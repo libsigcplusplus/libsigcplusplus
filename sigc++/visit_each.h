@@ -61,8 +61,10 @@ struct limit_derived_target<T_target*, T_action>
 
   template <bool I_derived, class T_type> struct with_type;
   template <class T_type> struct with_type<false,T_type>
-  { static void execute_(const T_type&, const T_self&) {} 
-    static void execute_(const T_type*&, const T_self&) {} };
+  { static void execute_(T_type*&, const T_self&) {}
+    static void execute_(const T_type*&, const T_self&) {}
+    static void execute_(T_type&, const T_self&) {}
+    static void execute_(const T_type&, const T_self&) {} };
 
   template <class T_type> struct with_type<true,T_type>
   { 

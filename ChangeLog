@@ -1,3 +1,10 @@
+2003-03-05  Martin Schulze  <MHL.Schulze@t-online.de>
+
+	* sigc++/visit_each.h: BUGFIX in template specialization
+	limit_derive_target<T_Target*,T_action>::with_type<false,T_type>:
+	Add non-const overloads for static void execute_() avoiding
+	compile time errors.
+
 2003-02-16  Martin Schulze  <MHL.Schulze@t-online.de>
 
 	* tests/Makefile.am, tests/test_disconnect.cc:
