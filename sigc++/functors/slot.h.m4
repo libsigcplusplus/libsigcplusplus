@@ -71,7 +71,7 @@ FOR(1, $1,[  typedef _R_(T_arg%1) arg%1_type_;
     /** Launch the contained functor unless slot is in blocking state.dnl
 FOR(1, $1,[
      * @param _A_a%1 Argument to be passed on to the functor.])
-     * @return The return values of the functor invocation.
+     * @return The return value of the functor invocation.
      */
     inline T_return operator()(LOOP(arg%1_type_ _A_a%1, $1)) const
       {

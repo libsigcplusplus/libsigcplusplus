@@ -1,3 +1,8 @@
+2003-06-15  Martin Schulze  <teebaum@cvs.gnome.org>
+
+	* sigc++/functor/slot.h.m4: Correct typing error in docs.
+	* sigc++/functor/ptr_fun.h.m4: Document the whole thing.
+
 2003-05-31  Murray Cumming  <murrayc@usa.net>
 
 	* Reference documentation: Rearranged the groups to make it all
@@ -10,13 +15,13 @@
 	We probably need some more groups for the extra stuff, like we do
 	in libsigc++ 1.2.
 
-2003-05-29  Martin Schulze  <martin-ml@hippogriff.de>
+2003-05-29  Martin Schulze  <teebaum@cvs.gnome.org>
 
 	* sigc++/signal.h.m4: Fix documentation.
 	* sigc++/connection.h, sigc++/functor/slot.h.m4:
 	Document the whole thing.
 
-2003-05-29  Martin Schulze  <martin-ml@hippogriff.de>
+2003-05-29  Martin Schulze  <teebaum@cvs.gnome.org>
 
 	* sigc++/signal.h.m4:
 	- Remove bogus operator() from unnumbered signal<> and
