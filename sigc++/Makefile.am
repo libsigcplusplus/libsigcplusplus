@@ -37,15 +37,15 @@ build_subdirs = functors adaptors adaptors/lambda
 sigc_m4 = $(base_m4:%=macros/%) \
 	  $(functors_m4:%=functors/macros/%) \
           $(adaptors_m4:%=adaptors/macros/%) \
-          $(lambda_m4:%=adaptors/lambda/macros/%) 
-sigc_built_cc = $(base_built_cc:%=macros/%) \
-	  $(functors_built_cc:%=functors/macros/%) \
-          $(adaptors_built_cc:%=adaptors/macros/%) \
-          $(lambda_built_cc:%=adaptors/lambda/macros/%) 
+          $(lambda_m4:%=adaptors/lambda/macros/%)
+sigc_built_cc = $(base_built_cc) \
+	  $(functors_built_cc:%=functors/%) \
+          $(adaptors_built_cc:%=adaptors/%) \
+          $(lambda_built_cc:%=adaptors/lambda/%)
 sigc_built_h = $(base_built_h) \
 	  $(functors_built_h:%=functors/%) \
           $(adaptors_built_h:%=adaptors/%) \
-          $(lambda_built_h:%=adaptors/lambda/%) 
+          $(lambda_built_h:%=adaptors/lambda/%)
 
 EXTRA_DIST = $(sigc_m4) $(sigc_built_h) $(sigc_built_cc)
 

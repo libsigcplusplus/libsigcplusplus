@@ -1,3 +1,9 @@
+2003-11-02  Martin Schulze  <teebaum@cvs.gnome.org>
+
+	* Move all .m4 files into new subdirectories
+	sigc++/[...]/macros. Install the .m4 files on
+	"make install" (Reported by Ron Steinke).
+
 2003-11-01  Martin Schulze  <teebaum@cvs.gnome.org>
 
 	* sigc++/[class,method,object]_slot.h.m4: Include
