@@ -1,3 +1,7 @@
+2005-02-11  Martin Schulze  <mschulze@cvs.gnome.org>
+
+	* docs/manual/Makefile.am: Set the correct group in post-html.
+
 2005-02-11  Murray Cumming  <murrayc@murrayc.com>
 
 	* docs/website/doc.shtml: Fix typo in url for reference docs. Found by 

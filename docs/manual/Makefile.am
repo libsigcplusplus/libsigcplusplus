@@ -27,11 +27,11 @@ libsigc_manual-html.tar.gz: $(srcdir)/html
 
 
 post-lumps: $(srcdir)/libsigc_manual.dvi $(srcdir)/libsigc_manual.ps $(srcdir)/libsigc_manual.pdf $(srcdir)/libsigc_manual-html.tar.gz
-	tar -cf - $^ | ssh $$SSH_OPT $$USER@libsigc.sourceforge.net "cd $(libsigc_manual) ; tar -xvf - ; chmod a+r,g+w * ; chgrp gtkmm *"
+	tar -cf - $^ | ssh $$SSH_OPT $$USER@libsigc.sourceforge.net "cd $(libsigc_manual) ; tar -xvf - ; chmod a+r,g+w * ; chgrp libsigc *"
 
 post-html: $(srcdir)/html/index.html
 	(cd html && tar -cf - *.html | gzip -3 | \
-	 ssh $$SSH_OPT $$USER@libsigc.sourceforge.net "cd $(libsigc_manual)/html ; gunzip | tar -xvf - ; chmod a+r,g+w * ; chgrp gtkmm *")
+	 ssh $$SSH_OPT $$USER@libsigc.sourceforge.net "cd $(libsigc_manual)/html ; gunzip | tar -xvf - ; chmod a+r,g+w * ; chgrp libsigc *")
 
 tutorialdir = $(libsigc_docdir)/tutorial/html
 
