@@ -2,6 +2,7 @@ Makefile Makefile.in
 .libs .deps
 test_bind test_bind_return
 test_callof test_closure test_compose
+test_disconnect
 test_exception_catch
 test_functor_trait
 test_hide
