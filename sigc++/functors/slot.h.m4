@@ -97,6 +97,19 @@ FOR(1, $1,[
   slot(const T_functor& _A_func)
     : slot_base(new internal::typed_slot_rep<T_functor>(_A_func))
     { rep_->call_ = internal::slot_call$1<LIST(T_functor, T_return, LOOP(T_arg%1, $1))>::address(); }
+
+  /** Constructs a slot, copying an existing one.
+   * @param src The existing slot to copy.
+   */
+  slot(const slot& src)
+    : slot_base(src) {}
+
+  /** Overrides this slot making a copy from another slot.
+   * @param src The slot from which to make a copy.
+   * @return @p this.
+   */
+  slot& operator=(const slot& src)
+    { slot_base::operator=(src); return *this; }
 };
 
 ])
@@ -417,7 +430,7 @@ public:
     : rep_(rep), blocked_(false) {}
 
   /** Constructs a slot, copying an existing one.
-   * @param cl_ The existing slot to copy.
+   * @param src The existing slot to copy.
    */
   slot_base(const slot_base& src)
     : rep_(0), blocked_(src.blocked_)
@@ -487,13 +500,14 @@ public:
   void disconnect()
     { if (rep_) rep_->disconnect(); }
 
+protected:
   /** Overrides this slot making a copy from another slot.
    * @param src The slot from which to make a copy.
    * @return @p this.
    */
-  slot_base& operator = (const slot_base& src);
+  slot_base& operator=(const slot_base& src);
 
-//  protected: // public to avoid template friend declarations
+public: // public to avoid template friend declarations
   /** Typed slot_rep object that contains a functor. */
   mutable rep_type *rep_;
 

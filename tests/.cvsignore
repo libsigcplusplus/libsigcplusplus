@@ -3,6 +3,7 @@ Makefile Makefile.in
 test_accumulated
 test_bind
 test_bind_return
+test_retype_return
 test_callof
 test_slot
 test_compose

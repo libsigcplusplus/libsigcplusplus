@@ -78,10 +78,16 @@ struct connection
     { if (slot_) slot_->remove_destroy_notify_callback(this); }
 
   /** Returns whether the connection is still active.
-   * @return @p true if the connection is still active.
+   * @return @p false if the connection is still active.
    */
   bool empty() const
     { return (!slot_ || slot_->empty()); }
+
+  /** Returns whether the connection is still active.
+   * @return @p true if the connection is still active.
+   */
+  bool connected() const
+    { return !empty(); }
 
   /** Returns whether the connection is blocked.
    * @return @p true if the connection is blocked.
@@ -128,5 +134,16 @@ private:
 };
 
 } /* namespace sigc */
+
+
+#ifndef LIBSIGC_DISABLE_DEPRECATED
+
+namespace SigC {
+
+typedef ::sigc::connection Connection;
+
+}
+
+#endif /* LIBSIGC_DISABLE_DEPRECATED */
 
 #endif /* _SIGC_TRACKABLE_HPP_ */

@@ -1,3 +1,3 @@
 Makefile Makefile.in
 .libs .deps
-callof.h signal.h compatibility.h
+callof.h signal.h class_slot.h hide.h method_slot.h object_slot.h retype.h slot.h

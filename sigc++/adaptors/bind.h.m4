@@ -20,7 +20,7 @@ include(template.macros.m4)
 
 define([DEDUCE_RESULT_TYPE],[dnl
   template <LOOP(class T_arg%1,eval(CALL_SIZE-$2))>
-  struct deduce_result_type<LIST(LOOP(T_arg%1,eval(CALL_SIZE-$2)), LOOP(void,eval($2)))>
+  struct deduce_result_type<LIST(LOOP(T_arg%1,eval(CALL_SIZE-$2)))>
     { typedef typename adaptor_type::deduce_result_type<LIST(LOOP(_P_(T_arg%1),eval(CALL_SIZE-$2)), _P_(T_bound))>::type type; };
 ])
 define([BIND_OPERATOR],[dnl

@@ -147,7 +147,6 @@ FOR(1, $1,[
 };
 
 ])
-
 define([SIGNAL_N],[dnl
 /** Signal declaration.
  * signal$1 can be used to connect() slots that are invoked
@@ -251,7 +250,6 @@ FOR(1, $1,[
 };
 
 ])
-
 define([SIGNAL],[dnl
 ifelse($1, $2,[dnl
 /** Convenience wrapper for the numbered signal#<> templates.
@@ -314,6 +312,39 @@ public:
   signal() {}
   signal(const signal& src)
     : signal$1<LIST(T_return, LOOP(T_arg%1, $1),nil)>(src) {}
+};
+
+])
+define([SIGNAL_COMPAT_N],[dnl
+/** Signal declaration.
+ * Signal$1 can be used to connect() slots that are invoked
+ * during subsequent calls to emit(). Any functor or slot
+ * can be passed into connect(). It is converted into a slot
+ * implicitely.
+ *
+ * An STL-style list interface for the signal's list of slots
+ * can be retrieved with slots(). This interface supports
+ * iteration, insertion and removal of slots.
+ *
+ * The following template arguments are used:
+ * - @e T_return The desired return type for the emit() function (may be overridden by the accumulator).dnl
+FOR(1,$1,[
+ * - @e T_arg%1 Argument type used in the definition of emit().])
+ * - @e T_accumulator The accumulator type used for emission. The default nil means that no accumulator should be used. Signal emission returns the return value of the last slot invoked.
+ *
+ * This class is part of the compatibility module and therefore deprecated.
+ * Use the unnumbered template sigc::signal<> instead.
+ *
+ * @ingroup compat
+ */
+template <LIST(class T_return, LOOP(class T_arg%1, $1), class T_accumulator=::sigc::nil)>
+class Signal$1
+  : public ::sigc::signal$1<LIST(T_return, LOOP(T_arg%1, $1), T_accumulator)>
+{
+public:
+  Signal$1() {}
+  Signal$1(const Signal$1& src)
+    : ::sigc::signal$1<LIST(T_return, LOOP(T_arg%1, $1), T_accumulator)>(src) {}
 };
 
 ])
@@ -951,5 +982,16 @@ SIGNAL(CALL_SIZE,CALL_SIZE)
 FOR(0,eval(CALL_SIZE-1),[[SIGNAL(%1)]])
 
 } /* namespace sigc */
+
+
+#ifndef LIBSIGC_DISABLE_DEPRECATED
+
+namespace SigC {
+
+// SignalN
+FOR(0,CALL_SIZE,[[SIGNAL_COMPAT_N(%1)]])
+}
+
+#endif /* LIBSIGC_DISABLE_DEPRECATED */
 
 #endif /* _SIGC_SIGNAL_H_ */

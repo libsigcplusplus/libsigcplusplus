@@ -1,7 +1,9 @@
 # Base (./)
-base_m4 = template.macros.m4 signal.h.m4 compatibility.h.m4
+base_m4 = template.macros.m4 signal.h.m4 slot.h.m4 method_slot.h.m4 \
+	  object_slot.h.m4 class_slot.h.m4 hide.h.m4 retype.h.m4
 base_built_cc =
-base_built_h = signal.h compatibility.h
+base_built_h = signal.h slot.h method_slot.h \
+	       object_slot.h class_slot.h hide.h retype.h
 
 signal.cc : signal.h functors/slot.h functors/mem_fun.h functors/functor_trait.h
 
@@ -51,6 +53,7 @@ EXTRA_DIST = $(sigc_m4) $(sigc_built_h) $(sigc_built_cc)
 library_includedir = $(includedir)/sigc++-2.0/sigc++
 nobase_library_include_HEADERS = $(sigc_built_h) \
   sigc++.h connection.h trackable.h reference_wrapper.h type_traits.h visit_each.h \
+  object.h retype_return.h bind.h bind_return.h compatibility.h \
   functors/functors.h \
   adaptors/adaptors.h \
   adaptors/lambda/lambda.h

@@ -1,5 +1,32 @@
 2003-10-26  Martin Schulze  <teebaum@cvs.gnome.org>
 
+	Compatiblity module:
+	* sigc++/signal.h.m4: Move definition of compatiblity
+	classes SigC::SignalN to here.
+	* sigc++/connection.h:
+	- Add connection::connected().
+	- Add compatibility typedef SigC::Connection.
+	* sigc++/bind.h, sigc++/bind_return.h,
+	sigc++/class_slot.h.m4,	sigc++/hide.h.m4,
+	sigc++/method_slot.h.m4, sigc++/object.h,
+	sigc++/object_slot.h.m4, sigc++/retype.h.m4,
+	sigc++/retype_return.h sigc++/slot.h.m4,
+	sigc++/compatibility.h:
+	New files to complete compatibility module.
+	Split content of compatibility.h.m4 among the new files.
+	* sigc++/compatibility.h.m4: Removed.
+	* Makefile.am: Build and distribute new files.
+	* tests/test_compatibility.cc: Test new stuff.
+
+	Fixes:
+	* sigc++/functors/slot.h.m4: Fix copy constructor and
+	operator=() of slot template.
+	* sigc++/adaptors/bind.h.m4: Fix deduce_result_type
+	template specializations. bind<0>() probably compiles
+	with gcc-3.3, now.
+
+2003-10-26  Martin Schulze  <teebaum@cvs.gnome.org>
+
 	Fixes:
 	* sigc++/functors/slot.{cc,h.m4}:
 	- Fix notification process: don't defer detaching of a
