@@ -6,9 +6,9 @@ base_built_h = callof.h signal.h
 signal.cc : signal.h functors/closure.h
 
 # Functors (functors/)
-functors_m4 = closure.h.m4 ptr_fun.h.m4 mem_fun.h.m4
+functors_m4 = functor_trait.h.m4 closure.h.m4 ptr_fun.h.m4 mem_fun.h.m4
 functors_built_cc = 
-functors_built_h = closure.h ptr_fun.h mem_fun.h
+functors_built_h = functor_trait.h closure.h ptr_fun.h mem_fun.h
 
 functors/closure.cc : functors/closure.h
 
@@ -49,7 +49,7 @@ EXTRA_DIST = $(sigc_m4) $(sigc_built_h) $(sigc_built_cc)
 library_includedir = $(includedir)/sigc++-2.0/sigc++
 nobase_library_include_HEADERS = $(sigc_built_h) \
   sigc++.h connection.h trackable.h type_traits.h visit_each.h \
-  functors/functor_trait.h functors/functors.h \
+  functors/functors.h \
   adaptors/adaptors.h \
   adaptors/lambda/lambda.h
 
@@ -87,4 +87,3 @@ build-subdirs-stamp:
 # the same name as a standard header:
 DEFAULT_INCLUDES =
 AM_CPPFLAGS = -I$(top_srcdir) -I$(top_builddir)
-

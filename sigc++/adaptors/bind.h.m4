@@ -26,10 +26,8 @@ struct bind_functor <$1, T_bound, T_functor, T_return> : public adapts<T_functor
   typedef typename adapts<T_functor>::adaptor_type adaptor_type;
 
   result_type
-  operator()()
-    { return functor_.template operator()<_P_(T_bound)>
-       (bound_); 
-    }
+  operator()();
+
 FOR($1,CALL_SIZE,[[BIND_OPERATOR($1,%1)]])
   bind_functor(_R_(T_functor) _A_func, _R_(T_bound) _A_bound)
     : adapts<T_functor>(_A_func), bound_(_A_bound)
@@ -37,6 +35,11 @@ FOR($1,CALL_SIZE,[[BIND_OPERATOR($1,%1)]])
 
   T_bound bound_;
 };
+
+template <class T_bound, class T_functor, class T_return>
+typename bind_functor<$1, T_bound, T_functor, T_return>::result_type
+bind_functor<$1, T_bound, T_functor, T_return>::operator()()
+  { return functor_.template operator()<_P_(T_bound)> (bound_); }
 
 // void specialization
 template <class T_bound, class T_functor>
@@ -46,10 +49,8 @@ struct bind_functor <$1, T_bound, T_functor, void> : public adapts<T_functor>
   typedef typename adapts<T_functor>::adaptor_type adaptor_type;
 
   void
-  operator()()
-    { functor_.template operator()<_P_(T_bound)>
-       (bound_); 
-    }
+  operator()();
+
 FOR($1,CALL_SIZE,[[BIND_OPERATOR($1,%1)]])
   bind_functor(_R_(T_functor) _A_func, _R_(T_bound) _A_bound)
     : adapts<T_functor>(_A_func), bound_(_A_bound)
@@ -57,6 +58,11 @@ FOR($1,CALL_SIZE,[[BIND_OPERATOR($1,%1)]])
 
   T_bound bound_;
 };
+
+template <class T_bound, class T_functor>
+void
+bind_functor<$1, T_bound, T_functor, void>::operator()()
+  { return functor_.template operator()<_P_(T_bound)> (bound_); }
 
 ])
 define([BIND_OPERATOR],[dnl
@@ -119,9 +125,9 @@ class bind_functor;
 
 FOR(0,CALL_SIZE,[[BIND_FUNCTOR(%1)]])
 
-template <class T_action, int T_loc, class T_bound, class T_functor>
+template <class T_action, int T_loc, class T_bound, class T_functor, class T_return>
 void visit_each(const T_action& _A_action,
-                const bind_functor<T_loc, T_bound, T_functor>& _A_target)
+                const bind_functor<T_loc, T_bound, T_functor, T_return>& _A_target)
 {
   visit_each(_A_action, _A_target.functor_);
   visit_each(_A_action, _A_target.bound_);
@@ -137,7 +143,7 @@ bind(const T_functor& _A_func, T_bound1 _A_b1)
              (_A_func, _A_b1);
   }
 
-template <int I_location, class T_bound1, class T_bound2,class T_functor>
+template <int I_location, class T_bound1, class T_bound2, class T_functor>
 inline bind_functor<I_location, T_bound1,
        bind_functor<I_location?I_location+1:0, T_bound2, T_functor> >
 bind(const T_functor& _A_functor, T_bound1 _A_b1, T_bound2 _A_b2)
@@ -147,7 +153,7 @@ bind(const T_functor& _A_functor, T_bound1 _A_b1, T_bound2 _A_b2)
              (bind<(I_location?I_location+1:0)>(_A_functor, _A_b2), _A_b1); 
   }
 
-template <int I_location, class T_bound1, class T_bound2,class T_bound3,class T_functor>
+template <int I_location, class T_bound1, class T_bound2, class T_bound3, class T_functor>
 inline bind_functor<I_location, T_bound1,
        bind_functor<(I_location?I_location+1:0), T_bound2,
        bind_functor<(I_location?I_location+2:0), T_bound3, T_functor> > >
@@ -162,4 +168,3 @@ bind(const T_functor& _A_functor, T_bound1 _A_b1, T_bound2 _A_b2,T_bound3 _A_b3)
 
 } /* namespace functor */
 } /* namespace sigc */
-

@@ -26,6 +26,8 @@ define([LAMBDA_SELECT_DO],[dnl
 define([LAMBDA_SELECT],[dnl
 struct lambda_select$1 : public lambda_base
 {
+  typedef void result_type; // no operator ()() overload
+  void operator ()() const; // not implemented
 FOR($1, $2,[[LAMBDA_SELECT_DO($1,%1)]])
 };
 ])
@@ -36,6 +38,7 @@ divert(0)dnl
 #include <sigc++/adaptors/lambda/base.h>
 
 namespace sigc {
+namespace functor {
 
 namespace internal {
 FOR(1,CALL_SIZE,[[LAMBDA_SELECT(%1,CALL_SIZE)]])
@@ -44,6 +47,7 @@ FOR(1,CALL_SIZE,[[LAMBDA_SELECT(%1,CALL_SIZE)]])
 FOR(1,CALL_SIZE,[[extern lambda<internal::lambda_select%1> _%1;
 ]])
 
+} /* namespace functor */
 } /* namespace sigc */
 
 #endif /* _SIGC_LAMBDA_SELECT_HPP_ */

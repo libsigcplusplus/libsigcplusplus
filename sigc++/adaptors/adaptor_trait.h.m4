@@ -55,32 +55,6 @@ dnl    { return functor_(); }
 ])dnl
 ])
 
-define([ADAPTOR_PTR_FUN],[dnl
-template <LIST(LOOP(class T_arg%1, $1), class T_return)>
-struct adaptor_trait<T_return (*)(LOOP(T_arg%1, $1)), false>
-{
-  typedef T_return result_type;
-  typedef pointer_functor$1<LIST(LOOP(T_arg%1, $1), T_return)> functor_type;
-  typedef adaptor_functor<functor_type> adaptor_type;
-};
-])
-define([ADAPTOR_MEM_FUN],[dnl
-template <LIST(LOOP(class T_arg%1, $1), class T_return, class T_obj)>
-struct adaptor_trait<T_return (T_obj::*)(LOOP(T_arg%1, $1)), false>
-{
-  typedef T_return result_type;
-  typedef mem_functor$1<LIST(LOOP(T_arg%1, $1), T_return, T_obj)> functor_type;
-  typedef adaptor_functor<functor_type> adaptor_type;
-};
-template <LIST(LOOP(class T_arg%1, $1), class T_return, class T_obj)>
-struct adaptor_trait<T_return (T_obj::*)(LOOP(T_arg%1, $1)) const, false>
-{
-  typedef T_return result_type;
-  typedef const_mem_functor$1<LIST(LOOP(T_arg%1, $1), T_return, T_obj)> functor_type;
-  typedef adaptor_functor<functor_type> adaptor_type;
-};
-])
-
 divert(0)dnl
 /*
   Hint adaptor_base:
@@ -116,9 +90,8 @@ divert(0)dnl
 
   Trait adaptor_trait<functor, bool>:
     This trait allows the user to specific what is the
-  adaptor version of any type.  It has been overloaded to
-  automatically wrap function pointers and class methods
-  as well.  
+  adaptor version of any type.  It automatically wraps
+  function pointers and class methods as well.  
 
 */
 __FIREWALL__
@@ -134,7 +107,7 @@ namespace functor {
 struct adaptor_base : public functor_base {};
 template <class T_functor> struct adapts;
 
-template <class T_functor, class T_return = typename functor_trait<T_functor>::result_type>
+template <class T_functor, class T_return>
 struct adaptor_functor : public adaptor_base
 {
   typedef T_return result_type;
@@ -142,8 +115,8 @@ struct adaptor_functor : public adaptor_base
   operator T_functor& () const { return functor_; }
 
   result_type
-  operator()() const
-    { return functor_(); }
+  operator()() const;
+
 FOR(0,CALL_SIZE,[[ADAPTOR_DO(%1)]])
 
   adaptor_functor()
@@ -162,17 +135,22 @@ FOR(0,CALL_SIZE,[[ADAPTOR_DO(%1)]])
   mutable T_functor functor_;
 };
 
+template <class T_functor, class T_return>
+typename adaptor_functor<T_functor, T_return>::result_type
+adaptor_functor<T_functor, T_return>::operator()() const
+  { return functor_(); }
+
 // void specialization
 template <class T_functor>
-struct adaptor_functor<T_functor,void> : public adaptor_base
+struct adaptor_functor<T_functor, void> : public adaptor_base
 {
   typedef void result_type;
 
   operator T_functor& () const { return functor_; }
 
   void
-  operator()() const
-    { functor_(); }
+  operator()() const;
+
 FOR(0,CALL_SIZE,[[ADAPTOR_DO(%1)]])
 
   adaptor_functor()
@@ -191,12 +169,19 @@ FOR(0,CALL_SIZE,[[ADAPTOR_DO(%1)]])
   mutable T_functor functor_;
 };
 
-template <class T_action, class T_functor>
+template <class T_functor>
+typename adaptor_functor<T_functor, void>::result_type
+adaptor_functor<T_functor, void>::operator()() const
+  { functor_(); }
+
+
+template <class T_action, class T_functor, class T_return>
 void visit_each(const T_action& _A_action,
-                const adaptor_functor<T_functor>& _A_target)
+                const adaptor_functor<T_functor, T_return>& _A_target)
 {
   visit_each(_A_action, _A_target.functor_);
 }
+
 
 /******************************************************/
 
@@ -218,15 +203,9 @@ template <class T_functor>
 struct adaptor_trait<T_functor, false>
 {
   typedef typename functor_trait<T_functor>::result_type result_type;
-  typedef T_functor functor_type;
-  typedef adaptor_functor<T_functor> adaptor_type;
+  typedef typename functor_trait<T_functor>::functor_type functor_type;
+  typedef adaptor_functor<functor_type,result_type> adaptor_type;
 };
-
-
-// but sometimes the user gets mean and passes us a non-functor type.
-// well okay your the boss.
-FOR(0,CALL_SIZE,[[ADAPTOR_PTR_FUN(%1)]])
-FOR(0,CALL_SIZE,[[ADAPTOR_MEM_FUN(%1)]])
 
 /******************************************************/
 

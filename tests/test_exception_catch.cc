@@ -16,14 +16,25 @@ struct f
     {cout << "f(int "<<i<<")"<<endl; 
      throw std::range_error("out of range");}
 };
-#if 0
+
 struct g 
 {
   int operator()() 
     {cout << "g()"<<endl; 
      throw std::range_error("out of range");}
 };
-#endif
+
+// explicitly specify the return type of foo's operator() overload with no arguments
+// (cannot be auto-detected):
+
+namespace sigc {
+namespace functor {
+
+SIGC_FUNCTOR_TRAIT(g,int)
+
+} /* namespace functor */
+} /* namespace sigc */
+
 
 struct my_catch
 {
@@ -39,8 +50,9 @@ struct my_catch
   }
 };
 
+
 int main()
 {
-  exception_catch(f(), my_catch())(1);
-//  exception_catch(g(), my_catch())();
+  cout << exception_catch(f(), my_catch())(1) << endl;
+  cout << exception_catch(g(), my_catch())() << endl;
 }

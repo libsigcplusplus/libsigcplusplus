@@ -18,17 +18,13 @@ struct foo
     {std::cout << "foo(int "<<i<<",int "<<j<<", int "<<k<<")"<<std::endl;}
 };
 
-// explicitly specify the return type of foo's operator() overload with no arguments
-// (cannot be auto-detected):
 
 namespace sigc {
 namespace functor {
 
-template <>
-struct functor_trait<foo,false>
-{
-  typedef bool result_type;
-};
+// explicitly specify the return type of foo's operator() overload with no arguments
+// (cannot be auto-detected):
+SIGC_FUNCTOR_TRAIT(foo,bool)
 
 } /* namespace functor */
 } /* namespace sigc */

@@ -21,8 +21,7 @@ define([LAMBDA_DO],[dnl
   template <LOOP(class T_arg%1, $1)>
   typename callof<LIST(T_type, LOOP(T_arg%1, $1))>::result_type
   operator ()(LOOP(T_arg%1 _A_%1, $1)) const 
-    { 
-      return value_.template operator()<LOOP(_P_(T_arg%1), $1)>
+    { return value_.template operator()<LOOP(_P_(T_arg%1), $1)>
              (LOOP(_A_%1, $1)); 
     }
 ])
@@ -37,23 +36,75 @@ divert(0)dnl
 #define _SIGC_LAMBDA_BASE_HPP_
 #include <sigc++/adaptors/adaptor_trait.h>
 
-namespace sigc {
 
-/********************************************************************/
+namespace sigc {
+namespace functor {
 
 // dummy structure to keep track of the where we are.
-struct lambda_base : public functor::adaptor_base {};
+struct lambda_base : public adaptor_base {};
 
 template <class T_type> struct lambda;
 
+
 namespace internal {
 
-template <class T_type, bool I_islambda = is_base_and_derived<lambda_base, T_type>::value> struct lambda_core;
+template <class T_type, bool I_islambda = is_base_and_derived<lambda_base, T_type>::value> struct lambda_trait {};
 
 template <class T_type>
-struct lambda_core<T_type, true> : public lambda_base
+struct lambda_trait<T_type, true>
+{
+  typedef typename T_type::result_type result_type;
+  typedef T_type lambda_type;
+  static const bool derives_lambda_base = true;
+};
+
+template <class T_type>
+struct lambda_trait<T_type, false>
+{
+  typedef typename functor_trait<T_type>::result_type result_type;
+  typedef lambda<T_type> lambda_type;
+  static const bool derives_lambda_base = false;
+};
+
+
+template <class T_type, class T_return = typename lambda_trait<T_type>::result_type, bool I_islambda = lambda_trait<T_type>::derives_lambda_base> struct lambda_core;
+
+template <class T_type, class T_return>
+struct lambda_core<T_type, T_return, true> : public lambda_base
 {
   typedef T_type lambda_type;
+  typedef T_return result_type;
+
+  result_type
+  operator()() const;
+
+FOR(1,CALL_SIZE,[[LAMBDA_DO(%1)]])
+
+  lambda_core() {}
+  lambda_core(const T_type& v)
+    : value_(v) {}
+
+  template <class T1, class T2>
+  lambda_core(const T1& v1, const T2& v2)
+    : value_(v1, v2) {}
+
+  T_type value_;
+};
+
+template <class T_type, class T_return>
+typename lambda_core<T_type, T_return, true>::result_type
+lambda_core<T_type, T_return, true>::operator()() const
+  { return value_(); }
+
+
+template <class T_type>
+struct lambda_core<T_type, void, true> : public lambda_base
+{
+  typedef T_type lambda_type;
+  typedef void result_type;
+
+  void
+  operator()() const;
 
 FOR(1,CALL_SIZE,[[LAMBDA_DO(%1)]])
 
@@ -69,9 +120,18 @@ FOR(1,CALL_SIZE,[[LAMBDA_DO(%1)]])
 };
 
 template <class T_type>
-struct lambda_core<T_type, false> : public lambda_base
+typename lambda_core<T_type, void, true>::result_type
+lambda_core<T_type, void, true>::operator()() const
+  { value_(); }
+
+
+template <class T_type, class T_return>
+struct lambda_core<T_type, T_return, false> : public lambda_base
 {
   typedef lambda<T_type> lambda_type;
+  typedef T_return result_type; // T_type is a functor. T_return is the return type of the functor.
+
+  T_type operator()() const;
 
 FOR(1,CALL_SIZE,[[LAMBDA_DO_VALUE(%1)]])
 
@@ -81,11 +141,26 @@ FOR(1,CALL_SIZE,[[LAMBDA_DO_VALUE(%1)]])
   T_type value_;
 };
 
+template <class T_type, class T_return>
+T_type lambda_core<T_type, T_return, false>::operator()() const
+  { return value_; }
+
 } /* namespace internal */
+
+
+template <class T_action, class T_functor, class T_return, bool I_islambda>
+void visit_each(const T_action& _A_action,
+                const internal::lambda_core<T_functor, T_return, I_islambda>& _A_target)
+{
+  visit_each(_A_action, _A_target.value_);
+}
+
 
 template <class T_type>
 struct lambda : public internal::lambda_core<T_type>
 {
+  typedef typename internal::lambda_core<T_type>::result_type result_type;
+
   lambda()
     {}
   lambda(typename type_trait<T_type>::take v)
@@ -94,6 +169,7 @@ struct lambda : public internal::lambda_core<T_type>
 };
 
 
+} /* namespace functor */
 } /* namespace sigc */
 
 #endif /* _SIGC_LAMBDA_BASE_HPP_ */

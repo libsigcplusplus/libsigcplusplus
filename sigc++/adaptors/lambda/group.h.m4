@@ -19,93 +19,111 @@ include(template.macros.m4)
 
 dnl
 dnl  How to call the darn thing!
+define([LAMBDA_GROUP_FACTORY],[dnl
+template <class T_functor, LOOP(class T_type%1, $1)>
+lambda<lambda_group$1<T_functor, LOOP(T_type%1, $1)> >
+group(const T_functor& _A_func, LOOP(T_type%1 _A_%1, $1))
+{
+  typedef lambda_group$1<T_functor, LOOP(T_type%1, $1)> T_lambda;
+  return lambda<T_lambda>(T_lambda(_A_func, LOOP(_A_%1, $1)));
+}
+
+])
+dnl
+dnl  How to call the darn thing!
 define([LAMBDA_GROUP_DO],[dnl
 define([_L_],[LOOP(_A_%1, $2)])dnl
 define([_T_],[LOOP(T_arg%1, $2)])dnl
 dnl Please someone get a gun!
-  template <LIST(class T_func, LOOP(class T_arg%1, $2))>
+  template <LOOP(class T_arg%1, $2)>
   typename callof<
-      typename callof<T_func, LOOP(T_arg%1, $2)>::result_type,dnl
+      typename callof<lambda_type,LOOP(T_arg%1,$2)>::result_type,dnl
 LOOP([[
       typename callof<value%1_type, _T_>::result_type]], $1)
     >::result_type
-  operator() (LIST(T_func func, LOOP(T_arg%1 _A_%1, $2))) const
-    {  return (func(LOOP(_A_%1, $2)))(LOOP(value%1_(_L_),$1)); }
+  operator() (LOOP(T_arg%1 _A_%1, $2)) const
+    { return (func_(LOOP(_A_%1, $2)))(LOOP(value%1_(_L_),$1)); }
 ])
-
 dnl
 dnl This really doesn't have much to do with lambda other than
 dnl holding lambdas with in itself.
 define([LAMBDA_GROUP],[dnl
-template <LOOP(class T_type%1, $1)>
+template <class T_functor, LOOP(class T_type%1, $1), class T_return = typename lambda<T_functor>::result_type>
 struct lambda_group$1 : public lambda_base
 {
-FOR(1, $1,[  typedef typename lambda<T_type%1>::lambda_type value[]%1[]_type;
-])
+  typedef T_return result_type;dnl
 
-  // T_func must be a lambda
+FOR(1, $1,[
+  typedef typename lambda<T_type%1>::lambda_type value[]%1[]_type;])
+  typedef typename lambda<T_functor>::lambda_type lambda_type;
+
+  result_type
+  operator ()() const;
+
 FOR(1,CALL_SIZE,[[LAMBDA_GROUP_DO($1,%1)]])
 
-  lambda_group[]$1[](LOOP(const T_type%1& _A_%1, $1))
-    : LOOP(value%1_(_A_%1), $1) {}
-FOR(1, $1,[  value%1_type value%1_;
-])
+  lambda_group[]$1[](const T_functor& _A_func, LOOP(const T_type%1& _A_%1, $1))
+    : LOOP(value%1_(_A_%1), $1), func_(_A_func) {}dnl
+
+FOR(1, $1,[
+  value%1_type value%1_;])
+  mutable lambda_type func_;
 };
-])
 
-dnl
-dnl Operator () for lambda_call
-dnl
-define([LAMBDA_CALL_DO],[dnl
-  template <LOOP(class T_arg%1, $1)>
-  typename callof<LIST(T_group, value_type, LOOP(T_arg%1, $1))>::result_type
-  operator() (LOOP(T_arg%1 _A_%1, $1)) const
-   { return group_(LIST(value_, LOOP(_A_%1, $1))); }
-])
+template <class T_functor, LOOP(class T_type%1, $1), class T_return>
+typename lambda_group$1<T_functor, LOOP(T_type%1, $1), T_return>::result_type
+lambda_group$1<T_functor, LOOP(T_type%1, $1), T_return>::operator ()() const
+  { return (func_())(LOOP(value%1_(), $1)); }
 
+// void specialization
+template <class T_functor, LOOP(class T_type%1, $1)>
+struct lambda_group$1<T_functor, LOOP(T_type%1, $1), void> : public lambda_base
+{
+  typedef void result_type;dnl
+
+FOR(1, $1,[
+  typedef typename lambda<T_type%1>::lambda_type value[]%1[]_type;])
+  typedef typename lambda<T_functor>::lambda_type lambda_type;
+
+  void
+  operator ()() const;
+
+FOR(1,CALL_SIZE,[[LAMBDA_GROUP_DO($1,%1)]])
+
+  lambda_group[]$1[](const T_functor& _A_func, LOOP(const T_type%1& _A_%1, $1))
+    : LOOP(value%1_(_A_%1), $1), func_(_A_func) {}dnl
+
+FOR(1, $1,[
+  value%1_type value%1_;])
+  mutable lambda_type func_;
+};
+
+template <class T_functor, LOOP(class T_type%1, $1)>
+void
+lambda_group$1<T_functor, LOOP(T_type%1, $1), void>::operator ()() const
+  { (func_())(LOOP(value%1_(), $1)); }
+
+
+template <class T_action, class T_functor, LOOP(class T_type%1, $1), class T_return>
+void visit_each(const T_action& _A_action,
+                const lambda_group$1<T_functor, LOOP(T_type%1, $1), T_return>& _A_target)
+{dnl
+FOR(1, $1,[
+  visit_each(_A_action, _A_target.value%1_);])
+  visit_each(_A_action, _A_target.func_);
+}
+
+
+])
 divert(0)dnl
 __FIREWALL__
 #include <sigc++/adaptors/lambda/base.h>
 
 namespace sigc {
+namespace functor {
 
 FOR(1,3,[[LAMBDA_GROUP(%1)]])
+FOR(1,3,[[LAMBDA_GROUP_FACTORY(%1)]])
 
-template <class T_value, class T_group>
-struct lambda_call : public lambda_base
-{
-  typedef typename lambda<T_value>::lambda_type value_type;
-
-FOR(1,3,[[LAMBDA_CALL_DO(%1)]])
-
-  lambda_call(const T_value& _A_value, const T_group& _A_group)
-    : value_(_A_value), group_(_A_group)
-    {}
-  mutable value_type value_;
-  T_group group_;
-};
-
-template <class T_func, class T_arg1>
-lambda<lambda_call<T_func, lambda_group1<T_arg1> > >
-operator % (const T_func& _A_func, const lambda_group1<T_arg1>& _A_group)
-{ 
-  typedef lambda_call<T_func, lambda_group1<T_arg1> > T_lambda;
-  return lambda<T_lambda>(T_lambda(_A_func, _A_group));
-}
-
-template <class T_func, class T_arg1, class T_arg2>
-lambda<lambda_call<T_func, lambda_group2<T_arg1, T_arg2> > >
-operator % (const T_func& _A_func, const lambda_group2<T_arg1, T_arg2>& _A_group)
-{ 
-  typedef lambda_call<T_func, lambda_group2<T_arg1, T_arg2> > T_lambda;
-  return lambda<T_lambda>(T_lambda(_A_func, _A_group) ); 
-}
-
-template <class T_type1>
-inline lambda_group1<T_type1> grp(T_type1 _A_1)
-{ return lambda_group1<T_type1>(_A_1); }
-template <class T_type1, class T_type2>
-inline lambda_group2<T_type1, T_type2> grp(T_type1 _A_1, T_type2 _A_2)
-{ return lambda_group2<T_type1, T_type2>(_A_1, _A_2); }
-
+} /* namespace functor */
 } /* namespace sigc */

@@ -1,3 +1,31 @@
+2003-03-24  Martin Schulze  <MHL.Schulze@t-online.de>
+
+	* sigc++/Makefile.am, sigc++/functors/functor_trait.h[.m4],
+	sigc++/adaptors/adaptor_trait.h.m4: Move detection of function
+	and member method pointers' return types from adaptor_trait into
+	functor_trait. (We'll use functor_trait rather than adaptor_trait for
+	our lambda stuff.) functor_trait.h needs to be generated from .m4 now.
+
+	* sigc++/functors/functor_trait.h.m4: Add convenience macros:
+	- SIGC_FUNCTORS_HAVE_RESULT_TYPE indicates that the existance of
+	T_functor::result_type should be assumed for all unknown functors.
+	- SIGC_FUNCTOR_TRAIT(T_functor, T_result) explicitly specifies the
+	result type of a functor.
+	("typename functor_trait<T_functor>::result_type") is used to
+	determine the return type of our adaptors' operator()() overloads.
+
+	* sigc++/adaptors/[lambda/]*.h.m4: Various fixes in visit_each() and
+	operator()() overloads to make these operator()() overloads usable.
+	Most of them were just commented out before. Some adaptor types also
+	have void specializations, now.
+
+	* sigc++/adaptors/lambda/group.h.m4: Change syntax from
+	"[some_functor] % grp([args])" to "group([some_functor], [args])"
+	like we agreed on the ml some time ago.
+
+	* sigc++/tests/test_[all adaptors].cc: Test stuff that didn't work
+	before.
+
 2003-03-22  Murray Cumming  <murrayc@usa.net>
 
 	* Added pgk-config file, from a mystery person in bug #108857

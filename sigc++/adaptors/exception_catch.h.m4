@@ -71,39 +71,73 @@ __FIREWALL__
 namespace sigc {
 namespace functor {
 
-template <class T_functor, class T_catcher>
-class exception_catch_functor : public adapts<T_functor>
+template <class T_functor, class T_catcher, class T_return = typename adapts<T_functor>::result_type>
+struct exception_catch_functor : public adapts<T_functor>
 {
-  public:
-dnl   callof0_safe<T_functor>::result_type
-dnl   operator()();
+  typedef T_return result_type;
+  typedef typename adapts<T_functor>::adaptor_type adaptor_type;
+
+  result_type
+  operator()();
 
 FOR(1,CALL_SIZE,[[EXCEPTION_CATCH_OPERATOR(%1)]])
 
-    exception_catch_functor() {}
-    exception_catch_functor(const T_functor& _A_func,
-                            const T_catcher& _A_catcher)
-      : adapts<T_functor>(_A_func), catcher_(_A_catcher)
+  exception_catch_functor() {}
+  exception_catch_functor(const T_functor& _A_func,
+                          const T_catcher& _A_catcher)
+    : adapts<T_functor>(_A_func), catcher_(_A_catcher)
     {}
-    ~exception_catch_functor() {}
+  ~exception_catch_functor() {}
+
   protected: 
     T_catcher catcher_; 
-
 };
 
-dnl template <class T_functor, class T_catcher>
-dnl typename callof0_safe<T_functor>::result_type
-dnl exception_catch_functor<T_functor, T_catcher>
-dnl   ::operator()()
-dnl      { 
-dnl         try { return functor_(); }
-dnl         catch (...)
-dnl         { return catcher_(); }
-dnl      }
+template <class T_functor, class T_catcher, class T_return>
+typename exception_catch_functor<T_functor, T_catcher, T_return>::result_type
+exception_catch_functor<T_functor, T_catcher, T_return>::operator()()
+  { 
+    try { return functor_(); }
+    catch (...)
+    { return catcher_(); }
+  }
 
-template <class T_action, class T_functor, class T_catcher>
+// void specialization
+template <class T_functor, class T_catcher>
+struct exception_catch_functor<T_functor, T_catcher, void> : public adapts<T_functor>
+{
+  typedef void result_type;
+  typedef typename adapts<T_functor>::adaptor_type adaptor_type;
+
+  void
+  operator()();
+
+FOR(1,CALL_SIZE,[[EXCEPTION_CATCH_OPERATOR(%1)]])
+
+  exception_catch_functor() {}
+  exception_catch_functor(const T_functor& _A_func,
+                          const T_catcher& _A_catcher)
+    : adapts<T_functor>(_A_func), catcher_(_A_catcher)
+    {}
+  ~exception_catch_functor() {}
+
+  protected: 
+    T_catcher catcher_; 
+};
+
+template <class T_functor, class T_catcher>
+void
+exception_catch_functor<T_functor, T_catcher, void>::operator()()
+  { 
+    try { functor_(); }
+    catch (...)
+    { catcher_(); }
+  }
+
+
+template <class T_action, class T_functor, class T_catcher, class T_return>
 void visit_each(const T_action& _A_action,
-                const exception_catch_functor<T_functor, T_catcher>& _A_target)
+                const exception_catch_functor<T_functor, T_catcher, T_return>& _A_target)
 {
   visit_each(_A_action, _A_target.functor_);
   visit_each(_A_action, _A_target.catcher_);

@@ -22,7 +22,7 @@ define([BIND_RETURN_OPERATOR],[dnl
    template <LOOP(class T_arg%1, $1)>
    inline T_return operator()(LOOP(T_arg%1 _A_a%1, $1))
      { functor_.template operator()<LOOP(_P_(T_arg%1), $1)>
-        (LOOP(_A_a%1, $1)); return ret_value_; 
+        (LOOP(_A_a%1, $1)); return ret_value_;
      }
 ])
 
@@ -46,8 +46,8 @@ FOR(1,CALL_SIZE,[[BIND_RETURN_OPERATOR(%1)]])
     bind_return_functor(_R_(T_functor) _A_functor, _R_(T_return) _A_ret_value)
       : adapts<T_functor>(_A_functor), ret_value_(_A_ret_value)
     {}
-  protected: 
-    T_return ret_value_; 
+  protected:
+    T_return ret_value_;
 };
 
 template <class T_return, class T_functor>

@@ -91,6 +91,41 @@ struct nil;
 CALLOF(CALL_SIZE,CALL_SIZE)
 FOR(0,eval(CALL_SIZE-1),[[CALLOF(%1,CALL_SIZE)]])
 
+
+/** Macro to infer the return type of a functor.
+ * The callof_ignore_arg<> template can be used to infer the return type
+ * of the functor's operator() with no arguments. It is useful to determine
+ * the result type of template member functions that invoke the functor's
+ * operator() with no arguments: as opposed to callof<> with zero arguments
+ * it only get instantiated when the function itself is instatiated. Thus
+ * it's safe to use when the existance of the functor's operator() overload
+ * with no arguments is not known.
+ *
+ * sigc::functor::hide uses
+ * "typename callof_ignore_arg<T_functor, T_arg1>::result_type"
+ * to determine the return time of its templated operator() overload
+ * that invokes the functor's operator() overload with no arguments,
+ * like e.g. in:
+ *
+ *   template <class T_functor>
+ *   struct hide_functor <1, T_functor> : public adapts<T_functor>
+ *   {
+ *     ...
+ *     template <class T_arg1>
+ *     typename callof_ignore_arg<T_functor, T_arg1>::result_type
+ *     operator()(T_arg1 _A_arg1) const { return functor_(); }
+ *     ...
+ *   };
+ *
+ */
+template <class T_functor, class T_arg1>
+struct callof_ignore_arg
+{
+  typedef typeof(type_trait<T_functor>::instance().
+                   T_functor::operator()()) result_type;
+};
+
+
 /** Macro to infer the return type of a functor.
  * The callof_safe<> template can be used to infer a functor's return
  * type at compile time. If T_functor's operator() is overloaded,
