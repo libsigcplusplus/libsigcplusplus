@@ -1,5 +1,13 @@
 2005-02-01  Murray Cumming  <murrayc@murrayc.com>
 
+	* sigc++/adaptors/macros/compose.h.m4: In the template specializations 
+	of visit_each(): As before, specify the specific other template 
+	specializations of visit_each that we use. Needed by AIX.
+	* tests/Makefile.am: Reenabled most tests, because AIX can now 
+	build them.
+
+2005-02-01  Murray Cumming  <murrayc@murrayc.com>
+
 	* sigc++/visit_each.h: visit_each_type(): Specify the specific 
 	template specialization of visit_each<>() to use. The AIX compiler, 
 	and possibly the Tru64 compiler, need this extra hint.
