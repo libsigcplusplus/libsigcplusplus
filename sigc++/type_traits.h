@@ -102,9 +102,13 @@ template <class T_base, class T_derived>
 struct is_base_and_derived
 {
 private:
+  struct big {
+    char memory[64];
+  };
+
   struct test {
-    static double is_base_class_(const void*);
-    static char   is_base_class_(typename type_trait<T_base>::pointer);
+    static big  is_base_class_(const void*);
+    static char is_base_class_(typename type_trait<T_base>::pointer);
   };
 
 public:

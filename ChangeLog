@@ -1,3 +1,9 @@
+2004-02-19  Martin Schulze  <teebaum@cvs.gnome.org>
+
+  * sigc++/type_traits.h: Make is_base_and_derived<> platform independant.
+  * sigc++/adaptors/lambda/macros/base.h.m4: Make lambda_core<> ctors
+  explicit. Remove an unused ctor from lambda_core<T_type, true>.
+
 2004-02-14  Martin Schulze  <teebaum@cvs.gnome.org>
 
   * sigc++/functors/slot_base.h, sigc++/functors/macros/slot.h.m4:

@@ -64,12 +64,14 @@ struct lambda_core<T_type, true> : public lambda_base
 
 FOR(1,CALL_SIZE,[[LAMBDA_DO(%1)]])dnl
   lambda_core() {}
-  lambda_core(const T_type& v)
-    : value_(v) {}
 
-  template <class T1, class T2>
-  lambda_core(const T1& v1, const T2& v2)
-    : value_(v1, v2) {}
+  explicit lambda_core(const T_type& v)
+    : value_(v) {}
+dnl
+dnl  TODO: I have no idea what the following ctor was written for. Remove it?
+dnl  template <class T1, class T2>
+dnl  lambda_core(const T1& v1, const T2& v2)
+dnl    : value_(v1, v2) {}
 
   T_type value_;
 };
@@ -92,7 +94,7 @@ struct lambda_core<T_type, false> : public lambda_base
   result_type operator()() const;
 
 FOR(1,CALL_SIZE,[[LAMBDA_DO_VALUE(%1)]])dnl
-  lambda_core(typename type_trait<T_type>::take v)
+  explicit lambda_core(typename type_trait<T_type>::take v)
     : value_(v) {}
 
   T_type value_;
@@ -131,6 +133,7 @@ struct lambda : public internal::lambda_core<T_type>
 
   lambda()
     {}
+
   lambda(typename type_trait<T_type>::take v)
     : internal::lambda_core<T_type>(v) 
     {}
