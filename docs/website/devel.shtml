@@ -1,0 +1,77 @@
+<!-- SSI fragments/htm_declaration.html_fragment begin -->
+<!--#include virtual="fragments/html_declaration.html_fragment" -->
+<!-- SSI fragments/html_declaration.html_fragment end -->
+
+<a name="devel"><h2>Development</h2></a>
+
+
+<a name="mail"><h3>Mailing List</h3></a>
+
+There is a mailing list,
+<a href="http://lists.gnome.org/mailman/listinfo/libsigc-list">libsigc-list@gnome.org</a> for Libsigc++, to serve as
+a design discussion area as well as a place to report bugs.  To subscribe, use the web
+<a href="http://lists.gnome.org/mailman/listinfo/libsigc-list">page</a>.
+Members can post directly, but all other traffic is moderated.
+There is an archive of recent messages, 
+<a href="http://lists.gnome.org/archives/libsigc-list/">
+here</a>. The archive of the old list is <a href="http://www.geocrawler.com/lists/3/SourceForge/3727/0/">here</a>.
+<p>
+
+<a name="patches"><h3>Patches</h3></a>
+
+<p>
+Patches should be added to bugzilla bugs.</p>
+
+<p>
+Outstanding <a
+href="http://bugzilla.gnome.org/buglist.cgi?product=libsigc%2B%2B&bug_status=UNCONFIRMED&bug_status=NEW&bug_status=ASSIGNED&bug_status=REOPENED&email1=&emailtype1=substring&emailassigned_to1=1&email2=&emailtype2=substring&emailreporter2=1&changedin=&chfieldfrom=&chfieldto=Now&chfieldvalue=&short_desc=&short_desc_type=substring&long_desc=&long_desc_type=substring&bug_file_loc=&bug_file_loc_type=substring&status_whiteboard=&status_whiteboard_type=substring&keywords=&keywords_type=anywords&op_sys_details=&op_sys_details_type=substring&version_details=&version_details_type=substring&cmdtype=doit&namedcmd=gnome-libs+past+20+days&newqueryname=&order=Reuse+same+sort+as+last+time&form_name=query">libsigc++ bugs</a>
+(<a href="http://bugzilla.gnome.org/buglist.cgi?product=libsigc%2B%2B&bug_status=UNCONFIRMED&bug_status=NEW&bug_status=ASSIGNED&bug_status=REOPENED&email1=&emailtype1=substring&emailassigned_to1=1&email2=&emailtype2=substring&emailreporter2=1&changedin=&chfieldfrom=&chfieldto=Now&chfieldvalue=&short_desc=&short_desc_type=substring&long_desc=&long_desc_type=substring&bug_file_loc=&bug_file_loc_type=substring&status_whiteboard=&status_whiteboard_type=substring&keywords=PATCH&keywords_type=anywords&op_sys_details=&op_sys_details_type=substring&version_details=&version_details_type=substring&cmdtype=doit&namedcmd=gnome-libs+past+20+days&newqueryname=&order=Reuse+same+sort+as+last+time&form_name=query">patches</a>)<br/>
+Submit a new libsigc++ bug <a href="http://bugzilla.gnome.org/enter_bug.cgi?product=libsigc%2B%2B">here</a>
+</p>
+
+<p>
+Patches should be created with the "cvs diff -up" command, and you must patch the ChangeLog. See below for cvs instructions. Ask on the mailing list if you need help with this.
+</p>
+
+<a name="cvs"><h3>CVS</h3></a>
+CVS is a powerful tool for maintain version control with multiple
+developers produced by <a href="http://www.cyclic.com">Cyclic</a>.
+Developer versions of Libsigc++ are housed in the 
+<a href="http://www.gnome.org">Gnome</a> CVS repository. 
+<p>
+Documentation for CVS is available at 
+<a href="http://www.cyclic.com/cvs/doc-blandy-text.html">Introduction to CVS</a> or the 
+<a href="http://www.loria.fr/~molli/cvs/doc/cvs_toc.html">CVS manual</a>. CVS is available on a wide
+number of plaforms including Unix, Window 95/NT, and Macintosh. 
+<p>
+The main CVS repository is located at cvs.gnome.org and requires 
+a gnome developer login. For those who do not have a login on the
+gnome developer tree, anonymous CVS checkouts are available from 
+anoncvs.gnome.org.  Development versions from CVS may or may
+not work depending on the current state of revision.  Users
+who do not need some functionality being added should stick
+to a released version.
+<p>
+To obtain the latest development source for libsigc++:
+
+<br/>
+Stable branch:
+<pre>
+export CVSROOT=:pserver:anonymous@anoncvs.gnome.org:/cvs/gnome
+cvs login 
+(hit return as the password)
+cvs -z3 co libsigc++-1.2
+</pre>
+
+<br/>
+Unstable branch:
+<pre>
+export CVSROOT=:pserver:anonymous@anoncvs.gnome.org:/cvs/gnome
+cvs login 
+(hit return as the password)
+cvs -z3 co libsigc++2
+</pre>
+
+<!-- SSI fragments/footer.html_fragment begin -->
+<!--#include virtual="fragments/footer.html_fragment" -->
+<!-- SSI fragments/footer.html_fragment begin -->

@@ -1,0 +1,73 @@
+<!-- SSI fragments/htm_declaration.html_fragment begin -->
+<!--#include virtual="fragments/html_declaration.html_fragment" -->
+<!-- SSI fragments/html_declaration.html_fragment end -->
+
+<a name="gnome"><h3>GNOME Links</h3></a>
+
+<p>
+Libsigc++ is part of the greater GNOME code base. 
+<ul>
+ <li><a href="http://www.gtkmm.org">gtkmm widget wrapper</a></li>
+ <li><a href="http://www.gtk.org">GTK+ widget set</a></li>
+ <li><a href="http://www.gnome.org">Gnome project</a></li>
+</ul>
+</p>
+
+<a name="other"><h3>Callback Links</h3></a>
+
+<p>
+There are a number of other C++ callback systems
+and publications on construction of callback systems.
+<ul>
+ <li><a href="http://www.troll.no/qt/metaobjects.html">Trolltech signal system</a> (part of <a href="http://www.troll.no">Qt widget set</a>)</li>
+ <li>(Send us a link you find worth mentioning here.)</li>
+</ul>
+</p>
+
+<a name="CPP"><h3>C++ Links</h3></a>
+
+<p>
+Additionally, these sites provided valuable help in creating this
+library.
+<ul>
+ <li><a href="http://sivut.koti.soon.fi/epulkkin/instructive/">Esa Pulkkinen's programming techniques page</a></li>
+ <li><a href="http://cpptips.hyperformix.com/cpptips.html">C++ Tip-of-the-Day</a></li>
+</ul>
+</p>
+
+<a name=""><h3>Users</h3></a>
+
+<p>
+Here is a list of some of the projects that use libsigc++.
+(Have a project which is using libsigc++?  Mail us.)
+<ul>
+ <li><a href="http://ex-code.com/propcpp/">Libpropc++: Creating
+and effective using properties in C++</a></li>
+ <li><a href="http://ucxx.sourceforge.net/">Yehia: Extension library with support for cross-threaded signal emission.</a></li>
+ <li><a href="http://gfc.sourceforge.net/">GFC: Alternative C++ wrapper for the GTK+ widget set.</a></li>
+ <li><a href="http://libuta.sourceforge.net/">Libuta</a></li>
+ <li><a href="http://www.worldforge.org/">The WorldForge Project</a></li>
+</ul>
+</p>
+
+<a name=""><h3>Listings</h3></a>
+
+<p>
+This is just a list of sites that point to libsigc++.  It 
+should provided to help you find similar libraries and 
+related resources.  (somewhat sorted by relevance) 
+<ul>
+ <li><a href="http://sunsite.auc.dk/linuxgames/">Linux Game Development Center</a></li>
+ <li><a href="http://www.geocities.com/SiliconValley/Vista/7184/guitool.html">The GUI Toolkit/Framework Page</a></li>
+ <li><a href="http://www.trumphurst.com/cpplibs/cpplibs.phtml">Available C++ Libraries FAQ</a></li>
+ <li><a href="http://www.freshmeat.net">Freshmeat</a></li>
+ <li><a href="http://www.linuxberg.com">Linux Berg</a></li>
+ <li><a href="http://www.linuxlinks.com">Linux Links</a></li>
+ <li><a href="http://www.mathtools.net">Mathtools.net</a></li>
+</ul>
+</p>
+
+
+<!-- SSI fragments/footer.html_fragment begin -->
+<!--#include virtual="fragments/footer.html_fragment" -->
+<!-- SSI fragments/footer.html_fragment begin -->

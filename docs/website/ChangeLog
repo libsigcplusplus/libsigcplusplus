@@ -1,0 +1,29 @@
+2004-08-31  Martin Schulze  <mschulze@cvs.gnome.org>
+
+	* index.shtml: Bring supported compilers/platforms up-to-date.
+	* link.shtml: Add Jeff Frank's gtk+ wrapper.
+
+2004-08-31  Martin Schulze  <mschulze@cvs.gnome.org>
+
+	* *.shtml: Bring the contents and links up-to-date.
+	The number of links is quite reduced. Also the link to the website
+	sources is non-functional; however cvs.gnome.org is work-in-progress.
+
+2003-07-03  Murray Cumming  <murrayc@usa.net>
+
+	* fragments/footer.html_framgent, devel.shtml: Mentioned new
+	libsigc-list@gnome.org mailing list instead of the old sourceforge one.
+
+2002-12-06  Murray Cumming  <murrayc@usa.net>
+
+	* fragments/footer.html_fragment: Removed Development menu item, added
+	Patches.
+	* devel.shtml, stable.shtml:  Added h2 headings.
+
+2002-12-06  Murray Cumming  <murrayc@usa.net>
+
+	* fragments/footer.html_fragment: Added link to lxr cvs page of 
+	website source.
+	* fragments/html_declaration.html_fragment: Removed latest version
+	number - this is a pain to keep in sync.
+

@@ -1,0 +1,56 @@
+<!-- SSI fragments/htm_declaration.html_fragment begin -->
+<!--#include virtual="fragments/html_declaration.html_fragment" -->
+<!-- SSI fragments/html_declaration.html_fragment end -->
+
+<a name="doc"><h3>Documentation</h3></a>
+For the current stable version libsigc++ 2.0 <a href="libsigc2/docs/reference/html/index.html">reference</a> documentation is available online.
+
+<p>
+
+For libsigc++ 1.2 we have both <a href="libsigc1_2/manual/">tutorial-style</a> and <a href="libsigc1_2/reference/">reference</a> documentation.
+
+The following documentation also comes with the source:
+<ul>
+<li><a href="doc/API">API</a>
+<li><a href="doc/FAQ">FAQ</a>
+<li><a href="doc/UML">UML</a>
+<li><a href="doc/conventions">conventions</a>
+<li><a href="doc/diagrams">diagrams</a>
+<li><a href="doc/powerusers">powerusers</a>
+<li><a href="doc/marshal">marshal</a>
+<li><a href="doc/requirements">requirements</a>
+<li><a href="doc/signals">signals</a>
+<li><a href="doc/win32">win32</a>
+
+</ul>
+
+
+<a name="examples"><h3>Examples</h3></a>
+The following examples comes with the source.
+<ul>
+<li><a href="examples/signals.cc">signals.cc</a>
+<li><a href="examples/bind_slot_test.cc">bind_slot_test.cc</a>
+<li><a href="examples/convert_slot_test.cc">convert_slot_test.cc</a>
+<li><a href="examples/array_test.cc">array_test.cc</a>
+<li><a href="examples/rettype_slot_test.cc">rettype_slot_test.cc</a>
+
+</ul>
+
+
+<a name="benchmark"><h3>Benchmarks</h3></a>
+To show how libsigc++ stacks up against other systems
+found in industry, libsigc++ 1.0 was <a href="benchmark.shtml">benchmarked and compared
+</a> it against Qt's
+signal system.  From it you can see both the speed and flexiblity
+of Libsigc++.  
+<p>
+
+<a name="glossary"><h3>Glossary of terms</h3></a>
+For those which just want a quick look at the terms used in
+the system, glance over the <a href="glossary.shtml">glossary</a>
+<p> 
+
+
+<!-- SSI fragments/footer.html_fragment begin -->
+<!--#include virtual="fragments/footer.html_fragment" -->
+<!-- SSI fragments/footer.html_fragment begin -->

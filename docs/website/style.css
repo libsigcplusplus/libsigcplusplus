@@ -1,0 +1,32 @@
+body {
+    background-color: #F7F7F7;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+
+#rightbox {
+    float: right;
+    margin-top: 50px;
+    width: 180px;
+}
+
+#coloredbox {
+    background-color: #6299cd;
+    padding: 5px;
+    border: 2px solid black;
+
+}
+
+a.menu { text-decoration: underline; color: white; }
+a.menu:link { text-decoration: underline; color: white; }
+a.menu:visited { text-decoration: underline; color: white; }
+a.menu:hover { text-decoration: none; }
+
+.right {
+    text-align: right;
+}
+
+#contents {
+    margin-right: 190px;
+
+}
+

@@ -1,3 +1,8 @@
+2005-01-11  Murray Cumming  <murrayc@murrayc.com>
+
+	* docs/: Added website, copied from the libsigc++-1.2 cvs module.
+	We will use it from here from now on.
+
 2004-12-11  Cedric Gustin <cedric.gustin@swing.be>
 
 	* configure.ac : parse version tags at configure time (for

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+ <head>
+  <title>libsigc++ -- The Typesafe Callback Framework for C++</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="style.css" type="text/css" />
+ </head>
+ <body>
+
+  <div id="rightbox">
+
+   <div id="coloredbox">
+
+    <a class="menu" href="index.shtml">Main</a><br />
+
+    <a class="menu" href="index.shtml#features">Features</a><br />
+
+    <a class="menu" href="license.shtml">License</a><br />
+    <br />
+    <a class="menu" href="doc.shtml">Documentation</a><br />
+
+    <a class="menu" href="stable.shtml">Download</a><br />
+    <br />
+    <a class="menu" href="devel.shtml#mail">Mailing List</a><br />
+   
+    <a class="menu" href="devel.shtml#patches">Patches</a><br />
+
+    <a class="menu" href="devel.shtml#cvs">CVS</a><br />
+    <br />
+    <a class="menu" href="link.shtml">Links</a><br />
+
+  </div>
+
+  <br />
+
+  <a href="http://sourceforge.net/project/?group_id=1970"><img src="pix/anvil24.gif" width="24" height="24" style="border: none" alt="Record" /></a>&nbsp;
+  <a href="http://libsigc.sourceforge.net"><img src="pix/home.gif" width="24" height="24" style="border: none" alt="Home" /></a>&nbsp;
+  <a href="http://sourceforge.net/bugs/?group_id=1970"><img src="pix/bug.gif" width="24" height="24" style="border: none" alt="Bugs" /></a>&nbsp;
+  <a href="http://sourceforge.net/mail/?group_id=1970"><img src="pix/mail.gif" width="24" height="24" style="border: none" alt="Mailing List" /></a>&nbsp;
+  <a href="http://sourceforge.net/project/showfiles.php?group_id=1970"><img src="pix/save.gif" width="24" height="24" style="border: none" alt="Download" /></a>
+ </div>
+
+ <div id="contents">
+  <table border="0" width="90%" cellpadding="0">
+   <tr>
+    <td><img src="pix/logo.gif" width="280" height="85" alt="libsigc++" /></td>
+     <td align="center">
+      <b>Callback Framework for C++</b>
+     </td>
+    </tr>
+   </table>
+
+   <hr></hr>

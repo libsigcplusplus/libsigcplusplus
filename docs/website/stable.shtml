@@ -1,0 +1,81 @@
+<!-- SSI fragments/htm_declaration.html_fragment begin -->
+<!--#include virtual="fragments/html_declaration.html_fragment" -->
+<!-- SSI fragments/html_declaration.html_fragment end -->
+
+<a name="download"><h2>Download</h2></a>
+
+<a name="sources"><h3>Source Packages</h3></a>
+
+<p>
+The source packages for libsigc++ are available on the <a href="http://sourceforge.net/project/showfiles.php?group_id=1970">sourceforge download area</a>
+and on the <a href="http://ftp.gnome.org/pub/GNOME/sources/libsigc++/2.0/">gnome ftp site</a>.
+</p>
+
+<a name="binaries"><h3>Binary Packages</h3></a>
+
+<p>
+libsigc++-2.0 and the older versions libsigc++-1.0 and libsigc++-1.2 are available as
+Debian packages in the Debian distributions.
+</p>
+<p>
+There are currently no rpm packages available for download.
+However, a .spec file is included in the tarball.
+Your are of course invited to make .rpm file publicly available.
+Note that we won't take over responsibility for their maintainance.
+</p>
+
+
+<a name="require"><h3>Requirements</h3></a>
+
+<a href="http://www.freedesktop.org/software/pkgconfig">pkg-config</a> should be used to build software that depends on libsigc++.
+
+<p>
+libsigc++ is built and tested for a standards-compliant
+C++ compiler. Compilers that don't fully implement the
+the template sections of the standard are not likely to work properly.
+But we welcome any patches that might workaround compiler problems. 
+</p>
+
+<p>
+Required from the C++ compiler:
+<ul>
+  <li> Namespaces.</li>
+  <li> Partial specialization of class and function templates.</li>
+  <li> Member function templates and explicit instantiation.</li>
+  <li> Template copy constructors and operators.</li>
+  <li> Treat void return as normal return.</li>
+</ul>
+
+</p>
+<p>
+
+All version of gcc >= 3.2 are currently known to compile libsigc++-2.0.
+Beginning with libsigc++-2.0.1 the library also works with the Apple gcc port.
+Also cygwin (gcc >= 3.2) and mingw32 should be able to compile libsigc++-2.0.x.
+Project files for the Microsoft .NET 2003 C++ compiler are integrated into the tarball.
+Support for SUN FORTE C++ starts with libsigc++-2.0.4.
+libsigc++-2.0.1 was the first tarball that has been reported to compile with the Intel C++ compiler.
+
+</p>
+<p>
+
+A larger number of compilers have been tested and found
+capable for libsigc++-1.2. All versions of gcc (including cygwin)
+passed enough tests to compile. HP-UX aCC used to
+lack member function copy constructors. A port to Microsoft
+Visual C++ has been integerated into the distribution. 
+The primary development platform is gcc.
+
+</p>
+<p>
+
+Although not required, <a href="ftp://ftp.funet.fi/pub/gnu/gnu/">m4</a> 
+is useful to construct templates not provided in the standard 
+package.
+
+</p>
+
+
+<!-- SSI fragments/footer.html_fragment begin -->
+<!--#include virtual="fragments/footer.html_fragment" -->
+<!-- SSI fragments/footer.html_fragment begin -->

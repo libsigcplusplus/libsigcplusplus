@@ -1,0 +1,290 @@
+<!-- SSI fragments/htm_declaration.html_fragment begin -->
+<!--#include virtual="fragments/html_declaration.html_fragment" -->
+<!-- SSI fragments/html_declaration.html_fragment end -->
+
+
+<h3>Signal System Comparison: Qt (tm) vs Libsigc++</h3><p>
+
+<a name="preface"><h3>Preface</h3></a>
+
+This comparison is by no means a fair fight.  Libsigc++ can't possibly lose
+and will defeat Qt soundly.  First of all, Qt and Libsigc++ have different
+design goals and thus the things measured to show the features of Libsigc++,
+may not be considerations for Qt.  a excellent widget set and a program
+framework while libsigc++ is nothing more that a small component.  Speed of
+signal/slot operations is not a very big consideration in most GUI code.
+Further, Qt was written several years ago, while I still have cuts in my
+fingers from feeling the bleeding edge.  I am controlling the conditions of
+the tests, and thus when I find a failing in libsigc++ during the testing, I
+get to go back and fix it.  On the other hand, TrollTech is concerned with
+binary compatiblity with old versions. Further, libsigc++ is a template
+library meaning all the code is specialized for each usage.  On the other
+hand, Qt is a generalist using strings to store all signal information.
+This is flexible but slower. 
+
+<p>
+That said there is a basis for comparison.  Both libsigc++ and Qt provide
+similar functionality with their signal/slot system.  They both are C++
+libraries which run under both windows and Unix.  Both originated from
+widget sets and both have flexiblity and ease of use a key factors.   Qt
+version 1.42 was used and Libsigc++ modified from version 0.8.0.
+<p>
+
+(Note that I have been in contact with Arnt Gulbrandsen of Troll Tech AS.
+He has discovered a problem in the Qt system than resulted in excessive time
+in the emit functions.  He indicates that it should be fixed for Qt 2.0
+which will improve their performance.) 
+
+<p>
+<a name="arch"><h3>String based verse Templates</h3></a>
+
+There is a significant differences between the architectures of Libsigc++
+and Qt signal system.  Libsigc++ is a template based while Qt is string
+based.  
+<P>
+
+String based signal systems have a number of advantages and disadvantages
+over template based.  It is simpler to implement, so it should in general
+win in size and compile speed compared to the bloat of templates.  As they
+don't need anything but basic C++ features, such systems are more portable
+accross systems.  Any signal you want can be declared, including new signals
+at runtime.  (Although Qt doesn't take advantage of this.)  This is also a
+disadvantage for the approach as the compiler does not check the typesafty
+of connections until they are called at runtime.  Some basic checking may be
+done, but in general it is minimal.  Often this approach requires a
+preprocessor to hide the string nature and do such checking. 
+<p>
+
+Template based on the other hand is entirely different beast.  Everything is
+compiled in to the binary including the connections forming agents.  This is
+a huge advantage that whatever compiles, runs.  Beter still no precompiler
+was needed, as the whole system can be build using C++ notation.  All
+typechecking is done at compile time by the compiler, thus no checking needs
+to be performed during the runtime operations.  Faster running does come a
+price.  All the templates generate code which will appear in the binary.
+Therefore great pains in the design of a template library are taken to hold
+this to a minumum.  Further, the template capablities of different compilers
+vary wildly, so portablity is hard to achieve.  These are not insurmountable
+though, as libsigc++ has excellent portablity and size.  <p>
+
+
+<a name="features"><h3>Table of Features</h3></a>
+
+The following features are relevant when comparing Qt signal/slot system
+and Libsigc++.
+
+<table width="90%" border="1">
+<tr><td> Feature 	</td><td> Qt </td><td> Libsigc++ </td></tr>
+<tr><td> Requires no special compiler steps 	</td><td> No	</td><td> Yes  </td></tr>
+<tr><td> Protected Signals  		</td><td> Yes	</td><td> Yes  </td></tr>
+<tr><td> Public Signals			</td><td> No	</td><td> Yes  </td></tr>
+<tr><td> Any function can be slot 	</td><td> No	</td><td> Yes  </td></tr>
+<tr><td> Void returns 			</td><td> Yes	</td><td> Yes  </td></tr>
+<tr><td> Non-void returns		</td><td> No	</td><td> Yes  </td></tr>
+<tr><td> Reference returns 		</td><td> No	</td><td> No   </td></tr>
+<tr><td> Any type in argument list	</td><td> No	</td><td> Yes  </td></tr>
+<tr><td> Signals in global scope	</td><td> No	</td><td> Yes  </td></tr>
+<tr><td> Signals in class scope		</td><td> Yes	</td><td> Yes  </td></tr>
+<tr><td> Signals in other scopes	</td><td> No	</td><td> Yes  </td></tr>
+<tr><td> Bindable arguments		</td><td> No	</td><td> Yes  </td></tr>
+<tr><td> Argument type conversion	</td><td> No	</td><td> Yes  </td></tr>
+<tr><td> Return type conversion		</td><td> No	</td><td> Yes  </td></tr>
+<tr><td> Namespace support		</td><td> No	</td><td> Yes  </td></tr>
+<tr><td> Signal Cost (bytes)		</td><td> 0	</td><td> 4    </td></tr>
+</table>
+<p>
+
+<a name="details"><h3>Feature Details</h3></a>
+Preprocessors and such generally indicate a lack of faith in the compiler
+and add an extra step in compilation.  Qt does this because of its support
+for early compilers with poor template support.  At this time, such things
+aren't generally required.
+<p>
+
+Public and protected refer to the access of a signal in a class.  Qt can
+only emit from inside the owning class.  Libsigc++ signals are normal
+objects and thus can be private, protected or public.
+<p>
+
+Void and non-void returns refer to what type a signal may return from emit.
+Qt only supports void returns.  Libsigc++ supports return types of most
+kinds including building lists of return values.  However, pass by reference
+still has a few bugs.
+<p>
+
+There can be some restriction on the number and type of arguments a signal
+can take.  Qt does not support templates or function pointers in argument
+lists.  This can be gotten arround with careful typedefs.  This is a result
+of the moc preprocessor.
+<p>
+
+Signal declarations may have restrictions in the location of declaration.
+Libsigc++ signals can be declared anywhere including within templates and
+nested classes.  This a big plus.
+<p>
+
+Libsigc++ supplies a set of adaptors for altering the types of slots
+including binding arguments and converting types.  This is a feature that
+grew out of necessity of the gtkmm project needing to take something from a
+C type to a C++ type.  It can be very useful.
+<p>
+
+Size of signals is the one place where Qt is a clear winner.  Zero is a very
+attractive cost.  The same effect can be achieved using libsigc++ with a
+specialized signal and a map.  However, this arrangement would be slower.
+This functionality is scheduled to be added to libsigc++.
+<p>
+
+<a name="speed"><h3>Speed benchmarks</h3></a>
+
+To measure the speed of both systems, an emit was placed in a tight loop.
+The emit called a trivial function.  The benchmark speed was taken to be the
+total elapsed time as measured by unix "time" minus time for the same
+program to run calling directly divided by the number of calls.  Iterations
+were chosen to ensure the system ran for at least 20 seconds.  Both were
+dynamically linked, stripped, and fully optimized (-03).  Dynamic linked was
+tested to have insignificant effects. The benchmarking machine was a
+sluggish 133Mhz 586.
+<p>
+The number of slots was varied to determine how much of the cost is per emit
+and how much is per slot attached.
+<p>
+
+Libsigc++ could be run with either thread safe marshalling of the return
+value, skipping the return value or marshalling in a non-thread safe manner.
+The closest comparison between Qt and libsigc++ is to skip the return value,
+because Qt has no support for return types. 
+
+<pre>
+libsigc++ without marshal
+=====================================================
+iterations: 2^26
+
+      0 base  0 emit  1 base  1 emit  2 base  2 emit
+      1.023   10.58   2.03    32.717  2.533   56.237
+
+O penalty:   140ns
+1 penalty:   460ns
+2 penalty:   800ns
+
+Emit cost:   140ns
+Slot cost:   330ns
+
+
+libsigc++ with marshal
+=====================================================
+iterations: 2^24
+
+      0 base  0 emit  1 base  1 emit  2 base  2 emit
+      0.27    2.93    0.52    24.04   0.65    45.48
+
+0 penalty:   160ns
+1 penalty:  1400ns
+2 penalty:  2670ns
+
+Emit cost:   160ns
+Slot cost:  1260ns
+
+
+Qt
+=====================================================
+iterations: 2^21  (0 done a 2^24 for better resolution)
+
+      0 base  0 emit  1 base  1 emit  2 base  2 emit
+      0.37     5.28   0.18    32.34   0.20    34.25
+      0.37    31.82
+
+0 penalty:  1870ns (295ns shortcut)
+1 penalty: 15300ns
+2 penalty: 16200ns
+
+Emit cost: 1800ns-15300ns 
+  (varies with number of signals/slot attached.)
+Slot cost:   900ns
+
+</pre>
+Because Qt shares a data structure for all signal lists,
+the times for an emit are hard to calculate.  In general
+the more signals connected the longer it took to find the
+data needed to emit the slot, increasing the emit cost.
+As very small numbers of connects were tested, it is not
+clear how high this cost can go.  (Libsigc++ is
+more direct in approach, so one can calculate purely
+by multiplying up the frequencies by the costs.)
+<p>
+
+Qt does a short cut for emitting signals when no connections
+have been established yet
+which gives a massive speed up to emit time.  However,
+as the general case will have at least one signal connected
+somewhere in the object, this is not representative.
+If there is at least one slot connected to the signal, a 15ms
+time delay is paid.  This would be a good area in Qt for improvement.
+<p>
+
+In a direct comparison, libsigc++ is 30 times faster for emiting
+one connected signal.  Thread safe
+marshalling of the return values increase emit penalty by 3, which
+still is a order of magnitude faster that Qt for emitting a 
+signal with one slot.  The per slot cost of without marshalling of
+return values is only 3 times slowing in Qt then libsigc++, and
+comparable with the marshaller.  However, the initial startup
+cost dominates over all others.  So as far as speed is concerned,
+libsigc++ is clearly better. 
+<p>
+
+<a name="size"><h3>Binary size</h3></a>
+
+To show that libsigc++ is not taking advantage of its templates to
+specialize every detail at the cost of a huge binary, the size of the
+benchmarking programs was compared.  Both were striped and dynamically
+linked.
+
+<pre>
+Libsigc++:  5456 bytes
+Qt:         6020 bytes
+</pre>
+
+The binary sizes are comparable with a slight edge to libsigc++.  As the
+programs are very small, it should not be assumed that this trend holds as
+number of signals increases.
+<p>
+
+<a name="compile"><h3>Compile time</h3></a>
+
+Another major concern with Libsigc++ is that its hundreds of templates are
+likely going to take most compilers to its knees.  This is a very valid
+concern.  So I measured the time of compiling the benchmark programs
+
+<pre>
+Libsigc++: 0:02.62
+Qt:        0:03.09
+</pre>
+
+Again, there is a slight edge to Libsigc++.  This at least means that
+libsigc++ is not completely out of the ballpark at slow compiles.  Again one
+should not assume this holds for very large programs.
+<p>
+
+<a name="analysis"><h3>Final Analysis</h3></a>
+
+As expected libsigc++ beat Qt's signal system hands down.  It was an order
+of magnitude faster with no significant cost to binary size and compile
+time.  It is slightly larger on the size of objects which may be a concern
+if hundreds of signals are used.  An excellent start for a free library!
+
+<P>
+<a name="references"><h3>References</h3></a>
+
+<ul>
+ <li><a href="http://www.troll.no/qt/metaobjects.html">Signals, Slots and the Meta Object Compiler</a></li>
+ <li><a href="http://www.troll.no/qt/moc.html">Using the Meta Object Compiler</a></li>
+</ul>
+<p>
+tm - Qt is a trademark of Troll Tech As of Norway. 
+
+
+
+<!-- SSI fragments/footer.html_fragment begin -->
+<!--#include virtual="fragments/footer.html_fragment" -->
+<!-- SSI fragments/footer.html_fragment begin -->

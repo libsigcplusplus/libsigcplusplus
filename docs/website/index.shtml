@@ -1,0 +1,96 @@
+<!-- SSI fragments/htm_declaration.html_fragment begin -->
+<!--#include virtual="fragments/html_declaration.html_fragment" -->
+<!-- SSI fragments/html_declaration.html_fragment end -->
+
+
+<a name="about"><h3>About</h3></a>
+<p>
+libsigc++ implements a typesafe callback system for standard C++. It
+allows you to define signals and to connect those signals to any
+callback function, either global or a member function, regardless of
+whether it is static or virtual.
+</p>
+<p>
+It also contains adaptor classes for connection of dissimilar
+callbacks and has an ease of use unmatched by other
+C++ callback libraries.  Libsigc++ is licensed under
+the GNU Library General Public License, <a href="http://www.gnu.org/copyleft/lgpl.html">LGPL</a>.
+</p>
+<p>
+<a name="features"><h3>Features</h3></a>
+<ul>
+ <li>Compile time typesafe callbacks (faster than run time checks)</li>
+ <li>Typesafety violations report line number correctly with 
+ template names (no tracing template failures into headers)</li>
+ <li>No compiler extensions or meta compilers required</li>
+ <li>Proper handling of dynamic objects and signals
+ (deleted objects will not cause seg faults)</li>
+ <li>Extendable API at any level:
+ signal, slot, connection and trackable</li>
+ <li>Extensions do not require alteration of basic components</li>
+ <li>User definable accumulators</li>
+ <li>A variety of adaptors to change the callback signature:
+ bind, hide, retype, compose and lambda call groups</li>
+ <li>Various compilers and platforms are supported:
+ gcc, cygwin, mingw32, MS .NET 2003, Sun Forte C++, Compaq C++, Intel C++</li>
+</ul>
+</p>
+<p>
+<a name="news"><h3>News</h3></a>
+
+libsigc++ has reached the major version 2.0.
+libsigc++ 2.0 has been rewritten from scratch adapting modern C++ coding techniques that
+allow for a flexible and powerful but yet simple-to-use API.
+
+In particular the API improvements from libsigc++ 1.2 to 2.0 include:
+<ul>
+  <li>Provides unnumbered signal and slot templates.</li>
+  <li>Supports arbitrary functor types.</li>
+  <li>Supports implicit argument type conversions on signal emission.</li>
+  <li>Adds support for overloaded functions.</li>
+  <li>Borrows powerful accumulator interface from boost::signal.</li>
+  <li>Simplifies use of adaptors like sigc::hide(): argument types need
+  not be specified any more (except for sigc::retype_return()).</li>
+  <li>More powerful adaptors: position of arguments to hide or bind can
+  be chosen freely; up to 7 arguments can be bound at a time.</li>
+  <li>Adds two useful adaptors: sigc::compose(), sigc::exception_catch().</li>
+  <li>Adds all-in-one operator sigc::group() with support for lambdas
+  featuring a complete set of lambda selectors and lambda operators.</li>
+  <li>Performs only one indirect function call during slot invokation
+  regardless of the number of adaptors used; the direct function
+  calls involved are inline and can be optimized away by the compiler.</li>
+  <li>Conforms to the STL naming scheme: only uses small letters.</li>
+</ul>
+
+</p>
+<p>
+
+The libsigc++-1.2 series still is an alternative because it has less
+prerequisits for the comiler.
+Andreas Rottmann released some code for CORBA support with libsigc++-1.2.
+Please send <a href="mailto:rottmann@users.sourceforge.net">him</a> an email
+if you think that this is interesting for you!
+<a href="http://www.8ung.at/rotty/corba-sigc/">CORBA for libsigc++.</a>  
+Also good to check out are the <a href=
+ "http://www.erikyyy.de/sigslot/">Erik Thiele</a> and <a href=
+ "http://ucxx.sourceforge.net/">Andreas Rottmann</a> siztes which 
+include some interesting libsigc++ tools like cross-thread support.
+
+</p>
+<p>
+
+<a name="devel"><h3>Developers</h3></a>
+The original library was composed by Tero Pulkkinen for the
+gtkmm system, a C++ wrapper for the Gtk+ widget set. The revised 
+library was written and mantained by Karl Nelson. Special thanks
+to Esa Pulkkinen for development tips.
+The 1.2 phase was maintained by Murray Cumming after Karl provided the initial 1.2 code.
+A long 1.9 phase lead to the major relase 2.0 which is currently being maintained
+by Martin Schulze and Murray Cumming.
+
+</p>
+
+
+<!-- SSI fragments/footer.html_fragment begin -->
+<!--#include virtual="fragments/footer.html_fragment" -->
+<!-- SSI fragments/footer.html_fragment begin -->

@@ -1,0 +1,50 @@
+<!-- SSI fragments/htm_declaration.html_fragment begin -->
+<!--#include virtual="fragments/html_declaration.html_fragment" -->
+<!-- SSI fragments/html_declaration.html_fragment end -->
+
+
+<a name="index"><h3>Glossary of terms</h3></a>
+
+<b>adaptor</b> <i>(noun)</i> - Function which alters a slots signature. <p> 
+
+<b>bind</b> <i>(verb)</i> - To fix a value of a callback's argument in the STL sense. <p> 
+
+<b>call</b> <i>(verb)</i> - Process of invoking a callback or slot. <p> 
+
+<b>callback</b> <i>(noun)</i> - Structure which can be called with a set of arguments
+resulting in a function or method call.  Callbacks are not safe.  <p> 
+
+<b>connect</b> <i>(verb)</i> - Process of inserting a slot into a signal destroying
+the slot. <p> 
+
+<b>emit</b> <i>(verb)</i> - Process of invoking a signal. <p> 
+
+<b>factory</b> <i>(noun)</i> - Function which takes a set of arguments and 
+produces a different object based on those arguments. <p> 
+
+<b>handle</b> <i>(noun)</i> - Safe version of a pointer. <p> 
+
+<b>marshaller</b> <i>(noun)</i> - Structure which gathers up the results of a
+multi-callback to return a single return value. <p>  
+
+<b>reference</b> <i>(noun)</i> - Pointer to an object which attempts to prevent
+that object from deleting. <p> 
+
+<b>safe</b> <i>(adj)</i> - Any structure which falls back into uninitalized state 
+when its related resources are destroyed.  Safe resources can be
+held throughout the program. Unsafe resources may point to freed
+memory. <p> 
+
+<b>signal</b> <i>(noun)</i> - Container for slots which can be emited.  Signals consist
+of a marshaller, incoming list, and outgoing list. <p>  
+
+<b>signal handler</b> <i>(noun)</i> - A method or function which is connected to a signal. They are called when the signal is emitted. <p>  
+
+<b>signature</b> <i>(noun)</i> - The combination of return type and argument types of
+a function <p> 
+
+<b>slot</b> <i>(noun)</i> - Safe version of a callback. <p> 
+
+<!-- SSI fragments/footer.html_fragment begin -->
+<!--#include virtual="fragments/footer.html_fragment" -->
+<!-- SSI fragments/footer.html_fragment begin -->
