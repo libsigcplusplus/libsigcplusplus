@@ -6,7 +6,7 @@ test -z "$srcdir" && srcdir=.
 PKG_NAME="sigc++"
 
 echo "Adding libtools."
-libtoolize --automake --copy
+libtoolize --automake --copy --force
 
 echo "Building macros."
 aclocal  -I "$srcdir/scripts" $ACLOCAL_FLAGS
