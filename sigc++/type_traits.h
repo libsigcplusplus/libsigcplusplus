@@ -116,6 +116,8 @@ public:
   static const bool value =
     sizeof(is_base_class_(reinterpret_cast<typename type_trait<T_derived>::pointer>(0))) ==
     sizeof(char);
+
+  void avoid_gcc3_warning_(); //Not implemented. g++ 3.3.5 (but not 3.3.4, and not 3.4) warn that there are no public methods, even though there is a public variable.
 };
 
 template <class T_base>
