@@ -48,26 +48,7 @@ template <class T_type> struct lambda;
 
 namespace internal {
 
-template <class T_type, bool I_islambda = is_base_and_derived<lambda_base, T_type>::value> struct lambda_trait {};
-
-template <class T_type>
-struct lambda_trait<T_type, true>
-{
-  typedef typename T_type::result_type result_type;
-  typedef T_type lambda_type;
-  static const bool derives_lambda_base = true;
-};
-
-template <class T_type>
-struct lambda_trait<T_type, false>
-{
-  typedef typename functor_trait<T_type>::result_type result_type;
-  typedef lambda<T_type> lambda_type;
-  static const bool derives_lambda_base = false;
-};
-
-
-template <class T_type, class T_return = typename lambda_trait<T_type>::result_type, bool I_islambda = lambda_trait<T_type>::derives_lambda_base> struct lambda_core;
+template <class T_type, class T_return = typename functor_trait<T_type>::result_type, bool I_islambda = is_base_and_derived<lambda_base, T_type>::value> struct lambda_core;
 
 template <class T_type, class T_return>
 struct lambda_core<T_type, T_return, true> : public lambda_base
@@ -129,8 +110,8 @@ template <class T_type, class T_return>
 struct lambda_core<T_type, T_return, false> : public lambda_base
 {
   typedef lambda<T_type> lambda_type;
-  typedef T_return result_type; // T_type is a functor. T_return is the return type of the functor.
-
+  typedef T_type result_type; // all operator() overloads return T_type.
+                              // T_return == functor_trait<T_type>::result_type can be extracted at any other point.
   T_type operator()() const;
 
 FOR(1,CALL_SIZE,[[LAMBDA_DO_VALUE(%1)]])

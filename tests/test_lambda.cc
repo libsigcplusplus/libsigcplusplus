@@ -30,16 +30,17 @@ main()
   std::cout << (group(ptr_fun(&foo), _1, 2))  (1)    << std::endl;
   std::cout << (group(ptr_fun(&foo), 1, 2))   ()     << std::endl;
 
-  //TODO: how to simulate bind_return ?
+  //TODO: is there an equivalent for bind_return ?
 
   // same functionality as hide
   std::cout << (group(ptr_fun(&foo), _1, _2)) (1,2,3) << std::endl;
 
   // same functionality as compose
-  std::cout << (group(ptr_fun(&foo), group(ptr_fun(&foo), _1, _2)), _3) (1,2,3) << std::endl;
-    //TODO: the above doesn't work.
+  std::cout << (group(ptr_fun(&foo), group(ptr_fun(&foo), _1, _2), _3)) (1,2,3) << std::endl;
 
-  //TODO: code doesn't compile: somewhere the std::ostream(std::ostream&) copy ctor gets called.
-//  (lambda<std::ostream&>(std::cout) << 1)(1);
+  //TODO: code doesn't compile: the lambdas return std::ostream instead of std::ostream&.
+  //      The reason is that withh gcc-3.2 typeof(std::ostream& << int) == std::ostream (instead of std::ostream).
+  //      Probably, this is a compiler error.
+//  (lambda<std::ostream&>(std::cout) << 1)();
 //  (lambda<std::ostream&>(std::cout) << _1)("hello world");
 }

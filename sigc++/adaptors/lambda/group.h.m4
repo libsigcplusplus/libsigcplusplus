@@ -48,7 +48,7 @@ dnl
 dnl This really doesn't have much to do with lambda other than
 dnl holding lambdas with in itself.
 define([LAMBDA_GROUP],[dnl
-template <class T_functor, LOOP(class T_type%1, $1), class T_return = typename lambda<T_functor>::result_type>
+template <class T_functor, LOOP(class T_type%1, $1), class T_return = typename functor_trait<T_functor>::result_type>
 struct lambda_group$1 : public lambda_base
 {
   typedef T_return result_type;dnl

@@ -4,18 +4,20 @@
  */
 
 #include <sigc++/adaptors/bind.h>
+#include <sigc++/functors/closure.h>
 #include <iostream>
 
 using namespace sigc::functor;
+using sigc::trackable;
 
 struct foo 
 {
   bool operator()(int i)
-    {std::cout << "foo(int "<<i<<")"<<std::endl; return (i>0);}
+    {std::cout << "foo(int "<<i<<")" << std::endl; return (i>0);}
   int operator()(int i,int j)
-    {std::cout << "foo(int "<<i<<",int "<<j<<")"<<std::endl; return i+j;}
+    {std::cout << "foo(int "<<i<<",int "<<j<<")" << std::endl; return i+j;}
   void operator()(int i,int j,int k)
-    {std::cout << "foo(int "<<i<<",int "<<j<<", int "<<k<<")"<<std::endl;}
+    {std::cout << "foo(int "<<i<<",int "<<j<<", int "<<k<<")" << std::endl;}
 };
 
 
@@ -31,10 +33,21 @@ SIGC_FUNCTOR_TRAIT(foo,bool)
 
 
 int bar(int i,int j) 
-  {std::cout << "bar(int "<<i<<",int "<<j<<")"<<std::endl; return i+j;}
+  {std::cout << "bar(int "<<i<<",int "<<j<<")" << std::endl; return i+j;}
 
 bool simple(bool test)
-  {std::cout << "simple(bool "<<test<<")"<<std::endl; return test;}
+  {std::cout << "simple(bool "<<test<<")" << std::endl; return test;}
+
+void egon(std::string& str)
+  {std::cout << "egon(string '"<<str<<"')" << std::endl; str="egon was here";}
+
+
+struct book : public trackable
+{
+  book(const std::string& name) : name_(name) {}
+  operator std::string& () {return name_;}
+  std::string name_;
+};
 
 
 int main()
@@ -64,4 +77,18 @@ int main()
   // test return type of bind_functor::operator() overload with no arguments
   std::cout << bind<0>(foo(),14)() << std::endl;
   std::cout << bind<0>(&simple, true)() << std::endl;
+
+  // test references
+  std::string str("guest book");
+  bind<0,std::string&>(&egon,str)(); // Tell bind that is shall store a reference.
+  std::cout << str << std::endl;     // (This cannot be the default behaviour: just think about what happens if str dies!)
+
+  closure<void> c;
+  {
+    book guest_book("karl");
+    c = bind<0,book&>(&egon,guest_book);
+    c();
+    std::cout << (std::string&)guest_book << std::endl;
+  }    // auto-disconnect
+  c(); // :-)
 }

@@ -12,8 +12,9 @@ using namespace sigc::functor;
 class foo
 {
   public:
-  void operator()(int i) {cout << "foo(int "<<i<<")" << endl;}
-  void operator()(int,int) {cout << "foo(int,int)" << endl;}
+  void operator()(int i)       {cout << "foo(int "<<i<<")" << endl;}
+  void operator()(string& str) {cout << "foo(string '"<<str<<"')" << endl; str="foo was here";}
+  void operator()(int,int)     {cout << "foo(int,int)" << endl;}
 };
 
 int main()
@@ -22,4 +23,10 @@ int main()
   c(1);
   c=foo();
   c(2);
+
+  // test reference
+  closure<void,string&> s=foo();
+  string str("guest book");
+  s(str);
+  cout << str << endl;
 }

@@ -40,6 +40,11 @@ namespace internal {
 template <class T_test1, class T_test2>
 struct $1_calc_type
 {
+dnl
+dnl TODO: typeof() ignores "&" - compiler error in gcc-3.2?
+dnl       E.g. typeof(type_trait<std::ostream&>::instance() << type_trait<int>::instance())
+dnl                 == std::ostream  //(instead of std::ostream&)
+dnl
   typedef typeof(type_trait<T_test1>::instance() $2 type_trait<T_test2>::instance()) result_type;
 };
 
@@ -53,13 +58,14 @@ template <> struct $1_calc_type<void,void>
 template <class T_type1, class T_type2>
 struct lambda_$1 : public lambda_base
 {
-  // lambda_$1 has no void specialization (doesn't make sense) so we don't need an additional template argument T_return.
-  typedef typename $1_calc_type<
-              typename lambda_trait<T_type1>::result_type,
-              typename lambda_trait<T_type2>::result_type>::result_type result_type;
-
   typedef typename lambda<T_type1>::lambda_type arg1_type;
   typedef typename lambda<T_type2>::lambda_type arg2_type;
+
+  // We would need an additional template argument T_return for a void specialization.
+  // Then we would support operators that return void. TODO: is it wanted?
+  typedef typename $1_calc_type<
+              typename arg1_type::result_type,
+              typename arg2_type::result_type>::result_type result_type;
 
   result_type
   operator ()() const;

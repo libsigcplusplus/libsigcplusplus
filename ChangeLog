@@ -1,5 +1,15 @@
 2003-03-24  Martin Schulze  <MHL.Schulze@t-online.de>
 
+	* sigc++/adaptors/bind_return.h.m4: Make the adaptor's data member
+	public so that visit_each() can access it.
+
+	* sigc++/adaptors/lambda/*.h.m4: More fixes. Add a note about
+	malfunctioning typeof() (probably compiler bug in gcc-3.2).
+
+	* tests/*.cc: Test references. Fix compose equivalent in test_lambda.
+
+2003-03-24  Martin Schulze  <MHL.Schulze@t-online.de>
+
 	* sigc++/Makefile.am, sigc++/functors/functor_trait.h[.m4],
 	sigc++/adaptors/adaptor_trait.h.m4: Move detection of function
 	and member method pointers' return types from adaptor_trait into
