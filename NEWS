@@ -17,6 +17,17 @@ This version of libsigc++ needs GNU g++ 3.2 or higher to compile.
 
 *** ChangeLog summary:
 
+1.9.16:
+
+* Fixed compiler warning in sigc::connection (Alexander Nedotsukov, Murray Cumming).
+* Fixed examples and made them part of the regular build (Murray Cumming).
+* Added header sigc++config.h for configure time checks (Murray Cumming).
+* Added configure time checks to determine the correct syntax
+  for explicit template method specializations (Murray Cumming).
+* Removed code using partial specializations of overloaded template methods
+  from test cases. SUN Forte doesn't support this feature (Martin Schulze).
+* Fixed compilation for gcc 3.4 (Murray Cumming).
+
 1.9.15:
 
 API additions:
