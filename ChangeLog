@@ -1,5 +1,12 @@
 2005-01-21  Murray Cumming  <murrayc@murrayc.com>
 
+	* sigc++/adaptors/bind.h.m4: non-member operator()(): Specify the 
+	extra nil arguments in the templated class name prefix. Oddly, the 
+	AIX xlC compiler says that the type of the first parameter does not 
+	match the template if you don't do this.
+
+2005-01-21  Murray Cumming  <murrayc@murrayc.com>
+
 	* sigc++/type_traits.h: is_base_and_derived struct: Move the 
 	is_base_class_() functions out of the inner class, because the AIX 
 	xlC compiler does not like that - see the comments in the code.

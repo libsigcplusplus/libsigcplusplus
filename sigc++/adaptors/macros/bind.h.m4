@@ -111,7 +111,7 @@ FOR(eval($1+1),CALL_SIZE,[[BIND_OPERATOR_LOCATION(eval($1+1),%1)]])dnl
 
 template <class T_functor, class T_bound>
 typename bind_functor<$1, T_functor, T_bound>::result_type
-bind_functor<$1, T_functor, T_bound>::operator()()
+bind_functor<$1, T_functor, T_bound, LOOP(nil, 6)>::operator()()
   { return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<_P_(T_bound)> (bound_); }
 
 ])
@@ -123,7 +123,7 @@ define([BIND_FUNCTOR_COUNT],[dnl
  */
 template <LIST(class T_functor, LOOP(class T_type%1, $1))>
 dnl TODO: I don't like the hardcoded 7 here. murrayc.
-struct bind_functor<LIST(-1, T_functor, LIST(LOOP(T_type%1, $1), LOOP(nil, 6 - $1)))> : public adapts<T_functor>
+struct bind_functor<LIST(-1, T_functor, LIST(LOOP(T_type%1, $1), LOOP(nil, 7 - $1)))> : public adapts<T_functor>
 {
   typedef typename adapts<T_functor>::adaptor_type adaptor_type;
 
@@ -163,7 +163,7 @@ FOR(1,$1,[
 
 template <LIST(class T_functor, LOOP(class T_type%1, $1))>
 typename bind_functor<LIST(-1, T_functor, LOOP(T_type%1, $1))>::result_type
-bind_functor<LIST(-1, T_functor, LOOP(T_type%1, $1))>::operator()()
+bind_functor<LIST(-1, T_functor, LIST(LOOP(T_type%1, $1), LOOP(nil, 7 - $1)))>::operator()()
   { return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<LOOP(_P_(T_type%1),$1)> (LOOP(bound%1_, $1)); }
 
 /** Performs a functor on each of the targets of a functor.
