@@ -1,3 +1,15 @@
+2004-03-25  Murray Cumming  <murrayc@murrayc.com>
+
+	* scripts/cxx.m4, configure.in, sigc++config.h.in: Rename the 
+	template_keyword check to template_specialization, because the problem
+	is with or without the keyword.
+	* sigc++/adaptors/macros/adaptor_trait.h.m4: Define 
+	SIGC_WORKAROUND_OPERATOR_PARENTHESES, which calls either operator() or 
+	sun_forte_workaround() depending on the result of the compiler test.
+	* many .m4 files: Add sun_forte_workaround methods that call the 
+	operator() methods. Put them in #ifdefs so that only SUN Forte C++ 
+	sees them.
+
 2004-03-22  Murray Cumming  <murrayc@murrayc.com>
 
 	* Makefile.am, sigc++/Makfile.am: Fix the sigc++config.h.in disting,

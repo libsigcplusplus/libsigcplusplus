@@ -34,10 +34,17 @@ FOR(1, eval($2-1),[
   template <LOOP([class T_arg%1], eval($2-1))>
   typename deduce_result_type<LOOP(T_arg%1,eval($2-1))>::type
   operator()(LOOP(T_arg%1 _A_arg%1,eval($2-1)))
-    { return this->functor_.LIBSIGC_TEMPLATE_PREFIX operator()<LIST(LOOP([_P_(T_arg%1)],eval($1-1)), _P_(T_bound),FOR($1,eval($2-1),[_P_(T_arg%1),]))>
+    { return this->functor_.LIBSIGC_TEMPLATE_PREFIX SIGC_WORKAROUND_OPERATOR_PARENTHESES<LIST(LOOP([_P_(T_arg%1)],eval($1-1)), _P_(T_bound),FOR($1,eval($2-1),[_P_(T_arg%1),]))>
         (LIST(LOOP(_A_arg%1,eval($1-1)), bound_, FOR($1,eval($2-1),[_A_arg%1,])));
     }
 
+  #ifndef SIGC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD
+  template <LOOP([class T_arg%1], eval($2-1))>
+  typename deduce_result_type<LOOP(T_arg%1,eval($2-1))>::type
+  sun_forte_workaround(LOOP(T_arg%1 _A_arg%1,eval($2-1)))
+    { return operator()( LOOP(_A_arg%1,eval($2-1)) ); }
+  #endif
+    
 ])dnl
 ])
 define([BIND_OPERATOR_COUNT],[dnl
@@ -50,10 +57,17 @@ FOR(1, eval($2-1),[
   template <LOOP([class T_arg%1], eval($2-1))>
   typename deduce_result_type<LOOP(T_arg%1,eval($2-1))>::type
   operator()(LOOP(T_arg%1 _A_arg%1, eval($2-1)))
-    { return this->functor_.LIBSIGC_TEMPLATE_PREFIX operator()<LIST(LOOP([_P_(T_arg%1)],eval($2-1)), LOOP(_P_(T_type%1), $1))>
+    { return this->functor_.LIBSIGC_TEMPLATE_PREFIX SIGC_WORKAROUND_OPERATOR_PARENTHESES<LIST(LOOP([_P_(T_arg%1)],eval($2-1)), LOOP(_P_(T_type%1), $1))>
         (LIST(LOOP(_A_arg%1,eval($2-1)), LOOP(bound%1_, $1)));
     }
 
+  #ifndef SIGC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD
+  template <LOOP([class T_arg%1], eval($2-1))>
+  typename deduce_result_type<LOOP(T_arg%1,eval($2-1))>::type
+  sun_forte_workaround(LOOP(T_arg%1 _A_arg%1, eval($2-1)))
+    { return operator()( LOOP(_A_arg%1,eval($2-1)) ); }
+  #endif
+    
 ])
 define([BIND_FUNCTOR_LOCATION],[dnl
 /** Adaptor that binds an argument to the wrapped functor.
@@ -93,7 +107,7 @@ FOR(eval($1+1),CALL_SIZE,[[BIND_OPERATOR_LOCATION(eval($1+1),%1)]])dnl
 template <class T_functor, class T_bound>
 typename bind_functor<$1, T_functor, T_bound>::result_type
 bind_functor<$1, T_functor, T_bound>::operator()()
-  { return this->functor_.LIBSIGC_TEMPLATE_PREFIX operator()<_P_(T_bound)> (bound_); }
+  { return this->functor_.LIBSIGC_TEMPLATE_PREFIX SIGC_WORKAROUND_OPERATOR_PARENTHESES<_P_(T_bound)> (bound_); }
 
 ])
 define([BIND_FUNCTOR_COUNT],[dnl
@@ -136,7 +150,7 @@ FOR(1,$1,[
 template <LIST(class T_functor, LOOP(class T_type%1, $1))>
 typename bind_functor<LIST(-1, T_functor, LOOP(T_type%1, $1))>::result_type
 bind_functor<LIST(-1, T_functor, LOOP(T_type%1, $1))>::operator()()
-  { return this->functor_.LIBSIGC_TEMPLATE_PREFIX operator()<LOOP(_P_(T_type%1),$1)> (LOOP(bound%1_, $1)); }
+  { return this->functor_.LIBSIGC_TEMPLATE_PREFIX SIGC_WORKAROUND_OPERATOR_PARENTHESES<LOOP(_P_(T_type%1),$1)> (LOOP(bound%1_, $1)); }
 
 /** Performs a functor on each of the targets of a functor.
  * The function overload for sigc::bind_functor performs a functor on the

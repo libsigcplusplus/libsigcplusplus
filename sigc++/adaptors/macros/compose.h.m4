@@ -22,7 +22,7 @@ define([COMPOSE1_OPERATOR],[dnl
   template <LOOP(class T_arg%1, $1)>
   typename deduce_result_type<LOOP(T_arg%1, $1)>::type
   operator()(LOOP(T_arg%1 _A_a%1, $1))
-    { return this->functor_.LIBSIGC_TEMPLATE_PREFIX operator()<typename sigc::deduce_result_type<LIST(T_getter, LOOP(T_arg%1,$1))>::type>
+    { return this->functor_.LIBSIGC_TEMPLATE_PREFIX SIGC_WORKAROUND_OPERATOR_PARENTHESES<typename sigc::deduce_result_type<LIST(T_getter, LOOP(T_arg%1,$1))>::type>
         (get_(LOOP(_A_a%1, $1)));
     }
 
@@ -32,7 +32,7 @@ define([COMPOSE2_OPERATOR],[dnl
   template <LOOP(class T_arg%1, $1)>
   typename deduce_result_type<LOOP(T_arg%1, $1)>::type
   operator()(LOOP(T_arg%1 _A_a%1, $1))
-    { return this->functor_.LIBSIGC_TEMPLATE_PREFIX operator()<typename sigc::deduce_result_type<LIST(T_getter1, LOOP(T_arg%1,$1))>::type,
+    { return this->functor_.LIBSIGC_TEMPLATE_PREFIX SIGC_WORKAROUND_OPERATOR_PARENTHESES<typename sigc::deduce_result_type<LIST(T_getter1, LOOP(T_arg%1,$1))>::type,
                                                          typename sigc::deduce_result_type<LIST(T_getter2, LOOP(T_arg%1,$1))>::type>
         (get1_(LOOP(_A_a%1, $1)), get2_(LOOP(_A_a%1,$1)));
     }

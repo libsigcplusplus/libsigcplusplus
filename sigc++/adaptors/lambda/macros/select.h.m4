@@ -22,6 +22,13 @@ dnl Macros to make select arguments
 define([LAMBDA_SELECT_DO],[dnl
   template <LOOP(class T_arg%1, $2)>
   T_arg$1 operator ()(LOOP(T_arg%1 _A_%1, $2)) const { return _A_$1; }
+
+  #ifndef SIGC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD
+  template <LOOP(class T_arg%1, $2)>
+  //Does not work: T_arg$1 sun_forte_workaround(LOOP(T_arg%1 _A_%1, $2)) const { return operator()( LOOP(_A_%1, $2) ); }
+  T_arg$1 sun_forte_workaround(LOOP(T_arg%1 _A_%1, $2)) const { return _A_$1; }
+  #endif
+  
 ])
 define([LAMBDA_SELECT],[dnl
 struct lambda_select$1 : public lambda_base

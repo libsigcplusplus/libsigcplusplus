@@ -58,6 +58,15 @@ FOR(1, $1,[
   operator()(LOOP(T_arg%1 _A_arg%1, $1)) const
     { return functor_(LOOP(_A_arg%1, $1)); }
 
+  #ifndef SIGC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD
+  template <LOOP([class T_arg%1], $1)>
+  typename deduce_result_type<LOOP(T_arg%1, $1)>::type
+  sun_forte_workaround(LOOP(T_arg%1 _A_arg%1, $1)) const
+    { //Just calling operator() tries to copy the argument:
+      return functor_(LOOP(_A_arg%1, $1));
+    }
+  #endif
+  
 ])dnl
 ])
 
@@ -72,13 +81,23 @@ __FIREWALL__
 
 namespace sigc {
 
-#ifndef SIGC_TEMPLATE_KEYWORD_OPERATOR_OVERLOAD
+// Call either operator()<>() or sun_forte_workaround<>(),
+// depending on the compiler:
+#ifdef SIGC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD
+  #define SIGC_WORKAROUND_OPERATOR_PARENTHESES operator()
+#else
+  #define SIGC_WORKAROUND_OPERATOR_PARENTHESES sun_forte_workaround
+#endif
+
+// TODO: This should have its own test, without using operator()
+#ifdef SIGC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD
+  #define LIBSIGC_TEMPLATE_PREFIX template
+#else
   //The MSVC++ and SUN Forte C++ compilers have problems with this,
   //though the SUN Forte C++ compiler allows it in some places.
   #define LIBSIGC_TEMPLATE_PREFIX
-#else
-  #define LIBSIGC_TEMPLATE_PREFIX template
 #endif
+
 
 template <class T_functor> struct adapts;
 
@@ -123,6 +142,11 @@ struct adaptor_functor : public adaptor_base
   result_type
   operator()() const;
 
+  #ifndef SIGC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD
+  result_type sun_forte_workaround() const
+    { return operator(); }
+  #endif
+  
 FOR(0,CALL_SIZE,[[ADAPTOR_DO(%1)]])dnl
   /// Constructs an invalid functor.
   adaptor_functor()

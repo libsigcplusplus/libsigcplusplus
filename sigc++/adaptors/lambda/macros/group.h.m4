@@ -40,6 +40,13 @@ dnl Please someone get a gun!
   operator() (LOOP(T_arg%1 _A_%1, $2)) const
     { return (func_(LOOP(_A_%1, $2)))(LOOP(value%1_(_L_),$1)); }
 
+  #ifndef SIGC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD
+  template <LOOP(class T_arg%1, $2)>
+  typename deduce_result_type<LOOP(T_arg%1,$2)>::type
+  sun_forte_workaround (LOOP(T_arg%1 _A_%1, $2)) const
+    { return operator()( LOOP(_A_%1, $2) ); }
+  #endif //SIGC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD
+
 ])
 dnl
 dnl This really doesn't have much to do with lambda other than
