@@ -86,7 +86,7 @@ divert(0)dnl
 __FIREWALL__
 #include <sigc++/trackable.h>
 #include <sigc++/visit_each.h>
-dnl #include <sigc++/functor/functor_trait.h>
+#include <sigc++/functors/functor_trait.h>
 
 namespace sigc {
 struct nil;
@@ -203,7 +203,7 @@ struct typed_closure_rep : public closure_rep
  * add_dependency() is used by connection objects to add a notification
  * callback that is executed on destruction.
  */
-class closure_base /*: public functor_base*/
+class closure_base : public functor_base
 {
   typedef internal::closure_rep rep_type;
 

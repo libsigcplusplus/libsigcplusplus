@@ -6,34 +6,47 @@
 #include <sigc++/adaptors/bind.h>
 #include <iostream>
 
-using namespace std;
 using namespace sigc::functor;
 
 struct foo 
 {
-  int operator()(int i,int j) 
-    {cout << "foo(int "<<i<<",int "<<j<<")"<<endl; return i+j;}
+  int operator()(int i,int j)
+    {std::cout << "foo(int "<<i<<",int "<<j<<")"<<std::endl; return i+j;}
+  void operator()(int i,int j,int k)
+    {std::cout << "foo(int "<<i<<",int "<<j<<", int "<<k<<")"<<std::endl;}
 };
 
 int bar(int i,int j) 
-  {cout << "bar(int "<<i<<",int "<<j<<")"<<endl; return i+j;}
+  {std::cout << "bar(int "<<i<<",int "<<j<<")"<<std::endl; return i+j;}
+
+bool simple(bool test)
+  { std::cout << "simple(bool "<<test<<")"<<std::endl; return test; }
 
 
 int main()
 {
   // replacing bind1st, bind2nd
-  cout << bind<1>(foo(),-12345)(5) << endl;
-  cout << bind<2>(foo(),-12345)(5) << endl;
+  std::cout << bind<1>(foo(),-12345)(5) << std::endl;
+  std::cout << bind<2>(foo(),-12345)(5) << std::endl;
 
   // multiple
-  bind<1>(foo(),3,4)();
+  bind<1>(foo(),1,2)();
 
   // bind from end
-  bind<0>(foo(),3)(1);
+  bind<0>(foo(),4)(3);
+
+  // multiple beginning from end
+  bind<0>(foo(),5,6)();
 
   // used together
-  bind<1>(bind<1>(foo(),1),2)();
+  bind<1>(bind<1>(foo(),7),8)();
 
-  // using a function
-  bind<1>(&bar,1,2)();
+  // void return
+  bind<1>(foo(),9,10)(11);
+
+  // function pointer instead of functor
+  bind<1>(&bar,12,13)();
+
+  // test return type of bind_functor::operator() overload with no arguments
+  std::cout << bind<0>(&simple, true)() << std::endl;
 }

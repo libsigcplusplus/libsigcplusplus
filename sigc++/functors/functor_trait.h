@@ -21,6 +21,7 @@
 #define _SIGC_FUNCTOR_TRAIT_HPP_
 
 #include <sigc++/type_traits.h>
+#include <sigc++/callof.h>
 
 namespace sigc {
 namespace functor {
@@ -42,6 +43,9 @@ struct functor_trait<T_functor,true>
 template <class T_functor>
 struct functor_trait<T_functor,false>
 {
+  // Use callof_safe<> to guess the return type.
+  // This leads to compiler errors if T_functor::operator() is overloaded!
+//  typedef typename callof_safe<T_functor>::result_type result_type;
   typedef void result_type;
 };
 

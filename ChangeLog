@@ -1,3 +1,17 @@
+2003-03-20  Martin Schulze  <MHL.Schulze@t-online.de>
+
+	* sigc++/callof.h.m4: Add explanations. Comment in / create templates
+	callof_safe[#]. Unfortunately they don't work for functors with overloaded
+	operator() so we don't use it for now. At least everything is documented.
+
+	* sigc++/functors/functor_trait.h, sigc++/functors/*.h.m4: Add back
+	functor_base compiler hint. We're using it now in adaptor_functor<>.
+
+	* sigc++/adaptors/{adaptor_trait,bind}.h.m4: Make operator() overloads
+	with no arguments return the result of the functor invocation.
+	Fix multiple bind<0>().
+	* tests/test_bind.cc: Test the stuff that's working now.
+
 2003-03-16  Murray Cumming  <murrayc@usa.net>
 
 	* Added sigc++/sigc++.h, like in libsigc++ 1.2

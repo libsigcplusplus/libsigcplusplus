@@ -29,13 +29,24 @@ dnl
 dnl this all depends on partial specialization to allow
 dnl us to do
 dnl   functor_.template operator() <types> (args);
+dnl
+
+dnl I don't understand much of the above. However, I can
+dnl see that adaptors are implemented like they are because
+dnl there is no way to extract the return type and the argument
+dnl types from a functor type. Therefore, operator() is templated.
+dnl It's instatiated in closure_call#<>::operator() where the
+dnl argument types are known. The return type is finally determined
+dnl via the callof<> template - a tricky way to detect the return
+dnl type of a functor when the argument types are known. Martin.
 
 ])
-define([ADAPTOR_DO],
-[ifelse($1,0,[dnl
-  void
-  operator()() const
-    { functor_(); }
+define([ADAPTOR_DO],[dnl
+ifelse($1,0,[dnl
+dnl  typename callof_safe0<T_functor>::result_type // leads to compiler errors if T_functor has an overloaded operator()!
+dnl  typename functor_trait<T_functor>::result_type
+dnl  operator()() const
+dnl    { return functor_(); }
 ],[dnl
   template <LOOP([class T_arg%1], $1)>
   typename callof<LIST(T_functor, LOOP(T_arg%1, $1))>::result_type
@@ -48,6 +59,7 @@ define([ADAPTOR_PTR_FUN],[dnl
 template <LIST(LOOP(class T_arg%1, $1), class T_return)>
 struct adaptor_trait<T_return (*)(LOOP(T_arg%1, $1)), false>
 {
+  typedef T_return result_type;
   typedef pointer_functor$1<LIST(LOOP(T_arg%1, $1), T_return)> functor_type;
   typedef adaptor_functor<functor_type> adaptor_type;
 };
@@ -56,12 +68,14 @@ define([ADAPTOR_MEM_FUN],[dnl
 template <LIST(LOOP(class T_arg%1, $1), class T_return, class T_obj)>
 struct adaptor_trait<T_return (T_obj::*)(LOOP(T_arg%1, $1)), false>
 {
+  typedef T_return result_type;
   typedef mem_functor$1<LIST(LOOP(T_arg%1, $1), T_return, T_obj)> functor_type;
   typedef adaptor_functor<functor_type> adaptor_type;
 };
 template <LIST(LOOP(class T_arg%1, $1), class T_return, class T_obj)>
 struct adaptor_trait<T_return (T_obj::*)(LOOP(T_arg%1, $1)) const, false>
 {
+  typedef T_return result_type;
   typedef const_mem_functor$1<LIST(LOOP(T_arg%1, $1), T_return, T_obj)> functor_type;
   typedef adaptor_functor<functor_type> adaptor_type;
 };
@@ -108,25 +122,57 @@ divert(0)dnl
 
 */
 __FIREWALL__
-#include <sigc++/callof.h>
 #include <sigc++/visit_each.h>
-dnl #include <sigc++/functor/functor_trait.h>
+#include <sigc++/callof.h>
+#include <sigc++/functors/functor_trait.h>
 #include <sigc++/functors/ptr_fun.h>
 #include <sigc++/functors/mem_fun.h>
 
 namespace sigc { 
 namespace functor {
 
-struct adaptor_base /*: public functor_base*/ {};
+struct adaptor_base : public functor_base {};
 template <class T_functor> struct adapts;
 
-template <class T_functor>
+template <class T_functor, class T_return = typename functor_trait<T_functor>::result_type>
 struct adaptor_functor : public adaptor_base
 {
-/*  typedef typename functor_trait<T_functor>::result_type  result_type;*/
+  typedef T_return result_type;
 
   operator T_functor& () const { return functor_; }
 
+  result_type
+  operator()() const
+    { return functor_(); }
+FOR(0,CALL_SIZE,[[ADAPTOR_DO(%1)]])
+
+  adaptor_functor()
+    {}
+  adaptor_functor(const T_functor& _A_functor)
+    : functor_(_A_functor)
+    {}
+  template <class T_type>
+  adaptor_functor(T_type& _A_type)
+    : functor_(_A_type)
+    {}
+  template <class T_type>
+  adaptor_functor(const T_type& _A_type)
+    : functor_(_A_type)
+    {}
+  mutable T_functor functor_;
+};
+
+// void specialization
+template <class T_functor>
+struct adaptor_functor<T_functor,void> : public adaptor_base
+{
+  typedef void result_type;
+
+  operator T_functor& () const { return functor_; }
+
+  void
+  operator()() const
+    { functor_(); }
 FOR(0,CALL_SIZE,[[ADAPTOR_DO(%1)]])
 
   adaptor_functor()
@@ -162,20 +208,18 @@ template <class T_functor, bool I_isadaptor = is_base_and_derived<adaptor_base, 
 template <class T_functor> 
 struct adaptor_trait<T_functor, true>
 {
+  typedef typename T_functor::result_type result_type;
+  typedef T_functor functor_type;
   typedef T_functor adaptor_type;
-dnl  static T_functor& create(T_functor& _A_functor) 
-dnl    { return _A_functor; }
-dnl  static const T_functor& create(const T_functor& _A_functor) 
-dnl    { return _A_functor; }
 };
 
 // if not, well make it one.
 template <class T_functor>
 struct adaptor_trait<T_functor, false>
 {
+  typedef typename functor_trait<T_functor>::result_type result_type;
+  typedef T_functor functor_type;
   typedef adaptor_functor<T_functor> adaptor_type;
-dnl  static adaptor_type create(const T_functor& _A_functor)
-dnl    { return _A_functor; }
 };
 
 
@@ -190,8 +234,8 @@ FOR(0,CALL_SIZE,[[ADAPTOR_MEM_FUN(%1)]])
 template <class T_functor>
 struct adapts : public adaptor_base
 {
+  typedef typename adaptor_trait<T_functor>::result_type  result_type;
   typedef typename adaptor_trait<T_functor>::adaptor_type adaptor_type;
-/*  typedef typename functor_trait<T_functor>::result_type  result_type;*/
 
   adapts(const T_functor& _A_functor)
     : functor_(_A_functor)
@@ -202,4 +246,3 @@ struct adapts : public adaptor_base
 
 } /* namespace functor */
 } /* namespace sigc */
-

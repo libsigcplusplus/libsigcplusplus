@@ -19,11 +19,37 @@ divert(-1)
 include(template.macros.m4)
 
 define([BIND_FUNCTOR],[dnl
-template <class T_bound, class T_functor>
-struct bind_functor <$1, T_bound, T_functor> : public adapts<T_functor>
+template <class T_bound, class T_functor, class T_return>
+struct bind_functor <$1, T_bound, T_functor, T_return> : public adapts<T_functor>
 {
+  typedef T_return result_type;
   typedef typename adapts<T_functor>::adaptor_type adaptor_type;
 
+  result_type
+  operator()()
+    { return functor_.template operator()<_P_(T_bound)>
+       (bound_); 
+    }
+FOR($1,CALL_SIZE,[[BIND_OPERATOR($1,%1)]])
+  bind_functor(_R_(T_functor) _A_func, _R_(T_bound) _A_bound)
+    : adapts<T_functor>(_A_func), bound_(_A_bound)
+    {}
+
+  T_bound bound_;
+};
+
+// void specialization
+template <class T_bound, class T_functor>
+struct bind_functor <$1, T_bound, T_functor, void> : public adapts<T_functor>
+{
+  typedef void result_type;
+  typedef typename adapts<T_functor>::adaptor_type adaptor_type;
+
+  void
+  operator()()
+    { functor_.template operator()<_P_(T_bound)>
+       (bound_); 
+    }
 FOR($1,CALL_SIZE,[[BIND_OPERATOR($1,%1)]])
   bind_functor(_R_(T_functor) _A_func, _R_(T_bound) _A_bound)
     : adapts<T_functor>(_A_func), bound_(_A_bound)
@@ -33,18 +59,20 @@ FOR($1,CALL_SIZE,[[BIND_OPERATOR($1,%1)]])
 };
 
 ])
-define([BIND_OPERATOR],
-[ifelse($2,0,[], $2,1,[dnl
-  void 
-  operator()()
-    { functor_.template operator()<_P_(T_bound)>
-       (bound_); 
-    }
+define([BIND_OPERATOR],[dnl
+ifelse($2,0,[dnl
+], $2,1,[dnl
+dnl  result_type
+dnl  typename callof_safe1<adaptor_type>::result_type // leads to compiler errors if T_functor has an overloaded operator()!
+dnl  operator()()
+dnl    { /*return*/ functor_.template operator()<_P_(T_bound)>
+dnl       (bound_); 
+dnl    }
 ], $1,0,[dnl
   template <LOOP([class T_arg%1],eval($2-1))>
   typename callof<LIST(adaptor_type, LOOP(T_arg%1,eval($2-1)), T_bound)>::result_type
   operator()(LOOP(T_arg%1 _A_arg%1,eval($2-1)))
-    { functor_.template operator()<LIST(LOOP([_P_(T_arg%1)],eval($2-1)), _P_(T_bound))>
+    { return functor_.template operator()<LIST(LOOP([_P_(T_arg%1)],eval($2-1)), _P_(T_bound))>
        (LIST(LOOP(_A_arg%1,eval($2-1)), bound_)); 
     }
 ],[dnl
@@ -86,7 +114,7 @@ __FIREWALL__
 namespace sigc { 
 namespace functor {
 
-template <int I_location, class T_type, class T_functor>
+template <int I_location, class T_type, class T_functor, class T_return = typename adapts<T_functor>::result_type>
 class bind_functor;
 
 FOR(0,CALL_SIZE,[[BIND_FUNCTOR(%1)]])
@@ -111,24 +139,24 @@ bind(const T_functor& _A_func, T_bound1 _A_b1)
 
 template <int I_location, class T_bound1, class T_bound2,class T_functor>
 inline bind_functor<I_location, T_bound1,
-       bind_functor<I_location+1?I_location+1:0, T_bound2, T_functor> >
+       bind_functor<I_location?I_location+1:0, T_bound2, T_functor> >
 bind(const T_functor& _A_functor, T_bound1 _A_b1, T_bound2 _A_b2)
   { 
     return bind_functor<I_location, T_bound1,
-           bind_functor< (I_location ? I_location + 1 : 0), T_bound2, T_functor> >
-             (bind< (I_location ? I_location + 1 : 0) >(_A_functor, _A_b2), _A_b1); 
+           bind_functor<(I_location?I_location+1:0), T_bound2, T_functor> >
+             (bind<(I_location?I_location+1:0)>(_A_functor, _A_b2), _A_b1); 
   }
 
 template <int I_location, class T_bound1, class T_bound2,class T_bound3,class T_functor>
 inline bind_functor<I_location, T_bound1,
-       bind_functor< (I_location ? I_location + 1 : 0), T_bound2,
-       bind_functor< (I_location ? I_location + 2 : 0), T_bound3, T_functor> > >
+       bind_functor<(I_location?I_location+1:0), T_bound2,
+       bind_functor<(I_location?I_location+2:0), T_bound3, T_functor> > >
 bind(const T_functor& _A_functor, T_bound1 _A_b1, T_bound2 _A_b2,T_bound3 _A_b3)
   { 
     return bind_functor<I_location, T_bound1,
-           bind_functor<(I_location ? I_location + 1 : 0), T_bound2,
-           bind_functor<(I_location ? I_location + 2 : 0), T_bound3, T_functor> > >
-             (bind<(I_location ? I_location + 1 : 0)>(_A_functor, _A_b2, _A_b3),_A_b1); 
+           bind_functor<(I_location?I_location+1:0), T_bound2,
+           bind_functor<(I_location?I_location+2:0), T_bound3, T_functor> > >
+             (bind<(I_location?I_location+1:0)>(_A_functor, _A_b2, _A_b3),_A_b1); 
   }
 
 

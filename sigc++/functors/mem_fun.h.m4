@@ -20,7 +20,7 @@ include(template.macros.m4)
 
 define([MEMBER_FUNCTOR],[dnl
 template <LIST(LOOP(class T_arg%1, $1), class T_return, class T_obj)>
-class mem_functor$1 /*: public functor_base*/
+class mem_functor$1 : public functor_base
 {
   public:
     typedef T_return (T_obj::*function_type)(LOOP(T_arg%1, $1));
@@ -37,7 +37,7 @@ class mem_functor$1 /*: public functor_base*/
 };
 
 template <LIST(LOOP(class T_arg%1, $1), class T_return, class T_obj)>
-class const_mem_functor$1 /*: public functor_base*/
+class const_mem_functor$1 : public functor_base
 {
   public:
     typedef T_return (T_obj::*function_type)(LOOP(T_arg%1, $1)) const;
@@ -132,7 +132,7 @@ divert(0)
 //    to have automatic conversion for member pointers.
 __FIREWALL__
 #include <sigc++/type_traits.h>
-dnl #include <sigc++/functor/functor_trait.h>
+#include <sigc++/functors/functor_trait.h>
 
 namespace sigc {
 namespace functor {

@@ -20,7 +20,7 @@ include(template.macros.m4)
 
 define([POINTER_FUNCTOR],[dnl
 template <LIST(LOOP(class T_arg%1, $1), class T_return)>
-class pointer_functor$1 /*: public functor_base*/
+class pointer_functor$1 : public functor_base
 {
   typedef T_return (*function_type)(LOOP(T_arg%1, $1));
   protected: 
@@ -66,7 +66,7 @@ divert(0)
 */
 __FIREWALL__
 #include <sigc++/type_traits.h>
-dnl #include <sigc++/functor/functor_trait.h>
+#include <sigc++/functors/functor_trait.h>
 
 namespace sigc {
 namespace functor {
