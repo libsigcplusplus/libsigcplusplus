@@ -1,21 +1,7 @@
-*** libsigc++ 2.0:
+2.0.11:
 
-libsigc++ implements a typesafe callback system for standard C++. It
-allows you to define signals and to connect those signals to any
-callback function, either global or a member function, regardless of
-whether it is static or virtual.
-
-libsigc++ is used by gtkmm to wrap the GTK+ signal system. It does not depend 
-on GTK or gtkmm.
-
-libsigc++ 2.0 uses modern C++ mechanisms to achieve a highly flexible,
-yet typesafe callback system. It supports all features of libsigc++ 1.2
-and improves upon it with a simpler and more powerful API.
-
-This version of libsigc++ needs GNU g++ 3.2 or higher to compile.
-
-
-*** ChangeLog summary:
+* Build fixes for SUN Forte, Tru64
+  (Murray Cumming), and MSVC++ (Cedric Gustin).
 
 2.0.10:
 

@@ -1,3 +1,5 @@
+2.0.11:
+
 2005-03-09  Cedric Gustin <cedric.gustin@swing.be>
 
 	* Makefile.am: Moved MSVC_Net2003 directory to SUBDIRS.
