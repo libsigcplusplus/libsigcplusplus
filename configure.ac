@@ -85,6 +85,7 @@ AC_OUTPUT([
   sigc++-2.0.pc
 
   sigc++/Makefile
+  scripts/Makefile
   tests/Makefile
   examples/Makefile
   MSVC_Net2003/Makefile
