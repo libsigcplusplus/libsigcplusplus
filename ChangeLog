@@ -1,3 +1,18 @@
+2003-08-24  Martin Schulze  <teebaum@cvs.gnome.org>
+
+	* sigc++/adaptors[/lambda]/*.h.m4:
+	- Remove unnecessary void specializations. In fact, only the one
+	for sigc::functor::exception_catch<> is needed and I don't really
+	understand why. For the lambda stuff the void specializatoins are
+	just commented out at the moment.
+	- Make typeof() optional. Surprisingly, I got the lambda stuff working
+	without typeof()! The test suite doesn't catch all cases yet, so maybe
+	some thing are still not working.
+	TODO: Implement configure check.
+	* tests/test_bind.cc, tests/test_compose.cc tests/test_exception_catch.cc,
+	tests/test_hide.cc, tests/test_lambda.cc:
+	Only test multiple functor return types if typeof() is supported.
+
 2003-08-06  Martin Schulze  <teebaum@cvs.gnome.org>
 
 	* sigc++/trackable.{cc,h}: Add function trackable::clear().

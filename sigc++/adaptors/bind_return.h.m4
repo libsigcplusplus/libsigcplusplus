@@ -24,6 +24,7 @@ define([BIND_RETURN_OPERATOR],[dnl
     { functor_.template operator()<LOOP(_P_(T_arg%1), $1)>
         (LOOP(_A_a%1, $1)); return ret_value_;
     }
+
 ])
 
 divert(0)dnl
@@ -39,8 +40,7 @@ struct bind_return_functor : public adapts<T_functor>
   typedef T_return result_type;
   T_return operator()();
 
-FOR(1,CALL_SIZE,[[BIND_RETURN_OPERATOR(%1)]])
-
+FOR(1,CALL_SIZE,[[BIND_RETURN_OPERATOR(%1)]])dnl
   bind_return_functor() {}
   bind_return_functor(_R_(T_functor) _A_functor, _R_(T_return) _A_ret_value)
     : adapts<T_functor>(_A_functor), ret_value_(_A_ret_value)

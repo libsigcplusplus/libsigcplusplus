@@ -19,17 +19,23 @@ include(template.macros.m4)
 
 define([LAMBDA_DO],[dnl
   template <LOOP(class T_arg%1, $1)>
+#ifdef SIGC_CXX_TYPEOF
   typename internal::callof<LIST(T_type, LOOP(T_arg%1, $1))>::result_type
+#else
+  typename lambda_type::calc_type<LOOP(T_arg%1, $1)>::result_type
+#endif
   operator ()(LOOP(T_arg%1 _A_%1, $1)) const 
     { return value_.template operator()<LOOP(_P_(T_arg%1), $1)>
              (LOOP(_A_%1, $1)); 
     }
-])
+
+])dnl
 define([LAMBDA_DO_VALUE],[dnl
   template <LOOP(class T_arg%1, $1)>
   T_type operator ()(LOOP(T_arg%1 _A_%1, $1)) const 
     { return value_; }
-])
+
+])dnl
 
 divert(0)dnl
 #ifndef _SIGC_LAMBDA_BASE_HPP_
@@ -55,12 +61,14 @@ struct lambda_core<T_type, T_return, true> : public lambda_base
 {
   typedef T_type lambda_type;
   typedef T_return result_type;
+  template <LOOP(class T_arg%1 = void, CALL_SIZE)>
+  struct calc_type
+    { typedef typename lambda_type::calc_type<LOOP(T_arg%1, CALL_SIZE)>::result_type result_type; };
 
   result_type
   operator()() const;
 
-FOR(1,CALL_SIZE,[[LAMBDA_DO(%1)]])
-
+FOR(1,CALL_SIZE,[[LAMBDA_DO(%1)]])dnl
   lambda_core() {}
   lambda_core(const T_type& v)
     : value_(v) {}
@@ -78,17 +86,20 @@ lambda_core<T_type, T_return, true>::operator()() const
   { return value_(); }
 
 
+/*// void specialization
 template <class T_type>
 struct lambda_core<T_type, void, true> : public lambda_base
 {
   typedef T_type lambda_type;
   typedef void result_type;
+  template <LOOP(class T_arg%1 = void, CALL_SIZE)>
+  struct calc_type
+    { typedef typename lambda_type::calc_type<LOOP(T_arg%1, CALL_SIZE)>::result_type result_type; };
 
   void
   operator()() const;
 
-FOR(1,CALL_SIZE,[[LAMBDA_DO(%1)]])
-
+FOR(1,CALL_SIZE,[[LAMBDA_DO(%1)]])dnl
   lambda_core() {}
   lambda_core(const T_type& v)
     : value_(v) {}
@@ -103,7 +114,7 @@ FOR(1,CALL_SIZE,[[LAMBDA_DO(%1)]])
 template <class T_type>
 typename lambda_core<T_type, void, true>::result_type
 lambda_core<T_type, void, true>::operator()() const
-  { value_(); }
+  { value_(); }*/
 
 
 template <class T_type, class T_return>
@@ -112,10 +123,13 @@ struct lambda_core<T_type, T_return, false> : public lambda_base
   typedef lambda<T_type> lambda_type;
   typedef T_type result_type; // all operator() overloads return T_type.
                               // T_return == functor_trait<T_type>::result_type can be extracted at any other point.
+  template <LOOP(class T_arg%1 = void, CALL_SIZE)>
+  struct calc_type
+    { typedef T_type result_type; }; // TODO: does this make any sense?
+
   T_type operator()() const;
 
-FOR(1,CALL_SIZE,[[LAMBDA_DO_VALUE(%1)]])
-
+FOR(1,CALL_SIZE,[[LAMBDA_DO_VALUE(%1)]])dnl
   lambda_core(typename type_trait<T_type>::take v)
     : value_(v) {}
 

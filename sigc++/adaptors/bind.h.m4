@@ -18,40 +18,52 @@ divert(-1)
 
 include(template.macros.m4)
 
+define([BIND_OPERATOR],[dnl
+ifelse($2,0,[dnl
+], $2,1,[dnl
+dnl  typename internal::callof_safe1<adaptor_type>::result_type // leads to compiler errors if T_functor has an overloaded operator()!
+dnl  operator()()
+dnl    { return functor_.template operator()<_P_(T_bound)>
+dnl       (bound_); 
+dnl    }
+dnl
+], $1,0,[dnl
+  template <LOOP([class T_arg%1],eval($2-1))>
+#ifdef SIGC_CXX_TYPEOF
+  typename internal::callof<LIST(adaptor_type, LOOP(T_arg%1,eval($2-1)), T_bound)>::result_type
+#else
+  result_type
+#endif
+  operator()(LOOP(T_arg%1 _A_arg%1,eval($2-1)))
+    { return functor_.template operator()<LIST(LOOP([_P_(T_arg%1)],eval($2-1)), _P_(T_bound))>
+       (LIST(LOOP(_A_arg%1,eval($2-1)), bound_)); 
+    }
+
+],[dnl
+  template <LOOP([class T_arg%1],eval($2-1))>
+#ifdef SIGC_CXX_TYPEOF
+  typename internal::callof<LIST(adaptor_type, LOOP(T_arg%1,eval($1-1)), T_bound,FOR($1,eval($2-1),[T_arg%1,]))>::result_type
+#else
+  result_type
+#endif
+  operator()(LOOP(T_arg%1 _A_arg%1,eval($2-1)))
+    { return functor_.template operator()<LIST(LOOP([_P_(T_arg%1)],eval($1-1)), _P_(T_bound),FOR($1,eval($2-1),[_P_(T_arg%1),]))>
+      (LIST(LOOP(_A_arg%1,eval($1-1)), bound_,FOR($1,eval($2-1),[_A_arg%1,]))); 
+    }
+
+])dnl
+])
 define([BIND_FUNCTOR],[dnl
-template <class T_bound, class T_functor, class T_return>
-struct bind_functor <$1, T_bound, T_functor, T_return> : public adapts<T_functor>
+template <class T_bound, class T_functor>
+struct bind_functor <$1, T_bound, T_functor> : public adapts<T_functor>
 {
-  typedef T_return result_type;
+  typedef typename adapts<T_functor>::result_type  result_type;
   typedef typename adapts<T_functor>::adaptor_type adaptor_type;
 
   result_type
   operator()();
 
-FOR($1,CALL_SIZE,[[BIND_OPERATOR($1,%1)]])
-  bind_functor(_R_(T_functor) _A_func, _R_(T_bound) _A_bound)
-    : adapts<T_functor>(_A_func), bound_(_A_bound)
-    {}
-
-  T_bound bound_;
-};
-
-template <class T_bound, class T_functor, class T_return>
-typename bind_functor<$1, T_bound, T_functor, T_return>::result_type
-bind_functor<$1, T_bound, T_functor, T_return>::operator()()
-  { return functor_.template operator()<_P_(T_bound)> (bound_); }
-
-// void specialization
-template <class T_bound, class T_functor>
-struct bind_functor <$1, T_bound, T_functor, void> : public adapts<T_functor>
-{
-  typedef void result_type;
-  typedef typename adapts<T_functor>::adaptor_type adaptor_type;
-
-  void
-  operator()();
-
-FOR($1,CALL_SIZE,[[BIND_OPERATOR($1,%1)]])
+FOR($1,CALL_SIZE,[[BIND_OPERATOR($1,%1)]])dnl
   bind_functor(_R_(T_functor) _A_func, _R_(T_bound) _A_bound)
     : adapts<T_functor>(_A_func), bound_(_A_bound)
     {}
@@ -60,35 +72,10 @@ FOR($1,CALL_SIZE,[[BIND_OPERATOR($1,%1)]])
 };
 
 template <class T_bound, class T_functor>
-void
-bind_functor<$1, T_bound, T_functor, void>::operator()()
+typename bind_functor<$1, T_bound, T_functor>::result_type
+bind_functor<$1, T_bound, T_functor>::operator()()
   { return functor_.template operator()<_P_(T_bound)> (bound_); }
 
-])
-define([BIND_OPERATOR],[dnl
-ifelse($2,0,[dnl
-], $2,1,[dnl
-dnl  result_type
-dnl  typename internal::callof_safe1<adaptor_type>::result_type // leads to compiler errors if T_functor has an overloaded operator()!
-dnl  operator()()
-dnl    { /*return*/ functor_.template operator()<_P_(T_bound)>
-dnl       (bound_); 
-dnl    }
-], $1,0,[dnl
-  template <LOOP([class T_arg%1],eval($2-1))>
-  typename internal::callof<LIST(adaptor_type, LOOP(T_arg%1,eval($2-1)), T_bound)>::result_type
-  operator()(LOOP(T_arg%1 _A_arg%1,eval($2-1)))
-    { return functor_.template operator()<LIST(LOOP([_P_(T_arg%1)],eval($2-1)), _P_(T_bound))>
-       (LIST(LOOP(_A_arg%1,eval($2-1)), bound_)); 
-    }
-],[dnl
-  template <LOOP([class T_arg%1],eval($2-1))>
-  typename internal::callof<LIST(adaptor_type, LOOP(T_arg%1,eval($1-1)), T_bound,FOR($1,eval($2-1),[T_arg%1,]))>::result_type
-  operator()(LOOP(T_arg%1 _A_arg%1,eval($2-1)))
-    { return functor_.template operator()<LIST(LOOP([_P_(T_arg%1)],eval($1-1)), _P_(T_bound),FOR($1,eval($2-1),[_P_(T_arg%1),]))>
-      (LIST(LOOP(_A_arg%1,eval($1-1)), bound_,FOR($1,eval($2-1),[_A_arg%1,]))); 
-    }
-])dnl
 ])
 
 divert(0)dnl
@@ -120,14 +107,14 @@ __FIREWALL__
 namespace sigc { 
 namespace functor {
 
-template <int I_location, class T_type, class T_functor, class T_return = typename adapts<T_functor>::result_type>
+template <int I_location, class T_type, class T_functor>
 class bind_functor;
 
-FOR(0,CALL_SIZE,[[BIND_FUNCTOR(%1)]])
+FOR(0,CALL_SIZE,[[BIND_FUNCTOR(%1)]])dnl
 
-template <class T_action, int T_loc, class T_bound, class T_functor, class T_return>
+template <class T_action, int T_loc, class T_bound, class T_functor>
 void visit_each(const T_action& _A_action,
-                const bind_functor<T_loc, T_bound, T_functor, T_return>& _A_target)
+                const bind_functor<T_loc, T_bound, T_functor>& _A_target)
 {
   visit_each(_A_action, _A_target.functor_);
   visit_each(_A_action, _A_target.bound_);

@@ -12,14 +12,29 @@ using namespace sigc::functor;
 
 struct set 
 {
-  // explicitly specify the return type of set's operator()(int) overload
-  // (cannot be auto-detected):
+#ifdef SIGC_CXX_TYPEOF
+  // if the compiler supports typeof(), result_type must only match the
+  // return type of set's operator()(int) overload (cannot be auto-detected in C++).
   typedef int result_type;
-
   int operator()(int i) 
     {cout << "set(int "<<i<<")"<<endl; return i*i;}
   float operator()(float i) 
     {cout << "set(float "<<i<<")"<<endl; return i*5;}
+#else
+  // choose a type that can hold all return values
+  typedef float result_type;
+  float operator()(int i) 
+    {cout << "set(int "<<i<<")"<<endl; return i*i;}
+  float operator()(float i) 
+    {cout << "set(float "<<i<<")"<<endl; return i*5;}
+#endif
+};
+
+struct set_void
+{
+  typedef void result_type;
+  void operator()(int i)
+    { cout << "set_void(int "<<i<<")"<<endl; }
 };
 
 struct get
@@ -38,4 +53,5 @@ int main()
   cout << compose(set(),get())() << endl;
   cout << compose(set(),get())(1) << endl;
   cout << compose(set(),get())(1,2) << endl;
+  compose(set_void(),get())(3); //void test
 }

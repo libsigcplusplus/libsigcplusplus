@@ -43,15 +43,20 @@ dnl type of a functor when the argument types are known. Martin.
 ])
 define([ADAPTOR_DO],[dnl
 ifelse($1,0,[dnl
-dnl  typename internal::callof_safe0<T_functor>::result_type // leads to compiler errors if T_functor has an overloaded operator()!
+dnl  typename internal::callof_safe0<T_functor>::result_type // doesn't compile if T_functor has an overloaded operator()!
 dnl  typename functor_trait<T_functor>::result_type
 dnl  operator()() const
 dnl    { return functor_(); }
 ],[dnl
   template <LOOP([class T_arg%1], $1)>
+#ifdef SIGC_CXX_CALLOF
   typename internal::callof<LIST(T_functor, LOOP(T_arg%1, $1))>::result_type
+#else
+  result_type
+#endif
   operator()(LOOP(T_arg%1 _A_arg%1, $1)) const
     { return functor_(LOOP(_A_arg%1, $1)); }
+
 ])dnl
 ])
 
@@ -117,8 +122,7 @@ struct adaptor_functor : public adaptor_base
   result_type
   operator()() const;
 
-FOR(0,CALL_SIZE,[[ADAPTOR_DO(%1)]])
-
+FOR(0,CALL_SIZE,[[ADAPTOR_DO(%1)]])dnl
   adaptor_functor()
     {}
   adaptor_functor(const T_functor& _A_functor)
@@ -132,6 +136,7 @@ FOR(0,CALL_SIZE,[[ADAPTOR_DO(%1)]])
   adaptor_functor(const T_type& _A_type)
     : functor_(_A_type)
     {}
+
   mutable T_functor functor_;
 };
 
@@ -139,40 +144,6 @@ template <class T_functor, class T_return>
 typename adaptor_functor<T_functor, T_return>::result_type
 adaptor_functor<T_functor, T_return>::operator()() const
   { return functor_(); }
-
-// void specialization
-template <class T_functor>
-struct adaptor_functor<T_functor, void> : public adaptor_base
-{
-  typedef void result_type;
-
-  operator T_functor& () const { return functor_; }
-
-  void
-  operator()() const;
-
-FOR(0,CALL_SIZE,[[ADAPTOR_DO(%1)]])
-
-  adaptor_functor()
-    {}
-  adaptor_functor(const T_functor& _A_functor)
-    : functor_(_A_functor)
-    {}
-  template <class T_type>
-  adaptor_functor(T_type& _A_type)
-    : functor_(_A_type)
-    {}
-  template <class T_type>
-  adaptor_functor(const T_type& _A_type)
-    : functor_(_A_type)
-    {}
-  mutable T_functor functor_;
-};
-
-template <class T_functor>
-typename adaptor_functor<T_functor, void>::result_type
-adaptor_functor<T_functor, void>::operator()() const
-  { functor_(); }
 
 
 template <class T_action, class T_functor, class T_return>

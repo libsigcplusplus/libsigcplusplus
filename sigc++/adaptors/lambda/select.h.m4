@@ -27,9 +27,14 @@ define([LAMBDA_SELECT],[dnl
 struct lambda_select$1 : public lambda_base
 {
   typedef void result_type; // no operator ()() overload
+  template <LOOP(class T_arg%1 = void, $2)>
+  struct calc_type
+    { typedef T_arg$1 result_type; };
+
   void operator ()() const; // not implemented
-FOR($1, $2,[[LAMBDA_SELECT_DO($1,%1)]])
+FOR($1, $2,[[LAMBDA_SELECT_DO($1,%1)]])dnl
 };
+
 ])
 
 divert(0)dnl

@@ -10,30 +10,36 @@
 using namespace std;
 using namespace sigc::functor;
 
-struct f 
+#ifndef SIGC_CXX_TYPEOF
+struct f : public sigc::functor::functor_base
 {
+  typedef int result_type;
+#else
+struct f
+{
+#endif
   int operator()(int i) 
     {cout << "f(int "<<i<<")"<<endl; 
      throw std::range_error("out of range");}
 };
 
-struct g 
+struct g : public sigc::functor::functor_base
 {
+  // also necessary if the compiler supports typeof() because the return type of
+  // g's operator() overload with no arguments cannot be auto-detected in C++:
+  typedef int result_type;
   int operator()() 
     {cout << "g()"<<endl; 
      throw std::range_error("out of range");}
 };
 
-// explicitly specify the return type of foo's operator() overload with no arguments
-// (cannot be auto-detected):
-
-namespace sigc {
-namespace functor {
-
-SIGC_FUNCTOR_TRAIT(g,int)
-
-} /* namespace functor */
-} /* namespace sigc */
+struct g_void : public sigc::functor::functor_base
+{
+  typedef void result_type;
+  void operator()()
+    {cout << "g_void()"<<endl;
+     throw std::range_error("out of range");}
+};
 
 
 struct my_catch
@@ -55,4 +61,5 @@ int main()
 {
   cout << exception_catch(f(), my_catch())(1) << endl;
   cout << exception_catch(g(), my_catch())() << endl;
+  exception_catch(g_void(), my_catch())(); // void test
 }

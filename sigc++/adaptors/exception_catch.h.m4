@@ -19,17 +19,22 @@ divert(-1)
 include(template.macros.m4)
 
 define([EXCEPTION_CATCH_OPERATOR],[dnl
-   template <LOOP(class T_arg%1, $1)>
-   inline typename internal::callof<T_functor, LOOP(T_arg%1, $1)>::result_type
-     operator()(LOOP(T_arg%1 _A_a%1, $1))
-     { 
-        try { 
+  template <LOOP(class T_arg%1, $1)>
+#ifdef SIGC_CXX_TYPEOF
+  typename internal::callof<T_functor, LOOP(T_arg%1, $1)>::result_type
+#else
+  result_type
+#endif
+  operator()(LOOP(T_arg%1 _A_a%1, $1))
+    { 
+      try
+        {
           return functor_.template operator() <LOOP(_P_(T_arg%1), $1)>
             (LOOP(_A_a%1, $1));
         } 
-        catch (...)
+      catch (...)
         { return catcher_(); }
-     }
+    }
 
 ])
 
@@ -80,8 +85,7 @@ struct exception_catch_functor : public adapts<T_functor>
   result_type
   operator()();
 
-FOR(1,CALL_SIZE,[[EXCEPTION_CATCH_OPERATOR(%1)]])
-
+FOR(1,CALL_SIZE,[[EXCEPTION_CATCH_OPERATOR(%1)]])dnl
   exception_catch_functor() {}
   exception_catch_functor(const T_functor& _A_func,
                           const T_catcher& _A_catcher)
@@ -97,9 +101,10 @@ template <class T_functor, class T_catcher, class T_return>
 typename exception_catch_functor<T_functor, T_catcher, T_return>::result_type
 exception_catch_functor<T_functor, T_catcher, T_return>::operator()()
   { 
-    try { return functor_(); }
+    try
+      { return functor_(); }
     catch (...)
-    { return catcher_(); }
+      { return catcher_(); }
   }
 
 // void specialization
@@ -112,8 +117,7 @@ struct exception_catch_functor<T_functor, T_catcher, void> : public adapts<T_fun
   void
   operator()();
 
-FOR(1,CALL_SIZE,[[EXCEPTION_CATCH_OPERATOR(%1)]])
-
+FOR(1,CALL_SIZE,[[EXCEPTION_CATCH_OPERATOR(%1)]])dnl
   exception_catch_functor() {}
   exception_catch_functor(const T_functor& _A_func,
                           const T_catcher& _A_catcher)
@@ -129,9 +133,10 @@ template <class T_functor, class T_catcher>
 void
 exception_catch_functor<T_functor, T_catcher, void>::operator()()
   { 
-    try { functor_(); }
+    try
+      { functor_(); } // I don't understand why void return doesn't work here (Martin)
     catch (...)
-    { catcher_(); }
+      { catcher_(); }
   }
 
 

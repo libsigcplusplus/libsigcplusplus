@@ -10,26 +10,36 @@
 using namespace sigc::functor;
 using sigc::trackable;
 
-struct foo 
+struct foo : public sigc::functor::functor_base
 {
+#ifdef SIGC_CXX_TYPEOF
+  // if the compiler supports typeof(), result_type must only match the
+  // return type of the operator() overload with 1 argument (cannot be auto-detected in C++).
+  typedef bool result_type;
   bool operator()(int i)
     {std::cout << "foo(int "<<i<<")" << std::endl; return (i>0);}
   int operator()(int i,int j)
     {std::cout << "foo(int "<<i<<",int "<<j<<")" << std::endl; return i+j;}
   void operator()(int i,int j,int k)
     {std::cout << "foo(int "<<i<<",int "<<j<<", int "<<k<<")" << std::endl;}
+#else
+  // choose a type that can hold all return values
+  typedef int result_type;
+  int operator()(int i)
+    {std::cout << "foo(int "<<i<<")" << std::endl; return (i>0);}
+  int operator()(int i,int j)
+    {std::cout << "foo(int "<<i<<",int "<<j<<")" << std::endl; return i+j;}
+  int operator()(int i,int j,int k)
+    {std::cout << "foo(int "<<i<<",int "<<j<<", int "<<k<<")" << std::endl; return 0;}
+#endif
 };
 
-
-namespace sigc {
-namespace functor {
-
-// explicitly specify the return type of foo's operator() overload with no arguments
-// (cannot be auto-detected):
-SIGC_FUNCTOR_TRAIT(foo,bool)
-
-} /* namespace functor */
-} /* namespace sigc */
+struct foo_void : public sigc::functor::functor_base
+{
+  typedef void result_type;
+  void operator()(int i)
+    {std::cout << "foo_void(int "<<i<<")" << std::endl;}
+};
 
 
 int bar(int i,int j) 
@@ -69,13 +79,14 @@ int main()
   bind<1>(bind<1>(foo(),7),8)();
 
   // void return
-  bind<1>(foo(),9,10)(11);
+  bind<1>(foo(),9,10)(11); // (only returns void if typeof() is supported)
+  bind<0>(foo_void(),12)();
 
   // function pointer instead of functor
-  bind<1>(&bar,12,13)();
+  bind<1>(&bar,13,14)();
 
   // test return type of bind_functor::operator() overload with no arguments
-  std::cout << bind<0>(foo(),14)() << std::endl;
+  std::cout << bind<0>(foo(),15)() << std::endl;
   std::cout << bind<0>(&simple, true)() << std::endl;
 
   // test references
