@@ -109,8 +109,7 @@ FOR(1,CALL_SIZE,[[EXCEPTION_CATCH_OPERATOR(%1)]])dnl
     : adapts<T_functor>(_A_func), catcher_(_A_catcher)
     {}
 
-  protected: 
-    T_catcher catcher_; 
+  T_catcher catcher_; 
 };
 
 template <class T_functor, class T_catcher, class T_return>

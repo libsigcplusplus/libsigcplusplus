@@ -1,3 +1,9 @@
+2004-11-06  Martin Schulze  <mschulze@cvs.gnome.org>
+
+	* sigc++/adaptors/macros/exception_catch.h.m4: Make catcher_ member
+	public so that it can be accessed by visit_each() (bug reported on
+	ml by Philip Langdale <plangdale@vmware.com>).
+
 2004-10-24  Martin Schulze  <mschulze@cvs.gnome.org>
 
 	* MSVC_Net2003/*/*.vcproj: Link with the "multithreaded DLL" runtime
