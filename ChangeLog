@@ -1,5 +1,12 @@
 2005-01-17  Murray Cumming  <murrayc@murrayc.com>
 
+	* docs/manual/Makefile.am: Specifying html/index.html instead of 
+	just the html directory as a target seems to fix distcheck problems.
+	I can also now confirm that the install works on solaris, when using 
+	gmake, though not when using make.
+
+2005-01-17  Murray Cumming  <murrayc@murrayc.com>
+
 	* MSVC_Net2004/Makefile.am: Add built files to DISTCLEANFILES to fix 
 	the distcheck.
 	* docs/reference/Makefile.am, manual/Makefile.am: Specify $srcdir in 
