@@ -31,7 +31,7 @@ namespace sigc {
  * operator bool() can be used to test whether the connection is
  * still active. The connection can be blocked (block(), unblock()).
  *
- * This is possibly because the connection object gets notified
+ * This is possible because the connection object gets notified
  * when the referred slot dies (notify()).
  *
  * @ingroup signal

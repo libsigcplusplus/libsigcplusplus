@@ -80,8 +80,8 @@ struct limit_derived_target<T_target*, T_action>
 
 
 /** This function performs a functor on each of the targets of a functor.
- * All unknown types just call @p _A_action on them.
- * Add overloads that specialize the @p T_functor argument for your own
+ * All unknown types just call @e _A_action on them.
+ * Add overloads that specialize the @e T_functor argument for your own
  * functor types, so that subobjects get visited. This is needed to enable
  * auto-disconnection support for your functor types.
  *
@@ -90,7 +90,8 @@ struct limit_derived_target<T_target*, T_action>
  *   struct some_functor
  *   {
  *     void operator()() {}
- *     some_sigc_trackable_derived_type some_data_member;
+ *     some_possibly_sigc_trackable_derived_type some_data_member;
+ *     some_other_functor_type some_other_functor;
  *   }
  *
  *   namespace sigc
@@ -100,6 +101,7 @@ struct limit_derived_target<T_target*, T_action>
  *                     const some_functor& _A_target)
  *     {
  *       visit_each(_A_action, _A_target.some_data_member);
+ *       visit_each(_A_action, _A_target.some_other_functor);
  *     }
  *   }
  *   @endcode

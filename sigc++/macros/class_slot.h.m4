@@ -19,10 +19,10 @@ divert(-1)
 include(template.macros.m4)
 
 define([SLOT_CLASS],[dnl
-/** Creates a functor of type bound_[$2]mem_functor$1 which encapsulates a $4 method and an object instance.
+/** Creates a functor of type SigC::Slot$1 that encapsulates a $4 method and an object instance.
  *
  * This function is part of the compatibility module and therefore deprecated.
- * Use the unnumbered template sigc::mem_fun() instead.
+ * Use sigc::mem_fun() instead.
  *
  * @param _A_obj Reference to object instance the functor should operate on.
  * @param _A_func Pointer to method that should be wrapped.

@@ -116,7 +116,7 @@ FOR(1, $1,[
 };
 
 /** Performs a functor on each of the targets of a functor.
- * The function overload for bound_[$2]mem_functor performs a functor
+ * The function overload for sigc::bound_[$2]mem_functor performs a functor
  * on the object instance stored in the bound_mem_functor object.
  *
  * @ingroup functors
@@ -131,7 +131,7 @@ void visit_each(const T_action& _A_action,
 ])
 
 define([MEM_FUN],[dnl
-/** Creates a functor of type [$3]mem_functor$1 which wraps a method.
+/** Creates a functor of type sigc::[$3]mem_functor$1 which wraps a $5 method.
  * @param _A_func Pointer to method that should be wrapped.
  * @return Functor that executes _A_func on invokation.
  *
@@ -144,10 +144,10 @@ mem_fun[]ifelse($2,, $1)(T_return (T_obj::*_A_func)(LOOP(T_arg%1,$1)) $5)
 
 ])
 define([BOUND_MEM_FUN],[dnl
-/** Creates a functor of type bound_[$3]mem_functor$1 which encapsulates a method and an object instance.
+/** Creates a functor of type sigc::bound_[$3]mem_functor$1 which encapsulates a method and an object instance.
  * @param _A_obj Pointer to object instance the functor should operate on.
  * @param _A_func Pointer to method that should be wrapped.
- * @return Functor that executes _A_func on invokation.
+ * @return Functor that executes @e _A_func on invokation.
  *
  * @ingroup functors
  */
@@ -156,10 +156,10 @@ inline bound_[$3]mem_functor$1<LIST(T_return, T_obj, LOOP(T_arg%1, $1))>
 mem_fun[]ifelse($2,, $1)($4 T_obj* _A_obj, T_return (T_obj::*_A_func)(LOOP(T_arg%1,$1)) $5)
 { return bound_[$3]mem_functor$1<LIST(T_return, T_obj, LOOP(T_arg%1, $1))>(_A_obj, _A_func); }
 
-/** Creates a functor of type bound_[$3]mem_functor$1 which encapsulates a method and an object instance.
+/** Creates a functor of type sigc::bound_[$3]mem_functor$1 which encapsulates a method and an object instance.
  * @param _A_obj Reference to object instance the functor should operate on.
  * @param _A_func Pointer to method that should be wrapped.
- * @return Functor that executes _A_func on invokation.
+ * @return Functor that executes @e _A_func on invokation.
  *
  * @ingroup functors
  */

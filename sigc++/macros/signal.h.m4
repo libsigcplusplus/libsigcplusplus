@@ -20,10 +20,10 @@ include(template.macros.m4)
 
 define([SIGNAL_EMIT_N],[dnl
 /** Abstracts signal emission.
- * This template implements the emit() function of signal$1<>.
+ * This template implements the emit() function of signal$1.
  * Template specializations are available to optimize signal
  * emission when no accumulator is used, i.e. the template
- * argument @p T_accumulator is @p nil.
+ * argument @e T_accumulator is @p nil.
  */
 template <LIST(class T_return, LOOP(class T_arg%1, $1), class T_accumulator)>
 struct signal_emit$1
@@ -34,11 +34,12 @@ struct signal_emit$1
   typedef slot_iterator_buf<self_type> slot_iterator_buf_type;
   typedef signal_impl::const_iterator_type iterator_type;
 
-  /** Instantiates the class.
 ifelse($1,0,,[dnl
+  /** Instantiates the class.
    * The parameters are stored in member variables. operator()() passes
-   * the values on to some slot.])
+   * the values on to some slot.
    */
+])dnl
   signal_emit$1(LOOP(typename type_trait<T_arg%1>::take _A_a%1, $1)) ifelse($1,0,,[
     : LOOP(_A_a%1_(_A_a%1), $1)]) {}
 
@@ -53,11 +54,11 @@ ifelse($1,0,[dnl
 dnl  T_return operator()(const slot_type& _A_slot) const
 dnl    { return _A_slot(LOOP(_A_a%1_, $1)); }
 
-  /** Executes a list of slots using an accumulator of type @p T_accumulator.
-ifelse($1,0,,[dnl
+  /** Executes a list of slots using an accumulator of type @e T_accumulator.dnl
+ifelse($1,0,,[
    * The arguments are buffered in a temporary instance of signal_emit$1.])
    * @param first An iterator pointing to the first slot in the list.
-   * @param last An iterator pointing to the last slot in the list.
+   * @param last An iterator pointing to the last slot in the list.dnl
 FOR(1, $1,[
    * @param _A_a%1 Argument to be passed on to the slots.])
    * @return The accumulated return values of the slot invocations as processed by the accumulator.
@@ -87,12 +88,12 @@ struct signal_emit$1<LIST(T_return, LOOP(T_arg%1, $1), nil)>
   typedef signal_impl::const_iterator_type iterator_type;
   typedef typename slot_type::call_type call_type;
 
-  /** Executes a list of slots using an accumulator of type @p T_accumulator.
-ifelse($1,0,,[dnl
+  /** Executes a list of slots using an accumulator of type @e T_accumulator.dnl
+ifelse($1,0,,[
    * The arguments are passed directly on to the slots.])
    * The return value of the last slot invoked is returned.
    * @param first An iterator pointing to the first slot in the list.
-   * @param last An iterator pointing to the last slot in the list.
+   * @param last An iterator pointing to the last slot in the list.dnl
 FOR(1, $1,[
    * @param _A_a%1 Argument to be passed on to the slots.])
    * @return The return value of the last slot invoked.
@@ -116,7 +117,7 @@ FOR(1, $1,[
 /** Abstracts signal emission.
  * This template specialization implements an optimized emit()
  * function for the case that no accumulator is used and the
- * return type is void.
+ * return type is @p void.
  */
 template <LOOP(class T_arg%1, $1)>
 struct signal_emit$1<LIST(void, LOOP(T_arg%1, $1), nil)>
@@ -127,11 +128,11 @@ struct signal_emit$1<LIST(void, LOOP(T_arg%1, $1), nil)>
   typedef signal_impl::const_iterator_type iterator_type;
   typedef ifelse($1,0,void (*call_type)(slot_rep*),typename slot_type::call_type call_type);
 
-  /** Executes a list of slots using an accumulator of type @p T_accumulator.
-ifelse($1,0,,[dnl
+  /** Executes a list of slots using an accumulator of type @e T_accumulator.dnl
+ifelse($1,0,,[
    * The arguments are passed directly on to the slots.])
    * @param first An iterator pointing to the first slot in the list.
-   * @param last An iterator pointing to the last slot in the list.
+   * @param last An iterator pointing to the last slot in the list.dnl
 FOR(1, $1,[
    * @param _A_a%1 Argument to be passed on to the slots.])
    */
@@ -154,6 +155,14 @@ define([SIGNAL_N],[dnl
  * can be passed into connect(). It is converted into a slot
  * implicitely.
  *
+ * If you want to connect one signal to another, use make_slot()
+ * to retrieve a functor that emits the signal when invoked.
+ *
+ * Be careful if you directly pass one signal into the connect()
+ * method of another: a shallow copy of the signal is made and
+ * the signal's slots are not disconnected until both the signal
+ * and its clone are destroyed which is probably not what you want!
+ *
  * An STL-style list interface for the signal's list of slots
  * can be retrieved with slots(). This interface supports
  * iteration, insertion and removal of slots.
@@ -162,9 +171,9 @@ define([SIGNAL_N],[dnl
  * - @e T_return The desired return type for the emit() function (may be overridden by the accumulator).dnl
 FOR(1,$1,[
  * - @e T_arg%1 Argument type used in the definition of emit().])
- * - @e T_accumulator The accumulator type used for emission. The default nil means that no accumulator should be used. Signal emission returns the return value of the last slot invoked.
+ * - @e T_accumulator The accumulator type used for emission. The default @p nil means that no accumulator should be used, i.e. signal emission returns the return value of the last slot invoked.
  *
- * You should use the unnumbered signal<> template for convenience.
+ * You should use the more convenient unnumbered sigc::signal template.
  *
  * @ingroup signal
  */
@@ -188,7 +197,7 @@ public:
    * The returned iterator may be stored for disconnection
    * of the slot at some later point. It stays valid until
    * the slot is removed from the list of slots. The iterator
-   * can also be implicitely converted into a connection object
+   * can also be implicitely converted into a sigc::connection object
    * that may be used safely beyond the life time of the slot.
    * @param slot_ The slot to add to the list of slots.
    * @return An iterator pointing to the new slot in the list.
@@ -200,7 +209,7 @@ public:
    * During signal emission all slots that have been connected
    * to the signal are invoked unless they are manually set into
    * a blocking state. The parameters are passed on to the slots.
-   * If @p T_accumulated is not @p nil, an accumulator of this type
+   * If @e T_accumulated is not @p nil, an accumulator of this type
    * is used to process the return values of the slot invocations.
    * Otherwise, the return value of the last slot invoked is returned.dnl
 FOR(1, $1,[
@@ -252,11 +261,20 @@ FOR(1, $1,[
 ])
 define([SIGNAL],[dnl
 ifelse($1, $2,[dnl
-/** Convenience wrapper for the numbered signal#<> templates.
+/** Convenience wrapper for the numbered sigc::signal# templates.
  * signal can be used to connect() slots that are invoked
  * during subsequent calls to emit(). Any functor or slot
  * can be passed into connect(). It is converted into a slot
- * implicitely.
+ * implicitly.
+ *
+ * If you want to connect one signal to another, use make_slot()
+ * to retrieve a functor that emits the signal when invoked.
+ *
+ * Be careful if you directly pass one signal into the connect()
+ * method of another: a shallow copy of the signal is made and
+ * the signal's slots are not disconnected until both the signal
+ * and its clone are destroyed which is probably not what you want!
+ *
  * An STL-style list interface for the signal's list of slots
  * can be retrieved with slots(). This interface supports
  * iteration, insertion and removal of slots.
@@ -267,7 +285,7 @@ ifelse($1, $2,[dnl
 FOR(1,$1,[
  * - @e T_arg%1 Argument type used in the definition of emit(). The default @p nil means no argument.])
  *
- * To specify an accumulator type the nested class accumulated can be used.
+ * To specify an accumulator type the nested class signal::accumulated can be used.
  *
  * @par Example:
  *   @code
@@ -280,24 +298,33 @@ FOR(1,$1,[
  * @ingroup signal
  */
 template <LIST(class T_return, LOOP(class T_arg%1 = nil, $1))>],[dnl
-/** Convenience wrapper for the numbered signal#<> template.
+/** Convenience wrapper for the numbered sigc::signal$1 template.
  * See the base class for useful methods.
- * This is the template specialization of the unnumbered signal<>
- * template for $1 arguments.
+ * This is the template specialization of the unnumbered sigc::signal
+ * template for $1 argument(s).
+ifelse($1, $2,[dnl
  *
  * @ingroup signal
+])dnl
  */
 template <LIST(class T_return, LOOP(class T_arg%1, $1))>])
 class signal ifelse($1, $2,,[<LIST(T_return, LOOP(T_arg%1,$1))>])
   : public signal$1<LIST(T_return, LOOP(T_arg%1, $1),nil)>
 {
 public:
-  /** Convenience wrapper for the numbered signal#<> templates.
-   * Like signal<> but the additional template parameter @e T_accumulator
+ifelse($1, $2,[dnl
+  /** Convenience wrapper for the numbered sigc::signal# templates.
+   * Like sigc::signal but the additional template parameter @e T_accumulator
    * defines the accumulator type that should be used.
    *
-   * TODO: accumulated should be in the documented in the parent class rather than in group signal!
+   * TODO: Add an example to show how to define an accumulator. Is this the right place?
+   *
    * @ingroup signal
+],[
+  /** Convenience wrapper for the numbered sigc::signal$1 template.
+   * Like sigc::signal but the additional template parameter @e T_accumulator
+   * defines the accumulator type that should be used.
+])dnl
    */
   template <class T_accumulator>
   class accumulated
@@ -322,6 +349,14 @@ define([SIGNAL_COMPAT_N],[dnl
  * can be passed into connect(). It is converted into a slot
  * implicitely.
  *
+ * If you want to connect one signal to another, use slot()
+ * to retrieve a functor that emits the signal when invoked.
+ *
+ * Be careful if you directly pass one signal into the connect()
+ * method of another: a shallow copy of the signal is made and
+ * the signal's slots are not disconnected until both the signal
+ * and its clone are destroyed which is probably not what you want!
+ *
  * An STL-style list interface for the signal's list of slots
  * can be retrieved with slots(). This interface supports
  * iteration, insertion and removal of slots.
@@ -330,10 +365,10 @@ define([SIGNAL_COMPAT_N],[dnl
  * - @e T_return The desired return type for the emit() function (may be overridden by the accumulator).dnl
 FOR(1,$1,[
  * - @e T_arg%1 Argument type used in the definition of emit().])
- * - @e T_accumulator The accumulator type used for emission. The default nil means that no accumulator should be used. Signal emission returns the return value of the last slot invoked.
+ * - @e T_accumulator The accumulator type used for emission. The default @p nil means that no accumulator should be used. Signal emission returns the return value of the last slot invoked.
  *
  * This class is part of the compatibility module and therefore deprecated.
- * Use the unnumbered template sigc::signal<> instead.
+ * Use the unnumbered template sigc::signal instead.
  *
  * @ingroup compat
  */
@@ -376,8 +411,8 @@ divert(0)
 
 namespace sigc {
 
-/** @defgroup signal signal
- * Use connect() with sigc::mem_fun() and sigc::ptr_fun() to connect a method or function with a signal.
+/** @defgroup signal Signals
+ * Use signal::connect() with sigc::mem_fun() and sigc::ptr_fun() to connect a method or function with a signal.
  *
  * @code
  * signal_clicked.connect( sigc::mem_fun(*this, &MyWindow::on_clicked) );
@@ -385,7 +420,9 @@ namespace sigc {
  *
  * When the signal is emitted your method will be called.
  *
- * connect() returns a connection, which you can later use to disconnect your method.
+ * signal::connect() returns a connection, which you can later use to disconnect your method.
+ * If the type of your object inherits from sigc::trackable the method is disconnected
+ * automatically when your object is destroyed.
  *
  * When signals are copied they share the underlying information,
  * so you can have a protected/private sigc::signal member and a public accessor method.
@@ -433,7 +470,7 @@ struct signal_impl
   inline void unreference()
     { if (!(--ref_count_)) delete this; }
 
-  /* Decrements the reference and execution counter.
+  /** Decrements the reference and execution counter.
    * Invokes sweep() if the execution counter reaches zero and the
    * removal of one or more slots has been deferred.
    */
@@ -459,21 +496,21 @@ struct signal_impl
   size_type size() const
     { return slots_.size(); }
 
-  /** Add a slot at the bottom of the list of slots.
+  /** Adds a slot at the bottom of the list of slots.
    * @param slot_ The slot to add to the list of slots.
    * @return An iterator pointing to the new slot in the list.
    */
   iterator_type connect(const slot_base& slot_)
     { return insert(slots_.end(), slot_); }
 
-  /** Add a slot at the given position into the list of slots.
+  /** Adds a slot at the given position into the list of slots.
    * @param i An iterator indicating the position where @p slot_ should be inserted.
    * @param slot_ The slot to add to the list of slots.
    * @return An iterator pointing to the new slot in the list.
    */
   iterator_type insert(iterator_type i, const slot_base& slot_);
 
-  /** Remove the slot at the given position from the list of slots.
+  /** Removes the slot at the given position from the list of slots.
    * @param i An iterator pointing to the slot to be removed.
    * @return An iterator pointing to the slot in the list after the one removed.
    */
@@ -510,39 +547,32 @@ struct signal_impl
   std::list<slot_base> slots_;
 };
 
-/// Exception safe sweeper for cleaning up invalid slots on list.
+/// Exception safe sweeper for cleaning up invalid slots on the slot list.
 struct signal_exec
 {
-  /** The parent signal_impl object. */
+  /// The parent sigc::signal_impl object.
   signal_impl* sig_;
 
-  /** Increments the reference and execution counter of the parent signal_impl object.
-   * @param sig The parent signal_impl object.
+  /** Increments the reference and execution counter of the parent sigc::signal_impl object.
+   * @param sig The parent sigc::signal_impl object.
    */
   inline signal_exec(const signal_impl* sig) 
     : sig_(const_cast<signal_impl*>(sig) )
     { sig_->reference_exec(); }
 
-  /// Decrements the reference and execution counter of the parent signal_impl object.
+  /// Decrements the reference and execution counter of the parent sigc::signal_impl object.
   inline ~signal_exec() 
     { sig_->unreference_exec(); }
 };
 
 } /* namespace internal */
 
-/** Base class for the signal#<> templates.
- * signal_base integrates most of the interface of the derived signal#<>
- * templates (therefore reducing code size). The implementation, however,
- * resides in signal_impl. A signal_impl object is dynamically allocated
- * from signal_base when first connecting a slot to the signal. This
- * technique drastically reduces the size of empty signals.
- * Although possible, it is not recommended to build a slot directly from
- * a signal because the slot would operate on a copy of the signal that
- * shares the signal's slot list. This means that the signal's slots are
- * not disconnected until both the signal and the slot built from it are
- * destroyed which is probably not what you want!
- * This is not the case when you use sigc::mem_fun() e.g. to build a slot
- * from emit().
+/** Base class for the sigc::signal# templates.
+ * signal_base integrates most of the interface of the derived sigc::signal#
+ * templates. The implementation, however, resides in sigc::internal::signal_impl.
+ * A sigc::internal::signal_impl object is dynamically allocated from signal_base
+ * when first connecting a slot to the signal. This ensures that empty signals
+ * don't waste memory.
  *
  * @ingroup signal
  */
@@ -580,22 +610,22 @@ struct signal_base : public trackable
 protected:
   typedef internal::signal_impl::iterator_type iterator_type;
 
-  /** Add a slot at the bottom of the list of slots.
+  /** Adds a slot at the bottom of the list of slots.
    * @param slot_ The slot to add to the list of slots.
    * @return An iterator pointing to the new slot in the list.
    */
   iterator_type connect(const slot_base& slot_)
     { return impl()->connect(slot_); }
 
-  /** Add a slot at the given position into the list of slots.
-   * @param i An iterator indicating the position where @p slot_ should be inserted.
+  /** Adds a slot at the given position into the list of slots.
+   * @param i An iterator indicating the position where @e slot_ should be inserted.
    * @param slot_ The slot to add to the list of slots.
    * @return An iterator pointing to the new slot in the list.
    */
   iterator_type insert(iterator_type i, const slot_base& slot_)
     { return impl()->insert(i, slot_); }
 
-  /** Remove the slot at the given position from the list of slots.
+  /** Removes the slot at the given position from the list of slots.
    * @param i An iterator pointing to the slot to be removed.
    * @return An iterator pointing to the slot in the list after the one removed.
    */
@@ -607,7 +637,7 @@ protected:
    */
   internal::signal_impl* impl() const;
 
-  /// The signal_impl object encapsulating the list of slots.
+  /// The signal_impl object encapsulating the slot list.
   mutable internal::signal_impl* impl_;
 };
 
@@ -743,7 +773,7 @@ struct slot_const_iterator
   iterator_type i_;
 };
 
-/** STL-style list interface for signal#<>.
+/** STL-style list interface for sigc::signal#.
  * slot_list can be used to iterate over the list of slots that
  * is managed by a signal. Slots can be added or removed from
  * the list while existing iterators stay valid. A slot_list
@@ -838,10 +868,10 @@ protected:
   internal::signal_impl* list_;
 };
 
-/** Special iterator over signal_impl's slot list that holds extra data.
+/** Special iterator over sigc::signal_impl's slot list that holds extra data.
  * This iterators is for use in accumulators. operator*() executes
  * the slot. The return value is buffered, so that in an expression
- * like @code a = *i * *i; @endcode the slot is executed only once.
+ * like @code a = (*i) * (*i); @endcode the slot is executed only once.
  *
  * @ingroup signal
  */

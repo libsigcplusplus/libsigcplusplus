@@ -21,7 +21,7 @@ include(template.macros.m4)
 define([SLOT],[dnl
 ifelse($1, $2,[dnl
 /** Converts an arbitrary functor to a unified type which is opaque.
- * slot itself is a functor or to be more precise a closure. It contains
+ * sigc::slot itself is a functor or to be more precise a closure. It contains
  * a single, arbitrary functor (or closure) that is executed in operator()().
  *
  * The template arguments determine the function signature of operator()():
@@ -116,7 +116,7 @@ FOR(1, $1,[
 
 define([SLOT_CALL],[dnl
 /** Abstracts functor execution.
- * call_it() invokes a functor of type @p T_functor with a list of
+ * call_it() invokes a functor of type @e T_functor with a list of
  * parameters whose types are given by the template arguments.
  * address() forms a function pointer from call_it().
  *
@@ -260,7 +260,7 @@ struct slot_rep : public trackable
    * inherited type that is referred by this slot_rep object.
    * It is executed when the slot becomes invalid because of some 
    * referred object dying.
-   * @param d The slot_rep object that is becoming invalid (@p this).
+   * @param data The slot_rep object that is becoming invalid (@p this).
    */
   static void* notify(void* data);
 };
@@ -286,9 +286,7 @@ struct slot_do_bind
     { t->add_destroy_notify_callback(rep_, &slot_rep::notify); }
 };
 
-/** Functor used to remove a dependency from a trackable.
- * This is used when the slot dies before the trackable does.
- */
+/// Functor used to remove a dependency from a trackable.
 struct slot_do_unbind
 {
   /** The slot_rep object trackables don't need to notify on destruction any more. */
@@ -311,7 +309,7 @@ struct slot_do_unbind
  * slot::operator()(). visit_each() is used to visit the functor's
  * targets that inherit trackable recursively and register the
  * notification callback. Consequently the slot_rep object will be
- * notified when some referred object is destroyed or overridden.
+ * notified when some referred object is destroyed or overwritten.
  */
 template <class T_functor>
 struct typed_slot_rep : public slot_rep
@@ -357,7 +355,7 @@ struct typed_slot_rep : public slot_rep
 
 } /* namespace internal */
 
-/** @defgroup functors functors
+/** @defgroup functors Functors
  * Functors are copyable types that define operator()().
  *
  * Types that define operator()() overloads with different return types
@@ -374,43 +372,80 @@ struct typed_slot_rep : public slot_rep
  * Since libsigc++ is a callback libaray, most functors are also
  * closures. Therefore the documentation doesn't distinguish between
  * functors and closures. The basic functor types libsigc++ defines
- * are listed below. Adaptors are documented here ... TODO ...
+ * are listed on this page. They are created with ptr_fun() and mem_fun()
+ * and can be converted into slots implicitly as described below.
+ * Adaptors are documented in the equally named group.
+ *
+ * ptr_fun() is used to convert a pointer to a function to a functor.
+ * If the function pointer is to an overloaded type, you must specify
+ * the types using template arguments starting with the first argument.
+ * It is not necessary to supply the return type.
+ *
+ * @par Example:
+ *   @code
+ *   void foo(int) {}
+ *   sigc::slot<void, int> sl = sigc::ptr_fun(&foo);
+ *   @endcode
+ *
+ * Use ptr_fun#() if there is an abiguity as to the number of arguments.
+ *
+ * @par Example:
+ *   @code
+ *   void foo(int) {}  // choose this one
+ *   void foo(float) {}
+ *   void foo(int, int) {}
+ *   slot<void, long> sl = ptr_fun1<int>(&foo);
+ *   @endcode
+ *
+ * ptr_fun() can also be used to convert a pointer to a static member
+ * function to a functor, like so:
+ *
+ * @par Example:
+ *   @code
+ *   struct foo
+ *   {
+ *     static void bar(int);
+ *   };
+ *   sigc::slot<void, int> sl = sigc::ptr_fun(&foo::bar);
+ *   @endcode
+ *
+ * TODO: Add a similar description for mem_fun().
  */
 
-/** @defgroup slot slot
+/** @defgroup slot Slots
  * Slots are type-safe representations of callback methods and functions.
  * A Slot can be constructed from any function, regardless of whether it is
  * a global function, a member method, static, or virtual.
  *
  * Use the sigc::mem_fun() and sigc::ptr_fun() template functions to get a sigc::slot, like so:
  * @code
- * sigc::slot<void, int> slot = sigc::mem_fun(someobj, &SomeClass::somemethod);
+ * sigc::slot<void, int> sl = sigc::mem_fun(someobj, &SomeClass::somemethod);
  * @endcode
  * or
  * @code
- * sigc::slot<void, int> slot = sigc::ptr_fun(&somefunction);
+ * sigc::slot<void, int> sl = sigc::ptr_fun(&somefunction);
  * @endcode
  * or
  * @code
  * m_Button.signal_clicked().connect( sigc::mem_fun(*this, &MyWindow::on_button_clicked) );
  * @endcode
- * The compiler will complain if SomeClass::somemethod has the wrong signature.
+ * The compiler will complain if SomeClass::somemethod, etc. have the wrong signature.
  *
  * You can also pass slots as method parameters where you might normally pass a function pointer.
  */
 
 /** Base type for slots.
  * slot_base integrates most of the interface of the derived
- * slot templates (therefore reducing code size). slots
+ * sigc::slot templates. slots
  * can be connected to signals, be disconnected at some later point
  * (disconnect()) and temporarily be blocked (block(), unblock()).
  * The validity of a slot can be tested with empty().
  *
- * The internal representation is a slot_rep derived type and built
- * from slot_base's derivations. set_parent() is used to register
- * a notification callback that is executed when the slot gets invalid. 
- * add_destroy_notify_callback() is used by connection objects to add
- * a notification callback that is executed on destruction.
+ * The internal representation of a sigc::internal::slot_rep derived
+ * type is built from slot_base's derivations. set_parent() is used to
+ * register a notification callback that is executed when the slot gets
+ * invalid. add_destroy_notify_callback() is used by connection objects
+ * to add a notification callback that is executed on destruction.
  *
  * @ingroup slot
  */
@@ -477,12 +512,10 @@ public:
     { return blocked_; }
 
   /** Sets the blocking state.
-   * If @p should_block is @p true then the blocking state is set.
+   * If @e should_block is @p true then the blocking state is set.
    * Subsequent calls to slot::operator()() don't invoke the functor
-   * (TODO: launch is not a good word to use here or in the rest of the docs)
-   * (TODO: Be more constructive: is invoke okay as alternative?)
    * contained by this slot until unblock() or block() with
-   * @p should_block == @p false is called.
+   * @e should_block = @p false is called.
    * @param should_block Indicates whether the blocking state should be set or unset.
    * @return @p true if the slot was in blocking state before.
    */

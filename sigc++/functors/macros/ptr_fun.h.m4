@@ -19,7 +19,7 @@ divert(-1)
 include(template.macros.m4)
 
 define([POINTER_FUNCTOR],[dnl
-/** pointer_functor$1 wraps existing non-member functions with $1 arguments.
+/** pointer_functor$1 wraps existing non-member functions with $1 argument(s).
  * Use the convenience function ptr_fun() to create an instance of pointer_functor$1.
  *
  * The following template arguments are used:dnl
@@ -58,9 +58,9 @@ FOR(1, $1,[
 ])
 
 define([PTR_FUN],[dnl
-/** Creates a functor of type pointer_functor$1 which wraps an existing non-member function.
+/** Creates a functor of type sigc::pointer_functor$1 which wraps an existing non-member function.
  * @param _A_func Pointer to function that should be wrapped.
- * @return Functor that executes _A_func on invokation.
+ * @return Functor that executes @e _A_func on invokation.
  *
  * @ingroup functors
  */

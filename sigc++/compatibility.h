@@ -27,6 +27,14 @@
 
 namespace SigC {
 
+/** @defgroup compat Compatibility module
+ * This set of types and functions provides an API that is compatible to
+ * libsigc++-1.2. Some internal structures of libsigc++-1.2 are not available.
+ *
+ * All types and functions that are defined in namespace SigC are deprecated!
+ * Use the new libsigc++2 API that is defined in namespace sigc.
+ */
+
 }
 
 #endif /* LIBSIGC_DISABLE_DEPRECATED */

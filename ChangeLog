@@ -1,5 +1,11 @@
 2003-11-02  Martin Schulze  <teebaum@cvs.gnome.org>
 
+	* Improve documentation of the core parts of the library.
+	* tests/test_ptr_fun.cc: Test ptr_fun() with static
+	member functions.
+
+2003-11-02  Martin Schulze  <teebaum@cvs.gnome.org>
+
 	* Move all .m4 files into new subdirectories
 	sigc++/[...]/macros. Install the .m4 files on
 	"make install" (Reported by Ron Steinke).
