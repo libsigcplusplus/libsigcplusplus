@@ -17,7 +17,7 @@ dnl
 divert(-1)
 
 include(template.macros.m4)
- 
+
 define([SLOT],[dnl
 ifelse($1, $2,[dnl
 /** Converts an arbitrary functor to a unified type which is opaque.
@@ -53,7 +53,7 @@ FOR(1,$1,[
  */
 template <LIST(class T_return, LOOP(class T_arg%1 = nil, $1))>],[dnl
 /** Converts an arbitrary functor to a unified type which is opaque.
- * This is the template specialization of the slot<> template
+ * This is the template specialization of the sigc::slot template
  * for $1 arguments.
 dnl *
 dnl * @ingroup slot
@@ -136,11 +136,16 @@ FOR(1, $1,[
    * @param _A_a%1 Argument to be passed on to the functor.])
    * @return The return values of the functor invocation.
    */
-  static T_return call_it(LIST(slot_rep* rep, LOOP(typename type_trait<T_arg%1>::take a_%1, $1)))
+  static T_return call_it(LIST(slot_rep* rep, LOOP(_R_(T_arg%1) a_%1, $1)))
     {
       typedef typed_slot_rep<T_functor> typed_slot;
-      typed_slot *typed_rep = static_cast<typed_slot*>(rep);
-      return (typed_rep->functor_)(LOOP(a_%1, $1));
+      typed_slot *typed_rep = static_cast<typed_slot*>(rep);dnl
+ifelse($1,0,[
+      return (typed_rep->functor_)();
+],[
+      return (typed_rep->functor_).LIBSIGC_TEMPLATE_PREFIX operator()<LOOP([_R_(T_arg%1)],$1)>
+               (LOOP(a_%1, $1));
+])dnl
     }
 
   /** Forms a function pointer from call_it().
@@ -153,24 +158,10 @@ FOR(1, $1,[
 ])
 
 divert(0)dnl
-/*
-  Type slot<R, A1, A2...>
-
-  Usage:
-    Converts an arbitrary functor to a unified type which is opaque.
-    To use simply assign the slot to the desirer functor. When called
-    it will invoke the functor with minimal copies. Because it is opaque
-    visit_each() will not visit any members contained within.
-
-  Example:
-    void foo(int) {}
-    slot<void, long> cl = ptr_fun(&foo);
-
- */
 __FIREWALL__
 #include <sigc++/trackable.h>
 #include <sigc++/visit_each.h>
-#include <sigc++/functors/functor_trait.h>
+#include <sigc++/adaptors/adaptor_trait.h>
 
 namespace sigc {
 
@@ -316,8 +307,12 @@ struct typed_slot_rep : public slot_rep
 {
   typedef typed_slot_rep<T_functor> self;
 
+  /* Use an adaptor type so that arguments can be passed as const references
+   * through explicit template instantiation from slot_call#::call_it() */
+  typedef typename adaptor_trait<T_functor>::adaptor_type adaptor_type;
+
   /** The functor contained by this slot_rep object. */
-  T_functor functor_;
+  adaptor_type functor_;
 
   /** Constructs an invalid typed slot_rep object.
    * The notification callback is registered using visit_each().

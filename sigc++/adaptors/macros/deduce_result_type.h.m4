@@ -18,6 +18,10 @@ divert(-1)
 include(template.macros.m4)
 
 define([DEDUCE_RESULT_TYPE_ADAPTOR],[dnl
+/** Deduce the return type of a functor.
+ * This is the template specialization of the sigc::deduce_result_type template
+ * for $1 arguments.
+ */
 template <LIST(class T_functor, LOOP(class T_arg%1, $1))>
 struct deduce_result_type<LIST(T_functor, LOOP(T_arg%1,$1), LOOP(void,eval($2-$1)), true)>
   { typedef typename T_functor::deduce_result_type<LOOP(T_arg%1,$1)>::type type; };
@@ -45,30 +49,41 @@ __FIREWALL__
 namespace sigc {
 
 /** A hint to the compiler.
- * All multi-type functors which define deduce_result_type<> should publically inherit from this hint.
+ * Functors which have all methods based on templates
+ * should publicly inherit from this hint and define 
+ * a nested template class @p deduce_result_type that
+ * can be used to deduce the methods' return types.
+ *
+ * adaptor_base inherits from the functor_base hint so
+ * derived types should also have a result_type defined.
+ *
+ * Adaptors don't inherit from this type directly. They use
+ * use sigc::adapts as a base type instead. sigc::adaptors
+ * wraps arbitrary functor types as well as function pointers
+ * and class methods.
+ *
+ * @ingroup adaptors
  */
 struct adaptor_base : public functor_base {};
 
 
 /** Deduce the return type of a functor.
- * typename deduce_result_type<functor_type, [list of arg_types]>::type
- * can be used to infer a functor's return type at compile time if the
- * argument types are known.
- * It defaults to typename functor_trait<functor_type>::result_type.
- * This gives the correct return type if functor_type inherits from
- * sigc::functor::functor_base and defines result_type or if functor_type
- * is actually a (member) function type. Mulit-type functors are not
+ * <tt>typename deduce_result_type<functor_type, [list of arg_types]>::type</tt>
+ * deduces a functor's result type if @p functor_type inherits from
+ * sigc::functor_base and defines @p result_type or if @p functor_type
+ * is actually a (member) function type. Multi-type functors are not
  * supported.
- * sigc++ adaptors define a class member deduce_result_type<> that is
- * used by the global deduce_result_type<> template to correctly deduce
- * the return types of the different template operator() overloads.
- *
- * Specifying wrong argument types or a wrong number of arguments leads
- * to compiler errors!
  *
  * sigc++ adaptors use
- * typename deduce_result_type<functor_type, [list of arg_types]>type
- * to determine the return time of their templated operator() overloads.
+ * <tt>typename deduce_result_type<functor_type, [list of arg_types]>::type</tt>
+ * to determine the return type of their <tt>templated operator()</tt> overloads.
+ *
+ * Adaptors in turn define a nested template class @p deduce_result_type
+ * that is used by template specializations of the global deduce_result_type
+ * template to correctly deduce the return types of the adaptor's suitable
+ * <tt>template operator()</tt> overload.
+ *
+ * @ingroup adaptors
  */
 template <class T_functor,
           LOOP(class T_arg%1=void, CALL_SIZE),

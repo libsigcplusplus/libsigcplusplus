@@ -92,14 +92,14 @@ public:
    * @param _A_obj Pointer to instance the method will operate on.
    * @param _A_func Pointer to method will be invoked from operator()().
    */
-  explicit bound_[$2]mem_functor$1($3 T_obj* _A_obj, function_type _A_func)
+  bound_[$2]mem_functor$1($3 T_obj* _A_obj, function_type _A_func)
     : base_type_(_A_func), obj_ptr_(_A_obj) {}
 
   /** Constructs a bound_[$2]mem_functor$1 object that wraps the passed method.
    * @param _A_obj Reference to instance the method will operate on.
    * @param _A_func Pointer to method will be invoked from operator()().
    */
-  explicit bound_[$2]mem_functor$1($3 T_obj& _A_obj, function_type _A_func)
+  bound_[$2]mem_functor$1($3 T_obj& _A_obj, function_type _A_func)
     : base_type_(_A_func), obj_ptr_(&_A_obj) {}
 
   /** Execute the wrapped method operating on the stored instance.dnl
@@ -117,7 +117,7 @@ FOR(1, $1,[
 
 /** Performs a functor on each of the targets of a functor.
  * The function overload for sigc::bound_[$2]mem_functor performs a functor
- * on the object instance stored in the bound_mem_functor object.
+ * on the object instance stored in the sigc::bound_[$2]mem_functor object.
  *
  * @ingroup mem_fun
  */

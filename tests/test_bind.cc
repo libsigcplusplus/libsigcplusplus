@@ -41,8 +41,15 @@ void egon(std::string& str)
 struct book : public sigc::trackable
 {
   book(const std::string& name) : name_(name) {}
-  operator std::string& () {return name_;}
+  std::string& get_name()  {return name_;}
+  operator std::string& () {return get_name();}
+
+private:
   std::string name_;
+
+  //non-copyable:
+  book(const book&);
+  book& operator=(const book&);
 };
 
 
@@ -70,6 +77,10 @@ int main()
 
   // function pointer instead of functor
   sigc::bind<1>(&bar,13,14)();
+
+  // method pointer instead of functor
+  book test_book("otto");
+  sigc::bind<1>(&book::get_name, sigc::ref(test_book))();
 
   // test return type of bind_functor::operator() overload with no arguments
   std::cout << sigc::bind<0>(foo(),15)() << std::endl;

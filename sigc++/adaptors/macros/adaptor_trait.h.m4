@@ -48,6 +48,11 @@ dnl  typename functor_trait<T_functor>::result_type
 dnl  operator()() const
 dnl    { return functor_(); }
 ],[dnl
+  /** Invokes the wrapped functor passing on the arguments.dnl
+FOR(1, $1,[
+   * @param _A_arg%1 Argument to be passed on to the functor.])
+   * @return The return value of the functor invocation.
+   */
   template <LOOP([class T_arg%1], $1)>
   typename deduce_result_type<LOOP(T_arg%1, $1)>::type
   operator()(LOOP(T_arg%1 _A_arg%1, $1)) const
@@ -57,44 +62,6 @@ dnl    { return functor_(); }
 ])
 
 divert(0)dnl
-/*
-  Hint adaptor_base:
-    Functors which have all methods based on templates 
-  should derive from this type so that the type arguments are
-  passed to the operator() thus saving copy costs.  This
-  is also derived from the functor_base hint so it should
-  have a result_type defined.
-    Ie.  
-      struct my_functor : public adaptor_base
-        {
-          typedef void result_type;
-          template <class Arg1>
-          void operator(Arg1 a1);
-          template <class Arg1, class Arg2>
-          void operator(Arg1 a1, Arg2 a2);
-        };
-
-  Hint adapts<functor>:
-    A simple way to wrap a functor when proxying its
-  call.  It has the added benefit of automatically wrapping
-  non-functors such as function pointers and methods as 
-  functors automatically.  It derives from the adaptor_base
-  hint and contains a single member functor which is always
-  an adaptor_base.  It has a typedef adaptor_type for which
-  you should refer to as the contained functor type as
-  the functor type may be changed.
-
-  Adaptor adaptor_functor<functor>:
-    This is the do nothing functor.  It just changes
-  the operators to take template parameters so we
-  can pass type hints.  It derives from adaptor_base
-
-  Trait adaptor_trait<functor, bool>:
-    This trait allows the user to specific what is the
-  adaptor version of any type.  It automatically wraps
-  function pointers and class methods as well.  
-
-*/
 __FIREWALL__
 #include <sigc++/visit_each.h>
 #include <sigc++/functors/functor_trait.h>
@@ -112,6 +79,33 @@ namespace sigc {
 
 template <class T_functor> struct adapts;
 
+/** @defgroup adaptors Adaptors
+ * Adaptors are functors that alter the signature of a functor's
+ * operator()().
+ *
+ * The adaptor types libsigc++ provides
+ * are created with bind(), bind_return(), hide(), hide_return(),
+ * retype_return(), retype(), compose(), exception_catch() and group().
+ *
+ * You can easily derive your own adaptor type from sigc::adapts.
+ */
+
+/** Converts an arbitrary functor into an adaptor type.
+ * All adaptor tyes in libsigc++ are unnumbered and have
+ * a <tt>template operator()</tt> member of every argument count
+ * they support. These functions in turn invoke a stored adaptor's
+ * <tt>template operator()</tt> processing the arguments and return
+ * value in a characteristic manner. Explicit function template
+ * instantiation is used to pass type hints thus saving copy costs.
+ *
+ * adaptor_functor is a glue between adaptors and arbitrary functors
+ * that just passes on the arguments. You won't use this type directly.
+ *
+ * The template argument @e T_functor determines the type of stored
+ * functor.
+ *
+ * @ingroup adaptors
+ */
 template <class T_functor>
 struct adaptor_functor : public adaptor_base
 {
@@ -120,26 +114,34 @@ struct adaptor_functor : public adaptor_base
     { typedef typename sigc::deduce_result_type<LIST(T_functor, LOOP(T_arg%1,CALL_SIZE))>::type type; };
   typedef typename functor_trait<T_functor>::result_type result_type;
 
-  operator T_functor& () const { return functor_; }
-
+  /** Invokes the wrapped functor passing on the arguments.
+   * @return The return value of the functor invocation.
+   */
   result_type
   operator()() const;
 
 FOR(0,CALL_SIZE,[[ADAPTOR_DO(%1)]])dnl
+  /// Constructs an invalid functor.
   adaptor_functor()
     {}
-  adaptor_functor(const T_functor& _A_functor)
+
+  /** Constructs an adaptor_functor object that wraps the passed functor.
+   * @param _A_functor Functor to invoke from operator()().
+   */
+  explicit adaptor_functor(const T_functor& _A_functor)
     : functor_(_A_functor)
     {}
+
+  /** Constructs an adaptor_functor object that wraps the passed (member)
+   * function pointer.
+   * @param _A_type Pointer to function or class method to invoke from operator()().
+   */
   template <class T_type>
-  adaptor_functor(T_type& _A_type)
-    : functor_(_A_type)
-    {}
-  template <class T_type>
-  adaptor_functor(const T_type& _A_type)
+  explicit adaptor_functor(const T_type& _A_type)
     : functor_(_A_type)
     {}
 
+  /// Functor that is invoked from operator()().
   mutable T_functor functor_;
 };
 
@@ -149,6 +151,12 @@ adaptor_functor<T_functor>::operator()() const
   { return functor_(); }
 
 
+/** Performs a functor on each of the targets of a functor.
+ * The function overload for sigc::adaptor_functor performs a functor
+ * on the functor stored in the sigc::adaptor_functor object.
+ *
+ * @ingroup adaptors
+ */
 template <class T_action, class T_functor>
 void visit_each(const T_action& _A_action,
                 const adaptor_functor<T_functor>& _A_target)
@@ -157,13 +165,21 @@ void visit_each(const T_action& _A_action,
 }
 
 
-/******************************************************/
-
-// adaptor to permit classes to use the adaptor to build the type
-// quickly.
+/** Trait that specifies what is the adaptor version of a functor type.
+ * Template specializations for sigc::adaptor_base derived functors,
+ * for function pointers and for class methods are provided.
+ *
+ * The template argument @e T_functor is the functor type to convert.
+ * @e I_isadaptor indicates whether @e T_functor inherits from sigc::adaptor_base.
+ *
+ * @ingroup adaptors
+ */
 template <class T_functor, bool I_isadaptor = is_base_and_derived<adaptor_base, T_functor>::value> struct adaptor_trait;
 
-// if it already is an adaptor functor, great just use it.
+/** Trait that specifies what is the adaptor version of a functor type.
+ * This template specialization is used for types that inherit from adaptor_base.
+ * adaptor_type is equal to @p T_functor in this case.
+ */
 template <class T_functor> 
 struct adaptor_trait<T_functor, true>
 {
@@ -172,7 +188,12 @@ struct adaptor_trait<T_functor, true>
   typedef T_functor adaptor_type;
 };
 
-// if not, well make it one.
+/** Trait that specifies what is the adaptor version of a functor type.
+ * This template specialization is used for arbitrary functors,
+ * for function pointers and for class methods are provided.
+ * The latter are converted into @p pointer_functor or @p mem_functor types.
+ * adaptor_type is equal to @p adaptor_functor<functor_type>.
+ */
 template <class T_functor>
 struct adaptor_trait<T_functor, false>
 {
@@ -181,19 +202,59 @@ struct adaptor_trait<T_functor, false>
   typedef adaptor_functor<functor_type> adaptor_type;
 };
 
-/******************************************************/
 
-
+/** Base type for adaptors.
+ * adapts wraps adaptors, functors, function pointers and class methods.
+ * It contains a single member functor which is always a sigc::adaptor_base.
+ * The typedef adaptor_type defines the exact type that is used
+ * to store the adaptor, functor, function pointer or class method passed
+ * into the constructor. It differs from @e T_functor unless @e T_functor
+ * inherits from sigc::adaptor_base.
+ *
+ * @par Example of a simple adaptor:
+ *   @code
+ *   template <T_functor>
+ *   struct my_adpator : public sigc::adapts<T_functor>
+ *   {
+ *     template <class T_arg1=void, class T_arg2=void>
+ *     struct deduce_result_type
+ *     { typedef typename sigc::deduce_result_type<T_functor, T_arg1, T_arg2>::type type; };
+ *     typedef typename sigc::functor_trait<T_functor>::result_type result_type;
+ *
+ *     result_type
+ *     operator()() const;
+ *
+ *     template <class T_arg1>
+ *     typename deduce_result_type<T_arg1>::type
+ *     operator()(T_arg1 _A_arg1) const;
+ *
+ *     template <class T_arg1, class T_arg2>
+ *     typename deduce_result_type<T_arg1, T_arg2>::type
+ *     operator()(T_arg1 _A_arg1, class T_arg2) const;
+ *
+ *     explicit adaptor_functor(const T_functor& _A_functor) // Constructs a my_functor object that wraps the passed functor.
+ *       : sigc::adapts<T_functor>(_A_functor) {}
+ *
+ *     mutable T_functor functor_; // Functor that is invoked from operator()().
+ *   };
+ *   @endcode
+ *
+ * @ingroup adaptors
+ */
 template <class T_functor>
 struct adapts : public adaptor_base
 {
   typedef typename adaptor_trait<T_functor>::result_type  result_type;
   typedef typename adaptor_trait<T_functor>::adaptor_type adaptor_type;
 
-  adapts(const T_functor& _A_functor)
+  /** Constructs an adaptor that wraps the passed functor.
+   * @param _A_functor Functor to invoke from operator()().
+   */
+  explicit adapts(const T_functor& _A_functor)
     : functor_(_A_functor)
     {}
 
+  /// Adaptor that is invoked from operator()().
   mutable adaptor_type functor_;
 };
 

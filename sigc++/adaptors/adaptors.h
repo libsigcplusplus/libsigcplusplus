@@ -22,8 +22,10 @@
 
 #include <sigc++/adaptors/bind.h>
 #include <sigc++/adaptors/bind_return.h>
-#include <sigc++/adaptors/compose.h>
 #include <sigc++/adaptors/hide.h>
+#include <sigc++/adaptors/retype_return.h>
+#include <sigc++/adaptors/retype.h>
+#include <sigc++/adaptors/compose.h>
 #include <sigc++/adaptors/exception_catch.h>
 #include <sigc++/adaptors/lambda/lambda.h>
 

@@ -1,6 +1,29 @@
+2003-11-09  Martin Schulze  <teebaum@cvs.gnome.org>
+
+	* sigc++/functors/macros/slot.h.m4: Change functor type in
+	typed_slot_rep to adaptor_trait::adaptor_type<T_functor>
+	and use explicit function template instantiation in
+	internal::slot_call::call_it(). Avoids copying of arguments
+	in call_it() and enables binding of object instances
+	to class methods through bind() (Reported by Jeff Franks).
+	* tests/test_bind.cc: Test binding object instances to
+	class methods through bind().
+	* sigc++/adaptors/adaptors.h: Include retype[_result].h.
+	* sigc++/adaptors/macros/adaptor_trait.h.m4:
+	- Add documentation.
+	- Mark some c-tors as explicit.
+	- Remove ununsed operator T_functor&() from adaptor_functor.
+	* sigc++/adaptors/macros/deduce_result_type.h.m4:
+	Rewrite parts of the documentation.
+	* sigc++/adaptors/macros/bind.h.m4: Add documentation.
+	* sigc++/functors/macros/mem_fun.h.m4: Remove unnecessary
+	explicit markers. Minor fixes to documentation.
+	* sigc++/functors/macros/functor_trait.h.m4:
+	Minor fixes to documentation.
+
 1.9.12:
 
-2003-10-26  Martin Schulze  <teebaum@cvs.gnome.org>
+2003-11-04  Martin Schulze  <teebaum@cvs.gnome.org>
 
 	* configure.ac: Bump version number to 1.9.12.
 	* NEWS: Add ChangeLog summary for version 1.9.12.
