@@ -60,7 +60,7 @@ public:
   Slot$1() {}
 
   /** Constructs a slot from an arbitrary functor.
-   * @param _A_func The desirer functor the new slot should be assigned to.
+   * @param _A_func The desired functor the new slot should be assigned to.
    */
   template <class T_functor>
   Slot$1(const T_functor& _A_func)

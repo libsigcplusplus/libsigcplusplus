@@ -48,8 +48,7 @@ FOR(1,$1,[
 /* TODO: Where put the following bit of information? I can't make any
  *       sense of the "because", by the way!
  *
- * Because slot is opaque visit_each() will not visit any members
- * contained within.
+ * Because slot is opaque, visit_each() will not visit its internal members.
  */
 template <LIST(class T_return, LOOP(class T_arg%1 = nil, $1))>],[dnl
 /** Converts an arbitrary functor to a unified type which is opaque.
@@ -437,6 +436,16 @@ public:
 
   ~slot_base()
     { if (rep_) delete rep_; }
+
+  /** Tests whether a slot is null, because the default constructor was used.
+   * Test a slot for null like so:
+   * <code>
+   * if(slot)
+   *  do_something()
+   * <endcode>
+   */
+  operator bool() const
+    { return rep_ != 0; }
 
   /** Sets the parent of this slot.
    * This function is used by signals to register a notification callback.

@@ -1,3 +1,9 @@
+2004-02-09  Murray Cumming  <murrayc@usa.net>
+
+	* sigc++/macros/slot.h.m4: slot_base: Added operator bool(), needed to
+	check for a slot that is created with the default constructor. This was
+	present in libsigc++ 1.2 also.
+
 2004-02-06  Murray Cumming  <murrayc@usa.net>
 
 	* Makefile.am: Build the docs directory, by adding it to SUBDIRS.

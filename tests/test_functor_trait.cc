@@ -38,13 +38,13 @@ struct print
     { std::cout << "int "<< i << std::endl; }
   template <class T>
   void operator()(const T& t) const
-    { with_trackable<sigc::is_base_and_derived<trackable,T>::value,T>::perform(t); }
+    { with_trackable<sigc::is_base_and_derived<trackable,T>::value, T>::perform(t); }
   template <class T>
   void operator()(const T* t) const
-    { with_trackable<sigc::is_base_and_derived<trackable,T>::value,T>::perform(t); }
+    { with_trackable<sigc::is_base_and_derived<trackable,T>::value, T>::perform(t); }
   template <class T>
   void operator()(T* t) const
-    { with_trackable<sigc::is_base_and_derived<trackable,T>::value,T>::perform(t); }
+    { with_trackable<sigc::is_base_and_derived<trackable,T>::value, T>::perform(t); }
 };
 
 void foo(int i,int j,int k)
@@ -58,9 +58,9 @@ int main()
   int i=1,j=2,k=3;
   A a;
   std::cout << "hit all targets" << std::endl;
-  sigc::visit_each(print(),sigc::compose(sigc::bind(sigc::ptr_fun3(&foo),&a,j),sigc::ptr_fun1(&bar)));
+  sigc::visit_each(print(), sigc::compose(sigc::bind(sigc::ptr_fun3(&foo), &a, j), sigc::ptr_fun1(&bar)));
   std::cout << "hit all ints" << std::endl;
-  sigc::visit_each_type<int>(print(),sigc::compose(sigc::bind(sigc::ptr_fun3(&foo),&a,j),sigc::ptr_fun1(&bar)));
+  sigc::visit_each_type<int>(print(),sigc::compose(sigc::bind(sigc::ptr_fun3(&foo), &a, j),sigc::ptr_fun1(&bar)));
   std::cout << "hit all trackable" << std::endl;
-  sigc::visit_each_type<trackable*>(print(),sigc::compose(sigc::bind(sigc::ptr_fun3(&foo),&a,j),sigc::ptr_fun1(&bar)));
+  sigc::visit_each_type<trackable*>(print(), sigc::compose(sigc::bind(sigc::ptr_fun3(&foo), &a, j),sigc::ptr_fun1(&bar)));
 }
