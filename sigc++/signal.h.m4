@@ -285,15 +285,16 @@ template <LIST(class T_return, LOOP(class T_arg%1, $1))>])
 class signal ifelse($1, $2,,[<LIST(T_return, LOOP(T_arg%1,$1))>])
   : public signal$1<LIST(T_return, LOOP(T_arg%1, $1),nil)>
 {
-  /** Convenience wrapper for the numbered signal#<> templates.
-   * Like signal<> but the additional template parameter @p T_accumulator
-   * defines the accumulator type that should be used.
-   *
-   */
-  template <class T_accumulator>
-  class accumulated
-    : public signal$1<LIST(T_return, LOOP(T_arg%1, $1), T_accumulator)>
-    {};
+  public:
+    /** Convenience wrapper for the numbered signal#<> templates.
+     * Like signal<> but the additional template parameter @p T_accumulator
+     * defines the accumulator type that should be used.
+     *
+     */
+    template <class T_accumulator>
+    class accumulated
+      : public signal$1<LIST(T_return, LOOP(T_arg%1, $1), T_accumulator)>
+      {};
 };
 
 ])
