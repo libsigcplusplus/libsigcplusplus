@@ -21,7 +21,13 @@ struct A : public sigc::trackable
 
 int main()
 {
+  // signal
   sigc::signal<int,int> sig;
+
+  // emit empty signal
+  sig(0);
+
+  // connect some slots before emitting & test auto-disconnection
   {
     A a;
     sig.connect(sigc::ptr_fun1(&foo));

@@ -32,7 +32,7 @@ define([SLOT_MEM_FUN],[dnl
 template <LIST(class T_return, LOOP(class T_arg%1, $1), class T_obj1, class T_obj2)>
 inline Slot$1<LIST(T_return, LOOP(T_arg%1, $1))>
 slot($3 T_obj1& _A_obj, T_return (T_obj2::*_A_func)(LOOP(T_arg%1,$1)) $4)
-{ dynamic_cast<$3 Object&>(_A_obj);
+{ (void)dynamic_cast<$3 Object&>(_A_obj); // trigger compiler error if T_obj1 does not derive from SigC::Object
   return ::sigc::bound_mem_functor$1<LIST(T_return, T_obj2, LOOP(T_arg%1, $1))>(_A_obj, _A_func); }
 
 ])

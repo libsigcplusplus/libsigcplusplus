@@ -1,3 +1,12 @@
+2004-05-30  Martin Schulze  <mschulze@cvs.gnome.org>
+
+	* configure.ac: Bump version number to 2.0.3.
+	* NEWS: Add ChangeLog summary for version 2.0.3.
+	* sigc++/macros/signal.h.m4: Fix segfault on emission of unconnected signal.
+	* tests/test_signal.cc, tests/test_accumulated.cc: Emit unconnected signal.
+	* sigc++/macros/object_slot.h.m4: Suppress compiler warning at
+	dynamic_cast<>-test (tested by Christof Petig/Timothy M. Shead).
+
 2004-05-22  Martin Schulze  <mschulze@cvs.gnome.org>
 
 	* configure.ac: Bump version number to 2.0.2.

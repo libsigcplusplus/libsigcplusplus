@@ -17,6 +17,13 @@ This version of libsigc++ needs GNU g++ 3.2 or higher to compile.
 
 *** ChangeLog summary:
 
+2.0.3:
+
+* Fix segfault on emission of unconnected signal.
+* Test emission of unconnected signals in the test case.
+* Suppress compiler warning at dynamic_cast<>-test for good.
+  (Help from Christof Petig and Timothy M. Shead.)
+
 2.0.2:
 
 * Suppress compiler warning in compatibility module at

@@ -65,12 +65,16 @@ FOR(1, $1,[
    */
   static result_type emit(LIST(signal_impl* impl, LOOP(typename type_trait<T_arg%1>::take _A_a%1, $1)))
     {
+      T_accumulator accumulator;
+
+      if (!impl)
+        return accumulator(slot_iterator_buf_type(), slot_iterator_buf_type());
+
       signal_exec exec(impl);
 
       self_type self ifelse($1,0,,[(LOOP(_A_a%1, $1))]);
-      T_accumulator accumulator;
-      return accumulator(slot_iterator_buf_type(impl->slots_.begin(), self),
-                         slot_iterator_buf_type(impl->slots_.end(), self));
+      return accumulator(slot_iterator_buf_type(impl->slots_.begin(), &self),
+                         slot_iterator_buf_type(impl->slots_.end(), &self));
     }
 dnl
   FOR(1, $1,[
@@ -102,7 +106,7 @@ FOR(1, $1,[
    */
   static result_type emit(LIST(signal_impl* impl, LOOP(typename type_trait<T_arg%1>::take _A_a%1, $1)))
     {
-      if (impl->slots_.empty()) return T_return();
+      if (!impl || impl->slots_.empty()) return T_return();
       iterator_type it = impl->slots_.begin();
       for (; it != impl->slots_.end(); ++it)
         if (!it->empty() && !it->blocked()) break;
@@ -145,7 +149,7 @@ FOR(1, $1,[
    */
   static result_type emit(LIST(signal_impl* impl, LOOP(typename type_trait<T_arg%1>::take _A_a%1, $1)))
     {
-      if (impl->slots_.empty()) return;
+      if (!impl || impl->slots_.empty()) return;
       signal_exec exec(impl);
 
       for (iterator_type it = impl->slots_.begin(); it != impl->slots_.end(); ++it)
@@ -702,14 +706,17 @@ struct slot_iterator_buf
 
   typedef signal_impl::const_iterator_type iterator_type;
 
-  slot_iterator_buf(const iterator_type& i, const emitter_type& c)
+  slot_iterator_buf()
+    : c_(0), invoked_(false) {}
+
+  slot_iterator_buf(const iterator_type& i, const emitter_type* c)
     : i_(i), c_(c), invoked_(false) {}
 
   result_type operator*() const
     {
       if (!i_->empty() && !i_->blocked() && !invoked_)
         {
-          r_ = c_(static_cast<const slot_type&>(*i_));
+          r_ = (*c_)(static_cast<const slot_type&>(*i_));
           invoked_ = true;
         }
       return r_;
@@ -746,14 +753,17 @@ struct slot_iterator_buf
     }
 
   bool operator == (const slot_iterator_buf& other) const
-    { return i_ == other.i_; }
+    { return (!c_ || (i_ == other.i_)); } /* If '!c_' the iterators are empty.
+                                           * Unfortunately, empty stl iterators are not equal.
+                                           * We are forcing equality so that 'first==last'
+                                           * in the accumulator's emit function yields true. */
 
   bool operator != (const slot_iterator_buf& other) const
-    { return i_ != other.i_; }
+    { return (c_ && (i_ != other.i_)); }
 
 private:
   iterator_type i_;
-  const emitter_type& c_;
+  const emitter_type* c_;
   mutable result_type r_;
   mutable bool invoked_;
 };
@@ -773,14 +783,17 @@ struct slot_iterator_buf<T_emitter, void>
 
   typedef signal_impl::const_iterator_type iterator_type;
 
-  slot_iterator_buf(const iterator_type& i, const emitter_type& c)
+  slot_iterator_buf()
+    : c_(0), invoked_(false) {}
+
+  slot_iterator_buf(const iterator_type& i, const emitter_type* c)
     : i_(i), c_(c), invoked_(false) {}
 
   void operator*() const
     {
       if (!i_->empty() && !i_->blocked() && !invoked_)
         {
-          c_(static_cast<const slot_type&>(*i_));
+          (*c_)(static_cast<const slot_type&>(*i_));
           invoked_ = true;
         }
     }
@@ -823,7 +836,7 @@ struct slot_iterator_buf<T_emitter, void>
 
 private:
   iterator_type i_;
-  const emitter_type& c_;
+  const emitter_type* c_;
   mutable bool invoked_;
 };
 

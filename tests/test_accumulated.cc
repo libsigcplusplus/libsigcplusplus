@@ -19,7 +19,7 @@ struct arithmetic_mean_accumulator
       int n_ = 0;
       for (; first != last; ++first, ++n_)
         value_ += *first;
-      return value_ / n_;
+      return (n_ ? value_ / n_ : -1); // empty slot list <=> n_==0
     }
 };
 
@@ -34,6 +34,8 @@ struct A : public sigc::trackable
 int main()
 {
    sigc::signal<int,int>::accumulated<arithmetic_mean_accumulator> sig;
+
+   std::cout << "Result (empty slot list): " << sig(0) << std::endl;
 
    A a;
    sig.connect(sigc::ptr_fun1(&foo));
