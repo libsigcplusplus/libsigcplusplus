@@ -1,3 +1,8 @@
+2004-04-02  Murray Cumming  <murrayc@murrayc.com>
+
+	* sigc++config.h.m4: Remove every undef apart from the one we need, to
+	avoid clashes, because we #include this in a public header.
+
 2004-03-25  Murray Cumming  <murrayc@murrayc.com>
 
 	* scripts/cxx.m4, configure.in, sigc++config.h.in: Rename the 
