@@ -1,5 +1,9 @@
 2004-09-01  Martin Schulze <mschulze@cvs.gnome.org>
 
+	* docs/index.html: Correct link to lambda module.
+
+2004-09-01  Martin Schulze <mschulze@cvs.gnome.org>
+
 	* README: Update compatibility section.
 
 2.0.5:
