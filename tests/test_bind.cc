@@ -18,8 +18,10 @@ struct foo : public sigc::functor_base
   typedef int result_type;
   int operator()(int i)
     {std::cout << "foo(int "<<i<<")" << std::endl; return (i>0);}
+    
   int operator()(int i, int j)
     {std::cout << "foo(int "<<i<<",int "<<j<<")" << std::endl; return i+j;}
+    
   int operator()(int i, int j, int k)
     {std::cout << "foo(int "<<i<<",int "<<j<<", int "<<k<<")" << std::endl; return 0;}
 };
@@ -33,13 +35,13 @@ struct foo_void : public sigc::functor_base
 
 
 int bar(int i,int j) 
-  {std::cout << "bar(int "<<i<<",int "<<j<<")" << std::endl; return i+j;}
+  {std::cout << "bar(int "<< i << ", int " << j << ")" << std::endl; return i+j;}
 
 bool simple(bool test)
-  {std::cout << "simple(bool "<<test<<")" << std::endl; return test;}
+  {std::cout << "simple(bool " << test <<")" << std::endl; return test;}
 
 void egon(std::string& str)
-  {std::cout << "egon(string '"<<str<<"')" << std::endl; str="egon was here";}
+  {std::cout << "egon(string '" << str <<"')" << std::endl; str="egon was here";}
 
 
 struct book : public sigc::trackable

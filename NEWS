@@ -17,6 +17,25 @@ This version of libsigc++ needs GNU g++ 3.2 or higher to compile.
 
 *** ChangeLog summary:
 
+2.0.7:
+
+* Now builds with the following compilers, in addition to 
+the existing GNU g++, MSVC++ .Net 2003, and Intel compilers:
+- SUN Forte CC 5.5
+- IBM AIX xlC v7
+- Tru64 C++ V6.5-042
+- IRIX MIPSpro 7.4.2m
+  (Older versions of all these compilers might also work.)
+  (Murray Cumming, www.thewrittenword.com)
+* MSVC++ .Net 2003 build improvements.
+  (Cedric Gustin, Timothy M. Shead)
+* Replace C-style casts with reinterpret_cast<> and 
+  static_cast<>. (e97_far at e.kth.se).
+* Documentation: Added manual, based on the manual in 
+  libsigc++ 1.2, but updated for the new API.
+  (Murray Cumming)
+
+
 2.0.6:
 
 * Fixed a memory leak in sigc::slot.
