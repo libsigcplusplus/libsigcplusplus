@@ -409,6 +409,7 @@ FOR(1,$1,[
  * This class is part of the compatibility module and therefore deprecated.
  * Use the unnumbered template sigc::signal instead.
  *
+ * @deprecated Use the unnumbered template sigc::signal instead.
  * @ingroup compat
  */
 template <LIST(class T_return, LOOP(class T_arg%1, $1), class T_accumulator=::sigc::nil)>
@@ -623,7 +624,9 @@ struct signal_base : public trackable
     : impl_(0) {}
 
   signal_base(const signal_base& src)
-    : impl_(src.impl()) { impl_->reference(); }
+    : trackable(),
+      impl_(src.impl())
+    { impl_->reference(); }
 
   ~signal_base()
     { if (impl_) impl_->unreference(); }

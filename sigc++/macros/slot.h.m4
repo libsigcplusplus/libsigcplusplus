@@ -46,6 +46,7 @@ FOR(1,$1,[
  * This class is part of the compatibility module and therefore deprecated.
  * Use the unnumbered template sigc::slot instead.
  *
+ * @deprecated Use the unnumbered template sigc::slot instead.
  * @ingroup compat
  */
 template <LIST(class T_return, LOOP(class T_arg%1, $1))>
@@ -89,6 +90,7 @@ define([SLOT_PTR_FUN],[dnl
  * @param _A_func Pointer to function that should be wrapped.
  * @return Functor that executes _A_func on invokation.
  *
+ * @deprecated Use sigc::ptr_fun() instead.
  * @ingroup compat
  */
 template <LIST(class T_return, LOOP(class T_arg%1, $1))>

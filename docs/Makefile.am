@@ -1,4 +1,4 @@
-## Stolen from:
+## Based on on:
 
 ## Copyright (c) 2001
 ## The gtkmm development team.

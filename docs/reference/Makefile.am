@@ -1,4 +1,3 @@
-
 doxygen_configfile = Doxyfile
 doxygen_configfile_source = $(srcdir)/Doxyfile.in
 beautify_docs = $(srcdir)/beautify_docs.pl
@@ -8,8 +7,8 @@ web_path_reference = $(web_path_docs)reference
 
 EXTRA_DIST = README Doxyfile.in \
              libsigc_header.html_fragment libsigc_footer.html_fragment \
-	     beautify_docs.pl \
-             html
+             beautify_docs.pl \
+             html libsigc_doxygen_tags
 
 html: html/index.html
 html/index.html: $(doxygen_configfile_source) $(beautify_docs)

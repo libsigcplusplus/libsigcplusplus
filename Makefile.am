@@ -4,8 +4,8 @@
 EXTRA_DIST = autogen.sh
 # ACLOCAL_FLAGS = -I scripts
 
-SUBDIRS      = sigc++ tests
-DIST_SUBDIRS = $(SUBDIRS) examples docs MSVC_Net2003
+SUBDIRS      = sigc++ tests docs
+DIST_SUBDIRS = $(SUBDIRS) examples MSVC_Net2003
 
 
 pkgconfigdir = $(libdir)/pkgconfig

@@ -33,7 +33,7 @@ documentation:
 
 basic functionality:
 
-- I don't understand what is meant by "stl pointer like functions" (Martin):
+- I don't understand what is meant by "stl-pointer-like functions" (Martin):
 
   slot should have the full set of stl pointer like functions. (Karl Nelson)
 
@@ -51,7 +51,7 @@ lambda functionality (I don't understand this (Martin)):
 
 Old TODO's that should be almost finished (Martin):
 
-- Fine tooth comb the code looking for missing operator =() function
+- Fine-tooth comb the code looking for missing operator =() function
   and missing copy constructors.
 
 - Improve and expand the test suite.  There are a lot of combinations which

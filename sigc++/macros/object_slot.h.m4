@@ -29,6 +29,7 @@ define([SLOT_MEM_FUN],[dnl
  * @param _A_func Pointer to method that should be wrapped.
  * @return Functor that executes _A_func on invokation.
  *
+ * @deprecated Use sigc::mem_fun() instead.
  * @ingroup compat
  */
 template <LIST(class T_return, LOOP(class T_arg%1, $1), class T_obj1, class T_obj2)>

@@ -1,3 +1,3 @@
-This is the 1.9 branch of the sigc++ library.
+This is the 1.9 branch of the libsigc++ library, which will become libsigc++ 2.0.x.
 
-It needs GNU g++ 3.2 or higher to compile.
+It should build with several different compilers, but for gcc, you need 3.2 or higher.
