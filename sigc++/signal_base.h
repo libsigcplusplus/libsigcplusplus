@@ -161,6 +161,13 @@ struct SIGC_API signal_exec
     { sig_->unreference_exec(); }
 };
 
+/** Temporary slot list used during signal emission.
+ * The signal's slot list is swapped into a temp_slot_list
+ * object during signal emission. While slots connected during
+ * signal emission are stored in the original list the
+ * accumulators work on the temp_slot_list object so that
+ * new slots are not executed until the next emission occurs.
+ */
 struct temp_slot_list
 {
   typedef signal_impl::slot_list slot_list;
@@ -255,13 +262,16 @@ struct SIGC_API signal_base : public trackable
 protected:
   typedef internal::signal_impl::iterator_type iterator_type;
 
-  /** Adds a slot at the bottom of the list of slots.
+  /** Adds a slot at the end of the list of slots.
+   * With connect(), slots can also be added during signal emission.
+   * In this case, they won't be executed until the next emission occurs.
    * @param slot_ The slot to add to the list of slots.
    * @return An iterator pointing to the new slot in the list.
    */
   iterator_type connect(const slot_base& slot_);
 
   /** Adds a slot at the given position into the list of slots.
+   * Note that this function does not work during signal emission!
    * @param i An iterator indicating the position where @e slot_ should be inserted.
    * @param slot_ The slot to add to the list of slots.
    * @return An iterator pointing to the new slot in the list.
@@ -269,6 +279,7 @@ protected:
   iterator_type insert(iterator_type i, const slot_base& slot_);
 
   /** Removes the slot at the given position from the list of slots.
+   * Note that this function does not work during signal emission!
    * @param i An iterator pointing to the slot to be removed.
    * @return An iterator pointing to the slot in the list after the one removed.
    */

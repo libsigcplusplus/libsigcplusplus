@@ -1,5 +1,9 @@
 2005-02-20  Martin Schulze  <mschulze@cvs.gnome.org>
 
+	* sigc++/signal_base.h: Add some documentation.
+
+2005-02-20  Martin Schulze  <mschulze@cvs.gnome.org>
+
 	* sigc++/signal_base.cc: Reset deferred_ flag to false in
 	signal_impl::sweep() (Neal E. Coombes). Partly fixes bug #167714.
 
