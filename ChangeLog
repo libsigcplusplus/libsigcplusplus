@@ -1,3 +1,25 @@
+2004-02-13  Murray Cumming  <murrayc@usa.net>
+
+	* sigc++/functors/slot_base.[h|cc], sigc++/trackable.[h|cc]: Create 
+	and use a typedef for the destroy_notify callback functions, to avoid
+	confusion function pointer declaration syntax in the API.
+
+2004-02-13  Murray Cumming  <murrayc@murrayc.com>
+
+	* Moved implementation to .cc files:
+	* sigc++/functors/: Added slot_base.[h|cc] which contains non-template
+	code that was previsouly in the generated functors/slot.h and 
+	non-generated slot.cc files. All non-inline implementation is now in 
+	the .cc file.
+	* sigc++/functors/macros/slot.m4: Removed the code that has been moved
+	to slot_base.[h|cc].
+	* sigc++/: Added signal_base.[h|cc] which contains non-template code 
+	that was previously in the generated signal.h and non-generated
+	signal.cc file. All non-inline implementation is now in the .cc file.
+	* sigc++/macros/signal.m4: Removed the code that ahs been moved to
+	signal.cc
+	* sigc++/connector.[h|cc]: method implementation moved to the .cc file.
+
 1.9.14:
 
 2004-02-13  Martin Schulze  <teebaum@cvs.gnome.org>

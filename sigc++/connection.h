@@ -39,13 +39,12 @@ namespace sigc {
 struct connection
 {
   /** Constructs an empty connection object. */
-  connection() : slot_(0) {}
+  connection();
 
   /** Constructs a connection object copying an existing one.
    * @param c The connection object to make a copy from.
    */
-  connection(const connection& c) : slot_(c.slot_)
-    { if (slot_) slot_->add_destroy_notify_callback(this, &notify); }
+  connection(const connection& c);
 
   /** Constructs a connection object from a slot list iterator.
    * @param it The slot list iterator to take the slot from.
@@ -58,14 +57,12 @@ struct connection
    * This is only useful if you create your own slot list.
    * @param sl The slot to operate on.
    */
-  explicit connection(slot_base& sl) : slot_(&sl)
-    { slot_->add_destroy_notify_callback(this, &notify); }
+  explicit connection(slot_base& sl);
 
   /** Overrides this connection object copying another one.
    * @param c The connection object to make a copy from.
    */
-  connection& operator=(const connection& c)
-    { set_slot(c.slot_); return *this; }
+  connection& operator=(const connection& c);
 
   /** Overrides this connection object with another slot list iterator.
    * @param it The new slot list iterator to take the slot from.
@@ -74,50 +71,42 @@ struct connection
   connection& operator=(const slot_iterator<T_slot>& it)
     { set_slot(&(*it)); return *this; }
 
-  ~connection()
-    { if (slot_) slot_->remove_destroy_notify_callback(this); }
+  ~connection();
 
   /** Returns whether the connection is still active.
    * @return @p false if the connection is still active.
    */
-  bool empty() const
-    { return (!slot_ || slot_->empty()); }
+  bool empty() const;
 
   /** Returns whether the connection is still active.
    * @return @p true if the connection is still active.
    */
-  bool connected() const
-    { return !empty(); }
+  bool connected() const;
 
   /** Returns whether the connection is blocked.
    * @return @p true if the connection is blocked.
    */
-  inline bool blocked() const
-    { return (slot_ ? slot_->blocked() : 0); }
+  inline bool blocked() const;
 
   /** Sets or unsets the blocking state of this connection.
    * See slot_base::block() for details.
    * @param should_block Indicates whether the blocking state should be set or unset.
    * @return @p true if the connection has been in blocking state before.
    */
-  bool block(bool should_block = true)
-    { if (slot_) return slot_->block(should_block); }
+  bool block(bool should_block = true);
 
   /** Unsets the blocking state of this connection.
    * @return @p true if the connection has been in blocking state before.
    */
-  bool unblock()
-    { if (slot_) return slot_->unblock(); }
+  bool unblock();
 
   /// Disconnects the referred slot.
-  void disconnect()
-    { if (slot_) slot_->disconnect(); } // This notifies slot_'s parent.
+  void disconnect();
 
   /** Returns whether the connection is still active.
    * @return @p true if the connection is still active.
    */
-  operator bool()
-    { return !empty(); }
+  operator bool();
 
   /** Callback that is executed when the referred slot is destroyed.
    * @param d The connection object notified (@p this).

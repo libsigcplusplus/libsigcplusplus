@@ -34,7 +34,9 @@ divert(0)dnl
 
 __FIREWALL__
 
+#include <sigc++/slot.h>
 #include <sigc++/adaptors/hide.h>
+
 
 #ifndef LIBSIGC_DISABLE_DEPRECATED
 

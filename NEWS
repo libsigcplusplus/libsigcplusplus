@@ -17,6 +17,12 @@ This version of libsigc++ needs GNU g++ 3.2 or higher to compile.
 
 *** ChangeLog summary:
 
+Future 1.9.15:
+
+* Non-template code moved from .m4 macro source to .h/.cc files.
+* Implementation moved to .cc files.
+(Murray Cumming)
+
 1.9.14:
 
 * Added sigc::slot_base::operator bool() (Murray Cumming).

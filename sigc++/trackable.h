@@ -24,6 +24,8 @@ namespace sigc {
 
 namespace internal {
 
+typedef void* (*func_destroy_notify) (void* data);
+
 /** Destroy notification callback.
  * A destroy notification callback consists of a data pointer and a
  * function pointer. The function is executed from the owning callback
@@ -33,8 +35,8 @@ namespace internal {
 struct trackable_callback
 {
   void* data_;
-  void* (*func_)(void*);
-  trackable_callback(void* data, void* (*func)(void*))
+  func_destroy_notify func_;
+  trackable_callback(void* data, func_destroy_notify func)
     : data_(data), func_(func) {}
 };
 
@@ -46,7 +48,7 @@ struct trackable_callback
  */
 struct trackable_callback_list
 {
-  void add_callback(void* data, void* (*func)(void*) );
+  void add_callback(void* data, func_destroy_notify func);
   void remove_callback(void* data);
   void clear();
 
@@ -86,37 +88,32 @@ private:
  */
 struct trackable
 {
-  trackable() : callback_list_(0) {}
+  trackable();
 
-  trackable(const trackable& t)
-    : callback_list_(0) {}
+  trackable(const trackable& src);
 
-  trackable& operator=(const trackable& t)
-    {
-      notify_callbacks();
-      return *this;
-    }
+  trackable& operator=(const trackable& src);
 
-  ~trackable()
-    { notify_callbacks(); }
+  ~trackable();
 
   /*virtual ~trackable() {} */  /* we would need a virtual dtor for users
                                    who insist on using "trackable*" as
                                    pointer type for their own derived objects */
 
+  
+  typedef internal::func_destroy_notify func_destroy_notify;
+  
   /** Add a callback that is executed (notified) when the trackable object is detroyed.
    * @param data Passed into func upon notification.
    * @param func Callback executed upon destruction of the object.
    */
-  void add_destroy_notify_callback(void* data, void* (func)(void*)) const
-    { callback_list()->add_callback(data, func); }
+  void add_destroy_notify_callback(void* data, func_destroy_notify func) const;
 
   /** Remove a callback previously installed with add_destroy_notify_callback().
    * The callback is not executed.
    * @param data Parameter passed into previous call to add_destroy_notify_callback().
    */
-  void remove_destroy_notify_callback(void* data) const
-    { callback_list()->remove_callback(data); }
+  void remove_destroy_notify_callback(void* data) const;
 
   /// Execute and remove all previously installed callbacks.
   void notify_callbacks();

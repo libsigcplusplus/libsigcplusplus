@@ -23,6 +23,68 @@ using namespace std;
 
 namespace sigc {
 
+connection::connection()
+: slot_(0)
+{}
+
+connection::connection(const connection& c)
+: slot_(c.slot_)
+{
+  if (slot_)
+    slot_->add_destroy_notify_callback(this, &notify);
+}
+
+connection::connection(slot_base& sl)
+: slot_(&sl)
+{
+  slot_->add_destroy_notify_callback(this, &notify);
+}
+
+connection& connection::operator=(const connection& c)
+{
+  set_slot(c.slot_);
+  return *this;
+}
+
+connection::~connection()
+{
+  if (slot_)
+    slot_->remove_destroy_notify_callback(this);
+}
+
+bool connection::empty() const
+{
+  return (!slot_ || slot_->empty());
+}
+
+bool connection::connected() const
+{
+  return !empty();
+}
+
+bool connection::block(bool should_block)
+{
+  if (slot_)
+    return slot_->block(should_block);
+}
+
+bool connection::unblock()
+{
+  if (slot_)
+    return slot_->unblock();
+}
+
+void connection::disconnect()
+{
+  if (slot_)
+    slot_->disconnect(); // This notifies slot_'s parent.
+} 
+
+connection::operator bool()
+{
+  return !empty();
+}
+    
 void connection::set_slot(slot_base* sl)
 {
   if (slot_)

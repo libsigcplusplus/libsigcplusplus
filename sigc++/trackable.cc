@@ -22,8 +22,58 @@
 #include <iostream>
 using namespace std;
 
-namespace sigc {
-namespace internal {
+namespace sigc
+{
+
+trackable::trackable()
+: callback_list_(0)
+{}
+
+//TODO: Why doesn't this actually use src? murrayc.
+trackable::trackable(const trackable& src)
+: callback_list_(0)
+{}
+
+trackable& trackable::operator=(const trackable& src)
+{
+  notify_callbacks();
+  return *this;
+}
+
+trackable::~trackable()
+{
+  notify_callbacks();
+}
+
+void trackable::add_destroy_notify_callback(void* data, func_destroy_notify func) const
+{
+  callback_list()->add_callback(data, func);
+}
+
+void trackable::remove_destroy_notify_callback(void* data) const
+{
+  callback_list()->remove_callback(data);
+}
+
+void trackable::notify_callbacks()
+{
+  if (callback_list_)
+    delete callback_list_;
+
+  callback_list_ = 0;
+}
+
+internal::trackable_callback_list* trackable::callback_list() const
+{
+  if (!callback_list_)
+    callback_list_ = new internal::trackable_callback_list;
+
+  return callback_list_;
+}
+
+      
+namespace internal
+{
 
 trackable_callback_list::~trackable_callback_list()
 {
@@ -33,7 +83,7 @@ trackable_callback_list::~trackable_callback_list()
     (*i).func_((*i).data_);
 }
 
-void trackable_callback_list::add_callback(void* data, void* (*func)(void*) )
+void trackable_callback_list::add_callback(void* data, func_destroy_notify func)
 {
   if (!clearing_)  // TODO: Is it okay to silently ignore attempts to add dependencies when the list is being cleared?
                    //       I'd consider this a serious application bug, since the app is likely to segfault.
@@ -67,21 +117,5 @@ void trackable_callback_list::remove_callback(void* data)
 
 } /* namespace internal */
 
-
-void trackable::notify_callbacks()
-{
-  if (callback_list_)
-    delete callback_list_;
-
-  callback_list_ = 0;
-}
-
-internal::trackable_callback_list* trackable::callback_list() const
-{
-  if (!callback_list_)
-    callback_list_ = new internal::trackable_callback_list;
-
-  return callback_list_;
-}
 
 } /* namespace sigc */

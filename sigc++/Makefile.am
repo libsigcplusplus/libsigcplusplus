@@ -5,14 +5,14 @@ base_built_cc =
 base_built_h = signal.h slot.h method_slot.h \
 	       object_slot.h class_slot.h hide.h retype.h
 
-signal.cc : signal.h functors/slot.h functors/mem_fun.h functors/functor_trait.h
+signal.cc : signal.h signal_base.h functors/slot.h functors/slot_base.h functors/mem_fun.h functors/functor_trait.h
 
 # Functors (functors/)
 functors_m4 = functor_trait.h.m4 slot.h.m4 ptr_fun.h.m4 mem_fun.h.m4
 functors_built_cc = 
 functors_built_h = functor_trait.h slot.h ptr_fun.h mem_fun.h
 
-functors/slot.cc : functors/slot.h functors/functor_trait.h
+functors/slot.cc : functors/slot.h functors/slot_base.h functors/functor_trait.h
 
 # Adaptors (adaptors/)
 adaptors_m4 = deduce_result_type.h.m4 adaptor_trait.h.m4 bind.h.m4 bind_return.h.m4 \
@@ -53,8 +53,9 @@ EXTRA_DIST = $(sigc_m4) $(sigc_built_h) $(sigc_built_cc)
 library_includedir = $(includedir)/sigc++-2.0/sigc++
 nobase_library_include_HEADERS = $(sigc_m4) $(sigc_built_h) \
   sigc++.h connection.h trackable.h reference_wrapper.h type_traits.h visit_each.h \
-  object.h retype_return.h bind.h bind_return.h compatibility.h \
+  object.h retype_return.h bind.h bind_return.h compatibility.h signal_base.h \
   functors/functors.h \
+  functors/slot_base.h \
   adaptors/adaptors.h \
   adaptors/lambda/lambda.h
 
@@ -67,8 +68,8 @@ endif
 
 # build the library
 lib_LTLIBRARIES = libsigc-2.0.la
-libsigc_2_0_la_SOURCES = signal.cc trackable.cc connection.cc \
-                         functors/slot.cc \
+libsigc_2_0_la_SOURCES = signal.cc signal_base.cc trackable.cc connection.cc \
+                         functors/slot.cc functors/slot_base.cc \
 			 adaptors/lambda/lambda.cc
 libsigc_2_0_la_LDFLAGS  = $(win32_dlls_ldflags)
 BUILT_SOURCES = $(sigc_built_h) $(sigc_built_cc)

@@ -23,10 +23,6 @@ dnl I don't like to look at the automake cruft.
 #This just complicates things. murrayc
 #AC_CONFIG_AUX_DIR(scripts)
 
-dnl C++ libraries should generally be static if the interface is subject
-dnl to a lot of change.
-dnl AM_DISABLE_SHARED
-
 dnl Initialize automake stuff
 AM_INIT_AUTOMAKE($PACKAGE, $VERSION)
 
