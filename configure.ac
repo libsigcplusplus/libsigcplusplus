@@ -3,17 +3,40 @@ dnl
 dnl  Source for generating compiler independent libraries.
 dnl
 
-dnl INIT is required name a file which is unique to the package
+#We use pushdef here because we can't use shell variables before AC_INIT, but we want to use a variable with AC_INIT:
+dnl   thus make format_package-0.0.1.tar.gz 
+pushdef([FP_MAJOR_VERSION],     [2])
+pushdef([FP_MINOR_VERSION],     [0])
+pushdef([FP_MICRO_VERSION],     [6])
+pushdef([FP_EXTRA_VERSION],     [])
+pushdef([FP_VERSION], FP_MAJOR_VERSION.FP_MINOR_VERSION.FP_MICRO_VERSION[]FP_EXTRA_VERSION)
+AC_INIT([sigc++], FP_VERSION, [libsigc-list@gnome.org])
+
+dnl AC_CONFIG_SRCDIR is required name a file which is unique to the package
 dnl just to prevent someone from copying the configure to the wrong package.
-AC_INIT(sigc++)
+AC_CONFIG_SRCDIR([sigc++])
 
-dnl This version stuff is just for the packaging section of the tool.
-dnl   thus make format_package-0.0.1.tar.gz  
-FP_MAJOR_VERSION=2
-FP_MINOR_VERSION=0
-FP_MICRO_VERSION=6
-FP_VERSION=$FP_MAJOR_VERSION.$FP_MINOR_VERSION.$FP_MICRO_VERSION
+AC_PREREQ(2.59)
 
+#########################################################################
+#  Version and initialization
+#########################################################################
+[FP_MAJOR_VERSION]=FP_MAJOR_VERSION
+[FP_MINOR_VERSION]=FP_MINOR_VERSION
+[FP_MICRO_VERSION]=FP_MICRO_VERSION
+[FP_EXTRA_VERSION]=FP_EXTRA_VERSION
+[FP_VERSION]=FP_VERSION
+popdef([FP_MAJOR_VERSION])
+popdef([FP_MINOR_VERSION])
+popdef([FP_MICRO_VERSION])
+popdef([FP_EXTRA_VERSION])
+popdef([FP_VERSION])
+FP_RELEASE=$FP_MAJOR_VERSION.$FP_MINOR_VERSION
+AC_DEFINE_UNQUOTED(FP_MAJOR_VERSION, $FP_MAJOR_VERSION, [Major version of libsigc++])
+AC_DEFINE_UNQUOTED(FP_MINOR_VERSION, $FP_MINOR_VERSION, [Minor version of libsigc++])
+AC_DEFINE_UNQUOTED(FP_MICRO_VERSION, $FP_MICRO_VERSION, [Micro version of libsigc++])
+AC_SUBST(FP_VERSION)
+AC_SUBST(FP_RELEASE)
 AC_SUBST(FP_MAJOR_VERSION)
 AC_SUBST(FP_MINOR_VERSION)
 AC_SUBST(FP_MICRO_VERSION)
@@ -22,8 +45,9 @@ dnl For automake.
 VERSION=$FP_VERSION
 PACKAGE=libsigc++
 
-dnl Initialize automake stuff
-AM_INIT_AUTOMAKE($PACKAGE, $VERSION)
+# Initialize automake stuff
+# tar-ustar asks it to use a sensible tar format that can handle long filenames.
+AM_INIT_AUTOMAKE([1.9 tar-ustar])
 
 dnl Specify a configuration file:
 AC_CONFIG_HEADER(sigc++config.h)

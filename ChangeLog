@@ -1,5 +1,12 @@
 2005-01-18  Murray Cumming  <murrayc@murrayc.com>
 
+	* configure.in: Used the autoconf 2.93 and AM_INIT_AUTOMAKE() 
+	technique to specify ustar format for the tarball, to prevent files 
+	with long file names from appearing at the top of the tarball. 
+	Based on the same fix in gtkmm 2.6.
+
+2005-01-18  Murray Cumming  <murrayc@murrayc.com>
+
 	* sigc++/functors/macros/slot_h.m4: Specify the base class when 
 	using the rep_ member variable. This stops the HP-UX aCC compiler 
 	from saying that a Nonstatic member  is referenced in a nested class, 
