@@ -34,14 +34,14 @@ FOR(1, $1,[  typedef _R_(T_arg%1) arg%1_type_;
   public:
     typedef T_return result_type;
 
-    T_return operator()(LOOP(arg%1_type_ _A_a%1, $1)) const
+    inline T_return operator()(LOOP(arg%1_type_ _A_a%1, $1)) const
       {
         if (!empty() && !blocked())
           return (reinterpret_cast<call_type>(rep_->call_))(LIST(rep_, LOOP(_A_a%1, $1)));
         return T_return();
       }
 
-    closure() 
+    inline closure() 
       {}
 
     template <class T_functor>
@@ -71,17 +71,18 @@ struct closure_call$1
 divert(0)dnl
 /*
   Type closure<R, A1, A2...>
-  usage:
+
+  Usage:
     Converts an arbitrary functor to a unified type which is opaque.
-  To use simply assign the closure to the desirer functor.  When called
-  it will launch the functor with minimal copies.  Because it is opaque
-  visit_each will not visit any members contained within.
-                
-  Ie.
+    To use simply assign the closure to the desirer functor. When called
+    it will launch the functor with minimal copies. Because it is opaque
+    visit_each will not visit any members contained within.
+
+  Example:
     void foo(int) {}
     closure<void, long> cl = ptr_fun(&foo);
-                          
-*/
+
+ */
 __FIREWALL__
 #include <sigc++/trackable.h>
 #include <sigc++/visit_each.h>
@@ -95,32 +96,106 @@ namespace internal {
 
 typedef void* (*hook)(void*);
 
-// Internal representation of a closure.    
+struct closure_base;
+
+/** Internal representation of a closure.
+ * Derivations of this class could also be considered as a
+ * link between a closure and the functor that closure should
+ * execute in operator(). This link is needed because in
+ * libsigc++2 the closure doesn't necessarily have exactly the
+ * same function signature as the functor to allow for automatic
+ * conversions.
+ * The base class closure_rep serves the purpose to
+ * - form a common pointer type (closure_rep*),
+ * - offer the possibility to create duplicates (dup()),
+ * - offer a notification callback (notify()),
+ * - implement some of closure_base's interface that depends
+ *   on the notification callback, i.e.
+ *   -- the possibility to set a single dependency
+ *      (set_dependency()) whose callback is executed from notify(),
+ *   -- an untyped function pointer, call_, that can be easily
+ *      set to zero in notify() to invalidate the closure.
+ */
 struct closure_rep
 {
   hook call_; // this can't be virtual, number of arguments must be flexible.
   hook cleanup_; 
-  void* parent_;
+  void* dependency_;
 
   closure_rep()
-    : call_(0), parent_(0) {}
+    : call_(0), dependency_(0) {}
   closure_rep(const closure_rep& cl)
-    : call_(cl.call_), parent_(0) {}
+    : call_(cl.call_), dependency_(0) {}
+
   virtual closure_rep* dup() const = 0;
   virtual ~closure_rep()
     {}
 
-  // closures have one parent exclusively.
-  void set_dependency(void* parent, hook cleanup)
+  // closures have one dependency exclusively.
+  void set_dependency(void* dependency, hook cleanup)
     {
-      parent_ = parent;
+      dependency_ = dependency;
       cleanup_ = cleanup;
     }
 
   static void* notify(void* p);
 };
 
-// base type for closures to reduce code size
+/** Used to add a dependency to a trackable so that
+ * closure_rep::notify gets executed when the trackable
+ * is destroyed or overwritten.
+ */
+struct closure_do_bind
+{
+  closure_rep* rep_;
+  inline closure_do_bind(closure_rep* rep) : rep_(rep) {}
+  inline void operator()(const trackable* t) const
+  { t->add_dependency(rep_, &closure_rep::notify); }
+};
+
+/** Used to remove a dependency from a trackable when
+ * the closure dies before the trackable does.
+ */
+struct closure_do_unbind
+{
+  closure_rep* rep_;
+  inline closure_do_unbind(closure_rep* rep) : rep_(rep) {}
+  inline void operator()(const trackable* t) const
+  { t->remove_dependency(rep_); }
+};
+
+/** A typed closure_rep.
+ * A typed closure_rep holds a functor which can be called from
+ * operator() of the closure templates.
+ */
+template <class T_functor>
+struct typed_closure_rep : public closure_rep
+{
+  public:
+    inline typed_closure_rep(const T_functor& functor)
+      : functor_(functor)
+      { visit_each_type<trackable*>(closure_do_bind(this), functor_); }
+    inline typed_closure_rep(const typed_closure_rep& cl)
+      : closure_rep(cl), functor_(cl.functor_)
+      { visit_each_type<trackable*>(closure_do_bind(this), functor_); }
+    virtual ~typed_closure_rep()
+      { visit_each_type<trackable*>(closure_do_unbind(this), functor_); }
+    virtual closure_rep* dup() const
+      { return new typed_closure_rep<T_functor>(*this); }
+    T_functor functor_;
+};
+
+/** Base type for closures.
+ * closure_base integrates most of the interface of the derived
+ * closure templates (therefore reducing code size). closures
+ * can be connected to signals, be disconnected at some later point
+ * (disconnect()) and temporarily be blocked (block(), unblock()).
+ * closure_base has a closure_rep* member, rep_, that is filled in
+ * from the constructors of its derivations. set_dependency() is
+ * used to add a notification callback that is executed when the
+ * closure gets invalid. The validity of a closure can be tested
+ * with empty().
+ */
 class closure_base /*: public functor_base*/
 {
   typedef internal::closure_rep rep_type;
@@ -132,22 +207,18 @@ class closure_base /*: public functor_base*/
     closure_base(rep_type* rep)
       : rep_(rep), blocked_(false) {}
 
-    closure_base(const closure_base& cl_)
-      : rep_(0), blocked_(cl_.blocked_)
-      {
-        if (cl_.rep_)
-          rep_ = cl_.rep_->dup();
-      }
+    closure_base(const closure_base& cl_);
 
     ~closure_base()
-      { delete rep_; }
+      { if (rep_) delete rep_; }
 
     // hook for signals
-    void set_dependency(void* parent, void* (*func)(void*)) const;
+    void set_dependency(void* dependency, void* (*func)(void*)) const;
 
-    bool empty() const;
+    inline bool empty() const
+      { return (!rep_ || !rep_->call_); }
 
-    bool blocked() const
+    inline bool blocked() const
       { return blocked_; }
 
     bool block(bool should_block = true);
@@ -164,44 +235,25 @@ class closure_base /*: public functor_base*/
     bool blocked_;
 };
 
-// This places the back dependency for trackable to disconnect closures
-struct closure_do_bind
-{
-  closure_rep* rep_;
-  closure_do_bind(closure_rep* rep) : rep_(rep) {}
-  void operator()(const trackable* t) const
-  { t->add_dependency(rep_, &closure_rep::notify); }
-};
-struct closure_do_unbind
-{
-  closure_rep* rep_;
-  closure_do_unbind(closure_rep* rep) : rep_(rep) {}
-  void operator()(const trackable* t) const
-  { t->remove_dependency(rep_); }
-};
-
-// A typed closure is one which can be called.
-template <class T_functor>
-struct typed_closure_rep : public closure_rep
-{
-  public:
-    typed_closure_rep(const T_functor& functor)
-      : functor_(functor)
-      { visit_each_type<trackable*>(closure_do_bind(this), functor_); }
-    typed_closure_rep(const typed_closure_rep& cl)
-      : closure_rep(cl), functor_(cl.functor_)
-      { visit_each_type<trackable*>(closure_do_bind(this), functor_); }
-    virtual ~typed_closure_rep()
-      { visit_each_type<trackable*>(closure_do_unbind(this), functor_); }
-    virtual closure_rep* dup() const
-      { return new typed_closure_rep<T_functor>(*this); }
-    T_functor functor_;
-};
-
-
+/** closure_call#<>::call_it() executes the functor that is held
+ * by the typed_closure_rep. This template is "responsible" for
+ * our type safety: If the compiler cannot convert the parameter
+ * list of the closure to the parameter list of the functor an
+ * error will occur here.
+ */
 FOR(0,CALL_SIZE,[[CLOSURE_CALL(%1)]])
 } /* namespace internal */
 
+/** Converts an arbitrary functor to a unified type which is opaque.
+ * To use simply assign the closure to the desirer functor. When called
+ * it will launch the functor with minimal copies. Because it is opaque
+ * visit_each will not visit any members contained within.
+ *
+ * Example:
+ *   void foo(int) {}
+ *   closure<void, long> cl = ptr_fun(&foo);
+ *
+ */
 CLOSURE(CALL_SIZE,CALL_SIZE)
 FOR(0,eval(CALL_SIZE-1),[[CLOSURE(%1,CALL_SIZE)]])
 

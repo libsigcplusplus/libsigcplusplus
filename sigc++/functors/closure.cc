@@ -26,27 +26,34 @@ namespace internal {
 void* closure_rep::notify(void* p)
 {
   closure_rep* self=(closure_rep*)p;
-  self->call_ = 0;
-  if (self->parent_)
-    (self->cleanup_)(self->parent_);
+  self->call_ = 0;                        // Invalidate the closure.
+  if (self->dependency_)
+    (self->cleanup_)(self->dependency_);  // Notify the dependency.
   return 0;
 }
 
-void closure_base::set_dependency(void* parent, void* (*func)(void*)) const
-{ 
-  if (rep_)
-    rep_->set_dependency(parent, func);
+closure_base::closure_base(const closure_base& cl_)
+: rep_(0), blocked_(cl_.blocked_)
+{
+  if (cl_.rep_)
+    rep_ = cl_.rep_->dup();
 }
 
-bool closure_base::empty() const 
+void closure_base::set_dependency(void* dependency, void* (*func)(void*)) const
+{ 
+  if (rep_)
+    rep_->set_dependency(dependency, func);
+}
+
+/*bool closure_base::empty() const // having this function not inline is killing performance !!!
 { 
   if (rep_ && !rep_->call_)
     {
-      delete rep_;
-      rep_ = 0;
+      delete rep_;        // This is not strictly necessary here. I'm convinced that it is
+      rep_ = 0;           // safe to wait for the destructor to delete the closure_rep. Martin.
     }
   return (rep_ == 0); 
-}
+}*/
 
 bool closure_base::block(bool should_block)
 {
@@ -57,22 +64,31 @@ bool closure_base::block(bool should_block)
 
 void closure_base::disconnect()
 {
-  if (rep_)
-    rep_->notify(rep_);
-}
+  if (rep_)               // Disconnection a closure always means destroying it.
+    rep_->notify(rep_);   // So we can mark it as invalid and notify its dependency.
+}                         // This is exactly what closure_rep::notify() does.
 
+// TODO: untested
 closure_base& closure_base::operator=(const closure_base& cl)
 {
   if (cl.rep_ == rep_) return *this;
-  
-  delete rep_;
-  rep_ = 0;
-  
-  if (cl.rep_)
-  {
-    rep_ = cl.rep_->dup();
-  }
-  
+
+  if (cl.empty())
+    {
+      disconnect();
+      return *this;
+    }
+
+  closure_rep* new_rep_ = cl.rep_->dup();
+
+  if (rep_)               // Silently exchange the closure_rep.
+    {
+      new_rep_->set_dependency(rep_->dependency_, rep_->cleanup_);
+      delete rep_;
+    }
+
+  rep_ = new_rep_;
+
   return *this;
 }
 

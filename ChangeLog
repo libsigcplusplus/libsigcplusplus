@@ -1,5 +1,13 @@
 2003-03-07  Martin Schulze  <MHL.Schulze@t-online.de>
 
+	* sigc++/closure.{cc,h.m4}:
+	- closure_base: BUGFIXES in ~closure_base() and operator=().
+	- Mark some functions with the inline keyword. This seems to
+          help gcc 3.2 to optimize signal emission and (dis)connection.
+	- Document the classes. Restructure the header file a bit.
+
+2003-03-07  Martin Schulze  <MHL.Schulze@t-online.de>
+
 	* sigc++/trackable.{cc,h}: Make trackable allocate a
 	trackable_dep_list object dynamically when adding the first
 	dependency. (This reduces the size of objects, that are not
