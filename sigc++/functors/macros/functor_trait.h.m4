@@ -81,7 +81,8 @@ namespace sigc {
  * The nil struct type is used as default template argument in the
  * unnumbered sigc::signal and sigc::slot templates.
  *
- * @ingroup signal slot
+ * @ingroup signal
+ * @ingroup slot
  */
 struct nil;
 

@@ -64,9 +64,11 @@ int main()
 
   // bind from end
   sigc::bind<0>(foo(),4)(3);
+  sigc::bind(foo(),4)(3);
 
   // multiple beginning from end
   sigc::bind<0>(foo(),5,6)();
+  sigc::bind(foo(),5,6)();
 
   // used together
   sigc::bind<1>(sigc::bind<1>(foo(),7),8)();

@@ -1,3 +1,12 @@
+2003-11-10  Martin Schulze  <teebaum@cvs.gnome.org>
+
+	* sigc++/adaptors/macros/[bind,hide].h.m4: Add unnumbered
+	bind() and hide() overloads to make specifying the argument
+	position optional (Proposed by Jeff Franks).
+	* tests/test_[bind,hide].cc: Test unnumbered bind() and hide().
+	* sigc++/adaptors/macros/adaptor_trait.h.m4:
+	Change "#ifdef MSVC" to "#ifdef _MSC_VER" (Roel Vanhout).
+
 2003-11-09  Martin Schulze  <teebaum@cvs.gnome.org>
 
 	* sigc++/functors/macros/slot.h.m4: Change functor type in

@@ -114,4 +114,12 @@ hide(const T_functor& _A_func)
            (_A_func);
 }
 
+template <class T_functor>
+inline hide_functor<0, T_functor>
+hide(const T_functor& _A_func)
+{ 
+  return hide_functor<0, T_functor>
+           (_A_func);
+}
+
 } /* namespace sigc */

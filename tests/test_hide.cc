@@ -31,5 +31,6 @@ int main()
   std::cout << sigc::hide<1>(foo())(1,2) << std::endl;
   std::cout << sigc::hide<2>(foo())(1,2) << std::endl;
   std::cout << sigc::hide<0>(foo())(1) << std::endl;
+  std::cout << sigc::hide(foo())(1) << std::endl;
   sigc::hide<0>(foo_void())(1); // void test
 }

@@ -118,9 +118,9 @@ namespace sigc {
 
 /** @defgroup bind bind()
  * sigc::bind() alters an arbitrary functor by fixing arguments to certain values.
- * The mandatory first template argument specifies the number of the
+ * The optional first template argument specifies the number of the
  * argument where binding starts. Counting starts from @p 1. A value
- * of @p 0 means that binding should start from the last argument.
+ * of @p 0 or a missing value means that binding should start from the last argument.
  * Up to three arguments can be bound at a time.
  * The types of the arguments can optionally be specified if not deduced.
  *
@@ -131,8 +131,10 @@ namespace sigc {
  *   sigc::bind<2>(&foo,1)(2,3); //fixes the second argument and calls foo(2,1,3);
  *   sigc::bind<3>(&foo,1)(2,3); //fixes the third argument and calls foo(2,3,1);
  *   sigc::bind<0>(&foo,1)(2,3); //fixes the last (third) argument and calls foo(2,3,1);
+ *   sigc::bind(&foo,1)(2,3);    //same as bind<0>(&foo,1)(2,3);
  *   sigc::bind<1>(&foo,1,2)(3); //fixes the first and second argument and calls foo(1,2,3);
  *   sigc::bind<0>(&foo,1,2)(3); //fixes the last two (second and third) arguments and calls foo(3,1,2);
+ *   sigc::bind(&foo,1,2)(3);    //same as sigc::bind<0>(&foo,1,2)(3);
  *   @endcode
  *
  * The functor sigc::bind() returns can be passed into
@@ -142,7 +144,7 @@ namespace sigc {
  *   @code
  *   sigc::signal<void> some_signal;
  *   void foo(int);
- *   some_signal.connect(sigc::bind<0>(&foo,1));
+ *   some_signal.connect(sigc::bind(&foo,1));
  *   @endcode
  *
  * You can bind references to functors by passing the objects through
@@ -153,7 +155,7 @@ namespace sigc {
  *   int some_int;
  *   sigc::signal<void> some_signal;
  *   void foo(int&);
- *   some_signal.connect(sigc::bind<0>(&foo,sigc::ref(some_int)));
+ *   some_signal.connect(sigc::bind(&foo,sigc::ref(some_int)));
  *   @endcode
  *
  * If you bind an object of a sigc::trackable derived type to a functor
@@ -165,7 +167,7 @@ namespace sigc {
  *   struct bar : public sigc::trackable {} some_bar;
  *   sigc::signal<void> some_signal;
  *   void foo(bar&);
- *   some_signal.connect(sigc::bind<0>(&foo,sigc::ref(some_bar)));
+ *   some_signal.connect(sigc::bind(&foo,sigc::ref(some_bar)));
  *     // disconnected automatically if some_bar goes out of scope
  *   @endcode
  *
@@ -227,6 +229,23 @@ bind(const T_functor& _A_func, T_bound1 _A_b1)
            (_A_func, _A_b1);
 }
 
+/** Creates an adaptor of type sigc::bind_functor which fixes the last argument of the passed functor.
+ * This function overload fixes the last argument of @e _A_func.
+ *
+ * @param _A_func Functor that should be wrapped.
+ * @param _A_b1 Argument to bind to @e _A_func.
+ * @return Adaptor that executes _A_func with the bound argument on invokation.
+ *
+ * @ingroup bind
+ */
+template <class T_bound1, class T_functor>
+inline bind_functor<0, typename unwrap_reference<T_bound1>::type, T_functor>
+bind(const T_functor& _A_func, T_bound1 _A_b1)
+{
+  return bind_functor<0, typename unwrap_reference<T_bound1>::type, T_functor>
+           (_A_func, _A_b1);
+}
+
 /** Creates an adaptor of type sigc::bind_functor which binds the passed arguments to the passed functor.
  * The template argument @e I_location is mandatory and specifies the
  * number of the argument where binding should start (counting starts
@@ -247,6 +266,26 @@ bind(const T_functor& _A_functor, T_bound1 _A_b1, T_bound2 _A_b2)
   return bind_functor<I_location, typename unwrap_reference<T_bound1>::type,
          bind_functor<I_location?I_location+1:0, typename unwrap_reference<T_bound2>::type, T_functor> >
            (bind<I_location?I_location+1:0>(_A_functor, _A_b2), _A_b1);
+}
+
+/** Creates an adaptor of type sigc::bind_functor which fixes the last two arguments of the passed functor.
+ * This function overload fixes the last two arguments of @e _A_func.
+ *
+ * @param _A_func Functor that should be wrapped.
+ * @param _A_b1 First argument to bind to @e _A_func.
+ * @param _A_b2 Second argument to bind to @e _A_func.
+ * @return Adaptor that executes _A_func with the bound argument on invokation.
+ *
+ * @ingroup bind
+ */
+template <class T_bound1, class T_bound2, class T_functor>
+inline bind_functor<0, typename unwrap_reference<T_bound1>::type,
+       bind_functor<0, typename unwrap_reference<T_bound2>::type, T_functor> >
+bind(const T_functor& _A_functor, T_bound1 _A_b1, T_bound2 _A_b2)
+{ 
+  return bind_functor<0, typename unwrap_reference<T_bound1>::type,
+         bind_functor<0, typename unwrap_reference<T_bound2>::type, T_functor> >
+           (bind(_A_functor, _A_b2), _A_b1);
 }
 
 /** Creates an adaptor of type sigc::bind_functor which binds the passed arguments to the passed functor.
@@ -272,6 +311,29 @@ bind(const T_functor& _A_functor, T_bound1 _A_b1, T_bound2 _A_b2,T_bound3 _A_b3)
          bind_functor<I_location?I_location+1:0, typename unwrap_reference<T_bound2>::type,
          bind_functor<I_location?I_location+2:0, typename unwrap_reference<T_bound3>::type, T_functor> > >
            (bind<I_location?I_location+1:0>(_A_functor, _A_b2, _A_b3),_A_b1);
+}
+
+/** Creates an adaptor of type sigc::bind_functor which fixes the last three arguments of the passed functor.
+ * This function overload fixes the last three arguments of @e _A_func.
+ *
+ * @param _A_func Functor that should be wrapped.
+ * @param _A_b1 First argument to bind to @e _A_func.
+ * @param _A_b2 Second argument to bind to @e _A_func.
+ * @param _A_b3 Third argument to bind to @e _A_func.
+ * @return Adaptor that executes _A_func with the bound argument on invokation.
+ *
+ * @ingroup bind
+ */
+template <class T_bound1, class T_bound2, class T_bound3, class T_functor>
+inline bind_functor<0, typename unwrap_reference<T_bound1>::type,
+       bind_functor<0, typename unwrap_reference<T_bound2>::type,
+       bind_functor<0, typename unwrap_reference<T_bound3>::type, T_functor> > >
+bind(const T_functor& _A_functor, T_bound1 _A_b1, T_bound2 _A_b2,T_bound3 _A_b3)
+{ 
+  return bind_functor<0, typename unwrap_reference<T_bound1>::type,
+         bind_functor<0, typename unwrap_reference<T_bound2>::type,
+         bind_functor<0, typename unwrap_reference<T_bound3>::type, T_functor> > >
+           (bind(_A_functor, _A_b2, _A_b3),_A_b1);
 }
 
 } /* namespace sigc */

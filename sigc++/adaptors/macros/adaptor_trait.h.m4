@@ -71,7 +71,7 @@ __FIREWALL__
 
 namespace sigc {
 
-#ifdef MSVC
+#ifdef _MSC_VER
 #define LIBSIGC_TEMPLATE_PREFIX
 #else
 #define LIBSIGC_TEMPLATE_PREFIX template
