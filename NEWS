@@ -17,6 +17,20 @@ This version of libsigc++ needs GNU g++ 3.2 or higher to compile.
 
 *** ChangeLog summary:
 
+1.9.12:
+
+* Added adaptor retype(). With this final API addition all adaptors
+  are in place that are available in libsigc++-1.2.
+* Added negation lambda operator. Use STL names for lambda actions.
+* Remove formerly disabled support for gcc extension typeof().
+* Added project files for MS Visual Studio .Net 2003. (Roel Vanhout)
+* Make libsigc++2 compile with .Net 2003. (Roel Vanhout, Martin Schulze)
+* Build shared version of libsigc++2 by default. (Cedric Gustin)
+* Add support for win32 platform. (Cedric Gustin)
+* Install .m4 files. (requested by Ron Steinke)
+* Cleaned up functors.
+* Restructured and completed documentation of the core library parts.
+
 1.9.11:
 
 API Additions and important bug fixes:
