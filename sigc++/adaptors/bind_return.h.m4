@@ -32,7 +32,6 @@ __FIREWALL__
 #include <sigc++/adaptors/adaptor_trait.h>
 
 namespace sigc {
-namespace functor {
 
 template <class T_return, class T_functor>
 struct bind_return_functor : public adapts<T_functor>
@@ -72,5 +71,4 @@ inline bind_return_functor<T_return, T_functor>
 bind_return(const T_functor& _A_functor, T_return _A_ret_value)
   { return bind_return_functor<T_return, T_functor>(_A_functor, _A_ret_value); }
 
-} /* namespace functor */
 } /* namespace sigc */

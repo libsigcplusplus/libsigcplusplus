@@ -1,3 +1,45 @@
+2003-10-19  Martin Schulze  <teebaum@cvs.gnome.org>
+
+	* NEWS: Add announces of versions 1.9.6 and 1.9.7.
+	* sigc++/compatibility.h.m4: New file. Defines namespace SigC.
+	namespace SigC should be API compatible to libsigc++-1.2.
+	* sigc++/Makefile.am: Build compatibility.h.
+	* tests/test_compatibility.cc, tests/Makefile.am:
+	Add test case for compatibility module.
+	* docs/index.html: Change group names.
+	* sigc++/sigc++.h: Include connection.h.
+	* sigc++/connection.{cc,h}:
+	- Rename dependency to destroy_notify_callback.
+	- Change parameter name in set_slot() from d to data.
+	- Fix operator=(): Add "return *this;"
+	- Get rid of namespace functor.
+	- Corrections in documentation.
+	* sigc++/signal.{cc,h.m4}:
+	- Add reference counter to signal_impl. Replaces "bool destroy_".
+	- Move signal_base, slot_iterator[_buf], slot_list out of
+	namespace internal. They are part of the public API.
+	- Add convenience function signal#::make_slot().
+	- Get rid of namespace functor.
+	- Corrections in documentation.
+	* sigc++/trackable.{cc,h}:
+	- Rename dependency to destroy_notify_callback.
+	- Rename trackable::clear() to trackable::notify_callbacks().
+	- Corrections in documentation.
+	* sigc++/type_traits.h: Add documentation.
+	* sigc++/visit_each.h:
+	- Get rid of namespace functor.
+	- Add documentation.
+	* sigc++/adaptors[/lambda]/*: Get rid of namespace functor.
+	* sigc++/functors/{functor_trait.h,ptr_fun.h.m4,mem_fun.h.m4}:
+	- Get rid of namespace functor.
+	- Corrections in documentation / add documentation.
+	* sigc++/functors/slot.{cc,h.m4}:
+	- Move slot_base out of namespace internal. It's public API.
+	- Get rid of one-letter-parameter-names.
+	- Get rid of namespace functor.
+	- Corrections in documentation.
+	* tests/*.cc: Get rid of "using namespace ...".
+
 2003-09-10  Martin Schulze  <teebaum@cvs.gnome.org>
 
 	* sigc++/adaptors/lambda/{base,operators}.h.m4:

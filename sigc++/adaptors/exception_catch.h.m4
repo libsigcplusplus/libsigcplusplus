@@ -70,7 +70,6 @@ __FIREWALL__
 #include <sigc++/adaptors/adaptor_trait.h>
 
 namespace sigc {
-namespace functor {
 
 template <class T_functor, class T_catcher, class T_return = typename adapts<T_functor>::result_type>
 struct exception_catch_functor : public adapts<T_functor>
@@ -129,8 +128,7 @@ FOR(1,CALL_SIZE,[[EXCEPTION_CATCH_OPERATOR(%1)]])dnl
 };
 
 template <class T_functor, class T_catcher>
-void
-exception_catch_functor<T_functor, T_catcher, void>::operator()()
+void exception_catch_functor<T_functor, T_catcher, void>::operator()()
   { 
     try
       { functor_(); } // I don't understand why void return doesn't work here (Martin)
@@ -153,5 +151,4 @@ inline exception_catch_functor<T_functor, T_catcher>
 exception_catch(const T_functor& _A_func, const T_catcher& _A_catcher)
   { return exception_catch_functor<T_functor, T_catcher>(_A_func, _A_catcher); }
 
-} /* namespace functor */
 } /* namespace sigc */

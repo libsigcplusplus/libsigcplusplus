@@ -9,38 +9,40 @@
 #include <sigc++/functors/mem_fun.h>
 #include <iostream>
 
-using namespace std;
-using namespace sigc::functor;
-using sigc::signal;
-
-int foo(int i)   {cout << "foo(int "<<i<<")" << endl; return 1;}
-int bar(float i) {cout << "bar(float "<<i<<")" << endl; return 1;}
+int foo(int i)   {std::cout << "foo(int "<<i<<")" << std::endl; return 1;}
+int bar(float i) {std::cout << "bar(float "<<i<<")" << std::endl; return 1;}
 
 struct A : public sigc::trackable
 {
-  int  foo(int i)       {cout << "A::foo(int "<<i<<")" << endl; return 1;}
-  void bar(string& str) {cout << "A::foo(string '"<<str<<"')" << endl; str="foo was here";}
+  int  foo(int i)            {std::cout << "A::foo(int "<<i<<")" << std::endl; return 1;}
+  void bar(std::string& str) {std::cout << "A::foo(string '"<<str<<"')" << std::endl; str="foo was here";}
 };
 
 int main()
 {
-  signal<int,int> sig;
+  sigc::signal<int,int> sig;
   {
     A a;
-    sig.connect(ptr_fun1(&foo));
-    sig.connect(mem_fun1(&a, &A::foo));
-    sig.connect(ptr_fun1(&bar));
+    sig.connect(sigc::ptr_fun1(&foo));
+    sig.connect(sigc::mem_fun1(&a, &A::foo));
+    sig.connect(sigc::ptr_fun1(&bar));
     sig(1);
-    cout << sig.size() << endl;
+    std::cout << sig.size() << std::endl;
   } // a dies => auto-disconnect
-  cout << sig.size() << endl;
+  std::cout << sig.size() << std::endl;
   sig(2);
 
   // test reference
   A a;
-  string str("guest book");
-  signal<void,string&> sigstr;
-  sigstr.connect(mem_fun(&a, &A::bar));
+  std::string str("guest book");
+  sigc::signal<void,std::string&> sigstr;
+  sigstr.connect(sigc::mem_fun(&a, &A::bar));
   sigstr(str);
-  cout << str << endl;
+  std::cout << str << std::endl;
+
+  // test make_slot()
+  sig.connect(sigc::ptr_fun1(&foo));
+  sigc::signal<int,int> sig2;
+  sig2.connect(sig.make_slot());
+  sig2(3);
 }

@@ -25,59 +25,63 @@ using namespace std;
 namespace sigc {
 namespace internal {
 
-trackable_dep_list::~trackable_dep_list()
+trackable_callback_list::~trackable_callback_list()
 {
   clearing_ = true;
 
-  for (dep_list::iterator i = deps_.begin(); i != deps_.end(); ++i)
-    (*i).func_((*i).obj_);
+  for (callback_list::iterator i = callbacks_.begin(); i != callbacks_.end(); ++i)
+    (*i).func_((*i).data_);
 }
 
-void trackable_dep_list::add_dependency(void* target, void* (*func)(void*) )
+void trackable_callback_list::add_callback(void* data, void* (*func)(void*) )
 {
   if (!clearing_)  // TODO: Is it okay to silently ignore attempts to add dependencies when the list is being cleared?
                    //       I'd consider this a serious application bug, since the app is likely to segfault.
                    //       But then, how should we handle it? Throw an exception? Martin.
-    deps_.push_back(trackable_dependency(target,func));
+    callbacks_.push_back(trackable_callback(data,func));
 }
 
-void trackable_dep_list::clear()
+void trackable_callback_list::clear()
 {
   clearing_ = true;
 
-  for (dep_list::iterator i=deps_.begin(); i!=deps_.end(); ++i)
-    (*i).func_((*i).obj_);
+  for (callback_list::iterator i = callbacks_.begin(); i != callbacks_.end(); ++i)
+    (*i).func_((*i).data_);
 
-  deps_.clear();
+  callbacks_.clear();
 
   clearing_ = false;
 }
 
-void trackable_dep_list::remove_dependency(void* target)
+void trackable_callback_list::remove_callback(void* data)
 {
   if (clearing_) return; // No circular notices
 
-  for (dep_list::iterator i = deps_.begin(); i != deps_.end(); ++i)
-    if ((*i).obj_ == target)
-      {
-        deps_.erase(i);
-        return;
-      }
+  for (callback_list::iterator i = callbacks_.begin(); i != callbacks_.end(); ++i)
+    if ((*i).data_ == data)
+    {
+      callbacks_.erase(i);
+      return;
+    }
 }
 
 } /* namespace internal */
 
 
-void trackable::clear()
+void trackable::notify_callbacks()
 {
-  if (dep_list_) delete dep_list_; dep_list_ = 0;
+  if (callback_list_)
+    delete callback_list_;
+
+  callback_list_ = 0;
 }
 
-internal::trackable_dep_list* trackable::dep_list() const
+internal::trackable_callback_list* trackable::callback_list() const
 {
-  if (!dep_list_)
-    dep_list_ = new internal::trackable_dep_list;
-  return dep_list_;
+  if (!callback_list_)
+    callback_list_ = new internal::trackable_callback_list;
+
+  return callback_list_;
 }
 
 } /* namespace sigc */

@@ -55,7 +55,7 @@ FOR(1, $1,[
 
   template <LOOP(class T_arg%1=void,$2)>
   struct deduce_result_type
-    { typedef typename sigc::functor::deduce_result_type<
+    { typedef typename sigc::deduce_result_type<
                 typename functor_type::deduce_result_type<LOOP(T_arg%1,$2)>::type,dnl
 LOOP([
                 typename value%1_type::deduce_result_type<LOOP(T_arg%1,$2)>::type], $1)
@@ -95,10 +95,8 @@ __FIREWALL__
 #include <sigc++/adaptors/lambda/base.h>
 
 namespace sigc {
-namespace functor {
 
 FOR(1,3,[[LAMBDA_GROUP(%1, CALL_SIZE)]])
 FOR(1,3,[[LAMBDA_GROUP_FACTORY(%1)]])
 
-} /* namespace functor */
 } /* namespace sigc */

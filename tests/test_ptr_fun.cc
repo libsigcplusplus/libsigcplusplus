@@ -6,22 +6,19 @@
 #include <iostream>
 #include <sigc++/functors/ptr_fun.h>
 
-using namespace std;
-using namespace sigc::functor;
-
 int foo()  
-  {cout << "foo()" <<endl; return 1;}
+  {std::cout << "foo()" <<std::endl; return 1;}
 void foo(int i1)   
-  {cout << "foo(int "<< i1<< ')' <<endl; }
+  {std::cout << "foo(int "<< i1<< ')' <<std::endl; }
 void foo(float i1)   
-  {cout << "foo(float "<< i1<< ')' <<endl; }
+  {std::cout << "foo(float "<< i1<< ')' <<std::endl; }
 double foo(int i1,int i2) 
-  {cout << "foo("<<i1<<','<<i2<< ')' <<endl; return 1.0;}
+  {std::cout << "foo("<<i1<<','<<i2<< ')' <<std::endl; return 1.0;}
 
 int main()
 {
-   ptr_fun0(&foo)();
-   ptr_fun1<int>(&foo)(1);
-   ptr_fun1<float>(&foo)(1.0);
-   ptr_fun2(&foo)(1,2);
+  sigc::ptr_fun0(&foo)();
+  sigc::ptr_fun1<int>(&foo)(1);
+  sigc::ptr_fun1<float>(&foo)(1.0);
+  sigc::ptr_fun2(&foo)(1,2);
 }

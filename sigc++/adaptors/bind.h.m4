@@ -112,10 +112,9 @@ __FIREWALL__
 #include <sigc++/adaptors/adaptor_trait.h>
 
 namespace sigc { 
-namespace functor {
 
 template <int I_location, class T_type, class T_functor>
-class bind_functor;
+struct bind_functor;
 
 FOR(0,CALL_SIZE,[[BIND_FUNCTOR(%1)]])dnl
 
@@ -132,33 +131,31 @@ void visit_each(const T_action& _A_action,
 template <int I_location, class T_bound1, class T_functor>
 inline bind_functor<I_location, T_bound1, T_functor>
 bind(const T_functor& _A_func, T_bound1 _A_b1)
-  { 
-    return bind_functor<I_location, T_bound1, T_functor>
-             (_A_func, _A_b1);
-  }
+{ 
+  return bind_functor<I_location, T_bound1, T_functor>
+           (_A_func, _A_b1);
+}
 
 template <int I_location, class T_bound1, class T_bound2, class T_functor>
 inline bind_functor<I_location, T_bound1,
        bind_functor<I_location?I_location+1:0, T_bound2, T_functor> >
 bind(const T_functor& _A_functor, T_bound1 _A_b1, T_bound2 _A_b2)
-  { 
-    return bind_functor<I_location, T_bound1,
-           bind_functor<(I_location?I_location+1:0), T_bound2, T_functor> >
-             (bind<(I_location?I_location+1:0)>(_A_functor, _A_b2), _A_b1); 
-  }
+{ 
+  return bind_functor<I_location, T_bound1,
+         bind_functor<(I_location?I_location+1:0), T_bound2, T_functor> >
+           (bind<(I_location?I_location+1:0)>(_A_functor, _A_b2), _A_b1); 
+}
 
 template <int I_location, class T_bound1, class T_bound2, class T_bound3, class T_functor>
 inline bind_functor<I_location, T_bound1,
        bind_functor<(I_location?I_location+1:0), T_bound2,
        bind_functor<(I_location?I_location+2:0), T_bound3, T_functor> > >
 bind(const T_functor& _A_functor, T_bound1 _A_b1, T_bound2 _A_b2,T_bound3 _A_b3)
-  { 
-    return bind_functor<I_location, T_bound1,
-           bind_functor<(I_location?I_location+1:0), T_bound2,
-           bind_functor<(I_location?I_location+2:0), T_bound3, T_functor> > >
-             (bind<(I_location?I_location+1:0)>(_A_functor, _A_b2, _A_b3),_A_b1); 
-  }
+{ 
+  return bind_functor<I_location, T_bound1,
+         bind_functor<(I_location?I_location+1:0), T_bound2,
+         bind_functor<(I_location?I_location+2:0), T_bound3, T_functor> > >
+           (bind<(I_location?I_location+1:0)>(_A_functor, _A_b2, _A_b3),_A_b1); 
+}
 
-
-} /* namespace functor */
 } /* namespace sigc */

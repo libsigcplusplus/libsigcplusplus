@@ -26,13 +26,13 @@ namespace sigc {
  * Iterators must not be used beyond the lifetime of the list
  * they work on. A connection object can be created from a
  * slot list iterator and may safely be used to disconnect
- * the refered slot at any time (disconnect()). If the slot
+ * the referred slot at any time (disconnect()). If the slot
  * has already been destroyed, disconnect() does nothing. empty() or
  * operator bool() can be used to test whether the connection is
  * still active. The connection can be blocked (block(), unblock()).
  *
- * All this is possibly because the connection object gets notified
- * when the refered slot dies (notify()).
+ * This is possibly because the connection object gets notified
+ * when the referred slot dies (notify()).
  *
  * @ingroup signal
  */
@@ -45,31 +45,30 @@ struct connection
    * @param c The connection object to make a copy from.
    */
   connection(const connection& c) : slot_(c.slot_)
-    { if (slot_) slot_->add_dependency(this, &notify); }
+    { if (slot_) slot_->add_destroy_notify_callback(this, &notify); }
 
   /** Constructs a connection object from a slot list iterator.
    * @param it The slot list iterator to take the slot from.
    */
   template <typename T_slot>
-  connection(const internal::slot_iterator<T_slot>& it) : slot_(&(*it))
-    { if (slot_) slot_->add_dependency(this, &notify); }
+  connection(const slot_iterator<T_slot>& it) : slot_(&(*it))
+    { if (slot_) slot_->add_destroy_notify_callback(this, &notify); }
 
   /** Overrides this connection object copying another one.
    * @param c The connection object to make a copy from.
    */
-  connection& operator = (const connection& c)
-    { set_slot(c.slot_); }
+  connection& operator=(const connection& c)
+    { set_slot(c.slot_); return *this; }
 
   /** Overrides this connection object with another slot list iterator.
    * @param it The new slot list iterator to take the slot from.
    */
   template <typename T_slot>
-  connection& operator = (const internal::slot_iterator<T_slot>& it)
-    { set_slot(&(*it)); }
+  connection& operator=(const slot_iterator<T_slot>& it)
+    { set_slot(&(*it)); return *this; }
 
-  /** Destructs the connection object. */
   ~connection()
-    { if (slot_) slot_->remove_dependency(this); }
+    { if (slot_) slot_->remove_destroy_notify_callback(this); }
 
   /** Returns whether the connection is still active.
    * @return @p true if the connection is still active.
@@ -97,11 +96,9 @@ struct connection
   bool unblock()
     { if (slot_) return slot_->unblock(); }
 
-  /** Disconnects the underlying slot.
-   * Invalidates the underlying slot notifying its parent.
-   */
+  /// Disconnects the referred slot.
   void disconnect()
-    { if (slot_) slot_->disconnect(); }
+    { if (slot_) slot_->disconnect(); } // This notifies slot_'s parent.
 
   /** Returns whether the connection is still active.
    * @return @p true if the connection is still active.
@@ -109,18 +106,18 @@ struct connection
   operator bool()
     { return !empty(); }
 
-  /** Callback that is executed when the slot is destroyed.
-   * This callback is registered in the wrapped slot object.
-   * It is executed when the slot is destroyed and sets slot_
-   * to zero.
+  /** Callback that is executed when the referred slot is destroyed.
    * @param d The connection object notified (@p this).
    */
-  static void* notify(void* d);
+  static void* notify(void* data);
 
-  private:
-    void set_slot(functor::internal::slot_base* cl);
+private:
+  void set_slot(slot_base* sl);
 
-    functor::internal::slot_base* slot_;
+  /* Referred slot. Set to zero from notify().
+   * A value of zero indicates an "empty" connection.
+   */
+  slot_base* slot_;
 };
 
 } /* namespace sigc */

@@ -43,7 +43,6 @@ divert(0)dnl
 #include <sigc++/adaptors/lambda/base.h>
 
 namespace sigc {
-namespace functor {
 
 namespace internal {
 FOR(1,CALL_SIZE,[[LAMBDA_SELECT(%1,CALL_SIZE)]])
@@ -52,7 +51,6 @@ FOR(1,CALL_SIZE,[[LAMBDA_SELECT(%1,CALL_SIZE)]])
 FOR(1,CALL_SIZE,[[extern const lambda<internal::lambda_select%1> _%1;
 ]])
 
-} /* namespace functor */
 } /* namespace sigc */
 
 #endif /* _SIGC_LAMBDA_SELECT_HPP_ */

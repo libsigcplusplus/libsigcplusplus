@@ -39,7 +39,6 @@ divert(0)dnl
 #include <sigc++/adaptors/adaptor_trait.h>
 
 namespace sigc {
-namespace functor {
 
 // dummy structure to keep track of the where we are.
 struct lambda_base : public adaptor_base {};
@@ -170,7 +169,6 @@ template <class T_type>
 lambda<const T_type&> var(const T_type& v)
 { return lambda<const T_type&>(v); }
 
-} /* namespace functor */
 } /* namespace sigc */
 
 #endif /* _SIGC_LAMBDA_BASE_HPP_ */

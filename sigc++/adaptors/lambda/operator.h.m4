@@ -120,7 +120,6 @@ divert(0)dnl
 #include <sigc++/adaptors/lambda/base.h>
 
 namespace sigc {
-namespace functor {
 
 template <class T_type>
 struct dereference_trait
@@ -447,7 +446,6 @@ void visit_each(const T_action& _A_action,
 
 undivert(2)dnl
 
-} /* namespace functor */
 } /* namespace sigc */
 
 #endif /* _SIGC_LAMBDA_OPERATOR_HPP_ */

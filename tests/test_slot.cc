@@ -6,27 +6,24 @@
 #include <iostream>
 #include <sigc++/functors/slot.h>
 
-using namespace std;
-using namespace sigc::functor;
-
 class foo
 {
   public:
-  void operator()(int i)       {cout << "foo(int "<<i<<")" << endl;}
-  void operator()(string& str) {cout << "foo(string '"<<str<<"')" << endl; str="foo was here";}
-  void operator()(int,int)     {cout << "foo(int,int)" << endl;}
+  void operator()(int i)            {std::cout << "foo(int "<<i<<")" << std::endl;}
+  void operator()(std::string& str) {std::cout << "foo(string '"<<str<<"')" << std::endl; str="foo was here";}
+  void operator()(int,int)          {std::cout << "foo(int,int)" << std::endl;}
 };
 
 int main()
 {
-  slot<void,int> c=foo();
+  sigc::slot<void,int> c=foo();
   c(1);
   c=foo();
   c(2);
 
   // test reference
-  slot<void,string&> s=foo();
-  string str("guest book");
+  sigc::slot<void,std::string&> s=foo();
+  std::string str("guest book");
   s(str);
-  cout << str << endl;
+  std::cout << str << std::endl;
 }

@@ -1,16 +1,16 @@
 # Base (./)
-base_m4 = template.macros.m4 signal.h.m4
+base_m4 = template.macros.m4 signal.h.m4 compatibility.h.m4
 base_built_cc =
-base_built_h = signal.h
+base_built_h = signal.h compatibility.h
 
-signal.cc : signal.h functors/slot.h
+signal.cc : signal.h functors/slot.h functors/mem_fun.h functors/functor_trait.h
 
 # Functors (functors/)
 functors_m4 = functor_trait.h.m4 slot.h.m4 ptr_fun.h.m4 mem_fun.h.m4
 functors_built_cc = 
 functors_built_h = functor_trait.h slot.h ptr_fun.h mem_fun.h
 
-functors/slot.cc : functors/slot.h
+functors/slot.cc : functors/slot.h functors/functor_trait.h
 
 # Adaptors (adaptors/)
 adaptors_m4 = deduce_result_type.h.m4 adaptor_trait.h.m4 bind.h.m4 bind_return.h.m4 \
@@ -24,7 +24,9 @@ lambda_m4 = base.h.m4 select.h.m4 operator.h.m4 group.h.m4 lambda.cc.m4
 lambda_built_cc = lambda.cc
 lambda_built_h = base.h select.h operator.h group.h
 
-adaptors/lambda/lambda.cc : $(sigc_built_h)
+adaptors/lambda/lambda.cc : adaptors/lambda/select.h adaptors/lambda/base.h \
+                   adaptors/adaptor_trait.h adaptors/deduce_result_type.h \
+                   functors/ptr_fun.h functors/mem_fun.h functors/functor_trait.h
 
 # Subdirectories needed also in the build dir
 build_subdirs = functors adaptors adaptors/lambda

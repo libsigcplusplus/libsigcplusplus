@@ -9,28 +9,24 @@
 #include <sigc++/adaptors/bind.h>
 #include <sigc++/functors/mem_fun.h>
 
-using namespace std;
-using namespace sigc;
-using namespace sigc::functor;
-
-class my_class: public trackable
+class my_class: public sigc::trackable
 {
   public:
     int i;
-    virtual void foo() { cout << i << endl; }
+    virtual void foo() { std::cout << i << std::endl; }
 };
 
 int main()
 {
-  slot<void> cl;
+  sigc::slot<void> sl;
   {
     my_class t;
     t.i=10;
-    cl = mem_fun0(&t, &my_class::foo);
-//    cl = bind<1>(&my_class::foo, &t);
-    cl();
+    sl = sigc::mem_fun0(&t, &my_class::foo);
+//    sl = bind<1>(&my_class::foo, &t); // TODO: shouldn't this work?
+    sl();
   }
   int i=0;
 
-  cl();
+  sl();
 }

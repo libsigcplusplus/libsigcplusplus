@@ -23,10 +23,10 @@
 #include <sigc++/type_traits.h>
 
 namespace sigc {
-namespace functor {
 
 namespace internal {
 
+/// Helper struct for visit_each_type().
 template <class T_target, class T_action>
 struct limit_derived_target
 {
@@ -54,6 +54,7 @@ struct limit_derived_target
   T_action action_;
 };
 
+/// Helper struct for visit_each_type().
 template <class T_target, class T_action>
 struct limit_derived_target<T_target*, T_action>
 {
@@ -99,17 +100,42 @@ struct limit_derived_target<T_target*, T_action>
 } /* namespace internal */
 
 
-// This function allows you to perform a functor on each of the targets
-// of a functor.
-// All unknown types just call action on them.
-// Add overloads that specialize the T_functor argument for known types,
-// so that subobjects can be visited.
+/** This function performs a functor on each of the targets of a functor.
+ * All unknown types just call @p _A_action on them.
+ * Add overloads that specialize the @p T_functor argument for your own
+ * functor types, so that subobjects get visited. This is needed to enable
+ * auto-disconnection support for your functor types.
+ *
+ * @par Example:
+ *   @code
+ *   struct some_functor
+ *   {
+ *     void operator()() {}
+ *     some_sigc_trackable_derived_type some_data_member;
+ *   }
+ *
+ *   namespace sigc
+ *   {
+ *     template <class T_action>
+ *     void visit_each(const T_action& _A_action,
+ *                     const some_functor& _A_target)
+ *     {
+ *       visit_each(_A_action, _A_target.some_data_member);
+ *     }
+ *   }
+ *   @endcode
+ *
+ * @ingroup functors
+ */
 template <class T_action, class T_functor>
 void visit_each(const T_action& _A_action, const T_functor& _A_functor)
 { _A_action(_A_functor); }
 
-// This function allows you to perform a functor on each of the targets
-// of a functor limited to a restricted type.
+/** This function performs a functor on each of the targets
+ * of a functor limited to a restricted type.
+ *
+ * @ingroup functors
+ */
 template <class T_type, class T_action, class T_functor>
 void visit_each_type(const T_action& _A_action, const T_functor& _A_functor)
 { 
@@ -117,6 +143,5 @@ void visit_each_type(const T_action& _A_action, const T_functor& _A_functor)
   visit_each(limited_action,_A_functor);
 }
 
-} /* namespace functor */
 } /* namespace sigc */
 #endif

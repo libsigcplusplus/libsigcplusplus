@@ -7,10 +7,7 @@
 #include <sigc++/functors/slot.h>
 #include <iostream>
 
-using namespace sigc::functor;
-using sigc::trackable;
-
-struct foo : public sigc::functor::functor_base
+struct foo : public sigc::functor_base
 {
 #ifdef SIGC_CXX_TYPEOF
   // if the compiler supports typeof(), result_type must only match the
@@ -34,7 +31,7 @@ struct foo : public sigc::functor::functor_base
 #endif
 };
 
-struct foo_void : public sigc::functor::functor_base
+struct foo_void : public sigc::functor_base
 {
   typedef void result_type;
   void operator()(int i)
@@ -52,7 +49,7 @@ void egon(std::string& str)
   {std::cout << "egon(string '"<<str<<"')" << std::endl; str="egon was here";}
 
 
-struct book : public trackable
+struct book : public sigc::trackable
 {
   book(const std::string& name) : name_(name) {}
   operator std::string& () {return name_;}
@@ -63,41 +60,41 @@ struct book : public trackable
 int main()
 {
   // replacing bind1st, bind2nd
-  std::cout << bind<1>(foo(),-12345)(5) << std::endl;
-  std::cout << bind<2>(foo(),-12345)(5) << std::endl;
+  std::cout << sigc::bind<1>(foo(),-12345)(5) << std::endl;
+  std::cout << sigc::bind<2>(foo(),-12345)(5) << std::endl;
 
   // multiple
-  bind<1>(foo(),1,2)();
+  sigc::bind<1>(foo(),1,2)();
 
   // bind from end
-  bind<0>(foo(),4)(3);
+  sigc::bind<0>(foo(),4)(3);
 
   // multiple beginning from end
-  bind<0>(foo(),5,6)();
+  sigc::bind<0>(foo(),5,6)();
 
   // used together
-  bind<1>(bind<1>(foo(),7),8)();
+  sigc::bind<1>(sigc::bind<1>(foo(),7),8)();
 
   // void return
-  bind<1>(foo(),9,10)(11); // (only returns void if typeof() is supported)
-  bind<0>(foo_void(),12)();
+  sigc::bind<1>(foo(),9,10)(11); // (only returns void if typeof() is supported)
+  sigc::bind<0>(foo_void(),12)();
 
   // function pointer instead of functor
-  bind<1>(&bar,13,14)();
+  sigc::bind<1>(&bar,13,14)();
 
   // test return type of bind_functor::operator() overload with no arguments
-  std::cout << bind<0>(foo(),15)() << std::endl;
-  std::cout << bind<0>(&simple, true)() << std::endl;
+  std::cout << sigc::bind<0>(foo(),15)() << std::endl;
+  std::cout << sigc::bind<0>(&simple, true)() << std::endl;
 
   // test references
   std::string str("guest book");
-  bind<0,std::string&>(&egon,str)(); // Tell bind that is shall store a reference.
+  sigc::bind<0,std::string&>(&egon,str)(); // Tell bind that is shall store a reference.
   std::cout << str << std::endl;     // (This cannot be the default behaviour: just think about what happens if str dies!)
 
-  slot<void> c;
+  sigc::slot<void> c;
   {
     book guest_book("karl");
-    c = bind<0,book&>(&egon,guest_book);
+    c = sigc::bind<0,book&>(&egon,guest_book);
     c();
     std::cout << (std::string&)guest_book << std::endl;
   }    // auto-disconnect

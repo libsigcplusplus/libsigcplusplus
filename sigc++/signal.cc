@@ -22,7 +22,7 @@
 namespace sigc {
 namespace internal {
 
-signal_impl::iterator_type signal_impl::insert(signal_impl::iterator_type i, const functor::internal::slot_base& slot_)
+signal_impl::iterator_type signal_impl::insert(signal_impl::iterator_type i, const slot_base& slot_)
 {
   iterator_type temp = slots_.insert(i, slot_);
   temp->set_parent(this, &notify);
@@ -31,12 +31,6 @@ signal_impl::iterator_type signal_impl::insert(signal_impl::iterator_type i, con
 
 void signal_impl::sweep()
 { 
-  if (destroy_)
-    {
-      delete this;
-      return;
-    }
-
   iterator_type i = slots_.begin();
   while (i != slots_.end())
     if ((*i).empty())  
@@ -45,38 +39,32 @@ void signal_impl::sweep()
       ++i;
 }
 
-void signal_impl::destroy()
-{
-  if (exec_count_ == 0)
-    delete this;
-  else                           // don't delete this during emission
-    destroy_ = defered_ = true;  // => sweep() will be called from ~signal_exec().
-}
-
 void* signal_impl::notify(void* d)
 {
   signal_impl* self = (signal_impl*)d;
   if (self->exec_count_ == 0)
     self->sweep();
-  else                      // This is occuring during signal emission.
-    self->defered_ = true;  // => sweep() will be called from ~signal_exec().
-  return 0;                 // This is safer because we don't have to care about our iterators in emit().
+  else                       // This is occuring during signal emission.
+    self->deferred_ = true;  // => sweep() will be called from ~signal_exec().
+  return 0;                  // This is safer because we don't have to care about our iterators in emit().
 }
 
+} /* namespace internal */
 
-signal_base::~signal_base()
+signal_base& signal_base::operator = (const signal_base& src)
 {
-  if (impl_)
-    impl_->destroy();
+  if (impl_) impl_->unreference();
+  impl_ = src.impl();
+  impl_->reference();
+  return *this;
 }
 
-signal_impl* signal_base::impl()
+internal::signal_impl* signal_base::impl() const
 {
   if (!impl_)
-    impl_ = new signal_impl;
+    impl_ = new internal::signal_impl;
+  impl_->reference();
   return impl_;
 }
 
-
-} /* namespace internal */
 } /* sigc */

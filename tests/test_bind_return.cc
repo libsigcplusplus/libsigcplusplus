@@ -7,19 +7,15 @@
 #include <sigc++/functors/slot.h>
 #include <iostream>
 
-using namespace std;
-using namespace sigc::functor;
-using sigc::trackable;
-
 struct foo 
 {
   void operator()(int i) 
-    {cout << "foo(int "<<i<<")"<<endl; }
+    {std::cout << "foo(int "<<i<<")"<<std::endl; }
   float operator()(float i) 
-    {cout << "foo(float "<<i<<")"<<endl; return i*5;}
+    {std::cout << "foo(float "<<i<<")"<<std::endl; return i*5;}
 };
 
-struct bar : public trackable
+struct bar : public sigc::trackable
 {
   bar(int i=0) : i_(i) {}
   operator int() {return i_;}
@@ -28,18 +24,18 @@ struct bar : public trackable
 
 int main()
 {
-  cout << bind_return(foo(),-12345)(5) << endl;
+  std::cout << sigc::bind_return(foo(),-12345)(5) << std::endl;
 
   // test references
-  string str("guest book");
-  bind_return<string&>(foo(),str)(6) = "main";
-  cout << str << endl;
+  std::string str("guest book");
+  sigc::bind_return<std::string&>(foo(),str)(6) = "main";
+  std::cout << str << std::endl;
 
-  slot<bar,int> c; // bar, not bar&: slots cannot return references
+  sigc::slot<bar,int> c; // bar, not bar&: slots cannot return references
   {
     bar choco(-1);
-    c = bind_return<bar&>(foo(),choco);
-    cout << c(7) << endl;
+    c = sigc::bind_return<bar&>(foo(),choco);
+    std::cout << c(7) << std::endl;
   } // auto-disconnect
-  cout << c(8) << endl;
+  std::cout << c(8) << std::endl;
 }

@@ -42,7 +42,6 @@ __FIREWALL__
 
 
 namespace sigc {
-namespace functor {
 
 /** A hint to the compiler.
  * All multi-type functors which define deduce_result_type<> should publically inherit from this hint.
@@ -83,5 +82,4 @@ FOR(0,CALL_SIZE,[[DEDUCE_RESULT_TYPE_ADAPTOR(%1,CALL_SIZE)]])
 FOR(0,CALL_SIZE,[[DEDUCE_RESULT_TYPE_TYPEOF(%1,CALL_SIZE)]])
 #endif
 
-} /* namespace functor */
 } /* namespace sigc */

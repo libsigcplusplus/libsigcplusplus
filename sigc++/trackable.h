@@ -22,101 +22,110 @@
 
 namespace sigc {
 
-class trackable;
-
 namespace internal {
 
-/** Representative of a dependency.
- * A dependency consists of a pointer and a callback. This callback is
- * executed from the dependency list (of type trackable_dep_list) that
- * holds the dependency when its parent object (of type trackable) is
- * destroyed or overwritten.
+/** Destroy notification callback.
+ * A destroy notification callback consists of a data pointer and a
+ * function pointer. The function is executed from the owning callback
+ * list (of type trackable_callback_list) when its parent object
+ * (of type trackable) is destroyed or overwritten.
  */
-struct trackable_dependency
+struct trackable_callback
 {
-  void* obj_;
+  void* data_;
   void* (*func_)(void*);
-  trackable_dependency(void* o, void* (*f)(void*))
-    : obj_(o), func_(f) {}
+  trackable_callback(void* data, void* (*func)(void*))
+    : data_(data), func_(func) {}
 };
 
-/** Dependency list.
- * A dependency list has an stl list of dependencies of type
- * trackable_dependency. Dependencies can be added and removed from the
- * list with the member functions add_dependency(), remove_dependency()
- * and clear(). The dependencies' callbacks are executed from clear()
- * and from the destructor.
+/** Callback list.
+ * A callback list has an stl list of callbacks of type
+ * trackable_callback. Callbacks are added and removed with
+ * add_callback(), remove_callback() and clear(). The callbacks
+ * are invoked from clear() and from the destructor.
  */
-class trackable_dep_list
+struct trackable_callback_list
 {
-    typedef std::list<trackable_dependency> dep_list;
-  public: 
+  void add_callback(void* data, void* (*func)(void*) );
+  void remove_callback(void* data);
+  void clear();
 
-    void add_dependency(void* target, void* (*func)(void*) );
-    void remove_dependency(void* target);
-    void clear();
+  trackable_callback_list()
+    : clearing_(false) {}
 
-    trackable_dep_list()
-      : clearing_(false) {}
+  ~trackable_callback_list();
 
-    ~trackable_dep_list();
-
-  private:
-    dep_list    deps_;
-    bool        clearing_;
+private:
+  typedef std::list<trackable_callback> callback_list;
+  callback_list callbacks_;
+  bool          clearing_;
 };
 
 } /* namespace internal */
 
+
 /** Base class for objects with auto-disconnection.
- * trackable is the class that must be inherited when objects shall
- * automatically invalidate slots that depend on them on destruction.
- * slots which are built from member functions of a class inheriting
- * trackable add a dependency to the object thus installing a callback
- * notifying them when the object is destroyed or overwritten.
- * add_dependency() and remove_dependency() are part of the public API
- * so that it can also be used at any place notification of the object
- * dying is needed.
- * The dependencies are held in a dependency list of type
- * trackable_dep_list. This list is allocated dynamically when the
- * first dependency is added.
- * Note that there is no virtual destructor. Therefore it would be
- * unwise to use "trackable*" as pointer type for storing derived
- * objects if their destructor should be called or if they have
- * virtual functions.
+ * trackable must be inherited when objects shall automatically
+ * invalidate slots referring to them on destruction.
+ * A slot built from a member function of a trackable derived
+ * type installs a callback that is invoked when the trackable object
+ * is destroyed or overwritten.
+ * add_destroy_notify_callback() and remove_destroy_notify_callback()
+ * can be used to manually install and remove callbacks when
+ * notification of the object dying is needed.
+ * notify_callbacks() invokes and removes all previously installed
+ * callbacks and can therefore be used to disconnect from all signals.
+ * Note that there is no virtual destructor. Don't use trackable*
+ * as pointer type for managing your data or the destructors of
+ * your derived types won't be called when deleting your objects.
+ *
+ * @ingroup signal
  */
-class trackable
+struct trackable
 {
-  public:
-    trackable() : dep_list_(0) {}
+  trackable() : callback_list_(0) {}
 
-    trackable(const trackable& t)
-      : dep_list_(0) {}
+  trackable(const trackable& t)
+    : callback_list_(0) {}
 
-    trackable& operator=(const trackable& t)
-      {
-        if (dep_list_) dep_list_->clear();
-        return *this;
-      }
+  trackable& operator=(const trackable& t)
+    {
+      notify_callbacks();
+      return *this;
+    }
 
-    ~trackable()
-      { clear(); }
+  ~trackable()
+    { notify_callbacks(); }
 
-    /*virtual ~trackable() {} */  /* we would need a virtual dtor for users
-                                     who insist on using "trackable*" as
-                                     pointer type for their own derived objects */
+  /*virtual ~trackable() {} */  /* we would need a virtual dtor for users
+                                   who insist on using "trackable*" as
+                                   pointer type for their own derived objects */
 
-    void add_dependency(void* o, void* (f)(void*)) const
-      { dep_list()->add_dependency(o, f); }
-    void remove_dependency(void* o) const
-      { dep_list()->remove_dependency(o); }
+  /** Add a callback that is executed (notified) when the trackable object is detroyed.
+   * @param data Passed into func upon notification.
+   * @param func Callback executed upon destruction of the object.
+   */
+  void add_destroy_notify_callback(void* data, void* (func)(void*)) const
+    { callback_list()->add_callback(data, func); }
 
-    /// Removes all dependencies and deletes dep_list_.
-    void clear();
+  /** Remove a callback previously installed with add_destroy_notify_callback().
+   * The callback is not executed.
+   * @param data Parameter passed into previous call to add_destroy_notify_callback().
+   */
+  void remove_destroy_notify_callback(void* data) const
+    { callback_list()->remove_callback(data); }
 
-  private:
-    internal::trackable_dep_list* dep_list() const;
-    mutable internal::trackable_dep_list* dep_list_;
+  /// Execute and remove all previously installed callbacks.
+  void notify_callbacks();
+
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+private:
+  /* The callbacks are held in a list of type trackable_callback_list.
+   * This list is allocated dynamically when the first callback is added.
+   */
+  internal::trackable_callback_list* callback_list() const;
+  mutable internal::trackable_callback_list* callback_list_;
+#endif
 };
 
 } /* namespace sigc */

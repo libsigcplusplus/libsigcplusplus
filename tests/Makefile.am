@@ -22,7 +22,8 @@ noinst_PROGRAMS= \
   test_functor_trait \
   test_trackable \
   test_size \
-  test_lambda
+  test_lambda \
+  test_compatibility
 
 TESTS = $(noinst_PROGRAMS)
 
@@ -44,3 +45,4 @@ test_functor_trait_SOURCES = test_functor_trait.cc
 test_lambda_SOURCES = test_lambda.cc
 test_trackable_SOURCES = test_trackable.cc
 test_size_SOURCES = test_size.cc
+test_compatibility_SOURCES = test_compatibility.cc

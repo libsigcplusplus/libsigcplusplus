@@ -7,11 +7,8 @@
 #include <iostream>
 #include <stdexcept>
 
-using namespace std;
-using namespace sigc::functor;
-
 #ifndef SIGC_CXX_TYPEOF
-struct f : public sigc::functor::functor_base
+struct f : public sigc::functor_base
 {
   typedef int result_type;
 #else
@@ -19,25 +16,25 @@ struct f
 {
 #endif
   int operator()(int i) 
-    {cout << "f(int "<<i<<")"<<endl; 
+    {std::cout << "f(int "<<i<<")"<<std::endl; 
      throw std::range_error("out of range");}
 };
 
-struct g : public sigc::functor::functor_base
+struct g : public sigc::functor_base
 {
   // also necessary if the compiler supports typeof() because the return type of
   // g's operator() overload with no arguments cannot be auto-detected in C++:
   typedef int result_type;
   int operator()() 
-    {cout << "g()"<<endl; 
+    {std::cout << "g()"<<std::endl;
      throw std::range_error("out of range");}
 };
 
-struct g_void : public sigc::functor::functor_base
+struct g_void : public sigc::functor_base
 {
   typedef void result_type;
   void operator()()
-    {cout << "g_void()"<<endl;
+    {std::cout << "g_void()"<<std::endl;
      throw std::range_error("out of range");}
 };
 
@@ -49,7 +46,7 @@ struct my_catch
     try { throw; } 
     catch (std::range_error e) // catch what types we know
       {
-        cerr << "caught "<< e.what() <<endl;
+        std::cerr << "caught "<< e.what() <<std::endl;
       }
     return 1;
     // all else continues out.
@@ -59,7 +56,7 @@ struct my_catch
 
 int main()
 {
-  cout << exception_catch(f(), my_catch())(1) << endl;
-  cout << exception_catch(g(), my_catch())() << endl;
-  exception_catch(g_void(), my_catch())(); // void test
+  std::cout << sigc::exception_catch(f(), my_catch())(1) << std::endl;
+  std::cout << sigc::exception_catch(g(), my_catch())() << std::endl;
+  sigc::exception_catch(g_void(), my_catch())(); // void test
 }

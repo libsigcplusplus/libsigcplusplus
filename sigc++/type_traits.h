@@ -84,11 +84,10 @@ struct type_trait<void>
 };
 
 
-/* determine the relationship between classes */
-
-// From Esa Pulkkin
-// Compile-time determination of base-class relationship in C++
-// Adapted to match the syntax of boost's type_traits library
+/** From Esa Pulkkin:
+ * Compile-time determination of base-class relationship in C++
+ * (adapted to match the syntax of boost's type_traits library).
+ */
 template <class T_base, class T_derived>
 struct is_base_and_derived
 {

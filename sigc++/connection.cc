@@ -23,20 +23,20 @@ using namespace std;
 
 namespace sigc {
 
-void connection::set_slot(functor::internal::slot_base* cl)
+void connection::set_slot(slot_base* sl)
 {
   if (slot_)
-    slot_->remove_dependency(this);
+    slot_->remove_destroy_notify_callback(this);
 
-  slot_ = cl;
+  slot_ = sl;
 
   if (slot_)
-    slot_->add_dependency(this, &notify);
+    slot_->add_destroy_notify_callback(this, &notify);
 }
 
-void* connection::notify(void* d)
+void* connection::notify(void* data)
 {
-  connection* self = (connection*)d;
+  connection* self = (connection*)data;
   self->slot_ = 0;
   return 0;
 }

@@ -103,7 +103,6 @@ __FIREWALL__
 #include <sigc++/adaptors/deduce_result_type.h>
 
 namespace sigc { 
-namespace functor {
 
 template <class T_functor> struct adapts;
 
@@ -112,7 +111,7 @@ struct adaptor_functor : public adaptor_base
 {
   template <LOOP(class T_arg%1=void, CALL_SIZE)>
   struct deduce_result_type
-    { typedef typename sigc::functor::deduce_result_type<LIST(T_functor, LOOP(T_arg%1,CALL_SIZE))>::type type; };
+    { typedef typename sigc::deduce_result_type<LIST(T_functor, LOOP(T_arg%1,CALL_SIZE))>::type type; };
   typedef typename functor_trait<T_functor>::result_type result_type;
 
   operator T_functor& () const { return functor_; }
@@ -192,5 +191,4 @@ struct adapts : public adaptor_base
   mutable adaptor_type functor_;
 };
 
-} /* namespace functor */
 } /* namespace sigc */

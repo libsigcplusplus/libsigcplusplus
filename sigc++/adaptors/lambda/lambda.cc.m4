@@ -20,9 +20,7 @@ divert(0)dnl
 #include <sigc++/adaptors/lambda/select.h>
 
 namespace sigc {
-namespace functor {
 
 FOR(1,CALL_SIZE,[[const lambda<internal::lambda_select%1> _%1;
 ]])
-} /* namespace functor */
 } /* namespace sigc */

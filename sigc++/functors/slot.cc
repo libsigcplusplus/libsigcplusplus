@@ -20,17 +20,18 @@
 #include <sigc++/functors/slot.h>
 
 namespace sigc {
-namespace functor {
 namespace internal {
 
-void* slot_rep::notify(void* p)
+void* slot_rep::notify(void* data)
 {
-  slot_rep* self=(slot_rep*)p;
+  slot_rep* self = (slot_rep*)data;
   self->call_ = 0;                    // Invalidate the slot.
   if (self->parent_)
     (self->cleanup_)(self->parent_);  // Notify the parent.
   return 0;
 }
+
+} /* namespace internal */
 
 /*bool slot_base::empty() const // having this function not inline is killing performance !!!
 { 
@@ -50,29 +51,27 @@ bool slot_base::block(bool should_block)
 }
 
 // TODO: untested
-slot_base& slot_base::operator=(const slot_base& cl)
+slot_base& slot_base::operator=(const slot_base& src)
 {
-  if (cl.rep_ == rep_) return *this;
+  if (src.rep_ == rep_) return *this;
 
-  if (cl.empty())
-    {
-      disconnect();
-      return *this;
-    }
+  if (src.empty())
+  {
+    disconnect();
+    return *this;
+  }
 
-  slot_rep* new_rep_ = cl.rep_->dup();
+  internal::slot_rep* new_rep_ = src.rep_->dup();
 
   if (rep_)               // Silently exchange the slot_rep.
-    {
-      new_rep_->set_parent(rep_->parent_, rep_->cleanup_);
-      delete rep_;
-    }
+  {
+    new_rep_->set_parent(rep_->parent_, rep_->cleanup_);
+    delete rep_;
+  }
 
   rep_ = new_rep_;
 
   return *this;
 }
 
-} /* namespace internal */
-} /* namespace functor */
-} /* sigc */
+} /* namespace sigc */

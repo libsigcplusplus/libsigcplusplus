@@ -91,7 +91,6 @@ __FIREWALL__
 #include <sigc++/adaptors/adaptor_trait.h>
 
 namespace sigc { 
-namespace functor {
 
 template <int I_location, class T_functor>
 class hide_functor;
@@ -109,10 +108,9 @@ void visit_each(const T_action& _A_action,
 template <int I_location, class T_functor>
 inline hide_functor<I_location, T_functor>
 hide(const T_functor& _A_func)
-  { 
-    return hide_functor<I_location, T_functor>
-             (_A_func);
-  }
+{ 
+  return hide_functor<I_location, T_functor>
+           (_A_func);
+}
 
-} /* namespace functor */
 } /* namespace sigc */

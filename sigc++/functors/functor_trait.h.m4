@@ -48,24 +48,25 @@ struct functor_trait<T_return (T_obj::*)(LOOP(T_arg%1, $1)) const, false>
 divert(0)dnl
 /*
   Trait functor_trait<functor>:
-    This trait allows the user to specific what is the return type
+
+  This trait allows the user to specific what is the return type
   of any type. It has been overloaded to detect the return type and
   the functor version of function pointers and class methods as well.
 
   To populate the return type of user defined and third party functors
   use the macro SIGC_FUNCTOR_TRAIT(T_functor,T_return) in
-  namespace sigc::functor. Multi-type functors are only partly supported.
-  Try specifying the return type of the functor's operator ()() overload.
+  namespace sigc. Multi-type functors are only partly supported.
+  Try specifying the return type of the functor's operator()() overload.
 
   Alternatively, you can derive your functors from functor_base and
   place "typedef T_return result_type;" in the class definition.
 
   Use SIGC_FUNCTORS_HAVE_RESULT_TYPE if you want sigc++ to assume that
-  result_type is defined in all user defined or third party functors
+  result_type is defined in all user defined or 3rd-party functors
   (except those you specify a return type explicitly with SIGC_FUNCTOR_TRAIT()).
 
   You might get away without these conventions if your compiler supports
-  typeof() and if you don't happen to use the operator ()() overload of
+  typeof() and if you don't happen to use the operator()() overload of
   sigc++'s adaptors in your program.
 
 */
@@ -74,10 +75,11 @@ __FIREWALL__
 
 
 namespace sigc {
-namespace functor {
 
 /** A hint to the compiler.
  * All functors which define "result_type" should publically inherit from this hint.
+ *
+ * @ingroup functors
  */
 struct functor_base {};
 
@@ -116,5 +118,4 @@ struct functor_trait<T_functor,false>          \
 FOR(0,CALL_SIZE,[[FUNCTOR_PTR_FUN(%1)]])
 FOR(0,CALL_SIZE,[[FUNCTOR_MEM_FUN(%1)]])
 
-} /* namespace functor */
 } /* namespace sigc */

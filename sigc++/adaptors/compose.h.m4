@@ -22,7 +22,7 @@ define([COMPOSE1_OPERATOR],[dnl
   template <LOOP(class T_arg%1, $1)>
   typename deduce_result_type<LOOP(T_arg%1, $1)>::type
   operator()(LOOP(T_arg%1 _A_a%1, $1))
-    { return functor_.template operator()<typename sigc::functor::deduce_result_type<LIST(T_getter, LOOP(T_arg%1,$1))>::type>
+    { return functor_.template operator()<typename sigc::deduce_result_type<LIST(T_getter, LOOP(T_arg%1,$1))>::type>
         (get_(LOOP(_A_a%1, $1)));
     }
 
@@ -32,8 +32,8 @@ define([COMPOSE2_OPERATOR],[dnl
   template <LOOP(class T_arg%1, $1)>
   typename deduce_result_type<LOOP(T_arg%1, $1)>::type
   operator()(LOOP(T_arg%1 _A_a%1, $1))
-    { return functor_.template operator()<typename sigc::functor::deduce_result_type<LIST(T_getter1, LOOP(T_arg%1,$1))>::type,
-                                          typename sigc::functor::deduce_result_type<LIST(T_getter2, LOOP(T_arg%1,$1))>::type>
+    { return functor_.template operator()<typename sigc::deduce_result_type<LIST(T_getter1, LOOP(T_arg%1,$1))>::type,
+                                          typename sigc::deduce_result_type<LIST(T_getter2, LOOP(T_arg%1,$1))>::type>
         (get1_(LOOP(_A_a%1, $1)), get2_(LOOP(_A_a%1,$1)));
     }
 
@@ -44,7 +44,6 @@ __FIREWALL__
 #include <sigc++/adaptors/adaptor_trait.h>
 
 namespace sigc {
-namespace functor {
 
 template <class T_setter, class T_getter>
 struct compose1_functor : public adapts<T_setter>
@@ -52,7 +51,7 @@ struct compose1_functor : public adapts<T_setter>
   template <LOOP(class T_arg%1=void, CALL_SIZE)>
   struct deduce_result_type
     { typedef typename adaptor_type::deduce_result_type<
-        typename sigc::functor::deduce_result_type<LIST(T_getter, LOOP(T_arg%1,CALL_SIZE))>::type
+        typename sigc::deduce_result_type<LIST(T_getter, LOOP(T_arg%1,CALL_SIZE))>::type
           >::type type; };
   typedef typename adaptor_type::result_type  result_type;
   typedef typename adapts<T_setter>::adaptor_type adaptor_type;
@@ -81,8 +80,8 @@ struct compose2_functor : public adapts<T_setter>
   template <LOOP(class T_arg%1=void, CALL_SIZE)>
   struct deduce_result_type
     { typedef typename adaptor_type::deduce_result_type<
-        typename sigc::functor::deduce_result_type<LIST(T_getter1, LOOP(T_arg%1,CALL_SIZE))>::type,
-        typename sigc::functor::deduce_result_type<LIST(T_getter2, LOOP(T_arg%1,CALL_SIZE))>::type
+        typename sigc::deduce_result_type<LIST(T_getter1, LOOP(T_arg%1,CALL_SIZE))>::type,
+        typename sigc::deduce_result_type<LIST(T_getter2, LOOP(T_arg%1,CALL_SIZE))>::type
           >::type result_type; };
   typedef typename adaptor_type::result_type  result_type;
   typedef typename adapts<T_setter>::adaptor_type adaptor_type;
@@ -138,5 +137,4 @@ inline compose2_functor<T_setter, T_getter1, T_getter2>
 compose(const T_setter& _A_setter, const T_getter1& _A_getter1, const T_getter2& _A_getter2)
   { return compose2_functor<T_setter, T_getter1, T_getter2>(_A_setter, _A_getter1, _A_getter2); }
 
-} /* namespace functor */
 } /* namespace sigc */
