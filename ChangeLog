@@ -1,5 +1,11 @@
 2005-02-01  Murray Cumming  <murrayc@murrayc.com>
 
+	* sigc++/visit_each.h: visit_each_type(): Specify the specific 
+	template specialization of visit_each<>() to use. The AIX compiler, 
+	and possibly the Tru64 compiler, need this extra hint.
+
+2005-02-01  Murray Cumming  <murrayc@murrayc.com>
+
 	* bind.h.m4: Define bind_functor::operator() inline because the AIX 
 	compiler/linker sometimes fails to find it when it is defined 
 	outside of the class.

@@ -124,6 +124,7 @@ void retype_slot_functor<LIST(T_functor, void, LOOP(T_type%1, CALL_SIZE))>::oper
   { this->functor_(); }
 
 
+//template specialization of visit_each<>(action, functor):
 template <LIST(class T_action, class T_functor, class T_return, LOOP(class T_type%1, CALL_SIZE))>
 void visit_each(const T_action& _A_action,
                 const retype_slot_functor<LIST(T_functor, T_return, LOOP(T_type%1, CALL_SIZE))>& _A_target)

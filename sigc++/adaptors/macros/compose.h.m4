@@ -167,7 +167,7 @@ typename compose2_functor<T_setter, T_getter1, T_getter2>::result_type
 compose2_functor<T_setter, T_getter1, T_getter2>::operator()()
   { return this->functor_(get1_(), get2_()); }
 
-
+//template specialization of visit_each<>(action, functor):
 /** Performs a functor on each of the targets of a functor.
  * The function overload for sigc::compose1_functor performs a functor on the
  * functors stored in the sigc::compose1_functor object.
@@ -182,6 +182,7 @@ void visit_each(const T_action& _A_action,
   visit_each(_A_action, _A_target.get_);
 }
 
+//template specialization of visit_each<>(action, functor):
 /** Performs a functor on each of the targets of a functor.
  * The function overload for sigc::compose2_functor performs a functor on the
  * functors stored in the sigc::compose2_functor object.

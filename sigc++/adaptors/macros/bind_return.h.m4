@@ -87,6 +87,7 @@ T_return bind_return_functor<T_return, T_functor>::operator()()
   { this->functor_(); return ret_value_; }
 
 
+//template specialization of visit_each<>(action, functor):
 /** Performs a functor on each of the targets of a functor.
  * The function overload for sigc::bind_return_functor performs a functor on the
  * functor and on the object instance stored in the sigc::bind_return_functor object.

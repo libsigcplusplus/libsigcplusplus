@@ -91,6 +91,7 @@ lambda_group$1<T_functor, LOOP(T_type%1, $1)>::operator ()() const
   { return func_(LOOP(value%1_(), $1)); }
 
 
+//template specialization of visit_each<>(action, functor):
 template <class T_action, class T_functor, LOOP(class T_type%1, $1)>
 void visit_each(const T_action& _A_action,
                 const lambda_group$1<T_functor, LOOP(T_type%1, $1)>& _A_target)

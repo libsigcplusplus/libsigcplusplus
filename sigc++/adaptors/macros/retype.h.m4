@@ -159,7 +159,8 @@ typename retype_functor<LIST(T_functor, LOOP(T_type%1, CALL_SIZE))>::result_type
 retype_functor<LIST(T_functor, LOOP(T_type%1, CALL_SIZE))>::operator()()
   { return this->functor_(); }
 
-
+  
+//template specialization of visit_each<>(action, functor):
 /** Performs a functor on each of the targets of a functor.
  * The function overload for sigc::retype_functor performs a functor on the
  * functor stored in the sigc::retype_functor object.

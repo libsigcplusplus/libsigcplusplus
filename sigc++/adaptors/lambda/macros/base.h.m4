@@ -152,6 +152,7 @@ typename lambda_core<T_type, false>::result_type lambda_core<T_type, false>::ope
 } /* namespace internal */
 
 
+//template specialization of visit_each<>(action, functor):
 template <class T_action, class T_functor, bool I_islambda>
 void visit_each(const T_action& _A_action,
                 const internal::lambda_core<T_functor, I_islambda>& _A_target)
@@ -209,6 +210,7 @@ struct lambda : public internal::lambda_core<T_type>
 };
 
 
+//template specialization of visit_each<>(action, functor):
 template <class T_action, class T_type>
 void visit_each(const T_action& _A_action,
                 const lambda<T_type>& _A_target)

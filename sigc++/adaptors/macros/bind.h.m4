@@ -144,7 +144,11 @@ FOR(eval($1+1),eval(CALL_SIZE-1),[[DEDUCE_RESULT_TYPE_COUNT($1,%1)]])dnl
    * @return The return value of the functor invocation.
    */
   result_type
-  operator()();
+  operator()()
+  {
+    //Note: The AIX compiler sometimes gives linker errors if we do not define this in the class.
+    return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<LOOP(_P_(T_type%1),$1)> (LOOP(bound%1_, $1));
+  }
 
 FOR(2,eval(CALL_SIZE-$1+1),[[BIND_OPERATOR_COUNT($1,%1)]])dnl
   /** Constructs a bind_functor object that binds an argument to the passed functor.
@@ -160,12 +164,8 @@ FOR(1,$1,[
   T_type%1 bound%1_;])
 };
 
-template <LIST(class T_functor, LOOP(class T_type%1, $1))>
-typename bind_functor<LIST(-1, T_functor, LOOP(T_type%1, $1))>::result_type
-dnl //TODO: I don't like the hardcoded 7 here. murrayc.
-bind_functor<LIST(-1, T_functor, LIST(LOOP(T_type%1, $1), LOOP(nil, 7 - $1)))>::operator()()
-  { return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<LOOP(_P_(T_type%1),$1)> (LOOP(bound%1_, $1)); }
 
+//template specialization of visit_each<>(action, functor):
 /** Performs a functor on each of the targets of a functor.
  * The function overload for sigc::bind_functor performs a functor on the
  * functor and on the object instances stored in the sigc::bind_functor object.
@@ -337,6 +337,8 @@ template <LIST(int I_location, class T_functor, LOOP(class T_type%1=nil, CALL_SI
 struct bind_functor;
 
 FOR(0,eval(CALL_SIZE-1),[[BIND_FUNCTOR_LOCATION(%1)]])dnl
+
+//template specialization of visit_each<>(action, functor):
 /** Performs a functor on each of the targets of a functor.
  * The function overload for sigc::bind_functor performs a functor on the
  * functor and on the object instances stored in the sigc::bind_functor object.

@@ -186,6 +186,7 @@ struct hide_functor;
 
 FOR(-1,eval(CALL_SIZE-1),[[HIDE_FUNCTOR(%1)]])dnl
 
+//template specialization of visit_each<>(action, functor):
 /** Performs a functor on each of the targets of a functor.
  * The function overload for sigc::hide_functor performs a functor on the
  * functor stored in the sigc::hide_functor object.

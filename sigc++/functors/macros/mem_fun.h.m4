@@ -115,6 +115,7 @@ FOR(1, $1,[
   $3 T_obj *obj_ptr_;
 };
 
+//template specialization of visit_each<>(action, functor):
 /** Performs a functor on each of the targets of a functor.
  * The function overload for sigc::bound_[$2]mem_functor performs a functor
  * on the object instance stored in the sigc::bound_[$2]mem_functor object.

@@ -153,7 +153,8 @@ void exception_catch_functor<T_functor, T_catcher, void>::operator()()
       { this->catcher_(); }
   }
 
-
+  
+//template specialization of visit_each<>(action, functor):
 template <class T_action, class T_functor, class T_catcher, class T_return>
 void visit_each(const T_action& _A_action,
                 const exception_catch_functor<T_functor, T_catcher, T_return>& _A_target)
