@@ -3,47 +3,51 @@
 <!-- SSI fragments/html_declaration.html_fragment end -->
 
 
-<a name="index"><h3>Glossary of terms</h3></a>
+<a name="index"><h3>Glossary of Terms</h3></a>
 
-<b>adaptor</b> <i>(noun)</i> - Function which alters a slots signature. <p> 
+<p><b>adaptor</b> <i>(noun)</i> - A function which alters a slot&#8217;s
+signature. </p> 
 
-<b>bind</b> <i>(verb)</i> - To fix a value of a callback's argument in the STL sense. <p> 
+<p><b>bind</b> <i>(verb)</i> - To fix a value of a callback's argument in the
+STL sense. </p> 
 
-<b>call</b> <i>(verb)</i> - Process of invoking a callback or slot. <p> 
+<p><b>call</b> <i>(verb)</i> - The process of invoking a callback or slot. </p> 
 
-<b>callback</b> <i>(noun)</i> - Structure which can be called with a set of arguments
-resulting in a function or method call.  Callbacks are not safe.  <p> 
+<p><b>callback</b> <i>(noun)</i> - A function or a member function which will
+be called when a signal is emitted. A slot specifies the callback and any extra
+data, such as the object instance, and extra parameters. </p>
 
-<b>connect</b> <i>(verb)</i> - Process of inserting a slot into a signal destroying
-the slot. <p> 
+<p><b>connect</b> <i>(verb)</i> - The process of specifying the callback
+which will be called when the signal is emitted. </p>
 
-<b>emit</b> <i>(verb)</i> - Process of invoking a signal. <p> 
+<p><b>emit</b> <i>(verb)</i> - When a signal is emitted, the connected slots
+will be called. </p> 
 
-<b>factory</b> <i>(noun)</i> - Function which takes a set of arguments and 
-produces a different object based on those arguments. <p> 
+<p><b>factory</b> <i>(noun)</i> - A function which takes a set of arguments and 
+produces a different object based on those arguments. </p> 
 
-<b>handle</b> <i>(noun)</i> - Safe version of a pointer. <p> 
+<p><b>handle</b> <i>(noun)</i> - A safe version of a pointer. </p> 
 
-<b>marshaller</b> <i>(noun)</i> - Structure which gathers up the results of a
-multi-callback to return a single return value. <p>  
+<p><b>marshaller</b> <i>(noun)</i> -  When a signal has a return value, and
+several slots are connected to that signal, each one returning a value, then a
+marshaller chooses one single return value. </p>
 
-<b>reference</b> <i>(noun)</i> - Pointer to an object which attempts to prevent
-that object from deleting. <p> 
-
-<b>safe</b> <i>(adj)</i> - Any structure which falls back into uninitalized state 
+<p><b>safe</b> <i>(adj)</i> - Any structure which falls back into uninitalized state 
 when its related resources are destroyed.  Safe resources can be
 held throughout the program. Unsafe resources may point to freed
-memory. <p> 
+memory. </p> 
 
-<b>signal</b> <i>(noun)</i> - Container for slots which can be emited.  Signals consist
-of a marshaller, incoming list, and outgoing list. <p>  
+<p><b>signal</b> <i>(noun)</i> - An object to which callback slots can be
+connected. When the signal is emitted, each callback will be invoked. The
+signal and the connected slots have a specific return type and parameter types.
+</p>
 
-<b>signal handler</b> <i>(noun)</i> - A method or function which is connected to a signal. They are called when the signal is emitted. <p>  
+<p><b>signal handler</b> <i>(noun)</i> - Another name for a callback. </p>  
 
-<b>signature</b> <i>(noun)</i> - The combination of return type and argument types of
-a function <p> 
+<p><b>signature</b> <i>(noun)</i> - The return type of a function together with
+the argument types of that function. </p> 
 
-<b>slot</b> <i>(noun)</i> - Safe version of a callback. <p> 
+<p><b>slot</b> <i>(noun)</i> - A safe version of a callback. </p> 
 
 <!-- SSI fragments/footer.html_fragment begin -->
 <!--#include virtual="fragments/footer.html_fragment" -->

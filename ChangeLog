@@ -1,3 +1,10 @@
+2004-12-17  GregSchussman  <schussman@slac.stanford.edu>
+ 
+ 	* glossary.shtml: Clean up punctuation, make definitions complete
+        sentences, and add clarifications for certain definitions according to
+        what Murray Cumming's suggestions and answers to my questions.
+ 	Bug #161580.
+
 2005-01-11  Murray Cumming  <murrayc@murrayc.com>
 
 	* docs/: Added manual, copied from the libsigc++-1.2 cvs module, 
