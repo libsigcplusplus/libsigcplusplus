@@ -1,5 +1,7 @@
 Martin Schulze <mschulze@cvs.gnome.org>
 Murray Cumming <murrayc@murrayc.com>
 Cedric Gustin <cedric.gustin@swing.be> (win32 support)
+Damien Carbery <Damien.Carbery@Sun.COM> (Sun FORTE C++ support)
+Takashi Takekawa <takekawa@users.sourceforge.jp> (Intel C++ support)
 Andreas Rottmann <rottmann@users.sourceforge.net> (make system)
 Karl Einar Nelson <kenelson@ece.ucdavis.edu> (initial version 1.9.4)

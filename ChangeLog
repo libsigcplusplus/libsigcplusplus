@@ -1,3 +1,8 @@
+2004-07-23  Martin Schulze <mschulze@cvs.gnome.org>
+
+	* Makefile.am: Fix typo concerning distribution of libsigc++-2.0.spec.
+	* AUTHORS: Mention our contributors for platforms Sun FORTE and Intel C++.
+
 2004-07-15  Martin Schulze <mschulze@cvs.gnome.org>
 
 	* *.h.m4: Don't call operator()() in sun_forte_workaround(); rather copy
