@@ -21,9 +21,9 @@ This version of libsigc++ needs GNU g++ 3.2 or higher to compile.
 
 * Fixed passing references through sigc::slot (Reported by Jeff Franks).
 * Enabled binding of objects to method slots through sigc::bind().
-* Reworked sigc::bind() API: Added overloads for binding of up to 7
-  arguments from the back (when no template argument is provided).
-  Made the template argument for the parameter position zero-based.
+* Reworked sigc::bind() API: Made the template argument for the
+  parameter position zero-based and optional. Added overloads for
+  binding of up to 7 arguments at a time when no position is specified.
 * Reworked sigc::hide() API: Made the template argument for the
   parameter position zero-based and optional.
 * Fixed compilation problems with MSVC .Net 2003 (Roel Vanhout).

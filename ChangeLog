@@ -1,3 +1,14 @@
+1.9.13:
+
+2003-11-30  Martin Schulze  <teebaum@cvs.gnome.org>
+
+	* configure.ac: Bump version number to 1.9.13.
+	* NEWS: Add ChangeLog summary for version 1.9.13.
+	* Makefile.am, MSVC_Net2003/Makefile.am, configure.ac:
+	Distribute MS .Net project files.
+	* sigc++/adaptors/macros/[bind,hide].h.m4: Correct and add
+	documentation. Make hide_functor ctor explicit.
+
 2003-11-11  Martin Schulze  <teebaum@cvs.gnome.org>
 
 	* sigc++/adaptors/macros/[bind,hide].h.m4: Change to zero-based

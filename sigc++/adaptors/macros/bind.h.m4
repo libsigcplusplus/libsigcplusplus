@@ -205,7 +205,7 @@ namespace sigc {
  *   sigc::bind<2>(&foo,1)(2,3);  //fixes the third argument and calls foo(2,3,1)
  *   // multi argument binding ...
  *   sigc::bind(&foo,1,2)(3);     //fixes the last two arguments and calls foo(3,1,2)
- *   sigc::bind(&foo,1,2,3)();    //fixes all three arguments and calls foo(3,1,2)
+ *   sigc::bind(&foo,1,2,3)();    //fixes all three arguments and calls foo(1,2,3)
  *   @endcode
  *
  * The functor sigc::bind() returns can be passed into
@@ -244,7 +244,7 @@ namespace sigc {
  *
  * For a more powerful version of this functionality see the lambda
  * library adaptor sigc::group() which can bind, hide and reorder
- * arguments arbitrarily.  Although lambda call is more flexible,
+ * arguments arbitrarily.  Although sigc::group() is more flexible,
  * sigc::bind() provides a means of binding parameters when then total
  * number of parameters called is variable.
  *
@@ -255,8 +255,9 @@ namespace sigc {
  * Use the convenience function bind() to create an instance of bind_functor.
  *
  * The following template arguments are used:
- * - @e I_location Number of the argument to fix (counting starts from @p 1, @p 0 stands for the last argument).
- * - @e T_type Type of the bound argument.
+ * - @e I_location Zero-based position of the argument to fix (@p -1 for the last argument).
+FOR(1, CALL_SIZE,[
+ * - @e T_type%1 Type of the %1st bound argument.])
  * - @e T_functor Type of the functor to wrap.
  *
  * @ingroup bind
@@ -282,9 +283,8 @@ void visit_each(const T_action& _A_action,
 FOR(1,CALL_SIZE,[[BIND_FUNCTOR_COUNT(%1)]])dnl
 
 /** Creates an adaptor of type sigc::bind_functor which binds the passed argument to the passed functor.
- * The template argument @e I_location is mandatory and specifies the
- * number of the argument to be fixed (counting starts from @p 1,
- * @p 0 stands for the last argument).
+ * The optional template argument @e I_location specifies the zero-based
+ * position of the argument to be fixed (@p -1 stands for the last argument).
  *
  * @param _A_func Functor that should be wrapped.
  * @param _A_b1 Argument to bind to @e _A_func.
