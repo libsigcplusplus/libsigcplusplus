@@ -1,3 +1,9 @@
+2004-11-27  Murray Cumming  <murrayc@murrayc.com>
+
+	* configure.in: Revert the AC_PROG_LIBTOOL change, so that this builds
+	with actually released libtool versions, and in jhbuild, so that it 
+	gets testing.
+
 2004-11-06  Martin Schulze  <mschulze@cvs.gnome.org>
 
 	* sigc++/adaptors/macros/exception_catch.h.m4: Make catcher_ member
