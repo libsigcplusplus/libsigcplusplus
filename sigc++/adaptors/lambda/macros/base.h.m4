@@ -216,11 +216,39 @@ void visit_each(const T_action& _A_action,
   visit_each(_A_action, _A_target.value_);
 }
 
-
-/// Converts a constant variable into a lambda object.
-template <class T_type>
-lambda<T_type> constant(const T_type& v)
-{ return lambda<T_type>(v); }
+dnl /* With the Sun FORTE and the Compaq C++ compiler,
+dnl  * sigc::var() doesn't work with string constants.
+dnl  * Some work-araound is needed to convert 'const (&) char[N]'
+dnl  * into 'const char*'. The following work-around works with gcc
+dnl  * but neither with the Sun FORTE nor with the Compaq C++ compiler
+dnl  * (for the gcc the work-around is not needed, anyway):
+dnl  */
+dnl namespace internal {
+dnl 
+dnl template <class T_type>
+dnl struct convert_array
+dnl { typedef T_type& type; };
+dnl 
+dnl template <class T_type, int N>
+dnl struct convert_array<T_type[[N]]>
+dnl { typedef T_type* type; };
+dnl 
+dnl } /* namespace internal */
+dnl 
+dnl /// Converts a constant variable into a lambda object.
+dnl template <class T_type>
+dnl lambda<T_type> constant(const T_type& v)
+dnl { return lambda<T_type>(v); }
+dnl 
+dnl /// Converts a reference into a lambda object.
+dnl template <class T_type>
+dnl lambda<typename internal::convert_array<T_type>::type> var(T_type& v)
+dnl { return lambda<typename internal::convert_array<T_type>::type>(v); }
+dnl 
+dnl /// Converts a constant reference into a lambda object.
+dnl template <class T_type>
+dnl lambda<typename internal::convert_array<const T_type>::type> var(const T_type& v)
+dnl { return lambda<typename internal::convert_array<const T_type>::type>(v); }
 
 /// Converts a reference into a lambda object.
 template <class T_type>

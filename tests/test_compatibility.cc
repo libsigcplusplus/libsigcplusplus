@@ -30,7 +30,7 @@ struct foo : public SigC::Object
     { std::cout << "foo::test_int()" << std::endl; return 1; }
   void test_void()
     { std::cout << "foo::test_void()" << std::endl; }
-  void test_void_string(const std::string& str) const
+  void test_void_string(const std::string& str)
     { std::cout << "foo::test_void_string(str="<<str<<")" << std::endl; }
 };
 

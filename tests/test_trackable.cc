@@ -10,9 +10,9 @@
 
 class my_class: public sigc::trackable
 {
-  public:
-    int i;
-    virtual void foo() { std::cout << i << std::endl; }
+public:
+  int i;
+  void foo() { std::cout << i << std::endl; }
 };
 
 int main()
@@ -24,7 +24,6 @@ int main()
     sl = sigc::mem_fun0(&t, &my_class::foo);
     sl();
   }
-  int i = 0;
 
   sl();
 }

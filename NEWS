@@ -17,6 +17,20 @@ This version of libsigc++ needs GNU g++ 3.2 or higher to compile.
 
 *** ChangeLog summary:
 
+2.0.4:
+
+* Fixed warnings and compiler errors in the test cases.
+* Added a new test case (Murray Cumming).
+* Fixed 'hello_world' example.
+* Don't test optional features that fail with the Sun FORTE.
+* Fixes for the Sun FORTE to compile out-of-the-box
+  (Damien Carbery, Murray Cumming, Martin Schulze).
+* Fixes for MSVC to build a DLL out-of-the-box (James Lin).
+* Improved compiler specific configuration during 'configure'.
+* Added rmp description file libsigc++-2.0.spec (Eric Bourque).
+* Minor documentation improvements (Murray Cumming).
+* Resolved bugs: #147311 #147313 #147391 #144846 #145541
+
 2.0.3:
 
 * Fix segfault on emission of unconnected signal.

@@ -1,3 +1,19 @@
+2.0.4:
+
+2004-08-21  Martin Schulze <mschulze@cvs.gnome.org>
+
+	* tests/test_lambda.cc: Use sigc::var("\n") instead of sigc::ref("\n").
+	Comment out the affected lines, nevertheless.
+	Sun FORTE and Compaq C++ can handle neither sigc::ref("\n") nor
+	sigc::var("\n"). I see more chances fixing sigc::var("\n").
+	* sigc++/adaptors/lambda/macros/base.h.m4: Add a comment about a
+	possible work around for sigc::var("\n") compiler problems.
+	* tests/test_compatibility.cc: Remove a 'const' keyword that prevents
+	the test case from compiling with the Sun FORTE.
+	* tests/test_trackable.cc: Remove a 'virtual' keyword and an unused
+	variable to avoid compiler warnings.
+	* NEWS: Add ChangeLog summary for version 2.0.4.
+
 2004-08-03  Martin Schulze <mschulze@cvs.gnome.org>
 
 	* scripts/cxx.m4, sigc++config.h.in, configure.ac,

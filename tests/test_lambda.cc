@@ -82,18 +82,18 @@ int main()
        // - constant() is used to create a lambda and delay execution of "std::cout << 1"
        // - var() is used to create a lambda that holds a reference and is interchangable with ref() in lambda operator expressions
        // - cannot use std::endl without much hackery because it is defined as a template function
-       // - cannot use "\n" without ref() because arrays cannot be copied
-  (sigc::ref(std::cout) << sigc::constant(1) << sigc::ref("\n"))();
+       // - cannot use "\n" without var() because arrays cannot be copied
+//  (sigc::ref(std::cout) << sigc::constant(1) << sigc::var("\n"))();
   (sigc::ref(std::cout) << _1 << std::string("\n"))("hello world");
   (sigc::ref(std::cout) << sigc::static_cast_<int>(_1) << std::string("\n"))(1.234);
-  (sigc::var(std::cout) << 1 << sigc::ref("\n"))();
+//  (sigc::var(std::cout) << 1 << sigc::var("\n"))();
   (sigc::var(std::cout) << _1 << std::string("\n"))("hello world");
 
   // auto-disconnect
   sigc::slot<void*> sl1; // TODO: why does the compiler demand void* ?
   {
     book guest_book("karl");
-    sl1 = (sigc::var(std::cout) << sigc::ref(guest_book) << sigc::ref("\n"));
+//    sl1 = (sigc::var(std::cout) << sigc::ref(guest_book) << sigc::var("\n"));
     sl1();
   }    // auto-disconnect // TODO: "Bus error" => fix bug !
   sl1(); // :-)
