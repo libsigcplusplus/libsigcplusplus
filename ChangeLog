@@ -1,3 +1,15 @@
+2003-03-08  Andreas Rottmann  <rottmann@users.sourceforge.net>
+
+	* sigc++/Makefile.am: Rewritten so we can build lambda cleanly.
+	* sigc++/Makefile.am_fragment: Removed.
+
+	* sigc++/functors/Makfile.am: Removed.
+	* sigc++/adaptors/Makefile.am: Removed.
+	* sigc++/adaptors/lambda/Makefile.am: Removed.
+	* configure.ac (AC_OUTPUT): Remove the above Makefiles.
+
+	* tests/Makefile.am: Re-included lambda test.
+	
 2003-03-07  Martin Schulze  <MHL.Schulze@t-online.de>
 
 	* sigc++/signal.{cc,h.m4}:
