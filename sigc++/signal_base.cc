@@ -68,6 +68,7 @@ signal_impl::iterator_type signal_impl::insert(signal_impl::iterator_type i, con
 
 void signal_impl::sweep()
 {
+  deferred_ = false;
   iterator_type i = slots_.begin();
   while (i != slots_.end())
     if ((*i).empty())
