@@ -69,10 +69,11 @@ FOR(1, $1,[
         return accumulator(slot_iterator_buf_type(), slot_iterator_buf_type());
 
       signal_exec exec(impl);
+      temp_slot_list slots(impl->slots_);
 
       self_type self ifelse($1,0,,[(LOOP(_A_a%1, $1))]);
-      return accumulator(slot_iterator_buf_type(impl->slots_.begin(), &self),
-                         slot_iterator_buf_type(impl->slots_.end(), &self));
+      return accumulator(slot_iterator_buf_type(slots.begin(), &self),
+                         slot_iterator_buf_type(slots.end(), &self));
     }
 dnl
   FOR(1, $1,[
@@ -105,15 +106,16 @@ FOR(1, $1,[
   static result_type emit(LIST(signal_impl* impl, LOOP(typename type_trait<T_arg%1>::take _A_a%1, $1)))
     {
       if (!impl || impl->slots_.empty()) return T_return();
-      iterator_type it = impl->slots_.begin();
-      for (; it != impl->slots_.end(); ++it)
+      temp_slot_list slots(impl->slots_);
+      iterator_type it = slots.begin();
+      for (; it != slots.end(); ++it)
         if (!it->empty() && !it->blocked()) break;
-      if (it == impl->slots_.end()) return T_return(); // note that 'T_return r_();' doesn't work => define 'r_' after this line and initialize as follows:
+      if (it == slots.end()) return T_return(); // note that 'T_return r_();' doesn't work => define 'r_' after this line and initialize as follows:
 
       signal_exec exec(impl);
 
       T_return r_ = (reinterpret_cast<call_type>(it->rep_->call_))(LIST(it->rep_, LOOP(_A_a%1, $1)));
-      for (++it; it != impl->slots_.end(); ++it)
+      for (++it; it != slots.end(); ++it)
         {
           if (it->empty() || it->blocked())
             continue;
@@ -149,8 +151,9 @@ FOR(1, $1,[
     {
       if (!impl || impl->slots_.empty()) return;
       signal_exec exec(impl);
+      temp_slot_list slots(impl->slots_);
 
-      for (iterator_type it = impl->slots_.begin(); it != impl->slots_.end(); ++it)
+      for (iterator_type it = slots.begin(); it != slots.end(); ++it)
         {
           if (it->empty() || it->blocked())
             continue;

@@ -44,8 +44,9 @@ namespace internal
 struct SIGC_API signal_impl
 {
   typedef size_t size_type;
-  typedef std::list<slot_base>::iterator       iterator_type;
-  typedef std::list<slot_base>::const_iterator const_iterator_type;
+  typedef std::list<slot_base> slot_list;
+  typedef slot_list::iterator       iterator_type;
+  typedef slot_list::const_iterator const_iterator_type;
 
   signal_impl();
 
@@ -160,6 +161,32 @@ struct SIGC_API signal_exec
     { sig_->unreference_exec(); }
 };
 
+struct temp_slot_list
+{
+  typedef signal_impl::slot_list slot_list;
+  typedef signal_impl::iterator_type iterator;
+  typedef signal_impl::const_iterator_type const_iterator;
+
+  temp_slot_list(slot_list &slots) : slots_(slots)
+  {
+    temp_slots_.swap(slots_);
+  }
+
+  ~temp_slot_list()
+  {
+    slots_.splice(slots_.begin(), temp_slots_);
+  }
+
+  iterator begin() { temp_slots_.begin(); }
+  iterator end() { temp_slots_.end(); }
+  const_iterator begin() const { temp_slots_.begin(); }
+  const_iterator end() const { temp_slots_.end(); }
+
+private:
+  slot_list &slots_;
+  slot_list temp_slots_;
+};
+  
 } /* namespace internal */
 
 

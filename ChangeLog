@@ -1,3 +1,15 @@
+2005-02-03  Neal E. Coombes <nealc@trdlnk.com>
+
+	* sigc++/signal_base.h: Add temp_slot_list struct to facilitate
+	allowing new connections to a signal during an emittion without
+	affecting that emittion.
+	* sigc++/macros/signal.h.m4: Use the new struct temp_slot_list to
+	prevent connections made during an emittion from being called in the
+	same emittion (which has the potential of causing things like
+	infinite loops).  This guarantees an emittion will be finite, as well
+	as maintaining any order of emittion guarantees that may have already
+	been in place.
+	
 2.0.9:
 
 2005-02-02  Murray Cumming  <murrayc@murrayc.com>
