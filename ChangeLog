@@ -1,3 +1,18 @@
+2003-09-03  Martin Schulze  <teebaum@cvs.gnome.org>
+
+	* sigc++/adaptors/lambda/operator.h.m4:
+	- Restructure so that the size of the generated source file stays
+	reasonable for 34 operators: There are only two lambda templates
+	lambda_operator and lambda_operator_unary. The action is an additional
+	template parameter. A small template lambda_action[_unary] is specialized
+	for all actions.
+	- Add most operators that boost::lambda supports. Missing operators are
+	"=", "[]", "," and support for pointer arithmetic. I don't know if it's
+	worth adding these. In libsigc++, the purpose of lambda operators is to
+	provide some extra functionality for the group adaptor.
+	* tests/test_lambda.cc:
+	Test pre-increment, address and dereference operator.
+
 2003-08-31  Martin Schulze  <teebaum@cvs.gnome.org>
 
 	* sigc++/reference_wrapper.h, sigc++/type_traits.h, sigc++/Makefile.am:

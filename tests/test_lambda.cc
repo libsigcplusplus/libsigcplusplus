@@ -12,13 +12,13 @@ using namespace sigc::functor;
 #ifndef SIGC_CXX_TYPEOF
 // other template libraries (e.g. boost::lambda) have similar hacks built in
 // to make lambda shift operators work with streams
-namespace sigc { namespace functor { namespace internal {
+namespace sigc { namespace functor {
 template <class T_arg>
-struct shiftleft_deduce_result_type<std::ostream&, T_arg>
+struct lambda_action_deduce_result_type<bitwise<leftshift>, std::ostream&, T_arg>
 {
   typedef std::ostream& type;
 };
-} } }
+} }
 #endif
 
 int foo(int i, int j)
@@ -38,12 +38,18 @@ struct bar
 main()
 {
   // test lambda operators
-  std::cout << (_1 + _2) (3,4) << std::endl;
-  std::cout << (_1 + 1)  (3,4) << std::endl;
-  std::cout << (_2 + 1)  (3,4) << std::endl;
-  std::cout << (2 + _1)  (3,4) << std::endl;
-  std::cout << (2 + _2)  (3,4) << std::endl;
-  std::cout << (_1+_2*_3)(1,2,3) << std::endl;
+  int a = 1;
+  std::cout << "(_1 + _2) (3,4):    " << (_1 + _2) (3,4) << std::endl;
+  std::cout << "(_1 + 1)  (3,4):    " << (_1 + 1)  (3,4) << std::endl;
+  std::cout << "(_2 + 1)  (3,4):    " << (_2 + 1)  (3,4) << std::endl;
+  std::cout << "(2 + _1)  (3,4):    " << (2 + _1)  (3,4) << std::endl;
+  std::cout << "(2 + _2)  (3,4):    " << (2 + _2)  (3,4) << std::endl;
+  std::cout << "(_1+_2*_3)(1,2,3):  " << (_1+_2*_3)(1,2,3) << std::endl;
+  std::cout << "((++_1)*2)(1):      " << ((++_1)*2)(1) << std::endl;
+  std::cout << "((++_1)*2)(a):      " << ((++_1)*2)(a) << "; a: " << a << std::endl;
+  std::cout << "((++_1)*2)(ref(a)): " << ((++_1)*2)(sigc::ref(a)) << "; a: " << a << std::endl;
+  std::cout << "((++(*_1))*2)(&a):  " << ((++(*_1))*2)(&a) << "; a: " << a << std::endl;
+  std::cout << "((--(*(&_1)))*2)(ref(a)):  " << ((--(*(&_1)))*2)(sigc::ref(a)) << "; a: " << a << std::endl;
 
        // c++ restrictions:
        // - ref() must be used to indicate that the value shall not be copied
