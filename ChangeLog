@@ -1,3 +1,8 @@
+2005-01-19  Murray Cumming  <murrayc@murrayc.com>
+
+	* configure.in: AC_INT(): Use libsigc++ instead of sigc++, attempting 
+	to get the correct tarball name.
+
 2005-01-18  Murray Cumming  <murrayc@murrayc.com>
 
 	* configure.in: Used the autoconf 2.93 and AM_INIT_AUTOMAKE() 

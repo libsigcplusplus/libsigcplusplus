@@ -10,7 +10,7 @@ pushdef([FP_MINOR_VERSION],     [0])
 pushdef([FP_MICRO_VERSION],     [6])
 pushdef([FP_EXTRA_VERSION],     [])
 pushdef([FP_VERSION], FP_MAJOR_VERSION.FP_MINOR_VERSION.FP_MICRO_VERSION[]FP_EXTRA_VERSION)
-AC_INIT([sigc++], FP_VERSION, [libsigc-list@gnome.org])
+AC_INIT([libsigc++], FP_VERSION, [libsigc-list@gnome.org])
 
 dnl AC_CONFIG_SRCDIR is required name a file which is unique to the package
 dnl just to prevent someone from copying the configure to the wrong package.
