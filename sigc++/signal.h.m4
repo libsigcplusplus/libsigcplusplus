@@ -226,8 +226,8 @@ FOR(1, $1,[
    * yields the same result.
    * @return A functor that calls emit() on this signal.
    */
-  bound_const_mem_functor$1<LIST(LOOP(typename type_trait<T_arg%1>::take, $1), result_type, signal$1)> make_slot() const
-    { return bound_const_mem_functor$1<LIST(LOOP(typename type_trait<T_arg%1>::take, $1), result_type, signal$1)>(this, &signal$1::emit); }
+  bound_const_mem_functor$1<LIST(result_type, signal$1, LOOP(typename type_trait<T_arg%1>::take, $1))> make_slot() const
+    { return bound_const_mem_functor$1<LIST(result_type, signal$1, LOOP(typename type_trait<T_arg%1>::take, $1))>(this, &signal$1::emit); }
 
   /** Creates an STL-style interface for the signal's list of slots.
    * This interface supports iteration, insertion and removal of slots.
@@ -358,7 +358,7 @@ public:
    * @return A functor that calls emit() on this signal.
    */
   slot_type slot() const
-    { return ::sigc::bound_const_mem_functor$1<LIST(LOOP(typename ::sigc::type_trait<T_arg%1>::take, $1), result_type, parent_type)>(this, &parent_type::emit); }
+    { return ::sigc::bound_const_mem_functor$1<LIST(result_type, parent_type, LOOP(typename ::sigc::type_trait<T_arg%1>::take, $1))>(this, &parent_type::emit); }
 };
 
 ])

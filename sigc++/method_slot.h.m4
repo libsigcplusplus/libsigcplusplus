@@ -19,7 +19,7 @@ divert(-1)
 include(template.macros.m4)
 
 define([SLOT_MEM_FUN],[dnl
-/** Creates a functor of type mem_functor$1 which wraps a method.
+/** Creates a functor of type [$2]mem_functor$1 which wraps a $4 method.
  * @param _A_func Pointer to method that should be wrapped.
  * @return Functor that executes _A_func on invokation.
  *
@@ -27,45 +27,8 @@ define([SLOT_MEM_FUN],[dnl
  */
 template <LIST(class T_return, LOOP(class T_arg%1, $1), class T_obj)>
 inline Slot[]eval($1+1)<LIST(T_return, T_obj&, LOOP(T_arg%1, $1))>
-slot[]ifelse($2,, $1)(T_return (T_obj::*_A_func)(LOOP(T_arg%1,$1)))
-{ return Slot[]eval($1+1)<LIST(T_return, T_obj&, LOOP(T_arg%1, $1))>
-    (::sigc::mem_functor$1<LIST(LOOP(T_arg%1, $1), T_return, T_obj)>(_A_func)); }
-
-/** Creates a functor of type const_mem_functor$1 which wraps a const method.
- * @param _A_func Pointer to method that should be wrapped.
- * @return Functor that executes _A_func on invokation.
- *
- * @ingroup functors
- */
-template <LIST(class T_return, LOOP(class T_arg%1, $1), class T_obj)>
-inline Slot[]eval($1+1)<LIST(T_return, const T_obj&, LOOP(T_arg%1, $1))>
-slot[]ifelse($2,, $1)(T_return (T_obj::*_A_func)(LOOP(T_arg%1,$1)) const)
-{ return Slot[]eval($1+1)<LIST(T_return, const T_obj&, LOOP(T_arg%1, $1))>
-    (::sigc::const_mem_functor$1<LIST(LOOP(T_arg%1, $1), T_return, T_obj)>(_A_func)); }
-
-/** Creates a functor of type volatile_functor$1 which wraps a volatile method.
- * @param _A_func Pointer to method that should be wrapped.
- * @return Functor that executes _A_func on invokation.
- *
- * @ingroup functors
- */
-template <LIST(class T_return, LOOP(class T_arg%1, $1), class T_obj)>
-inline Slot[]eval($1+1)<LIST(T_return, T_obj&, LOOP(T_arg%1, $1))>
-slot[]ifelse($2,, $1)(T_return (T_obj::*_A_func)(LOOP(T_arg%1,$1)) volatile)
-{ return Slot[]eval($1+1)<LIST(T_return, T_obj&, LOOP(T_arg%1, $1))>
-    (::sigc::volatile_mem_functor$1<LIST(LOOP(T_arg%1, $1), T_return, T_obj)>(_A_func)); }
-
-/** Creates a functor of type const_volatile_mem_functor$1 which wraps a const volatile method.
- * @param _A_func Pointer to method that should be wrapped.
- * @return Functor that executes _A_func on invokation.
- *
- * @ingroup functors
- */
-template <LIST(class T_return, LOOP(class T_arg%1, $1), class T_obj)>
-inline Slot[]eval($1+1)<LIST(T_return, const T_obj&, LOOP(T_arg%1, $1))>
-slot[]ifelse($2,, $1)(T_return (T_obj::*_A_func)(LOOP(T_arg%1,$1)) const volatile)
-{ return Slot[]eval($1+1)<LIST(T_return, const T_obj&, LOOP(T_arg%1, $1))>
-    (::sigc::const_volatile_mem_functor$1<LIST(LOOP(T_arg%1, $1), T_return, T_obj)>(_A_func)); }
+slot(T_return (T_obj::*_A_func)(LOOP(T_arg%1,$1)) $4)
+{ return ::sigc::[$2]mem_functor$1<LIST(T_return, T_obj, LOOP(T_arg%1, $1))>(_A_func); }
 
 ])
 
@@ -80,7 +43,10 @@ __FIREWALL__
 
 namespace SigC {
 
-FOR(0,eval(CALL_SIZE-1),[[SLOT_MEM_FUN(%1,1)]])
+FOR(0,eval(CALL_SIZE-1),[[SLOT_MEM_FUN(%1,[],[],[])]])
+FOR(0,eval(CALL_SIZE-1),[[SLOT_MEM_FUN(%1,[const_],[const],[const])]])
+FOR(0,eval(CALL_SIZE-1),[[SLOT_MEM_FUN(%1,[volatile_],[],[volatile])]])
+FOR(0,eval(CALL_SIZE-1),[[SLOT_MEM_FUN(%1,[const_volatile_],[const],[const volatile])]])
 
 }
 

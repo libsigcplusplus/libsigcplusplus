@@ -16,10 +16,10 @@ functors/slot.cc : functors/slot.h functors/functor_trait.h
 
 # Adaptors (adaptors/)
 adaptors_m4 = deduce_result_type.h.m4 adaptor_trait.h.m4 bind.h.m4 bind_return.h.m4 \
-	      retype_return.h.m4 hide.h.m4 compose.h.m4 exception_catch.h.m4
+	      retype_return.h.m4 hide.h.m4 retype.h.m4 compose.h.m4 exception_catch.h.m4
 adaptors_built_cc =
 adaptors_built_h = deduce_result_type.h adaptor_trait.h bind.h bind_return.h \
-                   retype_return.h hide.h compose.h exception_catch.h
+                   retype_return.h hide.h retype.h compose.h exception_catch.h
 
 # Lambda (adaptors/lambda)
 lambda_m4 = base.h.m4 select.h.m4 operator.h.m4 group.h.m4 lambda.cc.m4

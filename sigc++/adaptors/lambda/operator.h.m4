@@ -242,9 +242,9 @@ struct cast_ {};
 
 struct plus {};
 struct minus {};
-struct multiply {};
-struct divide {};
-struct remainder {};
+struct multiplies {};
+struct divides {};
+struct modulus {};
 struct leftshift {};
 struct rightshift {};
 struct and_ {};
@@ -252,14 +252,14 @@ struct or_ {};
 struct xor_ {};
 struct less {};
 struct greater {};
-struct lessorequal {};
-struct greaterorequal {};
-struct equal {};
-struct notequal {};
+struct less_equal {};
+struct greater_equal {};
+struct equal_to {};
+struct not_equal_to {};
 struct subscript {};
 struct assign {};
-struct preincrement {};
-struct predecrement {};
+struct pre_increment {};
+struct pre_decrement {};
 struct not_ {};
 struct address {};
 struct dereference {};
@@ -351,33 +351,33 @@ struct lambda_action_unary_deduce_result_type<unary_other<dereference>, T_test>
   { typedef typename type_trait<typename dereference_trait<T_test>::type>::pass type; };
 dnl #endif
 
-LAMBDA_OPERATOR(arithmetic<plus>,+)
-LAMBDA_OPERATOR(arithmetic<minus>,-)
-LAMBDA_OPERATOR(arithmetic<multiply>,*)
-LAMBDA_OPERATOR(arithmetic<divide>,/)
-LAMBDA_OPERATOR(arithmetic<remainder>,%)
-LAMBDA_OPERATOR(bitwise<leftshift>,<<)
-LAMBDA_OPERATOR(bitwise<rightshift>,>>)
-LAMBDA_OPERATOR(bitwise<and_>,&)
-LAMBDA_OPERATOR(bitwise<or_>,|)
-LAMBDA_OPERATOR(bitwise<xor_>,^)
-LAMBDA_OPERATOR(logical<and_>,&&)
-LAMBDA_OPERATOR(logical<or_>,||)
-LAMBDA_OPERATOR(relational<less>,<)
-LAMBDA_OPERATOR(relational<greater>,>)
-LAMBDA_OPERATOR(relational<lessorequal>,<=)
-LAMBDA_OPERATOR(relational<greaterorequal>,>=)
-LAMBDA_OPERATOR(relational<equal>,==)
-LAMBDA_OPERATOR(relational<notequal>,!=)
-LAMBDA_OPERATOR(arithmetic_assign<plus>,+=)
-LAMBDA_OPERATOR(arithmetic_assign<minus>,-=)
-LAMBDA_OPERATOR(arithmetic_assign<multiply>,*=)
-LAMBDA_OPERATOR(arithmetic_assign<divide>,/=)
-LAMBDA_OPERATOR(arithmetic_assign<remainder>,%=)
-LAMBDA_OPERATOR(bitwise_assign<leftshift>,<<=)
-LAMBDA_OPERATOR(bitwise_assign<rightshift>,>>=)
-LAMBDA_OPERATOR(bitwise_assign<and_>,&=)
-LAMBDA_OPERATOR(bitwise_assign<or_>,|=)
+LAMBDA_OPERATOR(arithmetic<plus>,+)dnl
+LAMBDA_OPERATOR(arithmetic<minus>,-)dnl
+LAMBDA_OPERATOR(arithmetic<multiplies>,*)dnl
+LAMBDA_OPERATOR(arithmetic<divides>,/)dnl
+LAMBDA_OPERATOR(arithmetic<modulus>,%)dnl
+LAMBDA_OPERATOR(bitwise<leftshift>,<<)dnl
+LAMBDA_OPERATOR(bitwise<rightshift>,>>)dnl
+LAMBDA_OPERATOR(bitwise<and_>,&)dnl
+LAMBDA_OPERATOR(bitwise<or_>,|)dnl
+LAMBDA_OPERATOR(bitwise<xor_>,^)dnl
+LAMBDA_OPERATOR(logical<and_>,&&)dnl
+LAMBDA_OPERATOR(logical<or_>,||)dnl
+LAMBDA_OPERATOR(relational<less>,<)dnl
+LAMBDA_OPERATOR(relational<greater>,>)dnl
+LAMBDA_OPERATOR(relational<less_equal>,<=)dnl
+LAMBDA_OPERATOR(relational<greater_equal>,>=)dnl
+LAMBDA_OPERATOR(relational<equal_to>,==)dnl
+LAMBDA_OPERATOR(relational<not_equal_to>,!=)dnl
+LAMBDA_OPERATOR(arithmetic_assign<plus>,+=)dnl
+LAMBDA_OPERATOR(arithmetic_assign<minus>,-=)dnl
+LAMBDA_OPERATOR(arithmetic_assign<multiplies>,*=)dnl
+LAMBDA_OPERATOR(arithmetic_assign<divides>,/=)dnl
+LAMBDA_OPERATOR(arithmetic_assign<modulus>,%=)dnl
+LAMBDA_OPERATOR(bitwise_assign<leftshift>,<<=)dnl
+LAMBDA_OPERATOR(bitwise_assign<rightshift>,>>=)dnl
+LAMBDA_OPERATOR(bitwise_assign<and_>,&=)dnl
+LAMBDA_OPERATOR(bitwise_assign<or_>,|=)dnl
 LAMBDA_OPERATOR(bitwise_assign<xor_>,^=)dnl
 dnl 
 dnl #ifdef SIGC_CXX_TYPEOF
@@ -414,15 +414,15 @@ struct lambda_action<other<assign> >
 
 divert(0)dnl
 
-LAMBDA_OPERATOR_UNARY(unary_arithmetic<preincrement>,++)
-LAMBDA_OPERATOR_UNARY(unary_arithmetic<predecrement>,--)
-LAMBDA_OPERATOR_UNARY(unary_bitwise<not_>,~)
-LAMBDA_OPERATOR_UNARY(unary_logical<not_>,!)
-LAMBDA_OPERATOR_UNARY(unary_other<address>,&)
-LAMBDA_OPERATOR_UNARY(unary_other<dereference>,*)
-LAMBDA_OPERATOR_CONVERT(cast_<reinterpret_>,reinterpret_cast)
-LAMBDA_OPERATOR_CONVERT(cast_<static_>,static_cast)
-LAMBDA_OPERATOR_CONVERT(cast_<dynamic_>,dynamic_cast)
+LAMBDA_OPERATOR_UNARY(unary_arithmetic<pre_increment>,++)dnl
+LAMBDA_OPERATOR_UNARY(unary_arithmetic<pre_decrement>,--)dnl
+LAMBDA_OPERATOR_UNARY(unary_bitwise<not_>,~)dnl
+LAMBDA_OPERATOR_UNARY(unary_logical<not_>,!)dnl
+LAMBDA_OPERATOR_UNARY(unary_other<address>,&)dnl
+LAMBDA_OPERATOR_UNARY(unary_other<dereference>,*)dnl
+LAMBDA_OPERATOR_CONVERT(cast_<reinterpret_>,reinterpret_cast)dnl
+LAMBDA_OPERATOR_CONVERT(cast_<static_>,static_cast)dnl
+LAMBDA_OPERATOR_CONVERT(cast_<dynamic_>,dynamic_cast)dnl
 
 template <class T_action>
 struct lambda_action {};

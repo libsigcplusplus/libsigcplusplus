@@ -22,12 +22,10 @@ define([HIDE_N],[dnl
 template <LIST(LOOP(class T_hidden%1, $2), class T_return, LOOP(class T_arg%1, $1))>
 inline SigC::Slot[]eval($1+$2)<LIST(T_return, LOOP(T_arg%1, $1), LOOP(T_hidden%1, $2))>
 hide(const SigC::Slot$1<LIST(T_return, LOOP(T_arg%1, $1))>& _A_slot)
-{ return SigC::Slot[]eval($1+$2)<LIST(T_return, LOOP(T_arg%1, $1), LOOP(T_hidden%1, $2))>
-FOR(0,eval($2-2),[[dnl
-    ::sigc::hide<0>(
-  ]])dnl
-    (::sigc::hide_functor<0, SigC::Slot$1<LIST(T_return, LOOP(T_arg%1, $1))> >
-      (_A_slot)FOR(0,eval($2-2),[[)]])); }
+{ return FOR(0,eval($2-2),[[::sigc::hide<0>(
+    ]])dnl
+::sigc::hide_functor<0, SigC::Slot$1<LIST(T_return, LOOP(T_arg%1, $1))> >
+      (_A_slot)FOR(0,eval($2-2),[[)]]); }
 
 ])
 

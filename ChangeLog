@@ -1,5 +1,24 @@
 2003-11-01  Martin Schulze  <teebaum@cvs.gnome.org>
 
+	* sigc++/[class_slot,method_slot,object_slot,hide].h.m4,
+	sigc++/signal.h.m4, sigc++/functors/mem_fun.h.m4:
+	- Use a shorter notation for ..._mem_function variants.
+	- Change order of mem_funcotr<>'s template arguments to
+	match std::mem_fun_t and to be more consistent with adaptors.
+	- Use ::sigc::slot's implicit ctor in compatibility module.
+	* sigc++/adaptors/lambda/operator.h.m4: Change some
+	lambda action names to match action names in std.
+
+	API addition:
+	* sigc++/adaptors/retype_return.h.m4: New file adding
+	adaptor retype.
+	* sigc++/Makefile.am: Build and distribute new file.
+	* tests/test_retype.cc: New file testing adaptor retype.
+	* MSVC_Net2003/tests/test_retype/test_reytype.vcproj,
+	tests/Makefile.am: Build and distribute new test case.
+
+2003-11-01  Martin Schulze  <teebaum@cvs.gnome.org>
+
 	* MSVC_Net2003: New directory containing project
 	files for Visual Studio .Net 2003.
 	Credits to Roel Vanhout <roel@riks.nl>!
