@@ -1,3 +1,12 @@
+2005-03-18  Murray Cumming <murrayc@murrayc.com>
+
+	* fragments/footer.html_fragment:
+	* fragments/html_declaration.html_fragment:
+	* link.shtml: Remove links to the sourceforge 
+	download page, because we do not use it.
+	* notes.shtml: Removed this. It is not linked 
+	from anywhere anyway.
+
 2004-08-31  Martin Schulze  <mschulze@cvs.gnome.org>
 
 	* index.shtml: Bring supported compilers/platforms up-to-date.
