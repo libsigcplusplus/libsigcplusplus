@@ -1,5 +1,10 @@
 2004-12-08  Cedric Gustin <cedric.gustin@swing.be>
 
+	* MSVC_Net2003/Makefile.am: get sigc++config.h from $(top_builddir)
+	instead of $(top_srcdir).
+
+2004-12-08  Cedric Gustin <cedric.gustin@swing.be>
+
 	* MSVC_Net2003/*/*.vcproj: Renamed libsigc++ target to
 	sigc-2.0d.dll (Debug) and sigc-2.0.dll (Release). Added
 	$(SolutionDir) and $(SolutionDir)\.. to "Additional Include

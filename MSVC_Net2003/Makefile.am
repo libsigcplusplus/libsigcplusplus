@@ -25,5 +25,5 @@ EXTRA_DIST=libsigc++2_msvcNet2003.vcproj libsigc++2_msvcNet2003.sln \
            tests/test_slot/test_slot.vcproj \
            tests/test_trackable/test_trackable.vcproj
 
-sigc++config.h: $(top_srcdir)/sigc++config.h
+sigc++config.h: $(top_builddir)/sigc++config.h
 	cp -f $< $@
