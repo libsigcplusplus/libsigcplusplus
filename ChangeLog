@@ -1,5 +1,15 @@
 2003-03-09  Martin Schulze  <MHL.Schulze@t-online.de>
 
+	* sigc++/signal.{cc,h.m4}: Add flag signal_impl::destroy_
+	and function signal_impl::destroy(). Use them to defer
+	the destruction of the signal_impl object during signal
+	emission.
+
+	* tests/test_disconnect.cc: Add tests for the connection
+	class and for deleting signals during emission.
+
+2003-03-09  Martin Schulze  <MHL.Schulze@t-online.de>
+
 	* sigc++/connection.{cc,h}, sigc++/Makefile.am:
 	- New files that add a connection class. Objects of this
 	  class are constructed from closure list iterators and can

@@ -5,6 +5,7 @@
 
 #include <sigc++/trackable.h>
 #include <sigc++/signal.h>
+#include <sigc++/connection.h>
 #include <sigc++/functors/ptr_fun.h>
 #include <sigc++/functors/mem_fun.h>
 #include <iostream>
@@ -12,6 +13,7 @@
 using namespace std;
 using namespace sigc::functor;
 using sigc::signal;
+using sigc::connection;
 
 int foo(int i) { cout << "foo: " << i << endl; return 1;}
 int bar(float i) { cout << "bar: " << i << endl; return 1;}
@@ -21,10 +23,34 @@ struct A : public sigc::trackable
   int foo(int i) { cout << "A::foo: " << i << endl; return 1;}
 };
 
+void good_bye_world() { cout << "Good bye world!" << endl; }
+
+struct B : public sigc::trackable
+{
+  B()
+    {
+      sig.connect(mem_fun(this, &B::destroy));
+      sig.connect(mem_fun(this, &B::boom));
+      sig.connect(ptr_fun(&good_bye_world));
+    }
+
+  void destroy()     // Calling destroy() during signal emission seems weird!
+    { delete this; } // However, if this works, anything will work!
+
+  void boom()
+    { cout << "boom!" << endl; }
+
+  void emit()
+    { sig.emit(); }
+
+  signal<void> sig;
+};
+
 int main()
 {
    signal<int,int> sig;
-   signal<int,int>::iterator confoo, conbar, cona;
+   signal<int,int>::iterator confoo, conbar;
+   connection cona;  // connection objects are safe to use beyond the life time of a signal.
 
    {
      A a;
@@ -51,7 +77,13 @@ int main()
    cout << "sig is connected to A::foo (size=" << sig.size() << "): " << endl;
    sig(5);
 
-   cona->disconnect();   // manual disconnection
+   cona.disconnect();    // manual disconnection
    cout << "sig is empty (size=" << sig.size() << "): " << endl;
    sig(6);
+
+   cona.disconnect();    // already disconnected -> legal with connection objects, however, nothing happens ...
+
+   cout << "deleting a signal during emission..." << endl;
+   B* b = new B;
+   b->emit();
 }

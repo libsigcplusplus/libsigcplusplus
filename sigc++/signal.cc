@@ -31,12 +31,26 @@ signal_impl::iterator_type signal_impl::insert(signal_impl::iterator_type i, con
 
 void signal_impl::sweep()
 { 
+  if (destroy_)
+    {
+      delete this;
+      return;
+    }
+
   iterator_type i = slots_.begin();
   while (i != slots_.end())
     if ((*i).empty())  
       i = slots_.erase(i);
     else 
       ++i;
+}
+
+void signal_impl::destroy()
+{
+  if (exec_count_ == 0)
+    delete this;
+  else                           // don't delete this during emission
+    destroy_ = defered_ = true;  // => sweep() will be called from ~signal_exec().
 }
 
 void* signal_impl::notify(void* d)
@@ -53,8 +67,8 @@ void* signal_impl::notify(void* d)
 signal_base::~signal_base()
 {
   if (impl_)
-    delete impl_;  // TODO: probably it is wiser to make signal_impl reference counted
-}                  //       in case signal_base gets deleted during signal emission.
+    impl_->destroy();
+}
 
 signal_impl* signal_base::impl()
 {

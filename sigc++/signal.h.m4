@@ -189,17 +189,14 @@ namespace sigc {
 
 namespace internal {
 
-struct signal_exec;
-
-template <class T_closure>
-struct closure_list;
-
 /** Implementation of the signal interface.
  * signal_impl manages a list of closures. When a closure becomes
  * invalid (because some referred object dies), notify() is executed.
  * notify() either calls sweep() directly or defers the execution of
  * sweep() when the signal is being emitted. sweep() removes all
- * invalid closures from the list.
+ * invalid closure from the list. sweep() also deletes "this" if
+ * the destruction was defered because the signal died during
+ * emission calling destroy().
  */
 struct signal_impl
 {
@@ -208,7 +205,7 @@ struct signal_impl
   typedef std::list<functor::internal::closure_base>::const_iterator const_iterator_type;
 
   signal_impl()
-    : exec_count_(0), defered_(0) {}
+    : exec_count_(0), defered_(0), destroy_(0) {}
 
   inline bool empty() const
     { return slots_.empty(); }
@@ -220,7 +217,7 @@ struct signal_impl
     { return slots_.size(); }
 
   iterator_type connect(const functor::internal::closure_base& slot_)
-    { return insert(slots_.begin(), slot_); }
+    { return insert(slots_.end(), slot_); }
 
   iterator_type insert(iterator_type i, const functor::internal::closure_base& slot_);
 
@@ -230,10 +227,14 @@ struct signal_impl
   // removes empty closures from slots_
   void sweep();
 
+  // deletes this if exec_count==0
+  void destroy();
+
   static void* notify(void* d);
 
   int exec_count_;
   bool defered_;
+  bool destroy_;
   std::list<functor::internal::closure_base> slots_;
 };
 
@@ -294,7 +295,7 @@ struct signal_exec
       { (sig_->exec_count_)++; }
   inline ~signal_exec() 
     { 
-      if (--(sig_->exec_count_) == 0 && sig_->defered_) 
+      if (--(sig_->exec_count_) == 0 && sig_->defered_)
         sig_->sweep(); 
     }
 };
