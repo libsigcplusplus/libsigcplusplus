@@ -107,7 +107,7 @@ private:
   };
 
   struct test {
-    static big  is_base_class_(const void*);
+    static big  is_base_class_(...);
     static char is_base_class_(typename type_trait<T_base>::pointer);
   };
 
