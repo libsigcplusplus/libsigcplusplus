@@ -303,7 +303,7 @@ protected:
    * @param src The slot from which to make a copy.
    * @return @p this.
    */
-  //slot_base& operator=(const slot_base& src);
+  slot_base& operator=(const slot_base& src);
 
 public: // public to avoid template friend declarations
   /** Typed slot_rep object that contains a functor. */
