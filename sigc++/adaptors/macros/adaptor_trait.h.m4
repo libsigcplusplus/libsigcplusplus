@@ -71,7 +71,8 @@ __FIREWALL__
 
 namespace sigc {
 
-#ifdef _MSC_VER
+/* TODO: we need a configure check for this: */
+#ifndef __GCC__
 #define LIBSIGC_TEMPLATE_PREFIX
 #else
 #define LIBSIGC_TEMPLATE_PREFIX template

@@ -1,3 +1,12 @@
+2004-03-18  Martin Schulze  <mschulze@cvs.gnome.org>
+
+  * tests/test_mem_fun.cc, tests/test_ptr_fun.cc: Don't test
+  making functors from overloaded methods with partial template
+  specialization. Not portable among different compilers (SUN FORTE).
+  * adaptors/macros/apdaptor_trait.h.m4: Only gcc seems to use the
+  notation A.template operator()<...>(...) => adapt preprocessor check
+  for #define LIBSIGC_TEMPLATE_PREFIX. TODO: replace with configure check.
+
 2004-03-13  Murray Cumming  <murrayc@murrayc.com>
 
 	* g++ 3.4 (pre-release) build fixes:
