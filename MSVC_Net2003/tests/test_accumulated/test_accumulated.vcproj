@@ -19,6 +19,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
+				AdditionalIncludeDirectories="$(SolutionDir);$(SolutionDir)\.."
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
@@ -70,6 +71,7 @@
 				Optimization="2"
 				InlineFunctionExpansion="1"
 				OmitFramePointers="TRUE"
+				AdditionalIncludeDirectories="$(SolutionDir);$(SolutionDir)\.."
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS"
 				StringPooling="FALSE"
 				RuntimeLibrary="2"

@@ -1,3 +1,8 @@
+
+BUILT_SOURCES = sigc++config.h
+
+MAINTAINERCLEANFILES = $(built_sources)
+
 EXTRA_DIST=libsigc++2_msvcNet2003.vcproj libsigc++2_msvcNet2003.sln \
            sigc++config.h \
            tests/test_accumulated/test_accumulated.vcproj \
@@ -19,3 +24,6 @@ EXTRA_DIST=libsigc++2_msvcNet2003.vcproj libsigc++2_msvcNet2003.sln \
            tests/test_size/test_size.vcproj \
            tests/test_slot/test_slot.vcproj \
            tests/test_trackable/test_trackable.vcproj
+
+sigc++config.h: $(top_srcdir)/sigc++config.h
+	cp -f $< $@

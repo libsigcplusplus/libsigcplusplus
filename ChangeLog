@@ -1,3 +1,14 @@
+2004-12-08  Cedric Gustin <cedric.gustin@swing.be>
+
+	* MSVC_Net2003/*/*.vcproj: Renamed libsigc++ target to
+	sigc-2.0d.dll (Debug) and sigc-2.0.dll (Release). Added
+	$(SolutionDir) and $(SolutionDir)\.. to "Additional Include
+	Directories" in tests projects.
+	* sigc++config.h.in: Rewrote dllexport/dllimport macros for
+	MSVC, for better consistency with glibmm/gtkmm.
+	* MSVC_Net2003/Makefile.am: copy sigc++config.h from $(top_srcdir)
+	at build time.
+
 2004-11-27  Murray Cumming  <murrayc@murrayc.com>
 
 	* configure.in: Revert the AC_PROG_LIBTOOL change, so that this builds
