@@ -22,7 +22,7 @@ divert(0)dnl
 namespace sigc {
 namespace functor {
 
-FOR(1,CALL_SIZE,[[lambda<internal::lambda_select%1> _%1;
+FOR(1,CALL_SIZE,[[const lambda<internal::lambda_select%1> _%1;
 ]])
 } /* namespace functor */
 } /* namespace sigc */

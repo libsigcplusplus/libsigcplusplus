@@ -39,7 +39,9 @@ template <class T_test1, class T_test2>
 struct $1_deduce_result_type
 {
 dnl
-dnl TODO: typeof() ignores "&" - compiler error in gcc-3.2? - Yes! (reported; should be fixed in 3.3.2)
+dnl TODO: check for this compiler bug and consequectly don't use typeof() if compiler is buggy:
+dnl       typeof() ignores "&"
+dnl       (http://gcc.gnu.org/cgi-bin/gnatsweb.pl?cmd=view%20audit-trail&database=gcc&pr=10243)
 dnl       E.g. typeof(type_trait<std::ostream&>::instance() << type_trait<int>::instance())
 dnl                 == std::ostream  //(instead of std::ostream&)
 dnl
@@ -50,12 +52,14 @@ dnl
 #endif
 };
 
+#ifdef SIGC_CXX_TYPEOF
 template <class T_test1> struct $1_deduce_result_type<T_test1,void>
   { typedef void type; };
 template <class T_test2> struct $1_deduce_result_type<void,T_test2>
   { typedef void type; };
 template <> struct $1_deduce_result_type<void,void>
   { typedef void type; };
+#endif
 
 template <class T_type1, class T_type2>
 struct lambda_$1 : public lambda_base
@@ -69,8 +73,6 @@ struct lambda_$1 : public lambda_base
           typename sigc::functor::deduce_result_type<LIST(arg1_type, LOOP(T_arg%1,$3))>::type,
           typename sigc::functor::deduce_result_type<LIST(arg2_type, LOOP(T_arg%1,$3))>::type
         >::type type; };
-  // We would need an additional template argument T_return for a void specialization.
-  // Then we would support operators that return void. TODO: is it wanted?
   typedef typename $1_deduce_result_type<
       typename arg1_type::result_type,
       typename arg2_type::result_type
@@ -79,7 +81,11 @@ struct lambda_$1 : public lambda_base
   result_type
   operator ()() const;
 
+ifelse($2,%,[dnl
+FOR(1, $3,[[LAMBDA_OPERATOR_DO]]($1,I hate m4!,%1))dnl
+],[dnl
 FOR(1, $3,[[LAMBDA_OPERATOR_DO]]($1,$2,%1))dnl
+])dnl
   lambda_$1(_R_(T_type1) a1, _R_(T_type2) a2 )
     : arg1_(a1), arg2_(a2) {}
 
@@ -103,9 +109,17 @@ lambda<internal::lambda_$1<T_arg1, T_arg2> >
 operator $2 (const lambda<T_arg1>& a1, const T_arg2& a2)
 { return lambda<internal::lambda_$1<T_arg1, T_arg2> >(internal::lambda_$1<T_arg1, T_arg2>(a1.value_,a2)); }
 template <class T_arg1, class T_arg2>
+lambda<internal::lambda_$1<T_arg1, T_arg2&> >
+operator $2 (const lambda<T_arg1>& a1, T_arg2& a2) // non-const argument is stored as reference
+{ return lambda<internal::lambda_$1<T_arg1, T_arg2&> >(internal::lambda_$1<T_arg1, T_arg2&>(a1.value_,a2)); }
+template <class T_arg1, class T_arg2>
 lambda<internal::lambda_$1<T_arg1, T_arg2> >
 operator $2 (const T_arg1& a1, const lambda<T_arg2>& a2)
 { return lambda<internal::lambda_$1<T_arg1, T_arg2> >(internal::lambda_$1<T_arg1, T_arg2>(a1,a2.value_)); }
+template <class T_arg1, class T_arg2>
+lambda<internal::lambda_$1<T_arg1&, T_arg2> >
+operator $2 (T_arg1& a1, const lambda<T_arg2>& a2) // non-const argument is stored as reference
+{ return lambda<internal::lambda_$1<T_arg1&, T_arg2> >(internal::lambda_$1<T_arg1&, T_arg2>(a1,a2.value_)); }
 divert(0)dnl
 } /* namespace internal */
 
@@ -128,8 +142,9 @@ namespace functor {
 
 LAMBDA_OPERATOR(plus,+,CALL_SIZE)
 LAMBDA_OPERATOR(minus,-,CALL_SIZE)
-LAMBDA_OPERATOR(multiplies,*,CALL_SIZE)
-LAMBDA_OPERATOR(divides,/,CALL_SIZE)
+LAMBDA_OPERATOR(multiply,*,CALL_SIZE)
+LAMBDA_OPERATOR(divide,/,CALL_SIZE)
+dnl LAMBDA_OPERATOR(modulus,%,CALL_SIZE) dnl m4 doesn't like % (see above)
 LAMBDA_OPERATOR(shiftleft,<<,CALL_SIZE)
 LAMBDA_OPERATOR(shiftright,>>,CALL_SIZE)
 

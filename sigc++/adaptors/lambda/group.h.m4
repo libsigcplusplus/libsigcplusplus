@@ -45,10 +45,10 @@ dnl
 dnl This really doesn't have much to do with lambda other than
 dnl holding lambdas with in itself.
 define([LAMBDA_GROUP],[dnl
-template <class T_functor, LOOP(class T_type%1, $1), class T_return = typename functor_trait<T_functor>::result_type>
+template <class T_functor, LOOP(class T_type%1, $1)>
 struct lambda_group$1 : public lambda_base
 {
-  typedef T_return result_type;dnl
+  typedef typename functor_trait<T_functor>::result_type result_type;dnl
 FOR(1, $1,[
   typedef typename lambda<T_type%1>::lambda_type   value[]%1[]_type;])
   typedef typename lambda<T_functor>::lambda_type lambda_type;
@@ -60,7 +60,6 @@ FOR(1, $1,[
 LOOP([[
                 typename sigc::functor::deduce_result_type<LIST(value%1_type, LOOP(T_arg%1,$2))>::type]], $1)
         >::type type; };
-dnl    { typedef T_return type; };
 
   result_type
   operator ()() const;
@@ -74,50 +73,15 @@ FOR(1, $1,[
   mutable lambda_type func_;
 };
 
-template <class T_functor, LOOP(class T_type%1, $1), class T_return>
-typename lambda_group$1<T_functor, LOOP(T_type%1, $1), T_return>::result_type
-lambda_group$1<T_functor, LOOP(T_type%1, $1), T_return>::operator ()() const
+template <class T_functor, LOOP(class T_type%1, $1)>
+typename lambda_group$1<T_functor, LOOP(T_type%1, $1)>::result_type
+lambda_group$1<T_functor, LOOP(T_type%1, $1)>::operator ()() const
   { return (func_())(LOOP(value%1_(), $1)); }
 
-/*// void specialization
-template <class T_functor, LOOP(class T_type%1, $1)>
-struct lambda_group$1<T_functor, LOOP(T_type%1, $1), void> : public lambda_base
-{
-  typedef void result_type;dnl
-FOR(1, $1,[
-  typedef typename lambda<T_type%1>::lambda_type  value[]%1[]_type;])
-  typedef typename lambda<T_functor>::lambda_type lambda_type;
 
-  template <LOOP(class T_arg%1=void,$2)>
-  struct deduce_result_type
-    { typedef typename sigc::functor::deduce_result_type<
-                typename sigc::functor::deduce_result_type<LIST(lambda_type, LOOP(T_arg%1,$2))>::type,dnl
-LOOP([[
-                typename sigc::functor::deduce_result_type<LIST(value%1_type, LOOP(T_arg%1,$2))>::type]], $1)
-        >::type type; };
-dnl    { typedef T_return type; };
-
-  void
-  operator ()() const;
-
-FOR(1,CALL_SIZE,[[LAMBDA_GROUP_DO($1,%1)]])dnl
-  lambda_group[]$1[](const T_functor& _A_func, LOOP(const T_type%1& _A_%1, $1))
-    : LOOP(value%1_(_A_%1), $1), func_(_A_func) {}dnl
-
-FOR(1, $1,[
-  value%1_type value%1_;])
-  mutable lambda_type func_;
-};
-
-template <class T_functor, LOOP(class T_type%1, $1)>
-void
-lambda_group$1<T_functor, LOOP(T_type%1, $1), void>::operator ()() const
-  { (func_())(LOOP(value%1_(), $1)); }*/
-
-
-template <class T_action, class T_functor, LOOP(class T_type%1, $1), class T_return>
+template <class T_action, class T_functor, LOOP(class T_type%1, $1)>
 void visit_each(const T_action& _A_action,
-                const lambda_group$1<T_functor, LOOP(T_type%1, $1), T_return>& _A_target)
+                const lambda_group$1<T_functor, LOOP(T_type%1, $1)>& _A_target)
 {dnl
 FOR(1, $1,[
   visit_each(_A_action, _A_target.value%1_);])

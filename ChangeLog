@@ -1,3 +1,15 @@
+2003-08-29  Martin Schulze  <teebaum@cvs.gnome.org>
+
+	* tests/test_lambda.cc: Add more tests.
+	* sigc++/adaptors/lambda/select.h.m4, sigc++/adaptors/lambda/lambda.cc.m4:
+	Make _1, _2, ... constant.
+	* sigc++/adaptors/lambda/operator.h.m4:
+	Add operator{+,-,*,...} overloads to distinguish between const and non-const objects.
+	Store references to non-const objects rather than copies.
+	This allows expressions like e.g. std::cout << _1.
+	* sigc++/adaptors/lambda/base.h.m4, sigc++/adaptors/lambda/group.h.m4:
+	Remove void specializations. Functors returning void are tested and work fine.
+
 2003-08-27  Martin Schulze  <teebaum@cvs.gnome.org>
 
 	* tests/test_callof.cc, tests/test_deduce_result_type.cc:

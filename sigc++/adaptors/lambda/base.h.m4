@@ -50,16 +50,16 @@ template <class T_type> struct lambda;
 
 namespace internal {
 
-template <class T_type, class T_return = typename functor_trait<T_type>::result_type, bool I_islambda = is_base_and_derived<lambda_base, T_type>::value> struct lambda_core;
+template <class T_type, bool I_islambda = is_base_and_derived<lambda_base, T_type>::value> struct lambda_core;
 
-template <class T_type, class T_return>
-struct lambda_core<T_type, T_return, true> : public lambda_base
+template <class T_type>
+struct lambda_core<T_type, true> : public lambda_base
 {
   template <LOOP(class T_arg%1=void,CALL_SIZE)>
   struct deduce_result_type
     { typedef typename T_type::deduce_result_type<LOOP(T_arg%1,CALL_SIZE)>::type type; };
-  typedef T_return result_type;
-  typedef T_type   lambda_type;
+  typedef typename functor_trait<T_type>::result_type result_type;
+  typedef T_type lambda_type;
 
   result_type
   operator()() const;
@@ -76,51 +76,19 @@ FOR(1,CALL_SIZE,[[LAMBDA_DO(%1)]])dnl
   T_type value_;
 };
 
-template <class T_type, class T_return>
-typename lambda_core<T_type, T_return, true>::result_type
-lambda_core<T_type, T_return, true>::operator()() const
+template <class T_type>
+typename lambda_core<T_type, true>::result_type
+lambda_core<T_type, true>::operator()() const
   { return value_(); }
 
 
-/*// void specialization
 template <class T_type>
-struct lambda_core<T_type, void, true> : public lambda_base
-{
-  template <LOOP(class T_arg%1=void,CALL_SIZE)>
-  struct deduce_result_type
-    { typedef typename T_type::deduce_result_type<LOOP(T_arg%1,CALL_SIZE)>::type type; };
-  typedef T_type lambda_type;
-  typedef void   result_type;
-
-  void
-  operator()() const;
-
-FOR(1,CALL_SIZE,[[LAMBDA_DO(%1)]])dnl
-  lambda_core() {}
-  lambda_core(const T_type& v)
-    : value_(v) {}
-
-  template <class T1, class T2>
-  lambda_core(const T1& v1, const T2& v2)
-    : value_(v1, v2) {}
-
-  T_type value_;
-};
-
-template <class T_type>
-typename lambda_core<T_type, void, true>::result_type
-lambda_core<T_type, void, true>::operator()() const
-  { value_(); }*/
-
-
-template <class T_type, class T_return>
-struct lambda_core<T_type, T_return, false> : public lambda_base
+struct lambda_core<T_type, false> : public lambda_base
 {
   template <LOOP(class T_arg%1=void,CALL_SIZE)>
   struct deduce_result_type
     { typedef T_type type; };
   typedef T_type result_type; // all operator() overloads return T_type.
-                              // T_return == functor_trait<T_type>::result_type can be extracted at any other point.
   typedef lambda<T_type> lambda_type;
 
   T_type operator()() const;
@@ -132,16 +100,16 @@ FOR(1,CALL_SIZE,[[LAMBDA_DO_VALUE(%1)]])dnl
   T_type value_;
 };
 
-template <class T_type, class T_return>
-T_type lambda_core<T_type, T_return, false>::operator()() const
+template <class T_type>
+T_type lambda_core<T_type, false>::operator()() const
   { return value_; }
 
 } /* namespace internal */
 
 
-template <class T_action, class T_functor, class T_return, bool I_islambda>
+template <class T_action, class T_functor, bool I_islambda>
 void visit_each(const T_action& _A_action,
-                const internal::lambda_core<T_functor, T_return, I_islambda>& _A_target)
+                const internal::lambda_core<T_functor, I_islambda>& _A_target)
 {
   visit_each(_A_action, _A_target.value_);
 }
@@ -150,8 +118,6 @@ void visit_each(const T_action& _A_action,
 template <class T_type>
 struct lambda : public internal::lambda_core<T_type>
 {
-  typedef typename internal::lambda_core<T_type>::result_type result_type;
-
   lambda()
     {}
   lambda(typename type_trait<T_type>::take v)
