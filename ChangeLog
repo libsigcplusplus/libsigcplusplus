@@ -1,3 +1,5 @@
+2.0.6:
+
 2004-10-12  Martin Schulze  <mschulze@cvs.gnome.org>
 
 	* MSVC_Net2003/*/*.vcproj, MSVC_Net2003/blank.cpp: Fix project files
