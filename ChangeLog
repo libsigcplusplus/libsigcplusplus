@@ -1,5 +1,11 @@
 2003-11-01  Martin Schulze  <teebaum@cvs.gnome.org>
 
+	* MSVC_Net2003: New directory containing project
+	files for Visual Studio .Net 2003.
+	Credits to Roel Vanhout <roel@riks.nl>!
+
+2003-11-01  Martin Schulze  <teebaum@cvs.gnome.org>
+
 	* sigc++/retype.h.m4: Use LIBSIGC_TEMPLATE_PREFIX
 	in explicit function template instantiations.
 	* sigc++/type_traits.h: Add template specialization
