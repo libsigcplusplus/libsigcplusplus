@@ -1,0 +1,21 @@
+M4_DIR = $(top_srcdir)/sigc++
+
+built_sources = $(sigc_built_h) $(sigc_built_cc)
+
+BUILT_sources = $(built_sources)
+
+#Generate .h and .cc from .h.m4 and .cc.m4:
+%.h: %.h.m4 $(M4_DIR)/template.macros.m4
+	        $(M4) $(M4_INCLUDES) $(DEFINES) -I $(M4_DIR) $<  > $@
+
+%.cc: %.cc.m4 $(M4_DIR)/template.macros.m4
+	        $(M4) $(M4_INCLUDES) $(DEFINES) -I $(M4_DIR) $<  > $@
+
+#Remove current directory from DEFAULT_INCLUDES because signal.h has the same name as a standard header:
+DEFAULT_INCLUDES =
+INCLUDES = -I$(top_srcdir) -I$(top_builddir)
+
+
+# Remove the generated sources during distclean:
+distclean-local:
+	rm -f $(built_sources)
