@@ -51,7 +51,7 @@ WARN_LOGFILE           =
 #---------------------------------------------------------------------------
 # configuration options related to the input files
 #---------------------------------------------------------------------------
-INPUT                  = ../../sigc++ ../../sigc++/functors ../../sigc++/adaptors ../../sigc++/adaptors/lambda
+INPUT                  = $(TOP_SRCDIR)/sigc++ $(TOP_SRCDIR)/sigc++/functors $(TOP_SRCDIR)/sigc++/adaptors $(TOP_SRCDIR)/sigc++/adaptors/lambda
 FILE_PATTERNS          = *.h
 RECURSIVE              = NO
 EXCLUDE                = 
@@ -82,8 +82,8 @@ IGNORE_PREFIX          =
 GENERATE_HTML          = YES
 HTML_OUTPUT            = html
 HTML_FILE_EXTENSION    = .html
-HTML_HEADER            = libsigc_header.html_fragment
-HTML_FOOTER            = libsigc_footer.html_fragment
+HTML_HEADER            = $(SRCDIR)/libsigc_header.html_fragment
+HTML_FOOTER            = $(SRCDIR)/libsigc_footer.html_fragment
 HTML_STYLESHEET        = 
 HTML_ALIGN_MEMBERS     = YES
 GENERATE_HTMLHELP      = NO

@@ -7,12 +7,14 @@ include $(top_srcdir)/docs/Makefile_web.am_fragment
 web_path_reference = $(web_path_docs)reference
 
 EXTRA_DIST = README Doxyfile.in \
-             libsigc_header.html_fragment libsigc_footer.html_fragment beautify_docs.pl \
+             libsigc_header.html_fragment libsigc_footer.html_fragment \
+	     beautify_docs.pl \
              html
 
+html: html/index.html
 html/index.html: $(doxygen_configfile_source) $(beautify_docs)
 	-rm -rf html
-	doxygen $(doxygen_configfile)
+	SRCDIR=$(srcdir) TOP_SRCDIR=$(top_srcdir) doxygen $(doxygen_configfile)
 	$(PERL_PATH) $(beautify_docs) html
 
 
