@@ -35,7 +35,7 @@ void* signal_base::notify(void* d)
 signal_base::iterator_type signal_base::insert(signal_base::iterator_type i, const functor::internal::closure_base& slot_)
 {
   iterator_type temp = slots_.insert(i, slot_);
-  slot_.set_dependency(this, &notify);
+  temp->set_dependency(this, &notify);
   return temp;
 }
 
