@@ -1,5 +1,10 @@
 2003-10-23  Martin Schulze  <teebaum@cvs.gnome.org>
 
+	* sigc++/functors/{functor_trait,slot}.h.m4:
+	Move definition of struct nil into functor_trait.h.
+
+2003-10-23  Martin Schulze  <teebaum@cvs.gnome.org>
+
 	* configure.ac: Disable typeof() compiler checks.
 	* sigc++/adaptors/bind.h.m4: Remove unnecessary
 	deduce_result_type<> template specializations.
