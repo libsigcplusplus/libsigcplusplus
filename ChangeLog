@@ -1,3 +1,11 @@
+2004-10-24  Martin Schulze  <mschulze@cvs.gnome.org>
+
+	* MSVC_Net2003/*/*.vcproj: Link with the "multithreaded DLL" runtime
+	libraries and enable RTTI for the MSVC build
+	(patch from Timothy M. Shead <tshead@k-3d.com>).
+	* MSVC_Net2003/*/.cvsignore: Hide generated build files from cvs
+	(patch from Timothy M. Shead <tshead@k-3d.com>).
+
 2.0.6:
 
 2004-10-12  Martin Schulze  <mschulze@cvs.gnome.org>

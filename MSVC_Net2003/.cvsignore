@@ -1,1 +1,7 @@
-Makefile Makefile.in
+Makefile
+Makefile.in 
+Debug 
+Release 
+*.ncb 
+*.suo
+
