@@ -1,5 +1,6 @@
 Makefile Makefile.in
 .libs .deps
+test_accumulated
 test_bind test_bind_return
 test_callof test_closure test_compose
 test_disconnect
@@ -10,4 +11,5 @@ test_lambda
 test_mem_fun
 test_ptr_fun
 test_signal
+test_size
 test_trackable
