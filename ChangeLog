@@ -58,7 +58,7 @@
 
 	* scripts/cxx.m4, sigc++config.h.in, configure.ac,
 	sigc++/adaptors/lambda/macros/operator.h.m4, tests/test_lambda.cc:
-	Add configure check SIGC_OPERATOR_OVERLOAD_AMBUGUITY for a SUN FORTE
+	Add configure check SIGC_OPERATOR_OVERLOAD_AMBIGUITY for a SUN FORTE
 	compiler problem (bug #147391). Use it to decide whether the lambda
 	action operators may be overloaded (not doing so restricts the API slightly).
 	* sigc++/adaptors/lambda/macros/operator.h.m4: Add some doxygen comments
