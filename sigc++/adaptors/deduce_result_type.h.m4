@@ -23,16 +23,17 @@ struct deduce_result_type<LIST(T_functor, LOOP(T_arg%1,$1), LOOP(void,eval($2-$1
   { typedef typename T_functor::deduce_result_type<LOOP(T_arg%1,$1)>::type type; };
 
 ])
-define([DEDUCE_RESULT_TYPE_TYPEOF],[dnl
-template <LIST(class T_functor, LOOP(class T_arg%1, $1))>
-struct deduce_result_type<LIST(T_functor, LOOP(T_arg%1,$1), LOOP(void,eval($2-$1)), false)>
-{
-  typedef typeof(type_trait<T_functor>::instance().
-                   T_functor::operator()(LOOP([
-                      type_trait<T_arg%1>::instance()], $1))) type;
-};
-
-])
+dnl 01.11.2003: Completely removed support for typeof() since it is non-standard!
+dnl define([DEDUCE_RESULT_TYPE_TYPEOF],[dnl
+dnl template <LIST(class T_functor, LOOP(class T_arg%1, $1))>
+dnl struct deduce_result_type<LIST(T_functor, LOOP(T_arg%1,$1), LOOP(void,eval($2-$1)), false)>
+dnl {
+dnl   typedef typeof(type_trait<T_functor>::instance().
+dnl                    T_functor::operator()(LOOP([
+dnl                       type_trait<T_arg%1>::instance()], $1))) type;
+dnl };
+dnl 
+dnl ])
 
 divert(0)dnl
 /*
@@ -53,12 +54,11 @@ struct adaptor_base : public functor_base {};
  * typename deduce_result_type<functor_type, [list of arg_types]>::type
  * can be used to infer a functor's return type at compile time if the
  * argument types are known.
- * If the compiler supports typeof() it is used to deduce the result type
- * the functor. Otherwise, typename functor_trait<functor_type>::result_type
- * is used. This gives the correct return type if functor_type inherits from
+ * It defaults to typename functor_trait<functor_type>::result_type.
+ * This gives the correct return type if functor_type inherits from
  * sigc::functor::functor_base and defines result_type or if functor_type
- * is actually a (member) function type. Mulit-type functors are only
- * supported when typeof() is available.
+ * is actually a (member) function type. Mulit-type functors are not
+ * supported.
  * sigc++ adaptors define a class member deduce_result_type<> that is
  * used by the global deduce_result_type<> template to correctly deduce
  * the return types of the different template operator() overloads.
@@ -76,10 +76,10 @@ template <class T_functor,
 struct deduce_result_type
   { typedef typename functor_trait<T_functor>::result_type type; };
 
-FOR(0,CALL_SIZE,[[DEDUCE_RESULT_TYPE_ADAPTOR(%1,CALL_SIZE)]])
+FOR(0,CALL_SIZE,[[DEDUCE_RESULT_TYPE_ADAPTOR(%1,CALL_SIZE)]])dnl
 
-#ifdef SIGC_CXX_TYPEOF
-FOR(0,CALL_SIZE,[[DEDUCE_RESULT_TYPE_TYPEOF(%1,CALL_SIZE)]])
-#endif
-
+dnl #ifdef SIGC_CXX_TYPEOF
+dnl FOR(0,CALL_SIZE,[[DEDUCE_RESULT_TYPE_TYPEOF(%1,CALL_SIZE)]])
+dnl #endif
+dnl
 } /* namespace sigc */

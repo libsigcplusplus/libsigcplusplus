@@ -65,10 +65,11 @@ divert(0)dnl
   result_type is defined in all user defined or 3rd-party functors
   (except those you specify a return type explicitly with SIGC_FUNCTOR_TRAIT()).
 
-  You might get away without these conventions if your compiler supports
-  typeof() and if you don't happen to use the operator()() overload of
-  sigc++'s adaptors in your program.
-
+dnl 01.11.2003: Completely removed support for typeof() since it is non-standard!
+dnl   You might get away without these conventions if your compiler supports
+dnl   typeof() and if you don't happen to use the operator()() overload of
+dnl   sigc++'s adaptors in your program.
+dnl 
 */
 __FIREWALL__
 #include <sigc++/type_traits.h>

@@ -33,6 +33,16 @@ struct type_trait
   static  T_type  instance(); /* not implemented */  
 };
 
+template <class T_type, int N>
+struct type_trait<T_type[N]>
+{
+  typedef T_type*  type;
+  typedef T_type*& pass;
+  typedef const T_type*& take;
+  typedef T_type** pointer;
+  static  T_type*  instance(); /* not implemented */  
+};
+
 template <class T_type>
 struct type_trait<T_type&>
 {

@@ -64,11 +64,12 @@ dnl       typeof() ignores "&"
 dnl       (http://gcc.gnu.org/cgi-bin/gnatsweb.pl?cmd=view%20audit-trail&database=gcc&pr=10243)
 dnl       E.g. typeof(type_trait<std::ostream&>::instance() << type_trait<int>::instance())
 dnl                 == std::ostream  //(instead of std::ostream&)
-#ifdef SIGC_CXX_TYPEOF
-template <class T_test1, class T_test2>
-struct lambda_action_deduce_result_type<$1, T_test1, T_test2>
-  { typedef typeof(type_trait<T_test1>::instance() $2 type_trait<T_test2>::instance()) type; };
-#endif
+dnl 01.11.2003: Completely removed support for typeof() since it is non-standard!
+dnl #ifdef SIGC_CXX_TYPEOF
+dnl template <class T_test1, class T_test2>
+dnl struct lambda_action_deduce_result_type<$1, T_test1, T_test2>
+dnl   { typedef typeof(type_trait<T_test1>::instance() $2 type_trait<T_test2>::instance()) type; };
+dnl #endif
 divert(1)dnl
 template <>
 struct lambda_action<$1 >
@@ -105,11 +106,12 @@ dnl       typeof() ignores "&"
 dnl       (http://gcc.gnu.org/cgi-bin/gnatsweb.pl?cmd=view%20audit-trail&database=gcc&pr=10243)
 dnl       E.g. typeof(type_trait<std::ostream&>::instance() << type_trait<int>::instance())
 dnl                 == std::ostream  //(instead of std::ostream&)
-#ifdef SIGC_CXX_TYPEOF
-template <class T_test>
-struct lambda_action_unary_deduce_result_type<$1, T_test>
-  { typedef typeof($2 type_trait<T_test>::instance()) type; };
-#endif
+dnl 01.11.2003: Completely removed support for typeof() since it is non-standard!
+dnl #ifdef SIGC_CXX_TYPEOF
+dnl template <class T_test>
+dnl struct lambda_action_unary_deduce_result_type<$1, T_test>
+dnl   { typedef typeof($2 type_trait<T_test>::instance()) type; };
+dnl #endif
 divert(1)dnl
 template <>
 struct lambda_action_unary<$1 >
@@ -136,11 +138,12 @@ dnl       typeof() ignores "&"
 dnl       (http://gcc.gnu.org/cgi-bin/gnatsweb.pl?cmd=view%20audit-trail&database=gcc&pr=10243)
 dnl       E.g. typeof(type_trait<std::ostream&>::instance() << type_trait<int>::instance())
 dnl                 == std::ostream  //(instead of std::ostream&)
-#ifdef SIGC_CXX_TYPEOF
-template <class T_type, class T_test>
-struct lambda_action_convert_deduce_result_type<$1, T_type, T_test>
-  { typedef typeof($2<T_type>(type_trait<T_test>::instance())) type; };
-#endif
+dnl 01.11.2003: Completely removed support for typeof() since it is non-standard!
+dnl #ifdef SIGC_CXX_TYPEOF
+dnl template <class T_type, class T_test>
+dnl struct lambda_action_convert_deduce_result_type<$1, T_type, T_test>
+dnl   { typedef typeof($2<T_type>(type_trait<T_test>::instance())) type; };
+dnl #endif
 divert(1)dnl
 template <class T_type>
 struct lambda_action_convert<$1, T_type>
@@ -268,85 +271,85 @@ template <class T_action, class T_test1, class T_test2>
 struct lambda_action_deduce_result_type
   { typedef typename type_trait<T_test1>::type type; }; // TODO: e.g. T_test1=int, T_test2=double yields int but it should yield double !
 
-#ifdef SIGC_CXX_TYPEOF
-template <class T_action, class T_test1>
-struct lambda_action_deduce_result_type<T_action, T_test1, void>
-  { typedef void type; };
-template <class T_action, T_test2>
-struct lambda_action_deduce_result_type<T_action, void, T_test2>
-  { typedef void type; };
-template <class T_action>
-struct lambda_action_deduce_result_type<T_action, void, void>
-  { typedef void type; };
-#endif
-
-#ifndef SIGC_CXX_TYPEOF
+dnl #ifdef SIGC_CXX_TYPEOF
+dnl template <class T_action, class T_test1>
+dnl struct lambda_action_deduce_result_type<T_action, T_test1, void>
+dnl   { typedef void type; };
+dnl template <class T_action, T_test2>
+dnl struct lambda_action_deduce_result_type<T_action, void, T_test2>
+dnl   { typedef void type; };
+dnl template <class T_action>
+dnl struct lambda_action_deduce_result_type<T_action, void, void>
+dnl   { typedef void type; };
+dnl #endif
+dnl 
+dnl #ifndef SIGC_CXX_TYPEOF
 template <class T_action, class T_test1, class T_test2>
 struct lambda_action_deduce_result_type<logical<T_action>, T_test1, T_test2>
   { typedef bool type; };
-#endif
+dnl #endif
 
-#ifndef SIGC_CXX_TYPEOF
+dnl #ifndef SIGC_CXX_TYPEOF
 template <class T_action, class T_test1, class T_test2>
 struct lambda_action_deduce_result_type<relational<T_action>, T_test1, T_test2>
   { typedef bool type; };
-#endif
+dnl #endif
 
-#ifndef SIGC_CXX_TYPEOF
+dnl #ifndef SIGC_CXX_TYPEOF
 template <class T_action, class T_test1, class T_test2>
 struct lambda_action_deduce_result_type<arithmetic_assign<T_action>, T_test1, T_test2>
   { typedef T_test1 type; };
-#endif
+dnl #endif
 
-#ifndef SIGC_CXX_TYPEOF
+dnl #ifndef SIGC_CXX_TYPEOF
 template <class T_action, class T_test1, class T_test2>
 struct lambda_action_deduce_result_type<bitwise_assign<T_action>, T_test1, T_test2>
   { typedef T_test1 type; };
-#endif
+dnl #endif
 
-#ifndef SIGC_CXX_TYPEOF
+dnl #ifndef SIGC_CXX_TYPEOF
 template <class T_test1, class T_test2>
 struct lambda_action_deduce_result_type<other<subscript>, T_test1, T_test2>
   { typedef typename type_trait<typename dereference_trait<T_test1>::type>::pass type; };
-#endif
+dnl #endif
 
 template <class T_action, class T_test>
 struct lambda_action_unary_deduce_result_type
   { typedef typename type_trait<T_test>::type type; };
 
-#ifdef SIGC_CXX_TYPEOF
-template <class T_action>
-struct lambda_action_unary_deduce_result_type<T_action, void>
-  { typedef void type; };
-#endif
-
+dnl #ifdef SIGC_CXX_TYPEOF
+dnl template <class T_action>
+dnl struct lambda_action_unary_deduce_result_type<T_action, void>
+dnl   { typedef void type; };
+dnl #endif
+dnl 
 template <class T_action, class T_type, class T_test>
 struct lambda_action_convert_deduce_result_type
   { typedef typename type_trait<T_type>::type type; };
 
-#ifdef SIGC_CXX_TYPEOF
-template <class T_action, class T_test>
-struct lambda_action_convert_deduce_result_type<T_action, void, T_test>
-  { typedef void type; };
-#endif
-
-#ifndef SIGC_CXX_TYPEOF
+dnl #ifdef SIGC_CXX_TYPEOF
+dnl template <class T_action, class T_test>
+dnl struct lambda_action_convert_deduce_result_type<T_action, void, T_test>
+dnl   { typedef void type; };
+dnl #endif
+dnl 
+dnl #ifndef SIGC_CXX_TYPEOF
 template <class T_action, class T_test>
 struct lambda_action_unary_deduce_result_type<unary_logical<T_action>, T_test>
   { typedef bool type; };
-#endif
+dnl #endif
 
-#ifndef SIGC_CXX_TYPEOF
+dnl #ifndef SIGC_CXX_TYPEOF
 template <class T_test>
 struct lambda_action_unary_deduce_result_type<unary_other<address>, T_test>
   { typedef typename type_trait<T_test>::pointer type; };
-#endif
+dnl #endif
 
-#ifndef SIGC_CXX_TYPEOF
+dnl #ifndef SIGC_CXX_TYPEOF
 template <class T_test>
 struct lambda_action_unary_deduce_result_type<unary_other<dereference>, T_test>
   { typedef typename type_trait<typename dereference_trait<T_test>::type>::pass type; };
-#endif
+dnl #endif
 
 LAMBDA_OPERATOR(arithmetic<plus>,+)
 LAMBDA_OPERATOR(arithmetic<minus>,-)
@@ -376,12 +379,12 @@ LAMBDA_OPERATOR(bitwise_assign<rightshift>,>>=)
 LAMBDA_OPERATOR(bitwise_assign<and_>,&=)
 LAMBDA_OPERATOR(bitwise_assign<or_>,|=)
 LAMBDA_OPERATOR(bitwise_assign<xor_>,^=)dnl
-
-#ifdef SIGC_CXX_TYPEOF
-template <class T_test1, class T_test2>
-struct lambda_action_deduce_result_type<other<subscript>, T_test1, T_test2>
-  { typedef typeof(type_trait<T_test1>::instance()[[type_trait<T_test2>::instance()]]) type; };
-#endif
+dnl 
+dnl #ifdef SIGC_CXX_TYPEOF
+dnl template <class T_test1, class T_test2>
+dnl struct lambda_action_deduce_result_type<other<subscript>, T_test1, T_test2>
+dnl   { typedef typeof(type_trait<T_test1>::instance()[[type_trait<T_test2>::instance()]]) type; };
+dnl #endif
 divert(1)dnl
 template <>
 struct lambda_action<other<subscript> >
@@ -393,12 +396,12 @@ struct lambda_action<other<subscript> >
 };
 
 divert(0)dnl
-
-#ifdef SIGC_CXX_TYPEOF
-template <class T_test1, class T_test2>
-struct lambda_action_deduce_result_type<other<assign>, T_test1, T_test2>
-  { typedef typeof(type_trait<T_test1>::instance() = type_trait<T_test2>::instance()) type; };
-#endif
+dnl 
+dnl #ifdef SIGC_CXX_TYPEOF
+dnl template <class T_test1, class T_test2>
+dnl struct lambda_action_deduce_result_type<other<assign>, T_test1, T_test2>
+dnl   { typedef typeof(type_trait<T_test1>::instance() = type_trait<T_test2>::instance()) type; };
+dnl #endif
 divert(1)dnl
 template <>
 struct lambda_action<other<assign> >

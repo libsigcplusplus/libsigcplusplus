@@ -1,3 +1,20 @@
+2003-11-01  Martin Schulze  <teebaum@cvs.gnome.org>
+
+	* sigc++/retype.h.m4: Use LIBSIGC_TEMPLATE_PREFIX
+	in explicit function template instantiations.
+	* sigc++/type_traits.h: Add template specialization
+	for arrays (T_type[N]) to disable non-working member
+	type_trait<T_type[N]>::instance().
+	* sigc++/visit_each.h: Remove more disturbing
+	limit_derived_target<>::operator() overloads.
+	(Should have noticed earlier that they are unnecessary.)
+	* sigc++/adaptors/deduce_result_type.h.m4,
+	sigc++/adaptors/lambda/operator.h.m4,
+	sigc++/functors/functor_trait.h.m4,
+	tests/test_[bind,compose,exception_catch,hide,lambda].cc:
+	Completely removed support for typeof(). We don't need
+	it any more and it is completely non-standard!
+
 2003-10-30  Cedric Gustin <cedric.gustin@swing.be>
  
  	* configure.ac: Added test of win32 platform. Commented

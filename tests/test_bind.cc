@@ -10,17 +10,6 @@
 
 struct foo : public sigc::functor_base
 {
-#ifdef SIGC_CXX_TYPEOF
-  // if the compiler supports typeof(), result_type must only match the
-  // return type of the operator() overload with 1 argument (cannot be auto-detected in C++).
-  typedef bool result_type;
-  bool operator()(int i)
-    {std::cout << "foo(int "<<i<<")" << std::endl; return (i>0);}
-  int operator()(int i,int j)
-    {std::cout << "foo(int "<<i<<",int "<<j<<")" << std::endl; return i+j;}
-  void operator()(int i,int j,int k)
-    {std::cout << "foo(int "<<i<<",int "<<j<<", int "<<k<<")" << std::endl;}
-#else
   // choose a type that can hold all return values
   typedef int result_type;
   int operator()(int i)
@@ -29,7 +18,6 @@ struct foo : public sigc::functor_base
     {std::cout << "foo(int "<<i<<",int "<<j<<")" << std::endl; return i+j;}
   int operator()(int i,int j,int k)
     {std::cout << "foo(int "<<i<<",int "<<j<<", int "<<k<<")" << std::endl; return 0;}
-#endif
 };
 
 struct foo_void : public sigc::functor_base

@@ -11,22 +11,12 @@ namespace sigc { SIGC_FUNCTORS_HAVE_RESULT_TYPE }
 
 struct set 
 {
-#ifdef SIGC_CXX_TYPEOF
-  // if the compiler supports typeof(), result_type must only match the
-  // return type of set's operator()(int) overload (cannot be auto-detected in C++).
-  typedef int result_type;
-  int operator()(int i) 
-    {std::cout << "set(int "<<i<<")"<<std::endl; return i*i;}
-  double operator()(double i) 
-    {std::cout << "set(double "<<i<<")"<<std::endl; return i*5;}
-#else
   // choose a type that can hold all return values
   typedef double result_type;
   double operator()(int i) 
     {std::cout << "set(int "<<i<<")"<<std::endl; return i*i;}
   double operator()(double i) 
     {std::cout << "set(double "<<i<<")"<<std::endl; return i*5;}
-#endif
 };
 
 struct set_void

@@ -16,7 +16,6 @@ using sigc::_5;
 using sigc::_6;
 using sigc::_7;
 
-#ifndef SIGC_CXX_TYPEOF
 // other template libraries (e.g. boost::lambda) have similar hacks built in
 // to make lambda shift operators work with streams
 namespace sigc {
@@ -26,7 +25,6 @@ struct lambda_action_deduce_result_type<bitwise<leftshift>, std::ostream&, T_arg
   typedef std::ostream& type;
 };
 }
-#endif
 
 int foo(int i, int j)
   {std::cout << "foo(int "<<i<<", int "<<j<<")" << std::endl; return 4*i+j;}

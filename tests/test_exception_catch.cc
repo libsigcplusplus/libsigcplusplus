@@ -7,14 +7,9 @@
 #include <iostream>
 #include <stdexcept>
 
-#ifndef SIGC_CXX_TYPEOF
 struct f : public sigc::functor_base
 {
   typedef int result_type;
-#else
-struct f
-{
-#endif
   int operator()(int i) 
     {std::cout << "f(int "<<i<<")"<<std::endl; 
      throw std::range_error("out of range");}
@@ -22,8 +17,6 @@ struct f
 
 struct g : public sigc::functor_base
 {
-  // also necessary if the compiler supports typeof() because the return type of
-  // g's operator() overload with no arguments cannot be auto-detected in C++:
   typedef int result_type;
   int operator()() 
     {std::cout << "g()"<<std::endl;

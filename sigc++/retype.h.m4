@@ -24,7 +24,7 @@ ifelse($1,0,[dnl
 ],[dnl
   template <LOOP(class T_arg%1, $1)>
   inline T_return operator()(LOOP(T_arg%1 _A_a%1, $1))
-    { return T_return(functor_.template operator()<LOOP(typename ::sigc::type_trait<T_type%1>::take, $1)>
+    { return T_return(functor_.LIBSIGC_TEMPLATE_PREFIX operator()<LOOP(typename ::sigc::type_trait<T_type%1>::take, $1)>
         (LOOP([[(T_type%1)_A_a%1]], $1)));
     }
 ])dnl
@@ -35,7 +35,7 @@ ifelse($1,0,[dnl
 ],[dnl
   template <LOOP(class T_arg%1, $1)>
   inline void operator()(LOOP(T_arg%1 _A_a%1, $1))
-    { T_return(functor_.template operator()<LOOP(typename ::sigc::type_trait<T_type%1>::take, $1)>
+    { T_return(functor_.LIBSIGC_TEMPLATE_PREFIX operator()<LOOP(typename ::sigc::type_trait<T_type%1>::take, $1)>
         (LOOP([[(T_type%1)_A_a%1]], $1)));
     }
 ])dnl
