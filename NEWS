@@ -20,8 +20,8 @@ This version of libsigc++ needs GNU g++ 3.2 or higher to compile.
 2.0.7:
 
 * Now builds with the following compilers, in addition to 
-the existing GNU g++, MSVC++ .Net 2003, and Intel compilers:
-- SUN Forte CC 5.5
+the existing GNU g++, SUN Forte CC 5.5, MSVC++ .Net 2003, 
+and Intel compilers: 
 - IBM AIX xlC v7
 - Tru64 C++ V6.5-042
 - IRIX MIPSpro 7.4.2m

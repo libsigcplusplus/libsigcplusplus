@@ -1,3 +1,5 @@
+2.0.7:
+
 2005-01-24  Cedric Gustin <cedric.gustin@swing.be>
 
 	* sigc++config.h.in : Moved the SIGC_USING_STD macro definition
