@@ -18,7 +18,7 @@ main()
 {
   sigc::signal<void, const std::string&> signal_print;
   
-  signal_print.connect( std::ptr_fun(&on_print) );
+  signal_print.connect( sigc::ptr_fun(&on_print) );
   
   signal_print.emit("hello world\n");
 }

@@ -1,3 +1,8 @@
+2004-07-11  Martin Schulze <mschulze@cvs.gnome.org>
+
+	* examples/hello_world.cc: Use sigc::ptr_fun instead of std::ptr_fun.
+	(fixes bug #144846)
+
 2004-07-11  Eric Bourque <ericb@computer.org>
 
 	* libsigc++-2.0.spec.in: new file
