@@ -1,3 +1,11 @@
+2005-01-17  Murray Cumming  <murrayc@murrayc.com>
+
+	* MSVC_Net2004/Makefile.am: Add built files to DISTCLEANFILES to fix 
+	the distcheck.
+	* docs/reference/Makefile.am, manual/Makefile.am: Specify $srcdir in 
+	paths, to fix distcheck of the manual, and maybe fix install problems 
+	on Solaris.
+
 2005-01-11  Murray Cumming  <murrayc@murrayc.com>
 
 	* docs/website/stable.html: Updated the text about binary packages.

@@ -3,6 +3,8 @@ BUILT_SOURCES = sigc++config.h sigc-2.0.rc
 
 MAINTAINERCLEANFILES = $(built_sources)
 
+DISTCLEANFILES = sigc++config.h
+
 EXTRA_DIST=libsigc++2_msvcNet2003.vcproj libsigc++2_msvcNet2003.sln \
            sigc++config.h sigc-2.0.rc \
            tests/test_accumulated/test_accumulated.vcproj \

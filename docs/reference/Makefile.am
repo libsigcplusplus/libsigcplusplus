@@ -10,30 +10,30 @@ EXTRA_DIST = README Doxyfile.in \
              beautify_docs.pl \
              html libsigc_doxygen_tags
 
-html: html/index.html
+html: $(srcdir)/html/index.html
 html/index.html: $(doxygen_configfile_source) $(beautify_docs)
 	-rm -rf html
 	SRCDIR=$(srcdir) TOP_SRCDIR=$(top_srcdir) doxygen $(doxygen_configfile)
 	$(PERL_PATH) $(beautify_docs) html
 
 
-libsigc-reference-html.tar.gz: html/index.html
+libsigc-reference-html.tar.gz: $(srcdir)/html/index.html
 	tar cf - html | gzip -c --best >$@
 
-libsigc-reference-html.tar.bz2: html/index.html
+libsigc-reference-html.tar.bz2: $(srcdir)/html/index.html
 	tar cf - html | bzip2 -c >$@
 
-post-html: html/index.html
+post-html: $(srcdir)/html/index.html
 	rsync $(rsync_args) -r html/ $$USER@shell.sourceforge.net:$(web_path_reference)/html/
 
 doc-clean:
-	-rm -rf html
-	-rm -f libsigc_doxygen_tags
-	-rm -f libsigc-reference-html.tar.gz libsigc-reference-html.tar.bz2
+	-rm -rf $(srcdir)/html
+	-rm -f $(srcdir)/libsigc_doxygen_tags
+	-rm -f $(srcdir)/libsigc-reference-html.tar.gz $(srcdir)/libsigc-reference-html.tar.bz2
 
 referencedir = $(libsigc_docdir)/reference/html
 
-install-reference: html/index.html
+install-reference: $(srcdir)/html/index.html
 	@$(NORMAL_INSTALL)
 	$(mkinstalldirs) $(DESTDIR)$(referencedir)
 	@dir='$(<D)'; for p in $$dir/*.html $$dir/*.css $$dir/*.png $$dir/*.dot ; do \
@@ -42,7 +42,7 @@ install-reference: html/index.html
 	  $(INSTALL_DATA) $$p $(DESTDIR)$(referencedir)/$$f; \
 	done
 
-uninstall-reference: html/index.html
+uninstall-reference: $(srcdir)/html/index.html
 	@$(NORMAL_UNINSTALL)
 	@dir='$(<D)'; for p in $$dir/*.html $$dir/*.css $$dir/*.png $$dir/*.dot ; do \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
