@@ -18,13 +18,11 @@ dnl For automake.
 VERSION=$FP_VERSION
 PACKAGE=libsigc++
 
-
-dnl I don't like to look at the automake cruft.
-#This just complicates things. murrayc
-#AC_CONFIG_AUX_DIR(scripts)
-
 dnl Initialize automake stuff
 AM_INIT_AUTOMAKE($PACKAGE, $VERSION)
+
+dnl Specify a configuration file:
+AC_CONFIG_HEADERS(config.h)
 
 dnl Macros to support windows platforms
 AC_CYGWIN
@@ -70,37 +68,7 @@ dnl Using C++ compiler
 AC_PROG_CXX
 AC_LANG_CPLUSPLUS
 
-dnl AC_MSG_CHECKING(if C++ compiler supports typeof (required))
-dnl AC_TRY_COMPILE(
-dnl [
-dnl   float func(int);
-dnl ],[
-dnl   typedef typeof(func(1)) type;
-dnl   type a=1.0;
-dnl ],[
-dnl   ac_typeof=yes
-dnl ],[
-dnl   ac_typeof=no
-dnl   config_error=yes
-dnl ])
-dnl AC_MSG_RESULT([$ac_typeof])
-dnl 
-dnl AC_MSG_CHECKING(if C++ compiler supports template typeof (required))
-dnl AC_TRY_COMPILE(
-dnl [
-dnl   template <class T>
-dnl   struct foo
-dnl   {
-dnl     typedef typeof( T::operator()(0) ) T2;
-dnl   };
-dnl ],[
-dnl ],[
-dnl    ac_template_typeof=yes
-dnl ],[
-dnl    ac_template_typeof=no
-dnl    config_error=yes
-dnl ])
-dnl AC_MSG_RESULT([$ac_template_typeof])
+SIGC_CXX_TEMPLATE_KEYWORD_OPERATOR_OVERLOAD()
 
 if test "X$config_error" = "Xyes" ; then
   AC_ERROR(

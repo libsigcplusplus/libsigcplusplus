@@ -63,6 +63,7 @@ FOR(1, $1,[
 
 divert(0)dnl
 __FIREWALL__
+#include <config.h> //To get SIGC_TEMPLATE_KEYWORD_OPERATOR_OVERLOAD
 #include <sigc++/visit_each.h>
 #include <sigc++/functors/functor_trait.h>
 #include <sigc++/functors/ptr_fun.h>
@@ -71,11 +72,11 @@ __FIREWALL__
 
 namespace sigc {
 
-/* TODO: we need a configure check for this: */
-#ifndef __GCC__
-#define LIBSIGC_TEMPLATE_PREFIX
+#ifndef SIGC_TEMPLATE_KEYWORD_OPERATOR_OVERLOAD
+  //The SUN Forte compiler has a problem with this.
+  #define LIBSIGC_TEMPLATE_PREFIX
 #else
-#define LIBSIGC_TEMPLATE_PREFIX template
+  #define LIBSIGC_TEMPLATE_PREFIX template
 #endif
 
 template <class T_functor> struct adapts;

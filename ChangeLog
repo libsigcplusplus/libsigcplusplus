@@ -1,3 +1,17 @@
+2004-03-20  Murray Cumming  <murrayc@murrayc.com>
+
+	* Added config.h.in, using autoheader, from which config.h will be 
+	generated, so we can detect compiler features.
+	* configure.ac: Added AC_CONFIG_HEADER(config.h) to generate config.h
+	from config.h.in.
+	* scripts/cxx.m4: Added this directory and file, with a 
+	SIGC_CXX_TEMPLATE_KEYWORD_OPERATOR_OVERLOAD macro that defines 
+	the SIGC_TEMPLATE_KEYWORD_OPERATOR_OVERLOAD C macro.
+	* autogen.sh: Added -I scripts to the aclocal call, so that it finds
+	the m4 macro for configure.ac.
+	* sigc++/adapators/macros/adaptor_trait.h.m4: Include config.h and
+	use SIGC_TEMPLATE_KEYOWRD_OPERATOR_OVERLOAD.
+
 2004-03-18  Martin Schulze  <mschulze@cvs.gnome.org>
 
   * tests/test_mem_fun.cc, tests/test_ptr_fun.cc: Don't test
