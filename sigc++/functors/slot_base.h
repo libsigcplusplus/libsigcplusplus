@@ -86,6 +86,12 @@ struct SIGC_API slot_rep : public trackable
   inline ~slot_rep()
     { destroy(); }
 
+  // only MSVC needs this to guarantee that all new/delete are executed from the DLL module
+#ifdef SIGC_NEW_DELETE_IN_LIBRARY_ONLY
+  void* operator new(size_t size_);
+  void operator delete(void* p);
+#endif
+
   /** Destroys the slot_rep object (but doesn't delete it).
    */
   inline void destroy()
@@ -219,11 +225,7 @@ public:
   /** Constructs a slot from an existing slot_rep object.
    * @param rep The slot_rep object this slot should contain.
    */
-#ifdef SIGC_NEW_DELETE_IN_LIBRARY_ONLY // only defined for MSVC to keep ABI compatibility
-  explicit slot_base(const rep_type& rep);
-#else
   explicit slot_base(rep_type* rep);
-#endif
 
   /** Constructs a slot, copying an existing one.
    * @param src The existing slot to copy.

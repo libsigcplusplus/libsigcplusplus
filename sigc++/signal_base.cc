@@ -26,10 +26,16 @@ signal_impl::signal_impl()
 : ref_count_(0), exec_count_(0), deferred_(0)
 {}
 
-#ifdef SIGC_NEW_DELETE_IN_LIBRARY_ONLY // only defined for MSVC to keep ABI compatibility
-void signal_impl::destroy()
+// only MSVC needs this to guarantee that all new/delete are executed from the DLL module
+#ifdef SIGC_NEW_DELETE_IN_LIBRARY_ONLY
+void* signal_impl::operator new(size_t size_)
 {
-  delete this;
+  return malloc(size_);
+}
+
+void signal_impl::operator delete(void* p)
+{
+  free(p);
 }
 #endif
 

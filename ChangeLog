@@ -1,3 +1,11 @@
+2004-10-10  Martin Schulze <mschulze@cvs.gnome.org>
+
+	* sigc++/signal_base.{h,cc}, sigc++/functors/slot_base.{h,cc},
+	sigc++/functors/macros/slot.h.m4: If SIGC_NEW_DELETE_IN_LIBRARY_ONLY
+	is defined, implement signal_base::operator new/delete and
+	slot_rep::operator new/delete (suggested by Timothy M. Shead).
+	Remove old work-around from 2004-10-02 since it didn't work.
+
 2004-10-07  Martin Schulze <mschulze@cvs.gnome.org>
 
 	* configure.ac: Update for libtool 1.5a (with support for Intel C++).

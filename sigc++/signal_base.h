@@ -49,9 +49,10 @@ struct SIGC_API signal_impl
 
   signal_impl();
 
-#ifdef SIGC_NEW_DELETE_IN_LIBRARY_ONLY // only defined for MSVC to keep ABI compatibility
-  /// Destroys the object.
-  void destroy();
+  // only MSVC needs this to guarantee that all new/delete are executed from the DLL module
+#ifdef SIGC_NEW_DELETE_IN_LIBRARY_ONLY
+  void* operator new(size_t size_);
+  void operator delete(void* p);
 #endif
 
   /// Increments the reference counter.
@@ -66,11 +67,7 @@ struct SIGC_API signal_impl
    * The object is deleted when the reference counter reaches zero.
    */
   inline void unreference()
-#ifdef SIGC_NEW_DELETE_IN_LIBRARY_ONLY // only defined for MSVC to keep ABI compatibility
-    { if (!(--ref_count_)) destroy(); }
-#else
     { if (!(--ref_count_)) delete this; }
-#endif
 
   /** Decrements the reference and execution counter.
    * Invokes sweep() if the execution counter reaches zero and the
@@ -78,11 +75,7 @@ struct SIGC_API signal_impl
    */
   inline void unreference_exec()
     {
-#ifdef SIGC_NEW_DELETE_IN_LIBRARY_ONLY // only defined for MSVC to keep ABI compatibility
-      if (!(--ref_count_)) destroy();
-#else
       if (!(--ref_count_)) delete this;
-#endif
       else if (!(--exec_count_) && deferred_) sweep();
     }
 
