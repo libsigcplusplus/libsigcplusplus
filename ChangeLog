@@ -1,3 +1,9 @@
+2004-04-19  Martin Schulze  <mschulze@cvs.gnome.org>
+
+  * sigc++/signal_base.cc: Fixed serious bug in signal_base::impl():
+  Only reference a newly created object (initial reference).
+  (This fixes bug #140269 reported by Andris.)
+
 2004-04-19  Murray Cumming  <murrayc@murrayc.com>
 
 	* scripts/cxx.m4: Updated the operator() template check, because it

@@ -128,9 +128,10 @@ signal_base& signal_base::operator = (const signal_base& src)
 
 internal::signal_impl* signal_base::impl() const
 {
-  if (!impl_)
+  if (!impl_) {
     impl_ = new internal::signal_impl;
-  impl_->reference();
+    impl_->reference();  // start with a reference count of 1
+  }
   return impl_;
 }
 
