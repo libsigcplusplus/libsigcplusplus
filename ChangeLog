@@ -1,3 +1,8 @@
+2005-02-11  Murray Cumming  <murrayc@murrayc.com>
+
+	* docs/website/doc.shtml: Fix typo in url for reference docs. Found by 
+	James Lin.
+
 2005-02-06  Murray Cumming  <murrayc@murrayc.com>
 
 	* sigc++/signal_base.h: temp_slot_list::begin(), end(): Actually 
