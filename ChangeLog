@@ -1,3 +1,8 @@
+2004-08-01  Martin Schulze <mschulze@cvs.gnome.org>
+
+	* sigc++/type_traits.h: Remove type_trait<>::instance()
+	(was unimplemented and unused; caused problems with the MSVC).
+
 2004-07-23  Martin Schulze <mschulze@cvs.gnome.org>
 
 	* Makefile.am: Fix typo concerning distribution of libsigc++-2.0.spec.

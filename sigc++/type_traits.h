@@ -30,7 +30,6 @@ struct type_trait
   typedef T_type& pass;
   typedef const T_type& take;
   typedef T_type* pointer;
-  static  T_type  instance(); /* not implemented */  
 };
 
 template <class T_type, int N>
@@ -40,7 +39,6 @@ struct type_trait<T_type[N]>
   typedef T_type*& pass;
   typedef const T_type*& take;
   typedef T_type** pointer;
-  static  T_type*  instance(); /* not implemented */  
 };
 
 template <class T_type>
@@ -50,7 +48,6 @@ struct type_trait<T_type&>
   typedef T_type& pass;
   typedef T_type& take;
   typedef T_type* pointer;
-  static  T_type& instance(); /* not implemented */ 
 };
 
 template <class T_type>
@@ -60,7 +57,6 @@ struct type_trait<const T_type&>
   typedef const T_type& pass;
   typedef const T_type& take;
   typedef const T_type* pointer;
-  static  const T_type& instance(); /* not implemented */ 
 };
 
 template <class T_type>
@@ -70,7 +66,6 @@ struct type_trait<reference_wrapper<T_type> >
   typedef T_type& pass;
   typedef T_type& take;
   typedef T_type* pointer;
-  static  T_type& instance(); /* not implemented */  
 };
 
 template <class T_type>
@@ -80,7 +75,6 @@ struct type_trait<const_reference_wrapper<T_type> >
   typedef T_type& pass;
   typedef const T_type& take;
   typedef T_type* pointer;
-  static  T_type& instance(); /* not implemented */  
 };
 
 template<>
@@ -90,7 +84,6 @@ struct type_trait<void>
   typedef void  pass;
   typedef void  take;
   typedef void* pointer;
-  static  void  instance(); /* not implemented */
 };
 
 
