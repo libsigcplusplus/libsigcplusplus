@@ -76,16 +76,27 @@ namespace sigc {
  *   @endcode
  */
 
-// dummy structure to keep track of the where we are.
+/** A hint to the compiler.
+ * All lambda types publically inherit from this hint.
+ *
+ * @ingroup lambdas
+ */
 struct lambda_base : public adaptor_base {};
 
+// Forward declaration of lambda.
 template <class T_type> struct lambda;
 
 
 namespace internal {
 
+/** Abstracts lambda functionality.
+ * Objects of this type store a value that may be of type lambda itself.
+ * In this case, operator()() executes the lambda (a lambda is always a functor at the same time).
+ * Otherwise, operator()() simply returns the stored value.
+ */
 template <class T_type, bool I_islambda = is_base_and_derived<lambda_base, T_type>::value> struct lambda_core;
 
+/// Abstracts lambda functionality (template specialization for lambda values).
 template <class T_type>
 struct lambda_core<T_type, true> : public lambda_base
 {
@@ -103,11 +114,6 @@ FOR(1,CALL_SIZE,[[LAMBDA_DO(%1)]])dnl
 
   explicit lambda_core(const T_type& v)
     : value_(v) {}
-dnl
-dnl  TODO: I have no idea what the following ctor was written for. Remove it?
-dnl  template <class T1, class T2>
-dnl  lambda_core(const T1& v1, const T2& v2)
-dnl    : value_(v1, v2) {}
 
   T_type value_;
 };
@@ -118,6 +124,7 @@ lambda_core<T_type, true>::operator()() const
   { return value_(); }
 
 
+/// Abstracts lambda functionality (template specialization for other value types).
 template <class T_type>
 struct lambda_core<T_type, false> : public lambda_base
 {
@@ -160,8 +167,18 @@ struct assign;
 template <class T_action, class T_type1, class T_type2>
 struct lambda_operator;
 
+template <class T_type>
+struct unwrap_lambda_type;
 
-// lambda
+
+/** Lambda type.
+ * Objects of this type store a value that may be of type lambda itself.
+ * In this case, operator()() executes the lambda (a lambda is always a functor at the same time).
+ * Otherwise, operator()() simply returns the stored value.
+ * The assign and subscript operators are defined to return a lambda operator.
+ *
+ * @ingroup lambdas
+ */
 template <class T_type>
 struct lambda : public internal::lambda_core<T_type>
 {
@@ -176,23 +193,17 @@ struct lambda : public internal::lambda_core<T_type>
 
   // operators for other<subscript>
   template <class T_arg>
-  lambda<lambda_operator<other<subscript>, self, T_arg> >
-  operator [[]] (const lambda<T_arg>& a) const
-    { return lambda<lambda_operator<other<subscript>, self, T_arg> >(lambda_operator<other<subscript>, self, T_arg>(this->value_, a.value_)); }
-  template <class T_arg>
-  lambda<lambda_operator<other<subscript>, self, T_arg> >
+  lambda<lambda_operator<other<subscript>, self, typename unwrap_lambda_type<T_arg>::type> >
   operator [[]] (const T_arg& a) const
-    { return lambda<lambda_operator<other<subscript>, self, T_arg> >(lambda_operator<other<subscript>, self, T_arg>(this->value_, a)); }
+    { typedef lambda_operator<other<subscript>, self, typename unwrap_lambda_type<T_arg>::type> lambda_operator_type;
+      return lambda<lambda_operator_type>(lambda_operator_type(this->value_, unwrap_lambda_value(a))); }
 
   // operators for other<assign>
   template <class T_arg>
-  lambda<lambda_operator<other<assign>, self, T_arg> >
-  operator = (const lambda<T_arg>& a) const
-    { return lambda<lambda_operator<other<assign>, self, T_arg> >(lambda_operator<other<assign>, self, T_arg>(this->value_, a.value_)); }
-  template <class T_arg>
-  lambda<lambda_operator<other<assign>, self, T_arg> >
+  lambda<lambda_operator<other<assign>, self, typename unwrap_lambda_type<T_arg>::type> >
   operator = (const T_arg& a) const
-    { return lambda<lambda_operator<other<assign>, self, T_arg> >(lambda_operator<other<assign>, self, T_arg>(this->value_, a)); }
+    { typedef lambda_operator<other<assign>, self, typename unwrap_lambda_type<T_arg>::type> lambda_operator_type;
+      return lambda<lambda_operator_type>(lambda_operator_type(this->value_, unwrap_lambda_value(a))); }
 };
 
 
@@ -204,17 +215,49 @@ void visit_each(const T_action& _A_action,
 }
 
 
+/// Converts a constant variable into a lambda object.
 template <class T_type>
 lambda<T_type> constant(const T_type& v)
 { return lambda<T_type>(v); }
 
+/// Converts a reference into a lambda object.
 template <class T_type>
 lambda<T_type&> var(T_type& v)
 { return lambda<T_type&>(v); }
 
+/// Converts a constant reference into a lambda object.
 template <class T_type>
 lambda<const T_type&> var(const T_type& v)
 { return lambda<const T_type&>(v); }
+
+
+/** Deduces the type of the object stored in an object of the passed lambda type.
+ * If the type passed as template argument is no lambda type,
+ * type is defined to unwrap_reference<T_type>::type.
+ */
+template <class T_type>
+struct unwrap_lambda_type
+{ typedef typename unwrap_reference<T_type>::type type; };
+
+template <class T_type>
+struct unwrap_lambda_type<lambda<T_type> >
+{ typedef T_type type; };
+
+
+/** Gets the object stored inside a lambda object.
+ * Returns the object passed as argument if it is not of type lambda.
+ */
+template <class T_type>
+T_type& unwrap_lambda_value(T_type& a)
+{ return a; }
+
+template <class T_type>
+const T_type& unwrap_lambda_value(const T_type& a)
+{ return a; }
+
+template <class T_type>
+const T_type& unwrap_lambda_value(const lambda<T_type>& a)
+{ return a.value_; }
 
 } /* namespace sigc */
 

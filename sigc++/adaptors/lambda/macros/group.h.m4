@@ -38,7 +38,10 @@ dnl Please someone get a gun!
   template <LOOP(class T_arg%1, $2)>
   typename deduce_result_type<LOOP(T_arg%1,$2)>::type
   operator() (LOOP(T_arg%1 _A_%1, $2)) const
-    { return (func_(LOOP(_A_%1, $2)))(LOOP(value%1_(_L_),$1)); }
+    { return this->func_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<LOOP([
+          typename value%1_type::template deduce_result_type<LOOP(T_arg%1,$2)>::type],$1)>(LOOP([
+        this->value%1_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<LOOP([
+          typename type_trait<T_arg%1>::pass],$2)>(_L_)],$1)); }
 
   #ifndef SIGC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD
   template <LOOP(class T_arg%1, $2)>
@@ -58,14 +61,13 @@ struct lambda_group$1 : public lambda_base
   typedef typename functor_trait<T_functor>::result_type result_type;dnl
 FOR(1, $1,[
   typedef typename lambda<T_type%1>::lambda_type   value%1_type;])
-  typedef typename lambda<T_functor>::lambda_type functor_type;
+  typedef typename adaptor_trait<T_functor>::adaptor_type functor_type;
 
   template <LOOP(class T_arg%1=void,$2)>
   struct deduce_result_type
-    { typedef typename sigc::deduce_result_type<
-                typename functor_type::template deduce_result_type<LOOP(T_arg%1,$2)>::type,dnl
-LOOP([
-                typename value%1_type::template deduce_result_type<LOOP(T_arg%1,$2)>::type], $1)
+    { typedef typename functor_type::deduce_result_type<LOOP([
+          typename value%1_type::template deduce_result_type<LOOP([
+            typename type_trait<T_arg%1>::pass],$2)>::type],$1)
         >::type type; };
 
   result_type
@@ -83,7 +85,7 @@ FOR(1, $1,[
 template <class T_functor, LOOP(class T_type%1, $1)>
 typename lambda_group$1<T_functor, LOOP(T_type%1, $1)>::result_type
 lambda_group$1<T_functor, LOOP(T_type%1, $1)>::operator ()() const
-  { return (func_())(LOOP(value%1_(), $1)); }
+  { return func_(LOOP(value%1_(), $1)); }
 
 
 template <class T_action, class T_functor, LOOP(class T_type%1, $1)>

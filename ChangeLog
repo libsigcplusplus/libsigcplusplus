@@ -1,3 +1,20 @@
+2004-07-15  Martin Schulze <mschulze@cvs.gnome.org>
+
+	* scripts/cxx.m4, sigc++config.h.in, configure.ac,
+	sigc++/adaptors/lambda/macros/operator.h.m4, tests/test_lambda.cc:
+	Add configure check SIGC_OPERATOR_OVERLOAD_AMBUGUITY for a SUN FORTE
+	compiler problem (bug #147391). Use it to decide whether the lambda
+	action operators may be overloaded (not doing so restricts the API slightly).
+	* sigc++/adaptors/lambda/macros/operator.h.m4: Add some doxygen comments
+	and remove attic code.
+	* sigc++/adaptors/lambda/macros/base.h.m4:
+	Add templates unwrap_lambda_type and unwrap_lambda_value() to support
+	the non-overloaded lambda action operators. Also add some doxygen comments
+	and remove attic code.
+	* sigc++/adaptors/lambda/macros/group.h.m4: Fix a bug that resulted in
+	gargabe values being passed on to the functor contained in the group adaptor
+	(partly fixes #147313).
+
 2004-07-11  Martin Schulze <mschulze@cvs.gnome.org>
 
 	* scripts/cxx.m4, sigc++config.h.in, configure.ac, *.h.m4:
