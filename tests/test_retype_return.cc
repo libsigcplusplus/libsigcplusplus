@@ -11,16 +11,26 @@ struct foo : public sigc::functor_base
 {
   typedef float result_type;
   float operator()(int i) 
-    {std::cout << "foo(int "<<i<<")"<<std::endl;}
+  {
+    std::cout << "foo(int " << i << ")" << std::endl;
+    return i;
+  }
+
   float operator()(float i) 
-    {std::cout << "foo(float "<<i<<")"<<std::endl; return i*5;}
+  {
+    std::cout << "foo(float " << i << ")" << std::endl;
+    return i * 5;
+  }
 };
 
 struct bar : public sigc::trackable, public sigc::functor_base
 {
   typedef int result_type;
   int operator()(int i)
-    {std::cout << "bar(int "<<i<<")"<<std::endl; return i;}
+  {
+    std::cout << "bar(int " << i << ")" << std::endl;
+    return i;
+  }
 };
 
 int main()
@@ -29,7 +39,7 @@ int main()
   std::cout << sigc::retype_return<int>(foo())(1.234f) << std::endl;
 
   // retype_return<void> / hide_return
-  sigc::slot<void,int> sl;
+  sigc::slot<void, int> sl;
   sl = sigc::retype_return<void>(bar());
   sl(5);
   sl = sigc::hide_return(bar());

@@ -9,13 +9,21 @@
 struct foo : public sigc::trackable
 {
   float test_int(int i) 
-    {std::cout << "foo(int "<<i<<")"<<std::endl; return i*1.5f;}
-  float test_float(float f) 
-    {std::cout << "foo(float "<<f<<")"<<std::endl; return f*5;}
+  {
+    std::cout << "foo(int " << i << ")" << std::endl;
+    return i * 1.5f;
+  }
+  float test_float(float f)
+  {
+    std::cout << "foo(float " << f << ")" << std::endl;
+    return f * 5;
+  }
 };
 
 void bar(short s)
-  {std::cout << "bar(short "<<s<<")"<<std::endl;}
+{
+  std::cout << "bar(short " << s << ")" << std::endl;
+}
 
 int main()
 {

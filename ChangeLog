@@ -1,5 +1,10 @@
 2004-07-08  Murray Cumming  <murrayc@murrayc.com>
 
+	* sigc++/tests/test_retype_return.cc: foo::operator(int): return a 
+	value. The SUN Forte 5.5 compiler complains about this, as it should.
+
+2004-07-08  Murray Cumming  <murrayc@murrayc.com>
+
 	* sigc++/macros/signal.h.m4: class signal*: Rename the slot_list 
 	typedef to slot_list_type, because there is already a template class 
 	called slot_type. SUN Forte 5.5 seems to complain about this and I am 
