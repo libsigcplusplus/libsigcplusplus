@@ -28,7 +28,7 @@ FOR(1,$1,[
  * - @e T_return The return type of operator()().
  * - @e T_obj The object type.
  *
- * @ingroup functors
+ * @ingroup mem_fun
  */
 template <LIST(class T_return, class T_obj, LOOP(class T_arg%1, $1))>
 class [$2]mem_functor$1 : public functor_base
@@ -78,7 +78,7 @@ FOR(1,$1,[
  * - @e T_return The return type of operator()().
  * - @e T_obj The object type.
  *
- * @ingroup functors
+ * @ingroup mem_fun
  */
 template <LIST(class T_return, class T_obj, LOOP(class T_arg%1, $1))>
 class bound_[$2]mem_functor$1
@@ -119,7 +119,7 @@ FOR(1, $1,[
  * The function overload for sigc::bound_[$2]mem_functor performs a functor
  * on the object instance stored in the bound_mem_functor object.
  *
- * @ingroup functors
+ * @ingroup mem_fun
  */
 template <LIST(class T_action, class T_return, class T_obj, LOOP(class T_arg%1, $1))>
 void visit_each(const T_action& _A_action,
@@ -135,7 +135,7 @@ define([MEM_FUN],[dnl
  * @param _A_func Pointer to method that should be wrapped.
  * @return Functor that executes _A_func on invokation.
  *
- * @ingroup functors
+ * @ingroup mem_fun
  */
 template <LIST(LOOP(class T_arg%1, $1), class T_return, class T_obj)>
 inline [$3]mem_functor$1<LIST(T_return, T_obj, LOOP(T_arg%1, $1))>
@@ -149,7 +149,7 @@ define([BOUND_MEM_FUN],[dnl
  * @param _A_func Pointer to method that should be wrapped.
  * @return Functor that executes @e _A_func on invokation.
  *
- * @ingroup functors
+ * @ingroup mem_fun
  */
 template <LIST(LOOP(class T_arg%1, $1), class T_return, class T_obj)>
 inline bound_[$3]mem_functor$1<LIST(T_return, T_obj, LOOP(T_arg%1, $1))>
@@ -161,7 +161,7 @@ mem_fun[]ifelse($2,, $1)($4 T_obj* _A_obj, T_return (T_obj::*_A_func)(LOOP(T_arg
  * @param _A_func Pointer to method that should be wrapped.
  * @return Functor that executes @e _A_func on invokation.
  *
- * @ingroup functors
+ * @ingroup mem_fun
  */
 template <LIST(LOOP(class T_arg%1, $1), class T_return, class T_obj)>
 inline bound_[$3]mem_functor$1<LIST(T_return, T_obj, LOOP(T_arg%1, $1))>
@@ -181,6 +181,56 @@ __FIREWALL__
 #include <sigc++/functors/functor_trait.h>
 
 namespace sigc {
+
+/** @defgroup mem_fun mem_fun()
+ * mem_fun() is used to convert a pointer to a method to a functor.
+ *
+ * Optionally a reference or pointer to an object can be bound to the functor.
+ * Note that only if the object type inherits from sigc::trackable
+ * the slot is cleared automatically when the object goes out of scope!
+ *
+ * If the member function pointer is to an overloaded type, you must specify
+ * the types using template arguments starting with the first argument.
+ * It is not necessary to supply the return type.
+ *
+ * @par Example:
+ *   @code
+ *   struct foo : public sigc::trackable
+ *   {
+ *     void bar(int) {}
+ *   };
+ *   foo my_foo;
+ *   sigc::slot<void, int> sl = sigc::mem_fun(my_foo, &foo::bar);
+ *   @endcode
+ *
+ * For const methods mem_fun() takes a const reference or pointer to an object.
+ *
+ * @par Example:
+ *   @code
+ *   struct foo : public sigc::trackable
+ *   {
+ *     void bar(int) const {}
+ *   };
+ *   const foo my_foo;
+ *   sigc::slot<void, int> sl = sigc::mem_fun(my_foo, &foo::bar);
+ *   @endcode
+ *
+ * Use mem_fun#() if there is an abiguity as to the number of arguments.
+ *
+ * @par Example:
+ *   @code
+ *   struct foo : public sigc::trackable
+ *   {
+ *     void bar(int) {}
+ *     void bar(float) {}
+ *     void bar(int, int) {}
+ *   };
+ *   foo my_foo;
+ *   sigc::slot<void, int> sl = sigc::mem_fun1<int>(my_foo, &foo::bar);
+ *   @endcode
+ *
+ * @ingroup functors
+ */
 
 FOR(0,CALL_SIZE,[[MEMBER_FUNCTOR(%1,[],[],[])]])dnl
 FOR(0,CALL_SIZE,[[MEMBER_FUNCTOR(%1,[const_],[const],[const])]])dnl

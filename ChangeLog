@@ -1,3 +1,13 @@
+2003-11-03  Martin Schulze  <teebaum@cvs.gnome.org>
+
+	* sigc++/macros/signal.h.m4: Document accumulators.
+	Move slot_iterator_buf into namespace internal. Since
+	accumulators have the iterator type as a template argument
+	there is no need to expose this very internal type.
+	* sigc++/functors/macros/*.m4: Regroup documentation.
+	Documentation of the core parts of the library should be
+	complete by now.
+
 2003-11-02  Martin Schulze  <teebaum@cvs.gnome.org>
 
 	* Improve documentation of the core parts of the library.

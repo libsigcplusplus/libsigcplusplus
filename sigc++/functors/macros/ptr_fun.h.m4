@@ -27,7 +27,7 @@ FOR(1,$1,[
  * - @e T_arg%1 Argument type used in the definition of operator()().])
  * - @e T_return The return type of operator()().
  *
- * @ingroup functors
+ * @ingroup ptr_fun
  */
 template <LIST(LOOP(class T_arg%1, $1), class T_return)>
 class pointer_functor$1 : public functor_base
@@ -62,7 +62,7 @@ define([PTR_FUN],[dnl
  * @param _A_func Pointer to function that should be wrapped.
  * @return Functor that executes @e _A_func on invokation.
  *
- * @ingroup functors
+ * @ingroup ptr_fun
  */
 template <LIST(LOOP(class T_arg%1, $1), class T_return)>
 inline pointer_functor$1<LIST(LOOP(T_arg%1, $1), T_return)> 
@@ -72,35 +72,48 @@ ptr_fun[]ifelse($2,, $1)(T_return (*_A_func)(LOOP(T_arg%1,$1)))
 ])
 
 divert(0)
-/*
-  ptr_fun(R (*)(A1...An))
-  ptr_fun#(R (*)(A1...An))
-  usage:
-    Converts a pointer to a function to a functor.  
-  If the function pointer is to an overloaded type, you must
-  specify the types using template arguments starting with the
-  first argument.  It is not necessary to supply the return type.
-
-  Ie.
-    void foo(int) {}
-    slot<void, long> cl = ptr_fun(&foo);
-
-  Note: # is required if there is an abiguity as to the number of 
-  arguments.
-
-  Ie.
-    void foo(int) {}  // chose this one
-    void foo(float) {}
-    void foo(int, int) {}
-
-    slot<void, long> cl = ptr_fun1<int>(&foo);
-   
-*/
 __FIREWALL__
 #include <sigc++/type_traits.h>
 #include <sigc++/functors/functor_trait.h>
 
 namespace sigc {
+
+/** @defgroup ptr_fun ptr_fun()
+ * ptr_fun() is used to convert a pointer to a function to a functor.
+ * If the function pointer is to an overloaded type, you must specify
+ * the types using template arguments starting with the first argument.
+ * It is not necessary to supply the return type.
+ *
+ * @par Example:
+ *   @code
+ *   void foo(int) {}
+ *   sigc::slot<void, int> sl = sigc::ptr_fun(&foo);
+ *   @endcode
+ *
+ * Use ptr_fun#() if there is an abiguity as to the number of arguments.
+ *
+ * @par Example:
+ *   @code
+ *   void foo(int) {}  // choose this one
+ *   void foo(float) {}
+ *   void foo(int, int) {}
+ *   sigc::slot<void, long> sl = sigc::ptr_fun1<int>(&foo);
+ *   @endcode
+ *
+ * ptr_fun() can also be used to convert a pointer to a static member
+ * function to a functor, like so:
+ *
+ * @par Example:
+ *   @code
+ *   struct foo
+ *   {
+ *     static void bar(int) {}
+ *   };
+ *   sigc::slot<void, int> sl = sigc::ptr_fun(&foo::bar);
+ *   @endcode
+ *
+ * @ingroup functors
+ */
 
 FOR(0,CALL_SIZE,[[POINTER_FUNCTOR(%1)]])dnl
 

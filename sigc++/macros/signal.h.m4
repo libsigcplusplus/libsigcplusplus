@@ -31,7 +31,7 @@ struct signal_emit$1
   typedef signal_emit$1<LIST(T_return, LOOP(T_arg%1, $1), T_accumulator)> self_type;
   typedef typename T_accumulator::result_type result_type;
   typedef slot<LIST(T_return, LOOP(T_arg%1, $1))> slot_type;
-  typedef slot_iterator_buf<self_type> slot_iterator_buf_type;
+  typedef internal::slot_iterator_buf<self_type> slot_iterator_buf_type;
   typedef signal_impl::const_iterator_type iterator_type;
 
 ifelse($1,0,,[dnl
@@ -317,7 +317,46 @@ ifelse($1, $2,[dnl
    * Like sigc::signal but the additional template parameter @e T_accumulator
    * defines the accumulator type that should be used.
    *
-   * TODO: Add an example to show how to define an accumulator. Is this the right place?
+   * An accumulator is a functor that uses a pair of special iterators
+   * to step through a list of slots and calculate a return value
+   * from the results of the slot invokations. The iterators' operator*()
+   * executes the slot. The return value is buffered, so that in an expression
+   * like @code a = (*i) * (*i); @endcode the slot is executed only once.
+   * The accumulator must define its return value as @p result_type.
+   * 
+   * @par Example 1:
+   *   This accumulator calculates the arithmetic mean value:
+   *   @code
+   *   struct arithmetic_mean_accumulator
+   *   {
+   *     typedef double result_type;
+   *     template<typename T_iterator>
+   *     result_type operator()(T_iterator first, T_iterator last) const
+   *     {
+   *       result_type value_ = 0;
+   *       int n_ = 0;
+   *       for (; first != last; ++first, ++n_)
+   *         value_ += *first;
+   *       return value_ / n_;
+   *     }
+   *   };
+   *   @endcode
+   *
+   * @par Example 2:
+   *   This accumulator stops signal emission when a slot returns zero:
+   *   @code
+   *   struct interruptable_accumulator
+   *   {
+   *     typedef bool result_type;
+   *     template<typename T_iterator>
+   *     result_type operator()(T_iterator first, T_iterator last) const
+   *     {
+   *       for (; first != last; ++first, ++n_)
+   *         if (!*first) return false;
+   *       return true;
+   *     }
+   *   };
+   *   @endcode
    *
    * @ingroup signal
 ],[
@@ -412,7 +451,7 @@ divert(0)
 namespace sigc {
 
 /** @defgroup signal Signals
- * Use signal::connect() with sigc::mem_fun() and sigc::ptr_fun() to connect a method or function with a signal.
+ * Use sigc::signal::connect() with sigc::mem_fun() and sigc::ptr_fun() to connect a method or function with a signal.
  *
  * @code
  * signal_clicked.connect( sigc::mem_fun(*this, &MyWindow::on_clicked) );
@@ -868,12 +907,13 @@ protected:
   internal::signal_impl* list_;
 };
 
-/** Special iterator over sigc::signal_impl's slot list that holds extra data.
+
+namespace internal {
+
+/** Special iterator over sigc::internal::signal_impl's slot list that holds extra data.
  * This iterators is for use in accumulators. operator*() executes
  * the slot. The return value is buffered, so that in an expression
  * like @code a = (*i) * (*i); @endcode the slot is executed only once.
- *
- * @ingroup signal
  */
 template <class T_emitter, class T_result = typename T_emitter::result_type>
 struct slot_iterator_buf
@@ -886,7 +926,7 @@ struct slot_iterator_buf
   typedef T_result                         result_type;
   typedef typename T_emitter::slot_type    slot_type;
 
-  typedef internal::signal_impl::const_iterator_type iterator_type;
+  typedef signal_impl::const_iterator_type iterator_type;
 
   slot_iterator_buf(const iterator_type& i, const emitter_type& c)
     : i_(i), c_(c), invoked_(false) {}
@@ -945,8 +985,6 @@ private:
 };
 
 /** Template specialization of slot_iterator_buf for void return signals.
- *
- * @ingroup signal
  */
 template <class T_emitter>
 struct slot_iterator_buf<T_emitter, void>
@@ -959,7 +997,7 @@ struct slot_iterator_buf<T_emitter, void>
   typedef void                             result_type;
   typedef typename T_emitter::slot_type    slot_type;
 
-  typedef internal::signal_impl::const_iterator_type iterator_type;
+  typedef signal_impl::const_iterator_type iterator_type;
 
   slot_iterator_buf(const iterator_type& i, const emitter_type& c)
     : i_(i), c_(c), invoked_(false) {}
@@ -1014,8 +1052,6 @@ private:
   const emitter_type& c_;
   mutable bool invoked_;
 };
-
-namespace internal {
 
 FOR(0,CALL_SIZE,[[SIGNAL_EMIT_N(%1)]])
 } /* namespace internal */

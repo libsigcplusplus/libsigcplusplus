@@ -43,7 +43,7 @@ FOR(1,$1,[
  *   s(19);
  *   @endcode
  *
- * @ingroup slot functors
+ * @ingroup slot
  */
 /* TODO: Where put the following bit of information? I can't make any
  *       sense of the "because", by the way!
@@ -55,8 +55,8 @@ template <LIST(class T_return, LOOP(class T_arg%1 = nil, $1))>],[dnl
 /** Converts an arbitrary functor to a unified type which is opaque.
  * This is the template specialization of the slot<> template
  * for $1 arguments.
- *
- * @ingroup slot functors
+dnl *
+dnl * @ingroup slot
  */
 template <LIST(class T_return, LOOP(class T_arg%1, $1))>])
 class slot ifelse($1, $2,,[<LIST(T_return, LOOP(T_arg%1,$1))>])
@@ -371,45 +371,12 @@ struct typed_slot_rep : public slot_rep
  * libsigc++ defines numerous functors, closures and adaptors.
  * Since libsigc++ is a callback libaray, most functors are also
  * closures. Therefore the documentation doesn't distinguish between
- * functors and closures. The basic functor types libsigc++ defines
- * are listed on this page. They are created with ptr_fun() and mem_fun()
- * and can be converted into slots implicitly as described below.
- * Adaptors are documented in the equally named group.
+ * functors and closures.
  *
- * ptr_fun() is used to convert a pointer to a function to a functor.
- * If the function pointer is to an overloaded type, you must specify
- * the types using template arguments starting with the first argument.
- * It is not necessary to supply the return type.
- *
- * @par Example:
- *   @code
- *   void foo(int) {}
- *   sigc::slot<void, int> sl = sigc::ptr_fun(&foo);
- *   @endcode
- *
- * Use ptr_fun#() if there is an abiguity as to the number of arguments.
- *
- * @par Example:
- *   @code
- *   void foo(int) {}  // choose this one
- *   void foo(float) {}
- *   void foo(int, int) {}
- *   slot<void, long> sl = ptr_fun1<int>(&foo);
- *   @endcode
- *
- * ptr_fun() can also be used to convert a pointer to a static member
- * function to a functor, like so:
- *
- * @par Example:
- *   @code
- *   struct foo
- *   {
- *     static void bar(int);
- *   };
- *   sigc::slot<void, int> sl = sigc::ptr_fun(&foo::bar);
- *   @endcode
- *
- * TODO: Add a similar description for mem_fun().
+ * The basic functor types libsigc++ provides
+ * are created with ptr_fun() and mem_fun() and can be converted into
+ * slots implicitly. The set of adaptors that ships with libsigc++ is
+ * documented in the equally named module.
  */
 
 /** @defgroup slot Slots
@@ -432,6 +399,8 @@ struct typed_slot_rep : public slot_rep
  * The compiler will complain if SomeClass::somemethod, etc. have the wrong signature.
  *
  * You can also pass slots as method parameters where you might normally pass a function pointer.
+ *
+ * @ingroup functors
  */
 
 /** Base type for slots.
