@@ -1,5 +1,12 @@
 2005-01-18  Murray Cumming  <murrayc@murrayc.com>
 
+	* sigc++/functors/macros/slot_h.m4: Specify the base class when 
+	using the rep_ member variable. This stops the HP-UX aCC compiler 
+	from saying that a Nonstatic member  is referenced in a nested class, 
+	local class or static member initializer. Bug #150719.
+
+2005-01-18  Murray Cumming  <murrayc@murrayc.com>
+
 	* Bug #159597 - patch from e97_far at e.kth.se to replace C-style 
 	casts with reinterpret_cast<> and static_cast<> to avoid warnings.
 

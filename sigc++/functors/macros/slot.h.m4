@@ -68,7 +68,7 @@ FOR(1, $1,[
   inline T_return operator()(LOOP(arg%1_type_ _A_a%1, $1)) const
     {
       if (!empty() && !blocked())
-        return (reinterpret_cast<call_type>(rep_->call_))(LIST(rep_, LOOP(_A_a%1, $1)));
+        return (reinterpret_cast<call_type>(slot_base::rep_->call_))(LIST(slot_base::rep_, LOOP(_A_a%1, $1)));
       return T_return();
     }
 
@@ -80,7 +80,10 @@ FOR(1, $1,[
   template <class T_functor>
   slot$1(const T_functor& _A_func)
     : slot_base(new internal::typed_slot_rep<T_functor>(_A_func))
-    { rep_->call_ = internal::slot_call$1<LIST(T_functor, T_return, LOOP(T_arg%1, $1))>::address(); }
+    {
+      //The slot_base:: is necessary to stop the HP-UX aCC compiler from being confused. murrayc.
+      slot_base::rep_->call_ = internal::slot_call$1<LIST(T_functor, T_return, LOOP(T_arg%1, $1))>::address();
+    }
 
   slot$1(const slot$1& src)
     : slot_base(src) {}
@@ -267,8 +270,8 @@ struct typed_slot_rep : public slot_rep
    */
   static void* dup(void* data)
     {
-      slot_rep* rep_ = reinterpret_cast<slot_rep*>(data);
-      return static_cast<slot_rep*>(new self(*static_cast<self*>(rep_)));
+      slot_rep* a_rep = reinterpret_cast<slot_rep*>(data);
+      return static_cast<slot_rep*>(new self(*static_cast<self*>(a_rep)));
     }
 };
 
