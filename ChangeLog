@@ -1,6 +1,11 @@
 2005-01-19  Murray Cumming  <murrayc@murrayc.com>
 
-	* configure.in: AC_INT(): Use libsigc++ instead of sigc++, attempting 
+	* configure.in: AC_INIT(): Provide the extra tarball name parameter, 
+	so that it does not create a libsigc--- tarball.
+
+2005-01-19  Murray Cumming  <murrayc@murrayc.com>
+
+	* configure.in: AC_INIT(): Use libsigc++ instead of sigc++, attempting 
 	to get the correct tarball name.
 
 2005-01-18  Murray Cumming  <murrayc@murrayc.com>
