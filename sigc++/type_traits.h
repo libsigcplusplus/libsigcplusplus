@@ -101,17 +101,20 @@ private:
   
   //Allow the test inner class to access the other (big) inner class.
   //The Tru64 compiler needs this. murrayc.
-  struct test;
-  friend struct test;
+  //struct test;
+  //friend struct test;
 
-  struct test {
+  //The AIX xlC compiles does not like these 2 functions being in the inner class.
+  //It says "The incomplete type "test" must no be used as a qualifier.
+  //It does not seem necessary anyway. murrayc.
+  //struct test {
     static big  is_base_class_(...);
     static char is_base_class_(typename type_trait<T_base>::pointer);
-  };
+  //};
 
 public:
   static const bool value =
-    sizeof(test::is_base_class_(reinterpret_cast<typename type_trait<T_derived>::pointer>(0))) ==
+    sizeof(is_base_class_(reinterpret_cast<typename type_trait<T_derived>::pointer>(0))) ==
     sizeof(char);
 };
 
