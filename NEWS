@@ -17,6 +17,17 @@ This version of libsigc++ needs GNU g++ 3.2 or higher to compile.
 
 *** ChangeLog summary:
 
+2.0.10:
+
+* tests: Include <new> to avoid unresolved symbols on Tru64.
+  (Tim Mooney)
+* When signal handlers are connected made during an emit
+  of the same signal, prevent them from being called in the
+  same emit, to prevent infinite loops.
+  (Neal E. Coombes)
+* Performance improvement in a corner case.
+  (Neal E. Coombes).
+
 2.0.9:
 
 * sigc::bind() now works with the AIX and Tru64 compilers.
