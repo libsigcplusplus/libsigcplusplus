@@ -1,5 +1,10 @@
 2003-04-06  Martin Schulze  <MHL.Schulze@t-online.de>
 
+	* TODO, configure.ac, Makefile.am, docs/*:
+	Add Doxygen framework.
+
+2003-04-06  Martin Schulze  <MHL.Schulze@t-online.de>
+
 	* sigc++/callof.h.m4, sigc++/adaptors/*, tests/test_callof.cc:
 	Move sigc::callof<> to sigc::functor::internal::callof<>.
 

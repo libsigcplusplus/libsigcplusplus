@@ -38,6 +38,10 @@ AC_EXEEXT
 dnl this package needs m4
 AC_CHECK_PROGS(M4, gm4 m4, m4)
 
+dnl perl is needed for building the reference documentation
+AC_PATH_PROGS([PERL_PATH], [perl perl5], [perl])
+AC_SUBST([PERL_PATH])
+
 dnl disable autoheader
 AUTOHEADER=':'
 
@@ -100,10 +104,16 @@ fi
 
 # Generate output
 AC_OUTPUT([
-  sigc++-2.0.pc
   Makefile
+  sigc++-2.0.pc
+
+  sigc++/Makefile
   tests/Makefile
   examples/Makefile
-  sigc++/Makefile
+
+  docs/Makefile
+    docs/images/Makefile
+    docs/reference/Makefile
+    docs/reference/Doxyfile
 ])
 
