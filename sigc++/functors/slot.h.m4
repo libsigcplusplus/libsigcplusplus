@@ -17,7 +17,7 @@ dnl
 divert(-1)
 
 include(template.macros.m4)
-
+ 
 define([SLOT],[dnl
 ifelse($1, $2,[dnl
 /** Converts an arbitrary functor to a unified type which is opaque.
@@ -29,13 +29,15 @@ ifelse($1, $2,[dnl
 FOR(1,$1,[
  * - @e T_arg%1 Argument type used in the definition of operator()(). The default @p nil means no argument.])
  *
- * To use simply assign the slot to the desirer functor. If the functor
+ * To use simply assign the slot to the desired functor. If the functor
  * is not compatible with the parameter list defined with the template
- * arguments compiler errors are triggered. When called the slot
+ * arguments then compiler errors are triggered. When called the slot
  * will launch the functor with minimal copies.
  * block() and unblock() can be used to block execution temporarily.
- * Because slot is opaque visit_each will not visit any members
+ * Because slot is opaque visit_each() will not visit any members
  * contained within.
+ *
+ * TODO: Use namespaces in this example.
  *
  * @par Example:
  *   @code
@@ -44,14 +46,14 @@ FOR(1,$1,[
  *   slot(19);
  *   @endcode
  *
- * @ingroup signal functors
+ * @ingroup Slots functors
  */
 template <LIST(class T_return, LOOP(class T_arg%1 = nil, $1))>],[dnl
 /** Converts an arbitrary functor to a unified type which is opaque.
  * This is the template specialization of the slot<> template
  * for $1 arguments.
  *
- * @ingroup signal functors
+ * @ingroup Slots functors
  */
 template <LIST(class T_return, LOOP(class T_arg%1, $1))>])
 class slot ifelse($1, $2,,[<LIST(T_return, LOOP(T_arg%1,$1))>])
@@ -105,7 +107,6 @@ define([SLOT_CALL],[dnl
 FOR(1,$1,[
  * - @e T_arg%1 Argument type used in the definition of call_it().])
  *
- * @ingroup signal
  */
 template<LIST(class T_functor, class T_return, LOOP(class T_arg%1, $1))>
 struct slot_call$1
@@ -140,7 +141,7 @@ divert(0)dnl
     Converts an arbitrary functor to a unified type which is opaque.
     To use simply assign the slot to the desirer functor. When called
     it will launch the functor with minimal copies. Because it is opaque
-    visit_each will not visit any members contained within.
+    visit_each() will not visit any members contained within.
 
   Example:
     void foo(int) {}
@@ -182,7 +183,6 @@ struct slot_base;
  * slot_rep inherits trackable so that connection objects can
  * refer to the slot and are notified when the slot is destroyed.
  *
- * @ingroup signal
  */
 struct slot_rep : public trackable
 {
@@ -215,7 +215,8 @@ struct slot_rep : public trackable
    */
   virtual slot_rep* dup() const = 0;
 
-  /** Destructs the slot_rep object. */
+  /** Destroys the slot_rep object. */
+  //TODO: Aren't all of these "This is a destructor" docs superfluous? murrayc.
   virtual ~slot_rep()
     {}
 
@@ -245,7 +246,6 @@ struct slot_rep : public trackable
  * Consequently slot_rep::notify() gets executed when the
  * trackable is destroyed or overwritten.
  *
- * @ingroup signal
  */
 struct slot_do_bind
 {
@@ -267,7 +267,6 @@ struct slot_do_bind
 /** Functor used to remove a dependency from a trackable.
  * This is used when the slot dies before the trackable does.
  *
- * @ingroup signal
  */
 struct slot_do_unbind
 {
@@ -293,7 +292,6 @@ struct slot_do_unbind
  * notification callback. Consequently the slot_rep object will be
  * notified when some referred object is destroyed or overridden.
  *
- * @ingroup signal
  */
 template <class T_functor>
 struct typed_slot_rep : public slot_rep
@@ -317,7 +315,7 @@ struct typed_slot_rep : public slot_rep
     : slot_rep(cl), functor_(cl.functor_)
     { visit_each_type<trackable*>(slot_do_bind(this), functor_); }
 
-  /** Destructs the typed slot_rep object.
+  /** Destroys the typed slot_rep object.
    * The notification callback is unregistered using visit_each().
    */
   virtual ~typed_slot_rep()
@@ -332,6 +330,24 @@ struct typed_slot_rep : public slot_rep
     { return new typed_slot_rep<T_functor>(*this); }
 };
 
+/** @defgroup Slots Slots
+ * Slots are type-safe representations of callback methods and functions.
+ * A Slot can be constructed from any function, regardless of whether it is
+ * a global function, a member method, static, or virtual.
+ *
+ * Use the sigc::slot() template function to get a sigc::Slot, like so:
+ * @code
+ * sigc::slot1<void, int> slot = sigc::slot(someobj, &SomeClass::somemethod);
+ * @endcode
+ * or
+ * @code
+ * m_Button.signal_clicked().connect( sigc::slot(*this, &MyWindow::on_button_clicked) );
+ * @endcode
+ * The compiler will complain if SomeClass::somemethod has the wrong signature.
+ *
+ * You can also pass slots as method parameters where you might normally pass a function pointer.
+ */
+ 
 /** Base type for slots.
  * slot_base integrates most of the interface of the derived
  * slot templates (therefore reducing code size). slots
@@ -345,7 +361,6 @@ struct typed_slot_rep : public slot_rep
  * add_dependency() is used by connection objects to add a notification
  * callback that is executed on destruction.
  *
- * @ingroup signal
  */
 class slot_base : public functor_base
 {
@@ -362,14 +377,14 @@ class slot_base : public functor_base
     explicit slot_base(rep_type* rep)
       : rep_(rep), blocked_(false) {}
 
-    /** Constructs a slot copying an existing one.
+    /** Constructs a slot, copying an existing one.
      * @param cl_ The existing slot to copy.
      */
     slot_base(const slot_base& cl_)
       : rep_(0), blocked_(cl_.blocked_)
       { if (cl_.rep_) rep_ = cl_.rep_->dup(); }
 
-    /** Destructs a slot. */
+    /** Destroys a slot. */
     ~slot_base()
       { if (rep_) delete rep_; }
 
@@ -391,6 +406,7 @@ class slot_base : public functor_base
      */
     void add_dependency(void* o, void* (*f)(void*)) const
       { if (rep_) rep_->add_dependency(o, f); }
+    //TODO: Use meaningful variable names instead of o or f. murrayc.
 
     /** Removes a dependency.
      * @param t The dependency object to remove.
@@ -411,8 +427,9 @@ class slot_base : public functor_base
       { return blocked_; }
 
     /** Sets the blocking state.
-     * If @p should_block is @p true, the blocking state is set.
+     * If @p should_block is @p true then the blocking state is set.
      * Subsequent calls to slot::operator()() don't launch the functor
+     * (TODO: launch is not a good word to use here or in the rest of the docs)
      * contained by this slot until unblock() or block() with
      * @p should_block == @p false is called.
      * @param should_block Indicates whether the blocking state should be set or unset.
@@ -433,10 +450,10 @@ class slot_base : public functor_base
       { if (rep_) rep_->notify(rep_); } // => notify() marks it as invalid and notifies the parent.
 
     /** Overrides this slot making a copy from another slot.
-     * @param cl The slot to make a copy from.
+     * @param cl The slot from which to make a copy.
      * @return @p this.
      */
-    slot_base& operator = (const slot_base& cl);
+    slot_base& operator = (const slot_base& cl); //TODO: Why "cl"? Why not src? murrayc
 
 //  protected: // public to avoid template friend declarations
     /** Typed slot_rep object that contains a functor. */

@@ -1,3 +1,15 @@
+2003-05-31  Murray Cumming  <murrayc@usa.net>
+
+	* Reference documentation: Rearranged the groups to make it all
+	a bit more like the libsigc++ 1.2 reference documentation.
+	Corrected some spelling and grammar too.
+	This needs a lot of work. The text is very hard to read and it's
+	generally not appropriate for a user of the code who doesn't
+	care about the internals. But it's not impossible - our examples
+	should show us what we need to say in the documentation.
+	We probably need some more groups for the extra stuff, like we do
+	in libsigc++ 1.2.
+
 2003-05-29  Martin Schulze  <martin-ml@hippogriff.de>
 
 	* sigc++/signal.h.m4: Fix documentation.

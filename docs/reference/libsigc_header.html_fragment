@@ -12,10 +12,7 @@
 </table>
 <center>
   <a class="qindex" href="../../index.html">Main Page</a> &nbsp;
-  <a href="group__signal.html">Signals and Slots</a> &nbsp;
-  <a href="group__functors.html">Functors</a> &nbsp;
-  <a href="group__adaptors.html">Adaptors</a> &nbsp;
-  <a href="group__lambda.html">Lambda</a> &nbsp;
+  <a class="qindex" href="modules.html">Groups</a> &nbsp;
   <a class="qindex" href="namespaces.html"> Namespaces</a> &nbsp;
 </center>
 <hr width="100%"/>
