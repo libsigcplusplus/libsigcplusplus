@@ -19,25 +19,25 @@ divert(-1)
 include(template.macros.m4)
 
 define([CLOSURE],[dnl
-ifelse($1,$2,
-[template <LIST(class T_return,LOOP(class T_arg%1=nil,$1))>],
-[template <LIST(class T_return,LOOP(class T_arg%1,$1))>])
-class closure ifelse($1,$2,,[<LIST(T_return,LOOP(T_arg%1,$1))>])
+ifelse($1, $2,
+[template <LIST(class T_return, LOOP(class T_arg%1 = nil, $1))>],
+[template <LIST(class T_return, LOOP(class T_arg%1, $1))>])
+class closure ifelse($1, $2,,[<LIST(T_return, LOOP(T_arg%1,$1))>])
   : public internal::closure_base
 {
   typedef internal::closure_rep rep_type;
   typedef T_return result_type;
-FOR(1,$1,[  typedef _R_(T_arg%1) arg%1_type_;
+FOR(1, $1,[  typedef _R_(T_arg%1) arg%1_type_;
 ])
 
-  typedef T_return (*call_type)(LIST(rep_type*,LOOP(arg%1_type_,$1)));
+  typedef T_return (*call_type)(LIST(rep_type*, LOOP(arg%1_type_, $1)));
   public:
     typedef T_return result_type;
 
-    T_return operator()(LOOP(arg%1_type_ _A_a%1,$1)) const
+    T_return operator()(LOOP(arg%1_type_ _A_a%1, $1)) const
       {
         if (!empty() && !blocked())
-          return (reinterpret_cast<call_type>(rep_->call_))(LIST(rep_,LOOP(_A_a%1,$1)));
+          return (reinterpret_cast<call_type>(rep_->call_))(LIST(rep_, LOOP(_A_a%1, $1)));
         return T_return();
       }
 
@@ -47,20 +47,20 @@ FOR(1,$1,[  typedef _R_(T_arg%1) arg%1_type_;
     template <class T_functor>
     closure(const T_functor& _A_func)
       : closure_base(new internal::typed_closure_rep<T_functor>(_A_func))
-      { rep_->call_=internal::closure_call$1<LIST(T_functor,T_return,LOOP(T_arg%1,$1))>::address(); }
+      { rep_->call_ = internal::closure_call$1<LIST(T_functor, T_return, LOOP(T_arg%1, $1))>::address(); }
 };
 
 ])
 
 define([CLOSURE_CALL],[dnl
-template<LIST(class T_functor,class T_return,LOOP(class T_arg%1,$1))>
+template<LIST(class T_functor, class T_return, LOOP(class T_arg%1, $1))>
 struct closure_call$1
 {
-  static T_return call_it(LIST(closure_rep* rep,LOOP(typename type_trait<T_arg%1>::take a_%1,$1)))
+  static T_return call_it(LIST(closure_rep* rep, LOOP(typename type_trait<T_arg%1>::take a_%1, $1)))
     {
       typedef typed_closure_rep<T_functor> typed_closure;
-      typed_closure *typed_rep=static_cast<typed_closure*>(rep);
-      return (typed_rep->functor_)(LOOP(a_%1,$1));
+      typed_closure *typed_rep = static_cast<typed_closure*>(rep);
+      return (typed_rep->functor_)(LOOP(a_%1, $1));
     }
   static hook address() 
     { return reinterpret_cast<hook>(&call_it); }
@@ -70,7 +70,7 @@ struct closure_call$1
 
 divert(0)dnl
 /*
-  Type closure<R,A1,A2...>
+  Type closure<R, A1, A2...>
   usage:
     Converts an arbitrary functor to a unified type which is opaque.
   To use simply assign the closure to the desirer functor.  When called
@@ -79,7 +79,7 @@ divert(0)dnl
                 
   Ie.
     void foo(int) {}
-    closure<void, long> cl=ptr_fun(&foo);
+    closure<void, long> cl = ptr_fun(&foo);
                           
 */
 __FIREWALL__
@@ -106,15 +106,15 @@ struct closure_rep
     : call_(0), parent_(0) {}
   closure_rep(const closure_rep& cl)
     : call_(cl.call_), parent_(0) {}
-  virtual closure_rep* dup() const=0;
+  virtual closure_rep* dup() const = 0;
   virtual ~closure_rep()
     {}
 
   // closures have one parent exclusively.
   void set_dependency(void* parent, hook cleanup)
     {
-      parent_=parent;
-      cleanup_=cleanup;
+      parent_ = parent;
+      cleanup_ = cleanup;
     }
 
   static void* notify(void* p);
@@ -136,7 +136,7 @@ class closure_base /*: public functor_base*/
       : rep_(0), blocked_(cl_.blocked_)
       {
         if (cl_.rep_)
-          rep_=cl_.rep_->dup();
+          rep_ = cl_.rep_->dup();
       }
 
     ~closure_base()
@@ -150,14 +150,14 @@ class closure_base /*: public functor_base*/
     bool blocked() const
       { return blocked_; }
 
-    bool block(bool should_block=true);
+    bool block(bool should_block = true);
 
     bool unblock()
       { return block(false); }
 
     void disconnect();
 
-    closure_base& operator=(const closure_base& cl);
+    closure_base& operator = (const closure_base& cl);
 
   protected:
     mutable rep_type *rep_;
@@ -187,12 +187,12 @@ struct typed_closure_rep : public closure_rep
   public:
     typed_closure_rep(const T_functor& functor)
       : functor_(functor)
-      { visit_each_type<trackable*>(closure_do_bind(this),functor_); }
+      { visit_each_type<trackable*>(closure_do_bind(this), functor_); }
     typed_closure_rep(const typed_closure_rep& cl)
       : closure_rep(cl), functor_(cl.functor_)
-      { visit_each_type<trackable*>(closure_do_bind(this),functor_); }
+      { visit_each_type<trackable*>(closure_do_bind(this), functor_); }
     virtual ~typed_closure_rep()
-      { visit_each_type<trackable*>(closure_do_unbind(this),functor_); }
+      { visit_each_type<trackable*>(closure_do_unbind(this), functor_); }
     virtual closure_rep* dup() const
       { return new typed_closure_rep<T_functor>(*this); }
     T_functor functor_;

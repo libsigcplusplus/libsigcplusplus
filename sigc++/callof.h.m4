@@ -19,18 +19,18 @@ divert(-1)
 include(template.macros.m4)
 
 define([CALLOF],[dnl
-ifelse($1,$2,[template <LIST(class T_functor,LOOP(class T_arg%1=nil,$1))>],
-[template <LIST(class T_functor,LOOP(class T_arg%1,$1))>])
-struct callof ifelse($1,$2,,[<LIST(T_functor,LOOP(T_arg%1,$1),LOOP(nil,eval($2-$1)))>])
+ifelse($1, $2,[template <LIST(class T_functor, LOOP(class T_arg%1 = nil,$1))>],
+[template <LIST(class T_functor, LOOP(class T_arg%1, $1))>])
+struct callof ifelse($1, $2,,[<LIST(T_functor, LOOP(T_arg%1,$1),LOOP(nil,eval($2-$1)))>])
 { 
    typedef typeof(type_trait<T_functor>::instance().
                     T_functor::operator()(LOOP([
-                       type_trait<T_arg%1>::instance()],$1))) result_type;
+                       type_trait<T_arg%1>::instance()], $1))) result_type;
 };
 ])
 
 dnl template <class T_functor>
-dnl struct callof <T_functor,nil,nil,nil,nil,nil,nil,nil>
+dnl struct callof <T_functor, nil, nil, nil, nil, nil, nil, nil>
 dnl {
 dnl    struct test_ 
 dnl      {

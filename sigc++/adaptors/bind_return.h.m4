@@ -19,10 +19,10 @@ divert(-1)
 include(template.macros.m4)
 
 define([BIND_RETURN_OPERATOR],[dnl
-   template <LOOP(class T_arg%1,$1)>
-   inline T_return operator()(LOOP(T_arg%1 _A_a%1,$1))
-     { functor_.template operator()<LOOP(_P_(T_arg%1),$1)>
-        (LOOP(_A_a%1,$1)); return ret_value_; 
+   template <LOOP(class T_arg%1, $1)>
+   inline T_return operator()(LOOP(T_arg%1 _A_a%1, $1))
+     { functor_.template operator()<LOOP(_P_(T_arg%1), $1)>
+        (LOOP(_A_a%1, $1)); return ret_value_; 
      }
 ])
 
@@ -33,7 +33,7 @@ __FIREWALL__
 namespace sigc {
 namespace functor {
 
-template <class T_return,class T_functor>
+template <class T_return, class T_functor>
 class bind_return_functor : public adapts<T_functor>
 {
   public:
@@ -43,29 +43,29 @@ class bind_return_functor : public adapts<T_functor>
 FOR(1,CALL_SIZE,[[BIND_RETURN_OPERATOR(%1)]])
 
     bind_return_functor() {}
-    bind_return_functor(_R_(T_functor) _A_functor,_R_(T_return) _A_ret_value)
+    bind_return_functor(_R_(T_functor) _A_functor, _R_(T_return) _A_ret_value)
       : adapts<T_functor>(_A_functor), ret_value_(_A_ret_value)
     {}
   protected: 
     T_return ret_value_; 
 };
 
-template <class T_return,class T_functor>
-T_return bind_return_functor<T_return,T_functor>::operator()()
+template <class T_return, class T_functor>
+T_return bind_return_functor<T_return, T_functor>::operator()()
   { functor_(); return ret_value_; }
 
 template <class T_action, class T_return, class T_functor>
 void visit_each(const T_action& _A_action,
-                const bind_return_functor<T_return,T_functor>& _A_target)
+                const bind_return_functor<T_return, T_functor>& _A_target)
 {
-  visit_each(_A_action,_A_target.ret_value_);
-  visit_each(_A_action,_A_target.functor_);
+  visit_each(_A_action, _A_target.ret_value_);
+  visit_each(_A_action, _A_target.functor_);
 }
 
-template <class T_return,class T_functor>
-inline bind_return_functor<T_return,T_functor>
-bind_return(const T_functor& _A_functor,T_return _A_ret_value)
-  { return bind_return_functor<T_return,T_functor>(_A_functor,_A_ret_value); }
+template <class T_return, class T_functor>
+inline bind_return_functor<T_return, T_functor>
+bind_return(const T_functor& _A_functor, T_return _A_ret_value)
+  { return bind_return_functor<T_return, T_functor>(_A_functor, _A_ret_value); }
 
 } /* namespace functor */
 } /* namespace sigc */

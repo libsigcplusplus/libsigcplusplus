@@ -27,8 +27,9 @@ namespace internal {
 
 trackable_dep_list::~trackable_dep_list()
 { 
-  clearing_=true;
-  for (dep_list::iterator i=deps_.begin(); i!=deps_.end(); ++i)
+  clearing_ = true;
+  
+  for (dep_list::iterator i = deps_.begin(); i != deps_.end(); ++i)
     (*i).func_((*i).obj_);
 }
 
@@ -42,17 +43,20 @@ void trackable_dep_list::add_dependency(void* target, void* (*func)(void*) )
 
 void trackable_dep_list::clear()
 {
-  clearing_=true;
+  clearing_ = true;
+  
   for (dep_list::iterator i=deps_.begin(); i!=deps_.end(); ++i)
     (*i).func_((*i).obj_);
-  clearing_=false;
+    
+  clearing_ = false;
 }
 
 void trackable_dep_list::remove_dependency(void* target)
 {
   if (clearing_) return; // No circular notices
-  for (dep_list::iterator i=deps_.begin(); i!=deps_.end(); ++i)
-    if ((*i).obj_==target) 
+  
+  for (dep_list::iterator i = deps_.begin(); i != deps_.end(); ++i)
+    if ((*i).obj_ == target) 
       { 
         deps_.erase(i); return;
       }

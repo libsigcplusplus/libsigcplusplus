@@ -20,13 +20,13 @@ include(template.macros.m4)
 dnl
 dnl Macros to make select arguments
 define([LAMBDA_SELECT_DO],[dnl
-  template <LOOP(class T_arg%1,$2)>
-  T_arg$1 operator ()(LOOP(T_arg%1 _A_%1,$2)) const { return _A_$1; }
+  template <LOOP(class T_arg%1, $2)>
+  T_arg$1 operator ()(LOOP(T_arg%1 _A_%1, $2)) const { return _A_$1; }
 ])
 define([LAMBDA_SELECT],[dnl
 struct lambda_select$1 : public lambda_base
 {
-FOR($1,$2,[[LAMBDA_SELECT_DO($1,%1)]])
+FOR($1, $2,[[LAMBDA_SELECT_DO($1,%1)]])
 };
 ])
 

@@ -18,17 +18,17 @@ divert(-1)
 include(template.macros.m4)
 
 define([LAMBDA_DO],[dnl
-  template <LOOP(class T_arg%1,$1)>
-  typename callof<LIST(T_type,LOOP(T_arg%1,$1))>::result_type
-  operator ()(LOOP(T_arg%1 _A_%1,$1)) const 
+  template <LOOP(class T_arg%1, $1)>
+  typename callof<LIST(T_type, LOOP(T_arg%1, $1))>::result_type
+  operator ()(LOOP(T_arg%1 _A_%1, $1)) const 
     { 
-      return value_.template operator()<LOOP(_P_(T_arg%1),$1)>
-             (LOOP(_A_%1,$1)); 
+      return value_.template operator()<LOOP(_P_(T_arg%1), $1)>
+             (LOOP(_A_%1, $1)); 
     }
 ])
 define([LAMBDA_DO_VALUE],[dnl
-  template <LOOP(class T_arg%1,$1)>
-  T_type operator ()(LOOP(T_arg%1 _A_%1,$1)) const 
+  template <LOOP(class T_arg%1, $1)>
+  T_type operator ()(LOOP(T_arg%1 _A_%1, $1)) const 
     { return value_; }
 ])
 
@@ -48,10 +48,10 @@ template <class T_type> struct lambda;
 
 namespace internal {
 
-template <class T_type, bool I_islambda=is_base_and_derived<lambda_base,T_type>::value> struct lambda_core;
+template <class T_type, bool I_islambda = is_base_and_derived<lambda_base, T_type>::value> struct lambda_core;
 
 template <class T_type>
-struct lambda_core<T_type,true> : public lambda_base
+struct lambda_core<T_type, true> : public lambda_base
 {
   typedef T_type lambda_type;
 
@@ -61,15 +61,15 @@ FOR(1,CALL_SIZE,[[LAMBDA_DO(%1)]])
   lambda_core(const T_type& v)
     : value_(v) {}
 
-  template <class T1,class T2>
-  lambda_core(const T1& v1,const T2& v2)
-    : value_(v1,v2) {}
+  template <class T1, class T2>
+  lambda_core(const T1& v1, const T2& v2)
+    : value_(v1, v2) {}
 
   T_type value_;
 };
 
 template <class T_type>
-struct lambda_core<T_type,false> : public lambda_base
+struct lambda_core<T_type, false> : public lambda_base
 {
   typedef lambda<T_type> lambda_type;
 

@@ -20,36 +20,36 @@ include(template.macros.m4)
 dnl 
 dnl Macros to make operators
 define([LAMBDA_OPERATOR_DO],[dnl
-  template <LOOP(class T_arg%1,$3)>
+  template <LOOP(class T_arg%1, $3)>
   typename internal_$1<
-      typename callof<arg1_type,LOOP(T_arg%1,$3)>::result_type,
-      typename callof<arg2_type,LOOP(T_arg%1,$3)>::result_type
+      typename callof<arg1_type, LOOP(T_arg%1, $3)>::result_type,
+      typename callof<arg2_type, LOOP(T_arg%1, $3)>::result_type
     >::result_type
-  operator ()(LOOP(T_arg%1 _A_%1,$3)) const
+  operator ()(LOOP(T_arg%1 _A_%1, $3)) const
   { 
-    return arg1_.template operator()<LOOP(_P_(T_arg%1),$3)>
-      (LOOP(_A_%1,$3)) 
-      $2 arg2_.template operator()<LOOP(_P_(T_arg%1),$3)>
-      (LOOP(_A_%1,$3)); 
+    return arg1_.template operator()<LOOP(_P_(T_arg%1), $3)>
+      (LOOP(_A_%1, $3)) 
+      $2 arg2_.template operator()<LOOP(_P_(T_arg%1), $3)>
+      (LOOP(_A_%1, $3)); 
   }
 ])
 
 define([LAMBDA_OPERATOR],[dnl
-template <class T_type1,class T_type2>
+template <class T_type1, class T_type2>
 struct lambda_$1 : public lambda_base
 {
   typedef typename lambda<T_type1>::lambda_type arg1_type;
   typedef typename lambda<T_type2>::lambda_type arg2_type;
 
-  template <class T_test1,class T_test2>
+  template <class T_test1, class T_test2>
   struct internal_$1
   {
     typedef typeof(type_trait<T_test1>::instance() $2 type_trait<T_test1>::instance() ) result_type;
   };
 
-FOR(1,$3,[[LAMBDA_OPERATOR_DO]]($1,$2,%1))
+FOR(1, $3,[[LAMBDA_OPERATOR_DO]]($1,$2,%1))
 
-  lambda_$1(_R_(T_type1) a1,_R_(T_type2) a2 )
+  lambda_$1(_R_(T_type1) a1, _R_(T_type2) a2 )
     : arg1_(a1), arg2_(a2) {}
 
   arg1_type arg1_;
@@ -57,18 +57,18 @@ FOR(1,$3,[[LAMBDA_OPERATOR_DO]]($1,$2,%1))
 };
 divert(2)
 // operators for $1
-template <class T_arg1,class T_arg2>
-lambda<internal::lambda_$1<T_arg1,T_arg2> >
-operator $2 (const lambda<T_arg1>& a1,const lambda<T_arg2>& a2)
-{ return lambda<internal::lambda_$1<T_arg1,T_arg2> >(internal::lambda_$1<T_arg1,T_arg2>(a1.value_,a2.value_)); }
-template <class T_arg1,class T_arg2>
-lambda<internal::lambda_$1<T_arg1,T_arg2> >
-operator $2 (const lambda<T_arg1>& a1,const T_arg2& a2)
-{ return lambda<internal::lambda_$1<T_arg1,T_arg2> >(internal::lambda_$1<T_arg1,T_arg2>(a1.value_,a2)); }
-template <class T_arg1,class T_arg2>
-lambda<internal::lambda_$1<T_arg1,T_arg2> >
-operator $2 (const T_arg1& a1,const lambda<T_arg2>& a2)
-{ return lambda<internal::lambda_$1<T_arg1,T_arg2> >(internal::lambda_$1<T_arg1,T_arg2>(a1,a2.value_)); }
+template <class T_arg1, class T_arg2>
+lambda<internal::lambda_$1<T_arg1, T_arg2> >
+operator $2 (const lambda<T_arg1>& a1, const lambda<T_arg2>& a2)
+{ return lambda<internal::lambda_$1<T_arg1, T_arg2> >(internal::lambda_$1<T_arg1, T_arg2>(a1.value_,a2.value_)); }
+template <class T_arg1, class T_arg2>
+lambda<internal::lambda_$1<T_arg1, T_arg2> >
+operator $2 (const lambda<T_arg1>& a1, const T_arg2& a2)
+{ return lambda<internal::lambda_$1<T_arg1, T_arg2> >(internal::lambda_$1<T_arg1, T_arg2>(a1.value_,a2)); }
+template <class T_arg1, class T_arg2>
+lambda<internal::lambda_$1<T_arg1, T_arg2> >
+operator $2 (const T_arg1& a1, const lambda<T_arg2>& a2)
+{ return lambda<internal::lambda_$1<T_arg1, T_arg2> >(internal::lambda_$1<T_arg1, T_arg2>(a1,a2.value_)); }
 divert(0)
 ])
 

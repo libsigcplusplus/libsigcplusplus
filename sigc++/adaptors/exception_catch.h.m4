@@ -19,13 +19,13 @@ divert(-1)
 include(template.macros.m4)
 
 define([EXCEPTION_CATCH_OPERATOR],[dnl
-   template <LOOP(class T_arg%1,$1)>
-   inline typename callof<T_functor,LOOP(T_arg%1,$1)>::result_type
-     operator()(LOOP(T_arg%1 _A_a%1,$1))
+   template <LOOP(class T_arg%1, $1)>
+   inline typename callof<T_functor, LOOP(T_arg%1, $1)>::result_type
+     operator()(LOOP(T_arg%1 _A_a%1, $1))
      { 
         try { 
-          return functor_.template operator() <LOOP(_P_(T_arg%1),$1)>
-            (LOOP(_A_a%1,$1));
+          return functor_.template operator() <LOOP(_P_(T_arg%1), $1)>
+            (LOOP(_A_a%1, $1));
         } 
         catch (...)
         { return catcher_(); }
@@ -35,7 +35,7 @@ define([EXCEPTION_CATCH_OPERATOR],[dnl
 
 divert(0)dnl
 /*
-   functor adaptor:  exception_catch(functor,catcher)
+   functor adaptor:  exception_catch(functor, catcher)
 
    usage:
      Allows the user to catch an exception thrown from within 
@@ -58,7 +58,7 @@ divert(0)dnl
           }
        }
      int foo(); // throws std::range_error
-     exception_catch(&foo,my_catch()) ();
+     exception_catch(&foo, my_catch()) ();
 
    Future directions:
      The catcher should be told what type of return it needs to
@@ -71,7 +71,7 @@ __FIREWALL__
 namespace sigc {
 namespace functor {
 
-template <class T_functor,class T_catcher>
+template <class T_functor, class T_catcher>
 class exception_catch_functor : public adapts<T_functor>
 {
   public:
@@ -91,9 +91,9 @@ FOR(1,CALL_SIZE,[[EXCEPTION_CATCH_OPERATOR(%1)]])
 
 };
 
-dnl template <class T_functor,class T_catcher>
+dnl template <class T_functor, class T_catcher>
 dnl typename callof0_safe<T_functor>::result_type
-dnl exception_catch_functor<T_functor,T_catcher>
+dnl exception_catch_functor<T_functor, T_catcher>
 dnl   ::operator()()
 dnl      { 
 dnl         try { return functor_(); }
@@ -103,17 +103,17 @@ dnl      }
 
 template <class T_action, class T_functor, class T_catcher>
 void visit_each(const T_action& _A_action,
-                const exception_catch_functor<T_functor,T_catcher>& _A_target)
+                const exception_catch_functor<T_functor, T_catcher>& _A_target)
 {
-  visit_each(_A_action,_A_target.functor_);
-  visit_each(_A_action,_A_target.catcher_);
+  visit_each(_A_action, _A_target.functor_);
+  visit_each(_A_action, _A_target.catcher_);
 }
 
 
-template <class T_functor,class T_catcher>
-inline exception_catch_functor<T_functor,T_catcher>
-exception_catch(const T_functor& _A_func,const T_catcher& _A_catcher)
-  { return exception_catch_functor<T_functor,T_catcher>(_A_func,_A_catcher); }
+template <class T_functor, class T_catcher>
+inline exception_catch_functor<T_functor, T_catcher>
+exception_catch(const T_functor& _A_func, const T_catcher& _A_catcher)
+  { return exception_catch_functor<T_functor, T_catcher>(_A_func, _A_catcher); }
 
 } /* namespace functor */
 } /* namespace sigc */

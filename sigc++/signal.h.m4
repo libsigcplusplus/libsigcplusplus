@@ -19,24 +19,24 @@ divert(-1)
 include(template.macros.m4)
 
 define([SIGNAL],[dnl
-ifelse($1,$2,
-[template <LIST(class T_return,LOOP(class T_arg%1=nil,$1))>],
-[template <LIST(class T_return,LOOP(class T_arg%1,$1))>])
-class signal ifelse($1,$2,,[<LIST(T_return,LOOP(T_arg%1,$1))>])
-  : public signal$1<LIST(T_return,LOOP(T_arg%1,$1),functor::default_accumulator<T_return> ) >
+ifelse($1, $2,
+[template <LIST(class T_return, LOOP(class T_arg%1 = nil, $1))>],
+[template <LIST(class T_return, LOOP(class T_arg%1, $1))>])
+class signal ifelse($1, $2,,[<LIST(T_return, LOOP(T_arg%1,$1))>])
+  : public signal$1<LIST(T_return, LOOP(T_arg%1, $1), functor::default_accumulator<T_return> ) >
 {
   template <class T_accumulator>
   class accumulated
-    :  public signal$1<LIST(T_return,LOOP(T_arg%1,$1),T_accumulator)>
+    :  public signal$1<LIST(T_return, LOOP(T_arg%1, $1), T_accumulator)>
     {
       public:
-        typename T_accumulator::result_type operator()(LOOP(typename type_trait<T_arg%1>::take _A_a%1,$1)) const
-          { return emit(LOOP(_A_a%1,$1)); }
+        typename T_accumulator::result_type operator()(LOOP(typename type_trait<T_arg%1>::take _A_a%1, $1)) const
+          { return emit(LOOP(_A_a%1, $1)); }
     };
 
   public:
-    T_return operator()(LOOP(typename type_trait<T_arg%1>::take _A_a%1,$1)) const
-      { return emit(LOOP(_A_a%1,$1)); }
+    T_return operator()(LOOP(typename type_trait<T_arg%1>::take _A_a%1, $1)) const
+      { return emit(LOOP(_A_a%1, $1)); }
 
     signal() {}
 };
@@ -44,29 +44,29 @@ class signal ifelse($1,$2,,[<LIST(T_return,LOOP(T_arg%1,$1))>])
 ])
 
 define([SIGNAL_N],[dnl
-template <LIST(class T_return,LOOP(class T_arg%1,$1),class T_accumulator)>
+template <LIST(class T_return, LOOP(class T_arg%1, $1), class T_accumulator)>
 class signal$1
   : public internal::signal_base
 {
   struct caller
   {
     typedef typename T_accumulator::result_type result_type;
-    typedef functor::closure<LIST(T_return,LOOP(T_arg%1,$1))> closure_type;
+    typedef functor::closure<LIST(T_return, LOOP(T_arg%1, $1))> closure_type;
 
-    caller(LOOP(typename type_trait<T_arg%1>::take _A_a%1,$1)) ifelse($1,0,,[
-      : LOOP(_A_a%1_(_A_a%1),$1)]) {}
+    caller(LOOP(typename type_trait<T_arg%1>::take _A_a%1, $1)) ifelse($1,0,,[
+      : LOOP(_A_a%1_(_A_a%1), $1)]) {}
 
     T_return operator()(const closure_type& _A_closure) const
-      { return _A_closure(LOOP(_A_a%1_,$1)); }
+      { return _A_closure(LOOP(_A_a%1_, $1)); }
 dnl
-    FOR(1,$1,[
+    FOR(1, $1,[
     typename type_trait<T_arg%1>::take _A_a%1_;])
   };
 
   public:
     typedef T_accumulator accumulator_type;
     typedef typename accumulator_type::result_type        result_type;
-    typedef functor::closure<LIST(T_return,LOOP(T_arg%1,$1))> closure_type;
+    typedef functor::closure<LIST(T_return, LOOP(T_arg%1, $1))> closure_type;
     typedef internal::closure_list<closure_type>          closure_list;
 dnl    typedef typename closure_list::iterator               iterator;
 dnl    typedef typename closure_list::const_iterator         const_iterator;
@@ -74,12 +74,12 @@ dnl    typedef typename closure_list::reverse_iterator       reverse_iterator;
 dnl    typedef typename closure_list::const_reverse_iterator const_reverse_iterator;
 
     void connect(const closure_type& slot_)
-      { insert(slots_.end(),slot_); }
+      { insert(slots_.end(), slot_); }
 
-    result_type emit(LOOP(typename type_trait<T_arg%1>::take _A_a%1,$1)) const;
+    result_type emit(LOOP(typename type_trait<T_arg%1>::take _A_a%1, $1)) const;
 
-    result_type operator()(LOOP(typename type_trait<T_arg%1>::take _A_a%1,$1)) const
-      { return emit(LOOP(_A_a%1,$1)); }
+    result_type operator()(LOOP(typename type_trait<T_arg%1>::take _A_a%1, $1)) const
+      { return emit(LOOP(_A_a%1, $1)); }
 
     closure_list closures()
       { return closure_list(this); }
@@ -102,25 +102,25 @@ dnl      }
 
   private:
     signal$1(const signal$1&);
-    signal$1& operator=(const signal$1&);
+    signal$1& operator = (const signal$1&);
 dnl
 dnl  protected:
 dnl    mutable closure_list closures_proxy_;
 };
 
-template <LIST(class T_return,LOOP(class T_arg%1,$1),class T_accumulator)>
+template <LIST(class T_return, LOOP(class T_arg%1, $1), class T_accumulator)>
 typename T_accumulator::result_type 
-signal$1<LIST(T_return,LOOP(T_arg%1,$1),T_accumulator)>
-  ::emit(LOOP(typename type_trait<T_arg%1>::take _A_a%1,$1)) const
+signal$1<LIST(T_return, LOOP(T_arg%1, $1), T_accumulator)>
+  ::emit(LOOP(typename type_trait<T_arg%1>::take _A_a%1, $1)) const
 {
   typedef internal::closure_iterator_buf<caller> closure_iterator_buf_type;
 
   internal::signal_exec exec(this);
-  caller caller_ ifelse($1,0,,[(LOOP(_A_a%1,$1))]);
+  caller caller_ ifelse($1,0,,[(LOOP(_A_a%1, $1))]);
   T_accumulator accumulator;
 
-  return accumulator(closure_iterator_buf_type(slots_.begin(),caller_),
-                      closure_iterator_buf_type(slots_.end(),caller_));
+  return accumulator(closure_iterator_buf_type(slots_.begin(), caller_),
+                      closure_iterator_buf_type(slots_.end(), caller_));
 }
 
 ])
@@ -265,11 +265,11 @@ struct closure_iterator
       return __tmp;
     }
 
-  bool operator==(const closure_iterator& other) const
-    { return i_==other.i_; }
+  bool operator == (const closure_iterator& other) const
+    { return i_ == other.i_; }
 
-  bool operator!=(const closure_iterator& other) const
-    { return i_!=other.i_; }
+  bool operator != (const closure_iterator& other) const
+    { return i_ != other.i_; }
 
   iterator_type i_;
 };
@@ -327,11 +327,11 @@ struct closure_const_iterator
       return __tmp;
     }
 
-  bool operator==(const closure_const_iterator& other) const
-    { return i_==other.i_; }
+  bool operator == (const closure_const_iterator& other) const
+    { return i_ == other.i_; }
 
-  bool operator!=(const closure_const_iterator& other) const
-    { return i_!=other.i_; }
+  bool operator != (const closure_const_iterator& other) const
+    { return i_ != other.i_; }
 
   iterator_type i_;
 };
@@ -433,7 +433,7 @@ struct signal_exec
       { (sig_->exec_count_)++; }
   ~signal_exec() 
     { 
-      if (--(sig_->exec_count_)==0&&sig_->defered_) 
+      if (--(sig_->exec_count_) == 0&&sig_->defered_) 
         sig_->sweep(); 
     }
 };
@@ -452,15 +452,15 @@ struct closure_iterator_buf
 
   typedef typename std::list<functor::internal::closure_base>::const_iterator iterator_type;
 
-  closure_iterator_buf(const iterator_type& i,const caller_type& c)
+  closure_iterator_buf(const iterator_type& i, const caller_type& c)
     : i_(i), c_(c), invoked_(false) {}
 
   result_type operator*() const
     {
       if (!invoked_)
         {
-          r_=c_(static_cast<const closure_type&>(*i_));
-          invoked_=true;
+          r_ = c_(static_cast<const closure_type&>(*i_));
+          invoked_ = true;
         }
       return r_;
     }
@@ -468,7 +468,7 @@ struct closure_iterator_buf
   closure_iterator_buf& operator++()
     {
       ++i_;
-      invoked_=false;
+      invoked_ = false;
       return *this;
     }
 
@@ -476,14 +476,14 @@ struct closure_iterator_buf
     { 
       closure_iterator_buf __tmp(*this);
       ++i_;
-      invoked_=false;
+      invoked_ = false;
       return __tmp;
     }
 
   closure_iterator_buf& operator--()
     {
       --i_;
-      invoked_=false;
+      invoked_ = false;
       return *this;
     }
 
@@ -491,15 +491,15 @@ struct closure_iterator_buf
     {
       closure_iterator_buf __tmp(*this);
       --i_;
-      invoked_=false;
+      invoked_ = false;
       return __tmp;
     }
 
-  bool operator==(const closure_iterator_buf& other) const
-    { return i_==other.i_; }
+  bool operator == (const closure_iterator_buf& other) const
+    { return i_ == other.i_; }
 
-  bool operator!=(const closure_iterator_buf& other) const
-    { return i_!=other.i_; }
+  bool operator != (const closure_iterator_buf& other) const
+    { return i_ != other.i_; }
 
   private:
     iterator_type i_;
@@ -509,7 +509,7 @@ struct closure_iterator_buf
 };
 
 template <class T_caller>
-struct closure_iterator_buf<T_caller,void>
+struct closure_iterator_buf<T_caller, void>
 {
   typedef size_t                          size_type;
   typedef ptrdiff_t                       difference_type;
@@ -521,7 +521,7 @@ struct closure_iterator_buf<T_caller,void>
 
   typedef typename std::list<functor::internal::closure_base>::const_iterator iterator_type;
 
-  closure_iterator_buf(const iterator_type& i,const caller_type& c)
+  closure_iterator_buf(const iterator_type& i, const caller_type& c)
     : i_(i), c_(c), invoked_(false) {}
 
   void operator*() const
@@ -529,14 +529,14 @@ struct closure_iterator_buf<T_caller,void>
       if (!invoked_)
         {
           c_(static_cast<const closure_type&>(*i_));
-          invoked_=true;
+          invoked_ = true;
         }
     }
 
   closure_iterator_buf& operator++()
     {
       ++i_;
-      invoked_=false;
+      invoked_ = false;
       return *this;
     }
 
@@ -544,14 +544,14 @@ struct closure_iterator_buf<T_caller,void>
     { 
       closure_iterator_buf __tmp(*this);
       ++i_;
-      invoked_=false;
+      invoked_ = false;
       return __tmp;
     }
 
   closure_iterator_buf& operator--()
     {
       --i_;
-      invoked_=false;
+      invoked_ = false;
       return *this;
     }
 
@@ -559,15 +559,15 @@ struct closure_iterator_buf<T_caller,void>
     {
       closure_iterator_buf __tmp(*this);
       --i_;
-      invoked_=false;
+      invoked_ = false;
       return __tmp;
     }
 
-  bool operator==(const closure_iterator_buf& other) const
-    { return i_==other.i_; }
+  bool operator == (const closure_iterator_buf& other) const
+    { return i_ == other.i_; }
 
-  bool operator!=(const closure_iterator_buf& other) const
-    { return i_!=other.i_; }
+  bool operator != (const closure_iterator_buf& other) const
+    { return i_ != other.i_; }
 
   private:
     iterator_type i_;

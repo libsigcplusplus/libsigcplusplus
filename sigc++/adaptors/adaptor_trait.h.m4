@@ -37,32 +37,32 @@ define([ADAPTOR_DO],
   operator()() const
     { functor_(); }
 ],[dnl
-  template <LOOP([class T_arg%1],$1)>
-  typename callof<LIST(T_functor,LOOP(T_arg%1,$1))>::result_type
-  operator()(LOOP(T_arg%1 _A_arg%1,$1)) const
-    { return functor_(LOOP(_A_arg%1,$1)); }
+  template <LOOP([class T_arg%1], $1)>
+  typename callof<LIST(T_functor, LOOP(T_arg%1, $1))>::result_type
+  operator()(LOOP(T_arg%1 _A_arg%1, $1)) const
+    { return functor_(LOOP(_A_arg%1, $1)); }
 ])dnl
 ])
 
 define([ADAPTOR_PTR_FUN],[dnl
-template <LIST(LOOP(class T_arg%1,$1),class T_return)>
-struct adaptor_trait<T_return (*)(LOOP(T_arg%1,$1)),false>
+template <LIST(LOOP(class T_arg%1, $1), class T_return)>
+struct adaptor_trait<T_return (*)(LOOP(T_arg%1, $1)), false>
 {
-  typedef pointer_functor$1<LIST(LOOP(T_arg%1,$1),T_return)> functor_type;
+  typedef pointer_functor$1<LIST(LOOP(T_arg%1, $1), T_return)> functor_type;
   typedef adaptor_functor<functor_type> adaptor_type;
 };
 ])
 define([ADAPTOR_MEM_FUN],[dnl
-template <LIST(LOOP(class T_arg%1,$1),class T_return,class T_obj)>
-struct adaptor_trait<T_return (T_obj::*)(LOOP(T_arg%1,$1)),false>
+template <LIST(LOOP(class T_arg%1, $1), class T_return, class T_obj)>
+struct adaptor_trait<T_return (T_obj::*)(LOOP(T_arg%1, $1)), false>
 {
-  typedef mem_functor$1<LIST(LOOP(T_arg%1,$1),T_return,T_obj)> functor_type;
+  typedef mem_functor$1<LIST(LOOP(T_arg%1, $1), T_return, T_obj)> functor_type;
   typedef adaptor_functor<functor_type> adaptor_type;
 };
-template <LIST(LOOP(class T_arg%1,$1),class T_return,class T_obj)>
-struct adaptor_trait<T_return (T_obj::*)(LOOP(T_arg%1,$1)) const,false>
+template <LIST(LOOP(class T_arg%1, $1), class T_return, class T_obj)>
+struct adaptor_trait<T_return (T_obj::*)(LOOP(T_arg%1, $1)) const, false>
 {
-  typedef const_mem_functor$1<LIST(LOOP(T_arg%1,$1),T_return,T_obj)> functor_type;
+  typedef const_mem_functor$1<LIST(LOOP(T_arg%1, $1), T_return, T_obj)> functor_type;
   typedef adaptor_functor<functor_type> adaptor_type;
 };
 ])
@@ -81,8 +81,8 @@ divert(0)dnl
           typedef void result_type;
           template <class Arg1>
           void operator(Arg1 a1);
-          template <class Arg1,class Arg2>
-          void operator(Arg1 a1,Arg2 a2);
+          template <class Arg1, class Arg2>
+          void operator(Arg1 a1, Arg2 a2);
         };
 
   Hint adapts<functor>:
@@ -100,7 +100,7 @@ divert(0)dnl
   the operators to take template parameters so we
   can pass type hints.  It derives from adaptor_base
 
-  Trait adaptor_trait<functor,bool>:
+  Trait adaptor_trait<functor, bool>:
     This trait allows the user to specific what is the
   adaptor version of any type.  It has been overloaded to
   automatically wrap function pointers and class methods
@@ -149,18 +149,18 @@ template <class T_action, class T_functor>
 void visit_each(const T_action& _A_action,
                 const adaptor_functor<T_functor>& _A_target)
 {
-  visit_each(_A_action,_A_target.functor_);
+  visit_each(_A_action, _A_target.functor_);
 }
 
 /******************************************************/
 
 // adaptor to permit classes to use the adaptor to build the type
 // quickly.
-template <class T_functor,bool I_isadaptor=is_base_and_derived<adaptor_base,T_functor>::value> struct adaptor_trait;
+template <class T_functor, bool I_isadaptor = is_base_and_derived<adaptor_base, T_functor>::value> struct adaptor_trait;
 
 // if it already is an adaptor functor, great just use it.
 template <class T_functor> 
-struct adaptor_trait<T_functor,true>
+struct adaptor_trait<T_functor, true>
 {
   typedef T_functor adaptor_type;
 dnl  static T_functor& create(T_functor& _A_functor) 
@@ -171,7 +171,7 @@ dnl    { return _A_functor; }
 
 // if not, well make it one.
 template <class T_functor>
-struct adaptor_trait<T_functor,false>
+struct adaptor_trait<T_functor, false>
 {
   typedef adaptor_functor<T_functor> adaptor_type;
 dnl  static adaptor_type create(const T_functor& _A_functor)

@@ -73,7 +73,7 @@ class trackable
                                      pointer type for their own derived objects */
 
     void add_dependency(void* o, void* (f)(void*)) const
-      { dep_list_.add_dependency(o,f); }
+      { dep_list_.add_dependency(o, f); }
     void remove_dependency(void* o) const
       { dep_list_.remove_dependency(o); }
 

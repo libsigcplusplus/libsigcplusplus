@@ -24,11 +24,11 @@ namespace internal {
 
 void* signal_base::notify(void* d)
 {
-  signal_base* self=(signal_base*)d;
-  if (self->exec_count_==0)
+  signal_base* self = (signal_base*)d;
+  if (self->exec_count_ == 0)
     self->sweep();
   else 
-    self->defered_=true;
+    self->defered_ = true;
   return 0;
 }
 
@@ -41,10 +41,10 @@ signal_base::iterator_type signal_base::insert(signal_base::iterator_type i, con
 
 void signal_base::sweep()
 { 
-  std::list<functor::internal::closure_base>::iterator i=slots_.begin();
-  while (i!=slots_.end())
+  std::list<functor::internal::closure_base>::iterator i = slots_.begin();
+  while (i != slots_.end())
     if ((*i).empty())  
-      i=slots_.erase(i);
+      i = slots_.erase(i);
     else 
       ++i;
 }

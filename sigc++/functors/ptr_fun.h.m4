@@ -19,25 +19,25 @@ divert(-1)
 include(template.macros.m4)
 
 define([POINTER_FUNCTOR],[dnl
-template <LIST(LOOP(class T_arg%1,$1),class T_return)>
+template <LIST(LOOP(class T_arg%1, $1), class T_return)>
 class pointer_functor$1 /*: public functor_base*/
 {
-  typedef T_return (*function_type)(LOOP(T_arg%1,$1));
+  typedef T_return (*function_type)(LOOP(T_arg%1, $1));
   protected: 
     function_type func_ptr_;
   public:
     typedef T_return result_type;
     pointer_functor$1() {}
     explicit pointer_functor$1(function_type _A_func): func_ptr_(_A_func) {}
-    T_return operator()(LOOP(typename type_trait<T_arg%1>::take _A_a%1,$1)) const 
-      { return func_ptr_(LOOP(_A_a%1,$1)); }
+    T_return operator()(LOOP(typename type_trait<T_arg%1>::take _A_a%1, $1)) const 
+      { return func_ptr_(LOOP(_A_a%1, $1)); }
 };])
 
 define([PTR_FUN],[dnl
-template <LIST(LOOP(class T_arg%1,$1),class T_return)>
-inline pointer_functor$1<LIST(LOOP(T_arg%1,$1),T_return)> 
-ptr_fun[]ifelse($2,,$1)(T_return (*_A_func)(LOOP(T_arg%1,$1)))
-{ return pointer_functor$1<LIST(LOOP(T_arg%1,$1),T_return)>(_A_func); }])
+template <LIST(LOOP(class T_arg%1, $1), class T_return)>
+inline pointer_functor$1<LIST(LOOP(T_arg%1, $1), T_return)> 
+ptr_fun[]ifelse($2,, $1)(T_return (*_A_func)(LOOP(T_arg%1,$1)))
+{ return pointer_functor$1<LIST(LOOP(T_arg%1, $1), T_return)>(_A_func); }])
 
 divert(0)
 /*
@@ -51,7 +51,7 @@ divert(0)
 
   Ie.
     void foo(int) {}
-    closure<void, long> cl=ptr_fun(&foo);
+    closure<void, long> cl = ptr_fun(&foo);
 
   Note: # is required if there is an abiguity as to the number of 
   arguments.
@@ -59,9 +59,9 @@ divert(0)
   Ie.
     void foo(int) {}  // chose this one
     void foo(float) {}
-    void foo(int,int) {}
+    void foo(int, int) {}
 
-    closure<void, long> cl=ptr_fun1<int>(&foo);
+    closure<void, long> cl = ptr_fun1<int>(&foo);
    
 */
 __FIREWALL__

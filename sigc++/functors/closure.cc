@@ -26,7 +26,7 @@ namespace internal {
 void* closure_rep::notify(void* p)
 {
   closure_rep* self=(closure_rep*)p;
-  self->call_=0;
+  self->call_ = 0;
   if (self->parent_)
     (self->cleanup_)(self->parent_);
   return 0;
@@ -40,12 +40,12 @@ void closure_base::set_dependency(void* parent, void* (*func)(void*)) const
 
 bool closure_base::empty() const 
 { 
-  if (rep_&&!rep_->call_)
+  if (rep_ && !rep_->call_)
     {
       delete rep_;
-      rep_=0;
+      rep_ = 0;
     }
-  return (rep_==0); 
+  return (rep_ == 0); 
 }
 
 bool closure_base::block(bool should_block)
@@ -63,13 +63,16 @@ void closure_base::disconnect()
 
 closure_base& closure_base::operator=(const closure_base& cl)
 {
-  if (cl.rep_==rep_) return *this;
+  if (cl.rep_ == rep_) return *this;
+  
   delete rep_;
-  rep_=0;
+  rep_ = 0;
+  
   if (cl.rep_)
   {
-    rep_=cl.rep_->dup();
+    rep_ = cl.rep_->dup();
   }
+  
   return *this;
 }
 

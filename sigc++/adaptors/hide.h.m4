@@ -20,7 +20,7 @@ include(template.macros.m4)
 
 define([HIDE_FUNCTOR],[dnl
 template <class T_functor>
-struct hide_functor <$1,T_functor> : public adapts<T_functor>
+struct hide_functor <$1, T_functor> : public adapts<T_functor>
 {
 FOR($1,CALL_SIZE,[[HIDE_OPERATOR($1,%1)]])
   hide_functor()
@@ -33,19 +33,19 @@ FOR($1,CALL_SIZE,[[HIDE_OPERATOR($1,%1)]])
 ])
 define([HIDE_OPERATOR],[dnl
 ifelse($2,0,,[dnl
-  template <LOOP([class T_arg%1],$2)>
+  template <LOOP([class T_arg%1], $2)>
 ifelse($1,0,[dnl
   ifelse($2,1,[void],[typename callof<LIST(T_functor,FOR(1,eval($2-1),[T_arg%1,]))>::result_type])
-  operator()(LOOP(T_arg%1 _A_a%1,$2))
+  operator()(LOOP(T_arg%1 _A_a%1, $2))
     { return functor_(LIST(FOR(1,eval($2-1),[_A_a%1,]))); }
-],$2,1,[dnl
+], $2,1,[dnl
   void // FIXME 0 arguments does not work
-  operator()(LOOP(T_arg%1 _A_a%1,$2))
-    { functor_(LIST(FOR(1,eval($1-1),[_A_a%1,]),FOR(eval($1+1),$2,[_A_a%1,]))); }
+  operator()(LOOP(T_arg%1 _A_a%1, $2))
+    { functor_(LIST(FOR(1,eval($1-1),[_A_a%1,]),FOR(eval($1+1), $2,[_A_a%1,]))); }
 ],[dnl
-  typename callof<LIST(T_functor,FOR(1,eval($1-1),[T_arg%1,]),FOR(eval($1+1),$2,[T_arg%1,]))>::result_type
-  operator()(LOOP(T_arg%1 _A_a%1,$2))
-    { return functor_(LIST(FOR(1,eval($1-1),[_A_a%1,]),FOR(eval($1+1),$2,[_A_a%1,]))); }
+  typename callof<LIST(T_functor,FOR(1,eval($1-1),[T_arg%1,]),FOR(eval($1+1), $2,[T_arg%1,]))>::result_type
+  operator()(LOOP(T_arg%1 _A_a%1, $2))
+    { return functor_(LIST(FOR(1,eval($1-1),[_A_a%1,]),FOR(eval($1+1), $2,[_A_a%1,]))); }
 ])])dnl
 ])
 
@@ -58,7 +58,7 @@ divert(0)dnl
   by the non-optional integer template argument.  An argument of
   0 hides the last argument automatically.
                     
-    void foo (int,int);
+    void foo (int, int);
     hide<0>(&foo)(1,2,3) -> calls foo(1,2);
     hide<1>(&foo)(1,2,3) -> calls foo(2,3);
                                 
@@ -80,18 +80,18 @@ FOR(0,CALL_SIZE,[[HIDE_FUNCTOR(%1)]])
 
 template <class T_action, int I_location, class T_functor>
 void visit_each(const T_action& _A_action,
-                const hide_functor<I_location,T_functor>& _A_target)
+                const hide_functor<I_location, T_functor>& _A_target)
 {
-  visit_each(_A_action,_A_target.functor_);
+  visit_each(_A_action, _A_target.functor_);
 }
 
 
 
 template <int I_location, class T_functor>
-inline hide_functor<I_location,T_functor>
+inline hide_functor<I_location, T_functor>
 hide(const T_functor& _A_func)
   { 
-    return hide_functor<I_location,T_functor>
+    return hide_functor<I_location, T_functor>
              (_A_func);
   }
 
