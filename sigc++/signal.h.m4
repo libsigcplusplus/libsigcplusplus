@@ -68,13 +68,13 @@ dnl
     typedef typename accumulator_type::result_type        result_type;
     typedef functor::closure<LIST(T_return, LOOP(T_arg%1, $1))> closure_type;
     typedef internal::closure_list<closure_type>          closure_list;
-dnl    typedef typename closure_list::iterator               iterator;
-dnl    typedef typename closure_list::const_iterator         const_iterator;
-dnl    typedef typename closure_list::reverse_iterator       reverse_iterator;
-dnl    typedef typename closure_list::const_reverse_iterator const_reverse_iterator;
+    typedef typename closure_list::iterator               iterator;
+    typedef typename closure_list::const_iterator         const_iterator;
+    typedef typename closure_list::reverse_iterator       reverse_iterator;
+    typedef typename closure_list::const_reverse_iterator const_reverse_iterator;
 
-    void connect(const closure_type& slot_)
-      { insert(slots_.end(), slot_); }
+    iterator connect(const closure_type& slot_)
+      { return iterator(insert(slots_.end(), static_cast<const functor::internal::closure_base&>(slot_))); }
 
     result_type emit(LOOP(typename type_trait<T_arg%1>::take _A_a%1, $1)) const;
 
