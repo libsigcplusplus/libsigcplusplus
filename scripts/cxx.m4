@@ -21,12 +21,22 @@ AC_TRY_COMPILE(
       std::cout << c << std::endl;
     }
   };
+
+  template<class T2>
+  class OtherThing
+  {
+  public:
+    void do_something()
+    {
+       Thing thing_;
+       thing_.template operator()<T2>(1, 2);
+       //This fails with or without the template keyword, on SUN Forte C++ 5.3, 5.4, and 5.5:
+    }
+  };
 ],
 [
-    Thing thing_;
-
-    //This fails with or without the template keyword, on SUN Forte C++ 5.3, 5.4, and 5.5:
-    thing_.template operator()<int>(1, 2);
+  OtherThing<int> thing;
+  thing.do_something();
 ],
 [
   sigcm_cxx_template_specialization_operator_overload=yes

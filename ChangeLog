@@ -1,3 +1,9 @@
+2004-04-19  Murray Cumming  <murrayc@murrayc.com>
+
+	* scripts/cxx.m4: Updated the operator() template check, because it
+	failed with gcc 3.4 (from cvs). Apparently the template keyword can
+	only be used from another template.
+
 2.0.0:
 
 2004-04-06  Martin Schulze  <mschulze@cvs.gnome.org>
