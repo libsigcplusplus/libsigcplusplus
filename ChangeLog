@@ -1,3 +1,10 @@
+1.9.15:
+
+2004-02-27  Martin Schulze  <teebaum@cvs.gnome.org>
+
+	* configure.ac: Bump version number to 1.9.15.
+	* NEWS: Add ChangeLog summary for version 1.9.15.
+
 2004-02-27  Martin Schulze  <teebaum@cvs.gnome.org>
 
   * sigc++/functors/macros/slot.h.m4: Make the unnumbered slot templates'

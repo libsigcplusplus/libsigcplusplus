@@ -11,7 +11,7 @@ dnl This version stuff is just for the packaging section of the tool.
 dnl   thus make format_package-0.0.1.tar.gz  
 FP_MAJOR_VERSION=1
 FP_MINOR_VERSION=9
-FP_MICRO_VERSION=14
+FP_MICRO_VERSION=15
 FP_VERSION=$FP_MAJOR_VERSION.$FP_MINOR_VERSION.$FP_MICRO_VERSION
 
 dnl For automake.

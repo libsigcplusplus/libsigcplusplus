@@ -17,11 +17,17 @@ This version of libsigc++ needs GNU g++ 3.2 or higher to compile.
 
 *** ChangeLog summary:
 
-Future 1.9.15:
+1.9.15:
 
-* Non-template code moved from .m4 macro source to .h/.cc files.
-* Implementation moved to .cc files.
-(Murray Cumming)
+API additions:
+* Add numbered slot# templates.
+* Allow for methods of the object's base types to be passed into sigc::mem_fun().
+
+Other fixes and cleanups:
+* Make is_base_and_derived template compatible with the SUN Forte.
+* Non-template code moved from .m4 macro source to .h/.cc files (Murray Cumming).
+* Implementation moved to .cc files (Murray Cumming).
+* More fixes for the SUN Forte. Make some more ctors explicit.
 
 1.9.14:
 
