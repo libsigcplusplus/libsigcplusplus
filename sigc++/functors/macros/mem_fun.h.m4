@@ -125,7 +125,7 @@ template <LIST(class T_action, class T_return, class T_obj, LOOP(class T_arg%1, 
 void visit_each(const T_action& _A_action,
                 const bound_[$2]mem_functor$1<LIST(T_return, T_obj, LOOP(T_arg%1, $1))>& _A_target)
 {
-  visit_each(_A_action, *_A_target.obj_ptr_);
+  sigc::visit_each(_A_action, *_A_target.obj_ptr_);
 }
 
 ])
