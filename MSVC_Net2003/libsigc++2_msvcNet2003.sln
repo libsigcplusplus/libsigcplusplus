@@ -1,9 +1,4 @@
 Microsoft Visual Studio Solution File, Format Version 8.00
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_accumulated", "tests\test_accumulated\test_accumulated.vcproj", "{D15D6940-E187-48B9-A6F3-3E278CC194B1}"
-	ProjectSection(ProjectDependencies) = postProject
-		{2C30C2D4-314A-400F-A142-E9EEEA800631} = {2C30C2D4-314A-400F-A142-E9EEEA800631}
-	EndProjectSection
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_bind", "tests\test_bind\test_bind.vcproj", "{7D0D2CF8-5B22-4F9E-BD38-63083A2CF662}"
 	ProjectSection(ProjectDependencies) = postProject
 		{2C30C2D4-314A-400F-A142-E9EEEA800631} = {2C30C2D4-314A-400F-A142-E9EEEA800631}
@@ -45,11 +40,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_functor_trait", "tests
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_hide", "tests\test_hide\test_hide.vcproj", "{64BDAD0B-0D0B-42D0-940E-3BCDA783C880}"
-	ProjectSection(ProjectDependencies) = postProject
-		{2C30C2D4-314A-400F-A142-E9EEEA800631} = {2C30C2D4-314A-400F-A142-E9EEEA800631}
-	EndProjectSection
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_lambda", "tests\test_lambda\test_lambda.vcproj", "{EB6B3891-3DC1-4F2F-B2AE-3209B858BE52}"
 	ProjectSection(ProjectDependencies) = postProject
 		{2C30C2D4-314A-400F-A142-E9EEEA800631} = {2C30C2D4-314A-400F-A142-E9EEEA800631}
 	EndProjectSection
@@ -109,10 +99,6 @@ Global
 		Release = Release
 	EndGlobalSection
 	GlobalSection(ProjectConfiguration) = postSolution
-		{D15D6940-E187-48B9-A6F3-3E278CC194B1}.Debug.ActiveCfg = Debug|Win32
-		{D15D6940-E187-48B9-A6F3-3E278CC194B1}.Debug.Build.0 = Debug|Win32
-		{D15D6940-E187-48B9-A6F3-3E278CC194B1}.Release.ActiveCfg = Release|Win32
-		{D15D6940-E187-48B9-A6F3-3E278CC194B1}.Release.Build.0 = Release|Win32
 		{7D0D2CF8-5B22-4F9E-BD38-63083A2CF662}.Debug.ActiveCfg = Debug|Win32
 		{7D0D2CF8-5B22-4F9E-BD38-63083A2CF662}.Debug.Build.0 = Debug|Win32
 		{7D0D2CF8-5B22-4F9E-BD38-63083A2CF662}.Release.ActiveCfg = Release|Win32
@@ -149,10 +135,6 @@ Global
 		{64BDAD0B-0D0B-42D0-940E-3BCDA783C880}.Debug.Build.0 = Debug|Win32
 		{64BDAD0B-0D0B-42D0-940E-3BCDA783C880}.Release.ActiveCfg = Release|Win32
 		{64BDAD0B-0D0B-42D0-940E-3BCDA783C880}.Release.Build.0 = Release|Win32
-		{EB6B3891-3DC1-4F2F-B2AE-3209B858BE52}.Debug.ActiveCfg = Debug|Win32
-		{EB6B3891-3DC1-4F2F-B2AE-3209B858BE52}.Debug.Build.0 = Debug|Win32
-		{EB6B3891-3DC1-4F2F-B2AE-3209B858BE52}.Release.ActiveCfg = Release|Win32
-		{EB6B3891-3DC1-4F2F-B2AE-3209B858BE52}.Release.Build.0 = Release|Win32
 		{66CED940-0111-4196-B921-27B146643F44}.Debug.ActiveCfg = Debug|Win32
 		{66CED940-0111-4196-B921-27B146643F44}.Debug.Build.0 = Debug|Win32
 		{66CED940-0111-4196-B921-27B146643F44}.Release.ActiveCfg = Release|Win32

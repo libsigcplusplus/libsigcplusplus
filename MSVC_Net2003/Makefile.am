@@ -5,7 +5,8 @@ MAINTAINERCLEANFILES = $(built_sources)
 
 DISTCLEANFILES = sigc++config.h
 
-EXTRA_DIST=libsigc++2_msvcNet2003.vcproj libsigc++2_msvcNet2003.sln \
+EXTRA_DIST=blank.cpp \
+	   libsigc++2_msvcNet2003.vcproj libsigc++2_msvcNet2003.sln \
            sigc++config.h sigc-2.0.rc \
            tests/test_accumulated/test_accumulated.vcproj \
            tests/test_bind/test_bind.vcproj \
@@ -14,6 +15,7 @@ EXTRA_DIST=libsigc++2_msvcNet2003.vcproj libsigc++2_msvcNet2003.sln \
            tests/test_compose/test_compose.vcproj \
            tests/test_deduce_result_type/test_deduce_result_type.vcproj \
            tests/test_disconnect/test_disconnect.vcproj \
+	   tests/test_disconnect_during_emit/test_disconnect_during_emit.vcproj \
            tests/test_exception_catch/test_exception_catch.vcproj \
            tests/test_functor_trait/test_functor_trait.vcproj \
            tests/test_hide/test_hide.vcproj \

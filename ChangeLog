@@ -1,3 +1,13 @@
+2005-01-24  Cedric Gustin <cedric.gustin@swing.be>
+
+	* Makefile.am: Moved MSVC_Net2003 directory to SUBDIRS.
+	* MSVC_Net2003/Makefile.am: Added blank.cpp to EXTRA_DIST.
+	* MSVC_Net2003/libsigc++2_msvcNet2003.sln: Removed
+	test_accumulated and test_lambda projects as the tests are
+	disabled in the standard, configure-based build.
+	* MSVC_Net2003/MSVC_Net2003/libsigc++2_msvcNet2003.vcproj:
+	Generate a PDB file in the Debug target.
+
 2005-03-05  Murray Cumming  <murrayc@murrayc.com>
 
 	* docs/website/stable.html: Mention actual supported compilers.
