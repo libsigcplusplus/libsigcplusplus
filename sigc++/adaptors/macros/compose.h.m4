@@ -22,7 +22,7 @@ define([COMPOSE1_OPERATOR],[dnl
   template <LOOP(class T_arg%1, $1)>
   typename deduce_result_type<LOOP(T_arg%1, $1)>::type
   operator()(LOOP(T_arg%1 _A_a%1, $1))
-    { return functor_.LIBSIGC_TEMPLATE_PREFIX operator()<typename sigc::deduce_result_type<LIST(T_getter, LOOP(T_arg%1,$1))>::type>
+    { return this->functor_.LIBSIGC_TEMPLATE_PREFIX operator()<typename sigc::deduce_result_type<LIST(T_getter, LOOP(T_arg%1,$1))>::type>
         (get_(LOOP(_A_a%1, $1)));
     }
 
@@ -32,7 +32,7 @@ define([COMPOSE2_OPERATOR],[dnl
   template <LOOP(class T_arg%1, $1)>
   typename deduce_result_type<LOOP(T_arg%1, $1)>::type
   operator()(LOOP(T_arg%1 _A_a%1, $1))
-    { return functor_.LIBSIGC_TEMPLATE_PREFIX operator()<typename sigc::deduce_result_type<LIST(T_getter1, LOOP(T_arg%1,$1))>::type,
+    { return this->functor_.LIBSIGC_TEMPLATE_PREFIX operator()<typename sigc::deduce_result_type<LIST(T_getter1, LOOP(T_arg%1,$1))>::type,
                                                          typename sigc::deduce_result_type<LIST(T_getter2, LOOP(T_arg%1,$1))>::type>
         (get1_(LOOP(_A_a%1, $1)), get2_(LOOP(_A_a%1,$1)));
     }
@@ -52,7 +52,7 @@ struct compose1_functor : public adapts<T_setter>
 
   template <LOOP(class T_arg%1=void, CALL_SIZE)>
   struct deduce_result_type
-    { typedef typename adaptor_type::deduce_result_type<
+    { typedef typename adaptor_type::template deduce_result_type<
         typename sigc::deduce_result_type<LIST(T_getter, LOOP(T_arg%1,CALL_SIZE))>::type
           >::type type; };
   typedef typename adaptor_type::result_type  result_type;
@@ -73,7 +73,7 @@ FOR(1,CALL_SIZE,[[COMPOSE1_OPERATOR(%1)]])dnl
 template <class T_setter, class T_getter>
 typename compose1_functor<T_setter, T_getter>::result_type
 compose1_functor<T_setter, T_getter>::operator()()
-  { return functor_(get_()); }
+  { return this->functor_(get_()); }
 
 template <class T_setter, class T_getter1, class T_getter2>
 struct compose2_functor : public adapts<T_setter>
@@ -82,7 +82,7 @@ struct compose2_functor : public adapts<T_setter>
 
   template <LOOP(class T_arg%1=void, CALL_SIZE)>
   struct deduce_result_type
-    { typedef typename adaptor_type::deduce_result_type<
+    { typedef typename adaptor_type::template deduce_result_type<
         typename sigc::deduce_result_type<LIST(T_getter1, LOOP(T_arg%1,CALL_SIZE))>::type,
         typename sigc::deduce_result_type<LIST(T_getter2, LOOP(T_arg%1,CALL_SIZE))>::type
           >::type result_type; };
@@ -107,7 +107,7 @@ FOR(1,CALL_SIZE,[[COMPOSE2_OPERATOR(%1)]])dnl
 template <class T_setter, class T_getter1, class T_getter2>
 typename compose2_functor<T_setter, T_getter1, T_getter2>::result_type
 compose2_functor<T_setter, T_getter1, T_getter2>::operator()()
-  { return functor_(get1_(), get2_()); }
+  { return this->functor_(get1_(), get2_()); }
 
 
 // declare how to access targets

@@ -21,7 +21,7 @@ include(template.macros.m4)
 define([RETYPE_RETURN_OPERATOR],[dnl
   template <LOOP(class T_arg%1, $1)>
   inline T_return operator()(LOOP(T_arg%1 _A_a%1, $1))
-    { return T_return(functor_.LIBSIGC_TEMPLATE_PREFIX operator()<LOOP(_P_(T_arg%1), $1)>
+    { return T_return(this->functor_.LIBSIGC_TEMPLATE_PREFIX operator()<LOOP(_P_(T_arg%1), $1)>
         (LOOP(_A_a%1, $1)));
     }
 
@@ -29,7 +29,7 @@ define([RETYPE_RETURN_OPERATOR],[dnl
 define([RETYPE_RETURN_VOID_OPERATOR],[dnl
   template <LOOP(class T_arg%1, $1)>
   inline void operator()(LOOP(T_arg%1 _A_a%1, $1))
-    { functor_.LIBSIGC_TEMPLATE_PREFIX operator()<LOOP(_P_(T_arg%1), $1)>
+    { this->functor_.LIBSIGC_TEMPLATE_PREFIX operator()<LOOP(_P_(T_arg%1), $1)>
         (LOOP(_A_a%1, $1));
     }
 
@@ -60,7 +60,7 @@ FOR(1,CALL_SIZE,[[RETYPE_RETURN_OPERATOR(%1)]])dnl
 
 template <class T_return, class T_functor>
 T_return retype_return_functor<T_return, T_functor>::operator()()
-  { return T_return(functor_()); }
+  { return T_return(this->functor_()); }
 
 
 // void specialization needed because of explicit cast to T_return
@@ -83,7 +83,7 @@ FOR(1,CALL_SIZE,[[RETYPE_RETURN_VOID_OPERATOR(%1)]])dnl
 
 template <class T_functor>
 void retype_return_functor<void, T_functor>::operator()()
-  { functor_(); }
+  { this->functor_(); }
 
 
 template <class T_action, class T_return, class T_functor>

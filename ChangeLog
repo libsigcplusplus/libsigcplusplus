@@ -1,3 +1,22 @@
+2004-03-13  Murray Cumming  <murrayc@murrayc.com>
+
+	* g++ 3.4 (pre-release) build fixes:
+	* sigc++/macros/signal.h.m4: slot_iterator_buf::operator*():
+	Use blocked() and empty() instead of non-existant blocked_and_empty().
+	* sigc++/functors/macros/mem_fun.h.m4: memfun_functor*::operator()(): 
+	Use this->func_ptr_ instead of just func_ptr_.
+	* sigc++/adaptors/macros/deduce_result_type.h.m4: Use 
+	T_functor::template deduce_result_type<> instead of just
+	T_functor::deduce_result_type<>.
+	* sigc++/adaptors/lambda/macros/base.h.m4, operator.h.m4, group.h.m4:: 
+	Use template keyword again. operator[](): Use this->value_ instead of 
+	just value_.
+	* sigc++/adaptors/lambda/macros/bind/m4: Use template keyword, and 
+	this-> again.
+	* sigc++/adaptors/macros/compose.h.m4, hide.h.m4, bind_return.h.m4, 
+	exception_catch.h.m4:
+	rettype.h.m4, rettype_return.h.m4: Use template keyword,and this-> again
+
 1.9.15:
 
 2004-02-27  Martin Schulze  <teebaum@cvs.gnome.org>

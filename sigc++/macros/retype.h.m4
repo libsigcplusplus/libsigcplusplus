@@ -24,7 +24,7 @@ ifelse($1,0,[dnl
 ],[dnl
   template <LOOP(class T_arg%1, $1)>
   inline T_return operator()(LOOP(T_arg%1 _A_a%1, $1))
-    { return T_return(functor_.LIBSIGC_TEMPLATE_PREFIX operator()<LOOP(typename ::sigc::type_trait<T_type%1>::take, $1)>
+    { return T_return(this->functor_.LIBSIGC_TEMPLATE_PREFIX operator()<LOOP(typename ::sigc::type_trait<T_type%1>::take, $1)>
         (LOOP([[(T_type%1)_A_a%1]], $1)));
     }
 ])dnl
@@ -35,7 +35,7 @@ ifelse($1,0,[dnl
 ],[dnl
   template <LOOP(class T_arg%1, $1)>
   inline void operator()(LOOP(T_arg%1 _A_a%1, $1))
-    { T_return(functor_.LIBSIGC_TEMPLATE_PREFIX operator()<LOOP(typename ::sigc::type_trait<T_type%1>::take, $1)>
+    { T_return(this->functor_.LIBSIGC_TEMPLATE_PREFIX operator()<LOOP(typename ::sigc::type_trait<T_type%1>::take, $1)>
         (LOOP([[(T_type%1)_A_a%1]], $1)));
     }
 ])dnl
@@ -79,7 +79,7 @@ FOR(1,CALL_SIZE,[[RETYPE_SLOT_OPERATOR(%1)]])dnl
 
 template <LIST(class T_functor, class T_return, LOOP(class T_type%1, CALL_SIZE))>
 T_return retype_slot_functor<LIST(T_functor, T_return, LOOP(T_type%1, CALL_SIZE))>::operator()()
-  { return T_return(functor_()); }
+  { return T_return(this->functor_()); }
 
 
 // void specialization needed because of explicit cast to T_return
@@ -103,7 +103,7 @@ FOR(1,CALL_SIZE,[[RETYPE_SLOT_VOID_OPERATOR(%1)]])dnl
 
 template <LIST(class T_functor, LOOP(class T_type%1, CALL_SIZE))>
 void retype_slot_functor<LIST(T_functor, void, LOOP(T_type%1, CALL_SIZE))>::operator()()
-  { functor_(); }
+  { this->functor_(); }
 
 
 template <LIST(class T_action, class T_functor, class T_return, LOOP(class T_type%1, CALL_SIZE))>

@@ -22,9 +22,9 @@ define([DEDUCE_RESULT_TYPE],[dnl
   template <LOOP(class T_arg%1=void, CALL_SIZE)>
   struct deduce_result_type
 ifelse($1,0,[dnl
-    { typedef typename adaptor_type::deduce_result_type<LOOP(_P_(T_arg%1),eval($2-1))>::type type; };
+    { typedef typename adaptor_type::template deduce_result_type<LOOP(_P_(T_arg%1),eval($2-1))>::type type; };
 ],[dnl
-    { typedef typename adaptor_type::deduce_result_type<LIST(LOOP(_P_(T_arg%1),eval($1-1)), FOR(eval($1+1),$2,[_P_(T_arg%1),]))>::type type; };
+    { typedef typename adaptor_type::template deduce_result_type<LIST(LOOP(_P_(T_arg%1),eval($1-1)), FOR(eval($1+1),$2,[_P_(T_arg%1),]))>::type type; };
 ])dnl
 ])
 define([HIDE_OPERATOR],[dnl
@@ -37,7 +37,7 @@ ifelse($2,1,[dnl
   template <class T_arg1>
   typename deduce_result_type<T_arg1>::type
   operator()(T_arg1 _A_a1)
-    { return functor_(); }
+    { return this->functor_(); }
 
 ],$1,0,[dnl
   /** Invokes the wrapped functor ignoring the last argument.dnl
@@ -49,7 +49,7 @@ FOR(1, eval($2-1),[
   template <LOOP([class T_arg%1], $2)>
   typename deduce_result_type<LOOP(T_arg%1, $2)>::type
   operator()(LOOP(T_arg%1 _A_a%1, $2))
-    { return functor_.LIBSIGC_TEMPLATE_PREFIX operator() <LIST(FOR(1,eval($2-1),[_P_(T_arg%1),]))>
+    { return this->functor_.LIBSIGC_TEMPLATE_PREFIX operator() <LIST(FOR(1,eval($2-1),[_P_(T_arg%1),]))>
         (LIST(FOR(1,eval($2-1),[_A_a%1,]))); }
 
 ],[dnl
@@ -64,7 +64,7 @@ FOR(eval($1+1), $2,[
   template <LOOP([class T_arg%1], $2)>
   typename deduce_result_type<LOOP(T_arg%1, $2)>::type
   operator()(LOOP(T_arg%1 _A_a%1, $2))
-    { return functor_.LIBSIGC_TEMPLATE_PREFIX operator() <LIST(FOR(1,eval($1-1),[_P_(T_arg%1),]),FOR(eval($1+1), $2,[_P_(T_arg%1),]))>
+    { return this->functor_.LIBSIGC_TEMPLATE_PREFIX operator() <LIST(FOR(1,eval($1-1),[_P_(T_arg%1),]),FOR(eval($1+1), $2,[_P_(T_arg%1),]))>
         (LIST(FOR(1,eval($1-1),[_A_a%1,]),FOR(eval($1+1),$2,[_A_a%1,]))); }
 
 ])])dnl

@@ -25,7 +25,7 @@ ifelse($1,0,[dnl
   template <LOOP(class T_arg%1, $1)>
   typename deduce_result_type<LOOP(T_arg%1,$1)>::type
   operator()(LOOP(T_arg%1 _A_a%1, $1))
-    { return functor_.LIBSIGC_TEMPLATE_PREFIX operator()<LOOP(typename type_trait<T_type%1>::take, $1)>
+    { return this->functor_.LIBSIGC_TEMPLATE_PREFIX operator()<LOOP(typename type_trait<T_type%1>::take, $1)>
         (LOOP([[(T_type%1)_A_a%1]], $1));
     }
 ])dnl
@@ -64,7 +64,7 @@ struct retype_functor
 
   template <LOOP(class T_arg%1=void, CALL_SIZE)>
   struct deduce_result_type
-    { typedef typename adaptor_type::deduce_result_type<LOOP(_P_(T_arg%1),CALL_SIZE)>::type type; };
+    { typedef typename adaptor_type::template deduce_result_type<LOOP(_P_(T_arg%1),CALL_SIZE)>::type type; };
   typedef typename adapts<T_functor>::result_type result_type;
 
 FOR(0,CALL_SIZE,[[RETYPE_OPERATOR(%1)]])dnl
@@ -77,7 +77,7 @@ FOR(0,CALL_SIZE,[[RETYPE_OPERATOR(%1)]])dnl
 template <LIST(class T_functor, LOOP(class T_type%1, CALL_SIZE))>
 typename retype_functor<LIST(T_functor, LOOP(T_type%1, CALL_SIZE))>::result_type
 retype_functor<LIST(T_functor, LOOP(T_type%1, CALL_SIZE))>::operator()()
-  { return functor_(); }
+  { return this->functor_(); }
 
 
 template <LIST(class T_action, class T_functor, LOOP(class T_type%1, CALL_SIZE))>

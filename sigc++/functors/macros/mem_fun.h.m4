@@ -52,7 +52,7 @@ FOR(1, $1,[
    * @return The return value of the method invocation.
    */
   T_return operator()(LIST($3 T_obj* _A_obj, LOOP(typename type_trait<T_arg%1>::take _A_a%1, $1))) const
-    { return (_A_obj->*func_ptr_)(LOOP(_A_a%1, $1)); }
+    { return (_A_obj->*(this->func_ptr_))(LOOP(_A_a%1, $1)); }
 
   /** Execute the wrapped method operating on the passed instance.
    * @param _A_obj Reference to instance the method should operate on.dnl
@@ -108,7 +108,7 @@ FOR(1, $1,[
    * @return The return value of the method invocation.
    */
   T_return operator()(LOOP(typename type_trait<T_arg%1>::take _A_a%1, $1)) const
-    { return (obj_ptr_->*func_ptr_)(LOOP(_A_a%1, $1)); }
+    { return (obj_ptr_->*(this->func_ptr_))(LOOP(_A_a%1, $1)); }
 
 //protected:
   /// Pointer to stored object instance.

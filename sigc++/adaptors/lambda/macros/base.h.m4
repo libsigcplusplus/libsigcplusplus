@@ -55,7 +55,7 @@ struct lambda_core<T_type, true> : public lambda_base
 {
   template <LOOP(class T_arg%1=void,CALL_SIZE)>
   struct deduce_result_type
-    { typedef typename T_type::deduce_result_type<LOOP(_P_(T_arg%1),CALL_SIZE)>::type type; };
+    { typedef typename T_type::template deduce_result_type<LOOP(_P_(T_arg%1),CALL_SIZE)>::type type; };
   typedef typename T_type::result_type result_type;
   typedef T_type lambda_type;
 
@@ -142,21 +142,21 @@ struct lambda : public internal::lambda_core<T_type>
   template <class T_arg>
   lambda<lambda_operator<other<subscript>, self, T_arg> >
   operator [[]] (const lambda<T_arg>& a) const
-    { return lambda<lambda_operator<other<subscript>, self, T_arg> >(lambda_operator<other<subscript>, self, T_arg>(value_, a.value_)); }
+    { return lambda<lambda_operator<other<subscript>, self, T_arg> >(lambda_operator<other<subscript>, self, T_arg>(this->value_, a.value_)); }
   template <class T_arg>
   lambda<lambda_operator<other<subscript>, self, T_arg> >
   operator [[]] (const T_arg& a) const
-    { return lambda<lambda_operator<other<subscript>, self, T_arg> >(lambda_operator<other<subscript>, self, T_arg>(value_, a)); }
+    { return lambda<lambda_operator<other<subscript>, self, T_arg> >(lambda_operator<other<subscript>, self, T_arg>(this->value_, a)); }
 
   // operators for other<assign>
   template <class T_arg>
   lambda<lambda_operator<other<assign>, self, T_arg> >
   operator = (const lambda<T_arg>& a) const
-    { return lambda<lambda_operator<other<assign>, self, T_arg> >(lambda_operator<other<assign>, self, T_arg>(value_, a.value_)); }
+    { return lambda<lambda_operator<other<assign>, self, T_arg> >(lambda_operator<other<assign>, self, T_arg>(this->value_, a.value_)); }
   template <class T_arg>
   lambda<lambda_operator<other<assign>, self, T_arg> >
   operator = (const T_arg& a) const
-    { return lambda<lambda_operator<other<assign>, self, T_arg> >(lambda_operator<other<assign>, self, T_arg>(value_, a)); }
+    { return lambda<lambda_operator<other<assign>, self, T_arg> >(lambda_operator<other<assign>, self, T_arg>(this->value_, a)); }
 };
 
 

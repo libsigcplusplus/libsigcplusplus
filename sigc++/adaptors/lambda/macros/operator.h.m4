@@ -445,8 +445,8 @@ struct lambda_operator : public lambda_base
 
   template <LOOP(class T_arg%1=void,CALL_SIZE)>
   struct deduce_result_type
-    { typedef typename arg1_type::deduce_result_type<LOOP(_P_(T_arg%1),CALL_SIZE)>::type left_type;
-      typedef typename arg2_type::deduce_result_type<LOOP(_P_(T_arg%1),CALL_SIZE)>::type right_type;
+    { typedef typename arg1_type::template deduce_result_type<LOOP(_P_(T_arg%1),CALL_SIZE)>::type left_type;
+      typedef typename arg2_type::template deduce_result_type<LOOP(_P_(T_arg%1),CALL_SIZE)>::type right_type;
       typedef typename lambda_action_deduce_result_type<T_action, left_type, right_type>::type type;
     };
   typedef typename lambda_action_deduce_result_type<
@@ -490,7 +490,7 @@ struct lambda_operator_unary : public lambda_base
 
   template <LOOP(class T_arg%1=void,CALL_SIZE)>
   struct deduce_result_type
-    { typedef typename arg_type::deduce_result_type<LOOP(_P_(T_arg%1),CALL_SIZE)>::type operand_type;
+    { typedef typename arg_type::template deduce_result_type<LOOP(_P_(T_arg%1),CALL_SIZE)>::type operand_type;
       typedef typename lambda_action_unary_deduce_result_type<T_action, operand_type>::type type;
     };
   typedef typename lambda_action_unary_deduce_result_type<
@@ -530,7 +530,7 @@ struct lambda_operator_convert : public lambda_base
 
   template <LOOP(class T_arg%1=void,CALL_SIZE)>
   struct deduce_result_type
-    { typedef typename arg_type::deduce_result_type<LOOP(_P_(T_arg%1),CALL_SIZE)>::type operand_type;
+    { typedef typename arg_type::template deduce_result_type<LOOP(_P_(T_arg%1),CALL_SIZE)>::type operand_type;
       typedef typename lambda_action_convert_deduce_result_type<T_action, T_type, operand_type>::type type;
     };
   typedef typename lambda_action_convert_deduce_result_type<

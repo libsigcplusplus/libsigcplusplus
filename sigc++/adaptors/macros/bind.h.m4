@@ -21,7 +21,7 @@ include(template.macros.m4)
 define([DEDUCE_RESULT_TYPE_COUNT],[dnl
   template <LOOP(class T_arg%1, eval(CALL_SIZE-$2))>
   struct deduce_result_type<LIST(LOOP(T_arg%1,eval(CALL_SIZE-$2)))>
-    { typedef typename adaptor_type::deduce_result_type<LIST(LOOP(_P_(T_arg%1), eval(CALL_SIZE-$2)), LOOP(_P_(T_type%1), $1))>::type type; };
+    { typedef typename adaptor_type::template deduce_result_type<LIST(LOOP(_P_(T_arg%1), eval(CALL_SIZE-$2)), LOOP(_P_(T_type%1), $1))>::type type; };
 ])
 define([BIND_OPERATOR_LOCATION],[dnl
 ifelse($2,1,,[dnl
@@ -31,10 +31,10 @@ FOR(1, eval($2-1),[
    * @param _A_arg%1 Argument to be passed on to the functor.])
    * @return The return value of the functor invocation.
    */
-  template <LOOP([class T_arg%1],eval($2-1))>
+  template <LOOP([class T_arg%1], eval($2-1))>
   typename deduce_result_type<LOOP(T_arg%1,eval($2-1))>::type
   operator()(LOOP(T_arg%1 _A_arg%1,eval($2-1)))
-    { return functor_.LIBSIGC_TEMPLATE_PREFIX operator()<LIST(LOOP([_P_(T_arg%1)],eval($1-1)), _P_(T_bound),FOR($1,eval($2-1),[_P_(T_arg%1),]))>
+    { return this->functor_.LIBSIGC_TEMPLATE_PREFIX operator()<LIST(LOOP([_P_(T_arg%1)],eval($1-1)), _P_(T_bound),FOR($1,eval($2-1),[_P_(T_arg%1),]))>
         (LIST(LOOP(_A_arg%1,eval($1-1)), bound_, FOR($1,eval($2-1),[_A_arg%1,])));
     }
 
@@ -47,10 +47,10 @@ FOR(1, eval($2-1),[
    * @param _A_arg%1 Argument to be passed on to the functor.])
    * @return The return value of the functor invocation.
    */
-  template <LOOP([class T_arg%1],eval($2-1))>
+  template <LOOP([class T_arg%1], eval($2-1))>
   typename deduce_result_type<LOOP(T_arg%1,eval($2-1))>::type
-  operator()(LOOP(T_arg%1 _A_arg%1,eval($2-1)))
-    { return functor_.LIBSIGC_TEMPLATE_PREFIX operator()<LIST(LOOP([_P_(T_arg%1)],eval($2-1)), LOOP(_P_(T_type%1), $1))>
+  operator()(LOOP(T_arg%1 _A_arg%1, eval($2-1)))
+    { return this->functor_.LIBSIGC_TEMPLATE_PREFIX operator()<LIST(LOOP([_P_(T_arg%1)],eval($2-1)), LOOP(_P_(T_type%1), $1))>
         (LIST(LOOP(_A_arg%1,eval($2-1)), LOOP(bound%1_, $1)));
     }
 
@@ -68,7 +68,7 @@ struct bind_functor<$1, T_functor, T_bound> : public adapts<T_functor>
 
   template <LOOP(class T_arg%1=void, eval(CALL_SIZE))>
   struct deduce_result_type
-    { typedef typename adaptor_type::deduce_result_type<LIST(LOOP(_P_(T_arg%1),eval($1)), _P_(T_bound),FOR(eval($1+1),eval(CALL_SIZE-1),[_P_(T_arg%1),]))>::type type; };
+    { typedef typename adaptor_type::template deduce_result_type<LIST(LOOP(_P_(T_arg%1),eval($1)), _P_(T_bound),FOR(eval($1+1),eval(CALL_SIZE-1),[_P_(T_arg%1),]))>::type type; };
   typedef typename adaptor_type::result_type  result_type;
 
   /** Invokes the wrapped functor passing on the bound argument only.
@@ -93,7 +93,7 @@ FOR(eval($1+1),CALL_SIZE,[[BIND_OPERATOR_LOCATION(eval($1+1),%1)]])dnl
 template <class T_functor, class T_bound>
 typename bind_functor<$1, T_functor, T_bound>::result_type
 bind_functor<$1, T_functor, T_bound>::operator()()
-  { return functor_.LIBSIGC_TEMPLATE_PREFIX operator()<_P_(T_bound)> (bound_); }
+  { return this->functor_.LIBSIGC_TEMPLATE_PREFIX operator()<_P_(T_bound)> (bound_); }
 
 ])
 define([BIND_FUNCTOR_COUNT],[dnl
@@ -109,7 +109,7 @@ struct bind_functor<LIST(-1, T_functor, LOOP(T_type%1, $1))> : public adapts<T_f
 
   template <LOOP(class T_arg%1=void, eval(CALL_SIZE))>
   struct deduce_result_type
-    { typedef typename adaptor_type::deduce_result_type<LIST(LOOP(_P_(T_arg%1), eval(CALL_SIZE-$1)), LOOP(_P_(T_type%1), $1))>::type type; };
+    { typedef typename adaptor_type::template deduce_result_type<LIST(LOOP(_P_(T_arg%1), eval(CALL_SIZE-$1)), LOOP(_P_(T_type%1), $1))>::type type; };
 FOR(eval($1+1),eval(CALL_SIZE-1),[[DEDUCE_RESULT_TYPE_COUNT($1,%1)]])dnl
   typedef typename adaptor_type::result_type  result_type;
 
@@ -136,7 +136,7 @@ FOR(1,$1,[
 template <LIST(class T_functor, LOOP(class T_type%1, $1))>
 typename bind_functor<LIST(-1, T_functor, LOOP(T_type%1, $1))>::result_type
 bind_functor<LIST(-1, T_functor, LOOP(T_type%1, $1))>::operator()()
-  { return functor_.LIBSIGC_TEMPLATE_PREFIX operator()<LOOP(_P_(T_type%1),$1)> (LOOP(bound%1_, $1)); }
+  { return this->functor_.LIBSIGC_TEMPLATE_PREFIX operator()<LOOP(_P_(T_type%1),$1)> (LOOP(bound%1_, $1)); }
 
 /** Performs a functor on each of the targets of a functor.
  * The function overload for sigc::bind_functor performs a functor on the

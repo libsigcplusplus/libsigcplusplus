@@ -21,7 +21,7 @@ include(template.macros.m4)
 define([BIND_RETURN_OPERATOR],[dnl
   template <LOOP(class T_arg%1, $1)>
   inline T_return operator()(LOOP(T_arg%1 _A_a%1, $1))
-    { functor_.LIBSIGC_TEMPLATE_PREFIX operator()<LOOP(_P_(T_arg%1), $1)>
+    { this->functor_.LIBSIGC_TEMPLATE_PREFIX operator()<LOOP(_P_(T_arg%1), $1)>
         (LOOP(_A_a%1, $1)); return ret_value_;
     }
 
@@ -54,7 +54,7 @@ FOR(1,CALL_SIZE,[[BIND_RETURN_OPERATOR(%1)]])dnl
 
 template <class T_return, class T_functor>
 T_return bind_return_functor<T_return, T_functor>::operator()()
-  { functor_(); return ret_value_; }
+  { this->functor_(); return ret_value_; }
 
 
 template <class T_action, class T_return, class T_functor>

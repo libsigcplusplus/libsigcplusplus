@@ -24,7 +24,7 @@ define([DEDUCE_RESULT_TYPE_ADAPTOR],[dnl
  */
 template <LIST(class T_functor, LOOP(class T_arg%1, $1))>
 struct deduce_result_type<LIST(T_functor, LOOP(T_arg%1,$1), LOOP(void,eval($2-$1)), true)>
-  { typedef typename T_functor::deduce_result_type<LOOP(T_arg%1,$1)>::type type; };
+  { typedef typename T_functor::template deduce_result_type<LOOP(T_arg%1,$1)>::type type; };
 
 ])
 dnl 01.11.2003: Completely removed support for typeof() since it is non-standard!

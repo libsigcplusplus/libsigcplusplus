@@ -56,9 +56,9 @@ FOR(1, $1,[
   template <LOOP(class T_arg%1=void,$2)>
   struct deduce_result_type
     { typedef typename sigc::deduce_result_type<
-                typename functor_type::deduce_result_type<LOOP(T_arg%1,$2)>::type,dnl
+                typename functor_type::template deduce_result_type<LOOP(T_arg%1,$2)>::type,dnl
 LOOP([
-                typename value%1_type::deduce_result_type<LOOP(T_arg%1,$2)>::type], $1)
+                typename value%1_type::template deduce_result_type<LOOP(T_arg%1,$2)>::type], $1)
         >::type type; };
 
   result_type

@@ -776,7 +776,7 @@ struct slot_iterator_buf<T_emitter, void>
 
   void operator*() const
     {
-      if (!i_->empty_or_blocked() && !invoked_)
+      if (!i_->empty() && !i_->blocked() && !invoked_)
         {
           c_(static_cast<const slot_type&>(*i_));
           invoked_ = true;
