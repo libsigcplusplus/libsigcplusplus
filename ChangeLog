@@ -1,5 +1,9 @@
 2003-08-27  Martin Schulze  <teebaum@cvs.gnome.org>
 
+	* Update TODO.
+
+2003-08-27  Martin Schulze  <teebaum@cvs.gnome.org>
+
 	* sigc++/adaptors/hide.h.m4: Remove usage of callof_ignore_arg<>.
 	* sigc++/callof.h.m4, sigc++/adaptors/deduce_result_type.h.m4,
 	sigc++/functors/functor_trait.h.m4:

@@ -5,27 +5,25 @@ Naming issues:
 
 - Release 1.9.7 after sorting out the above.
 
-- Rename callof to something sensible.
-
 
 Configure checks and Makefile issues:
 
-- Most probably needed:
-  Only use typeof() if it's supported.
-  This can be achieved via unsing macros CALLOF#() instead of callof<>
-  that are defined to "result_type" if typeof() is not supported.
+- Add header sigcconfig.h like we have in libsigc++-1.2
 
-- Find out whether this is a gcc bug and whether it is already reported:
+- Manipulate configure check for typeof():
+  define SIGC_CXX_TYPEOF in sigcconfig.h if typeof() is supported.
+
+- This is a gcc bug:
+  http://gcc.gnu.org/cgi-bin/gnatsweb.pl?cmd=view%20audit-trail&database=gcc&pr=10243
 
   int& foo();
   =>  typeof(foo()) == int instead of int& (g++ 3.2, 3.3)
 
-  Maybe find a workaround for this for the return type deduction of the
+  We need some a workaround for this for the return type deduction of the
   lambda operators. It really hurts there because a lambda library should
   support e.g.: (lambda<std::ostream&>(std::cout) << _1)("hello world");
-
-- Maybe move lambda stuff to libsigc++-extra if it can't be modified to
-  work without typeof().
+  However this doesn't work if "operator <<" returns "std::ostream" instead
+  of "std::ostream&"!
 
 - Add return codes to "make check" so that the user doesn't need to 
   analyze the code to see what the heck it is supposed to do to ensure
@@ -59,16 +57,15 @@ documentation:
 
 basic functionality:
 
-- Find an alternative for SIGC_FUNCTORS_HAVE_RESULT_TYPE or remove it.
-
-- Check what mem_functor variants are needed. ([bound_][volatile_][const_])
-
 - I don't understand what is meant by "stl pointer like functions" (Martin):
 
   slot should have the full set of stl pointer like functions. (Karl Nelson)
 
 
 lambda functionality:
+
+- lambda operators need a more intelligent return type deduction when
+  typeof() is not supported.
 
 - Add support for _R to force references down into 
   the stack frame of lambda.  Ie.
