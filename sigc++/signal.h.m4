@@ -199,7 +199,7 @@ struct closure_list;
  * invalid (because some referred object dies), notify() is executed.
  * notify() either calls sweep() directly or defers the execution of
  * sweep() when the signal is being emitted. sweep() removes all
- * invalid closure from the list.
+ * invalid closures from the list.
  */
 struct signal_impl
 {
