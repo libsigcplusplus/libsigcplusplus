@@ -19,10 +19,12 @@ This version of libsigc++ needs GNU g++ 3.2 or higher to compile.
 
 2.0.6:
 
-* Compiles with gcc-3.4.
-* Fixed a memory leak.
-* When compiled with MSVC .Net 2003 move all calls to new
-  and delete into non-inline library code (fixes segfaults).
+* Fixed a memory leak in sigc::slot.
+* Fixed compilation for gcc-3.4.
+* Fixed compilation for Intel C++ compiler (upgraded libtool).
+* Fixed project files for MSVC .Net (Timothy M. Shead).
+* Fixed segfaults when compiled with MSVC .Net 2003 (moved
+  all calls to new and delete into non-inline library code).
 * In the compatibility module use correct bound_mem_functor
   variants for const (volatile) methods when creating a slot.
 * Minor documentation fix.

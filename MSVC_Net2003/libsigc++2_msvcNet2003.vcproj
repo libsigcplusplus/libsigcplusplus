@@ -22,8 +22,8 @@
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="5"
-				UsePrecompiledHeader="3"
+				RuntimeLibrary="3"
+				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="TRUE"
 				DebugInformationFormat="4"/>
@@ -61,8 +61,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
-				RuntimeLibrary="4"
-				UsePrecompiledHeader="3"
+				RuntimeLibrary="2"
+				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="TRUE"
 				DebugInformationFormat="3"/>
@@ -99,6 +99,9 @@
 			Name="Source Files"
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
+			<File
+				RelativePath=".\blank.cpp">
+			</File>
 			<File
 				RelativePath="..\sigc++\connection.cc">
 				<FileConfiguration
@@ -244,6 +247,126 @@
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
+			<File
+				RelativePath="..\sigc++\adaptors\adaptor_trait.h">
+			</File>
+			<File
+				RelativePath="..\sigc++\adaptors\adaptors.h">
+			</File>
+			<File
+				RelativePath="..\sigc++\adaptors\lambda\base.h">
+			</File>
+			<File
+				RelativePath="..\sigc++\adaptors\bind.h">
+			</File>
+			<File
+				RelativePath="..\sigc++\bind.h">
+			</File>
+			<File
+				RelativePath="..\sigc++\adaptors\bind_return.h">
+			</File>
+			<File
+				RelativePath="..\sigc++\bind_return.h">
+			</File>
+			<File
+				RelativePath="..\sigc++\class_slot.h">
+			</File>
+			<File
+				RelativePath="..\sigc++\compatibility.h">
+			</File>
+			<File
+				RelativePath="..\sigc++\adaptors\compose.h">
+			</File>
+			<File
+				RelativePath="..\sigc++\connection.h">
+			</File>
+			<File
+				RelativePath="..\sigc++\adaptors\deduce_result_type.h">
+			</File>
+			<File
+				RelativePath="..\sigc++\adaptors\exception_catch.h">
+			</File>
+			<File
+				RelativePath="..\sigc++\functors\functor_trait.h">
+			</File>
+			<File
+				RelativePath="..\sigc++\functors\functors.h">
+			</File>
+			<File
+				RelativePath="..\sigc++\adaptors\lambda\group.h">
+			</File>
+			<File
+				RelativePath="..\sigc++\adaptors\hide.h">
+			</File>
+			<File
+				RelativePath="..\sigc++\hide.h">
+			</File>
+			<File
+				RelativePath="..\sigc++\adaptors\lambda\lambda.h">
+			</File>
+			<File
+				RelativePath="..\sigc++\functors\mem_fun.h">
+			</File>
+			<File
+				RelativePath="..\sigc++\method_slot.h">
+			</File>
+			<File
+				RelativePath="..\sigc++\object.h">
+			</File>
+			<File
+				RelativePath="..\sigc++\object_slot.h">
+			</File>
+			<File
+				RelativePath="..\sigc++\adaptors\lambda\operator.h">
+			</File>
+			<File
+				RelativePath="..\sigc++\functors\ptr_fun.h">
+			</File>
+			<File
+				RelativePath="..\sigc++\reference_wrapper.h">
+			</File>
+			<File
+				RelativePath="..\sigc++\adaptors\retype.h">
+			</File>
+			<File
+				RelativePath="..\sigc++\retype.h">
+			</File>
+			<File
+				RelativePath="..\sigc++\adaptors\retype_return.h">
+			</File>
+			<File
+				RelativePath="..\sigc++\retype_return.h">
+			</File>
+			<File
+				RelativePath="..\sigc++\adaptors\lambda\select.h">
+			</File>
+			<File
+				RelativePath="..\sigc++\sigc++.h">
+			</File>
+			<File
+				RelativePath="..\sigc++\signal.h">
+			</File>
+			<File
+				RelativePath="..\sigc++\signal_base.h">
+			</File>
+			<File
+				RelativePath="..\sigc++\functors\slot.h">
+			</File>
+			<File
+				RelativePath="..\sigc++\slot.h">
+			</File>
+			<File
+				RelativePath="..\sigc++\functors\slot_base.h">
+			</File>
+			<File
+				RelativePath="..\sigc++\trackable.h">
+			</File>
+			<File
+				RelativePath="..\sigc++\type_traits.h">
+			</File>
+			<File
+				RelativePath="..\sigc++\visit_each.h">
+			</File>
 		</Filter>
 		<Filter
 			Name="Resource Files"
