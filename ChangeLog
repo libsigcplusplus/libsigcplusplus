@@ -1,3 +1,7 @@
+2003-03-22  Murray Cumming  <murrayc@usa.net>
+
+	* Added pgk-config file, from a mystery person in bug #108857
+
 2003-03-22  Martin Schulze  <MHL.Schulze@t-online.de>
 
 	* tests/test_bind.cc: Test and show how to use functor_trait

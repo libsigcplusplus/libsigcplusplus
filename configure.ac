@@ -100,6 +100,7 @@ fi
 
 # Generate output
 AC_OUTPUT([
+  sigc++-2.0.pc
   Makefile
   tests/Makefile
   examples/Makefile

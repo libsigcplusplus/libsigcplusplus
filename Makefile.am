@@ -6,3 +6,6 @@ EXTRA_DIST = autogen.sh
 
 SUBDIRS = sigc++ tests
 DIST_SUBDIRS = sigc++ tests examples
+
+pkgconfigdir = $(libdir)/pkgconfig
+pkgconfig_DATA = sigc++-2.0.pc
