@@ -1,7 +1,13 @@
 2004-05-20  Martin Schulze  <mschulze@cvs.gnome.org>
 
-  * sigc++/macros/object_slot.h.m4: Suppress compiler warning at
-  dynamic_cast<>-test (suggested by Timothy M. Shead).
+	* sigc++/macros/signal.h.m4: If a custom accumulator is specified
+	invoke it on signal emission even if the signal's slot list is empty.
+	(This used to be the case in libsigc++-1.2 as pointed out by Timothy.)
+
+2004-05-20  Martin Schulze  <mschulze@cvs.gnome.org>
+
+	* sigc++/macros/object_slot.h.m4: Suppress compiler warning at
+	dynamic_cast<>-test (suggested by Timothy M. Shead).
 
 2004-05-01  Martin Schulze  <mschulze@cvs.gnome.org>
 

@@ -63,12 +63,14 @@ FOR(1, $1,[
    * @param _A_a%1 Argument to be passed on to the slots.])
    * @return The accumulated return values of the slot invocations as processed by the accumulator.
    */
-  static result_type emit(LIST(const iterator_type& first, const iterator_type& last, LOOP(typename type_trait<T_arg%1>::take _A_a%1, $1)))
+  static result_type emit(LIST(signal_impl* impl, LOOP(typename type_trait<T_arg%1>::take _A_a%1, $1)))
     {
+      signal_exec exec(impl);
+
       self_type self ifelse($1,0,,[(LOOP(_A_a%1, $1))]);
       T_accumulator accumulator;
-      return accumulator(slot_iterator_buf_type(first, self),
-                         slot_iterator_buf_type(last, self));
+      return accumulator(slot_iterator_buf_type(impl->slots_.begin(), self),
+                         slot_iterator_buf_type(impl->slots_.end(), self));
     }
 dnl
   FOR(1, $1,[
@@ -98,17 +100,22 @@ FOR(1, $1,[
    * @param _A_a%1 Argument to be passed on to the slots.])
    * @return The return value of the last slot invoked.
    */
-  static result_type emit(LIST(iterator_type first, iterator_type last, LOOP(typename type_trait<T_arg%1>::take _A_a%1, $1)))
+  static result_type emit(LIST(signal_impl* impl, LOOP(typename type_trait<T_arg%1>::take _A_a%1, $1)))
     {
-      for (; first != last; ++first) if (!first->empty() && !first->blocked()) break;
-      if (first == last) return T_return(); // avoid compiler warning about r_ being possibly uninitialized (T_return r_(); doesn't work)
+      if (impl->slots_.empty()) return T_return();
+      iterator_type it = impl->slots_.begin();
+      for (; it != impl->slots_.end(); ++it)
+        if (!it->empty() && !it->blocked()) break;
+      if (it == impl->slots_.end()) return T_return(); // note that 'T_return r_();' doesn't work => define 'r_' after this line and initialize as follows:
 
-      T_return r_ = (reinterpret_cast<call_type>(first->rep_->call_))(LIST(first->rep_, LOOP(_A_a%1, $1)));
-      for (++first; first != last; ++first)
+      signal_exec exec(impl);
+
+      T_return r_ = (reinterpret_cast<call_type>(it->rep_->call_))(LIST(it->rep_, LOOP(_A_a%1, $1)));
+      for (++it; it != impl->slots_.end(); ++it)
         {
-          if (first->empty() || first->blocked())
+          if (it->empty() || it->blocked())
             continue;
-          r_ = (reinterpret_cast<call_type>(first->rep_->call_))(LIST(first->rep_, LOOP(_A_a%1, $1)));
+          r_ = (reinterpret_cast<call_type>(it->rep_->call_))(LIST(it->rep_, LOOP(_A_a%1, $1)));
         }
       return r_;
     }
@@ -136,13 +143,16 @@ ifelse($1,0,,[
 FOR(1, $1,[
    * @param _A_a%1 Argument to be passed on to the slots.])
    */
-  static result_type emit(LIST(iterator_type first, iterator_type last, LOOP(typename type_trait<T_arg%1>::take _A_a%1, $1)))
+  static result_type emit(LIST(signal_impl* impl, LOOP(typename type_trait<T_arg%1>::take _A_a%1, $1)))
     {
-      for (; first != last; ++first)
+      if (impl->slots_.empty()) return;
+      signal_exec exec(impl);
+
+      for (iterator_type it = impl->slots_.begin(); it != impl->slots_.end(); ++it)
         {
-          if (first->empty() || first->blocked())
+          if (it->empty() || it->blocked())
             continue;
-          (reinterpret_cast<call_type>(first->rep_->call_))(LIST(first->rep_, LOOP(_A_a%1, $1)));
+          (reinterpret_cast<call_type>(it->rep_->call_))(LIST(it->rep_, LOOP(_A_a%1, $1)));
         }
     }
 };
@@ -217,12 +227,7 @@ FOR(1, $1,[
    * @return The accumulated return values of the slot invocations.
    */
   result_type emit(LOOP(typename type_trait<T_arg%1>::take _A_a%1, $1)) const
-    {
-      if (empty())
-        return result_type();
-      internal::signal_exec exec(impl_);
-      return emitter_type::emit(LIST(impl_->slots_.begin(), impl_->slots_.end(), LOOP(_A_a%1, $1)));
-    }
+    { return emitter_type::emit(LIST(impl_, LOOP(_A_a%1, $1))); }
 
   /** Triggers the emission of the signal (see emit()). */
   result_type operator()(LOOP(typename type_trait<T_arg%1>::take _A_a%1, $1)) const
