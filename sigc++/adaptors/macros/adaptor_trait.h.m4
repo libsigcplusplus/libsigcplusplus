@@ -83,19 +83,16 @@ namespace sigc {
 
 // Call either operator()<>() or sun_forte_workaround<>(),
 // depending on the compiler:
-#ifdef SIGC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD
-  #define SIGC_WORKAROUND_OPERATOR_PARENTHESES operator()
+#ifdef SIGC_GCC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD
+  #define SIGC_WORKAROUND_OPERATOR_PARENTHESES template operator()
+  #define SIGC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD
 #else
-  #define SIGC_WORKAROUND_OPERATOR_PARENTHESES sun_forte_workaround
-#endif
-
-// TODO: This should have its own test, without using operator()
-#ifdef SIGC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD
-  #define LIBSIGC_TEMPLATE_PREFIX template
-#else
-  //The MSVC++ and SUN Forte C++ compilers have problems with this,
-  //though the SUN Forte C++ compiler allows it in some places.
-  #define LIBSIGC_TEMPLATE_PREFIX
+  #ifdef SIGC_MSVC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD
+    #define SIGC_WORKAROUND_OPERATOR_PARENTHESES operator()
+    #define SIGC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD
+  #else
+    #define SIGC_WORKAROUND_OPERATOR_PARENTHESES sun_forte_workaround
+  #endif
 #endif
 
 

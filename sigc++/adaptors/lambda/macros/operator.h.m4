@@ -27,9 +27,9 @@ define([LAMBDA_OPERATOR_DO],[dnl
       return lambda_action<T_action>::template do_action<
             typename deduce_result_type<LOOP(T_arg%1,$1)>::left_type,
             typename deduce_result_type<LOOP(T_arg%1,$1)>::right_type>
-        (arg1_.LIBSIGC_TEMPLATE_PREFIX SIGC_WORKAROUND_OPERATOR_PARENTHESES<LOOP(_P_(T_arg%1), $1)>
+        (arg1_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<LOOP(_P_(T_arg%1), $1)>
             (LOOP(_A_%1, $1)),
-         arg2_.LIBSIGC_TEMPLATE_PREFIX SIGC_WORKAROUND_OPERATOR_PARENTHESES<LOOP(_P_(T_arg%1), $1)>
+         arg2_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<LOOP(_P_(T_arg%1), $1)>
             (LOOP(_A_%1, $1)));
     }
 
@@ -50,7 +50,7 @@ define([LAMBDA_OPERATOR_UNARY_DO],[dnl
     {
       return lambda_action_unary<T_action>::template do_action<
             typename deduce_result_type<LOOP(T_arg%1,$1)>::operand_type>
-        (arg_.LIBSIGC_TEMPLATE_PREFIX SIGC_WORKAROUND_OPERATOR_PARENTHESES<LOOP(_P_(T_arg%1), $1)>
+        (arg_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<LOOP(_P_(T_arg%1), $1)>
             (LOOP(_A_%1, $1)));
     }
 
@@ -71,7 +71,7 @@ define([LAMBDA_OPERATOR_CONVERT_DO],[dnl
     {
       return lambda_action_convert<T_action, T_type>::template do_action<
             typename deduce_result_type<LOOP(T_arg%1,$1)>::operand_type>
-        (arg_.LIBSIGC_TEMPLATE_PREFIX SIGC_WORKAROUND_OPERATOR_PARENTHESES<LOOP(_P_(T_arg%1), $1)>
+        (arg_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<LOOP(_P_(T_arg%1), $1)>
             (LOOP(_A_%1, $1)));
     }
 

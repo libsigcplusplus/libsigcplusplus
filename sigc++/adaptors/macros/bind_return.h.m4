@@ -26,7 +26,7 @@ FOR(1, $1),[
    */
   template <LOOP(class T_arg%1, $1)>
   inline T_return operator()(LOOP(T_arg%1 _A_a%1, $1))
-    { this->functor_.LIBSIGC_TEMPLATE_PREFIX SIGC_WORKAROUND_OPERATOR_PARENTHESES<LOOP(_P_(T_arg%1), $1)>
+    { this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<LOOP(_P_(T_arg%1), $1)>
         (LOOP(_A_a%1, $1)); return ret_value_;
     }
 

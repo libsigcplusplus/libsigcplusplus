@@ -21,7 +21,7 @@ include(template.macros.m4)
 define([RETYPE_RETURN_OPERATOR],[dnl
   template <LOOP(class T_arg%1, $1)>
   inline T_return operator()(LOOP(T_arg%1 _A_a%1, $1))
-    { return T_return(this->functor_.LIBSIGC_TEMPLATE_PREFIX SIGC_WORKAROUND_OPERATOR_PARENTHESES<LOOP(_P_(T_arg%1), $1)>
+    { return T_return(this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<LOOP(_P_(T_arg%1), $1)>
         (LOOP(_A_a%1, $1)));
     }
 
@@ -35,7 +35,7 @@ define([RETYPE_RETURN_OPERATOR],[dnl
 define([RETYPE_RETURN_VOID_OPERATOR],[dnl
   template <LOOP(class T_arg%1, $1)>
   inline void operator()(LOOP(T_arg%1 _A_a%1, $1))
-    { this->functor_.LIBSIGC_TEMPLATE_PREFIX SIGC_WORKAROUND_OPERATOR_PARENTHESES<LOOP(_P_(T_arg%1), $1)>
+    { this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<LOOP(_P_(T_arg%1), $1)>
         (LOOP(_A_a%1, $1));
     }
 

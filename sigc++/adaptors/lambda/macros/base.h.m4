@@ -21,7 +21,7 @@ define([LAMBDA_DO],[dnl
   template <LOOP(class T_arg%1, $1)>
   typename deduce_result_type<LOOP(T_arg%1,$1)>::type
   operator ()(LOOP(T_arg%1 _A_%1, $1)) const 
-    { return value_.LIBSIGC_TEMPLATE_PREFIX SIGC_WORKAROUND_OPERATOR_PARENTHESES<LOOP(_P_(T_arg%1), $1)>
+    { return value_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<LOOP(_P_(T_arg%1), $1)>
              (LOOP(_A_%1, $1)); 
     }
 

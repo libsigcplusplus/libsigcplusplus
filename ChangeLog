@@ -1,5 +1,15 @@
 2004-07-11  Martin Schulze <mschulze@cvs.gnome.org>
 
+	* scripts/cxx.m4, sigc++config.h.in, configure.ac, *.h.m4:
+	Split SIGC_CXX_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD
+	into SIGC_CXX_GCC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD
+	and SIGC_CXX_MSVC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD.
+	Remove LIBSIGC_TEMPLATE_PREFIX. Add template keyword to
+	SIGC_WORKAROUND_OPERATOR_PARENTHESES depending on the configure checks.
+	Should fix the compiler problems with MSVC.
+
+2004-07-11  Martin Schulze <mschulze@cvs.gnome.org>
+
 	* examples/hello_world.cc: Use sigc::ptr_fun instead of std::ptr_fun.
 	(fixes bug #144846)
 
