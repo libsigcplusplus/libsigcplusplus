@@ -1,5 +1,11 @@
 2004-07-15  Martin Schulze <mschulze@cvs.gnome.org>
 
+	* *.h.m4: Don't call operator()() in sun_forte_workaround(); rather copy
+	operator()(). Calling operator()() makes a copy of the arguments causing
+	wrong results if an argument type is a reference. Hopefully fixes #147311.
+
+2004-07-15  Martin Schulze <mschulze@cvs.gnome.org>
+
 	* tests/test_lambda.cc: Break "std::cout << [expr] << a << std::endl;"
 	into "std::cout << [expr]; std::cout << a << std::endl;".
 	I hope this fixes #147313 where the right values for "[expr]" but wrong

@@ -33,7 +33,9 @@ FOR(1, $1),[
   #ifndef SIGC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD
   template <LOOP(class T_arg%1, $1)>
   inline T_return sun_forte_workaround(LOOP(T_arg%1 _A_a%1, $1))
-    { return operator()( LOOP(_A_a%1, $1) ); }
+    { this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<LOOP(_P_(T_arg%1), $1)>
+        (LOOP(_A_a%1, $1)); return ret_value_;
+    }
   #endif
 
 ])

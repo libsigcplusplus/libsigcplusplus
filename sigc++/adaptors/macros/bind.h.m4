@@ -42,7 +42,9 @@ FOR(1, eval($2-1),[
   template <LOOP([class T_arg%1], eval($2-1))>
   typename deduce_result_type<LOOP(T_arg%1,eval($2-1))>::type
   sun_forte_workaround(LOOP(T_arg%1 _A_arg%1,eval($2-1)))
-    { return operator()( LOOP(_A_arg%1,eval($2-1)) ); }
+    { return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<LIST(LOOP([_P_(T_arg%1)],eval($1-1)), _P_(T_bound),FOR($1,eval($2-1),[_P_(T_arg%1),]))>
+        (LIST(LOOP(_A_arg%1,eval($1-1)), bound_, FOR($1,eval($2-1),[_A_arg%1,])));
+    }
   #endif
     
 ])dnl
@@ -65,7 +67,9 @@ FOR(1, eval($2-1),[
   template <LOOP([class T_arg%1], eval($2-1))>
   typename deduce_result_type<LOOP(T_arg%1,eval($2-1))>::type
   sun_forte_workaround(LOOP(T_arg%1 _A_arg%1, eval($2-1)))
-    { return operator()( LOOP(_A_arg%1,eval($2-1)) ); }
+    { return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<LIST(LOOP([_P_(T_arg%1)],eval($2-1)), LOOP(_P_(T_type%1), $1))>
+        (LIST(LOOP(_A_arg%1,eval($2-1)), LOOP(bound%1_, $1)));
+    }
   #endif
     
 ])
