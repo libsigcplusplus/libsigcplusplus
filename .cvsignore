@@ -2,3 +2,4 @@ Makefile Makefile.in
 .libs .deps
 aclocal.m4 configure ltmain.sh libtool
 autom4te.cache config.log config.status config.cache
+config.guess config.sub depcomp install-sh missing mkinstalldirs
