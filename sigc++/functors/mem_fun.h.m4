@@ -107,14 +107,17 @@ template <LIST(LOOP(class T_arg%1, $1), class T_return, class T_obj)>
 inline mem_functor$1<LIST(LOOP(T_arg%1, $1), T_return, T_obj)> 
 mem_fun[]ifelse($2,, $1)(T_return (T_obj::*_A_func)(LOOP(T_arg%1,$1)))
 { return mem_functor$1<LIST(LOOP(T_arg%1, $1), T_return, T_obj)>(_A_func); }
+
 template <LIST(LOOP(class T_arg%1, $1), class T_return, class T_obj)>
 inline const_mem_functor$1<LIST(LOOP(T_arg%1, $1), T_return, T_obj)> 
 mem_fun[]ifelse($2,, $1)(T_return (T_obj::*_A_func)(LOOP(T_arg%1,$1)) const)
 { return const_mem_functor$1<LIST(LOOP(T_arg%1, $1), T_return, T_obj)>(_A_func); }
+
 template <LIST(LOOP(class T_arg%1, $1), class T_return, class T_obj)>
 inline bound_mem_functor$1<LIST(LOOP(T_arg%1, $1), T_return, T_obj)> 
 mem_fun[]ifelse($2,, $1)(T_obj* _A_obj, T_return (T_obj::*_A_func)(LOOP(T_arg%1,$1)))
 { return bound_mem_functor$1<LIST(LOOP(T_arg%1, $1), T_return, T_obj)>(_A_obj, _A_func); }
+
 template <LIST(LOOP(class T_arg%1, $1), class T_return, class T_obj)>
 inline bound_const_mem_functor$1<LIST(LOOP(T_arg%1, $1), T_return, T_obj)> 
 mem_fun[]ifelse($2,, $1)(const T_obj* _A_obj, T_return (T_obj::*_A_func)(LOOP(T_arg%1,$1)) const)

@@ -1,3 +1,9 @@
+2003-03-16  Murray Cumming  <murrayc@usa.net>
+
+	* Added sigc++/sigc++.h, like in libsigc++ 1.2
+	* examples: Added member_method example, which uses a class method
+	and which demonstrates disconnection.
+
 1.9.6:
 
 2003-03-11  Andreas Rottmann  <rottmann@users.sourceforge.net>

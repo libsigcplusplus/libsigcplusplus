@@ -7,22 +7,18 @@
 #include <iostream>
 #include <string>
 
-#include <sigc++/signal.h>
-#include <sigc++/functors/ptr_fun.h>
+#include <sigc++/sigc++.h>
 
-using namespace std;
-using namespace sigc;
-
-void print(const string &str)
+void on_print(const std::string& str)
 {
-  cout << str;
+  std::cout << str;
 }
 
 main()
 {
-  signal<void, const string&> printer;
+  sigc::signal<void, const std::string&> signal_print;
   
-  printer.connect(ptr_fun(&print));
+  signal_print.connect( std::ptr_fun(&on_print) );
   
-  printer("hello world\n");
+  signal_print.emit("hello world\n");
 }

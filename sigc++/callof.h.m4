@@ -16,6 +16,8 @@ dnl Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 dnl 
 divert(-1)
 
+//TODO: What's this? murrayc.
+
 include(template.macros.m4)
 
 define([CALLOF],[dnl
