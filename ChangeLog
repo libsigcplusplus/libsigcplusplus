@@ -1,3 +1,8 @@
+2003-10-20  Martin Schulze  <teebaum@cvs.gnome.org>
+
+	* sigc++/adaptors/compose.h.m4:
+	Correct order of typedefs for good. (Patch from Jeff Franks.)
+
 1.9.9:
 
 2003-10-20  Martin Schulze  <teebaum@cvs.gnome.org>

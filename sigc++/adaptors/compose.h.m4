@@ -78,6 +78,8 @@ compose1_functor<T_setter, T_getter>::operator()()
 template <class T_setter, class T_getter1, class T_getter2>
 struct compose2_functor : public adapts<T_setter>
 {
+  typedef typename adapts<T_setter>::adaptor_type adaptor_type;
+
   template <LOOP(class T_arg%1=void, CALL_SIZE)>
   struct deduce_result_type
     { typedef typename adaptor_type::deduce_result_type<
@@ -85,7 +87,6 @@ struct compose2_functor : public adapts<T_setter>
         typename sigc::deduce_result_type<LIST(T_getter2, LOOP(T_arg%1,CALL_SIZE))>::type
           >::type result_type; };
   typedef typename adaptor_type::result_type  result_type;
-  typedef typename adapts<T_setter>::adaptor_type adaptor_type;
 
   result_type
   operator()();
