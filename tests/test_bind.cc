@@ -56,47 +56,43 @@ private:
 int main()
 {
   // replacing bind1st, bind2nd
+  std::cout << sigc::bind<0>(foo(),-12345)(5) << std::endl;
   std::cout << sigc::bind<1>(foo(),-12345)(5) << std::endl;
-  std::cout << sigc::bind<2>(foo(),-12345)(5) << std::endl;
 
   // multiple
-  sigc::bind<1>(foo(),1,2)();
+  sigc::bind(foo(),1,2)();
 
   // bind from end
-  sigc::bind<0>(foo(),4)(3);
+  sigc::bind<-1>(foo(),4)(3);
   sigc::bind(foo(),4)(3);
 
-  // multiple beginning from end
-  sigc::bind<0>(foo(),5,6)();
-  sigc::bind(foo(),5,6)();
-
   // used together
-  sigc::bind<1>(sigc::bind<1>(foo(),7),8)();
+  sigc::bind<0>(sigc::bind<0>(foo(),7),8)();
 
   // void return
-  sigc::bind<1>(foo(),9,10)(11); // (only returns void if typeof() is supported)
-  sigc::bind<0>(foo_void(),12)();
+  sigc::bind(foo(),9,10)(11); // (only returned void if typeof() would be supported)
+  sigc::bind(foo_void(),12)();
 
   // function pointer instead of functor
-  sigc::bind<1>(&bar,13,14)();
+  sigc::bind(&bar,13,14)();
 
   // method pointer instead of functor
   book test_book("otto");
-  sigc::bind<1>(&book::get_name, sigc::ref(test_book))();
+  sigc::bind<0>(&book::get_name, sigc::ref(test_book))();
 
   // test return type of bind_functor::operator() overload with no arguments
-  std::cout << sigc::bind<0>(foo(),15)() << std::endl;
-  std::cout << sigc::bind<0>(&simple, true)() << std::endl;
+  std::cout << sigc::bind(foo(),15)() << std::endl;
+  std::cout << sigc::bind(&simple, true)() << std::endl;
 
   // test references
   std::string str("guest book");
-  sigc::bind<0>(&egon,sigc::ref(str))(); // Tell bind that is shall store a reference.
+  sigc::bind(&egon,sigc::ref(str))(); // Tell bind that is shall store a reference.
   std::cout << str << std::endl;     // (This cannot be the default behaviour: just think about what happens if str dies!)
 
   sigc::slot<void> sl;
   {
     book guest_book("karl");
-    sl = sigc::bind<0>(&egon, sigc::ref(guest_book));
+    sl = sigc::bind(&egon, sigc::ref(guest_book));
     sl();
     std::cout << (std::string&)guest_book << std::endl;
   }    // auto-disconnect

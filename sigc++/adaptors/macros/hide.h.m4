@@ -57,10 +57,10 @@ struct hide_functor <$1, T_functor> : public adapts<T_functor>
 {
   typedef typename adapts<T_functor>::adaptor_type adaptor_type;
 
-DEDUCE_RESULT_TYPE($1,CALL_SIZE)dnl
+DEDUCE_RESULT_TYPE(eval($1+1),CALL_SIZE)dnl
   typedef typename adaptor_type::result_type  result_type;
 
-FOR($1,CALL_SIZE,[[HIDE_OPERATOR($1,%1)]])dnl
+FOR(eval($1+1),CALL_SIZE,[[HIDE_OPERATOR(eval($1+1),%1)]])dnl
   hide_functor()
     {}
   hide_functor(const T_functor& _A_func)
@@ -96,7 +96,7 @@ namespace sigc {
 template <int I_location, class T_functor>
 struct hide_functor;
 
-FOR(0,CALL_SIZE,[[HIDE_FUNCTOR(%1)]])dnl
+FOR(-1,eval(CALL_SIZE-1),[[HIDE_FUNCTOR(%1)]])dnl
 
 template <class T_action, int I_location, class T_functor>
 void visit_each(const T_action& _A_action,
@@ -115,10 +115,10 @@ hide(const T_functor& _A_func)
 }
 
 template <class T_functor>
-inline hide_functor<0, T_functor>
+inline hide_functor<-1, T_functor>
 hide(const T_functor& _A_func)
 { 
-  return hide_functor<0, T_functor>
+  return hide_functor<-1, T_functor>
            (_A_func);
 }
 

@@ -18,35 +18,13 @@ divert(-1)
 
 include(template.macros.m4)
 
-define([DEDUCE_RESULT_TYPE],[dnl
-  template <LOOP(class T_arg%1,eval(CALL_SIZE-$2))>
+define([DEDUCE_RESULT_TYPE_COUNT],[dnl
+  template <LOOP(class T_arg%1, eval(CALL_SIZE-$2))>
   struct deduce_result_type<LIST(LOOP(T_arg%1,eval(CALL_SIZE-$2)))>
-    { typedef typename adaptor_type::deduce_result_type<LIST(LOOP(_P_(T_arg%1),eval(CALL_SIZE-$2)), _P_(T_bound))>::type type; };
+    { typedef typename adaptor_type::deduce_result_type<LIST(LOOP(_P_(T_arg%1), eval(CALL_SIZE-$2)), LOOP(_P_(T_type%1), $1))>::type type; };
 ])
-define([BIND_OPERATOR],[dnl
-ifelse($2,0,[dnl
-], $2,1,[dnl
-dnl  typename internal::callof_safe1<adaptor_type>::result_type // leads to compiler errors if T_functor has an overloaded operator()!
-dnl  operator()()
-dnl    { return functor_.template operator()<_P_(T_bound)>
-dnl        (bound_); 
-dnl    }
-dnl
-], $1,0,[dnl
-  /** Invokes the wrapped functor passing on the arguments.
-   * bound_ is passed as the last ($2[]th) argument.dnl
-FOR(1, eval($2-1),[
-   * @param _A_arg%1 Argument to be passed on to the functor.])
-   * @return The return value of the functor invocation.
-   */
-  template <LOOP([class T_arg%1],eval($2-1))>
-  typename deduce_result_type<LOOP(T_arg%1,eval($2-1))>::type
-  operator()(LOOP(T_arg%1 _A_arg%1,eval($2-1)))
-    { return functor_.LIBSIGC_TEMPLATE_PREFIX operator()<LIST(LOOP([_P_(T_arg%1)],eval($2-1)), _P_(T_bound))>
-        (LIST(LOOP(_A_arg%1,eval($2-1)), bound_)); 
-    }
-
-],[dnl
+define([BIND_OPERATOR_LOCATION],[dnl
+ifelse($2,1,,[dnl
   /** Invokes the wrapped functor passing on the arguments.
    * bound_ is passed as the $1[]th argument.dnl
 FOR(1, eval($2-1),[
@@ -57,31 +35,40 @@ FOR(1, eval($2-1),[
   typename deduce_result_type<LOOP(T_arg%1,eval($2-1))>::type
   operator()(LOOP(T_arg%1 _A_arg%1,eval($2-1)))
     { return functor_.LIBSIGC_TEMPLATE_PREFIX operator()<LIST(LOOP([_P_(T_arg%1)],eval($1-1)), _P_(T_bound),FOR($1,eval($2-1),[_P_(T_arg%1),]))>
-        (LIST(LOOP(_A_arg%1,eval($1-1)), bound_,FOR($1,eval($2-1),[_A_arg%1,]))); 
+        (LIST(LOOP(_A_arg%1,eval($1-1)), bound_, FOR($1,eval($2-1),[_A_arg%1,])));
     }
 
 ])dnl
 ])
-define([BIND_FUNCTOR],[dnl
+define([BIND_OPERATOR_COUNT],[dnl
+  /** Invokes the wrapped functor passing on the arguments.
+   * The last $1 argument(s) are fixed.dnl
+FOR(1, eval($2-1),[
+   * @param _A_arg%1 Argument to be passed on to the functor.])
+   * @return The return value of the functor invocation.
+   */
+  template <LOOP([class T_arg%1],eval($2-1))>
+  typename deduce_result_type<LOOP(T_arg%1,eval($2-1))>::type
+  operator()(LOOP(T_arg%1 _A_arg%1,eval($2-1)))
+    { return functor_.LIBSIGC_TEMPLATE_PREFIX operator()<LIST(LOOP([_P_(T_arg%1)],eval($2-1)), LOOP(_P_(T_type%1), $1))>
+        (LIST(LOOP(_A_arg%1,eval($2-1)), LOOP(bound%1_, $1)));
+    }
+
+])
+define([BIND_FUNCTOR_LOCATION],[dnl
 /** Adaptor that binds an argument to the wrapped functor.
- * This template specialization fixes the ifelse($1,0,last,$1[]th)
- * argument of the wrapped functor.
+ * This template specialization fixes the eval($1+1)[]th argument of the wrapped functor.
  *
  * @ingroup bind
  */
-template <class T_bound, class T_functor>
-struct bind_functor <$1, T_bound, T_functor> : public adapts<T_functor>
+template <class T_functor, class T_bound>
+struct bind_functor<$1, T_functor, T_bound> : public adapts<T_functor>
 {
   typedef typename adapts<T_functor>::adaptor_type adaptor_type;
 
   template <LOOP(class T_arg%1=void, eval(CALL_SIZE))>
   struct deduce_result_type
-ifelse($1,0,[dnl
-    { typedef typename adaptor_type::deduce_result_type<LIST(LOOP(_P_(T_arg%1),eval(CALL_SIZE-1)), _P_(T_bound))>::type type; };
-FOR(2,eval(CALL_SIZE-1),[[DEDUCE_RESULT_TYPE($1,%1)]])dnl
-],[dnl
-    { typedef typename adaptor_type::deduce_result_type<LIST(LOOP(_P_(T_arg%1),eval($1-1)), _P_(T_bound),FOR($1,eval(CALL_SIZE-1),[_P_(T_arg%1),]))>::type type; };
-])dnl
+    { typedef typename adaptor_type::deduce_result_type<LIST(LOOP(_P_(T_arg%1),eval($1)), _P_(T_bound),FOR(eval($1+1),eval(CALL_SIZE-1),[_P_(T_arg%1),]))>::type type; };
   typedef typename adaptor_type::result_type  result_type;
 
   /** Invokes the wrapped functor passing on the bound argument only.
@@ -90,7 +77,7 @@ FOR(2,eval(CALL_SIZE-1),[[DEDUCE_RESULT_TYPE($1,%1)]])dnl
   result_type
   operator()();
 
-FOR($1,CALL_SIZE,[[BIND_OPERATOR($1,%1)]])dnl
+FOR(eval($1+1),CALL_SIZE,[[BIND_OPERATOR_LOCATION(eval($1+1),%1)]])dnl
   /** Constructs a bind_functor object that binds an argument to the passed functor.
    * @param _A_functor Functor to invoke from operator()().
    * @param _A_bound Argument to bind to the functor.
@@ -103,10 +90,93 @@ FOR($1,CALL_SIZE,[[BIND_OPERATOR($1,%1)]])dnl
   T_bound bound_;
 };
 
-template <class T_bound, class T_functor>
-typename bind_functor<$1, T_bound, T_functor>::result_type
-bind_functor<$1, T_bound, T_functor>::operator()()
+template <class T_functor, class T_bound>
+typename bind_functor<$1, T_functor, T_bound>::result_type
+bind_functor<$1, T_functor, T_bound>::operator()()
   { return functor_.LIBSIGC_TEMPLATE_PREFIX operator()<_P_(T_bound)> (bound_); }
+
+])
+define([BIND_FUNCTOR_COUNT],[dnl
+/** Adaptor that binds $1 argument(s) to the wrapped functor.
+ * This template specialization fixes the last $1 argument(s) of the wrapped functor.
+ *
+ * @ingroup bind
+ */
+template <LIST(class T_functor, LOOP(class T_type%1, $1))>
+struct bind_functor<LIST(-1, T_functor, LOOP(T_type%1, $1))> : public adapts<T_functor>
+{
+  typedef typename adapts<T_functor>::adaptor_type adaptor_type;
+
+  template <LOOP(class T_arg%1=void, eval(CALL_SIZE))>
+  struct deduce_result_type
+    { typedef typename adaptor_type::deduce_result_type<LIST(LOOP(_P_(T_arg%1), eval(CALL_SIZE-$1)), LOOP(_P_(T_type%1), $1))>::type type; };
+FOR(eval($1+1),eval(CALL_SIZE-1),[[DEDUCE_RESULT_TYPE_COUNT($1,%1)]])dnl
+  typedef typename adaptor_type::result_type  result_type;
+
+  /** Invokes the wrapped functor passing on the bound argument only.
+   * @return The return value of the functor invocation.
+   */
+  result_type
+  operator()();
+
+FOR(2,eval(CALL_SIZE-$1+1),[[BIND_OPERATOR_COUNT($1,%1)]])dnl
+  /** Constructs a bind_functor object that binds an argument to the passed functor.
+   * @param _A_functor Functor to invoke from operator()().
+   * @param _A_bound Argument to bind to the functor.
+   */
+  bind_functor(_R_(T_functor) _A_func, LOOP(_R_(T_type%1) _A_bound%1, $1))
+    : adapts<T_functor>(_A_func), LOOP(bound%1_(_A_bound%1), $1)
+    {}
+
+  /// The argument bound to the functor.dnl
+FOR(1,$1,[
+  T_type%1 bound%1_;])
+};
+
+template <LIST(class T_functor, LOOP(class T_type%1, $1))>
+typename bind_functor<LIST(-1, T_functor, LOOP(T_type%1, $1))>::result_type
+bind_functor<LIST(-1, T_functor, LOOP(T_type%1, $1))>::operator()()
+  { return functor_.LIBSIGC_TEMPLATE_PREFIX operator()<LOOP(_P_(T_type%1),$1)> (LOOP(bound%1_, $1)); }
+
+/** Performs a functor on each of the targets of a functor.
+ * The function overload for sigc::bind_functor performs a functor on the
+ * functor and on the object instances stored in the sigc::bind_functor object.
+ *
+ * @ingroup bind
+ */
+template <class T_action, class T_functor, LOOP(class T_type%1, $1)>
+void visit_each(const T_action& _A_action,
+                const bind_functor<-1, T_functor, LOOP(T_type%1, $1)>& _A_target)
+{
+  visit_each(_A_action, _A_target.functor_);dnl
+FOR(1,$1,[
+  visit_each(_A_action, _A_target.bound%1_);])
+}
+
+])
+define([BIND_COUNT],[dnl
+/** Creates an adaptor of type sigc::bind_functor which fixes the last $1 argument(s) of the passed functor.
+ * This function overload fixes the last $1 argument(s) of @e _A_func.
+ *
+ * @param _A_func Functor that should be wrapped.dnl
+FOR(1,$1,[
+ * @param _A_b%1 Argument to bind to @e _A_func.])
+ * @return Adaptor that executes _A_func with the bound argument on invokation.
+ *
+ * @ingroup bind
+ */
+template <LIST(LOOP(class T_type%1, $1), class T_functor)>
+inline bind_functor<-1, T_functor,dnl
+FOR(1,eval($1-1),[
+                    typename unwrap_reference<T_type%1>::type,])
+                    typename unwrap_reference<T_type$1>::type>
+bind(const T_functor& _A_func, LOOP(T_type%1 _A_b%1, $1))
+{ return bind_functor<-1, T_functor,dnl
+FOR(1,eval($1-1),[
+                    typename unwrap_reference<T_type%1>::type,])
+                    typename unwrap_reference<T_type$1>::type>
+                    (_A_func, LOOP(_A_b%1, $1));
+}
 
 ])
 
@@ -118,23 +188,24 @@ namespace sigc {
 
 /** @defgroup bind bind()
  * sigc::bind() alters an arbitrary functor by fixing arguments to certain values.
- * The optional first template argument specifies the number of the
- * argument where binding starts. Counting starts from @p 1. A value
- * of @p 0 or a missing value means that binding should start from the last argument.
- * Up to three arguments can be bound at a time.
+ * Up to CALL_SIZE arguments can be bound at a time.
+ * For single argument binding overloads of sigc::bind() are provided that let you
+ * specify the zero-based position of the argument to fix with the first template parameter.
+ * (A value of @p -1 fixes the last argument so sigc::bind<-1>() gives the same result as sigc::bind().)
  * The types of the arguments can optionally be specified if not deduced.
  *
  * @par Examples:
  *   @code
  *   void foo(int, int, int);
- *   sigc::bind<1>(&foo,1)(2,3); //fixes the first argument and calls foo(1,2,3);
- *   sigc::bind<2>(&foo,1)(2,3); //fixes the second argument and calls foo(2,1,3);
- *   sigc::bind<3>(&foo,1)(2,3); //fixes the third argument and calls foo(2,3,1);
- *   sigc::bind<0>(&foo,1)(2,3); //fixes the last (third) argument and calls foo(2,3,1);
- *   sigc::bind(&foo,1)(2,3);    //same as bind<0>(&foo,1)(2,3);
- *   sigc::bind<1>(&foo,1,2)(3); //fixes the first and second argument and calls foo(1,2,3);
- *   sigc::bind<0>(&foo,1,2)(3); //fixes the last two (second and third) arguments and calls foo(3,1,2);
- *   sigc::bind(&foo,1,2)(3);    //same as sigc::bind<0>(&foo,1,2)(3);
+ *   // single argument binding ...
+ *   sigc::bind(&foo,1)(2,3);     //fixes the last (third) argument and calls foo(2,3,1)
+ *   sigc::bind<-1>(&foo,1)(2,3); //same as bind(&foo,1)(2,3) (calls foo(2,3,1))
+ *   sigc::bind<0>(&foo,1)(2,3);  //fixes the first argument and calls foo(1,2,3)
+ *   sigc::bind<1>(&foo,1)(2,3);  //fixes the second argument and calls foo(2,1,3)
+ *   sigc::bind<2>(&foo,1)(2,3);  //fixes the third argument and calls foo(2,3,1)
+ *   // multi argument binding ...
+ *   sigc::bind(&foo,1,2)(3);     //fixes the last two arguments and calls foo(3,1,2)
+ *   sigc::bind(&foo,1,2,3)();    //fixes all three arguments and calls foo(3,1,2)
  *   @endcode
  *
  * The functor sigc::bind() returns can be passed into
@@ -190,25 +261,25 @@ namespace sigc {
  *
  * @ingroup bind
  */
-template <int I_location, class T_type, class T_functor>
+template <LIST(int I_location, class T_functor, LOOP(class T_type%1=nil, CALL_SIZE))>
 struct bind_functor;
 
-FOR(0,CALL_SIZE,[[BIND_FUNCTOR(%1)]])dnl
-
+FOR(0,eval(CALL_SIZE-1),[[BIND_FUNCTOR_LOCATION(%1)]])dnl
 /** Performs a functor on each of the targets of a functor.
  * The function overload for sigc::bind_functor performs a functor on the
- * functor and on the object instance stored in the sigc::bind_functor object.
+ * functor and on the object instances stored in the sigc::bind_functor object.
  *
  * @ingroup bind
  */
-template <class T_action, int T_loc, class T_bound, class T_functor>
+template <class T_action, int T_loc, class T_functor, class T_bound>
 void visit_each(const T_action& _A_action,
-                const bind_functor<T_loc, T_bound, T_functor>& _A_target)
+                const bind_functor<T_loc, T_functor, T_bound>& _A_target)
 {
   visit_each(_A_action, _A_target.functor_);
   visit_each(_A_action, _A_target.bound_);
 }
 
+FOR(1,CALL_SIZE,[[BIND_FUNCTOR_COUNT(%1)]])dnl
 
 /** Creates an adaptor of type sigc::bind_functor which binds the passed argument to the passed functor.
  * The template argument @e I_location is mandatory and specifies the
@@ -222,118 +293,13 @@ void visit_each(const T_action& _A_action,
  * @ingroup bind
  */
 template <int I_location, class T_bound1, class T_functor>
-inline bind_functor<I_location, typename unwrap_reference<T_bound1>::type, T_functor>
+inline bind_functor<I_location, T_functor, typename unwrap_reference<T_bound1>::type>
 bind(const T_functor& _A_func, T_bound1 _A_b1)
 { 
-  return bind_functor<I_location, typename unwrap_reference<T_bound1>::type, T_functor>
+  return bind_functor<I_location, T_functor, typename unwrap_reference<T_bound1>::type>
            (_A_func, _A_b1);
 }
 
-/** Creates an adaptor of type sigc::bind_functor which fixes the last argument of the passed functor.
- * This function overload fixes the last argument of @e _A_func.
- *
- * @param _A_func Functor that should be wrapped.
- * @param _A_b1 Argument to bind to @e _A_func.
- * @return Adaptor that executes _A_func with the bound argument on invokation.
- *
- * @ingroup bind
- */
-template <class T_bound1, class T_functor>
-inline bind_functor<0, typename unwrap_reference<T_bound1>::type, T_functor>
-bind(const T_functor& _A_func, T_bound1 _A_b1)
-{
-  return bind_functor<0, typename unwrap_reference<T_bound1>::type, T_functor>
-           (_A_func, _A_b1);
-}
-
-/** Creates an adaptor of type sigc::bind_functor which binds the passed arguments to the passed functor.
- * The template argument @e I_location is mandatory and specifies the
- * number of the argument where binding should start (counting starts
- * from @p 1, @p 0 stands for the last two arguments).
- *
- * @param _A_func Functor that should be wrapped.
- * @param _A_b1 First argument to bind to @e _A_func.
- * @param _A_b2 Second argument to bind to @e _A_func.
- * @return Adaptor that executes _A_func with the bound argument on invokation.
- *
- * @ingroup bind
- */
-template <int I_location, class T_bound1, class T_bound2, class T_functor>
-inline bind_functor<I_location, typename unwrap_reference<T_bound1>::type,
-       bind_functor<I_location?I_location+1:0, typename unwrap_reference<T_bound2>::type, T_functor> >
-bind(const T_functor& _A_functor, T_bound1 _A_b1, T_bound2 _A_b2)
-{ 
-  return bind_functor<I_location, typename unwrap_reference<T_bound1>::type,
-         bind_functor<I_location?I_location+1:0, typename unwrap_reference<T_bound2>::type, T_functor> >
-           (bind<I_location?I_location+1:0>(_A_functor, _A_b2), _A_b1);
-}
-
-/** Creates an adaptor of type sigc::bind_functor which fixes the last two arguments of the passed functor.
- * This function overload fixes the last two arguments of @e _A_func.
- *
- * @param _A_func Functor that should be wrapped.
- * @param _A_b1 First argument to bind to @e _A_func.
- * @param _A_b2 Second argument to bind to @e _A_func.
- * @return Adaptor that executes _A_func with the bound argument on invokation.
- *
- * @ingroup bind
- */
-template <class T_bound1, class T_bound2, class T_functor>
-inline bind_functor<0, typename unwrap_reference<T_bound1>::type,
-       bind_functor<0, typename unwrap_reference<T_bound2>::type, T_functor> >
-bind(const T_functor& _A_functor, T_bound1 _A_b1, T_bound2 _A_b2)
-{ 
-  return bind_functor<0, typename unwrap_reference<T_bound1>::type,
-         bind_functor<0, typename unwrap_reference<T_bound2>::type, T_functor> >
-           (bind(_A_functor, _A_b2), _A_b1);
-}
-
-/** Creates an adaptor of type sigc::bind_functor which binds the passed arguments to the passed functor.
- * The template argument @e I_location is mandatory and specifies the
- * number of the argument where binding should start (counting starts
- * from @p 1, @p 0 stands for the three arguments).
- *
- * @param _A_func Functor that should be wrapped.
- * @param _A_b1 First argument to bind to @e _A_func.
- * @param _A_b2 Second argument to bind to @e _A_func.
- * @param _A_b3 Third argument to bind to @e _A_func.
- * @return Adaptor that executes _A_func with the bound argument on invokation.
- *
- * @ingroup bind
- */
-template <int I_location, class T_bound1, class T_bound2, class T_bound3, class T_functor>
-inline bind_functor<I_location, typename unwrap_reference<T_bound1>::type,
-       bind_functor<I_location?I_location+1:0, typename unwrap_reference<T_bound2>::type,
-       bind_functor<I_location?I_location+2:0, typename unwrap_reference<T_bound3>::type, T_functor> > >
-bind(const T_functor& _A_functor, T_bound1 _A_b1, T_bound2 _A_b2,T_bound3 _A_b3)
-{ 
-  return bind_functor<I_location, typename unwrap_reference<T_bound1>::type,
-         bind_functor<I_location?I_location+1:0, typename unwrap_reference<T_bound2>::type,
-         bind_functor<I_location?I_location+2:0, typename unwrap_reference<T_bound3>::type, T_functor> > >
-           (bind<I_location?I_location+1:0>(_A_functor, _A_b2, _A_b3),_A_b1);
-}
-
-/** Creates an adaptor of type sigc::bind_functor which fixes the last three arguments of the passed functor.
- * This function overload fixes the last three arguments of @e _A_func.
- *
- * @param _A_func Functor that should be wrapped.
- * @param _A_b1 First argument to bind to @e _A_func.
- * @param _A_b2 Second argument to bind to @e _A_func.
- * @param _A_b3 Third argument to bind to @e _A_func.
- * @return Adaptor that executes _A_func with the bound argument on invokation.
- *
- * @ingroup bind
- */
-template <class T_bound1, class T_bound2, class T_bound3, class T_functor>
-inline bind_functor<0, typename unwrap_reference<T_bound1>::type,
-       bind_functor<0, typename unwrap_reference<T_bound2>::type,
-       bind_functor<0, typename unwrap_reference<T_bound3>::type, T_functor> > >
-bind(const T_functor& _A_functor, T_bound1 _A_b1, T_bound2 _A_b2,T_bound3 _A_b3)
-{ 
-  return bind_functor<0, typename unwrap_reference<T_bound1>::type,
-         bind_functor<0, typename unwrap_reference<T_bound2>::type,
-         bind_functor<0, typename unwrap_reference<T_bound3>::type, T_functor> > >
-           (bind(_A_functor, _A_b2, _A_b3),_A_b1);
-}
+FOR(1,CALL_SIZE,[[BIND_COUNT(%1)]])dnl
 
 } /* namespace sigc */

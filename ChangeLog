@@ -1,3 +1,15 @@
+2003-11-11  Martin Schulze  <teebaum@cvs.gnome.org>
+
+	* sigc++/adaptors/macros/[bind,hide].h.m4: Change to zero-based
+	argument index in numbered bind() and hide() overload
+	(Agreement on the mailing list).
+	Support binding up to CALL_SIZE arguments with one bind adaptor.
+	(Requested by joey yandle and others).
+	Only support binding of multiple arguments in unnumberd overloads
+	to keep the API simple (Requested by Murray Cumming).
+	* tests/test_[bind,hide,functor_trait].cc, sigc++/bind.h:
+	Reflect API changes in compatibility module and test cases.
+
 2003-11-10  Martin Schulze  <teebaum@cvs.gnome.org>
 
 	* sigc++/adaptors/macros/[bind,hide].h.m4: Add unnumbered
