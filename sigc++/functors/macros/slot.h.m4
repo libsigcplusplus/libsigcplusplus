@@ -79,7 +79,11 @@ FOR(1, $1,[
    */
   template <class T_functor>
   slot$1(const T_functor& _A_func)
+#ifdef SIGC_NEW_DELETE_IN_LIBRARY_ONLY // only defined for MSVC to keep ABI compatibility
+    : slot_base(internal::typed_slot_rep<T_functor>(_A_func))
+#else
     : slot_base(new internal::typed_slot_rep<T_functor>(_A_func))
+#endif
     { rep_->call_ = internal::slot_call$1<LIST(T_functor, T_return, LOOP(T_arg%1, $1))>::address(); }
 
   slot$1(const slot$1& src)

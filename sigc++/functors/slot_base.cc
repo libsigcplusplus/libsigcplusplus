@@ -59,10 +59,17 @@ slot_base::slot_base()
   blocked_(false)
 {}
 
+#ifdef SIGC_NEW_DELETE_IN_LIBRARY_ONLY // only defined for MSVC to keep ABI compatibility
+slot_base::slot_base(const rep_type& rep)
+: rep_(rep.dup()),
+  blocked_(false)
+{}
+#else
 slot_base::slot_base(rep_type* rep)
 : rep_(rep),
   blocked_(false)
 {}
+#endif
 
 slot_base::slot_base(const slot_base& src)
 : rep_(0),

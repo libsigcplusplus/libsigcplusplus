@@ -215,7 +215,11 @@ public:
   /** Constructs a slot from an existing slot_rep object.
    * @param rep The slot_rep object this slot should contain.
    */
+#ifdef SIGC_NEW_DELETE_IN_LIBRARY_ONLY // only defined for MSVC to keep ABI compatibility
+  explicit slot_base(const rep_type& rep);
+#else
   explicit slot_base(rep_type* rep);
+#endif
 
   /** Constructs a slot, copying an existing one.
    * @param src The existing slot to copy.

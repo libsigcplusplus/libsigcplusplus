@@ -16,15 +16,18 @@
 //
 #pragma warning(disable:4251)
 
+/* configure checks */
+// #undef SIGC_GCC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD
+#define SIGC_MSVC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD 1
+
+/* platform specific macros */
+// #define LIBSIGC_DISABLE_DEPRECATED
+#define SIGC_NEW_DELETE_IN_LIBRARY_ONLY // only defined for MSVC to keep ABI compatibility
 #if defined(_WINDLL)
  #define SIGC_API __declspec(dllexport)
 #else
  #define SIGC_API __declspec(dllimport)
 #endif
-
-// #undef SIGC_GCC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD
-#define SIGC_MSVC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD 1
-
-// #define LIBSIGC_DISABLE_DEPRECATED
+#define
 
 #endif // SIGCXX_CONFIG_H

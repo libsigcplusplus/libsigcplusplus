@@ -1,3 +1,11 @@
+2004-10-02  Martin Schulze <mschulze@cvs.gnome.org>
+
+	* sigc++config.h.in, MSVC_Net2003/sigc++config.h,
+	sigc++/signal_base.cc, sigc++/functors/slot_base.{h,cc},
+	sigc++/functors/macros/slot.h.m4: Define and use new macro
+	SIGC_NEW_DELETE_IN_LIBRARY_ONLY to ABI-compatibly move
+	all calls to new and delete into non-inline library code.
+
 2004-09-26  Martin Schulze <mschulze@cvs.gnome.org>
 
 	* sigc++/adaptors/lambda/macros/group.h.m4: Add a missing
