@@ -76,6 +76,15 @@ __FIREWALL__
 
 namespace sigc {
 
+/** nil struct type.
+ * The nil struct type is used as default template argument in the
+ * unnumbered signal<> and slot<> templates. Template specializations
+ * for the last m of n template arguments being "nil" can use other,
+ * numbered templates, like signal#<>, knowing that # = (n-m).
+ */
+struct nil;
+
+
 /** A hint to the compiler.
  * All functors which define "result_type" should publically inherit from this hint.
  *
