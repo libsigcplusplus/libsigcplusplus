@@ -9,6 +9,10 @@
 
 #include <sigc++/sigc++.h>
 
+SIGC_USING_STD(cout)
+SIGC_USING_STD(endl)
+SIGC_USING_STD(string)
+
 void on_print(const std::string& str)
 {
   std::cout << str;

@@ -9,6 +9,9 @@
 #include <sigc++/functors/mem_fun.h>
 #include <iostream>
 
+SIGC_USING_STD(cout)
+SIGC_USING_STD(endl)
+
 struct arithmetic_mean_accumulator
 {
   typedef double result_type;

@@ -10,6 +10,10 @@
 #include <iostream>
 #include <string>
 
+SIGC_USING_STD(cout)
+SIGC_USING_STD(endl)
+SIGC_USING_STD(string)
+
 int foo(int i)   {std::cout << "foo(int "<<i<<")" << std::endl; return 1;}
 int bar(float i) {std::cout << "bar(float "<<i<<")" << std::endl; return 1;}
 

@@ -7,6 +7,9 @@
 #include <sigc++/functors/slot.h>
 #include <iostream>
 
+SIGC_USING_STD(cout)
+SIGC_USING_STD(endl)
+
 struct foo : public sigc::functor_base
 {
   typedef float result_type;

@@ -10,6 +10,9 @@
 #include <sigc++/functors/mem_fun.h>
 #include <iostream>
 
+SIGC_USING_STD(cout)
+SIGC_USING_STD(endl)
+
 int foo(int i)    { std::cout << "foo: " << i << std::endl; return 1;}
 int bar(double i) { std::cout << "bar: " << i << std::endl; return 1;}
 

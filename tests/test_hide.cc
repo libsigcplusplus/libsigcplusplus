@@ -6,6 +6,9 @@
 #include <sigc++/adaptors/hide.h>
 #include <iostream>
 
+SIGC_USING_STD(cout)
+SIGC_USING_STD(endl)
+
 struct foo : public sigc::functor_base
 {
   // choose a type that can hold all return values

@@ -4,7 +4,11 @@
  */
 
 #include <iostream>
-#include <sigc++/functors/ptr_fun.h>
+//#include <sigc++/functors/ptr_fun.h>
+#include <sigc++/sigc++.h>
+
+SIGC_USING_STD(cout)
+SIGC_USING_STD(endl)
 
 int foo()
   {std::cout << "foo()" << std::endl; return 1;}

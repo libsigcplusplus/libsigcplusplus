@@ -10,6 +10,9 @@
 #include <sigc++/functors/mem_fun.h>
 #include <iostream>
 
+SIGC_USING_STD(cout)
+SIGC_USING_STD(endl)
+
 sigc::connection connection;
 
 class HandlerClass : public sigc::trackable

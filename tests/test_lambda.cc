@@ -11,6 +11,7 @@
 SIGC_USING_STD(cout)
 SIGC_USING_STD(endl)
 SIGC_USING_STD(string)
+SIGC_USING_STD(ostream)
 
 using sigc::_1;
 using sigc::_2;

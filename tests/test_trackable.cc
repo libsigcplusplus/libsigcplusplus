@@ -8,6 +8,9 @@
 #include <sigc++/functors/slot.h>
 #include <sigc++/functors/mem_fun.h>
 
+SIGC_USING_STD(cout)
+SIGC_USING_STD(endl)
+
 class my_class: public sigc::trackable
 {
 public:

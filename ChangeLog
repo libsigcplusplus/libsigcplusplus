@@ -1,5 +1,18 @@
 2005-01-19  Murray Cumming  <murrayc@murrayc.com>
 
+	* scripts/: Added cxx_std.m4, with a test copied from 
+	glibmm/scripts/cxx_std.m4 to check if the compiler has the std:: 
+	namespace.
+	* sigcconfig.h: #undef the new #define and add SIGC_USING_STD(), 
+	like GLIBMM_USING_STD, to put stuff in the std:: namespace when it 
+	is not there already,
+	* configure.in: Used the new test.
+	* tests/*: Uses SIG_USING_STD() for every std:: thing that we use.
+	This is needed by the Tru64 and HP-UX compilers when using their 
+	defaults.
+
+2005-01-19  Murray Cumming  <murrayc@murrayc.com>
+
 	* configure.in: AC_INIT(): Provide the extra tarball name parameter, 
 	so that it does not create a libsigc--- tarball.
 

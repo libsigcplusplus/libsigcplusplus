@@ -26,6 +26,15 @@
   #undef SIGC_GCC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD
   #undef SIGC_MSVC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD
   
+  #undef SIGC_HAVE_NAMESPACE_STD
+  
+  //Put things in the std namespace, if they should be there.
+  #ifndef SIGC_HAVE_NAMESPACE_STD
+    # define SIGC_USING_STD(Symbol) namespace std { using ::Symbol; }
+  #else
+  #  define SIGC_USING_STD(Symbol) /* empty */
+  #endif
+
   // platform specific macros
   // #define LIBSIGC_DISABLE_DEPRECATED
   // #define SIGC_NEW_DELETE_IN_LIBRARY_ONLY 

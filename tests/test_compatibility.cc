@@ -15,6 +15,10 @@
 #include <sigc++/bind_return.h>
 #include <sigc++/retype.h>
 
+SIGC_USING_STD(cout)
+SIGC_USING_STD(endl)
+SIGC_USING_STD(string)
+
 void print(const std::string &str)
   { std::cout << "print(str="<<str<<")" << std::endl; }
 

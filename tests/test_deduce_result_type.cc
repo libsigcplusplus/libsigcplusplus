@@ -4,7 +4,11 @@
  */
 
 #include <iostream>
-#include <sigc++/adaptors/deduce_result_type.h>
+//#include <sigc++/adaptors/deduce_result_type.h>
+#include <sigc++/sigc++.h>
+
+SIGC_USING_STD(cout)
+SIGC_USING_STD(endl)
 
 template <class T>
 void bar(T t)

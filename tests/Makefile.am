@@ -24,9 +24,11 @@ noinst_PROGRAMS= \
   test_retype \
   test_compose \
   test_exception_catch \
-  test_lambda \
   test_size \
   test_compatibility
+  
+#Disabled:
+#   test_lambda - The Tru64 compiler can't build this when not using --std strict_ansi -model ansi, so let's not worry about it.
 
 TESTS = $(noinst_PROGRAMS)
 
@@ -49,6 +51,8 @@ test_hide_SOURCES = test_hide.cc
 test_retype_SOURCES = test_retype.cc
 test_compose_SOURCES = test_compose.cc
 test_exception_catch_SOURCES = test_exception_catch.cc
-test_lambda_SOURCES = test_lambda.cc
+
+#test_lambda_SOURCES = test_lambda.cc
+
 test_size_SOURCES = test_size.cc
 test_compatibility_SOURCES = test_compatibility.cc

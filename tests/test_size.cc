@@ -6,6 +6,8 @@
 #include <sigc++/sigc++.h>
 #include <iostream>
 
+SIGC_USING_STD(cout)
+SIGC_USING_STD(endl)
 
 struct A {
   void foo();

@@ -9,6 +9,9 @@
 #include <sigc++/functors/mem_fun.h>
 #include <sigc++/functors/ptr_fun.h>
 
+SIGC_USING_STD(cout)
+SIGC_USING_STD(endl)
+
 class trackable {};
 struct A: public trackable { A() {} };
 

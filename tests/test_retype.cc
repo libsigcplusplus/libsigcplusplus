@@ -6,6 +6,9 @@
 #include <sigc++/adaptors/retype.h>
 #include <iostream>
 
+SIGC_USING_STD(cout)
+SIGC_USING_STD(endl)
+
 struct foo : public sigc::trackable
 {
   float test_int(int i) 

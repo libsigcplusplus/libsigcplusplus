@@ -8,6 +8,10 @@
 #include <iostream>
 #include <string>
 
+SIGC_USING_STD(cout)
+SIGC_USING_STD(endl)
+SIGC_USING_STD(string)
+
 struct foo : public sigc::functor_base
 {
   // choose a type that can hold all return values

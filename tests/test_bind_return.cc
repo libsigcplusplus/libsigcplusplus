@@ -8,6 +8,10 @@
 #include <iostream>
 #include <string>
 
+SIGC_USING_STD(cout)
+SIGC_USING_STD(endl)
+SIGC_USING_STD(string)
+
 struct foo 
 {
   void operator()(int i) 

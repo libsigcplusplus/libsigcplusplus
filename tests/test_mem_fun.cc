@@ -3,8 +3,12 @@
  *  Assigned to public domain.  Use as you wish without restriction.
  */
 
-#include <sigc++/functors/mem_fun.h>
+//#include <sigc++/functors/mem_fun.h>
+#include <sigc++/sigc++.h>
 #include <iostream>
+
+SIGC_USING_STD(cout)
+SIGC_USING_STD(endl)
 
 struct test
 {
