@@ -1,5 +1,12 @@
 2003-08-27  Martin Schulze  <teebaum@cvs.gnome.org>
 
+	* tests/test_callof.cc, tests/test_deduce_result_type.cc:
+	Rename, correct and improve this test case.
+	* tests/Makefile.am: Build and run test_deduce_result_type
+	instead of test_callof.
+
+2003-08-27  Martin Schulze  <teebaum@cvs.gnome.org>
+
 	* Update TODO.
 
 2003-08-27  Martin Schulze  <teebaum@cvs.gnome.org>
