@@ -126,15 +126,18 @@ FOR(1,$1,[
  * @ingroup slot
  */
 template <LIST(class T_return, LOOP(class T_arg%1 = nil, $1))>],[dnl
+
 /** Convenience wrapper for the numbered sigc::slot$1 template.
  * See the base class for useful methods.
  * This is the template specialization of the unnumbered sigc::slot
- * template for $1 argument(s).
+ * template for $1 argument(s), specialized for different numbers of arguments
+ * This is possible because the template has default (nil) template types.
 dnl *
 dnl * @ingroup slot
  */
 template <LIST(class T_return, LOOP(class T_arg%1, $1))>])
-class slot ifelse($1, $2,,[<LIST(T_return, LOOP(T_arg%1,$1))>])
+dnl TODO: I don't like the hardcoded 7 here. murrayc.
+class slot ifelse($1, $2,,[<LIST(T_return, LIST(LOOP(T_arg%1, $1), LOOP(nil, 7 - $1)))>])
   : public slot$1<LIST(T_return, LOOP(T_arg%1, $1))>
 {
 public:

@@ -43,7 +43,8 @@ void Something::on_print(int a)
   std::cout << "on_print recieved: " << a << std::endl;
 }
 
-main()
+int main()
 {
   Something something;  
+  return 0;
 }

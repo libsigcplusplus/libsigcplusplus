@@ -15,7 +15,8 @@
     #define SIGC_WIN32
     #define SIGC_CONFIGURE
   #else
-    #warning "Unknown architecture (send me gcc --dumpspecs or equiv)"
+    //The Tru64 compiler complains about this "unrecognized preprocessing directive", but it should never get this far anyway.
+    //#warning "libsigc++ config: Unknown win32 architecture (send me gcc --dumpspecs or equiv)"
   #endif
 #else
   #define SIGC_CONFIGURE

@@ -28,7 +28,7 @@ noinst_PROGRAMS= \
   test_compatibility
   
 #Disabled:
-#   test_lambda - The Tru64 compiler can't build this when not using --std strict_ansi -model ansi, so let's not worry about it.
+#   test_lambda - The Tru64 compiler can't build this when not using -std strict_ansi -model ansi, so let's not worry about it.
 
 TESTS = $(noinst_PROGRAMS)
 

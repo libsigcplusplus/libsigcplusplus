@@ -1,3 +1,12 @@
+2005-01-21  Murray Cumming  <murrayc@murrayc.com>
+
+	* sigc++/functors/macros/slot.h.m4, sigc++/macros/signal.h.m4: 
+	slot and signal template specialization for 
+	various numbers of template args: In the class slot line, specify 
+	all the remaining template types as null, instead of expecting the 
+	compiler to guess them in itself. This partly fixes the build on 
+	AIX with the xlC compiler. Bug #164685.
+
 2005-01-19  Murray Cumming  <murrayc@murrayc.com>
 
 	* sigc++/type_traits: struct is_base_and_derived: Make the test inner 
