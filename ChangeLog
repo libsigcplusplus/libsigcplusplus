@@ -1,3 +1,8 @@
+2005-02-23  Murray Cumming  <murrayc@murrayc.com>
+
+	* sigc++/functors/slot_base.h: Make slot_base::operator=() public, to 
+	fix the build with SUN Forte C++ 5.5 and Tru64.
+
 2.0.10:
 
 2005-02-20  Murray Cumming  <murrayc@murrayc.com>
