@@ -17,6 +17,28 @@ This version of libsigc++ needs GNU g++ 3.2 or higher to compile.
 
 *** ChangeLog summary:
 
+1.9.8:
+
+* Add compatibility module that defines namespace SigC.
+  namespace SigC should be API compatible to libsigc++-1.2.
+  Currenctly only the core parts of the library are supported.
+  Adaptors are still to follow.
+* Fix connection::operator=(). Include connection.h in sigc++.h.
+* Get rid of namespace functor.
+* Rename dependency to destroy_notify_callback.
+* Rename trackable::clear() to trackable::notify_callbacks().
+* Move slot_base, signal_base, slot_iterator[_buf], slot_list
+  out of namespace internal. They are public API.
+* Add reference counter to signal_impl enabling signals
+  to share the underlying information.
+* Add convenience function signal#::make_slot().
+* Get rid of one-letter-parameter-names.
+* Get rid of "using namespace ..." in the test cases.
+* Add lambda operators subscript ([]) and assign (=).
+* Fix is_base_and_derived<> for const types.
+* New and updated documentation.
+* Add previous announces to file NEWS.
+
 1.9.7:
 
 * Added sigc++/sigc++.h. (Murray Cumming)

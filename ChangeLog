@@ -1,3 +1,11 @@
+1.9.8:
+
+2003-10-19  Martin Schulze  <teebaum@cvs.gnome.org>
+
+	* sigc++/functors/slot.h.m4: Define doxygen group functors.
+	* configure.ac: Bump version number to 1.9.8.
+	* NEWS: Add ChangeLog summary for version 1.9.8.
+
 2003-10-19  Martin Schulze  <teebaum@cvs.gnome.org>
 
 	* NEWS: Add announces of versions 1.9.6 and 1.9.7.

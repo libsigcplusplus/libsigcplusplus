@@ -337,6 +337,26 @@ struct typed_slot_rep : public slot_rep
 
 } /* namespace internal */
 
+/** @defgroup functors functors
+ * Functors are copyable types that define operator()().
+ *
+ * Types that define operator()() overloads with different return types
+ * are referred to as multi-type functors. Multi-type functors are only
+ * partly supported in libsigc++.
+ *
+ * Closures are functors that store all information needed to invoke
+ * a callback from operator()().
+ *
+ * Adaptors are functors that alter the signature of a functor's
+ * operator()().
+ *
+ * libsigc++ defines numerous functors, closures and adaptors.
+ * Since libsigc++ is a callback libaray, most functors are also
+ * closures. Therefore the documentation doesn't distinguish between
+ * functors and closures. The basic functor types libsigc++ defines
+ * are listed below. Adaptors are documented here ... TODO ...
+ */
+
 /** @defgroup slot slot
  * Slots are type-safe representations of callback methods and functions.
  * A Slot can be constructed from any function, regardless of whether it is
