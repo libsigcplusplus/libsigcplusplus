@@ -110,7 +110,6 @@ struct lambda_action<$1 >
 
 divert(2)dnl
 // Operators for lambda action $1. At least one of the arguments needs to be of type lamdba, hence the overloads.
-#ifndef SIGC_OPERATOR_OVERLOAD_AMBIGUITY
 template <class T_arg1, class T_arg2>
 lambda<lambda_operator<$1, T_arg1, T_arg2> >
 operator $2 (const lambda<T_arg1>& a1, const lambda<T_arg2>& a2)
@@ -118,21 +117,14 @@ operator $2 (const lambda<T_arg1>& a1, const lambda<T_arg2>& a2)
   return lambda<operator_type>(operator_type(a1.value_,a2.value_)); }
 template <class T_arg1, class T_arg2>
 lambda<lambda_operator<$1, T_arg1, typename unwrap_reference<T_arg2>::type> >
-operator $2 (const lambda<T_arg1>& a1, T_arg2 a2)
+operator $2 (const lambda<T_arg1>& a1, const T_arg2& a2)
 { typedef lambda_operator<$1, T_arg1, typename unwrap_reference<T_arg2>::type> operator_type;
   return lambda<operator_type>(operator_type(a1.value_,a2)); }
 template <class T_arg1, class T_arg2>
 lambda<lambda_operator<$1, typename unwrap_reference<T_arg1>::type, T_arg2> >
-operator $2 (T_arg1 a1, const lambda<T_arg2>& a2)
+operator $2 (const T_arg1& a1, const lambda<T_arg2>& a2)
 { typedef lambda_operator<$1, typename unwrap_reference<T_arg1>::type, T_arg2> operator_type;
   return lambda<operator_type>(operator_type(a1,a2.value_)); }
-#else  // The compiler reports ambiguities with the overloads above. Restrict the syntax so that the left hand side argument needs to be of type lambda.
-template <class T_arg1, class T_arg2>
-lambda<lambda_operator<$1, T_arg1, typename unwrap_lambda_type<T_arg2>::type> >
-operator $2 (const lambda<T_arg1>& a1, const T_arg2& a2)
-{ typedef lambda_operator<$1, T_arg1, typename unwrap_lambda_type<T_arg2>::type > operator_type;
-  return lambda<operator_type>(operator_type(a1.value_,unwrap_lambda_value(a2))); }
-#endif
 
 divert(0)dnl
 ])

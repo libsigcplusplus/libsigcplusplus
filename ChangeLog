@@ -1,3 +1,13 @@
+2004-08-03  Martin Schulze <mschulze@cvs.gnome.org>
+
+	* scripts/cxx.m4, sigc++config.h.in, configure.ac,
+	sigc++/adaptors/lambda/macros/operator.h.m4, tests/test_lambda.cc:
+	Rollback change from 2004-07-15: configure check
+	SIGC_OPERATOR_OVERLOAD_AMBIGUITY is not needed - the overload
+	ambiguity doesn't occur if the lambda operators take all arguments
+	as const reference.
+	* configure.ac: Bump version number to 2.0.4.
+
 2004-08-03  James Lin <slimjimmy@mail.com>
 
 	* Added SIGC_API qualifier to all externally-visible non-template 
@@ -125,6 +135,8 @@
 
 	* autogen.sh: Add '--force'-flag to the 'libtoolize'-command (bug #143425).
 
+2.0.3:
+
 2004-05-30  Martin Schulze  <mschulze@cvs.gnome.org>
 
 	* configure.ac: Bump version number to 2.0.3.
@@ -133,6 +145,8 @@
 	* tests/test_signal.cc, tests/test_accumulated.cc: Emit unconnected signal.
 	* sigc++/macros/object_slot.h.m4: Suppress compiler warning at
 	dynamic_cast<>-test (tested by Christof Petig/Timothy M. Shead).
+
+2.0.2:
 
 2004-05-22  Martin Schulze  <mschulze@cvs.gnome.org>
 

@@ -60,10 +60,8 @@ int main()
   std::cout << "(_1 + _2) (3,4):    " << (_1 + _2) (3,4)      << std::endl;
   std::cout << "(_1 + 1)  (3,4):    " << (_1 + 1)  (3,4)      << std::endl;
   std::cout << "(_2 + 1)  (3,4):    " << (_2 + 1)  (3,4)      << std::endl;
-#ifndef SIGC_OPERATOR_OVERLOAD_AMBIGUITY
   std::cout << "(2 + _1)  (3,4):    " << (2 + _1)  (3,4)      << std::endl;
   std::cout << "(2 + _2)  (3,4):    " << (2 + _2)  (3,4)      << std::endl;
-#endif
   std::cout << "(_1+_2*_3)(1,2,3):  " << (_1+_2*_3)(1,2,3)    << std::endl;
   std::cout << "((++_1)*2)(1):      " << ((++_1)*2)(1)        << std::endl;
   std::cout << "((++_1)*2)(a):      " << ((++_1)*2)(a);
@@ -85,11 +83,9 @@ int main()
        // - var() is used to create a lambda that holds a reference and is interchangable with ref() in lambda operator expressions
        // - cannot use std::endl without much hackery because it is defined as a template function
        // - cannot use "\n" without ref() because arrays cannot be copied
-#ifndef SIGC_OPERATOR_OVERLOAD_AMBIGUITY
   (sigc::ref(std::cout) << sigc::constant(1) << sigc::ref("\n"))();
   (sigc::ref(std::cout) << _1 << std::string("\n"))("hello world");
   (sigc::ref(std::cout) << sigc::static_cast_<int>(_1) << std::string("\n"))(1.234);
-#endif
   (sigc::var(std::cout) << 1 << sigc::ref("\n"))();
   (sigc::var(std::cout) << _1 << std::string("\n"))("hello world");
 
