@@ -28,6 +28,5 @@
 #else
  #define SIGC_API __declspec(dllimport)
 #endif
-#define
 
 #endif // SIGCXX_CONFIG_H

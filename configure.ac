@@ -61,8 +61,10 @@ AC_MSG_RESULT([$platform_win32])
 AM_CONDITIONAL(PLATFORM_WIN32, test "$platform_win32" = "yes")
 
 dnl Using libtool
+AC_CONFIG_MACRO_DIR(scripts)
 AC_LIBTOOL_WIN32_DLL
-AM_PROG_LIBTOOL
+LT_INIT
+dnl AM_PROG_LIBTOOL
 
 dnl Using C++ compiler
 AC_PROG_CXX

@@ -1,3 +1,9 @@
+2004-10-07  Martin Schulze <mschulze@cvs.gnome.org>
+
+	* configure.ac: Update for libtool 1.5a (with support for Intel C++).
+	* MSVC_Net2003/sigc++config.h: Remove bogus '#define'
+	(reported by Timothy M. Shead <tshead@k-3d.com>).
+
 2004-10-02  Martin Schulze <mschulze@cvs.gnome.org>
 
 	* configure.ac: Bump version number to 2.0.6.
