@@ -1,3 +1,22 @@
+2003-02-16  Martin Schulze  <MHL.Schulze@t-online.de>
+
+	* tests/Makefile.am, tests/test_disconnect.cc:
+	Add testcase with a mixed connection & disconnection sequence.
+
+2003-02-16  Martin Schulze  <MHL.Schulze@t-online.de>
+
+	* sigc++/signal.cc: Bugfix in signal_base::insert():
+	Set notification function in the newly created copy of
+	slot_ rather than in slot_ itself.
+
+2003-02-10  Martin Schulze  <MHL.Schulze@t-online.de>
+
+	* sigc++/signal.h.m4: Comment in typedefs for iterator types in
+	the signal#<> class template. Make signal#<>::connect() return an
+	iterator for convenience.
+	(Note that the first change increases the binary size of
+	tests/test_signal from 201k to 204k, the second change to 206k.)
+
 2003-01-23  Murray Cumming  <murrayc@usa.net>
 
 	* sigc++/adaptors/lambda is disable temporarily (not built and
