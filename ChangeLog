@@ -1,6 +1,31 @@
 2003-03-07  Martin Schulze  <MHL.Schulze@t-online.de>
 
-	* sigc++/closure.{cc,h.m4}:
+	* sigc++/signal.{cc,h.m4}:
+	- signal_emit#<>: New templates replacing signal#<>::caller.
+	  The purpose of these templates is implementing the emit
+	  function and optimizing signal emission for the case that
+	  no accumulator is used via template specializations.
+	- default_accumulator<>: Removed. The default for T_accumulator
+	  in signal#<> now is nil. An example how to use accumulators
+	  is available in tests/test_accumulator.cc.
+	- signal_{base,impl}: Move the implementation of signal_base's
+	  interface to signal_impl. An object of this class is
+	  dynamically allocated when first connecting a closure to
+	  the signal. This drastically reduces the size of empty signals
+	  and allows for future addition of a reference counter to make
+	  it safe to delete a signal during emission.
+	- Directly work on closure_rep during signal emission. This
+	  seems to be quicker than using the closure templates.
+	- Document the classes. Restructure the header file a bit.
+
+	* sigc++/functors/closure.h.m4: Make closure_base::rep_ data
+	member public, so that signal emission can directly work on it.
+
+	* tests/test_size.cc: Add an entry for signal_impl.
+
+2003-03-07  Martin Schulze  <MHL.Schulze@t-online.de>
+
+	* sigc++/functors/closure.{cc,h.m4}:
 	- closure_base: BUGFIXES in ~closure_base() and operator=().
 	- Mark some functions with the inline keyword. This seems to
           help gcc 3.2 to optimize signal emission and (dis)connection.

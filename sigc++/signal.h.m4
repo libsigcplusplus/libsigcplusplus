@@ -18,27 +18,76 @@ divert(-1)
 
 include(template.macros.m4)
 
-define([SIGNAL],[dnl
-ifelse($1, $2,
-[template <LIST(class T_return, LOOP(class T_arg%1 = nil, $1))>],
-[template <LIST(class T_return, LOOP(class T_arg%1, $1))>])
-class signal ifelse($1, $2,,[<LIST(T_return, LOOP(T_arg%1,$1))>])
-  : public signal$1<LIST(T_return, LOOP(T_arg%1, $1), functor::default_accumulator<T_return> ) >
+define([SIGNAL_EMIT_N],[dnl
+template <LIST(class T_return, LOOP(class T_arg%1, $1), class T_accumulator)>
+struct signal_emit$1
 {
-  template <class T_accumulator>
-  class accumulated
-    :  public signal$1<LIST(T_return, LOOP(T_arg%1, $1), T_accumulator)>
+  typedef signal_emit$1<LIST(T_return, LOOP(T_arg%1, $1), T_accumulator)> self_type;
+  typedef typename T_accumulator::result_type result_type;
+  typedef functor::closure<LIST(T_return, LOOP(T_arg%1, $1))> closure_type;
+  typedef internal::closure_iterator_buf<self_type> closure_iterator_buf_type;
+  typedef signal_impl::const_iterator_type iterator_type;
+
+  signal_emit$1(LOOP(typename type_trait<T_arg%1>::take _A_a%1, $1)) ifelse($1,0,,[
+    : LOOP(_A_a%1_(_A_a%1), $1)]) {}
+
+  T_return operator()(const closure_type& _A_cl) const
+    { return (reinterpret_cast<typename closure_type::call_type>(_A_cl.rep_->call_))(LIST(_A_cl.rep_, LOOP(_A_a%1_, $1))); }
+dnl  T_return operator()(const closure_type& _A_closure) const
+dnl    { return _A_closure(LOOP(_A_a%1_, $1)); }
+
+  static result_type emit(LIST(const iterator_type& first, const iterator_type& last, LOOP(typename type_trait<T_arg%1>::take _A_a%1, $1)))
     {
-      public:
-        typename T_accumulator::result_type operator()(LOOP(typename type_trait<T_arg%1>::take _A_a%1, $1)) const
-          { return emit(LOOP(_A_a%1, $1)); }
-    };
+      self_type self ifelse($1,0,,[(LOOP(_A_a%1, $1))]);
+      T_accumulator accumulator;
+      return accumulator(closure_iterator_buf_type(first, self),
+                         closure_iterator_buf_type(last, self));
+    }
+dnl
+  FOR(1, $1,[
+  typename type_trait<T_arg%1>::take _A_a%1_;])
+};
 
-  public:
-    T_return operator()(LOOP(typename type_trait<T_arg%1>::take _A_a%1, $1)) const
-      { return emit(LOOP(_A_a%1, $1)); }
+template <LIST(class T_return, LOOP(class T_arg%1, $1))>
+struct signal_emit$1<LIST(T_return, LOOP(T_arg%1, $1), nil)>
+{
+  typedef signal_emit$1<LIST(T_return, LOOP(T_arg%1, $1), nil) > self_type;
+  typedef T_return result_type;
+  typedef functor::closure<LIST(T_return, LOOP(T_arg%1, $1))> closure_type;
+  typedef signal_impl::const_iterator_type iterator_type;
+  typedef typename closure_type::call_type call_type;
 
-    signal() {}
+  static result_type emit(LIST(iterator_type first, iterator_type last, LOOP(typename type_trait<T_arg%1>::take _A_a%1, $1)))
+    {
+      T_return r_;
+      for (; first != last; ++first)
+        {
+          if (first->empty() || first->blocked())
+            continue;
+          r_ = (reinterpret_cast<call_type>(first->rep_->call_))(LIST(first->rep_, LOOP(_A_a%1, $1)));
+        }
+      return r_;
+    }
+};
+
+template <LOOP(class T_arg%1, $1)>
+struct signal_emit$1<LIST(void, LOOP(T_arg%1, $1), nil)>
+{
+  typedef signal_emit$1<LIST(void, LOOP(T_arg%1, $1), nil)> self_type;
+  typedef void result_type;
+  typedef functor::closure<LIST(void, LOOP(T_arg%1, $1))> closure_type;
+  typedef signal_impl::const_iterator_type iterator_type;
+  typedef ifelse($1,0,void (*call_type)(functor::internal::closure_rep*),typename closure_type::call_type call_type);
+
+  static result_type emit(LIST(iterator_type first, iterator_type last, LOOP(typename type_trait<T_arg%1>::take _A_a%1, $1)))
+    {
+      for (; first != last; ++first)
+        {
+          if (first->empty() || first->blocked())
+            continue;
+          (reinterpret_cast<call_type>(first->rep_->call_))(LIST(first->rep_, LOOP(_A_a%1, $1)));
+        }
+    }
 };
 
 ])
@@ -48,24 +97,9 @@ template <LIST(class T_return, LOOP(class T_arg%1, $1), class T_accumulator)>
 class signal$1
   : public internal::signal_base
 {
-  struct caller
-  {
-    typedef typename T_accumulator::result_type result_type;
-    typedef functor::closure<LIST(T_return, LOOP(T_arg%1, $1))> closure_type;
-
-    caller(LOOP(typename type_trait<T_arg%1>::take _A_a%1, $1)) ifelse($1,0,,[
-      : LOOP(_A_a%1_(_A_a%1), $1)]) {}
-
-    T_return operator()(const closure_type& _A_closure) const
-      { return _A_closure(LOOP(_A_a%1_, $1)); }
-dnl
-    FOR(1, $1,[
-    typename type_trait<T_arg%1>::take _A_a%1_;])
-  };
-
   public:
-    typedef T_accumulator accumulator_type;
-    typedef typename accumulator_type::result_type        result_type;
+    typedef internal::signal_emit$1<LIST(T_return, LOOP(T_arg%1, $1), T_accumulator)> emitter_type;
+    typedef typename emitter_type::result_type            result_type;
     typedef functor::closure<LIST(T_return, LOOP(T_arg%1, $1))> closure_type;
     typedef internal::closure_list<closure_type>          closure_list;
     typedef typename closure_list::iterator               iterator;
@@ -74,18 +108,24 @@ dnl
     typedef typename closure_list::const_reverse_iterator const_reverse_iterator;
 
     iterator connect(const closure_type& slot_)
-      { return iterator(insert(slots_.end(), static_cast<const functor::internal::closure_base&>(slot_))); }
+      { return iterator(signal_base::connect(static_cast<const functor::internal::closure_base&>(slot_))); }
 
-    result_type emit(LOOP(typename type_trait<T_arg%1>::take _A_a%1, $1)) const;
+    result_type emit(LOOP(typename type_trait<T_arg%1>::take _A_a%1, $1)) const
+      {
+        if (empty())
+          return result_type();
+        internal::signal_exec exec(impl_);
+        return emitter_type::emit(LIST(impl_->slots_.begin(), impl_->slots_.end(), LOOP(_A_a%1, $1)));
+      }
 
     result_type operator()(LOOP(typename type_trait<T_arg%1>::take _A_a%1, $1)) const
       { return emit(LOOP(_A_a%1, $1)); }
 
     closure_list closures()
-      { return closure_list(this); }
+      { return closure_list(impl()); }
 
     const closure_list closures() const
-      { return closure_list(const_cast<signal$1*>(this)); }
+      { return closure_list(const_cast<signal$1*>(this)->impl()); }
 dnl    closure_list& closures()
 dnl      {
 dnl        closures_proxy_ = closure_list(this);
@@ -108,20 +148,30 @@ dnl  protected:
 dnl    mutable closure_list closures_proxy_;
 };
 
-template <LIST(class T_return, LOOP(class T_arg%1, $1), class T_accumulator)>
-typename T_accumulator::result_type 
-signal$1<LIST(T_return, LOOP(T_arg%1, $1), T_accumulator)>
-  ::emit(LOOP(typename type_trait<T_arg%1>::take _A_a%1, $1)) const
+])
+
+define([SIGNAL],[dnl
+ifelse($1, $2,
+[template <LIST(class T_return, LOOP(class T_arg%1 = nil, $1))>],
+[template <LIST(class T_return, LOOP(class T_arg%1, $1))>])
+class signal ifelse($1, $2,,[<LIST(T_return, LOOP(T_arg%1,$1))>])
+  : public signal$1<LIST(T_return, LOOP(T_arg%1, $1),nil)>
 {
-  typedef internal::closure_iterator_buf<caller> closure_iterator_buf_type;
+  template <class T_accumulator>
+  class accumulated
+    : public signal$1<LIST(T_return, LOOP(T_arg%1, $1), T_accumulator)>
+    {
+      public:
+        inline typename T_accumulator::result_type operator()(LOOP(typename type_trait<T_arg%1>::take _A_a%1, $1)) const
+          { return emit(LOOP(_A_a%1, $1)); }
+    };
 
-  internal::signal_exec exec(this);
-  caller caller_ ifelse($1,0,,[(LOOP(_A_a%1, $1))]);
-  T_accumulator accumulator;
+  public:
+    T_return operator()(LOOP(typename type_trait<T_arg%1>::take _A_a%1, $1)) const
+      { return emit(LOOP(_A_a%1, $1)); }
 
-  return accumulator(closure_iterator_buf_type(slots_.begin(), caller_),
-                      closure_iterator_buf_type(slots_.end(), caller_));
-}
+    signal() {}
+};
 
 ])
 
@@ -136,37 +186,6 @@ divert(0)
 #include <sigc++/functors/closure.h>
 
 namespace sigc {
-namespace functor {
-
-// fixme move outside
-template <class T_return>
-struct default_accumulator 
-{
-  typedef T_return result_type;
-  template<typename T_iterator>
-  T_return operator()(T_iterator first, T_iterator last) const
-    {
-      T_return value_;
-      while (first != last)
-        value_ = *first++;
-      return value_;
-    }
-};
-
-template <>
-struct default_accumulator<void>
-{
-  typedef void result_type;
-  template<typename T_iterator>
-  void operator()(T_iterator first, T_iterator last) const
-    {
-      while (first != last)
-        *first++;
-    }
-};
-
-} /* namespace functor */
-
 
 namespace internal {
 
@@ -175,43 +194,113 @@ struct signal_exec;
 template <class T_closure>
 struct closure_list;
 
-// Base class to simplify code. Notes:
-// - signals are not copyable and therefore not functors
-// - inherits trackable so that functors with our auto-disconnection
-//   feature can be built from the emit function
+/** Implementation of the signal interface.
+ * signal_impl manages a list of closures. When a closure becomes
+ * invalid (because some referred object dies), notify() is executed.
+ * notify() either calls sweep() directly or defers the execution of
+ * sweep() when the signal is being emitted. sweep() removes all
+ * invalid closure from the list.
+ */
+struct signal_impl
+{
+  typedef size_t size_type;
+  typedef std::list<functor::internal::closure_base>::iterator iterator_type;
+  typedef std::list<functor::internal::closure_base>::const_iterator const_iterator_type;
+
+  signal_impl()
+    : exec_count_(0), defered_(0) {}
+
+  inline bool empty() const
+    { return slots_.empty(); }
+
+  void clear()
+    { slots_.clear(); }
+
+  size_type size() const
+    { return slots_.size(); }
+
+  iterator_type connect(const functor::internal::closure_base& slot_)
+    { return insert(slots_.begin(), slot_); }
+
+  iterator_type insert(iterator_type i, const functor::internal::closure_base& slot_);
+
+  iterator_type erase(iterator_type i)
+    { return slots_.erase(i); }
+
+  // removes empty closures from slots_
+  void sweep();
+
+  static void* notify(void* d);
+
+  int exec_count_;
+  bool defered_;
+  std::list<functor::internal::closure_base> slots_;
+};
+
+/** Base class for the signal#<> templates.
+ * signal_base integrates most of the interface of the derived signal#<>
+ * templates (therefore reducing code size). The implementation, however,
+ * resides in signal_impl. A signal_impl object is dynamically allocated
+ * from signal_base when first connecting a closure to the signal. This
+ * measure drastically reduces the size of empty signals.
+ * Note that signals are not copyable and therefore cannot be functors,
+ * i.e. no closure can be built from a signal directly.
+ * However, functors can be built from member functions of signal_base
+ * or signal#<> using mem_fun(). Closures built from these functors are
+ * automatically disconnected when the signal dies because signal_base
+ * inherits trackable.
+ */
 struct signal_base : public trackable
 {
-  friend struct signal_exec;
-  template <class T_closure> friend struct closure_list;
-
   typedef size_t size_type;
 
   signal_base()
-    : exec_count_(0), defered_(0) {}
+    : impl_(0) {}
 
-  bool empty() const { return slots_.empty(); }
-  void clear()       { slots_.clear(); }
+  ~signal_base();
 
-  size_type size() const { return slots_.size(); }
+  inline bool empty() const
+    { return (!impl_ || impl_->empty()); }
+
+  void clear()
+    { if (impl_) impl_->clear(); }
+
+  size_type size() const
+    { return (impl_ ? impl_->size() : 0); }
 
   protected:
     typedef std::list<functor::internal::closure_base>::iterator iterator_type;
 
-    static void* notify(void* d);
+    iterator_type connect(const functor::internal::closure_base& slot_)
+      { return impl()->connect(slot_); }
 
-    iterator_type insert(iterator_type i, const functor::internal::closure_base& slot_);
+    iterator_type insert(iterator_type i, const functor::internal::closure_base& slot_)
+      { return impl()->insert(i, slot_); }
+
     iterator_type erase(iterator_type i)
-      { return slots_.erase(i); }
+      { return impl()->erase(i); }
 
-    // removes empty closures from slots_
-    void sweep();
-
-    int exec_count_;
-    bool defered_;
-    std::list<functor::internal::closure_base> slots_;
+    signal_impl* impl_;
+    signal_impl* impl();
 };
 
-// Iterator over closures.
+/** Exception safe sweeper for cleaning up empty closures on list.
+ */
+struct signal_exec
+{
+  signal_impl* sig_;
+  inline signal_exec(const signal_impl* sig) 
+    : sig_(const_cast<signal_impl*>(sig) )
+      { (sig_->exec_count_)++; }
+  inline ~signal_exec() 
+    { 
+      if (--(sig_->exec_count_) == 0 && sig_->defered_) 
+        sig_->sweep(); 
+    }
+};
+
+/** Stl-style iterator for closure_list.
+ */
 template <typename T_closure>
 struct closure_iterator
 {
@@ -225,7 +314,7 @@ struct closure_iterator
   typedef T_closure* pointer;
   typedef T_closure& reference;
 
-  typedef typename std::list<functor::internal::closure_base>::iterator iterator_type;
+  typedef typename signal_impl::iterator_type iterator_type;
 
   closure_iterator()
     {}
@@ -274,6 +363,8 @@ struct closure_iterator
   iterator_type i_;
 };
 
+/** Stl-style const iterator for closure_list.
+ */
 template <typename T_closure>
 struct closure_const_iterator
 {
@@ -287,7 +378,7 @@ struct closure_const_iterator
   typedef const T_closure* pointer;
   typedef const T_closure& reference;
 
-  typedef typename std::list<functor::internal::closure_base>::const_iterator iterator_type;
+  typedef typename signal_impl::const_iterator_type iterator_type;
 
   closure_const_iterator()
     {}
@@ -336,7 +427,11 @@ struct closure_const_iterator
   iterator_type i_;
 };
 
-// Templated base class to summonize stl list style interface
+/** Stl style list interface for signal#<>.
+ * closure_list can be used to access the list of closures that
+ * is managed by a signal. A closure_list object can be retrieved
+ * from signal#<>::closures().
+ */
 template <class T_closure>
 struct closure_list
 {
@@ -353,7 +448,7 @@ struct closure_list
   closure_list()
     : list_(0) {}
 
-  explicit closure_list(signal_base* __list)
+  explicit closure_list(signal_impl* __list)
     : list_(__list) {}
 
   iterator begin()
@@ -421,43 +516,33 @@ struct closure_list
     }
 
   protected:
-    signal_base* list_;
+    signal_impl* list_;
 };
 
-// Exception safe sweeper for cleaning up empty closures on list
-struct signal_exec
-{
-  signal_base* sig_;
-  signal_exec(const signal_base* sig) 
-    : sig_(const_cast<signal_base*>(sig) )
-      { (sig_->exec_count_)++; }
-  ~signal_exec() 
-    { 
-      if (--(sig_->exec_count_) == 0&&sig_->defered_) 
-        sig_->sweep(); 
-    }
-};
-
-// Iterator over closures. For use in accumulators during emit.
-template <class T_caller, class T_result = typename T_caller::result_type>
+/** Special iterator over signal_impl's closure list that holds extra data.
+ * This iterators is for use in accumulators. operator*() executes the closure.
+ * The return value is buffered, so that in an expression like "a = *i * *i;"
+ * the closure is only executed once.
+ */
+template <class T_emitter, class T_result = typename T_emitter::result_type>
 struct closure_iterator_buf
 {
-  typedef size_t                          size_type;
-  typedef ptrdiff_t                       difference_type;
-  typedef std::bidirectional_iterator_tag iterator_category;
+  typedef size_t                           size_type;
+  typedef ptrdiff_t                        difference_type;
+  typedef std::bidirectional_iterator_tag  iterator_category;
 
-  typedef T_caller                        caller_type;
-  typedef T_result                        result_type;
-  typedef typename T_caller::closure_type closure_type;
+  typedef T_emitter                        emitter_type;
+  typedef T_result                         result_type;
+  typedef typename T_emitter::closure_type closure_type;
 
-  typedef typename std::list<functor::internal::closure_base>::const_iterator iterator_type;
+  typedef signal_impl::const_iterator_type iterator_type;
 
-  closure_iterator_buf(const iterator_type& i, const caller_type& c)
+  closure_iterator_buf(const iterator_type& i, const emitter_type& c)
     : i_(i), c_(c), invoked_(false) {}
 
   result_type operator*() const
     {
-      if (!invoked_)
+      if (!i_->empty() && !i_->blocked() && !invoked_)
         {
           r_ = c_(static_cast<const closure_type&>(*i_));
           invoked_ = true;
@@ -503,30 +588,32 @@ struct closure_iterator_buf
 
   private:
     iterator_type i_;
-    const caller_type& c_;
+    const emitter_type& c_;
     mutable result_type r_;
     mutable bool invoked_;
 };
 
-template <class T_caller>
-struct closure_iterator_buf<T_caller, void>
+/** Template specialization of closure_iterator_buf for void return.
+ */
+template <class T_emitter>
+struct closure_iterator_buf<T_emitter, void>
 {
-  typedef size_t                          size_type;
-  typedef ptrdiff_t                       difference_type;
-  typedef std::bidirectional_iterator_tag iterator_category;
+  typedef size_t                           size_type;
+  typedef ptrdiff_t                        difference_type;
+  typedef std::bidirectional_iterator_tag  iterator_category;
 
-  typedef T_caller                        caller_type;
-  typedef void                            result_type;
-  typedef typename T_caller::closure_type closure_type;
+  typedef T_emitter                        emitter_type;
+  typedef void                             result_type;
+  typedef typename T_emitter::closure_type closure_type;
 
   typedef typename std::list<functor::internal::closure_base>::const_iterator iterator_type;
 
-  closure_iterator_buf(const iterator_type& i, const caller_type& c)
+  closure_iterator_buf(const iterator_type& i, const emitter_type& c)
     : i_(i), c_(c), invoked_(false) {}
 
   void operator*() const
     {
-      if (!invoked_)
+      if (!i_->empty_or_blocked() && !invoked_)
         {
           c_(static_cast<const closure_type&>(*i_));
           invoked_ = true;
@@ -571,16 +658,41 @@ struct closure_iterator_buf<T_caller, void>
 
   private:
     iterator_type i_;
-    const caller_type& c_;
+    const emitter_type& c_;
     mutable bool invoked_;
 };
 
+/** Abstracts signal emission.
+ * This template implements the emit() function of signal#<>.
+ * Template specializations are available to optimize signal
+ * emission when no accumulator is used (T_accumulator == nil).
+ */
+FOR(0,CALL_SIZE,[[SIGNAL_EMIT_N(%1)]])
+
 } /* namespace internal */
 
-// signal# is the full signal declaration
+/** Signal declaration.
+ * An stl style list interface for the signal's list of
+ * closures can be retrieved with closures().
+ */
 FOR(0,CALL_SIZE,[[SIGNAL_N(%1)]])
 
-// signal is a wrapper to make it nice
+/** Convinience wrappers for the signal#<> templates.
+ * Connect some closures to the signal and call emit() when
+ * you want the closures to be executed. The closure<>
+ * templates have implicit constructors so that you can
+ * pass any functor into the connect function.
+ * To disconnect a specific closure you need its iterator.
+ * You get iterators from connect() or from the stl style
+ * list interface of signal that can be retrieved from closures().
+ *
+ * Example:
+ *   void foo(int) {}
+ *   signal<void, long> sig;
+ *   sig.connect(ptr_fun(&foo));
+ *   sig.emit(19);
+ *
+ */
 SIGNAL(CALL_SIZE,CALL_SIZE)
 FOR(0,eval(CALL_SIZE-1),[[SIGNAL(%1)]])
 

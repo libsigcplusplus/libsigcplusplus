@@ -230,7 +230,7 @@ class closure_base /*: public functor_base*/
 
     closure_base& operator = (const closure_base& cl);
 
-  protected:
+//  protected:
     mutable rep_type *rep_;
     bool blocked_;
 };

@@ -22,32 +22,47 @@
 namespace sigc {
 namespace internal {
 
-void* signal_base::notify(void* d)
-{
-  signal_base* self = (signal_base*)d;
-  if (self->exec_count_ == 0)
-    self->sweep();
-  else 
-    self->defered_ = true;
-  return 0;
-}
-
-signal_base::iterator_type signal_base::insert(signal_base::iterator_type i, const functor::internal::closure_base& slot_)
+signal_impl::iterator_type signal_impl::insert(signal_impl::iterator_type i, const functor::internal::closure_base& slot_)
 {
   iterator_type temp = slots_.insert(i, slot_);
   temp->set_dependency(this, &notify);
   return temp;
 }
 
-void signal_base::sweep()
+void signal_impl::sweep()
 { 
-  std::list<functor::internal::closure_base>::iterator i = slots_.begin();
+  iterator_type i = slots_.begin();
   while (i != slots_.end())
     if ((*i).empty())  
       i = slots_.erase(i);
     else 
       ++i;
 }
+
+void* signal_impl::notify(void* d)
+{
+  signal_impl* self = (signal_impl*)d;
+  if (self->exec_count_ == 0)
+    self->sweep();
+  else                      // This is occuring during signal emission.
+    self->defered_ = true;  // => sweep() will be called from ~signal_exec().
+  return 0;                 // This is safer because we don't have to care about our iterators in emit().
+}
+
+
+signal_base::~signal_base()
+{
+  if (impl_)
+    delete impl_;  // TODO: probably it is wiser to make signal_impl reference counted
+}                  //       in case signal_base gets deleted during signal emission.
+
+signal_impl* signal_base::impl()
+{
+  if (!impl_)
+    impl_ = new signal_impl;
+  return impl_;
+}
+
 
 } /* namespace internal */
 } /* sigc */

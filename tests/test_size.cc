@@ -36,4 +36,5 @@ int main()
    cout << "  closure_rep:            " << sizeof(internal::closure_rep) << endl;
    cout << "  typed_closure_rep<mem_functor0<void,A> >: "
         << sizeof(internal::typed_closure_rep<mem_functor0<void,A> >) << endl;
+   cout << "  signal_impl:            " << sizeof(sigc::internal::signal_impl) << endl;
 }
