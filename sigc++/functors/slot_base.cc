@@ -92,6 +92,7 @@ slot_base::operator bool() const
   return rep_ != 0;
 }
 
+/*
 slot_base& slot_base::operator=(const slot_base& src)
 {
   if (src.rep_ == rep_) return *this;
@@ -114,6 +115,7 @@ slot_base& slot_base::operator=(const slot_base& src)
 
   return *this;
 }
+(/
 
 void slot_base::set_parent(void* parent, void* (*cleanup)(void*)) const
 {
