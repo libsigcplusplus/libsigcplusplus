@@ -13,17 +13,7 @@ and on the <a href="http://ftp.gnome.org/pub/GNOME/sources/libsigc++/2.0/">gnome
 
 <a name="binaries"><h3>Binary Packages</h3></a>
 
-<p>
-libsigc++-2.0 and the older versions libsigc++-1.0 and libsigc++-1.2 are available as
-Debian packages in the Debian distributions.
-</p>
-<p>
-There are currently no rpm packages available for download.
-However, a .spec file is included in the tarball.
-Your are of course invited to make .rpm file publicly available.
-Note that we won't take over responsibility for their maintainance.
-</p>
-
+<p>Whenever possible, you should use the official binary packages approved by the supplier of your operating system, such as your Linux distribution. For instance, Debian Linux and Fedora Linux have official libsigc++ packages.</p>
 
 <a name="require"><h3>Requirements</h3></a>
 
@@ -33,7 +23,7 @@ Note that we won't take over responsibility for their maintainance.
 libsigc++ is built and tested for a standards-compliant
 C++ compiler. Compilers that don't fully implement the
 the template sections of the standard are not likely to work properly.
-But we welcome any patches that might workaround compiler problems. 
+But we welcome any patches that might work around compiler problems. 
 </p>
 
 <p>

@@ -1,3 +1,9 @@
+2005-01-11  Murray Cumming  <murrayc@murrayc.com>
+
+	* docs/website/stable.html: Updated the text about binary packages.
+	* docs/website/docs.html: Link to the 2.0 documentation instead of the 
+	1.2 documentation.
+
 2004-12-17  GregSchussman  <schussman@slac.stanford.edu>
  
  	* glossary.shtml: Clean up punctuation, make definitions complete
