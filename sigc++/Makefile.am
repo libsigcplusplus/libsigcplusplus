@@ -34,14 +34,14 @@ adaptors/lambda/lambda.cc : adaptors/lambda/select.h adaptors/lambda/base.h \
 build_subdirs = functors adaptors adaptors/lambda
 
 # Combine all the above parts with right directories prefixed
-sigc_m4 = $(base_m4) \
-	  $(functors_m4:%=functors/%) \
-          $(adaptors_m4:%=adaptors/%) \
-          $(lambda_m4:%=adaptors/lambda/%) 
-sigc_built_cc = $(base_built_cc) \
-	  $(functors_built_cc:%=functors/%) \
-          $(adaptors_built_cc:%=adaptors/%) \
-          $(lambda_built_cc:%=adaptors/lambda/%) 
+sigc_m4 = $(base_m4:%=macros/%) \
+	  $(functors_m4:%=functors/macros/%) \
+          $(adaptors_m4:%=adaptors/macros/%) \
+          $(lambda_m4:%=adaptors/lambda/macros/%) 
+sigc_built_cc = $(base_built_cc:%=macros/%) \
+	  $(functors_built_cc:%=functors/macros/%) \
+          $(adaptors_built_cc:%=adaptors/macros/%) \
+          $(lambda_built_cc:%=adaptors/lambda/macros/%) 
 sigc_built_h = $(base_built_h) \
 	  $(functors_built_h:%=functors/%) \
           $(adaptors_built_h:%=adaptors/%) \
@@ -51,7 +51,7 @@ EXTRA_DIST = $(sigc_m4) $(sigc_built_h) $(sigc_built_cc)
 
 # install the headers
 library_includedir = $(includedir)/sigc++-2.0/sigc++
-nobase_library_include_HEADERS = $(sigc_built_h) \
+nobase_library_include_HEADERS = $(sigc_m4) $(sigc_built_h) \
   sigc++.h connection.h trackable.h reference_wrapper.h type_traits.h visit_each.h \
   object.h retype_return.h bind.h bind_return.h compatibility.h \
   functors/functors.h \
@@ -78,14 +78,14 @@ CLEANFILES = build-subdirs-stamp
 # Remove the generated sources during maintainer-clean:
 MAINTAINERCLEANFILES = $(built_sources)
 
-M4_DIR = $(top_srcdir)/sigc++
+M4_DIR = $(top_srcdir)/sigc++/macros
 
 # Rules to generate .h and .cc from .h.m4 and .cc.m4:
-%.h: %.h.m4 $(M4_DIR)/template.macros.m4
-	        $(M4) $(M4_INCLUDES) $(DEFINES) -I $(M4_DIR) $<  > $@
+%.h: macros/%.h.m4 $(M4_DIR)/template.macros.m4
+	        $(M4) $(M4_INCLUDES) $(DEFINES) -I $(M4_DIR) -I macros $<  > $@
 
-%.cc: %.cc.m4 $(M4_DIR)/template.macros.m4
-	        $(M4) $(M4_INCLUDES) $(DEFINES) -I $(M4_DIR) $<  > $@
+%.cc: macros/%.cc.m4 $(M4_DIR)/template.macros.m4
+	        $(M4) $(M4_INCLUDES) $(DEFINES) -I $(M4_DIR) -I macros $<  > $@
 
 # This would be a necessary target for VPATH builds from a clean CVS checkout,
 # but I'm not sure where to invoke it... [rotty]
