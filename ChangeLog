@@ -1,6 +1,13 @@
+1.9.14:
+
+2004-02-13  Martin Schulze  <teebaum@cvs.gnome.org>
+
+	* configure.ac: Bump version number to 1.9.14.
+	* NEWS: Add ChangeLog summary for version 1.9.14.
+
 2004-02-09  Murray Cumming  <murrayc@usa.net>
 
-	* sigc++/macros/slot.h.m4: slot_base: Added operator bool(), needed to
+	* sigc++/functors/macros/slot.h.m4: slot_base: Added operator bool(), needed to
 	check for a slot that is created with the default constructor. This was
 	present in libsigc++ 1.2 also.
 

@@ -17,6 +17,13 @@ This version of libsigc++ needs GNU g++ 3.2 or higher to compile.
 
 *** ChangeLog summary:
 
+1.9.14:
+
+* Added sigc::slot_base::operator bool() (Murray Cumming).
+* Build docs directory by default (Murray Cumming).
+* Fixed minor doxygen issues (Murray Cumming).
+* Fixed compiler warning in signal.h (Murray Cumming).
+
 1.9.13:
 
 * Fixed passing references through sigc::slot (Reported by Jeff Franks).
