@@ -3,12 +3,14 @@
  *  Assigned to public domain.  Use as you wish without restriction.
  */
 
-#define SIGC_FUNCTORS_HAVE_RESULT_TYPE // assume existance of T_functor::result_type for unknown functor types
 #include <sigc++/adaptors/compose.h>
 #include <iostream>
 
 using namespace std;
 using namespace sigc::functor;
+
+// assume existance of T_functor::result_type for unknown functor types:
+namespace sigc { namespace functor { SIGC_FUNCTORS_HAVE_RESULT_TYPE } }
 
 struct set 
 {
@@ -33,18 +35,29 @@ struct set
 struct set_void
 {
   typedef void result_type;
-  void operator()(int i)
-    { cout << "set_void(int "<<i<<")"<<endl; }
+  void operator()(float i)
+    { cout << "set_void(float "<<i<<")"<<endl; }
 };
 
 struct get
 {
+#ifdef SIGC_CXX_TYPEOF
   bool operator()()
     { cout << "get()"<<endl; return true; }
   int operator()(int i) 
     { cout << "get("<<i<<")"<<endl; return i*2; }
   float operator()(int i,int j) 
     { cout << "get("<<i<<","<<j<<")"<<endl; return float(i)/float(j); }
+#else
+  // choose a type that can hold all return values
+  typedef float result_type;
+  float operator()()
+    { cout << "get()"<<endl; return true; }
+  float operator()(int i) 
+    { cout << "get("<<i<<")"<<endl; return i*2; }
+  float operator()(int i,int j) 
+    { cout << "get("<<i<<","<<j<<")"<<endl; return float(i)/float(j); }
+#endif
 };
 
 

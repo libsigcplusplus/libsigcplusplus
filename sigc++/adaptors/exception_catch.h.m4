@@ -20,11 +20,7 @@ include(template.macros.m4)
 
 define([EXCEPTION_CATCH_OPERATOR],[dnl
   template <LOOP(class T_arg%1, $1)>
-#ifdef SIGC_CXX_TYPEOF
-  typename internal::callof<T_functor, LOOP(T_arg%1, $1)>::result_type
-#else
-  result_type
-#endif
+  typename deduce_result_type<LOOP(T_arg%1,$1)>::type
   operator()(LOOP(T_arg%1 _A_a%1, $1))
     { 
       try
@@ -79,6 +75,9 @@ namespace functor {
 template <class T_functor, class T_catcher, class T_return = typename adapts<T_functor>::result_type>
 struct exception_catch_functor : public adapts<T_functor>
 {
+  template <LOOP(class T_arg%1=void, CALL_SIZE)>
+  struct deduce_result_type
+    { typedef typename sigc::functor::deduce_result_type<LIST(T_functor, LOOP(T_arg%1,CALL_SIZE))>::type type; };
   typedef T_return result_type;
   typedef typename adapts<T_functor>::adaptor_type adaptor_type;
 

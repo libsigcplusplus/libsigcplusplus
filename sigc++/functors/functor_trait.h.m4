@@ -44,10 +44,26 @@ struct functor_trait<T_return (T_obj::*)(LOOP(T_arg%1, $1)) const, false>
 };
 
 ])
+define([DEDUCE_RESULT_TYPE_ADAPTOR],[dnl
+template <LIST(class T_functor, LOOP(class T_arg%1, $1))>
+struct deduce_result_type<LIST(T_functor, LOOP(T_arg%1,$1), LOOP(void,eval($2-$1)), true)>
+  { typedef typename T_functor::deduce_result_type<LOOP(T_arg%1,$1)>::type type; };
+
+])
+define([DEDUCE_RESULT_TYPE_TYPEOF],[dnl
+template <LIST(class T_functor, LOOP(class T_arg%1, $1))>
+struct deduce_result_type<LIST(T_functor, LOOP(T_arg%1,$1), LOOP(void,eval($2-$1)), false)>
+{
+  typedef typeof(type_trait<T_functor>::instance().
+                   T_functor::operator()(LOOP([
+                      type_trait<T_arg%1>::instance()], $1))) type;
+};
+
+])
 
 divert(0)dnl
 /*
-  Trait functor_trait<functor, bool>:
+  Trait functor_trait<functor>:
     This trait allows the user to specific what is the return type
   of any type. It has been overloaded to detect the return type and
   the functor version of function pointers and class methods as well.
@@ -60,10 +76,9 @@ divert(0)dnl
   Alternatively, you can derive your functors from functor_base and
   place "typedef T_return result_type;" in the class definition.
 
-  If you place a "#define SIGC_FUNCTORS_HAVE_RESULT_TYPE" in your
-  source file before including some sigc++ header, sigc++ will assume
-  that result_type is defined in user defined or third party functors,
-  unless you specify a return type explicitly with SIGC_FUNCTOR_TRAIT().
+  Use SIGC_FUNCTORS_HAVE_RESULT_TYPE if you want sigc++ to assume that
+  result_type is defined in all user defined or third party functors
+  (except those you specify a return type explicitly with SIGC_FUNCTOR_TRAIT()).
 
   You might get away without these conventions if your compiler supports
   typeof() and if you don't happen to use the operator ()() overload of
@@ -73,16 +88,27 @@ divert(0)dnl
 __FIREWALL__
 #include <sigc++/type_traits.h>
 
+
 namespace sigc {
 namespace functor {
 
-// functor_base is a hint to the compiler.
-// all functors which define "result_type" should publically inherite from
-// this hint.
+/** A hint to the compiler.
+ * All functors which define "result_type" should publically inherit from this hint.
+ */
 struct functor_base {};
 
-template <class T_functor,bool I_derives=is_base_and_derived<functor_base,T_functor>::value>
-struct functor_trait;
+/** A hint to the compiler.
+ * All multi-type functors which define "struct deduce_result_type" should publically inherit from this hint.
+ */
+struct adaptor_base : public functor_base {};
+
+
+template <class T_functor, bool I_derives_functor_base=is_base_and_derived<functor_base,T_functor>::value>
+struct functor_trait
+{
+  typedef void result_type;
+  typedef T_functor functor_type;
+};
 
 template <class T_functor>
 struct functor_trait<T_functor,true>
@@ -91,18 +117,12 @@ struct functor_trait<T_functor,true>
   typedef T_functor functor_type;
 };
 
-template <class T_functor>
-struct functor_trait<T_functor,false>
-{
-  // Use callof_safe<> to guess the return type.
-  // This leads to compiler errors if T_functor::operator() is overloaded!
-//  typedef typename callof_safe<T_functor>::result_type result_type;
-#ifndef SIGC_FUNCTORS_HAVE_RESULT_TYPE
-  typedef void result_type;
-#else
-  typedef typename T_functor::result_type result_type;
-#endif
-  typedef T_functor functor_type;
+#define SIGC_FUNCTORS_HAVE_RESULT_TYPE                 \
+template <class T_functor>                             \
+struct functor_trait<T_functor,false>                  \
+{                                                      \
+  typedef typename T_functor::result_type result_type; \
+  typedef T_functor functor_type;                      \
 };
 
 #define SIGC_FUNCTOR_TRAIT(T_functor,T_return) \
@@ -116,6 +136,18 @@ struct functor_trait<T_functor,false>          \
 // detect the return type and the functor version of non-functor types.
 FOR(0,CALL_SIZE,[[FUNCTOR_PTR_FUN(%1)]])
 FOR(0,CALL_SIZE,[[FUNCTOR_MEM_FUN(%1)]])
+
+template <class T_functor,
+          LOOP(class T_arg%1=void, CALL_SIZE),
+          bool I_derives_adaptor_base=is_base_and_derived<adaptor_base,T_functor>::value>
+struct deduce_result_type
+  { typedef typename functor_trait<T_functor>::result_type type; };
+
+FOR(0,CALL_SIZE,[[DEDUCE_RESULT_TYPE_ADAPTOR(%1,CALL_SIZE)]])
+
+#ifdef SIGC_CXX_TYPEOF
+FOR(0,CALL_SIZE,[[DEDUCE_RESULT_TYPE_TYPEOF(%1,CALL_SIZE)]])
+#endif
 
 } /* namespace functor */
 } /* namespace sigc */

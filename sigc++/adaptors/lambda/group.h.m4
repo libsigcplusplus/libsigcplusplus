@@ -36,15 +36,7 @@ define([_L_],[LOOP(_A_%1, $2)])dnl
 define([_T_],[LOOP(T_arg%1, $2)])dnl
 dnl Please someone get a gun!
   template <LOOP(class T_arg%1, $2)>
-#ifdef SIGC_CXX_TYPEOF
-  typename internal::callof<
-      typename internal::callof<lambda_type,LOOP(T_arg%1,$2)>::result_type,dnl
-LOOP([[
-      typename internal::callof<value%1_type, _T_>::result_type]], $1)
-    >::result_type
-#else
-  result_type
-#endif
+  typename deduce_result_type<LOOP(T_arg%1,$2)>::type
   operator() (LOOP(T_arg%1 _A_%1, $2)) const
     { return (func_(LOOP(_A_%1, $2)))(LOOP(value%1_(_L_),$1)); }
 
@@ -57,13 +49,18 @@ template <class T_functor, LOOP(class T_type%1, $1), class T_return = typename f
 struct lambda_group$1 : public lambda_base
 {
   typedef T_return result_type;dnl
-  template <LOOP(class T_arg%1 = void, $2)>
-  struct calc_type
-    { typedef T_return result_type; };
-
 FOR(1, $1,[
-  typedef typename lambda<T_type%1>::lambda_type value[]%1[]_type;])
+  typedef typename lambda<T_type%1>::lambda_type   value[]%1[]_type;])
   typedef typename lambda<T_functor>::lambda_type lambda_type;
+
+  template <LOOP(class T_arg%1=void,$2)>
+  struct deduce_result_type
+    { typedef typename sigc::functor::deduce_result_type<
+                typename sigc::functor::deduce_result_type<LIST(lambda_type, LOOP(T_arg%1,$2))>::type,dnl
+LOOP([[
+                typename sigc::functor::deduce_result_type<LIST(value%1_type, LOOP(T_arg%1,$2))>::type]], $1)
+        >::type type; };
+dnl    { typedef T_return type; };
 
   result_type
   operator ()() const;
@@ -87,19 +84,23 @@ template <class T_functor, LOOP(class T_type%1, $1)>
 struct lambda_group$1<T_functor, LOOP(T_type%1, $1), void> : public lambda_base
 {
   typedef void result_type;dnl
-  template <LOOP(class T_arg%1 = void, $2)>
-  struct calc_type
-    { typedef void result_type; };
-
 FOR(1, $1,[
-  typedef typename lambda<T_type%1>::lambda_type value[]%1[]_type;])
+  typedef typename lambda<T_type%1>::lambda_type  value[]%1[]_type;])
   typedef typename lambda<T_functor>::lambda_type lambda_type;
+
+  template <LOOP(class T_arg%1=void,$2)>
+  struct deduce_result_type
+    { typedef typename sigc::functor::deduce_result_type<
+                typename sigc::functor::deduce_result_type<LIST(lambda_type, LOOP(T_arg%1,$2))>::type,dnl
+LOOP([[
+                typename sigc::functor::deduce_result_type<LIST(value%1_type, LOOP(T_arg%1,$2))>::type]], $1)
+        >::type type; };
+dnl    { typedef T_return type; };
 
   void
   operator ()() const;
 
-FOR(1,CALL_SIZE,[[LAMBDA_GROUP_DO($1,%1)]])
-
+FOR(1,CALL_SIZE,[[LAMBDA_GROUP_DO($1,%1)]])dnl
   lambda_group[]$1[](const T_functor& _A_func, LOOP(const T_type%1& _A_%1, $1))
     : LOOP(value%1_(_A_%1), $1), func_(_A_func) {}dnl
 

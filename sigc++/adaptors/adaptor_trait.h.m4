@@ -49,11 +49,7 @@ dnl  operator()() const
 dnl    { return functor_(); }
 ],[dnl
   template <LOOP([class T_arg%1], $1)>
-#ifdef SIGC_CXX_CALLOF
-  typename internal::callof<LIST(T_functor, LOOP(T_arg%1, $1))>::result_type
-#else
-  result_type
-#endif
+  typename deduce_result_type<LOOP(T_arg%1, $1)>::type
   operator()(LOOP(T_arg%1 _A_arg%1, $1)) const
     { return functor_(LOOP(_A_arg%1, $1)); }
 
@@ -109,13 +105,15 @@ __FIREWALL__
 namespace sigc { 
 namespace functor {
 
-struct adaptor_base : public functor_base {};
 template <class T_functor> struct adapts;
 
-template <class T_functor, class T_return>
+template <class T_functor>
 struct adaptor_functor : public adaptor_base
 {
-  typedef T_return result_type;
+  template <LOOP(class T_arg%1=void, CALL_SIZE)>
+  struct deduce_result_type
+    { typedef typename sigc::functor::deduce_result_type<LIST(T_functor, LOOP(T_arg%1,CALL_SIZE))>::type type; };
+  typedef typename functor_trait<T_functor>::result_type result_type;
 
   operator T_functor& () const { return functor_; }
 
@@ -140,15 +138,15 @@ FOR(0,CALL_SIZE,[[ADAPTOR_DO(%1)]])dnl
   mutable T_functor functor_;
 };
 
-template <class T_functor, class T_return>
-typename adaptor_functor<T_functor, T_return>::result_type
-adaptor_functor<T_functor, T_return>::operator()() const
+template <class T_functor>
+typename adaptor_functor<T_functor>::result_type
+adaptor_functor<T_functor>::operator()() const
   { return functor_(); }
 
 
-template <class T_action, class T_functor, class T_return>
+template <class T_action, class T_functor>
 void visit_each(const T_action& _A_action,
-                const adaptor_functor<T_functor, T_return>& _A_target)
+                const adaptor_functor<T_functor>& _A_target)
 {
   visit_each(_A_action, _A_target.functor_);
 }
@@ -175,7 +173,7 @@ struct adaptor_trait<T_functor, false>
 {
   typedef typename functor_trait<T_functor>::result_type result_type;
   typedef typename functor_trait<T_functor>::functor_type functor_type;
-  typedef adaptor_functor<functor_type,result_type> adaptor_type;
+  typedef adaptor_functor<functor_type> adaptor_type;
 };
 
 /******************************************************/

@@ -37,7 +37,11 @@ namespace functor {
 template <class T_return, class T_functor>
 struct bind_return_functor : public adapts<T_functor>
 {
+  template <LOOP(class T_arg%1=void, CALL_SIZE)>
+  struct deduce_result_type
+    { typedef T_return type; };
   typedef T_return result_type;
+
   T_return operator()();
 
 FOR(1,CALL_SIZE,[[BIND_RETURN_OPERATOR(%1)]])dnl

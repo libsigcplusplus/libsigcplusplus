@@ -12,7 +12,7 @@ dnl Lesser General Public License for more details.
 dnl 
 dnl You should have received a copy of the GNU Lesser General Public 
 dnl License along with this library; if not, write to the Free Software 
-dnl Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA 
+dnl Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 dnl
 divert(-1)
 include(template.macros.m4)
@@ -26,10 +26,10 @@ define([LAMBDA_SELECT_DO],[dnl
 define([LAMBDA_SELECT],[dnl
 struct lambda_select$1 : public lambda_base
 {
+  template <LOOP(class T_arg%1=void,$2)>
+  struct deduce_result_type
+    { typedef T_arg$1 type; };
   typedef void result_type; // no operator ()() overload
-  template <LOOP(class T_arg%1 = void, $2)>
-  struct calc_type
-    { typedef T_arg$1 result_type; };
 
   void operator ()() const; // not implemented
 FOR($1, $2,[[LAMBDA_SELECT_DO($1,%1)]])dnl

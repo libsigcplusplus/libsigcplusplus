@@ -21,17 +21,7 @@ dnl
 dnl Macros to make operators
 define([LAMBDA_OPERATOR_DO],[dnl
   template <LOOP(class T_arg%1, $3)>
-#ifdef SIGC_CXX_TYPEOF
-  typename $1_calc_type<
-      typename internal::callof<arg1_type, LOOP(T_arg%1, $3)>::result_type,
-      typename internal::callof<arg2_type, LOOP(T_arg%1, $3)>::result_type
-    >::result_type
-#else
-  typename $1_calc_type<
-      typename arg1_type::calc_type<LOOP(T_arg%1, $3)>::result_type,
-      typename arg2_type::calc_type<LOOP(T_arg%1, $3)>::result_type
-    >::result_type
-#endif
+  typename deduce_result_type<LOOP(T_arg%1,$3)>::type
   operator ()(LOOP(T_arg%1 _A_%1, $3)) const
     {
       return arg1_.template operator()<LOOP(_P_(T_arg%1), $3)>
@@ -46,7 +36,7 @@ define([LAMBDA_OPERATOR],[dnl
 namespace internal {
 
 template <class T_test1, class T_test2>
-struct $1_calc_type
+struct $1_deduce_result_type
 {
 dnl
 dnl TODO: typeof() ignores "&" - compiler error in gcc-3.2? - Yes! (reported; should be fixed in 3.3.2)
@@ -54,18 +44,18 @@ dnl       E.g. typeof(type_trait<std::ostream&>::instance() << type_trait<int>::
 dnl                 == std::ostream  //(instead of std::ostream&)
 dnl
 #ifdef SIGC_CXX_TYPEOF
-  typedef typeof(type_trait<T_test1>::instance() $2 type_trait<T_test2>::instance()) result_type;
+  typedef typeof(type_trait<T_test1>::instance() $2 type_trait<T_test2>::instance()) type;
 #else
-  typedef typename type_trait<T_test1>::type result_type; // TODO: the trivial solution is probably not the best
+  typedef typename type_trait<T_test1>::type type; // TODO: the trivial solution is probably not the best
 #endif
 };
 
-template <class T_test1> struct $1_calc_type<T_test1,void>
-  { typedef void result_type; };
-template <class T_test2> struct $1_calc_type<void,T_test2>
-  { typedef void result_type; };
-template <> struct $1_calc_type<void,void>
-  { typedef void result_type; };
+template <class T_test1> struct $1_deduce_result_type<T_test1,void>
+  { typedef void type; };
+template <class T_test2> struct $1_deduce_result_type<void,T_test2>
+  { typedef void type; };
+template <> struct $1_deduce_result_type<void,void>
+  { typedef void type; };
 
 template <class T_type1, class T_type2>
 struct lambda_$1 : public lambda_base
@@ -73,15 +63,18 @@ struct lambda_$1 : public lambda_base
   typedef typename lambda<T_type1>::lambda_type arg1_type;
   typedef typename lambda<T_type2>::lambda_type arg2_type;
 
+  template <LOOP(class T_arg%1=void,$3)>
+  struct deduce_result_type
+    { typedef typename $1_deduce_result_type<
+          typename sigc::functor::deduce_result_type<LIST(arg1_type, LOOP(T_arg%1,$3))>::type,
+          typename sigc::functor::deduce_result_type<LIST(arg2_type, LOOP(T_arg%1,$3))>::type
+        >::type type; };
   // We would need an additional template argument T_return for a void specialization.
   // Then we would support operators that return void. TODO: is it wanted?
-  typedef typename $1_calc_type<
-              typename arg1_type::result_type,
-              typename arg2_type::result_type
-    >::result_type result_type;
-  template <LOOP(class T_arg%1 = void, CALL_SIZE)>
-  struct calc_type
-    { typedef typename arg1_type::calc_type<LOOP(T_arg%1, CALL_SIZE)>::result_type result_type; };
+  typedef typename $1_deduce_result_type<
+      typename arg1_type::result_type,
+      typename arg2_type::result_type
+    >::type result_type;
 
   result_type
   operator ()() const;

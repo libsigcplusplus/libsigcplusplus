@@ -18,37 +18,40 @@ divert(-1)
 
 include(template.macros.m4)
 
+define([DEDUCE_RESULT_TYPE],[dnl
+ifelse($2,0,,$2,1,,[dnl
+  template <LOOP(class T_arg%1,eval($2-1))>
+  struct deduce_result_type<LIST(LOOP(T_arg%1,eval($2-1)), LOOP(void,eval(CALL_SIZE-$2+1)))>
+ifelse($1,0,[dnl
+    { typedef typename sigc::functor::deduce_result_type<LIST(T_functor, LOOP(T_arg%1,eval($2-1)), T_bound)>::type type; };
+],[dnl
+    { typedef typename sigc::functor::deduce_result_type<LIST(T_functor, LOOP(T_arg%1,eval($1-1)), T_bound,FOR($1,eval($2-1),[T_arg%1,]))>::type type; };
+])dnl
+])dnl
+])
 define([BIND_OPERATOR],[dnl
 ifelse($2,0,[dnl
 ], $2,1,[dnl
 dnl  typename internal::callof_safe1<adaptor_type>::result_type // leads to compiler errors if T_functor has an overloaded operator()!
 dnl  operator()()
 dnl    { return functor_.template operator()<_P_(T_bound)>
-dnl       (bound_); 
+dnl        (bound_); 
 dnl    }
 dnl
 ], $1,0,[dnl
   template <LOOP([class T_arg%1],eval($2-1))>
-#ifdef SIGC_CXX_TYPEOF
-  typename internal::callof<LIST(adaptor_type, LOOP(T_arg%1,eval($2-1)), T_bound)>::result_type
-#else
-  result_type
-#endif
+  typename deduce_result_type<LOOP(T_arg%1,eval($2-1))>::type
   operator()(LOOP(T_arg%1 _A_arg%1,eval($2-1)))
     { return functor_.template operator()<LIST(LOOP([_P_(T_arg%1)],eval($2-1)), _P_(T_bound))>
-       (LIST(LOOP(_A_arg%1,eval($2-1)), bound_)); 
+        (LIST(LOOP(_A_arg%1,eval($2-1)), bound_)); 
     }
 
 ],[dnl
   template <LOOP([class T_arg%1],eval($2-1))>
-#ifdef SIGC_CXX_TYPEOF
-  typename internal::callof<LIST(adaptor_type, LOOP(T_arg%1,eval($1-1)), T_bound,FOR($1,eval($2-1),[T_arg%1,]))>::result_type
-#else
-  result_type
-#endif
+  typename deduce_result_type<LOOP(T_arg%1,eval($2-1))>::type
   operator()(LOOP(T_arg%1 _A_arg%1,eval($2-1)))
     { return functor_.template operator()<LIST(LOOP([_P_(T_arg%1)],eval($1-1)), _P_(T_bound),FOR($1,eval($2-1),[_P_(T_arg%1),]))>
-      (LIST(LOOP(_A_arg%1,eval($1-1)), bound_,FOR($1,eval($2-1),[_A_arg%1,]))); 
+        (LIST(LOOP(_A_arg%1,eval($1-1)), bound_,FOR($1,eval($2-1),[_A_arg%1,]))); 
     }
 
 ])dnl
@@ -57,6 +60,10 @@ define([BIND_FUNCTOR],[dnl
 template <class T_bound, class T_functor>
 struct bind_functor <$1, T_bound, T_functor> : public adapts<T_functor>
 {
+  template <LOOP(class T_arg%1=void, CALL_SIZE)>
+  struct deduce_result_type
+    { typedef typename sigc::functor::deduce_result_type<LIST(T_functor, T_bound)>::type type; };
+FOR($1,CALL_SIZE,[[DEDUCE_RESULT_TYPE($1,%1)]])dnl
   typedef typename adapts<T_functor>::result_type  result_type;
   typedef typename adapts<T_functor>::adaptor_type adaptor_type;
 

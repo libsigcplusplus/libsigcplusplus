@@ -1,5 +1,13 @@
 2003-08-24  Martin Schulze  <teebaum@cvs.gnome.org>
 
+	* sigc++/functors/functor_trait.h,m4, sigc++/adaptors[/lambda]/*.h.m4:
+	Merge adaptor return type deduction and typeof() into
+	sigc::functor::deduce_result_type. Use it for all adaptors.
+	* tests/test_compose.cc: Only test multi-type get-functor if
+	typeof() if supported.
+
+2003-08-24  Martin Schulze  <teebaum@cvs.gnome.org>
+
 	* sigc++/adaptors[/lambda]/*.h.m4:
 	- Remove unnecessary void specializations. In fact, only the one
 	for sigc::functor::exception_catch<> is needed and I don't really

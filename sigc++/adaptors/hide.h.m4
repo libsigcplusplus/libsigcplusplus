@@ -18,27 +18,28 @@ divert(-1)
 
 include(template.macros.m4)
 
+define([DEDUCE_RESULT_TYPE],[dnl
+  template <LOOP(class T_arg%1=void, CALL_SIZE)>
+  struct deduce_result_type
+ifelse($1,0,[dnl
+    { typedef typename sigc::functor::deduce_result_type<LIST(T_functor, LOOP(T_arg%1,eval($2-1)))>::type type; };
+],[dnl
+    { typedef typename sigc::functor::deduce_result_type<LIST(T_functor, LOOP(T_arg%1,eval($1-1)), FOR(eval($1+1),$2,[T_arg%1,]))>::type type; };
+])dnl
+])
 define([HIDE_OPERATOR],[dnl
 ifelse($2,0,,[dnl
 ifelse($2,1,,[dnl
 ifelse($1,0,[dnl
   template <LOOP([class T_arg%1], $2)>
-#ifdef SIGC_CXX_TYPEOF
-  typename internal::callof<LIST(T_functor,FOR(1,eval($2-1),[T_arg%1,]))>::result_type
-#else
-  result_type
-#endif
+  typename deduce_result_type<LOOP(T_arg%1, $2)>::type
   operator()(LOOP(T_arg%1 _A_a%1, $2))
     { return functor_.template operator() <LIST(FOR(1,eval($2-1),[_P_(T_arg%1),]))>
         (LIST(FOR(1,eval($2-1),[_A_a%1,]))); }
 
 ],[dnl
   template <LOOP([class T_arg%1], $2)>
-#ifdef SIGC_CXX_TYPEOF
-  typename internal::callof<LIST(T_functor,FOR(1,eval($1-1),[T_arg%1,]),FOR(eval($1+1), $2,[T_arg%1,]))>::result_type
-#else
-  result_type
-#endif
+  typename deduce_result_type<LOOP(T_arg%1, $2)>::type
   operator()(LOOP(T_arg%1 _A_a%1, $2))
     { return functor_.template operator() <LIST(FOR(1,eval($1-1),[_P_(T_arg%1),]),FOR(eval($1+1), $2,[_P_(T_arg%1),]))>
         (LIST(FOR(1,eval($1-1),[_A_a%1,]),FOR(eval($1+1), $2,[_A_a%1,]))); }
@@ -49,6 +50,7 @@ define([HIDE_FUNCTOR],[dnl
 template <class T_functor>
 struct hide_functor <$1, T_functor> : public adapts<T_functor>
 {
+DEDUCE_RESULT_TYPE($1,CALL_SIZE)dnl
   typedef typename adapts<T_functor>::result_type  result_type;
   typedef typename adapts<T_functor>::adaptor_type adaptor_type;
 
