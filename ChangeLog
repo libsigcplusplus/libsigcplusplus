@@ -1,3 +1,12 @@
+2003-05-29  Martin Schulze  <martin-ml@hippogriff.de>
+
+	* sigc++/signal.h.m4:
+	- Remove bogus operator() from unnumbered signal<> and
+	  signal<>::accumulated templates.
+	- Document the whole thing.
+
+	* docs/index.html: Fix some links.
+
 2003-04-06  Martin Schulze  <MHL.Schulze@t-online.de>
 
 	* TODO, configure.ac, Makefile.am, docs/*:
