@@ -1,3 +1,14 @@
+2003-03-07  Martin Schulze  <MHL.Schulze@t-online.de>
+
+	* sigc++/trackable.{cc,h}: Make trackable allocate a
+	trackable_dep_list object dynamically when adding the first
+	dependency. (This reduces the size of objects, that are not
+	refered by a closure by 4 bytes (50%) and increases the size
+	of objects that are refered by a closure by 4 bytes (50%)
+	on a 32 bit architecture => This reduces total memory use
+	when >50% of the trackables are not refered by a closure.)
+	Document the classes.
+
 2003-03-05  Martin Schulze  <MHL.Schulze@t-online.de>
 
 	* tests/Makefile.am, tests/test_size.cc, tests/test_accumulated.cc:

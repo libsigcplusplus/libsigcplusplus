@@ -26,6 +26,12 @@ class trackable;
 
 namespace internal {
 
+/** Representative of a dependency.
+ * A dependency consists of a pointer and a callback. This callback is
+ * executed from the dependency list (of type trackable_dep_list) that
+ * holds the dependency when its parent object (of type trackable) is
+ * destroyed or overwritten.
+ */
 struct trackable_dependency
 {
   void* obj_;
@@ -34,6 +40,13 @@ struct trackable_dependency
     : obj_(o), func_(f) {}
 };
 
+/** Dependency list.
+ * A dependency list has an stl list of dependencies of type
+ * trackable_dependency. Dependencies can be added and removed from the
+ * list with the member functions add_dependency(), remove_dependency()
+ * and clear(). The dependencies' callbacks are executed from clear()
+ * and from the destructor.
+ */
 class trackable_dep_list
 {
     typedef std::list<trackable_dependency> dep_list;
@@ -55,30 +68,52 @@ class trackable_dep_list
 
 } /* namespace internal */
 
+/** Base class for objects with auto-disconnection.
+ * Trackable is the class that must be inherited when objects shall
+ * automatically invalidate closures that depend on them on destruction.
+ * Closures which are built from member functions of a class inheriting
+ * trackable add a dependency to the object thus installing a callback
+ * notifying them when the object is destroyed or overwritten.
+ * add_dependency() and remove_dependency() are part of the public API
+ * so that it can also be used at any place notification of the object
+ * dying is needed.
+ * The dependencies are hold in a dependency list of type
+ * trackable_dep_list. This list is allocated dynamically when the
+ * first dependency is added.
+ * Note that there is no virtual destructor. Therefore it would be
+ * unwise to use "trackable*" as pointer type for storing derived
+ * objects if their destructor should be called or if they have
+ * virtual functions.
+ */
 class trackable
 {
   public:
-    trackable() {}
+    trackable() : dep_list_(0) {}
 
-    trackable(const trackable& t) {}
+    trackable(const trackable& t)
+      : dep_list_(0) {}
 
     trackable& operator=(const trackable& t)
       {
-        dep_list_.clear();
+        if (dep_list_) dep_list_->clear();
         return *this;
       }
+
+    ~trackable()
+      { if (dep_list_) delete dep_list_; }
 
     /*virtual ~trackable() {} */  /* we would need a virtual dtor for users
                                      who insist on using "trackable*" as
                                      pointer type for their own derived objects */
 
     void add_dependency(void* o, void* (f)(void*)) const
-      { dep_list_.add_dependency(o, f); }
+      { dep_list()->add_dependency(o, f); }
     void remove_dependency(void* o) const
-      { dep_list_.remove_dependency(o); }
+      { dep_list()->remove_dependency(o); }
 
   private:
-    mutable internal::trackable_dep_list dep_list_;
+    internal::trackable_dep_list* dep_list() const;
+    mutable internal::trackable_dep_list* dep_list_;
 };
 
 } /* namespace sigc */
