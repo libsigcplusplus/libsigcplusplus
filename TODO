@@ -20,7 +20,7 @@ Configure checks and Makefile issues:
 
 sigc++-1.2 compatibility:
 
-- Complete compatibility module. Add support for adaptors.
+- Verify completeness.
 
 
 documentation:

@@ -1,3 +1,8 @@
+2003-10-27  Martin Schulze  <teebaum@cvs.gnome.org>
+
+	* sigc++/retype.h.m4: Cleanup.
+	* TODO: Bring it up to date.
+
 1.9.11:
 
 2003-10-26  Martin Schulze  <teebaum@cvs.gnome.org>

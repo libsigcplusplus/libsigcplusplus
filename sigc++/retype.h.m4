@@ -40,60 +40,6 @@ ifelse($1,0,[dnl
     }
 ])dnl
 ])
-define([RETYPE_SLOT_FUNCTOR],[dnl
-ifelse($1,$2,[dnl
-template <LIST(class T_functor, class T_return, LOOP(class T_type%1 = ::sigc::nil, $1))>],[dnl
-template <LIST(class T_functor, class T_return, LOOP(class T_type%1, $1))>])
-struct retype_slot_functor ifelse($1,$2,,[<LIST(T_functor, T_return, LOOP(T_type%1, $1))>])
-  : public ::sigc::adapts<T_functor>
-{
-  template <LOOP(class T_arg%1=void, CALL_SIZE)>
-  struct deduce_result_type
-    { typedef T_return type; };
-  typedef T_return result_type;
-
-dnl   T_return operator()();
-dnl 
-dnl FOR(1,$1,[[RETYPE_SLOT_OPERATOR(%1)]])dnl
-RETYPE_SLOT_OPERATOR($1)
-   retype_slot_functor(typename ::sigc::type_trait<T_functor>::take _A_functor)
-    : ::sigc::adapts<T_functor>(_A_functor)
-    {}
-};
-ifelse($1,0,[dnl
-
-template <LIST(class T_functor, class T_return, LOOP(class T_type%1, $1))>
-T_return retype_slot_functor<LIST(T_functor, T_return, LOOP(T_type%1, $1))>::operator()()
-  { return T_return(functor_()); }
-])dnl
-
-// void specialization needed because of explicit cast to T_return
-template <LIST(class T_functor, LOOP(class T_type%1, $1))>
-struct retype_slot_functor<LIST(T_functor, void, LOOP(T_type%1, $1))>
-  : public ::sigc::adapts<T_functor>
-{
-  template <LOOP(class T_arg%1=void, CALL_SIZE)>
-  struct deduce_result_type
-    { typedef void type; };
-  typedef void result_type;
-
-dnl   void operator()();
-dnl 
-dnl FOR(1,$1,[[RETYPE_SLOT_VOID_OPERATOR(%1)]])dnl
-RETYPE_SLOT_VOID_OPERATOR($1)
-  retype_slot_functor(typename ::sigc::type_trait<T_functor>::take _A_functor)
-    : ::sigc::adapts<T_functor>(_A_functor)
-    {}
-};
-ifelse($1,0,[dnl
-
-template <LIST(class T_functor, LOOP(class T_type%1, $1))>
-void retype_slot_functor<LIST(T_functor, void, LOOP(T_type%1, $1))>::operator()()
-  { functor_(); }
-])dnl
-
-
-])
 define([RETYPE],[dnl
 template <LIST(class T_return, LOOP(class T_arg%1, $1), class T_ret, LOOP(class T_type%1, $1))>
 inline Slot$1<LIST(T_return, LOOP(T_arg%1, $1))>
@@ -113,9 +59,53 @@ __FIREWALL__
 
 namespace SigC {
 
-RETYPE_SLOT_FUNCTOR(CALL_SIZE, CALL_SIZE)dnl
-FOR(0,eval(CALL_SIZE-1),[[RETYPE_SLOT_FUNCTOR(%1)]])dnl
-dnl
+template <LIST(class T_functor, class T_return, LOOP(class T_type%1=::sigc::nil, CALL_SIZE))>
+struct retype_slot_functor
+  : public ::sigc::adapts<T_functor>
+{
+  template <LOOP(class T_arg%1=void, CALL_SIZE)>
+  struct deduce_result_type
+    { typedef T_return type; };
+  typedef T_return result_type;
+
+  T_return operator()();
+
+FOR(1,CALL_SIZE,[[RETYPE_SLOT_OPERATOR(%1)]])dnl
+
+  retype_slot_functor(typename ::sigc::type_trait<T_functor>::take _A_functor)
+    : ::sigc::adapts<T_functor>(_A_functor)
+    {}
+};
+
+template <LIST(class T_functor, class T_return, LOOP(class T_type%1, CALL_SIZE))>
+T_return retype_slot_functor<LIST(T_functor, T_return, LOOP(T_type%1, CALL_SIZE))>::operator()()
+  { return T_return(functor_()); }
+
+
+// void specialization needed because of explicit cast to T_return
+template <LIST(class T_functor, LOOP(class T_type%1, CALL_SIZE))>
+struct retype_slot_functor<LIST(T_functor, void, LOOP(T_type%1, CALL_SIZE))>
+  : public ::sigc::adapts<T_functor>
+{
+  template <LOOP(class T_arg%1=void, CALL_SIZE)>
+  struct deduce_result_type
+    { typedef void type; };
+  typedef void result_type;
+
+  void operator()();
+
+FOR(1,CALL_SIZE,[[RETYPE_SLOT_VOID_OPERATOR(%1)]])dnl
+
+  retype_slot_functor(typename ::sigc::type_trait<T_functor>::take _A_functor)
+    : ::sigc::adapts<T_functor>(_A_functor)
+    {}
+};
+
+template <LIST(class T_functor, LOOP(class T_type%1, CALL_SIZE))>
+void retype_slot_functor<LIST(T_functor, void, LOOP(T_type%1, CALL_SIZE))>::operator()()
+  { functor_(); }
+
+
 template <LIST(class T_action, class T_functor, class T_return, LOOP(class T_type%1, CALL_SIZE))>
 void visit_each(const T_action& _A_action,
                 const retype_slot_functor<LIST(T_functor, T_return, LOOP(T_type%1, CALL_SIZE))>& _A_target)
