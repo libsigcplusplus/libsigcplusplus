@@ -1,5 +1,17 @@
 2004-04-02  Murray Cumming  <murrayc@murrayc.com>
 
+	* sigc++/connection.cc: Make block() and unblock() always return a 
+	value, to fix compiler warnings. Patch from bug #138620 by
+	Alexander Nedotsukov.
+
+2004-04-02  Murray Cumming  <murrayc@murrayc.com>
+
+	* Fix the compile of examples/member_method.cc. Bug #131701 from 
+	Kirill Smelkov. I also made the examples build as part of the regular
+	build.
+
+2004-04-02  Murray Cumming  <murrayc@murrayc.com>
+
 	* sigc++config.h.m4: Remove every undef apart from the one we need, to
 	avoid clashes, because we #include this in a public header.
 

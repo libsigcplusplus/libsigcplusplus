@@ -64,14 +64,12 @@ bool connection::connected() const
 
 bool connection::block(bool should_block)
 {
-  if (slot_)
-    return slot_->block(should_block);
+  return (slot_ ? slot_->block(should_block) : false);
 }
 
 bool connection::unblock()
 {
-  if (slot_)
-    return slot_->unblock();
+  return (slot_ ? slot_->unblock() : false);
 }
 
 void connection::disconnect()

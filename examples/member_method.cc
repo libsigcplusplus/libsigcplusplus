@@ -25,7 +25,7 @@ protected:
 
 Something::Something()
 {
-  type_signal_print::iterator iter = signal_print.connect( sigc::functor::mem_fun(this, &Something::on_print) );
+  type_signal_print::iterator iter = signal_print.connect( sigc::mem_fun(this, &Something::on_print) );
 
   signal_print.emit(2);
 

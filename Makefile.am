@@ -4,8 +4,8 @@
 EXTRA_DIST = autogen.sh sigc++config.h.in
 # ACLOCAL_FLAGS = -I scripts
 
-SUBDIRS      = sigc++ tests docs
-DIST_SUBDIRS = $(SUBDIRS) examples MSVC_Net2003
+SUBDIRS      = sigc++ tests docs examples
+DIST_SUBDIRS = $(SUBDIRS) MSVC_Net2003
 
 sigc_configdir = $(libdir)/sigc++-1.9/include
 sigc_config_DATA = sigc++config.h
