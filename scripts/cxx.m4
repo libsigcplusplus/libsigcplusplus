@@ -74,8 +74,8 @@ AC_TRY_COMPILE(
   };
 ],
 [
-    //This fails with on Apple gcc 3.3:
-    std::cout << "number of void arguments: " << Thing<int,void>::value << std::endl;
+    //This fails on Apple gcc 3.3:
+    std::cout << "number of void arguments: " << Thing<void,void>::value << std::endl;
 ],
 [
   sigcm_cxx_template_specialization_multiple=yes

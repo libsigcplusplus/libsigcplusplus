@@ -1,5 +1,10 @@
 2004-04-26  Martin Schulze  <mschulze@cvs.gnome.org>
 
+	* scripts/cxx.m4: Updated the configure check. It would probably
+	have succeeded on the Apple.
+
+2004-04-26  Martin Schulze  <mschulze@cvs.gnome.org>
+
 	* sigc++/adaptors/macros/bind.h.m4: Add work-arounds for
 	bind<-1>::deduce_result_type compilation error on Apple gcc 3.3.
 	* scripts/cxx.m4, sigc++config.h.in, configure.ac: Add configure
