@@ -9,6 +9,7 @@ test_slot
 test_signal
 test_accumulated
 test_disconnect
+test_disconnect_during_emit
 test_bind
 test_bind_return
 test_retype_return
