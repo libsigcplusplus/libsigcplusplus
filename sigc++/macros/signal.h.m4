@@ -197,11 +197,19 @@ public:
   typedef internal::signal_emit$1<LIST(T_return, LOOP(T_arg%1, $1), T_accumulator)> emitter_type;
   typedef typename emitter_type::result_type         result_type;
   typedef slot<LIST(T_return, LOOP(T_arg%1, $1))>    slot_type;
-  typedef slot_list<slot_type>                       slot_list;
-  typedef typename slot_list::iterator               iterator;
-  typedef typename slot_list::const_iterator         const_iterator;
-  typedef typename slot_list::reverse_iterator       reverse_iterator;
-  typedef typename slot_list::const_reverse_iterator const_reverse_iterator;
+  typedef slot_list<slot_type>                       slot_list_type;
+  typedef typename slot_list_type::iterator               iterator;
+  typedef typename slot_list_type::const_iterator         const_iterator;
+  typedef typename slot_list_type::reverse_iterator       reverse_iterator;
+  typedef typename slot_list_type::const_reverse_iterator const_reverse_iterator;
+
+#ifdef SIGC_TYPEDEF_REDEFINE_ALLOWED
+  /** This typedef is only for backwards-compatibility.
+   * It is not available when using the SUN Forte compiler.
+   * @deprecated slot_list_type;
+   */
+  typedef slot_list_type slot_list;
+#endif
 
   /** Add a slot to the list of slots.
    * Any functor or slot may be passed into connect().
@@ -249,15 +257,15 @@ FOR(1, $1,[
    * This interface supports iteration, insertion and removal of slots.
    * @return An STL-style interface for the signal's list of slots.
    */
-  slot_list slots()
-    { return slot_list(impl()); }
+  slot_list_type slots()
+    { return slot_list_type(impl()); }
 
   /** Creates an STL-style interface for the signal's list of slots.
    * This interface supports iteration, insertion and removal of slots.
    * @return An STL-style interface for the signal's list of slots.
    */
-  const slot_list slots() const
-    { return slot_list(const_cast<signal$1*>(this)->impl()); }
+  const slot_list_type slots() const
+    { return slot_list_type(const_cast<signal$1*>(this)->impl()); }
 
   signal$1() {}
 
@@ -453,6 +461,14 @@ divert(0)
 #include <sigc++/trackable.h>
 #include <sigc++/functors/slot.h>
 #include <sigc++/functors/mem_fun.h>
+
+// TODO: This should have its own test.
+// I have just used this because there is a correlation between these two problems.
+#ifdef SIGC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD
+  //Compilers, such as SUN Forte C++, that do not allow this also often
+  //do not allow a typedef to have the same name as a class in the typedef's definition.
+  #define SIGC_TYPEDEF_REDEFINE_ALLOWED 1
+#endif
 
 namespace sigc {
 

@@ -1,3 +1,11 @@
+2004-07-08  Murray Cumming  <murrayc@murrayc.com>
+
+	* sigc++/macros/signal.h.m4: class signal*: Rename the slot_list 
+	typedef to slot_list_type, because there is already a template class 
+	called slot_type. SUN Forte 5.5 seems to complain about this and I am 
+	not surprised. The old typdef is still there for backwards 
+	compatibility, except when building with SUN Forte.
+
 2004-07-07  Murray Cumming  <murrayc@murrayc.com>
 
 	* scripts/cxx.m4: SIGC_CXX_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD():
