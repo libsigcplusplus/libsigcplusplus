@@ -1,3 +1,11 @@
+2005-01-27  Murray Cumming  <murrayc@murrayc.com>
+
+	* sigc++/adaptors/macros/adaptor_trait.h.m4: Add a sigc:: namespace 
+	prefix to the nested use of visit_each(), to avoid ambiguity when 
+	using 2 versions of the libsigc++ API inside different namespace, 
+	which is not very advisable anyway. Bug #165222 from 
+	liza at trdlnk.com.
+
 2.0.7:
 
 2005-01-24  Cedric Gustin <cedric.gustin@swing.be>
