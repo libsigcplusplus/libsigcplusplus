@@ -1,5 +1,10 @@
 2004-10-02  Martin Schulze <mschulze@cvs.gnome.org>
 
+	* configure.ac: Bump version number to 2.0.6.
+	* NEWS: Add ChangeLog summary for version 2.0.6.
+
+2004-10-02  Martin Schulze <mschulze@cvs.gnome.org>
+
 	* sigc++/functors/slot_base.{h,cc}, sigc++/functors/macros/slot.h.m4:
 	Rename (typed_)slot_rep::detach to (typed_)slot_rep::destroy.
 	Call the dtor of the functor stored in typed_slot_rep from destroy().

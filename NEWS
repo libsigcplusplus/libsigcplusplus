@@ -17,6 +17,17 @@ This version of libsigc++ needs GNU g++ 3.2 or higher to compile.
 
 *** ChangeLog summary:
 
+2.0.6:
+
+* Compiles with gcc-3.4.
+* Fixed a memory leak.
+* When compiled with MSVC .Net 2003 move all calls to new
+  and delete into non-inline library code (fixes segfaults).
+* In the compatibility module use correct bound_mem_functor
+  variants for const (volatile) methods when creating a slot.
+* Minor documentation fix.
+* Resolved bugs: #152327 #148744 #152323 #151404 #153143
+
 2.0.5:
 
 * Distribute pregenerated configuration header for MSVC .Net.
