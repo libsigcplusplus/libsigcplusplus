@@ -16,3 +16,5 @@ test_ptr_fun
 test_signal
 test_size
 test_trackable
+test_compatibility
+test_deduce_result_type

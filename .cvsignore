@@ -3,4 +3,5 @@ Makefile Makefile.in
 aclocal.m4 configure ltmain.sh libtool
 autom4te.cache config.log config.status config.cache
 config.guess config.sub depcomp install-sh missing mkinstalldirs
-libsigc++-*.tar.gz
+sigc++-2.0.pc
+libsigc++-*.tar.*
