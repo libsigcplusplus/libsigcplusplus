@@ -25,9 +25,9 @@ define([LAMBDA_OPERATOR_DO],[dnl
   operator ()(LOOP(T_arg%1 _A_%1, $3)) const
     {
       return arg1_.template operator()<LOOP(_P_(T_arg%1), $3)>
-        (LOOP(_A_%1, $3)) 
+        (LOOP(_A_%1, $3))
         $2 arg2_.template operator()<LOOP(_P_(T_arg%1), $3)>
-        (LOOP(_A_%1, $3)); 
+        (LOOP(_A_%1, $3));
     }
 
 ])
@@ -70,8 +70,8 @@ struct lambda_$1 : public lambda_base
   template <LOOP(class T_arg%1=void,$3)>
   struct deduce_result_type
     { typedef typename $1_deduce_result_type<
-          typename sigc::functor::deduce_result_type<LIST(arg1_type, LOOP(T_arg%1,$3))>::type,
-          typename sigc::functor::deduce_result_type<LIST(arg2_type, LOOP(T_arg%1,$3))>::type
+          typename arg1_type::deduce_result_type<LOOP(_P_(T_arg%1),$3)>::type,
+          typename arg2_type::deduce_result_type<LOOP(_P_(T_arg%1),$3)>::type
         >::type type; };
   typedef typename $1_deduce_result_type<
       typename arg1_type::result_type,
@@ -106,20 +106,12 @@ operator $2 (const lambda<T_arg1>& a1, const lambda<T_arg2>& a2)
 { return lambda<internal::lambda_$1<T_arg1, T_arg2> >(internal::lambda_$1<T_arg1, T_arg2>(a1.value_,a2.value_)); }
 template <class T_arg1, class T_arg2>
 lambda<internal::lambda_$1<T_arg1, T_arg2> >
-operator $2 (const lambda<T_arg1>& a1, const T_arg2& a2)
+operator $2 (const lambda<T_arg1>& a1, T_arg2 a2)
 { return lambda<internal::lambda_$1<T_arg1, T_arg2> >(internal::lambda_$1<T_arg1, T_arg2>(a1.value_,a2)); }
 template <class T_arg1, class T_arg2>
-lambda<internal::lambda_$1<T_arg1, T_arg2&> >
-operator $2 (const lambda<T_arg1>& a1, T_arg2& a2) // non-const argument is stored as reference
-{ return lambda<internal::lambda_$1<T_arg1, T_arg2&> >(internal::lambda_$1<T_arg1, T_arg2&>(a1.value_,a2)); }
-template <class T_arg1, class T_arg2>
 lambda<internal::lambda_$1<T_arg1, T_arg2> >
-operator $2 (const T_arg1& a1, const lambda<T_arg2>& a2)
+operator $2 (T_arg1 a1, const lambda<T_arg2>& a2)
 { return lambda<internal::lambda_$1<T_arg1, T_arg2> >(internal::lambda_$1<T_arg1, T_arg2>(a1,a2.value_)); }
-template <class T_arg1, class T_arg2>
-lambda<internal::lambda_$1<T_arg1&, T_arg2> >
-operator $2 (T_arg1& a1, const lambda<T_arg2>& a2) // non-const argument is stored as reference
-{ return lambda<internal::lambda_$1<T_arg1&, T_arg2> >(internal::lambda_$1<T_arg1&, T_arg2>(a1,a2.value_)); }
 divert(0)dnl
 } /* namespace internal */
 

@@ -51,13 +51,13 @@ struct compose1_functor : public adapts<T_setter>
 {
   template <LOOP(class T_arg%1=void, CALL_SIZE)>
   struct deduce_result_type
-    { typedef typename sigc::functor::deduce_result_type<T_setter,
+    { typedef typename adaptor_type::deduce_result_type<
         typename sigc::functor::deduce_result_type<LIST(T_getter, LOOP(T_arg%1,CALL_SIZE))>::type
           >::type type; };
-  typedef typename adapts<T_setter>::result_type  result_type;
+  typedef typename adaptor_type::result_type  result_type;
   typedef typename adapts<T_setter>::adaptor_type adaptor_type;
 
-  result_type // TODO: conflicts with our previous explanation that result_type is the return type of the functor's operator() overload with no arguments!
+  result_type
   operator()();
 
 FOR(1,CALL_SIZE,[[COMPOSE1_OPERATOR(%1)]])dnl
@@ -80,14 +80,14 @@ struct compose2_functor : public adapts<T_setter>
 {
   template <LOOP(class T_arg%1=void, CALL_SIZE)>
   struct deduce_result_type
-    { typedef typename sigc::functor::deduce_result_type<T_setter,
+    { typedef typename adaptor_type::deduce_result_type<
         typename sigc::functor::deduce_result_type<LIST(T_getter1, LOOP(T_arg%1,CALL_SIZE))>::type,
         typename sigc::functor::deduce_result_type<LIST(T_getter2, LOOP(T_arg%1,CALL_SIZE))>::type
           >::type result_type; };
-  typedef typename adapts<T_setter>::result_type  result_type;
+  typedef typename adaptor_type::result_type  result_type;
   typedef typename adapts<T_setter>::adaptor_type adaptor_type;
 
-  result_type // TODO: conflicts with our previous explanation that result_type is the return type of the functor's operator() overload with no arguments!
+  result_type
   operator()();
 
 FOR(1,CALL_SIZE,[[COMPOSE2_OPERATOR(%1)]])dnl

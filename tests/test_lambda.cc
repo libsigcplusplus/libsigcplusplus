@@ -38,30 +38,34 @@ struct bar
 main()
 {
   // test lambda operators
-  std::cout << (_1 + _2)(3,4) << std::endl;
-  std::cout << (_1 + 1) (3,4) << std::endl;
-  std::cout << (_2 + 1) (3,4) << std::endl;
-  std::cout << (2 + _1) (3,4) << std::endl;
-  std::cout << (2 + _2) (3,4) << std::endl;
-  std::cout << (_1+_2*_3) (1,2,3) << std::endl;
+  std::cout << (_1 + _2) (3,4) << std::endl;
+  std::cout << (_1 + 1)  (3,4) << std::endl;
+  std::cout << (_2 + 1)  (3,4) << std::endl;
+  std::cout << (2 + _1)  (3,4) << std::endl;
+  std::cout << (2 + _2)  (3,4) << std::endl;
+  std::cout << (_1+_2*_3)(1,2,3) << std::endl;
 
        // c++ restrictions:
+       // - ref() must be used to indicate that the value shall not be copied
+       // - constant() is used to create a lambda and delay execution of "std::cout << 1"
+       // - var() is used to create a lambda that holds a reference and is interchangable with ref() in lambda operator expressions
        // - cannot use std::endl without much hackery because it is defined as a template function
-       // - cannot use "\n" because arrays cannot be copied
-  (std::cout << lambda<int>(1) << std::string("\n"))();
-  (std::cout << _1 << std::string("\n"))("hello world");
+       // - cannot use "\n" without ref() because arrays cannot be copied
+  (sigc::ref(std::cout) << constant(1) << sigc::ref("\n"))();
+  (var(std::cout) << 1 << sigc::ref("\n"))();
+  (sigc::ref(std::cout) << _1 << std::string("\n"))("hello world");
+  (var(std::cout) << _1 << std::string("\n"))("hello world");
 
   // test grp adaptor
+  bar the_bar;
   std::cout << (group(&foo, _1, _2)) (1, 2) << std::endl;
   std::cout << (group(&foo, _2, _1)) (1, 2) << std::endl;
-//  std::cout << (group(&bar::test, _1, _2)) (bar(), 1, 2) << std::endl; // TODO: doesn't work
+  std::cout << (group(mem_fun(&bar::test), _1, _2, _3)) (sigc::ref(the_bar), 1, 2) << std::endl;
 
   // same functionality as bind
   std::cout << (group(&foo, _1, 2))  (1)    << std::endl;
   std::cout << (group(&foo, 1, 2))   ()     << std::endl;
   (group(ptr_fun(&foo_void), 1)) ();
-
-  //TODO: is there an equivalent for bind_return ?
 
   // same functionality as hide
   std::cout << (group(&foo, _1, _2)) (1,2,3) << std::endl;

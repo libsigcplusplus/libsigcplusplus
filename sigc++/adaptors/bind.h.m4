@@ -23,9 +23,9 @@ ifelse($2,0,,$2,1,,[dnl
   template <LOOP(class T_arg%1,eval($2-1))>
   struct deduce_result_type<LIST(LOOP(T_arg%1,eval($2-1)), LOOP(void,eval(CALL_SIZE-$2+1)))>
 ifelse($1,0,[dnl
-    { typedef typename sigc::functor::deduce_result_type<LIST(T_functor, LOOP(T_arg%1,eval($2-1)), T_bound)>::type type; };
+    { typedef typename adaptor_type::deduce_result_type<LIST(LOOP(_P_(T_arg%1),eval($2-1)), _P_(T_bound))>::type type; };
 ],[dnl
-    { typedef typename sigc::functor::deduce_result_type<LIST(T_functor, LOOP(T_arg%1,eval($1-1)), T_bound,FOR($1,eval($2-1),[T_arg%1,]))>::type type; };
+    { typedef typename adaptor_type::deduce_result_type<LIST(LOOP(_P_(T_arg%1),eval($1-1)), _P_(T_bound),FOR($1,eval($2-1),[_P_(T_arg%1),]))>::type type; };
 ])dnl
 ])dnl
 ])
@@ -62,9 +62,9 @@ struct bind_functor <$1, T_bound, T_functor> : public adapts<T_functor>
 {
   template <LOOP(class T_arg%1=void, CALL_SIZE)>
   struct deduce_result_type
-    { typedef typename sigc::functor::deduce_result_type<LIST(T_functor, T_bound)>::type type; };
+    { typedef typename adaptor_type::deduce_result_type<_P_(T_bound)>::type type; };
 FOR($1,CALL_SIZE,[[DEDUCE_RESULT_TYPE($1,%1)]])dnl
-  typedef typename adapts<T_functor>::result_type  result_type;
+  typedef typename adaptor_type::result_type  result_type;
   typedef typename adapts<T_functor>::adaptor_type adaptor_type;
 
   result_type

@@ -28,7 +28,7 @@ define([LAMBDA_DO],[dnl
 ])dnl
 define([LAMBDA_DO_VALUE],[dnl
   template <LOOP(class T_arg%1, $1)>
-  T_type operator ()(LOOP(T_arg%1 _A_%1, $1)) const 
+  result_type operator ()(LOOP(T_arg%1 _A_%1, $1)) const 
     { return value_; }
 
 ])dnl
@@ -37,7 +37,6 @@ divert(0)dnl
 #ifndef _SIGC_LAMBDA_BASE_HPP_
 #define _SIGC_LAMBDA_BASE_HPP_
 #include <sigc++/adaptors/adaptor_trait.h>
-
 
 namespace sigc {
 namespace functor {
@@ -57,8 +56,8 @@ struct lambda_core<T_type, true> : public lambda_base
 {
   template <LOOP(class T_arg%1=void,CALL_SIZE)>
   struct deduce_result_type
-    { typedef typename T_type::deduce_result_type<LOOP(T_arg%1,CALL_SIZE)>::type type; };
-  typedef typename functor_trait<T_type>::result_type result_type;
+    { typedef typename T_type::deduce_result_type<LOOP(_P_(T_arg%1),CALL_SIZE)>::type type; };
+  typedef typename T_type::result_type result_type;
   typedef T_type lambda_type;
 
   result_type
@@ -87,11 +86,11 @@ struct lambda_core<T_type, false> : public lambda_base
 {
   template <LOOP(class T_arg%1=void,CALL_SIZE)>
   struct deduce_result_type
-    { typedef T_type type; };
-  typedef T_type result_type; // all operator() overloads return T_type.
+    { typedef typename unwrap_reference<T_type>::type type; };
+  typedef typename unwrap_reference<T_type>::type result_type; // all operator() overloads return T_type.
   typedef lambda<T_type> lambda_type;
 
-  T_type operator()() const;
+  result_type operator()() const;
 
 FOR(1,CALL_SIZE,[[LAMBDA_DO_VALUE(%1)]])dnl
   lambda_core(typename type_trait<T_type>::take v)
@@ -101,7 +100,7 @@ FOR(1,CALL_SIZE,[[LAMBDA_DO_VALUE(%1)]])dnl
 };
 
 template <class T_type>
-T_type lambda_core<T_type, false>::operator()() const
+typename lambda_core<T_type, false>::result_type lambda_core<T_type, false>::operator()() const
   { return value_; }
 
 } /* namespace internal */
@@ -125,6 +124,18 @@ struct lambda : public internal::lambda_core<T_type>
     {}
 };
 
+
+template <class T_type>
+lambda<T_type> constant(const T_type& v)
+{ return lambda<T_type>(v); }
+
+template <class T_type>
+lambda<T_type&> var(T_type& v)
+{ return lambda<T_type&>(v); }
+
+template <class T_type>
+lambda<const T_type&> var(const T_type& v)
+{ return lambda<const T_type&>(v); }
 
 } /* namespace functor */
 } /* namespace sigc */

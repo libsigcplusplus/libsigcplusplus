@@ -50,27 +50,27 @@ struct lambda_group$1 : public lambda_base
 {
   typedef typename functor_trait<T_functor>::result_type result_type;dnl
 FOR(1, $1,[
-  typedef typename lambda<T_type%1>::lambda_type   value[]%1[]_type;])
-  typedef typename lambda<T_functor>::lambda_type lambda_type;
+  typedef typename lambda<T_type%1>::lambda_type   value%1_type;])
+  typedef typename lambda<T_functor>::lambda_type functor_type;
 
   template <LOOP(class T_arg%1=void,$2)>
   struct deduce_result_type
     { typedef typename sigc::functor::deduce_result_type<
-                typename sigc::functor::deduce_result_type<LIST(lambda_type, LOOP(T_arg%1,$2))>::type,dnl
-LOOP([[
-                typename sigc::functor::deduce_result_type<LIST(value%1_type, LOOP(T_arg%1,$2))>::type]], $1)
+                typename functor_type::deduce_result_type<LOOP(T_arg%1,$2)>::type,dnl
+LOOP([
+                typename value%1_type::deduce_result_type<LOOP(T_arg%1,$2)>::type], $1)
         >::type type; };
 
   result_type
   operator ()() const;
 
 FOR(1,CALL_SIZE,[[LAMBDA_GROUP_DO($1,%1)]])dnl
-  lambda_group[]$1[](const T_functor& _A_func, LOOP(const T_type%1& _A_%1, $1))
+  lambda_group$1(const T_functor& _A_func, LOOP(const T_type%1& _A_%1, $1))
     : LOOP(value%1_(_A_%1), $1), func_(_A_func) {}dnl
 
 FOR(1, $1,[
   value%1_type value%1_;])
-  mutable lambda_type func_;
+  mutable functor_type func_;
 };
 
 template <class T_functor, LOOP(class T_type%1, $1)>

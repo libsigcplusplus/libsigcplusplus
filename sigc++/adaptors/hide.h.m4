@@ -22,9 +22,9 @@ define([DEDUCE_RESULT_TYPE],[dnl
   template <LOOP(class T_arg%1=void, CALL_SIZE)>
   struct deduce_result_type
 ifelse($1,0,[dnl
-    { typedef typename sigc::functor::deduce_result_type<LIST(T_functor, LOOP(T_arg%1,eval($2-1)))>::type type; };
+    { typedef typename adaptor_type::deduce_result_type<LOOP(_P_(T_arg%1),eval($2-1))>::type type; };
 ],[dnl
-    { typedef typename sigc::functor::deduce_result_type<LIST(T_functor, LOOP(T_arg%1,eval($1-1)), FOR(eval($1+1),$2,[T_arg%1,]))>::type type; };
+    { typedef typename adaptor_type::deduce_result_type<LIST(LOOP(_P_(T_arg%1),eval($1-1)), FOR(eval($1+1),$2,[_P_(T_arg%1),]))>::type type; };
 ])dnl
 ])
 define([HIDE_OPERATOR],[dnl
@@ -56,7 +56,7 @@ template <class T_functor>
 struct hide_functor <$1, T_functor> : public adapts<T_functor>
 {
 DEDUCE_RESULT_TYPE($1,CALL_SIZE)dnl
-  typedef typename adapts<T_functor>::result_type  result_type;
+  typedef typename adaptor_type::result_type  result_type;
   typedef typename adapts<T_functor>::adaptor_type adaptor_type;
 
 FOR($1,CALL_SIZE,[[HIDE_OPERATOR($1,%1)]])dnl

@@ -48,7 +48,7 @@ EXTRA_DIST = $(sigc_m4) $(sigc_built_h) $(sigc_built_cc)
 # install the headers
 library_includedir = $(includedir)/sigc++-2.0/sigc++
 nobase_library_include_HEADERS = $(sigc_built_h) \
-  sigc++.h connection.h trackable.h type_traits.h visit_each.h \
+  sigc++.h connection.h trackable.h reference_wrapper.h type_traits.h visit_each.h \
   functors/functors.h \
   adaptors/adaptors.h \
   adaptors/lambda/lambda.h

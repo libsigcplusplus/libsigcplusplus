@@ -1,3 +1,23 @@
+2003-08-31  Martin Schulze  <teebaum@cvs.gnome.org>
+
+	* sigc++/reference_wrapper.h, sigc++/type_traits.h, sigc++/Makefile.am:
+	New file reference_wrapper.h provides ref() to specify that adaptors/lambdas
+	should take a reference to the object passed into ref() instead of a copy.
+	* tests/test_lambda.cc:
+	- Test group() with mem_fun().
+	- Use ref() where lambdas should store references to objects.
+	- Test var() and constant().
+	* sigc++/adaptors/lambda/base.h.m4:
+	- Support ref() in return type deduction.
+	- Add var() and constant() which create lambdas for usage with lambda operators.
+	* sigc++/adaptors/lambda/operator.h.m4:
+	- Fix return type deduction.
+	- Remove operator{+,-,*,...} overloads added on 2003-08-29. ref() is way cleaner.
+	* sigc++/adaptors/lambda/group.h.m4,
+	sigc++/adaptors/bind.h.m4, sigc++/adaptors/compose.h.m4,
+	sigc++/adaptors/exception_catch.h.m4, sigc++/adaptors/hide.h.m4:
+	Fix return type deduction.
+
 2003-08-29  Martin Schulze  <teebaum@cvs.gnome.org>
 
 	* tests/test_lambda.cc: Add more tests.
