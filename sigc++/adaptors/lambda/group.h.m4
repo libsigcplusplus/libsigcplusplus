@@ -21,10 +21,10 @@ dnl
 dnl  How to call the darn thing!
 define([LAMBDA_GROUP_FACTORY],[dnl
 template <class T_functor, LOOP(class T_type%1, $1)>
-lambda<lambda_group$1<T_functor, LOOP(T_type%1, $1)> >
+lambda<lambda_group$1<T_functor, LOOP(typename unwrap_reference<T_type%1>::type, $1)> >
 group(const T_functor& _A_func, LOOP(T_type%1 _A_%1, $1))
 {
-  typedef lambda_group$1<T_functor, LOOP(T_type%1, $1)> T_lambda;
+  typedef lambda_group$1<T_functor, LOOP(typename unwrap_reference<T_type%1>::type, $1)> T_lambda;
   return lambda<T_lambda>(T_lambda(_A_func, LOOP(_A_%1, $1)));
 }
 
@@ -65,7 +65,7 @@ LOOP([
   operator ()() const;
 
 FOR(1,CALL_SIZE,[[LAMBDA_GROUP_DO($1,%1)]])dnl
-  lambda_group$1(const T_functor& _A_func, LOOP(const T_type%1& _A_%1, $1))
+  lambda_group$1(typename type_trait<T_functor>::take _A_func, LOOP(typename type_trait<T_type%1>::take _A_%1, $1))
     : LOOP(value%1_(_A_%1), $1), func_(_A_func) {}dnl
 
 FOR(1, $1,[

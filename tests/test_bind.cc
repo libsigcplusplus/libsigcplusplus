@@ -88,15 +88,17 @@ int main()
 
   // test references
   std::string str("guest book");
-  sigc::bind<0,std::string&>(&egon,str)(); // Tell bind that is shall store a reference.
+  sigc::bind<0>(&egon,sigc::ref(str))(); // Tell bind that is shall store a reference.
   std::cout << str << std::endl;     // (This cannot be the default behaviour: just think about what happens if str dies!)
 
-  sigc::slot<void> c;
+  sigc::slot<void> sl;
   {
     book guest_book("karl");
-    c = sigc::bind<0,book&>(&egon,guest_book);
-    c();
+    sl = sigc::bind<0>(&egon, sigc::ref(guest_book));
+    sl();
     std::cout << (std::string&)guest_book << std::endl;
   }    // auto-disconnect
-  c(); // :-)
+  sl(); // :-)
+
+  const bool b1 = sigc::is_base_and_derived<sigc::trackable, void (*)(std::string&)>::value;
 }

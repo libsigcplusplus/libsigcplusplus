@@ -85,8 +85,8 @@ struct lambda_core<T_type, false> : public lambda_base
 {
   template <LOOP(class T_arg%1=void,CALL_SIZE)>
   struct deduce_result_type
-    { typedef typename unwrap_reference<T_type>::type type; };
-  typedef typename unwrap_reference<T_type>::type result_type; // all operator() overloads return T_type.
+    { typedef T_type type; };
+  typedef T_type result_type; // all operator() overloads return T_type.
   typedef lambda<T_type> lambda_type;
 
   result_type operator()() const;
@@ -155,6 +155,14 @@ struct lambda : public internal::lambda_core<T_type>
   operator = (const T_arg& a) const
     { return lambda<lambda_operator<other<assign>, self, T_arg> >(lambda_operator<other<assign>, self, T_arg>(value_, a)); }
 };
+
+
+template <class T_action, class T_type>
+void visit_each(const T_action& _A_action,
+                const lambda<T_type>& _A_target)
+{
+  visit_each(_A_action, _A_target.value_);
+}
 
 
 template <class T_type>

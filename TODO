@@ -1,35 +1,12 @@
-Naming issues:
-
-- Shall we move everything from namespace sigc::functor to namespace sigc?
-  (Discussion already started on the list - 26.03.2003).
-
-- Release 1.9.7 after sorting out the above.
-
-
 Configure checks and Makefile issues:
 
-- Add header sigcconfig.h like we have in libsigc++-1.2
-
-- Manipulate configure check for typeof():
-  define SIGC_CXX_TYPEOF in sigcconfig.h if typeof() is supported.
-
-- This is a gcc bug:
-  http://gcc.gnu.org/cgi-bin/gnatsweb.pl?cmd=view%20audit-trail&database=gcc&pr=10243
-
-  int& foo();
-  =>  typeof(foo()) == int instead of int& (g++ 3.2, 3.3)
-
-  We need some a workaround for this for the return type deduction of the
-  lambda operators. It really hurts there because a lambda library should
-  support e.g.: (lambda<std::ostream&>(std::cout) << _1)("hello world");
-  However this doesn't work if "operator <<" returns "std::ostream" instead
-  of "std::ostream&"!
+- Add header sigcconfig.h like we have in libsigc++-1.2 ?
 
 - Add return codes to "make check" so that the user doesn't need to 
   analyze the code to see what the heck it is supposed to do to ensure
   it passed. (Karl Nelson)
 
-- Find out what compiler features apart from typeof() can be made optional.
+- Find out what compiler features apart from typeof() should be made optional.
   Add configure checks.
 
 - When you use a single Makefile.am for
@@ -43,7 +20,7 @@ Configure checks and Makefile issues:
 
 sigc++-1.2 compatibility:
 
-- Add compatibility function make_slot() that works like sigc++-1.2's slot().
+- Complete compatibility module. Add support for adaptors.
 
 
 documentation:
@@ -51,8 +28,7 @@ documentation:
 - Improve documentation: Make groups (see index.html). Exclude stuff to make
   the html output readable.
 
-- Add more documentation. Recent ml threads should give hints:
-  "callof", "call for names" (26.03.2003)
+- Add documentation for adaptors and accumulators.
 
 
 basic functionality:
@@ -62,10 +38,7 @@ basic functionality:
   slot should have the full set of stl pointer like functions. (Karl Nelson)
 
 
-lambda functionality:
-
-- lambda operators need a more intelligent return type deduction when
-  typeof() is not supported.
+lambda functionality (I don't understand this (Martin)):
 
 - Add support for _R to force references down into 
   the stack frame of lambda.  Ie.
@@ -73,11 +46,7 @@ lambda functionality:
   A a;
   (_1+_2)(1,a);  // fail if no "operator int() const"
 
-- Support for ++, -- etc in lambda.
-
-- I don't understand this (Martin):
-
-  Call groups in lambda.  (Huh, that appears to be in group?)
+- Call groups in lambda.  (Huh, that appears to be in group?)
 
 
 Old TODO's that should be almost finished (Martin):
@@ -88,11 +57,6 @@ Old TODO's that should be almost finished (Martin):
 - Improve and expand the test suite.  There are a lot of combinations which
   should be valid but haven't been tested which are likely to result in
   wierd compiler errors if something wasn't done consistantly.  
-
-- Done, but the test suite doesn't check this (Martin):
-
-  Verify visit_trait is set up for lambda and propogates to allow 
-  disconnection through a slot.
 
 
 Old TODO's that should be finished (Martin):

@@ -72,15 +72,18 @@ divert(2)dnl
 template <class T_arg1, class T_arg2>
 lambda<lambda_operator<$1, T_arg1, T_arg2> >
 operator $2 (const lambda<T_arg1>& a1, const lambda<T_arg2>& a2)
-{ return lambda<lambda_operator<$1, T_arg1, T_arg2> >(lambda_operator<$1, T_arg1, T_arg2>(a1.value_,a2.value_)); }
+{ typedef lambda_operator<$1, T_arg1, T_arg2> operator_type;
+  return lambda<operator_type>(operator_type(a1.value_,a2.value_)); }
 template <class T_arg1, class T_arg2>
-lambda<lambda_operator<$1, T_arg1, T_arg2> >
+lambda<lambda_operator<$1, T_arg1, typename unwrap_reference<T_arg2>::type> >
 operator $2 (const lambda<T_arg1>& a1, T_arg2 a2)
-{ return lambda<lambda_operator<$1, T_arg1, T_arg2> >(lambda_operator<$1, T_arg1, T_arg2>(a1.value_,a2)); }
+{ typedef lambda_operator<$1, T_arg1, typename unwrap_reference<T_arg2>::type> operator_type;
+  return lambda<operator_type>(operator_type(a1.value_,a2)); }
 template <class T_arg1, class T_arg2>
-lambda<lambda_operator<$1, T_arg1, T_arg2> >
+lambda<lambda_operator<$1, typename unwrap_reference<T_arg1>::type, T_arg2> >
 operator $2 (T_arg1 a1, const lambda<T_arg2>& a2)
-{ return lambda<lambda_operator<$1, T_arg1, T_arg2> >(lambda_operator<$1, T_arg1, T_arg2>(a1,a2.value_)); }
+{ typedef lambda_operator<$1, typename unwrap_reference<T_arg1>::type, T_arg2> operator_type;
+  return lambda<operator_type>(operator_type(a1,a2.value_)); }
 
 divert(0)dnl
 ])
@@ -110,7 +113,8 @@ divert(2)dnl
 template <class T_arg>
 lambda<lambda_operator_unary<$1, T_arg> >
 operator $2 (const lambda<T_arg>& a)
-{ return lambda<lambda_operator_unary<$1, T_arg> >(lambda_operator_unary<$1, T_arg>(a.value_)); }
+{ typedef lambda_operator_unary<$1, T_arg> operator_type;
+  return lambda<operator_type>(operator_type(a.value_)); }
 
 divert(0)dnl
 ])

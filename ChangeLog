@@ -1,3 +1,17 @@
+2003-10-25  Martin Schulze  <teebaum@cvs.gnome.org>
+
+	* sigc++/visit_each.h: Remove disturbing
+	limit_derived_target<>::operator() overloads.
+	* sigc++/adaptors/bind.h.m4: Add support for sigc::ref().
+	* tests/test_bind.cc: Test sigc::ref().
+	* sigc++/adaptors/lambda/{operator,group,base}.h.m4:
+	- Move support for sigc::ref() from lambda_core<> into
+	lambda operator and lambda group creator functions.
+	- Add missing visit_each() overload for lambda<> template.
+	* tests/test_lambda.cc: Test auto-disconnection.
+	TODO: Fix a strange bug that leads to "Bus error"
+	during auto-disconnection.
+
 1.9.10:
 
 2003-10-23  Martin Schulze  <teebaum@cvs.gnome.org>

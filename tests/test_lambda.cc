@@ -4,6 +4,7 @@
  */
 
 #include <iostream>
+#include <string>
 #include <sigc++/functors/functors.h>
 #include <sigc++/adaptors/lambda/lambda.h>
 
@@ -41,6 +42,20 @@ struct bar
     {std::cout << "bar::test_void(int "<<i<<")" << std::endl;}
 };
 
+
+void egon(std::string& str)
+  {std::cout << "egon(string '"<<str<<"')" << std::endl; str="egon was here";}
+
+struct book : public sigc::trackable
+{
+  book(const std::string& name) : name_(name) {}
+  operator std::string& () {return name_;}
+  std::string name_;
+};
+
+inline std::ostream& operator << (std::ostream& s, const book& b) { s << b.name_; return s; }
+
+
 main()
 {
   // test lambda operators
@@ -71,6 +86,16 @@ main()
   (sigc::ref(std::cout) << _1 << std::string("\n"))("hello world");
   (sigc::var(std::cout) << _1 << std::string("\n"))("hello world");
 
+  // auto-disconnect
+  sigc::slot<void*> sl1; // TODO: why does the compiler demand void* ?
+  {
+    book guest_book("karl");
+    sl1 = (sigc::var(std::cout) << sigc::ref(guest_book) << sigc::ref("\n"));
+    sl1();
+  }    // auto-disconnect // TODO: "Bus error" => fix bug !
+  sl1(); // :-)
+
+
   // test grp adaptor
   bar the_bar;
   std::cout << (sigc::group(&foo, _1, _2)) (1, 2) << std::endl;
@@ -81,6 +106,16 @@ main()
   std::cout << (sigc::group(&foo, _1, 2))  (1)    << std::endl;
   std::cout << (sigc::group(&foo, 1, 2))   ()     << std::endl;
   (sigc::group(sigc::ptr_fun(&foo_void), 1)) ();
+
+  // auto-disconnect
+  sigc::slot<void> sl2;
+  {
+    book guest_book("karl");
+    sl2 = sigc::group(&egon, sigc::ref(guest_book));
+    sl2();
+    std::cout << (std::string&)guest_book << std::endl;
+  }    // auto-disconnect
+  sl2(); // :-)
 
   // same functionality as hide
   std::cout << (sigc::group(&foo, _1, _2)) (1,2,3) << std::endl;
