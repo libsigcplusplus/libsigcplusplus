@@ -48,6 +48,8 @@ void trackable_dep_list::clear()
   for (dep_list::iterator i=deps_.begin(); i!=deps_.end(); ++i)
     (*i).func_((*i).obj_);
 
+  deps_.clear();
+
   clearing_ = false;
 }
 

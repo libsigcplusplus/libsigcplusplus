@@ -1,3 +1,7 @@
+2003-03-08  Martin Schulze  <MHL.Schulze@t-online.de>
+
+	* sigc++/trackable.cc: BUGFIX in trackable_dep_list::clear()
+
 2003-03-08  Andreas Rottmann  <rottmann@users.sourceforge.net>
 
 	* sigc++/Makefile.am: Rewritten so we can build lambda cleanly.
