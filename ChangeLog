@@ -1,3 +1,8 @@
+2005-02-06  Murray Cumming  <murrayc@murrayc.com>
+
+	* sigc++/signal_base.h: temp_slot_list::begin(), end(): Actually 
+	return the iterators.
+
 2005-02-03  Neal E. Coombes <nealc@trdlnk.com>
 
 	* sigc++/signal_base.h: Add temp_slot_list struct to facilitate

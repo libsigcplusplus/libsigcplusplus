@@ -177,10 +177,10 @@ struct temp_slot_list
     slots_.splice(slots_.begin(), temp_slots_);
   }
 
-  iterator begin() { temp_slots_.begin(); }
-  iterator end() { temp_slots_.end(); }
-  const_iterator begin() const { temp_slots_.begin(); }
-  const_iterator end() const { temp_slots_.end(); }
+  iterator begin() { return temp_slots_.begin(); }
+  iterator end() { return temp_slots_.end(); }
+  const_iterator begin() const { return temp_slots_.begin(); }
+  const_iterator end() const { return temp_slots_.end(); }
 
 private:
   slot_list &slots_;
