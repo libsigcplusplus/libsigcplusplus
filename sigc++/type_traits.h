@@ -1,0 +1,80 @@
+/*
+ * Copyright 2002, Karl Einar Nelson
+ *
+ *  This library is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU Lesser General Public
+ *  License as published by the Free Software Foundation; either
+ *  version 2.1 of the License, or (at your option) any later version.
+ *
+ *  This library is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ *  Lesser General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Lesser General Public
+ *  License along with this library; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+ *
+ */
+#ifndef _SIGC_TYPE_TRAIT_H_
+#define _SIGC_TYPE_TRAIT_H_
+
+namespace sigc {
+
+template <class T_type>
+struct type_trait
+{
+  typedef T_type  type;
+  typedef T_type& pass;
+  typedef const T_type& take;
+  typedef T_type* pointer;
+  static T_type instance(); /* not implemented */  
+};
+
+template <class T_type>
+struct type_trait<T_type&>
+{
+  typedef T_type  type;
+  typedef T_type& pass;
+  typedef T_type& take;
+  typedef T_type* pointer;
+  static  T_type& instance(); /* not implemented */ 
+};
+template<>
+struct type_trait<void>
+{
+  typedef void type;
+  typedef void* pointer;
+  static void instance(); /* not implemented */
+};
+
+
+/* determine the relationship between classes */
+
+// From Esa Pulkkin
+// Compile-time determination of base-class relationship in C++
+// Adapted to match the syntax of boost's type_traits library
+template <class T_base, class T_derived>
+struct is_base_and_derived
+{
+private:
+  struct test {
+    static long long is_base_class_(void*);
+    static char      is_base_class_(typename type_trait<T_base>::pointer);
+  };
+
+public:
+  static const bool value =
+    sizeof(test::is_base_class_((typename type_trait<T_derived>::pointer)0)) ==
+    sizeof(char);
+};
+
+template <class T_base>
+struct is_base_and_derived<T_base, T_base>
+{
+  static const bool value = true;
+};
+
+} /* namespace sigc */
+
+#endif /* _SIGC_TYPE_TRAIT_H_ */

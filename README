@@ -1,0 +1,3 @@
+This is the 1.9 branch of the sigc++ library.
+
+It needs GNU g++ 3.2 or higher to compile.

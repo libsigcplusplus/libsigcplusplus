@@ -1,0 +1,33 @@
+Add support for _R to force references down into 
+the stack frame of lambda.  Ie.
+  A a;
+  (_1+_2)(1,a);  // fail if no "operator int() const"
+
+Support for ++, -- etc in lambda.
+
+Call groups in lambda.  (Huh, that appears to be in group?)
+
+Improve signal#, it currently is just barely functional.
+Add iterator support and stl like functionality to signal.
+
+Add blocking capablity to closure.
+
+Deinline/move to .cc where possible to move functions into the library to 
+reduce resulting binary size.
+
+Add return codes to "make check" so that the user doesn't need to 
+analyze the code to see what the heck it is supposed to do to ensure
+it passed.
+
+Fine tooth comb the code looking for missing operator =() function
+and missing copy constructors.
+
+Improve and expand the test suite.  There are a lot of combinations which
+should be valid but haven't been tested which are likely to result in
+wierd compiler errors if something wasn't done consistantly.  
+
+Closure should have the full set of stl pointer like functions.
+
+Verify visit_trait is set up for lambda and propogates to allow 
+disconnection through a closure.
+
