@@ -1,5 +1,17 @@
 2003-03-05  Martin Schulze  <MHL.Schulze@t-online.de>
 
+	* tests/Makefile.am, tests/test_size.cc, tests/test_accumulated.cc:
+	Add two test cases. test_size is showing the size of  public and
+	internal structures. (Which apart from empty signals are smaller
+	than the sizes of the equivalent libsigc++-1.2 structures.)
+	test_accumulated is a test for the template signal<>::accumulated<>
+	at the same time showing the use of accumulators in libsigc++2.
+
+	* Offtopic: My note about binary sizes from 2003-02-10 is wrong.
+	Stripped libsigc++2 test binaries are about 8-10k in size.
+
+2003-03-05  Martin Schulze  <MHL.Schulze@t-online.de>
+
 	* sigc++/visit_each.h: BUGFIX in template specialization
 	limit_derive_target<T_Target*,T_action>::with_type<false,T_type>:
 	Add non-const overloads for static void execute_() avoiding
