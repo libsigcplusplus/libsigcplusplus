@@ -8,6 +8,10 @@
 #include <sigc++/functors/functors.h>
 #include <sigc++/adaptors/lambda/lambda.h>
 
+SIGC_USING_STD(cout)
+SIGC_USING_STD(endl)
+SIGC_USING_STD(string)
+
 using sigc::_1;
 using sigc::_2;
 using sigc::_3;

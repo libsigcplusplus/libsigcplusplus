@@ -7,11 +7,15 @@
 #include <iostream>
 #include <stdexcept>
 
+SIGC_USING_STD(cout)
+SIGC_USING_STD(endl)
+SIGC_USING_STD(exception)
+
 struct f : public sigc::functor_base
 {
   typedef int result_type;
   int operator()(int i) 
-    {std::cout << "f(int "<<i<<")"<<std::endl; 
+    {std::cout << "f(int "<<i<< ")"<< std::endl; 
      throw std::range_error("out of range");}
 };
 
@@ -19,7 +23,7 @@ struct g : public sigc::functor_base
 {
   typedef int result_type;
   int operator()() 
-    {std::cout << "g()"<<std::endl;
+    {std::cout << "g()" << std::endl;
      throw std::range_error("out of range");}
 };
 
@@ -27,7 +31,7 @@ struct g_void : public sigc::functor_base
 {
   typedef void result_type;
   void operator()()
-    {std::cout << "g_void()"<<std::endl;
+    {std::cout << "g_void()" << std::endl;
      throw std::range_error("out of range");}
 };
 

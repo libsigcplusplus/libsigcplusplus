@@ -6,8 +6,13 @@
 #include <sigc++/adaptors/compose.h>
 #include <iostream>
 
+SIGC_USING_STD(cout)
+SIGC_USING_STD(endl)
+SIGC_USING_STD(string)
+
 // assume existance of T_functor::result_type for unknown functor types:
 namespace sigc { SIGC_FUNCTORS_HAVE_RESULT_TYPE }
+
 
 struct set 
 {
