@@ -62,6 +62,11 @@ bool connection::connected() const
   return !empty();
 }
 
+bool connection::blocked() const
+{
+  return (slot_ ? slot_->blocked() : false);
+}
+
 bool connection::block(bool should_block)
 {
   return (slot_ ? slot_->block(should_block) : false);

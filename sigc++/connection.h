@@ -86,7 +86,7 @@ struct connection
   /** Returns whether the connection is blocked.
    * @return @p true if the connection is blocked.
    */
-  inline bool blocked() const;
+  bool blocked() const;
 
   /** Sets or unsets the blocking state of this connection.
    * See slot_base::block() for details.
