@@ -1,3 +1,9 @@
+2003-10-23  Martin Schulze  <teebaum@cvs.gnome.org>
+
+	* configure.ac: Disable typeof() compiler checks.
+	* sigc++/adaptors/bind.h.m4: Remove unnecessary
+	deduce_result_type<> template specializations.
+
 2003-10-20  Martin Schulze  <teebaum@cvs.gnome.org>
 
 	* sigc++/adaptors/compose.h.m4:

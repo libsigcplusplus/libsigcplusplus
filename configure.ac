@@ -60,37 +60,37 @@ dnl Using C++ compiler
 AC_PROG_CXX
 AC_LANG_CPLUSPLUS
 
-AC_MSG_CHECKING(if C++ compiler supports typeof (required))
-AC_TRY_COMPILE(
-[
-  float func(int);
-],[
-  typedef typeof(func(1)) type;
-  type a=1.0;
-],[
-  ac_typeof=yes
-],[
-  ac_typeof=no
-  config_error=yes
-])
-AC_MSG_RESULT([$ac_typeof])
-
-AC_MSG_CHECKING(if C++ compiler supports template typeof (required))
-AC_TRY_COMPILE(
-[
-  template <class T>
-  struct foo
-  {
-    typedef typeof( T::operator()(0) ) T2;
-  };
-],[
-],[
-   ac_template_typeof=yes
-],[
-   ac_template_typeof=no
-   config_error=yes
-])
-AC_MSG_RESULT([$ac_template_typeof])
+dnl AC_MSG_CHECKING(if C++ compiler supports typeof (required))
+dnl AC_TRY_COMPILE(
+dnl [
+dnl   float func(int);
+dnl ],[
+dnl   typedef typeof(func(1)) type;
+dnl   type a=1.0;
+dnl ],[
+dnl   ac_typeof=yes
+dnl ],[
+dnl   ac_typeof=no
+dnl   config_error=yes
+dnl ])
+dnl AC_MSG_RESULT([$ac_typeof])
+dnl 
+dnl AC_MSG_CHECKING(if C++ compiler supports template typeof (required))
+dnl AC_TRY_COMPILE(
+dnl [
+dnl   template <class T>
+dnl   struct foo
+dnl   {
+dnl     typedef typeof( T::operator()(0) ) T2;
+dnl   };
+dnl ],[
+dnl ],[
+dnl    ac_template_typeof=yes
+dnl ],[
+dnl    ac_template_typeof=no
+dnl    config_error=yes
+dnl ])
+dnl AC_MSG_RESULT([$ac_template_typeof])
 
 if test "X$config_error" = "Xyes" ; then
   AC_ERROR(
