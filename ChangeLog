@@ -10,7 +10,7 @@
 	lambda action names to match action names in std.
 
 	API addition:
-	* sigc++/adaptors/retype_return.h.m4: New file adding
+	* sigc++/adaptors/retype.h.m4: New file adding
 	adaptor retype.
 	* sigc++/Makefile.am: Build and distribute new file.
 	* tests/test_retype.cc: New file testing adaptor retype.

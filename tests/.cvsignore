@@ -1,21 +1,21 @@
 Makefile Makefile.in
 .libs .deps
+test_trackable
+test_deduce_result_type
+test_functor_trait
+test_mem_fun
+test_ptr_fun
+test_slot
+test_signal
 test_accumulated
+test_disconnect
 test_bind
 test_bind_return
 test_retype_return
-test_callof
-test_slot
-test_compose
-test_disconnect
-test_exception_catch
-test_functor_trait
 test_hide
+test_retype
+test_compose
+test_exception_catch
 test_lambda
-test_mem_fun
-test_ptr_fun
-test_signal
 test_size
-test_trackable
 test_compatibility
-test_deduce_result_type

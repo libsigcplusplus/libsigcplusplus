@@ -7,44 +7,46 @@ DEFS =
 
 # this means make check will run these programs.
 noinst_PROGRAMS= \
+  test_trackable \
   test_deduce_result_type \
+  test_functor_trait \
   test_mem_fun \
   test_ptr_fun \
-  test_compose \
-  test_bind \
-  test_bind_return \
-  test_retype_return \
-  test_hide \
   test_slot \
   test_signal \
   test_accumulated \
   test_disconnect \
+  test_bind \
+  test_bind_return \
+  test_retype_return \
+  test_hide \
+  test_retype \
+  test_compose \
   test_exception_catch \
-  test_functor_trait \
-  test_trackable \
-  test_size \
   test_lambda \
+  test_size \
   test_compatibility
 
 TESTS = $(noinst_PROGRAMS)
 
 
 # we can have as many programs built here as we need.
+test_trackable_SOURCES = test_trackable.cc
 test_deduce_result_type_SOURCES = test_deduce_result_type.cc
-test_compose_SOURCES = test_compose.cc
-test_bind_SOURCES = test_bind.cc
-test_bind_return_SOURCES = test_bind_return.cc
-test_retype_return_SOURCES = test_retype_return.cc
-test_hide_SOURCES = test_hide.cc
-test_exception_catch_SOURCES = test_exception_catch.cc
+test_functor_trait_SOURCES = test_functor_trait.cc
+test_mem_fun_SOURCES = test_mem_fun.cc
+test_ptr_fun_SOURCES = test_ptr_fun.cc
 test_slot_SOURCES = test_slot.cc
 test_signal_SOURCES = test_signal.cc
 test_accumulated_SOURCES = test_accumulated.cc
 test_disconnect_SOURCES = test_disconnect.cc
-test_mem_fun_SOURCES = test_mem_fun.cc
-test_ptr_fun_SOURCES = test_ptr_fun.cc
-test_functor_trait_SOURCES = test_functor_trait.cc
+test_bind_SOURCES = test_bind.cc
+test_bind_return_SOURCES = test_bind_return.cc
+test_retype_return_SOURCES = test_retype_return.cc
+test_hide_SOURCES = test_hide.cc
+test_retype_SOURCES = test_retype.cc
+test_compose_SOURCES = test_compose.cc
+test_exception_catch_SOURCES = test_exception_catch.cc
 test_lambda_SOURCES = test_lambda.cc
-test_trackable_SOURCES = test_trackable.cc
 test_size_SOURCES = test_size.cc
 test_compatibility_SOURCES = test_compatibility.cc
