@@ -74,11 +74,12 @@ namespace sigc {
 template <class T_functor, class T_catcher, class T_return = typename adapts<T_functor>::result_type>
 struct exception_catch_functor : public adapts<T_functor>
 {
+  typedef typename adapts<T_functor>::adaptor_type adaptor_type;
+
   template <LOOP(class T_arg%1=void, CALL_SIZE)>
   struct deduce_result_type
     { typedef typename adaptor_type::deduce_result_type<LOOP(_P_(T_arg%1),CALL_SIZE)>::type type; };
   typedef T_return result_type;
-  typedef typename adapts<T_functor>::adaptor_type adaptor_type;
 
   result_type
   operator()();

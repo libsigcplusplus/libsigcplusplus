@@ -70,10 +70,10 @@ FOR(1, $1,[  typedef _R_(T_arg%1) arg%1_type_;
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 private:
   typedef internal::slot_rep rep_type;
+public:
   typedef T_return (*call_type)(LIST(rep_type*, LOOP(arg%1_type_, $1)));
 #endif
 
-public:
   /** Invoke the contained functor unless slot is in blocking state.dnl
 FOR(1, $1,[
    * @param _A_a%1 Argument to be passed on to the functor.])

@@ -55,9 +55,10 @@ define([HIDE_FUNCTOR],[dnl
 template <class T_functor>
 struct hide_functor <$1, T_functor> : public adapts<T_functor>
 {
+  typedef typename adapts<T_functor>::adaptor_type adaptor_type;
+
 DEDUCE_RESULT_TYPE($1,CALL_SIZE)dnl
   typedef typename adaptor_type::result_type  result_type;
-  typedef typename adapts<T_functor>::adaptor_type adaptor_type;
 
 FOR($1,CALL_SIZE,[[HIDE_OPERATOR($1,%1)]])dnl
   hide_functor()

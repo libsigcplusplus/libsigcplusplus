@@ -1,3 +1,20 @@
+1.9.9:
+
+2003-10-20  Martin Schulze  <teebaum@cvs.gnome.org>
+
+	* sigc++/connection.h: Add constructor that takes
+	a sigc::slot_base& to support 3rd-party slot lists
+	like they are used in glibmm/gtkmm.
+	* sigc++/functors/slot.h.m4: Make sigc::slot::call_type public.
+	(Fixes compile problems reported by Jeff Franks.)
+	* sig++/type_traits.h: Don't use long long in
+	sigc::is_base_and_derived.
+	(Fixes compile problems reported by Jeff Franks.)
+	* sigc++/adaptors/{bind,compose,hide,exception_catch}.h.m4:
+	Correct order of typedefs. (Repoted by Jeff Franks.)
+	* configure.ac: Bump version number to 1.9.9.
+	* NEWS: Add ChangeLog summary for version 1.9.9.
+
 1.9.8:
 
 2003-10-19  Martin Schulze  <teebaum@cvs.gnome.org>

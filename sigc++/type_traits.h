@@ -93,8 +93,8 @@ struct is_base_and_derived
 {
 private:
   struct test {
-    static long long is_base_class_(const void*);
-    static char      is_base_class_(typename type_trait<T_base>::pointer);
+    static double is_base_class_(const void*);
+    static char   is_base_class_(typename type_trait<T_base>::pointer);
   };
 
 public:

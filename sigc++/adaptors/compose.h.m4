@@ -48,13 +48,14 @@ namespace sigc {
 template <class T_setter, class T_getter>
 struct compose1_functor : public adapts<T_setter>
 {
+  typedef typename adapts<T_setter>::adaptor_type adaptor_type;
+
   template <LOOP(class T_arg%1=void, CALL_SIZE)>
   struct deduce_result_type
     { typedef typename adaptor_type::deduce_result_type<
         typename sigc::deduce_result_type<LIST(T_getter, LOOP(T_arg%1,CALL_SIZE))>::type
           >::type type; };
   typedef typename adaptor_type::result_type  result_type;
-  typedef typename adapts<T_setter>::adaptor_type adaptor_type;
 
   result_type
   operator()();

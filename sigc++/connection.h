@@ -54,6 +54,13 @@ struct connection
   connection(const slot_iterator<T_slot>& it) : slot_(&(*it))
     { if (slot_) slot_->add_destroy_notify_callback(this, &notify); }
 
+  /** Constructs a connection object from a slot object.
+   * This is only useful if you create your own slot list.
+   * @param sl The slot to operate on.
+   */
+  explicit connection(slot_base& sl) : slot_(&sl)
+    { slot_->add_destroy_notify_callback(this, &notify); }
+
   /** Overrides this connection object copying another one.
    * @param c The connection object to make a copy from.
    */

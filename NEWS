@@ -17,6 +17,12 @@ This version of libsigc++ needs GNU g++ 3.2 or higher to compile.
 
 *** ChangeLog summary:
 
+1.9.9:
+
+* Add a constructor to sigc::connection that takes a slot_base&
+  to support user defined slot lists like they are used in gtkmm.
+* Fix compiler issues with gcc-3.3.2 (reported by Jeff Franks).
+
 1.9.8:
 
 * Add compatibility module that defines namespace SigC.
