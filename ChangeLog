@@ -1,3 +1,5 @@
+1.9.6:
+
 2003-03-11  Andreas Rottmann  <rottmann@users.sourceforge.net>
 
 	* sigc++/Makefile.am: Use substitution references instead of
