@@ -64,8 +64,8 @@ class slot ifelse($1, $2,,[<LIST(T_return, LOOP(T_arg%1,$1))>])
 FOR(1, $1,[  typedef _R_(T_arg%1) arg%1_type_;
 ])
 
-  typedef T_return (*call_type)(LIST(rep_type*, LOOP(arg%1_type_, $1)));
   public:
+    typedef T_return (*call_type)(LIST(rep_type*, LOOP(arg%1_type_, $1)));
     typedef T_return result_type;
 
     /** Launch the contained functor unless slot is in blocking state.dnl
@@ -161,7 +161,7 @@ namespace internal {
 
 typedef void* (*hook)(void*);
 
-struct slot_base;
+class slot_base;
 
 /** Internal representation of a slot.
  * Derivations of this class can be considered as a link
