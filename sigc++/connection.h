@@ -27,9 +27,9 @@ namespace sigc {
  * they work on. A connection object can be created from a
  * closure list iterator and may safely be used to disconnect
  * the refered closure at any time (disconnect()). If the closure
- * has already been destroyed, disconnect() does nothing.
+ * has already been destroyed, disconnect() does nothing. empty() or
  * operator bool() can be used to test whether the connection is
- * still active.
+ * still active. The connection can be blocked (block(), unblock()).
  * This is possibly because the connection object gets notified
  * when the refered closure dies (notify()).
  */
@@ -54,11 +54,23 @@ struct connection
   ~connection()
     { if (closure_) closure_->remove_dependency(this); }
 
+  bool empty() const
+    { return (!closure_ || closure_->empty()); }
+
+  inline bool blocked() const
+    { return (closure_ ? closure_->blocked() : 0); }
+
+  bool block(bool should_block = true)
+    { if (closure_) return closure_->block(should_block); }
+
+  bool unblock()
+    { if (closure_) return closure_->unblock(); }
+
   void disconnect()
     { if (closure_) closure_->disconnect(); }
 
   operator bool()
-    { return (closure_ != 0); }
+    { return !empty(); }
 
   static void* notify(void* d);
 

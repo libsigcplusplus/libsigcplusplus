@@ -1,5 +1,9 @@
 2003-03-09  Martin Schulze  <MHL.Schulze@t-online.de>
 
+	* sigc++/connection.h: Add block() capability.
+
+2003-03-09  Martin Schulze  <MHL.Schulze@t-online.de>
+
 	* sigc++/signal.{cc,h.m4}: Add flag signal_impl::destroy_
 	and function signal_impl::destroy(). Use them to defer
 	the destruction of the signal_impl object during signal
