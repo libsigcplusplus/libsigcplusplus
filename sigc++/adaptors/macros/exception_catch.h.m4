@@ -35,41 +35,60 @@ define([EXCEPTION_CATCH_OPERATOR],[dnl
 ])
 
 divert(0)dnl
+__FIREWALL__
+#include <sigc++/adaptors/adaptor_trait.h>
+
+namespace sigc {
+
 /*
    functor adaptor:  exception_catch(functor, catcher)
 
    usage:
-     Allows the user to catch an exception thrown from within 
-   a functor and direct it to a catcher functor.  This catcher
-   can then rethrow the exception and catch it with the proper
-   type.  Note that the catcher is expected to return the
-   same type as functor was expected to throw so that normal
-   flow can continue.  Catchers can be cascaded to catch multiple
-   types because uncaught rethrown exceptions proceed to the 
-   next catcher adaptor.
 
-     struct my_catch
-       {
-         int operator()()
-          {
-            try { throw; }
-            catch (std::range_error e) // catch what types we know
-              { cerr << "caught "<< e.what() <<endl; }
-            return 1;
-          }
-       }
-     int foo(); // throws std::range_error
-     exception_catch(&foo, my_catch()) ();
 
    Future directions:
      The catcher should be told what type of return it needs to
    return for multiple type functors,  to do this the user
    will need to derive from catcher_base.
 */
-__FIREWALL__
-#include <sigc++/adaptors/adaptor_trait.h>
-
-namespace sigc {
+/** @defgroup exception_catch exception_catch()
+ * sigc::exception_catch() catches an exception thrown from within 
+ * the wrapped functor and directs it to a catcher functor.
+ * This catcher can then rethrow the exception and catch it with the proper type.
+ *
+ * Note that the catcher is expected to return the same type
+ * as the wrapped functor so that normal flow can continue.
+ *
+ * Catchers can be cascaded to catch multiple types because uncaught
+ * rethrown exceptions proceed to the next catcher adaptor.
+ *
+ * @par Examples:
+ *   @code
+ *   struct my_catch
+ *   {
+ *     int operator()()
+ *     {
+ *       try { throw; }
+ *       catch (std::range_error e) // catch what types we know
+ *         { std::cerr << "caught " << e.what() << std::endl; }
+ *       return 1;
+ *     }
+ *   }
+ *   int foo(); // throws std::range_error
+ *   sigc::exception_catch(&foo, my_catch())();
+ *   @endcode
+ *
+ * The functor sigc::execption_catch() returns can be passed into
+ * sigc::signal::connect() directly.
+ *
+ * @par Example:
+ *   @code
+ *   sigc::signal<int> some_signal;
+ *   some_signal.connect(sigc::exception_catch(&foo, my_catch));
+ *   @endcode
+ *
+ * @ingroup adaptors
+ */
 
 template <class T_functor, class T_catcher, class T_return = typename adapts<T_functor>::result_type>
 struct exception_catch_functor : public adapts<T_functor>
@@ -85,12 +104,10 @@ struct exception_catch_functor : public adapts<T_functor>
   operator()();
 
 FOR(1,CALL_SIZE,[[EXCEPTION_CATCH_OPERATOR(%1)]])dnl
-  exception_catch_functor() {}
   exception_catch_functor(const T_functor& _A_func,
                           const T_catcher& _A_catcher)
     : adapts<T_functor>(_A_func), catcher_(_A_catcher)
     {}
-  ~exception_catch_functor() {}
 
   protected: 
     T_catcher catcher_; 

@@ -1,4 +1,4 @@
-*** libsigc++ 2.0 (unstable):
+*** libsigc++ 2.0:
 
 libsigc++ implements a typesafe callback system for standard C++. It
 allows you to define signals and to connect those signals to any
@@ -16,6 +16,12 @@ This version of libsigc++ needs GNU g++ 3.2 or higher to compile.
 
 
 *** ChangeLog summary:
+
+2.0.0:
+
+* Implemented sigc::connection::blocked() (Murray Cumming).
+* Added the scripts directory to the make dist target (Murray Cumming).
+* Added more documentation (Martin Schulze).
 
 1.9.16:
 

@@ -19,6 +19,11 @@ divert(-1)
 include(template.macros.m4)
 
 define([BIND_RETURN_OPERATOR],[dnl
+  /** Invokes the wrapped functor passing on the arguments.dnl
+FOR(1, $1),[
+   * @param _A_arg%1 Argument to be passed on to the functor.])
+   * @return The fixed return value.
+   */
   template <LOOP(class T_arg%1, $1)>
   inline T_return operator()(LOOP(T_arg%1 _A_a%1, $1))
     { this->functor_.LIBSIGC_TEMPLATE_PREFIX SIGC_WORKAROUND_OPERATOR_PARENTHESES<LOOP(_P_(T_arg%1), $1)>
@@ -39,6 +44,15 @@ __FIREWALL__
 
 namespace sigc {
 
+/** Adaptor that fixes the return value of the wrapped functor.
+ * Use the convenience function sigc::bind_return() to create an instance of sigc::bind_return_functor.
+ *
+ * The following template arguments are used:
+ * - @e T_return Type of the fixed return value.
+ * - @e T_functor Type of the functor to wrap.
+ *
+ * @ingroup bind
+ */
 template <class T_return, class T_functor>
 struct bind_return_functor : public adapts<T_functor>
 {
@@ -47,14 +61,22 @@ struct bind_return_functor : public adapts<T_functor>
     { typedef T_return type; };
   typedef T_return result_type;
 
+  /** Invokes the wrapped functor dropping its return value.
+   * @return The fixed return value.
+   */
   T_return operator()();
 
 FOR(1,CALL_SIZE,[[BIND_RETURN_OPERATOR(%1)]])dnl
-  bind_return_functor() {}
+
+  /** Constructs a bind_return_functor object that fixes the return value to @p _A_ret_value.
+   * @param _A_functor Functor to invoke from operator()().
+   * @param _A_ret_value Value to return from operator()().
+   */
   bind_return_functor(_R_(T_functor) _A_functor, _R_(T_return) _A_ret_value)
     : adapts<T_functor>(_A_functor), ret_value_(_A_ret_value)
     {}
 
+  /// The fixed return value.
   T_return ret_value_; // public, so that visit_each() can access it
 };
 
@@ -63,6 +85,12 @@ T_return bind_return_functor<T_return, T_functor>::operator()()
   { this->functor_(); return ret_value_; }
 
 
+/** Performs a functor on each of the targets of a functor.
+ * The function overload for sigc::bind_return_functor performs a functor on the
+ * functor and on the object instance stored in the sigc::bind_return_functor object.
+ *
+ * @ingroup bind
+ */
 template <class T_action, class T_return, class T_functor>
 void visit_each(const T_action& _A_action,
                 const bind_return_functor<T_return, T_functor>& _A_target)
@@ -72,6 +100,14 @@ void visit_each(const T_action& _A_action,
 }
 
 
+/** Creates an adaptor of type sigc::bind_return_functor which fixes the return value of the passed functor to the passed argument.
+ *
+ * @param _A_functor Functor that should be wrapped.
+ * @param _A_ret_value Argument to fix the return value of @e _A_functor to.
+ * @return Adaptor that executes @e _A_functor on invokation and returns @e _A_ret_value.
+ *
+ * @ingroup bind
+ */
 template <class T_return, class T_functor>
 inline bind_return_functor<typename unwrap_reference<T_return>::type, T_functor>
 bind_return(const T_functor& _A_functor, T_return _A_ret_value)

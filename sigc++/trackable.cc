@@ -29,12 +29,13 @@ trackable::trackable()
 : callback_list_(0)
 {}
 
-//TODO: Why doesn't this actually use src? murrayc.
-trackable::trackable(const trackable& src)
+/* Don't copy the notification list.
+   The objects watching src don't need to be notified when the new object dies. */
+trackable::trackable(const trackable& /*src*/)
 : callback_list_(0)
 {}
 
-trackable& trackable::operator=(const trackable& src)
+trackable& trackable::operator=(const trackable& /*src*/)
 {
   notify_callbacks();
   return *this;

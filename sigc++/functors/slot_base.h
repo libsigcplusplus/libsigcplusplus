@@ -157,6 +157,37 @@ struct slot_do_unbind
 
 } //namespace internal
 
+
+/** @defgroup slot Slots
+ * Slots are type-safe representations of callback methods and functions.
+ * A Slot can be constructed from any function, regardless of whether it is a global function,
+ * a member method, static, or virtual.
+ *
+ * Use the sigc::mem_fun() and sigc::ptr_fun() template functions to get a sigc::slot, like so:
+ *
+ * @code
+ * sigc::slot<void, int> sl = sigc::mem_fun(someobj,& SomeClass::somemethod);
+ * @endcode
+ *
+ * or
+ *
+ * @code
+ * sigc::slot<void, int> sl = sigc::ptr_fun(&somefunction);
+ * @endcode
+ *
+ * or
+ *
+ * @code
+ * m_Button.signal_clicked().connect( sigc::mem_fun(*this, &MyWindow::on_button_clicked) );
+ * @endcode
+ *
+ * The compiler will complain if SomeClass::somemethod, etc. have the wrong signature.
+ *
+ * You can also pass slots as method parameters where you might normally pass a function pointer.
+ *
+ * @ingroup functors
+ */
+
 /** Base type for slots.
  * slot_base integrates most of the interface of the derived
  * sigc::slot templates. slots

@@ -1,3 +1,13 @@
+2.0.0:
+
+2004-04-06  Martin Schulze  <mschulze@cvs.gnome.org>
+
+	* configure.ac: Bump version number to 2.0.0.
+	* NEWS: Add ChangeLog summary for version 2.0.0.
+	* TODO, AUTHORS: Bring up to date.
+	* sigc++-2.0.pc.in, Makefile.am: 1.9 -> 2.0
+	* Added more documentation.
+
 2004-04-10  Murray Cumming  <murrayc@murrayc.com>
 
 	* sigc++/connection.[h|cc]: Implement blocked() to avoid undefined 

@@ -200,7 +200,7 @@ __FIREWALL__
 
 namespace sigc { 
 
-/** @defgroup bind bind()
+/** @defgroup bind bind(), bind_return()
  * sigc::bind() alters an arbitrary functor by fixing arguments to certain values.
  * Up to CALL_SIZE arguments can be bound at a time.
  * For single argument binding overloads of sigc::bind() are provided that let you
@@ -230,6 +230,15 @@ namespace sigc {
  *   sigc::signal<void> some_signal;
  *   void foo(int);
  *   some_signal.connect(sigc::bind(&foo,1));
+ *   @endcode
+ *
+ * sigc::bind_return() alters an arbitrary functor by
+ * fixing its return value to a certain value.
+ *
+ * @par Example:
+ *   @code
+ *   void foo();
+ *   std::cout << sigc::bind_return(&foo, 5)(); // calls foo() and returns 5
  *   @endcode
  *
  * You can bind references to functors by passing the objects through
@@ -266,7 +275,7 @@ namespace sigc {
  */
 
 /** Adaptor that binds an argument to the wrapped functor.
- * Use the convenience function bind() to create an instance of bind_functor.
+ * Use the convenience function sigc::bind() to create an instance of sigc::bind_functor.
  *
  * The following template arguments are used:
  * - @e I_location Zero-based position of the argument to fix (@p -1 for the last argument).
@@ -302,7 +311,7 @@ FOR(1,CALL_SIZE,[[BIND_FUNCTOR_COUNT(%1)]])dnl
  *
  * @param _A_func Functor that should be wrapped.
  * @param _A_b1 Argument to bind to @e _A_func.
- * @return Adaptor that executes _A_func with the bound argument on invokation.
+ * @return Adaptor that executes @e _A_func with the bound argument on invokation.
  *
  * @ingroup bind
  */

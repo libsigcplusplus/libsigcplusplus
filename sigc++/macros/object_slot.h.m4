@@ -20,10 +20,7 @@ include(template.macros.m4)
 
 define([SLOT_MEM_FUN],[dnl
 /** Creates a functor of type SigC::Slot$1 that encapsulates a $4 method and an object instance.
- * @e _A_obj must be of a type that inherits SigC::Object.
- *
- * This function is part of the compatibility module and therefore deprecated.
- * Use sigc::mem_fun() instead.
+ * @e _A_obj must be of a type that inherits from SigC::Object.
  *
  * @param _A_obj Reference to object instance the functor should operate on.
  * @param _A_func Pointer to method that should be wrapped.

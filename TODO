@@ -1,13 +1,9 @@
+Compatibility:
+
+- Fix compilation for SUN FORTE C++ 5.5.
+
+
 Configure checks and Makefile issues:
-
-- Add header sigcconfig.h like we have in libsigc++-1.2 ?
-
-- Add return codes to "make check" so that the user doesn't need to 
-  analyze the code to see what the heck it is supposed to do to ensure
-  it passed. (Karl Nelson)
-
-- Find out what compiler features apart from typeof() should be made optional.
-  Add configure checks.
 
 - When you use a single Makefile.am for
   several directories (in sigc++2, all under sigc++/ is ruled by a

@@ -122,7 +122,7 @@ __FIREWALL__
 
 namespace sigc { 
 
-/** @defgroup hide hide()
+/** @defgroup hide hide(), hide_return()
  * sigc::hide() alters an arbitrary functor in that it adds a parameter
  * whose value is ignored on invocation of the returned functor.
  * Thus you can discard one or more of the arguments of a signal.
@@ -170,7 +170,7 @@ namespace sigc {
  */
 
 /** Adaptor that adds a dummy parameter to the wrapped functor.
- * Use the convenience function sigc::hide() to create an instance of hide_functor.
+ * Use the convenience function sigc::hide() to create an instance of sigc::hide_functor.
  *
  * The following template arguments are used:
  * - @e I_location Zero-based position of the dummy parameter (@p -1 for the last parameter).
@@ -186,7 +186,7 @@ FOR(-1,eval(CALL_SIZE-1),[[HIDE_FUNCTOR(%1)]])dnl
 
 /** Performs a functor on each of the targets of a functor.
  * The function overload for sigc::hide_functor performs a functor on the
- * functor and on the object instances stored in the sigc::hide_functor object.
+ * functor stored in the sigc::hide_functor object.
  *
  * @ingroup hide
  */
@@ -203,7 +203,7 @@ void visit_each(const T_action& _A_action,
  * position of the dummy parameter in the returned functor (@p -1 stands for the last parameter).
  *
  * @param _A_func Functor that should be wrapped.
- * @return Adaptor that executes _A_func ignoring the value of the dummy parameter.
+ * @return Adaptor that executes @e _A_func ignoring the value of the dummy parameter.
  *
  * @ingroup hide
  */
@@ -216,7 +216,7 @@ hide(const T_functor& _A_func)
  * This overload adds a dummy parameter at the back of the functor's parameter list.
  *
  * @param _A_func Functor that should be wrapped.
- * @return Adaptor that executes _A_func ignoring the value of the last parameter.
+ * @return Adaptor that executes @e _A_func ignoring the value of the last parameter.
  *
  * @ingroup hide
  */

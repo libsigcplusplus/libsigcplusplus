@@ -43,9 +43,6 @@ FOR(1,$1,[
  *   s(19);
  *   @endcode
  *
- * This class is part of the compatibility module and therefore deprecated.
- * Use the unnumbered template sigc::slot instead.
- *
  * @deprecated Use the unnumbered template sigc::slot instead.
  * @ingroup compat
  */
@@ -84,9 +81,6 @@ public:
 define([SLOT_PTR_FUN],[dnl
 /** Creates a functor of type SigC::Slot$1 that wraps an existing non-member function.
  *
- * This function is part of the compatibility module and therefore deprecated.
- * Use sigc::ptr_fun() instead.
- *
  * @param _A_func Pointer to function that should be wrapped.
  * @return Functor that executes _A_func on invokation.
  *
@@ -121,7 +115,7 @@ FOR(0,CALL_SIZE,[[SLOT_N(%1)]])
  *
  * This ugly hack avoids the error:
  */
-// #define slot(...) make_slot(__VA_ARGS__)
+// #define slot(...) make_slot(__VA_ARGS__) /* only works for gcc */
 #endif
 
 

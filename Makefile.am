@@ -7,7 +7,7 @@ EXTRA_DIST = autogen.sh sigc++config.h.in
 SUBDIRS      = sigc++ tests docs examples scripts
 DIST_SUBDIRS = $(SUBDIRS) MSVC_Net2003
 
-sigc_configdir = $(libdir)/sigc++-1.9/include
+sigc_configdir = $(libdir)/sigc++-2.0/include
 sigc_config_DATA = sigc++config.h
 
 pkgconfigdir = $(libdir)/pkgconfig

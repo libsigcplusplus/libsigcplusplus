@@ -406,9 +406,6 @@ FOR(1,$1,[
  * - @e T_arg%1 Argument type used in the definition of emit().])
  * - @e T_accumulator The accumulator type used for emission. The default @p nil means that no accumulator should be used. Signal emission returns the return value of the last slot invoked.
  *
- * This class is part of the compatibility module and therefore deprecated.
- * Use the unnumbered template sigc::signal instead.
- *
  * @deprecated Use the unnumbered template sigc::signal instead.
  * @ingroup compat
  */

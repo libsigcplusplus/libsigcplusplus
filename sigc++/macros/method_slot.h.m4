@@ -20,12 +20,11 @@ include(template.macros.m4)
 
 define([SLOT_MEM_FUN],[dnl
 /** Creates a functor of type Sigc::Slot[]eval($1+1) that wraps a $4 method.
- * This function is part of the compatibility module and therefore deprecated.
- * Use sigc::mem_fun() instead.
  *
  * @param _A_func Pointer to method that should be wrapped.
  * @return Functor that executes _A_func on invokation.
  *
+ * @deprecated Use sigc::mem_fun() instead.
  * @ingroup compat
  */
 template <LIST(class T_return, LOOP(class T_arg%1, $1), class T_obj)>

@@ -21,6 +21,9 @@
 
 namespace sigc {
 
+/** Reference wrapper.
+ * Use sigc::ref() to create a reference wrapper.
+ */
 template <class T_type>
 struct reference_wrapper
 {
@@ -33,6 +36,9 @@ struct reference_wrapper
   T_type& value_;
 };
 
+/** Const reference wrapper.
+ * Use sigc::ref() to create a const reference wrapper.
+ */
 template <class T_type>
 struct const_reference_wrapper
 {
@@ -45,10 +51,30 @@ struct const_reference_wrapper
   const T_type& value_;
 };
 
+/** Creates a reference wrapper.
+ * Passing an object throught sigc::ref() makes libsigc++ adaptors
+ * like, e.g., sigc::bind store references to the object instead of copies.
+ * If the object type inherits from sigc::trackable this will ensure
+ * automatic invalidation of the adaptors when the object is deleted
+ * or overwritten.
+ *
+ * @param v Reference to store.
+ * @return A reference wrapper.
+ */
 template <class T_type>
 reference_wrapper<T_type> ref(T_type& v)
 { return reference_wrapper<T_type>(v); }
 
+/** Creates a const reference wrapper.
+ * Passing an object throught sigc::ref() makes libsigc++ adaptors
+ * like, e.g., sigc::bind store references to the object instead of copies.
+ * If the object type inherits from sigc::trackable this will ensure
+ * automatic invalidation of the adaptors when the object is deleted
+ * or overwritten.
+ *
+ * @param v Reference to store.
+ * @return A reference wrapper.
+ */
 template <class T_type>
 const_reference_wrapper<T_type> ref(const T_type& v)
 { return const_reference_wrapper<T_type>(v); }

@@ -87,6 +87,25 @@ namespace sigc {
 struct nil;
 
 
+/** @defgroup functors Functors
+ * Functors are copyable types that define operator()().
+ *
+ * Types that define operator()() overloads with different return types are referred to
+ * as multi-type functors. Multi-type functors are only partly supported in libsigc++.
+ *
+ * Closures are functors that store all information needed to invoke a callback from operator()().
+ *
+ * Adaptors are functors that alter the signature of a functor's operator()().
+ *
+ * libsigc++ defines numerous functors, closures and adaptors.
+ * Since libsigc++ is a callback libaray, most functors are also closures.
+ * The documentation doesn't distinguish between functors and closures.
+ *
+ * The basic functor types libsigc++ provides are created with ptr_fun() and mem_fun()
+ * and can be converted into slots implicitly.
+ * The set of adaptors that ships with libsigc++ is documented in the equally named module. 
+ */
+
 /** A hint to the compiler.
  * All functors which define @p result_type should publically inherit from this hint.
  *
@@ -109,6 +128,14 @@ struct functor_trait<T_functor,true>
   typedef T_functor functor_type;
 };
 
+/** If you want to mix functors from a different library with libsigc++ and
+ * these functors define @p result_type simply use this macro inside namespace sigc like so:
+ * @code
+ * namespace sigc { SIGC_FUNCTORS_HAVE_RESULT_TYPE }
+ * @endcode
+ *
+ * @ingroup functors
+ */
 #define SIGC_FUNCTORS_HAVE_RESULT_TYPE                 \
 template <class T_functor>                             \
 struct functor_trait<T_functor,false>                  \
@@ -117,6 +144,19 @@ struct functor_trait<T_functor,false>                  \
   typedef T_functor functor_type;                      \
 };
 
+/** If you want to mix functors from a different library with libsigc++ and
+ * these functors don't define @p result_type use this macro inside namespace sigc
+ * to expose the return type of the functors like so:
+ * @code
+ * namespace sigc {
+ *   SIGC_FUNCTOR_TRAIT(first_functor_type, return_type_of_first_functor_type)
+ *   SIGC_FUNCTOR_TRAIT(second_functor_type, return_type_of_second_functor_type)
+ *   ...
+ * }
+ * @endcode
+ *
+ * @ingroup functors
+ */
 #define SIGC_FUNCTOR_TRAIT(T_functor,T_return) \
 template <>                                    \
 struct functor_trait<T_functor,false>          \

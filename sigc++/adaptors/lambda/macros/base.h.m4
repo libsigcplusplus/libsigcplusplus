@@ -53,6 +53,28 @@ divert(0)dnl
 
 namespace sigc {
 
+/** @defgroup lambdas Lambdas
+ * libsigc++ ships with basic lambda functionality and the sigc::group adaptor that uses lambdas to transform a functor's parameter list.
+ *
+ * The lambda selectors sigc::_1, sigc::_2, ..., sigc::_9 are used to select the
+ * first, second, ..., nineth argument from a list.
+ *
+ * @par Examples:
+ *   @code
+ *   std::cout << sigc::_1(10,20,30); // returns 10
+ *   std::cout << sigc::_2(10,20,30); // returns 20
+ *   ...
+ *   @endcode
+ *
+ * Operators are defined so that lambda selectors can be used e.g. as placeholders in
+ * arithmetic expressions.
+ *
+ * @par Examples:
+ *   @code
+ *   std::cout << (sigc::_1 + 5)(3); // returns (3 + 5)
+ *   std::cout << (sigc::_1 * sigc::_2)(7,10); // returns (7 * 10)
+ */
+
 // dummy structure to keep track of the where we are.
 struct lambda_base : public adaptor_base {};
 

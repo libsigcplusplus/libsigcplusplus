@@ -1,1 +1,5 @@
-Karl Einar Nelson <kenelson@ece.ucdavis.edu>
+Martin Schulze <mschulze@cvs.gnome.org>
+Murray Cumming <murrayc@murrayc.com>
+Cedric Gustin <cedric.gustin@swing.be> (win32 support)
+Andreas Rottmann <rottmann@users.sourceforge.net> (make system)
+Karl Einar Nelson <kenelson@ece.ucdavis.edu> (initial version 1.9.4)
