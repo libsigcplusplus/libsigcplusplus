@@ -1,3 +1,10 @@
+2003-10-30  Cedric Gustin <cedric.gustin@swing.be>
+ 
+ 	* configure.ac: Added test of win32 platform. Commented
+ 	out AM_DISABLE_SHARED (DLLs are shared libraries).
+ 	* sigc++/Makefile.am: added a few LDFLAGS for win32
+ 	DLLs.
+
 2003-10-30  Martin Schulze  <teebaum@cvs.gnome.org>
 
 	* sigc++/signal.h.m4: Add SigC::Signal#<>::slot().

@@ -25,7 +25,7 @@ dnl I don't like to look at the automake cruft.
 
 dnl C++ libraries should generally be static if the interface is subject
 dnl to a lot of change.
-AM_DISABLE_SHARED
+dnl AM_DISABLE_SHARED
 
 dnl Initialize automake stuff
 AM_INIT_AUTOMAKE($PACKAGE, $VERSION)
@@ -51,6 +51,20 @@ AM_MAINTAINER_MODE
 dnl Using C compiler
 AC_PROG_CC
 AC_PROG_CPP
+
+dnl Used for enabling the "-no-undefined" flag while generating DLLs
+dnl Borrowed from the official gtk+-2 configure.in
+AC_MSG_CHECKING([for some Win32 platform])
+case "$host" in
+  *-*-mingw*|*-*-cygwin*)
+    platform_win32=yes
+    ;;
+  *)
+    platform_win32=no
+    ;;
+esac
+AC_MSG_RESULT([$platform_win32])
+AM_CONDITIONAL(PLATFORM_WIN32, test "$platform_win32" = "yes")
 
 dnl Using libtool
 AC_LIBTOOL_WIN32_DLL

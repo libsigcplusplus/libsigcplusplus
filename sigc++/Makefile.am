@@ -58,12 +58,19 @@ nobase_library_include_HEADERS = $(sigc_built_h) \
   adaptors/adaptors.h \
   adaptors/lambda/lambda.h
 
+# Support for DLL on cygwin/mingw using libtool > 1.4
+if PLATFORM_WIN32
+win32_dlls_ldflags = -no-undefined -Wl,--export-all-symbols
+else
+win32_dlls_ldflags =
+endif
+
 # build the library
 lib_LTLIBRARIES = libsigc-2.0.la
 libsigc_2_0_la_SOURCES = signal.cc trackable.cc connection.cc \
                          functors/slot.cc \
 			 adaptors/lambda/lambda.cc
-
+libsigc_2_0_la_LDFLAGS  = $(win32_dlls_ldflags)
 BUILT_SOURCES = $(sigc_built_h) $(sigc_built_cc)
 
 CLEANFILES = build-subdirs-stamp
