@@ -233,20 +233,34 @@ struct typed_slot_rep : public slot_rep
    * @param functor The functor contained by the new slot_rep object.
    */
   inline typed_slot_rep(const T_functor& functor)
-    : slot_rep(0, &detach, &dup), functor_(functor)
+    : slot_rep(0, &destroy, &dup), functor_(functor)
     { visit_each_type<trackable*>(slot_do_bind(this), functor_); }
 
   inline typed_slot_rep(const typed_slot_rep& cl)
-    : slot_rep(cl.call_, &detach, &dup), functor_(cl.functor_)
+    : slot_rep(cl.call_, &destroy, &dup), functor_(cl.functor_)
     { visit_each_type<trackable*>(slot_do_bind(this), functor_); }
 
-  /** Detaches the slot_rep object from all referred trackables.
-   * The notification callback is unregistered using visit_each().
-   */
-  static void* detach(void* data)
+  inline ~typed_slot_rep()
     {
-      slot_rep* rep_ = (slot_rep*)data;
-      visit_each_type<trackable*>(slot_do_unbind(rep_), static_cast<self*>(rep_)->functor_);
+      call_ = 0;
+      destroy_ = 0;
+      visit_each_type<trackable*>(slot_do_unbind(this), functor_);
+    }
+
+  /** Detaches the stored functor from the other referred trackables and destroys it.
+   * This does not destroy the base slot_rep object.
+   */
+  static void* destroy(void* data)
+    {
+      self* self_ = static_cast<self*>((slot_rep*)data);
+      self_->call_ = 0;
+      self_->destroy_ = 0;
+      visit_each_type<trackable*>(slot_do_unbind(self_), self_->functor_);
+      self_->functor_.~adaptor_type();
+      /* don't call disconnect() here: destroy() is either called
+       * a) from the parent itself (in which case disconnect() leads to a segfault) or
+       * b) from a parentless slot (in which case disconnect() does nothing)
+       */
       return 0;
     }
 

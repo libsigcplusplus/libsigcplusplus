@@ -63,12 +63,11 @@ struct SIGC_API slot_rep : public trackable
    */
   hook call_;
 
-  /// Callback that detaches the slot_rep object from referred trackables.
-  /* This could be a virtual function. However it would be identical to
-   * the virtual dtor. Therefore it's more efficient to have no virtual
-   * functions at all.
+  /// Callback that detaches the slot_rep object from referred trackables and destroys it.
+  /* This could be a replaced by a virtual dtor. However since this struct is
+   * crucual for the efficiency of the whole library we want to avoid this.
    */
-  hook detach_;
+  hook destroy_;
 
   /** Callback that makes a deep copy of the slot_rep object.
    * @return A deep copy of the slot_rep object.
@@ -81,11 +80,16 @@ struct SIGC_API slot_rep : public trackable
   /** Parent object whose callback cleanup_ is executed on notification. */
   void* parent_;
 
-  inline slot_rep(hook call__, hook detach__, hook dup__)
-    : call_(call__), detach_(detach__), dup_(dup__), cleanup_(0), parent_(0) {}
+  inline slot_rep(hook call__, hook destroy__, hook dup__)
+    : call_(call__), destroy_(destroy__), dup_(dup__), cleanup_(0), parent_(0) {}
 
   inline ~slot_rep()
-    { if (detach_) (*detach_)(this); }
+    { destroy(); }
+
+  /** Destroys the slot_rep object (but doesn't delete it).
+   */
+  inline void destroy()
+    { if (destroy_) (*destroy_)(this); }
 
   /** Makes a deep copy of the slot_rep object.
    * @return A deep copy of the slot_rep object.

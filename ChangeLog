@@ -1,5 +1,14 @@
 2004-10-02  Martin Schulze <mschulze@cvs.gnome.org>
 
+	* sigc++/functors/slot_base.{h,cc}, sigc++/functors/macros/slot.h.m4:
+	Rename (typed_)slot_rep::detach to (typed_)slot_rep::destroy.
+	Call the dtor of the functor stored in typed_slot_rep from destroy().
+	A cleaner solution would be to add an additional "virtual" function
+	that calls 'delete' or a real virtual dtor. However, this would be
+	less efficient and might break the ABI. (Fixes #152323.)
+
+2004-10-02  Martin Schulze <mschulze@cvs.gnome.org>
+
 	* sigc++config.h.in, MSVC_Net2003/sigc++config.h,
 	sigc++/signal_base.cc, sigc++/functors/slot_base.{h,cc},
 	sigc++/functors/macros/slot.h.m4: Define and use new macro

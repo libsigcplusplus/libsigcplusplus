@@ -27,11 +27,11 @@ namespace internal {
 
 void slot_rep::disconnect()
 {
-  if(parent_)
+  if (parent_)
   {
     call_ = 0;          // Invalidate the slot.
                         // _Must_ be done here because parent_ might defer the actual
-                        // destruction of the slot_rep and try to invoke it before.
+                        // destruction of the slot_rep and try to invoke it before that point.
     void* data_ = parent_;
     parent_ = 0;        // Just a precaution.
     (cleanup_)(data_);  // Notify the parent (might lead to destruction of this!).
@@ -43,12 +43,8 @@ void* slot_rep::notify(void* data)
 {
   slot_rep* self_ = (slot_rep*)data;
   self_->call_ = 0; // Invalidate the slot.
-  if (self_->detach_) (*self_->detach_)(self_); // Detach from the other referred trackables
-      // _Must_ be called from here as long as the notifying trackable is not
-      // destroyed, yet, because detach() executes remove_destroy_notify_callback()
-      // on _all_ trackables, including the referring one.
-  self_->detach_ = 0;
-  self_->disconnect(); // Disconnect the slot (might lead to destruction of self_!).
+  self_->destroy(); // Detach the stored functor from the other referred trackables and destroy it.
+  self_->disconnect(); // Disconnect the slot (might lead to deletion of self_!).
   return 0;
 }
 
