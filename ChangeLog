@@ -1,3 +1,9 @@
+2003-03-22  Martin Schulze  <MHL.Schulze@t-online.de>
+
+	* tests/test_bind.cc: Test and show how to use functor_trait
+	for user defined or 3rd-party functors so that a
+	bind<0>([functor],[arg1])() call with no arguments can return a value.
+
 2003-03-20  Martin Schulze  <MHL.Schulze@t-online.de>
 
 	* sigc++/callof.h.m4: Add explanations. Comment in / create templates

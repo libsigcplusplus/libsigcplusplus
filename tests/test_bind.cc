@@ -10,17 +10,35 @@ using namespace sigc::functor;
 
 struct foo 
 {
+  bool operator()(int i)
+    {std::cout << "foo(int "<<i<<")"<<std::endl; return (i>0);}
   int operator()(int i,int j)
     {std::cout << "foo(int "<<i<<",int "<<j<<")"<<std::endl; return i+j;}
   void operator()(int i,int j,int k)
     {std::cout << "foo(int "<<i<<",int "<<j<<", int "<<k<<")"<<std::endl;}
 };
 
+// explicitly specify the return type of foo's operator() overload with no arguments
+// (cannot be auto-detected):
+
+namespace sigc {
+namespace functor {
+
+template <>
+struct functor_trait<foo,false>
+{
+  typedef bool result_type;
+};
+
+} /* namespace functor */
+} /* namespace sigc */
+
+
 int bar(int i,int j) 
   {std::cout << "bar(int "<<i<<",int "<<j<<")"<<std::endl; return i+j;}
 
 bool simple(bool test)
-  { std::cout << "simple(bool "<<test<<")"<<std::endl; return test; }
+  {std::cout << "simple(bool "<<test<<")"<<std::endl; return test;}
 
 
 int main()
@@ -48,5 +66,6 @@ int main()
   bind<1>(&bar,12,13)();
 
   // test return type of bind_functor::operator() overload with no arguments
+  std::cout << bind<0>(foo(),14)() << std::endl;
   std::cout << bind<0>(&simple, true)() << std::endl;
 }
