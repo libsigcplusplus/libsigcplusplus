@@ -105,6 +105,5 @@ AC_OUTPUT([Makefile
     sigc++/Makefile
     sigc++/functors/Makefile
     sigc++/adaptors/Makefile
-    sigc++/adaptors/lambda/Makefile
 ])
 

@@ -1,4 +1,4 @@
-SUBDIRS = lambda
+SUBDIRS = #lambda
 
 sigc_m4 = adaptor_trait.h.m4 \
           compose.h.m4 bind_return.h.m4 exception_catch.h.m4 \

@@ -1,3 +1,9 @@
+2003-01-23  Murray Cumming  <murrayc@usa.net>
+
+	* sigc++/adaptors/lambda is disable temporarily (not built and
+	not distributed) because it gets built before its parent
+	directory, but #includes generated sources in the parent directory.
+
 2003-01-22  Murray Cumming  <murrayc@usa.net>
 
 	* Added Andreas Rottman's example.

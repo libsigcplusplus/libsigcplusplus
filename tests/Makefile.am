@@ -18,8 +18,8 @@ noinst_PROGRAMS= \
   test_exception_catch \
   test_hide \
   test_functor_trait \
-  test_lambda \
-  test_trackable 
+  test_trackable
+#  test_lambda \ 
 
 TESTS = $(noinst_PROGRAMS)
 
@@ -36,5 +36,5 @@ test_mem_fun_SOURCES = test_mem_fun.cc
 test_ptr_fun_SOURCES = test_ptr_fun.cc 
 test_hide_SOURCES = test_hide.cc 
 test_functor_trait_SOURCES = test_functor_trait.cc 
-test_lambda_SOURCES = test_lambda.cc 
+# test_lambda_SOURCES = test_lambda.cc 
 test_trackable_SOURCES = test_trackable.cc 
