@@ -48,13 +48,27 @@ struct trackable_callback
  */
 struct trackable_callback_list
 {
+  /** Add a callback function.
+   * @param data Data that will be sent as a parameter to teh callback function.
+   * @param func The callback function.
+   * 
+   */
   void add_callback(void* data, func_destroy_notify func);
+
+  /** Remove the callback which has this data associated with it.
+   * @param data The data that was given as a parameter to add_callback().
+   */
   void remove_callback(void* data);
+
+  /** This invokes all of the callback functions.
+   */
   void clear();
 
   trackable_callback_list()
     : clearing_(false) {}
 
+  /** This invokes all of the callback functions.
+   */
   ~trackable_callback_list();
 
 private:

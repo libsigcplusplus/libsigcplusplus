@@ -1,3 +1,10 @@
+2004-07-11  Murray Cumming  <murrayc@murrayc.com>
+
+	* sigc++/connection.cc: Added some comments.
+	* sigc++/trackable.cc: operator=(): Check for self-asignment, though I 
+	do not know of any actual bug that this fixes. Added some comments.
+	* sigc++/trackable.h Added some doxygen documentation.
+
 2004-07-09  Murray Cumming  <murrayc@murrayc.com>
 
 	* tests/: Added test_disconnect_during_emit.cc, to prove that this 
