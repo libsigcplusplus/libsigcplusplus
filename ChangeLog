@@ -1,3 +1,9 @@
+2005-02-01  Murray Cumming  <murrayc@murrayc.com>
+
+	* bind.h.m4: Define bind_functor::operator() inline because the AIX 
+	compiler/linker sometimes fails to find it when it is defined 
+	outside of the class.
+
 2.0.8:
 
 2005-01-30  Murray Cumming  <murrayc@murrayc.com>

@@ -94,7 +94,11 @@ struct bind_functor<$1, T_functor, T_bound, LIST(LOOP(nil, 6))> : public adapts<
    * @return The return value of the functor invocation.
    */
   result_type
-  operator()();
+  operator()()
+  {
+    //Note: The AIX compiler sometimes gives linker errors if we do not define this in the class.
+    return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<_P_(T_bound)> (bound_);
+  }
 
 FOR(eval($1+1),CALL_SIZE,[[BIND_OPERATOR_LOCATION(eval($1+1),%1)]])dnl
   /** Constructs a bind_functor object that binds an argument to the passed functor.
@@ -108,12 +112,6 @@ FOR(eval($1+1),CALL_SIZE,[[BIND_OPERATOR_LOCATION(eval($1+1),%1)]])dnl
   /// The argument bound to the functor.
   T_bound bound_;
 };
-
-template <class T_functor, class T_bound>
-typename bind_functor<$1, T_functor, T_bound>::result_type
-dnl //TODO: I don't like the hardcoded 6 here. murrayc.
-bind_functor<$1, T_functor, T_bound, LOOP(nil, 6)>::operator()()
-  { return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<_P_(T_bound)> (bound_); }
 
 ])
 define([BIND_FUNCTOR_COUNT],[dnl
