@@ -1,0 +1,489 @@
+<?xml version="1.0"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" >
+<book>
+
+<bookinfo>
+	<title>LibSigC++</title>
+        <author>
+          <firstname>Ainsley</firstname>
+          <surname>Pereira</surname>
+        </author>
+
+	<pubdate>September 2002. Updated January 2004 by Murray Cumming</pubdate>
+
+        <abstract>
+          <para>LibSigC++ is a C++ template library implementing typesafe callbacks. This is an intro to LibSigC++.</para>
+        </abstract>
+</bookinfo>
+
+<chapter id="sec-introduction">
+<title>Introduction</title>
+
+<sect1>
+<title>Motivation</title>
+
+	<para>There are many situations in which it is desirable to decouple code that
+	detects an event, and the code that deals with it. This is especially common in
+	GUI programming, where a toolkit might provide user interface elements such as
+	clickable buttons but, being a generic toolkit, doesn't know how an individual
+	application using that toolkit should handle the user clicking on it.</para>
+
+	<para>In C the callbacks are generally handled by the application calling a
+	'register' function and passing a pointer to a function and a <literal remap="tt">void *</literal>
+	argument, eg.</para>
+
+<programlisting>
+void clicked(void *data);
+
+button * okbutton = create_button("ok");
+static char somedata[] = "This is some data I want the clicked() function to have";
+
+register_click_handler(okbutton, clicked, somedata);
+</programlisting>
+
+	<para>When clicked, the toolkit will call <literal remap="tt">clicked()</literal> with the data pointer passed
+	to the <literal remap="tt">register_click_handler</literal> function.</para>
+
+	<para>This works in C, but is not typesafe. There is no compile-time way of
+	ensuring that <literal remap="tt">clicked()</literal> isn't expecting a struct of some sort instead of a
+	<literal remap="tt">char *</literal>.</para>
+
+	<para>As C++ programmers, we want type safety. We also want to be able to use
+	things other than free-standing functions as callbacks.</para>
+
+	<para>LibSigC++ provides the concept of a slot, which holds a reference to one of
+	the things that can be used as a callback:
+	<itemizedlist>
+	    <listitem>A free-standing function as in the example</listitem>
+	    <listitem>A functor objects that defines operator()</listitem>
+	    <listitem>A pointer-to-a-member-function and an instance of an object on which to invoke it (the
+	        object should inherit from <literal remap="tt">sigc::trackable</literal>)</listitem>
+	</itemizedlist></para>
+
+	<para>All of which can take different numbers and types of arguments.</para>
+
+	<para>To make it easier to construct these, libsigc++ provides 2 the sigc::ptr_fun() and sigc::mem_fun() functions, for creating slots from static functions and member functions, respectively. They return
+	a generic <literal remap="tt">signal::slot</literal> type that can be invoked with <literal remap="tt">emit()</literal> or <literal remap="tt">operator()</literal>.</para>
+
+	<para>For the other side of the fence, LibSigC++ provides <literal remap="tt">signal</literal>s, to which the
+	client can attach <literal remap="tt">slot</literal>s. When the <literal remap="tt">signal</literal> is emitted, all the connected
+	<literal remap="tt">slot</literal>s are called.</para>
+</sect1>
+</chapter>
+
+<chapter id="sec-connecting">
+<title>Connecting your code to signals</title>
+
+<sect1>
+<title>A simple example</title>
+	<para>So to get some experience, lets look at a simple example...</para>
+
+	<para>Lets say you and I are writing an application which informs the user when
+	aliens land in the car park. To keep the design nice and clean, and allow for
+	maximum portability to different interfaces, we decide to use LibSigC++ to
+	split the project in two parts.</para>
+
+	<para>I will write the <literal remap="tt">AlienDetector</literal> class, and you will write the code to inform
+	the user. (Well, OK, I'll write both, but we're pretending, remember?)</para>
+
+	<para>Here's my class:</para>
+
+<programlisting>
+class AlienDetector
+{
+public:
+    AlienDetector();
+
+    void run();
+
+    sigc::signal&lt;void&gt; signal_detected;
+};
+</programlisting>
+
+		<para>(I'll explain the type of signal_detected later.)</para>
+
+		<para>Here's your code that uses it:</para>
+
+<programlisting>
+void warn_people()
+{
+    cout &lt;&lt; "There are aliens in the carpark!" &lt;&lt; endl;
+}
+
+int main()
+{
+    AlienDetector mydetector;
+    mydetector.signal_detected.connect( sigc::ptr_fun(warn_people) );
+
+    mydetector.run();
+
+    return 0;
+}
+</programlisting>
+
+	<para>Pretty simple really - you call the <literal remap="tt">connect()</literal> method on the signal to
+	connect your function. <literal remap="tt">connect()</literal> takes a <literal remap="tt">slot</literal> parameter (remember slots
+	are capable of holding any type of callback), so you convert your
+	<literal remap="tt">warn_people()</literal> function to a slot using the <literal remap="tt">slot()</literal> function.</para>
+
+	<para>To compile this example from the downloadable example code, use:</para>
+	<programlisting>g++ example1.cc -o eg1 `pkg-config --cflags --libs sigc++-1.2`</programlisting>
+	<para>Note that those `` characters are backticks, not single quotes. Run it with</para>
+	<programlisting>./eg1</programlisting>
+	<para>(Try not to panic when the aliens land!)</para>
+
+</sect1>
+
+<sect1>
+<title>Using a member function</title>
+
+	<para>Suppose you found a more sophisticated alien alerter class on the web,
+	such as this:</para>
+
+<programlisting>
+class AlienAlerter : public sigc::trackable
+{
+public:
+    AlienAlerter(char const* servername);
+    void alert();
+private:
+    // ...
+};
+</programlisting>
+
+	<para>(Handily it derives from <literal remap="tt">sigc::trackable</literal> already. This isn't quite so
+	unlikely as you might think; all appropriate bits of the popular gtkmm library do so,
+	for example.)</para>
+
+	<para>You could rewrite your code as follows:</para>
+
+<programlisting>
+int main()
+{
+    AlienDetector mydetector;
+    AlienAlerter  myalerter("localhost");	// added
+    mydetector.signal_detected.connect( sigc::mem_fun(myalerter, &amp;AlienAlerter::alert) ); // changed
+
+    mydetector.run();
+
+    return 0;
+}
+</programlisting>
+
+	<para>Note that only 2 lines are different - one to create an instance of the
+	class, and the line to connect the method to the signal.</para>
+
+	<para>This code is in example2.cc, which can be compiled in the same way as
+	example1.cc</para>
+</sect1>
+
+<sect1>
+<title>Signals with parameters</title>
+
+	<para>Functions taking no parameters and returning void are quite useful,
+	especially when they're members of classes that can store unlimited amounts of
+	safely typed data, but they're not sufficient for everything.</para>
+
+	<para>What if aliens don't land in the carpark, but somewhere else? Let's modify
+	the example so that the callback function takes a <literal remap="tt">std::string</literal> with the location
+	in which aliens were detected.</para>
+
+	<para>I change my class to:</para>
+
+<programlisting>
+class AlienDetector
+{
+public:
+    AlienDetector();
+
+    void run();
+
+    sigc::signal&lt;void, std::string&gt; signal_detected;	// changed
+};
+</programlisting>
+
+	<para>The only line I had to change was the signal line (in <literal remap="tt">run()</literal> I need to change
+	my code to supply the argument when I emit the signal too, but that's not shown
+	here).</para>
+
+	<para>The name of the type is '<literal remap="tt">sigc::signal</literal>'. The template parameters are the return type, then the argument types.</para>
+
+	<para>The types in the function signature are in the same order as the template
+	parameters, eg:</para>
+
+<programlisting>
+sigc::signal&lt;void,         std::string&gt;
+              void function(std::string foo);
+</programlisting>
+
+		<para>So now you can update your alerter (for simplicity, lets go back to the
+		free-standing function version):</para>
+
+<programlisting>
+void warn_people(std::string where)
+{
+    cout &lt;&lt; "There are aliens in " &lt;&lt; where &lt;&lt; "!" &lt;&lt; endl;
+}
+
+int main()
+{
+    AlienDetector mydetector;
+    mydetector.signal_detected.connect( sigc::ptr_fun(warn_people) );
+
+    mydetector.run();
+
+    return 0;
+}
+</programlisting>
+
+	<para>Easy.</para>
+</sect1>
+
+<sect1>
+<title>Disconnecting</title>
+
+	<para>If you decide you no longer want your code to be called whenever a signal is
+	emitted, you must remember the return value of <literal remap="tt">connect()</literal>, which we've been
+	ignoring until now.</para>
+
+	<para><literal remap="tt">connect()</literal> returns a <literal remap="tt">sigc::connection</literal> object, which has a <literal remap="tt">disconnect()</literal> member method. This does just what you think it does.</para>
+
+</sect1>
+</chapter>
+
+<chapter id="sec-writing">
+<title>Writing your own signals</title>
+
+<sect1>
+<title>Quick recap</title>
+	<para>If all you want to do is use gtkmm, and connect your functionality to its
+	signals, you can probably stop reading here.</para>
+
+	<para>You might benefit from reading on anyway though, as this section is going to
+	be quite simple, and the 'Rebinding' technique from the next section is
+	occasionally useful.</para>
+
+	<para>We've already covered the way the types of signals are made up, but lets
+	recap:</para>
+
+	<para>A signal is an instance of a template, named <literal remap="tt">sigc::signal</literal>. 
+        The template arguments are the types,
+	in the order they appear in the function signature that can be connected to that
+	signal; that is the return type, then the argument types.</para>
+
+	<para>To provide a signal for people to connect to, you must make available an
+	instance of that <literal remap="tt">sigc::signal</literal>. In <literal remap="tt">AlienDetector</literal> this was done
+	with a public data member. That's not considered good practice usually, so you
+	might want to consider making a member function that returns the signal by
+	reference. (This is what gtkmm does.)</para>
+
+	<para>Once you've done this, all you have to do is emit the signal when you're
+	ready. Look at the code for <literal remap="tt">AlienDetector::run()</literal>:</para>
+
+<programlisting>
+void AlienDetector::run()
+{
+    sleep(3); // wait for aliens
+    signal_detected.emit(); // panic!
+}
+</programlisting>
+
+	<para>As a shortcut, <literal remap="tt">sigc::signal</literal> defines <literal remap="tt">operator()</literal> as a synonym for
+	<literal remap="tt">emit()</literal>, so you could just write <literal remap="tt">signal_detected();</literal> as in the second
+	example version:</para>
+
+<programlisting>
+void AlienDetector::run()
+{
+    sleep(3);                // wait for aliens
+    signal_detected("the carpark"); // this is the std::string version, looks like
+       	                     // they landed in the carpark afterall.
+}
+</programlisting>
+</sect1>
+
+<sect1>
+<title>What about return values?</title>
+	<para>If you only ever have one slot connected to a signal, or if you only care
+	about the return value of the last registered one, it's quite straightforward:</para>
+
+<programlisting>
+sigc::signal&lt;int&gt; somesignal;
+int a_return_value;
+
+a_return_value = somesignal.emit();
+</programlisting>
+
+		<para>If you care about every return value things are a little more complicated.
+		See the section on Marshallers for more info.</para>
+</sect1>
+</chapter>
+
+<chapter id="sec-advanced">
+<title>Advanced topics</title>
+
+<sect1>
+<title>Rebinding</title>
+	<para>Suppose you already have a function that you want to be called when a
+	signal is emitted, but it takes the wrong argument types. For example, lets try
+	to attach the <literal remap="tt">warn_people(std::string)</literal> function to the detected signal
+	from the first example, which didn't supply a location string.</para>
+
+	<para>Just trying to connect it with:</para>
+
+<programlisting>
+myaliendetector.signal_detected.connect(sigc::ptr_fun(warn_people));
+</programlisting>
+
+	<para>results in a compile-time error, because the types don't match. This is good!
+	This is typesafety at work. In the C way of doing things, this would have just
+	died at runtime after trying to print a random bit of memory as the location -
+	ick!</para>
+
+	<para>We have to make up a location string, and bind it to the function, so that
+	when signal_detected is emitted with no arguments, something adds it in before
+	<literal remap="tt">warn_people</literal> is actually called.</para>
+	<para>We could write it ourselves - it's not hard:</para>
+
+<programlisting>
+void warn_people_wrapper() // note this is the signature that 'signal_detected' expects
+{
+    warn_people("the carpark");
+}
+</programlisting>
+
+	<para>but after our first million or so we might start looking for a better way. As
+	it happens, LibSigC++ has one.</para>
+
+<programlisting>
+sigc::bind(slot, arg);
+</programlisting>
+
+	<para>binds arg as the argument to slot, and returns a new slot of the same return
+	type, but with one fewer arguments.</para>
+
+	<para>Now we can write:</para>
+<programlisting>
+myaliendetector.signal_detected.connect(sigc::bind( sigc::ptr_fun(warn_people), "the carpark" ) );
+</programlisting>
+
+	<para>If the input slot has multiple args, the rightmost one is bound.</para>
+
+	<para>The return type can also be bound with <literal remap="tt">sigc::bind_return(slot, returnvalue);</literal> though
+	this is not so commonly useful.</para>
+
+	<para>So if we can attach the new <literal remap="tt">warn_people()</literal> to the old detector, can we attach
+	the old <literal remap="tt">warn_people</literal> (the one that didn't take an argument) to the new detector?</para>
+
+	<para>Of course, we just need to hide the extra argument. This can be done with
+	<literal remap="tt">sigc::hide</literal>, eg.</para>
+
+<programlisting>
+myaliendetector.signal_detected.connect( sigc::hide&lt;std::string&gt;( sigc::ptr_fun(warn_people) ) );
+</programlisting>
+
+	<para>The template arguments are the types to hide (from the right only - you can't
+	hide the first argument of 3, for example, only the last).</para>
+
+	<para><literal remap="tt">sigc::hide_return</literal> effectively makes the return type void.</para>
+</sect1>
+
+<sect1>
+<title>Retyping</title>
+	<para>A similar topic is retyping. Perhaps you have a signal that takes an <literal remap="tt">int</literal>, but
+	you want to connect a function that takes a <literal remap="tt">double</literal>.</para>
+
+	<para>This can be achieved with the <literal remap="tt">sigc::retype</literal> template. <literal remap="tt">retype</literal> has template arguments
+	just like <literal remap="tt">sigc::signal</literal> - return value, signal types.</para>
+
+	<para>It's a function template that takes a <literal remap="tt">sigc::slot</literal>, and returns a <literal remap="tt">sigc::slot</literal>. eg.</para>
+
+<programlisting>
+void dostuff(double foo)
+{
+}
+
+sigc::signal&lt;void,int&gt; asignal;
+
+asignal.connect(  sigc::retype&lt;void, int&gt;( slot(&amp;dostuff) )  );
+</programlisting>
+
+	<para>If you only want to change the return type, you can use <literal remap="tt">sigc::retype_return</literal>.
+	<literal remap="tt">retype_return</literal> needs only one template argument.</para>
+</sect1>
+
+<sect1>
+<title>Marshallers</title>
+	<para>When I first mentioned return values, I said that more advanced handling of
+	multiple return values was possible with <literal remap="tt">Marshallers</literal>.</para>
+
+	<para>A Marshaller is a class that gets fed all the return values as they're
+	returned. It can do a couple of things:
+	<itemizedlist>
+	    <listitem>It can stop the emit process at any point, causing no further slots
+	        to be called</listitem>
+	    <listitem>It can return a value, of any type</listitem>
+	</itemizedlist></para>
+
+	<para>For example, if each <literal remap="tt">slot</literal> returned an <literal remap="tt">int</literal>, we could use a marshaller return
+	the average value as a <literal remap="tt">double</literal>. Or we could return all values in a
+	<literal remap="tt">std::vector&lt;int&gt;</literal>, or maybe stop as soon as the first slot returns 5.</para>
+
+	<para>As an example, here's the averaging marshaller:</para>
+
+<programlisting>
+class Averager
+{
+public:
+    // we must typedef InType and OutType for the libsigc++ library
+    typedef double OutType;
+    typedef int InType;
+
+    Averager()
+      : total_(0), number_(0)
+      {}
+
+
+    OutType value() { return (double)total_/(double)number_; } // avoid integer division
+
+    static OutType default_value() { return 0; }
+
+    // This is the function called for each return value.
+    // If it returns 'true' it stops here.
+    bool marshal(InType newval)
+    {
+        total_ += newval; // total of values
+        ++number_;        // count of values
+        return false;     // continue emittion process
+    };
+
+private:
+    int   total_;
+    int   number_;
+};
+</programlisting>
+
+	<para>To use this, we pass the type as an extra template argument when defining
+	the <literal remap="tt">Signal</literal>, eg.</para>
+
+<programlisting>
+sigc::signal&lt;int, Averager&gt; mysignal;
+</programlisting>
+
+	<para>Now we can do:</para>
+<programlisting>
+double average_of_all_connected_slots = mysignal();
+</programlisting>
+
+	<para>Each connected <literal remap="tt">slot</literal> will be called, its value passed to an instance of
+	<literal remap="tt">Averager</literal> and that <literal remap="tt">Averager</literal>'s <literal remap="tt">value()</literal> will be returned.</para>
+
+	<para>In the downloadable examples, this is example6.cc.</para>
+</sect1>
+</chapter>
+
+<chapter id="sec-reference">
+<title>Reference</title>
+	<para>See the reference documentation <ulink url="http://libsigc.sourceforge.net/libsigc1_2/reference/">online</ulink></para>
+</chapter>
+</book>

@@ -100,6 +100,7 @@ AC_OUTPUT([
   libsigc++-2.0.spec
 
   docs/Makefile
+    docs/manual/Makefile
     docs/images/Makefile
     docs/reference/Makefile
     docs/reference/Doxyfile

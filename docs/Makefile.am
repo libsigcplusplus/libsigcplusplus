@@ -3,7 +3,7 @@
 ## Copyright (c) 2001
 ## The gtkmm development team.
 
-SUBDIRS = images reference # FAQ images tutorial reference internal
+SUBDIRS = images reference manual
 
 EXTRA_DIST = Makefile_web.am_fragment index.html
 
