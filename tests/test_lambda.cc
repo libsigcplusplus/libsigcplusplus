@@ -69,6 +69,7 @@ main()
   std::cout << "((++_1)*2)(ref(a)): " << ((++_1)*2)(sigc::ref(a)) << "; a: " << a << std::endl;
   std::cout << "((++(*_1))*2)(&a):  " << ((++(*_1))*2)(&a)    << "; a: " << a << std::endl;
   std::cout << "((--(*(&_1)))*2)(ref(a)): " << ((--(*(&_1)))*2)(sigc::ref(a)) << "; a: " << a << std::endl;
+  std::cout << "(-_1)     (-5):     " << (-_1)     (-5)       << std::endl;
   std::cout << "(var(&a)[0])():     " << (sigc::var(&a)[0])() << std::endl;
   std::cout << "(_1[_2])    (&a,0): " << (_1[_2])    (&a,0)   << std::endl;
   std::cout << "(*_1=_2)    (&a,1): " << (*_1=_2)    (&a,1)   << std::endl;

@@ -260,6 +260,7 @@ struct subscript {};
 struct assign {};
 struct pre_increment {};
 struct pre_decrement {};
+struct negate {};
 struct not_ {};
 struct address {};
 struct dereference {};
@@ -416,6 +417,7 @@ divert(0)dnl
 
 LAMBDA_OPERATOR_UNARY(unary_arithmetic<pre_increment>,++)dnl
 LAMBDA_OPERATOR_UNARY(unary_arithmetic<pre_decrement>,--)dnl
+LAMBDA_OPERATOR_UNARY(unary_arithmetic<negate>,-)dnl
 LAMBDA_OPERATOR_UNARY(unary_bitwise<not_>,~)dnl
 LAMBDA_OPERATOR_UNARY(unary_logical<not_>,!)dnl
 LAMBDA_OPERATOR_UNARY(unary_other<address>,&)dnl
