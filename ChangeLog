@@ -1,4 +1,4 @@
-2005-01-24  Cedric Gustin <cedric.gustin@swing.be>
+2005-03-09  Cedric Gustin <cedric.gustin@swing.be>
 
 	* Makefile.am: Moved MSVC_Net2003 directory to SUBDIRS.
 	* MSVC_Net2003/Makefile.am: Added blank.cpp to EXTRA_DIST.
