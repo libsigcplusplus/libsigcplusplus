@@ -1,3 +1,7 @@
+2003-08-06  Martin Schulze  <teebaum@cvs.gnome.org>
+
+	* sigc++/trackable.{cc,h}: Add function trackable::clear().
+
 2003-06-24  Andreas Rottmann  <rottmann@users.sourceforge.net>
 
 	* TODO: Minor tweaks.

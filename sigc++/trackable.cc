@@ -68,6 +68,11 @@ void trackable_dep_list::remove_dependency(void* target)
 } /* namespace internal */
 
 
+void trackable::clear()
+{
+  if (dep_list_) delete dep_list_; dep_list_ = 0;
+}
+
 internal::trackable_dep_list* trackable::dep_list() const
 {
   if (!dep_list_)

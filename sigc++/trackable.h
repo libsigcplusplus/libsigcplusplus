@@ -77,7 +77,7 @@ class trackable_dep_list
  * add_dependency() and remove_dependency() are part of the public API
  * so that it can also be used at any place notification of the object
  * dying is needed.
- * The dependencies are hold in a dependency list of type
+ * The dependencies are held in a dependency list of type
  * trackable_dep_list. This list is allocated dynamically when the
  * first dependency is added.
  * Note that there is no virtual destructor. Therefore it would be
@@ -100,7 +100,7 @@ class trackable
       }
 
     ~trackable()
-      { if (dep_list_) delete dep_list_; }
+      { clear(); }
 
     /*virtual ~trackable() {} */  /* we would need a virtual dtor for users
                                      who insist on using "trackable*" as
@@ -110,6 +110,9 @@ class trackable
       { dep_list()->add_dependency(o, f); }
     void remove_dependency(void* o) const
       { dep_list()->remove_dependency(o); }
+
+    /// Removes all dependencies and deletes dep_list_.
+    void clear();
 
   private:
     internal::trackable_dep_list* dep_list() const;
