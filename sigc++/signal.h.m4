@@ -99,8 +99,11 @@ FOR(1, $1,[
    */
   static result_type emit(LIST(iterator_type first, iterator_type last, LOOP(typename type_trait<T_arg%1>::take _A_a%1, $1)))
     {
-      T_return r_;
-      for (; first != last; ++first)
+      for (; first != last; ++first) if (!first->empty() && !first->blocked()) break;
+      if (first == last) return T_return(); // avoid compiler warning about r_ being possibly uninitialized (T_return r_(); doesn't work)
+
+      T_return r_ = (reinterpret_cast<call_type>(first->rep_->call_))(LIST(first->rep_, LOOP(_A_a%1, $1)));
+      for (++first; first != last; ++first)
         {
           if (first->empty() || first->blocked())
             continue;

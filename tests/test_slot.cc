@@ -16,14 +16,27 @@ class foo
 
 int main()
 {
-  sigc::slot<void,int> c=foo();
-  c(1);
-  c=foo();
-  c(2);
+  // simple test
+  sigc::slot<void,int> s1 = foo();
+  s1(1);
+  s1 = foo();
+  s1(2);
+
+  // test implicit conversion
+  sigc::slot<void,char> s2 = foo();
+  s2(3);
 
   // test reference
-  sigc::slot<void,std::string&> s=foo();
+  sigc::slot<void,std::string&> sl1 = foo();
   std::string str("guest book");
-  s(str);
+  sl1(str);
+  std::cout << str << std::endl;
+
+  // test operator=
+  str = "guest book";
+  sigc::slot<void,std::string&> sl2;
+  sl2 = sl1;
+  sl1 = sl2;
+  sl1(str);
   std::cout << str << std::endl;
 }

@@ -34,7 +34,7 @@ int main()
   sigc::slot<bar,int> c; // bar, not bar&: slots cannot return references
   {
     bar choco(-1);
-    c = sigc::bind_return<bar&>(foo(),choco);
+    c = sigc::bind_return(foo(),sigc::ref(choco));
     std::cout << c(7) << std::endl;
   } // auto-disconnect
   std::cout << c(8) << std::endl;

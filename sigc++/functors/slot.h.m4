@@ -191,12 +191,24 @@ struct slot_rep : public trackable
    * However, a simple benchmark seems to indicate that this slows
    * down dereferencing of slot list iterators. Martin. */
 
-  /** Callback that invokes the contained functor.
-   * This can't be a virtual function since number of arguments
+  /// Callback that invokes the contained functor.
+  /* This can't be a virtual function since number of arguments
    * must be flexible. We use function pointers to slot_call::call_it()
    * instead. call_ is set to zero to indicate that the slot is invalid.
    */
   hook call_;
+
+  /// Callback that detaches the slot_rep object from referred trackables.
+  /* This could be a virtual function. However it would be identical to
+   * the virtual dtor. Therefore it's more efficient to have no virtual
+   * functions at all.
+   */
+  hook detach_;
+
+  /** Callback that makes a deep copy of the slot_rep object.
+   * @return A deep copy of the slot_rep object.
+   */
+  hook dup_;
 
   /** Callback of parent_. */
   hook cleanup_;
@@ -204,39 +216,37 @@ struct slot_rep : public trackable
   /** Parent object whose callback cleanup_ is executed on notification. */
   void* parent_;
 
-  /** Constructs an empty slot_rep object. */
-  slot_rep()
-    : call_(0), parent_(0) {}
+  inline slot_rep(hook call__, hook detach__, hook dup__)
+    : call_(call__), detach_(detach__), dup_(dup__), cleanup_(0), parent_(0) {}
 
-  /** Constructs a slot_rep object making a shallow copy of an existing one. */
-  slot_rep(const slot_rep& cl)
-    : call_(cl.call_), parent_(0) {}
+  inline ~slot_rep()
+    { if (detach_) (*detach_)(this); }
 
   /** Makes a deep copy of the slot_rep object.
    * @return A deep copy of the slot_rep object.
    */
-  virtual slot_rep* dup() const = 0;
-
-  virtual ~slot_rep()
-    {}
+  inline slot_rep* dup() const
+    { return (slot_rep*)(*dup_)(const_cast<slot_rep*>(this)); }
 
   /** Set the parent with a callback.
    * slots have one parent exclusively.
    * @param parent The new parent.
    * @param cleanup The callback to execute from notify().
    */
-  void set_parent(void* parent, hook cleanup)
+  inline void set_parent(void* parent, hook cleanup)
     {
       parent_ = parent;
       cleanup_ = cleanup;
     }
 
-  /** Callback that is executed when the slot becomes invalid.
-   * This callback is registered in every object referred by
-   * this slot_rep object that inherits trackable. It is executed
-   * when the slot becomes invalid because of some referred object dying.
-   * It invalidates the slot setting call_ to zero and executes the
-   * parent's cleanup callback.
+  /// Invalidates the slot and executes the parent's cleanup callback.
+  void disconnect();
+
+  /** Callback that invalidates the slot.
+   * This callback is registered in every object of a trackable
+   * inherited type that is referred by this slot_rep object.
+   * It is executed when the slot becomes invalid because of some 
+   * referred object dying.
    * @param d The slot_rep object that is becoming invalid (@p this).
    */
   static void* notify(void* data);
@@ -293,38 +303,43 @@ struct slot_do_unbind
 template <class T_functor>
 struct typed_slot_rep : public slot_rep
 {
+  typedef typed_slot_rep<T_functor> self;
+
   /** The functor contained by this slot_rep object. */
   T_functor functor_;
 
-  /** Constructs a typed slot_rep object.
+  /** Constructs an invalid typed slot_rep object.
    * The notification callback is registered using visit_each().
    * @param functor The functor contained by the new slot_rep object.
    */
   inline typed_slot_rep(const T_functor& functor)
-    : functor_(functor)
+    : slot_rep(0, &detach, &dup), functor_(functor)
     { visit_each_type<trackable*>(slot_do_bind(this), functor_); }
 
-  /** Constructs a typed slot_rep object.
-   * The notification callback is registered using visit_each().
-   * @param functor The functor contained by the new slot_rep object.
-   */
   inline typed_slot_rep(const typed_slot_rep& cl)
-    : slot_rep(cl), functor_(cl.functor_)
+    : slot_rep(cl.call_, &detach, &dup), functor_(cl.functor_)
     { visit_each_type<trackable*>(slot_do_bind(this), functor_); }
 
-  /** Destroys the typed slot_rep object.
+  /** Detaches the slot_rep object from all referred trackables.
    * The notification callback is unregistered using visit_each().
    */
-  virtual ~typed_slot_rep()
-    { visit_each_type<trackable*>(slot_do_unbind(this), functor_); }
+  static void* detach(void* data)
+    {
+      slot_rep* rep_ = (slot_rep*)data;
+      visit_each_type<trackable*>(slot_do_unbind(rep_), static_cast<self*>(rep_)->functor_);
+      return 0;
+    }
 
   /** Makes a deep copy of the slot_rep object.
    * Deep copy means that the notification callback of the new
    * slot_rep object is registered in the referred trackables.
    * @return A deep copy of the slot_rep object.
    */
-  virtual slot_rep* dup() const
-    { return new typed_slot_rep<T_functor>(*this); }
+  static void* dup(void* data)
+    {
+      slot_rep* rep_ = (slot_rep*)data;
+      return static_cast<slot_rep*>(new self(*static_cast<self*>(rep_)));
+    }
 };
 
 } /* namespace internal */
@@ -469,8 +484,8 @@ public:
   /** Disconnects the slot.
    * Invalidates the slot and notifies the parent.
    */
-  void disconnect()                   // Disconnecting a slot always means destroying it.
-    { if (rep_) rep_->notify(rep_); } // => notify() marks it as invalid and notifies the parent.
+  void disconnect()
+    { if (rep_) rep_->disconnect(); }
 
   /** Overrides this slot making a copy from another slot.
    * @param src The slot from which to make a copy.

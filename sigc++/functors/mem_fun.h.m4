@@ -405,7 +405,7 @@ template <class T_action, LIST(LOOP(class T_arg%1, $1), class T_return, class T_
 void visit_each(const T_action& _A_action,
                 const bound_mem_functor$1<LIST(LOOP(T_arg%1, $1), T_return, T_obj)>& _A_target)
 {
-  visit_each(_A_action, _A_target.obj_ptr_);
+  visit_each(_A_action, *_A_target.obj_ptr_);
 }
 
 /** Performs a functor on each of the targets of a functor.
@@ -418,7 +418,7 @@ template <class T_action, LIST(LOOP(class T_arg%1, $1), class T_return, class T_
 void visit_each(const T_action& _A_action,
                 const bound_const_mem_functor$1<LIST(LOOP(T_arg%1, $1), T_return, T_obj)>& _A_target)
 {
-  visit_each(_A_action, _A_target.obj_ptr_);
+  visit_each(_A_action, *_A_target.obj_ptr_);
 }
 
 /** Performs a functor on each of the targets of a functor.
@@ -431,7 +431,7 @@ template <class T_action, LIST(LOOP(class T_arg%1, $1), class T_return, class T_
 void visit_each(const T_action& _A_action,
                 const bound_volatile_mem_functor$1<LIST(LOOP(T_arg%1, $1), T_return, T_obj)>& _A_target)
 {
-  visit_each(_A_action, _A_target.obj_ptr_);
+  visit_each(_A_action, *_A_target.obj_ptr_);
 }
 
 /** Performs a functor on each of the targets of a functor.
@@ -444,7 +444,7 @@ template <class T_action, LIST(LOOP(class T_arg%1, $1), class T_return, class T_
 void visit_each(const T_action& _A_action,
                 const bound_const_volatile_mem_functor$1<LIST(LOOP(T_arg%1, $1), T_return, T_obj)>& _A_target)
 {
-  visit_each(_A_action, _A_target.obj_ptr_);
+  visit_each(_A_action, *_A_target.obj_ptr_);
 }
 
 ])

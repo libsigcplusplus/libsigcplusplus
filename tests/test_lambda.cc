@@ -85,6 +85,7 @@ main()
   (sigc::var(std::cout) << 1 << sigc::ref("\n"))();
   (sigc::ref(std::cout) << _1 << std::string("\n"))("hello world");
   (sigc::var(std::cout) << _1 << std::string("\n"))("hello world");
+  (sigc::ref(std::cout) << sigc::static_cast_<int>(_1) << std::string("\n"))(1.234);
 
   // auto-disconnect
   sigc::slot<void*> sl1; // TODO: why does the compiler demand void* ?
@@ -123,4 +124,7 @@ main()
 
   // same functionality as compose
   std::cout << (sigc::group(&foo, sigc::group(&foo, _1, _2), _3)) (1,2,3) << std::endl;
+
+  // same functionality as retype
+  std::cout << (sigc::group(&foo, sigc::static_cast_<int>(_1), 2)) (1.234) << std::endl;
 }

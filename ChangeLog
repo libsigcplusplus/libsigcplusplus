@@ -1,3 +1,34 @@
+2003-10-26  Martin Schulze  <teebaum@cvs.gnome.org>
+
+	Fixes:
+	* sigc++/functors/slot.{cc,h.m4}:
+	- Fix notification process: don't defer detaching of a
+	slot from all referred trackables during signal emission!
+	- Size optimization: replace virtual functions from
+	struct typed_slot_rep with function pointers in slot_rep
+	(reduces size of a typical typed_slot_rep instantiation
+	by 30% !!!).
+	* tests/test_slot.cc: Test sigc::slot more thoroughly.
+	* sigc++/functors/mem_fun.h.m4: Fix visit_each().
+	* sigc++/adaptos/bind_return.h.m4: Add support for
+	sigc::ref().
+	* tests/test_bind_return.cc: Use sigc::ref().
+	* sigc++/signal.h.m4: Avoid compiler warning about
+	uninitialized variable r_ in emit().
+	* sigc++/visit_each.h: Cleanup.
+
+	API additions:
+	* sigc++/adpators/lambda/operators.h.m4: Add
+	lambda actions sigc::{reinterpret,static,dynamic}_cast_
+	to support explicit parameter conversion.
+	* tests/test_lambda.cc: Test sigc::static_cast_.
+	* sigc++/adaptors/retype_return.h.m4: New file adding
+	adaptor retype_return (and hide_return).
+	* sigc++/Makefile.am: Build and distribute new file.
+	* tests/test_retype_return.cc: New file testing
+	adaptor retype_return (and hide_return).
+	* tests/Makefile.am: Build and distribute new test case.
+
 2003-10-25  Martin Schulze  <teebaum@cvs.gnome.org>
 
 	* sigc++/visit_each.h: Remove disturbing

@@ -67,8 +67,8 @@ void visit_each(const T_action& _A_action,
 
 
 template <class T_return, class T_functor>
-inline bind_return_functor<T_return, T_functor>
+inline bind_return_functor<typename unwrap_reference<T_return>::type, T_functor>
 bind_return(const T_functor& _A_functor, T_return _A_ret_value)
-  { return bind_return_functor<T_return, T_functor>(_A_functor, _A_ret_value); }
+{ return bind_return_functor<typename unwrap_reference<T_return>::type, T_functor>(_A_functor, _A_ret_value); }
 
 } /* namespace sigc */

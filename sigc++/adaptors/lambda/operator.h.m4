@@ -46,6 +46,18 @@ define([LAMBDA_OPERATOR_UNARY_DO],[dnl
     }
 
 ])
+define([LAMBDA_OPERATOR_CONVERT_DO],[dnl
+  template <LOOP(class T_arg%1, $1)>
+  typename deduce_result_type<LOOP(T_arg%1,$1)>::type
+  operator ()(LOOP(T_arg%1 _A_%1, $1)) const
+    {
+      return lambda_action_convert<T_action, T_type>::template do_action<
+            typename deduce_result_type<LOOP(T_arg%1,$1)>::operand_type>
+        (arg_.template operator()<LOOP(_P_(T_arg%1), $1)>
+            (LOOP(_A_%1, $1)));
+    }
+
+])
 define([LAMBDA_OPERATOR],[dnl
 dnl TODO: check for this compiler bug and consequectly don't use typeof() if compiler is buggy:
 dnl       typeof() ignores "&"
@@ -118,6 +130,42 @@ operator $2 (const lambda<T_arg>& a)
 
 divert(0)dnl
 ])
+define([LAMBDA_OPERATOR_CONVERT],[dnl
+dnl TODO: check for this compiler bug and consequectly don't use typeof() if compiler is buggy:
+dnl       typeof() ignores "&"
+dnl       (http://gcc.gnu.org/cgi-bin/gnatsweb.pl?cmd=view%20audit-trail&database=gcc&pr=10243)
+dnl       E.g. typeof(type_trait<std::ostream&>::instance() << type_trait<int>::instance())
+dnl                 == std::ostream  //(instead of std::ostream&)
+#ifdef SIGC_CXX_TYPEOF
+template <class T_type, class T_test>
+struct lambda_action_convert_deduce_result_type<$1, T_type, T_test>
+  { typedef typeof($2<T_type>(type_trait<T_test>::instance())) type; };
+#endif
+divert(1)dnl
+template <class T_type>
+struct lambda_action_convert<$1, T_type>
+{
+  template <class T_arg>
+  static typename lambda_action_convert_deduce_result_type<$1, T_type, T_arg>::type
+  do_action(T_arg _A)
+    { return $2<T_type>(_A); }
+};
+
+divert(2)dnl
+// creators for $1
+template <class T_type, class T_arg>
+lambda<lambda_operator_convert<$1, T_type, T_arg> >
+$2_(const lambda<T_arg>& a)
+{ typedef lambda_operator_convert<$1, T_type, T_arg> operator_type;
+  return lambda<operator_type>(operator_type(a.value_)); }
+/*template <class T_type, class T_arg>
+lambda<lambda_operator_convert<$1, T_type, typename unwrap_reference<T_arg>::type> >
+$2_(const T_arg& a)
+{ typedef lambda_operator_convert<$1, T_type, typename unwrap_reference<T_arg>::type> operator_type;
+  return lambda<operator_type>(operator_type(a)); }*/
+
+divert(0)dnl
+])
 divert(0)dnl
 #ifndef _SIGC_LAMBDA_OPERATOR_HPP_
 #define _SIGC_LAMBDA_OPERATOR_HPP_
@@ -186,6 +234,9 @@ struct unary_logical {};
 template <class T_type>
 struct unary_other {};
 
+template <class T_type>
+struct cast_ {};
+
 struct plus {};
 struct minus {};
 struct multiply {};
@@ -209,6 +260,9 @@ struct predecrement {};
 struct not_ {};
 struct address {};
 struct dereference {};
+struct reinterpret_ {};
+struct static_ {};
+struct dynamic_ {};
 
 template <class T_action, class T_test1, class T_test2>
 struct lambda_action_deduce_result_type
@@ -263,6 +317,16 @@ struct lambda_action_unary_deduce_result_type
 #ifdef SIGC_CXX_TYPEOF
 template <class T_action>
 struct lambda_action_unary_deduce_result_type<T_action, void>
+  { typedef void type; };
+#endif
+
+template <class T_action, class T_type, class T_test>
+struct lambda_action_convert_deduce_result_type
+  { typedef typename type_trait<T_type>::type type; };
+
+#ifdef SIGC_CXX_TYPEOF
+template <class T_action, class T_test>
+struct lambda_action_convert_deduce_result_type<T_action, void, T_test>
   { typedef void type; };
 #endif
 
@@ -353,12 +417,18 @@ LAMBDA_OPERATOR_UNARY(unary_bitwise<not_>,~)
 LAMBDA_OPERATOR_UNARY(unary_logical<not_>,!)
 LAMBDA_OPERATOR_UNARY(unary_other<address>,&)
 LAMBDA_OPERATOR_UNARY(unary_other<dereference>,*)
+LAMBDA_OPERATOR_CONVERT(cast_<reinterpret_>,reinterpret_cast)
+LAMBDA_OPERATOR_CONVERT(cast_<static_>,static_cast)
+LAMBDA_OPERATOR_CONVERT(cast_<dynamic_>,dynamic_cast)
 
 template <class T_action>
 struct lambda_action {};
 
 template <class T_action>
 struct lambda_action_unary {};
+
+template <class T_action, class T_type>
+struct lambda_action_convert {};
 
 undivert(1)
 
@@ -443,6 +513,46 @@ lambda_operator_unary<T_action, T_type>::operator ()() const
 template <class T_action, class T_lambda_action, class T_arg>
 void visit_each(const T_action& _A_action,
                 const lambda_operator_unary<T_lambda_action, T_arg>& _A_target)
+{
+  visit_each(_A_action, _A_target.arg_);
+}
+
+
+template <class T_action, class T_type, class T_arg>
+struct lambda_operator_convert : public lambda_base
+{
+  typedef typename lambda<T_arg>::lambda_type arg_type;
+
+  template <LOOP(class T_arg%1=void,CALL_SIZE)>
+  struct deduce_result_type
+    { typedef typename arg_type::deduce_result_type<LOOP(_P_(T_arg%1),CALL_SIZE)>::type operand_type;
+      typedef typename lambda_action_convert_deduce_result_type<T_action, T_type, operand_type>::type type;
+    };
+  typedef typename lambda_action_convert_deduce_result_type<
+      T_action, T_type,
+      typename arg_type::result_type
+    >::type result_type;
+
+  result_type
+  operator ()() const;
+
+FOR(1, CALL_SIZE,[[LAMBDA_OPERATOR_CONVERT_DO]](%1))dnl
+  lambda_operator_convert(_R_(T_arg) a)
+    : arg_(a) {}
+
+  arg_type arg_;
+};
+
+template <class T_action, class T_type, class T_arg>
+typename lambda_operator_convert<T_action, T_type, T_arg>::result_type
+lambda_operator_convert<T_action, T_type, T_arg>::operator ()() const
+  { return lambda_action_convert<T_action, T_type>::template do_action<
+      typename arg_type::result_type>
+      (arg_()); }
+
+template <class T_action, class T_lambda_action, class T_type, class T_arg>
+void visit_each(const T_action& _A_action,
+                const lambda_operator_convert<T_lambda_action, T_type, T_arg>& _A_target)
 {
   visit_each(_A_action, _A_target.arg_);
 }
