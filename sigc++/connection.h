@@ -18,6 +18,7 @@
  */
 #ifndef _SIGC_CONNECTION_HPP_
 #define _SIGC_CONNECTION_HPP_
+#include <sigc++config.h>
 #include <sigc++/signal.h>
 
 namespace sigc {
@@ -36,7 +37,7 @@ namespace sigc {
  *
  * @ingroup signal
  */
-struct connection
+struct SIGC_API connection
 {
   /** Constructs an empty connection object. */
   connection();

@@ -22,6 +22,7 @@
 #define _SIGC_SIGNAL_BASE_H_
 
 #include <list>
+#include <sigc++config.h>
 #include <sigc++/type_traits.h>
 #include <sigc++/trackable.h>
 #include <sigc++/functors/slot.h>
@@ -40,7 +41,7 @@ namespace internal
  * sweep() when the signal is being emitted. sweep() removes all
  * invalid slot from the list.
  */
-struct signal_impl
+struct SIGC_API signal_impl
 {
   typedef size_t size_type;
   typedef std::list<slot_base>::iterator       iterator_type;
@@ -136,7 +137,7 @@ struct signal_impl
 };
 
 /// Exception safe sweeper for cleaning up invalid slots on the slot list.
-struct signal_exec
+struct SIGC_API signal_exec
 {
   /// The parent sigc::signal_impl object.
   signal_impl* sig_;
@@ -192,7 +193,7 @@ struct signal_exec
  *
  * @ingroup signal
  */
-struct signal_base : public trackable
+struct SIGC_API signal_base : public trackable
 {
   typedef size_t size_type;
 

@@ -55,7 +55,7 @@ namespace internal {
 FOR(1,CALL_SIZE,[[LAMBDA_SELECT(%1,CALL_SIZE)]])
 } /* namespace internal */
 
-FOR(1,CALL_SIZE,[[extern const lambda<internal::lambda_select%1> _%1;
+FOR(1,CALL_SIZE,[[extern SIGC_API const lambda<internal::lambda_select%1> _%1;
 ]])
 
 } /* namespace sigc */

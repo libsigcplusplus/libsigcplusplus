@@ -19,6 +19,7 @@
 #ifndef _SIGC_SLOT_BASE_HPP_
 #define _SIGC_SLOT_BASE_HPP_
 
+#include <sigc++config.h>
 #include <sigc++/trackable.h>
 #include <sigc++/functors/functor_trait.h>
 
@@ -49,7 +50,7 @@ typedef void* (*hook)(void*);
  * slot_rep inherits trackable so that connection objects can
  * refer to the slot and are notified when the slot is destroyed.
  */
-struct slot_rep : public trackable
+struct SIGC_API slot_rep : public trackable
 {
   /* NB: Instead of slot_rep we could inherit slot_base from trackable.
    * However, a simple benchmark seems to indicate that this slows
@@ -120,7 +121,7 @@ struct slot_rep : public trackable
  * Consequently slot_rep::notify() gets executed when the
  * trackable is destroyed or overwritten.
  */
-struct slot_do_bind
+struct SIGC_API slot_do_bind
 {
   /** The slot_rep object trackables should notify on destruction. */
   slot_rep* rep_;
@@ -138,7 +139,7 @@ struct slot_do_bind
 };
 
 /// Functor used to remove a dependency from a trackable.
-struct slot_do_unbind
+struct SIGC_API slot_do_unbind
 {
   /** The slot_rep object trackables don't need to notify on destruction any more. */
   slot_rep* rep_;
@@ -203,7 +204,7 @@ struct slot_do_unbind
  *
  * @ingroup slot
  */
-class slot_base : public functor_base
+class SIGC_API slot_base : public functor_base
 {
   typedef internal::slot_rep rep_type;
 

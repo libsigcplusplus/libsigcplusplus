@@ -14,7 +14,7 @@
 			Name="Debug|Win32"
 			OutputDirectory="Debug"
 			IntermediateDirectory="Debug"
-			ConfigurationType="4"
+			ConfigurationType="2"
 			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
@@ -30,8 +30,7 @@
 			<Tool
 				Name="VCCustomBuildTool"/>
 			<Tool
-				Name="VCLibrarianTool"
-				OutputFile="$(OutDir)/libsigc++2-vc_net2003D.lib"/>
+				Name="VCLinkerTool"/>
 			<Tool
 				Name="VCMIDLTool"/>
 			<Tool
@@ -47,6 +46,8 @@
 			<Tool
 				Name="VCXMLDataGeneratorTool"/>
 			<Tool
+				Name="VCWebDeploymentTool"/>
+			<Tool
 				Name="VCManagedWrapperGeneratorTool"/>
 			<Tool
 				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
@@ -55,7 +56,7 @@
 			Name="Release|Win32"
 			OutputDirectory="Release"
 			IntermediateDirectory="Release"
-			ConfigurationType="4"
+			ConfigurationType="2"
 			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
@@ -68,8 +69,7 @@
 			<Tool
 				Name="VCCustomBuildTool"/>
 			<Tool
-				Name="VCLibrarianTool"
-				OutputFile="$(OutDir)/libsigc++2-vc_net2003.lib"/>
+				Name="VCLinkerTool"/>
 			<Tool
 				Name="VCMIDLTool"/>
 			<Tool
@@ -84,6 +84,8 @@
 				Name="VCWebServiceProxyGeneratorTool"/>
 			<Tool
 				Name="VCXMLDataGeneratorTool"/>
+			<Tool
+				Name="VCWebDeploymentTool"/>
 			<Tool
 				Name="VCManagedWrapperGeneratorTool"/>
 			<Tool
@@ -103,12 +105,17 @@
 					Name="Debug|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="0"/>
+						AdditionalIncludeDirectories=".;.."
+						RuntimeLibrary="3"
+						UsePrecompiledHeader="0"
+						DebugInformationFormat="3"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=".;.."
+						RuntimeLibrary="2"
 						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 			</File>
@@ -118,12 +125,17 @@
 					Name="Debug|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="0"/>
+						AdditionalIncludeDirectories=".;.."
+						RuntimeLibrary="3"
+						UsePrecompiledHeader="0"
+						DebugInformationFormat="3"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=".;.."
+						RuntimeLibrary="2"
 						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 			</File>
@@ -133,12 +145,37 @@
 					Name="Debug|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="0"/>
+						AdditionalIncludeDirectories=".;.."
+						RuntimeLibrary="3"
+						UsePrecompiledHeader="0"
+						DebugInformationFormat="3"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=".;.."
+						RuntimeLibrary="2"
+						UsePrecompiledHeader="0"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\sigc++\signal_base.cc">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=".;.."
+						RuntimeLibrary="3"
+						UsePrecompiledHeader="0"
+						DebugInformationFormat="3"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=".;.."
+						RuntimeLibrary="2"
 						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 			</File>
@@ -148,12 +185,37 @@
 					Name="Debug|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="0"/>
+						AdditionalIncludeDirectories=".;.."
+						RuntimeLibrary="3"
+						UsePrecompiledHeader="0"
+						DebugInformationFormat="3"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=".;.."
+						RuntimeLibrary="2"
+						UsePrecompiledHeader="0"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\sigc++\functors\slot_base.cc">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=".;.."
+						RuntimeLibrary="3"
+						UsePrecompiledHeader="0"
+						DebugInformationFormat="3"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=".;.."
+						RuntimeLibrary="2"
 						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 			</File>
@@ -163,12 +225,17 @@
 					Name="Debug|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="0"/>
+						AdditionalIncludeDirectories=".;.."
+						RuntimeLibrary="3"
+						UsePrecompiledHeader="0"
+						DebugInformationFormat="3"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=".;.."
+						RuntimeLibrary="2"
 						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
 			</File>

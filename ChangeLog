@@ -1,3 +1,18 @@
+2004-08-03  James Lin <slimjimmy@mail.com>
+
+	* Added SIGC_API qualifier to all externally-visible non-template 
+	classes/structs.
+	* Added #include <sigc++config.h> to the files that use SIGC_API.
+	* Added empty SIGC_API definition to sigc++config.h.in for non-MSVC
+	compilers.  I'm not sure if this is the right place to put this
+	(probably not).
+	* Added MSVC-specific sigc++config.h to the MSVC project directory.
+	(The comment in it probably should be edited.)
+	* Changed MSVC project settings to output a multi-threaded DLL, set 
+	the include paths to work (hopefully) out-of-the-box.  Disabled
+	precompiled headers, since they just complicate things and 
+	shouldn't be necessary for such a relatively project.
+
 2004-08-01  Martin Schulze <mschulze@cvs.gnome.org>
 
 	* sigc++/type_traits.h: Remove type_trait<>::instance()

@@ -19,6 +19,7 @@
 #ifndef _SIGC_TRACKABLE_HPP_
 #define _SIGC_TRACKABLE_HPP_
 #include <list>
+#include <sigc++config.h>
 
 namespace sigc {
 
@@ -32,7 +33,7 @@ typedef void* (*func_destroy_notify) (void* data);
  * list (of type sigc::internal::trackable_callback_list) when its parent
  * object (of type sigc::trackable) is destroyed or overwritten.
  */
-struct trackable_callback
+struct SIGC_API trackable_callback
 {
   void* data_;
   func_destroy_notify func_;
@@ -46,7 +47,7 @@ struct trackable_callback
  * add_callback(), remove_callback() and clear(). The callbacks
  * are invoked from clear() and from the destructor.
  */
-struct trackable_callback_list
+struct SIGC_API trackable_callback_list
 {
   /** Add a callback function.
    * @param data Data that will be sent as a parameter to teh callback function.
@@ -100,7 +101,7 @@ private:
  *
  * @ingroup signal
  */
-struct trackable
+struct SIGC_API trackable
 {
   trackable();
 
