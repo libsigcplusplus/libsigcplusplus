@@ -53,12 +53,12 @@ void bar(int i)
 
 int main()
 {
-  int i=1,j=2,k=3;
+  int i = 1, j = 2, k = 3;
   A a;
   std::cout << "hit all targets" << std::endl;
   sigc::visit_each(print(), sigc::compose(sigc::bind(sigc::ptr_fun3(&foo), sigc::ref(a), j), sigc::ptr_fun1(&bar)));
   std::cout << "hit all ints" << std::endl;
-  sigc::visit_each_type<int>(print(),sigc::compose(sigc::bind(sigc::ptr_fun3(&foo), sigc::ref(a), j),sigc::ptr_fun1(&bar)));
+  sigc::visit_each_type<int>(print(), sigc::compose(sigc::bind(sigc::ptr_fun3(&foo), sigc::ref(a), j),sigc::ptr_fun1(&bar)));
   std::cout << "hit all trackable" << std::endl;
   sigc::visit_each_type<trackable>(print(), sigc::compose(sigc::bind(sigc::ptr_fun3(&foo), sigc::ref(a), j),sigc::ptr_fun1(&bar)));
 }

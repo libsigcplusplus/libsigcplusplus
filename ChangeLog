@@ -1,5 +1,12 @@
 2005-01-21  Murray Cumming  <murrayc@murrayc.com>
 
+	* tests/: Disabled the test_accumulator, test_bind, and test_compose 
+	tests, and part of test_mem_fun because the AIX xlC compiler can not 
+	build them, but it can still do most things, including the examples.
+	See the comments in tests/Makefile.am.
+
+2005-01-21  Murray Cumming  <murrayc@murrayc.com>
+
 	* sigc++/adaptors/bind.h.m4: non-member operator()(): Specify the 
 	extra nil arguments in the templated class name prefix. Oddly, the 
 	AIX xlC compiler says that the type of the first parameter does not 

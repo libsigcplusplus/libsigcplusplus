@@ -18,9 +18,9 @@ struct foo : public sigc::functor_base
   typedef int result_type;
   int operator()(int i)
     {std::cout << "foo(int "<<i<<")" << std::endl; return (i>0);}
-  int operator()(int i,int j)
+  int operator()(int i, int j)
     {std::cout << "foo(int "<<i<<",int "<<j<<")" << std::endl; return i+j;}
-  int operator()(int i,int j,int k)
+  int operator()(int i, int j, int k)
     {std::cout << "foo(int "<<i<<",int "<<j<<", int "<<k<<")" << std::endl; return 0;}
 };
 
