@@ -1,3 +1,9 @@
+1.9.7:
+
+2003-09-05  Martin Schulze  <teebaum@cvs.gnome.org>
+
+	* configure.ac: Bump version number to 1.9.7.
+
 2003-09-03  Martin Schulze  <teebaum@cvs.gnome.org>
 
 	* sigc++/adaptors/lambda/operator.h.m4:
