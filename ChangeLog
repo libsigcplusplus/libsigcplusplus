@@ -1,3 +1,9 @@
+2005-03-05  Murray Cumming  <murrayc@murrayc.com>
+
+	* docs/website/stable.html: Mention actual supported compilers.
+	* docs/website/docs.html: Removed broken examples links. Change 
+	reference link to the reference overview page.
+
 2005-02-23  Murray Cumming  <murrayc@murrayc.com>
 
 	* sigc++/functors/slot_base.h: Make slot_base::operator=() public, to 
