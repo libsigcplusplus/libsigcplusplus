@@ -1,7 +1,7 @@
 
 # it includes all the autostuff automatically, you just name the
 # other stuff here
-EXTRA_DIST = autogen.sh
+EXTRA_DIST = autogen.sh sigc++config.h.in
 # ACLOCAL_FLAGS = -I scripts
 
 SUBDIRS      = sigc++ tests docs

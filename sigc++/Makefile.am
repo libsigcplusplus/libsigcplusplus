@@ -47,7 +47,7 @@ sigc_built_h = $(base_built_h) \
           $(adaptors_built_h:%=adaptors/%) \
           $(lambda_built_h:%=adaptors/lambda/%)
 
-EXTRA_DIST = $(sigc_m4) $(sigc_built_h) $(sigc_built_cc) sigc++config.h.in
+EXTRA_DIST = $(sigc_m4) $(sigc_built_h) $(sigc_built_cc)
 
 # install the headers
 library_includedir = $(includedir)/sigc++-2.0/sigc++

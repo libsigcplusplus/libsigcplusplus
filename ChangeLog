@@ -1,3 +1,8 @@
+2004-03-22  Murray Cumming  <murrayc@murrayc.com>
+
+	* Makefile.am, sigc++/Makfile.am: Fix the sigc++config.h.in disting,
+	to fix make distcheck.
+
 2004-03-21  Murray Cumming  <murrayc@murrayc.com>
 
 	* Rename config.h.in to sigc++config.h.in so that gtkmm does not 
