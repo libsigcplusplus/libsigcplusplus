@@ -114,14 +114,47 @@ void visit_each(const T_action& _A_action,
 }
 
 
+// forward declarations for lambda operators other<subscript> and other<assign>
+template <class T_type>
+struct other;
+struct subscript;
+struct assign;
+
+template <class T_action, class T_type1, class T_type2>
+struct lambda_operator;
+
+
+// lambda
 template <class T_type>
 struct lambda : public internal::lambda_core<T_type>
 {
+  typedef lambda<T_type> self;
+
   lambda()
     {}
   lambda(typename type_trait<T_type>::take v)
     : internal::lambda_core<T_type>(v) 
     {}
+
+  // operators for other<subscript>
+  template <class T_arg>
+  lambda<lambda_operator<other<subscript>, self, T_arg> >
+  operator [[]] (const lambda<T_arg>& a) const
+    { return lambda<lambda_operator<other<subscript>, self, T_arg> >(lambda_operator<other<subscript>, self, T_arg>(value_, a.value_)); }
+  template <class T_arg>
+  lambda<lambda_operator<other<subscript>, self, T_arg> >
+  operator [[]] (const T_arg& a) const
+    { return lambda<lambda_operator<other<subscript>, self, T_arg> >(lambda_operator<other<subscript>, self, T_arg>(value_, a)); }
+
+  // operators for other<assign>
+  template <class T_arg>
+  lambda<lambda_operator<other<assign>, self, T_arg> >
+  operator = (const lambda<T_arg>& a) const
+    { return lambda<lambda_operator<other<assign>, self, T_arg> >(lambda_operator<other<assign>, self, T_arg>(value_, a.value_)); }
+  template <class T_arg>
+  lambda<lambda_operator<other<assign>, self, T_arg> >
+  operator = (const T_arg& a) const
+    { return lambda<lambda_operator<other<assign>, self, T_arg> >(lambda_operator<other<assign>, self, T_arg>(value_, a)); }
 };
 
 

@@ -1,3 +1,14 @@
+2003-09-10  Martin Schulze  <teebaum@cvs.gnome.org>
+
+	* sigc++/adaptors/lambda/{base,operators}.h.m4:
+	Add subscript ([]) and assign (=) operator. I think there are now
+	enough operators available to make any future power user happy.
+	The only one missing is the comma operator and if we added it
+	the logical consequence would be to also add if(), switch(), do(),
+	etc. lambda expressions which are really out of place in libsigc++.
+	* sigc++/type_traits.h: Fix is_base_and_derived<> for const types.
+	* tests/test_lambda.cc: Test new operators.
+
 1.9.7:
 
 2003-09-05  Martin Schulze  <teebaum@cvs.gnome.org>

@@ -39,17 +39,20 @@ main()
 {
   // test lambda operators
   int a = 1;
-  std::cout << "(_1 + _2) (3,4):    " << (_1 + _2) (3,4) << std::endl;
-  std::cout << "(_1 + 1)  (3,4):    " << (_1 + 1)  (3,4) << std::endl;
-  std::cout << "(_2 + 1)  (3,4):    " << (_2 + 1)  (3,4) << std::endl;
-  std::cout << "(2 + _1)  (3,4):    " << (2 + _1)  (3,4) << std::endl;
-  std::cout << "(2 + _2)  (3,4):    " << (2 + _2)  (3,4) << std::endl;
-  std::cout << "(_1+_2*_3)(1,2,3):  " << (_1+_2*_3)(1,2,3) << std::endl;
-  std::cout << "((++_1)*2)(1):      " << ((++_1)*2)(1) << std::endl;
-  std::cout << "((++_1)*2)(a):      " << ((++_1)*2)(a) << "; a: " << a << std::endl;
+  std::cout << "(_1 + _2) (3,4):    " << (_1 + _2) (3,4)    << std::endl;
+  std::cout << "(_1 + 1)  (3,4):    " << (_1 + 1)  (3,4)    << std::endl;
+  std::cout << "(_2 + 1)  (3,4):    " << (_2 + 1)  (3,4)    << std::endl;
+  std::cout << "(2 + _1)  (3,4):    " << (2 + _1)  (3,4)    << std::endl;
+  std::cout << "(2 + _2)  (3,4):    " << (2 + _2)  (3,4)    << std::endl;
+  std::cout << "(_1+_2*_3)(1,2,3):  " << (_1+_2*_3)(1,2,3)  << std::endl;
+  std::cout << "((++_1)*2)(1):      " << ((++_1)*2)(1)      << std::endl;
+  std::cout << "((++_1)*2)(a):      " << ((++_1)*2)(a)      << "; a: " << a << std::endl;
   std::cout << "((++_1)*2)(ref(a)): " << ((++_1)*2)(sigc::ref(a)) << "; a: " << a << std::endl;
-  std::cout << "((++(*_1))*2)(&a):  " << ((++(*_1))*2)(&a) << "; a: " << a << std::endl;
-  std::cout << "((--(*(&_1)))*2)(ref(a)):  " << ((--(*(&_1)))*2)(sigc::ref(a)) << "; a: " << a << std::endl;
+  std::cout << "((++(*_1))*2)(&a):  " << ((++(*_1))*2)(&a)  << "; a: " << a << std::endl;
+  std::cout << "((--(*(&_1)))*2)(ref(a)): " << ((--(*(&_1)))*2)(sigc::ref(a)) << "; a: " << a << std::endl;
+  std::cout << "(var(&a)[0])():     " << (var(&a)[0])()     << std::endl;
+  std::cout << "(_1[_2])    (&a,0): " << (_1[_2])    (&a,0) << std::endl;
+  std::cout << "(*_1=_2)    (&a,1): " << (*_1=_2)    (&a,1) << std::endl;
 
        // c++ restrictions:
        // - ref() must be used to indicate that the value shall not be copied

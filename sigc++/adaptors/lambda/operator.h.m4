@@ -102,7 +102,7 @@ struct lambda_action_unary<$1 >
   template <class T_arg>
   static typename lambda_action_unary_deduce_result_type<$1, T_arg>::type
   do_action(T_arg _A)
-    { return $2 _A; }
+    { return $2[]_A; }
 };
 
 divert(2)dnl
@@ -121,6 +121,34 @@ divert(0)dnl
 
 namespace sigc {
 namespace functor {
+
+template <class T_type>
+struct dereference_trait
+  { typedef void type; };
+
+template <class T_type>
+struct dereference_trait<T_type*>
+  { typedef T_type type; };
+
+template <class T_type>
+struct dereference_trait<const T_type*>
+  { typedef const T_type type; };
+
+template <class T_type>
+struct dereference_trait<T_type*&>
+  { typedef T_type type; };
+
+template <class T_type>
+struct dereference_trait<const T_type*&>
+  { typedef const T_type type; };
+
+template <class T_type>
+struct dereference_trait<T_type* const&>
+  { typedef T_type type; };
+
+template <class T_type>
+struct dereference_trait<const T_type* const&>
+  { typedef const T_type type; };
 
 template <class T_type>
 struct arithmetic {};
@@ -171,6 +199,7 @@ struct lessorequal {};
 struct greaterorequal {};
 struct equal {};
 struct notequal {};
+struct subscript {};
 struct assign {};
 struct preincrement {};
 struct predecrement {};
@@ -218,6 +247,12 @@ struct lambda_action_deduce_result_type<bitwise_assign<T_action>, T_test1, T_tes
   { typedef T_test1 type; };
 #endif
 
+#ifndef SIGC_CXX_TYPEOF
+template <class T_test1, class T_test2>
+struct lambda_action_deduce_result_type<other<subscript>, T_test1, T_test2>
+  { typedef typename type_trait<typename dereference_trait<T_test1>::type>::pass type; };
+#endif
+
 template <class T_action, class T_test>
 struct lambda_action_unary_deduce_result_type
   { typedef typename type_trait<T_test>::type type; };
@@ -243,31 +278,7 @@ struct lambda_action_unary_deduce_result_type<unary_other<address>, T_test>
 #ifndef SIGC_CXX_TYPEOF
 template <class T_test>
 struct lambda_action_unary_deduce_result_type<unary_other<dereference>, T_test>
-  { typedef void type; };
-#endif
-
-#ifndef SIGC_CXX_TYPEOF
-template <class T_test>
-struct lambda_action_unary_deduce_result_type<unary_other<dereference>, T_test*>
-  { typedef typename type_trait<T_test>::pass type; };
-#endif
-
-#ifndef SIGC_CXX_TYPEOF
-template <class T_test>
-struct lambda_action_unary_deduce_result_type<unary_other<dereference>, const T_test*>
-  { typedef typename type_trait<const T_test>::pass type; };
-#endif
-
-#ifndef SIGC_CXX_TYPEOF
-template <class T_test>
-struct lambda_action_unary_deduce_result_type<unary_other<dereference>, T_test*&>
-  { typedef typename type_trait<T_test>::pass type; };
-#endif
-
-#ifndef SIGC_CXX_TYPEOF
-template <class T_test>
-struct lambda_action_unary_deduce_result_type<unary_other<dereference>, const T_test*&>
-  { typedef typename type_trait<const T_test>::pass type; };
+  { typedef typename type_trait<typename dereference_trait<T_test>::type>::pass type; };
 #endif
 
 LAMBDA_OPERATOR(arithmetic<plus>,+)
@@ -297,7 +308,42 @@ LAMBDA_OPERATOR(bitwise_assign<leftshift>,<<=)
 LAMBDA_OPERATOR(bitwise_assign<rightshift>,>>=)
 LAMBDA_OPERATOR(bitwise_assign<and_>,&=)
 LAMBDA_OPERATOR(bitwise_assign<or_>,|=)
-LAMBDA_OPERATOR(bitwise_assign<xor_>,^=)
+LAMBDA_OPERATOR(bitwise_assign<xor_>,^=)dnl
+
+#ifdef SIGC_CXX_TYPEOF
+template <class T_test1, class T_test2>
+struct lambda_action_deduce_result_type<other<subscript>, T_test1, T_test2>
+  { typedef typeof(type_trait<T_test1>::instance()[[type_trait<T_test2>::instance()]]) type; };
+#endif
+divert(1)dnl
+template <>
+struct lambda_action<other<subscript> >
+{
+  template <class T_arg1, class T_arg2>
+  static typename lambda_action_deduce_result_type<other<subscript>, T_arg1, T_arg2>::type
+  do_action(T_arg1 _A_1, T_arg2 _A_2)
+    { return _A_1[[_A_2]]; }
+};
+
+divert(0)dnl
+
+#ifdef SIGC_CXX_TYPEOF
+template <class T_test1, class T_test2>
+struct lambda_action_deduce_result_type<other<assign>, T_test1, T_test2>
+  { typedef typeof(type_trait<T_test1>::instance() = type_trait<T_test2>::instance()) type; };
+#endif
+divert(1)dnl
+template <>
+struct lambda_action<other<assign> >
+{
+  template <class T_arg1, class T_arg2>
+  static typename lambda_action_deduce_result_type<other<assign>, T_arg1, T_arg2>::type
+  do_action(T_arg1 _A_1, T_arg2 _A_2)
+    { return _A_1 = _A_2; }
+};
+
+divert(0)dnl
+
 LAMBDA_OPERATOR_UNARY(unary_arithmetic<preincrement>,++)
 LAMBDA_OPERATOR_UNARY(unary_arithmetic<predecrement>,--)
 LAMBDA_OPERATOR_UNARY(unary_bitwise<not_>,~)
@@ -311,7 +357,7 @@ struct lambda_action {};
 template <class T_action>
 struct lambda_action_unary {};
 
-undivert(1)dnl
+undivert(1)
 
 template <class T_action, class T_type1, class T_type2>
 struct lambda_operator : public lambda_base
