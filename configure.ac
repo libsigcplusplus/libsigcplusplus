@@ -89,6 +89,7 @@ AC_OUTPUT([
   tests/Makefile
   examples/Makefile
   MSVC_Net2003/Makefile
+  libsigc++-2.0.spec
 
   docs/Makefile
     docs/images/Makefile

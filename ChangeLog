@@ -1,3 +1,10 @@
+2004-07-11  Eric Bourque <ericb@computer.org>
+
+	* libsigc++-2.0.spec.in: new file
+	* configure.ac : patched generate spec file
+	* .cvsignore: ignore generated file (Martin Schulze)
+	* Makefile.am: distribute spec file (Martin Schulze)
+
 2004-07-11  Murray Cumming  <murrayc@murrayc.com>
 
 	* sigc++/connection.cc: Added some comments.
