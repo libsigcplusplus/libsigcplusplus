@@ -98,6 +98,11 @@ private:
   struct big {
     char memory[64];
   };
+  
+  //Allow the test inner class to access the other (big) inner class.
+  //The Tru64 compiler needs this. murrayc.
+  struct test;
+  friend struct test;
 
   struct test {
     static big  is_base_class_(...);

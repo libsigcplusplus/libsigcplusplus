@@ -1,5 +1,14 @@
 2005-01-19  Murray Cumming  <murrayc@murrayc.com>
 
+	* sigc++/type_traits: struct is_base_and_derived: Make the test inner 
+	struct a friend, so that it can use the big inner struct. This is 
+	required by the Tru64 compiler.
+	* sigc++/adaptors/lambda/base.h: Put the unwrap_lambda_value() 
+	definitions at the top, because Tru64 (understandably) needs them to 
+	be declared before use.
+
+2005-01-19  Murray Cumming  <murrayc@murrayc.com>
+
 	* scripts/: Added cxx_std.m4, with a test copied from 
 	glibmm/scripts/cxx_std.m4 to check if the compiler has the std:: 
 	namespace.
