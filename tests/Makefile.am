@@ -25,16 +25,13 @@ noinst_PROGRAMS= \
   test_bind \
   test_functor_trait \
   test_compatibility
-  
+
 #Disabled:
 #   test_lambda - The Tru64 compiler can't build this when not using -std strict_ansi -model ansi, so let's not worry about it.
 
-
 #  test_accumulated - The AIX xlC compiler can't build this. It says 
 #  xlC_r  -I. -I. -I.. -I.. -I..    -AA -c -o test_accumulated.o test_accumulated.cc
-# "../sigc++/signal.h", line 534.39: 1540-1110 (S) The referenced type "sigc::internal::signal_emit1" contains a circular reference back to "".
-
-
+# "../sigc++/signal.h", line 534.39: 1540-1110 (S) The referenced type "sigc::internal::signal_emit1" contains a circular reference back to ""
 
 TESTS = $(noinst_PROGRAMS)
 
@@ -47,7 +44,7 @@ test_mem_fun_SOURCES = test_mem_fun.cc
 test_ptr_fun_SOURCES = test_ptr_fun.cc
 test_slot_SOURCES = test_slot.cc
 test_signal_SOURCES = test_signal.cc
-#test_accumulated_SOURCES = test_accumulated.cc
+# test_accumulated_SOURCES = test_accumulated.cc
 test_disconnect_SOURCES = test_disconnect.cc
 test_disconnect_during_emit_SOURCES = test_disconnect_during_emit.cc
 test_bind_SOURCES = test_bind.cc
@@ -58,7 +55,7 @@ test_retype_SOURCES = test_retype.cc
 test_compose_SOURCES = test_compose.cc
 test_exception_catch_SOURCES = test_exception_catch.cc
 
-#test_lambda_SOURCES = test_lambda.cc
+# test_lambda_SOURCES = test_lambda.cc
 
 test_size_SOURCES = test_size.cc
 test_compatibility_SOURCES = test_compatibility.cc
