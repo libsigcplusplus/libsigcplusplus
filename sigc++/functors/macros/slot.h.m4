@@ -135,6 +135,8 @@ class slot ifelse($1, $2,,[<LIST(T_return, LOOP(T_arg%1,$1))>])
   : public slot$1<LIST(T_return, LOOP(T_arg%1, $1))>
 {
 public:
+  typedef slot$1<LIST(T_return, LOOP(T_arg%1, $1))> parent_type;
+
   inline slot() {}
 
   /** Constructs a slot from an arbitrary functor.
@@ -142,10 +144,10 @@ public:
    */
   template <class T_functor>
   slot(const T_functor& _A_func)
-    : slot$1<LIST(T_return, LOOP(T_arg%1, $1))>(_A_func) {}
+    : parent_type(_A_func) {}
 
   slot(const slot& src)
-    : slot$1<LIST(T_return, LOOP(T_arg%1, $1))>(src) {}
+    : parent_type((const parent_type&)src) {}
 };
 
 ])

@@ -40,4 +40,7 @@ int main()
   sl1 = sl2;
   sl1(str);
   std::cout << str << std::endl;
+
+  // test copy ctor
+  sigc::slot<void,int> s1_clone(s1);
 }
