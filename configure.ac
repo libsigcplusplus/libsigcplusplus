@@ -11,7 +11,7 @@ dnl This version stuff is just for the packaging section of the tool.
 dnl   thus make format_package-0.0.1.tar.gz  
 FP_MAJOR_VERSION=2
 FP_MINOR_VERSION=0
-FP_MICRO_VERSION=0
+FP_MICRO_VERSION=1
 FP_VERSION=$FP_MAJOR_VERSION.$FP_MINOR_VERSION.$FP_MICRO_VERSION
 
 dnl For automake.
@@ -69,7 +69,6 @@ AC_PROG_CXX
 AC_LANG_CPLUSPLUS
 
 SIGC_CXX_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD()
-SIGC_CXX_TEMPLATE_SPECIALIZATION_MULTIPLE()
 
 if test "X$config_error" = "Xyes" ; then
   AC_ERROR(

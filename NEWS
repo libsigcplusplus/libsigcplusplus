@@ -17,6 +17,13 @@ This version of libsigc++ needs GNU g++ 3.2 or higher to compile.
 
 *** ChangeLog summary:
 
+2.0.1:
+
+* Fixed serious bug in reference counting in sigc::signal_base::impl().
+* Fixed SigC::Object-derivation check in SigC::slot() compatibility module.
+* Fixed compilation on Apple gcc 3.3 (assisted by Spundun Bhatt).
+* Fixed configure check for gcc 3.4 (Murray Cumming).
+
 2.0.0:
 
 * Implemented sigc::connection::blocked() (Murray Cumming).

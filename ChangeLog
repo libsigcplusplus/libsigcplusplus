@@ -1,3 +1,16 @@
+2.0.1:
+
+2004-04-27  Martin Schulze  <mschulze@cvs.gnome.org>
+
+	* configure.ac: Bump version number to 2.0.1.
+	* NEWS: Add ChangeLog summary for version 2.0.1.
+	* sigc++/adaptors/lambda/macros/base.h.m4: Fixed documentation.
+	* sigc++/adaptors/macros/bind.h.m4: Hide work-arounds from doxygen.
+	* scripts/cxx.m4, sigc++config.h.in, configure.ac,
+	sigc++/adaptors/macros/bind.h.m4: Removed configure	check. It
+	showed that the Apple gcc can also compile the sophisticated version
+	of the work-around.
+
 2004-04-26  Martin Schulze  <mschulze@cvs.gnome.org>
 
 	* sigc++/macros/object_slot.h.m4: Modified test for SigC::Object

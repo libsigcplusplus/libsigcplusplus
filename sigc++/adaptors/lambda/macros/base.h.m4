@@ -73,6 +73,7 @@ namespace sigc {
  *   @code
  *   std::cout << (sigc::_1 + 5)(3); // returns (3 + 5)
  *   std::cout << (sigc::_1 * sigc::_2)(7,10); // returns (7 * 10)
+ *   @endcode
  */
 
 // dummy structure to keep track of the where we are.
