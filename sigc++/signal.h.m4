@@ -250,14 +250,15 @@ define([SIGNAL],[dnl
 ifelse($1, $2,[dnl
 /** Convinience wrapper for the numbered signal#<> templates.
  * signal can be used to connect() slots that are invoked
- * during subsequent calls to emit(). Any functor of closure
+ * during subsequent calls to emit(). Any functor or closure
  * can be passed into connect(). It is converted into a slot
  * implicitely.
  * An stl style list interface for the signal's list of slots
  * can be retrieved with slots(). This interface supports
  * iteration, insertion and removal of slots.
  *
- * The following template arguments are used:
+ * The template arguments determine the function signature of
+ * the emit() function:
  * - @e T_return The desired return type of the emit() function.dnl
 FOR(1,$1,[
  * - @e T_arg%1 Argument type used in the definition of emit(). The default @p nil means no argument.])
@@ -395,7 +396,7 @@ struct signal_impl
    * because of some referred object dying.
    * It either calls sweep() directly or defers the execution of
    * sweep() when the signal is being emitted.
-   * @param d The slot that is becoming invalid.
+   * @param d The signal object (@p this).
    */
   static void* notify(void* d);
 

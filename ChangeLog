@@ -1,5 +1,11 @@
 2003-05-29  Martin Schulze  <martin-ml@hippogriff.de>
 
+	* sigc++/signal.h.m4: Fix documentation.
+	* sigc++/connection.h, sigc++/functor/slot.h.m4:
+	Document the whole thing.
+
+2003-05-29  Martin Schulze  <martin-ml@hippogriff.de>
+
 	* sigc++/signal.h.m4:
 	- Remove bogus operator() from unnumbered signal<> and
 	  signal<>::accumulated templates.
