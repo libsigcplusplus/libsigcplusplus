@@ -17,32 +17,32 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
-#include <sigc++/functors/closure.h>
+#include <sigc++/functors/slot.h>
 
 namespace sigc {
 namespace functor {
 namespace internal {
 
-void* closure_rep::notify(void* p)
+void* slot_rep::notify(void* p)
 {
-  closure_rep* self=(closure_rep*)p;
-  self->call_ = 0;                    // Invalidate the closure.
+  slot_rep* self=(slot_rep*)p;
+  self->call_ = 0;                    // Invalidate the slot.
   if (self->parent_)
     (self->cleanup_)(self->parent_);  // Notify the parent.
   return 0;
 }
 
-/*bool closure_base::empty() const // having this function not inline is killing performance !!!
+/*bool slot_base::empty() const // having this function not inline is killing performance !!!
 { 
   if (rep_ && !rep_->call_)
     {
       delete rep_;        // This is not strictly necessary here. I'm convinced that it is
-      rep_ = 0;           // safe to wait for the destructor to delete the closure_rep. Martin.
+      rep_ = 0;           // safe to wait for the destructor to delete the slot_rep. Martin.
     }
   return (rep_ == 0); 
 }*/
 
-bool closure_base::block(bool should_block)
+bool slot_base::block(bool should_block)
 {
   bool old = blocked_;
   blocked_ = should_block;
@@ -50,7 +50,7 @@ bool closure_base::block(bool should_block)
 }
 
 // TODO: untested
-closure_base& closure_base::operator=(const closure_base& cl)
+slot_base& slot_base::operator=(const slot_base& cl)
 {
   if (cl.rep_ == rep_) return *this;
 
@@ -60,9 +60,9 @@ closure_base& closure_base::operator=(const closure_base& cl)
       return *this;
     }
 
-  closure_rep* new_rep_ = cl.rep_->dup();
+  slot_rep* new_rep_ = cl.rep_->dup();
 
-  if (rep_)               // Silently exchange the closure_rep.
+  if (rep_)               // Silently exchange the slot_rep.
     {
       new_rep_->set_parent(rep_->parent_, rep_->cleanup_);
       delete rep_;

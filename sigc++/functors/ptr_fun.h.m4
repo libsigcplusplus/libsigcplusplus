@@ -51,7 +51,7 @@ divert(0)
 
   Ie.
     void foo(int) {}
-    closure<void, long> cl = ptr_fun(&foo);
+    slot<void, long> cl = ptr_fun(&foo);
 
   Note: # is required if there is an abiguity as to the number of 
   arguments.
@@ -61,7 +61,7 @@ divert(0)
     void foo(float) {}
     void foo(int, int) {}
 
-    closure<void, long> cl = ptr_fun1<int>(&foo);
+    slot<void, long> cl = ptr_fun1<int>(&foo);
    
 */
 __FIREWALL__

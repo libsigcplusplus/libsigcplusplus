@@ -35,7 +35,7 @@ dnl I don't understand much of the above. However, I can
 dnl see that adaptors are implemented like they are because
 dnl there is no way to extract the return type and the argument
 dnl types from a functor type. Therefore, operator() is templated.
-dnl It's instatiated in closure_call#<>::operator() where the
+dnl It's instatiated in slot_call#<>::operator() where the
 dnl argument types are known. The return type is finally determined
 dnl via the callof<> template - a tricky way to detect the return
 dnl type of a functor when the argument types are known. Martin.

@@ -4,7 +4,7 @@
  */
 
 #include <sigc++/adaptors/bind.h>
-#include <sigc++/functors/closure.h>
+#include <sigc++/functors/slot.h>
 #include <iostream>
 
 using namespace sigc::functor;
@@ -83,7 +83,7 @@ int main()
   bind<0,std::string&>(&egon,str)(); // Tell bind that is shall store a reference.
   std::cout << str << std::endl;     // (This cannot be the default behaviour: just think about what happens if str dies!)
 
-  closure<void> c;
+  slot<void> c;
   {
     book guest_book("karl");
     c = bind<0,book&>(&egon,guest_book);

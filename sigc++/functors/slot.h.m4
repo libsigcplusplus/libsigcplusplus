@@ -18,14 +18,14 @@ divert(-1)
 
 include(template.macros.m4)
 
-define([CLOSURE],[dnl
+define([SLOT],[dnl
 ifelse($1, $2,
 [template <LIST(class T_return, LOOP(class T_arg%1 = nil, $1))>],
 [template <LIST(class T_return, LOOP(class T_arg%1, $1))>])
-class closure ifelse($1, $2,,[<LIST(T_return, LOOP(T_arg%1,$1))>])
-  : public internal::closure_base
+class slot ifelse($1, $2,,[<LIST(T_return, LOOP(T_arg%1,$1))>])
+  : public internal::slot_base
 {
-  typedef internal::closure_rep rep_type;
+  typedef internal::slot_rep rep_type;
   typedef T_return result_type;
 FOR(1, $1,[  typedef _R_(T_arg%1) arg%1_type_;
 ])
@@ -41,25 +41,25 @@ FOR(1, $1,[  typedef _R_(T_arg%1) arg%1_type_;
         return T_return();
       }
 
-    inline closure() 
+    inline slot() 
       {}
 
     template <class T_functor>
-    closure(const T_functor& _A_func)
-      : closure_base(new internal::typed_closure_rep<T_functor>(_A_func))
-      { rep_->call_ = internal::closure_call$1<LIST(T_functor, T_return, LOOP(T_arg%1, $1))>::address(); }
+    slot(const T_functor& _A_func)
+      : slot_base(new internal::typed_slot_rep<T_functor>(_A_func))
+      { rep_->call_ = internal::slot_call$1<LIST(T_functor, T_return, LOOP(T_arg%1, $1))>::address(); }
 };
 
 ])
 
-define([CLOSURE_CALL],[dnl
+define([SLOT_CALL],[dnl
 template<LIST(class T_functor, class T_return, LOOP(class T_arg%1, $1))>
-struct closure_call$1
+struct slot_call$1
 {
-  static T_return call_it(LIST(closure_rep* rep, LOOP(typename type_trait<T_arg%1>::take a_%1, $1)))
+  static T_return call_it(LIST(slot_rep* rep, LOOP(typename type_trait<T_arg%1>::take a_%1, $1)))
     {
-      typedef typed_closure_rep<T_functor> typed_closure;
-      typed_closure *typed_rep = static_cast<typed_closure*>(rep);
+      typedef typed_slot_rep<T_functor> typed_slot;
+      typed_slot *typed_rep = static_cast<typed_slot*>(rep);
       return (typed_rep->functor_)(LOOP(a_%1, $1));
     }
   static hook address() 
@@ -70,17 +70,17 @@ struct closure_call$1
 
 divert(0)dnl
 /*
-  Type closure<R, A1, A2...>
+  Type slot<R, A1, A2...>
 
   Usage:
     Converts an arbitrary functor to a unified type which is opaque.
-    To use simply assign the closure to the desirer functor. When called
+    To use simply assign the slot to the desirer functor. When called
     it will launch the functor with minimal copies. Because it is opaque
     visit_each will not visit any members contained within.
 
   Example:
     void foo(int) {}
-    closure<void, long> cl = ptr_fun(&foo);
+    slot<void, long> cl = ptr_fun(&foo);
 
  */
 __FIREWALL__
@@ -96,47 +96,47 @@ namespace internal {
 
 typedef void* (*hook)(void*);
 
-struct closure_base;
+struct slot_base;
 
-/** Internal representation of a closure.
+/** Internal representation of a slot.
  * Derivations of this class can be considered as a link
- * between a closure and the functor that the closure should
+ * between a slot and the functor that the slot should
  * execute in operator(). This link is needed because in
- * libsigc++2 the closure doesn't necessarily have exactly the
+ * libsigc++2 the slot doesn't necessarily have exactly the
  * same function signature as the functor allowing for implicit
  * conversions.
- * The base class closure_rep serves the purpose to
- * - form a common pointer type (closure_rep*),
+ * The base class slot_rep serves the purpose to
+ * - form a common pointer type (slot_rep*),
  * - offer the possibility to create duplicates (dup()),
  * - offer a notification callback (notify()),
- * - implement some of closure_base's interface that depends
+ * - implement some of slot_base's interface that depends
  *   on the notification callback, i.e.
  *   -- the possibility to set a single parent with a callback
  *      (set_parent()) that is executed from notify(),
  *   -- an generic function pointer, call_, that is simply
- *      set to zero in notify() to invalidate the closure.
- * closure_rep inherits trackable so that connection objects can
- * refer the closure and are notified when the closure is destroyed.
+ *      set to zero in notify() to invalidate the slot.
+ * slot_rep inherits trackable so that connection objects can
+ * refer the slot and are notified when the slot is destroyed.
  */
-struct closure_rep : public trackable
+struct slot_rep : public trackable
 {
-  /* Instead of closure_rep we could inherit closure_base from trackable.
-     However, this slows down dereferencing of closure list iterators. Martin. */
+  /* Instead of slot_rep we could inherit slot_base from trackable.
+     However, this slows down dereferencing of slot list iterators. Martin. */
 
   hook call_; // this can't be virtual, number of arguments must be flexible.
   hook cleanup_; 
   void* parent_;
 
-  closure_rep()
+  slot_rep()
     : call_(0), parent_(0) {}
-  closure_rep(const closure_rep& cl)
+  slot_rep(const slot_rep& cl)
     : call_(cl.call_), parent_(0) {}
 
-  virtual closure_rep* dup() const = 0;
-  virtual ~closure_rep()
+  virtual slot_rep* dup() const = 0;
+  virtual ~slot_rep()
     {}
 
-  // closures have one parent exclusively.
+  // slots have one parent exclusively.
   void set_parent(void* parent, hook cleanup)
     {
       parent_ = parent;
@@ -147,77 +147,77 @@ struct closure_rep : public trackable
 };
 
 /** Used to add a dependency to a trackable so that
- * closure_rep::notify gets executed when the trackable
+ * slot_rep::notify gets executed when the trackable
  * is destroyed or overwritten.
  */
-struct closure_do_bind
+struct slot_do_bind
 {
-  closure_rep* rep_;
-  inline closure_do_bind(closure_rep* rep) : rep_(rep) {}
+  slot_rep* rep_;
+  inline slot_do_bind(slot_rep* rep) : rep_(rep) {}
   inline void operator()(const trackable* t) const
-  { t->add_dependency(rep_, &closure_rep::notify); }
+  { t->add_dependency(rep_, &slot_rep::notify); }
 };
 
 /** Used to remove a dependency from a trackable when
- * the closure dies before the trackable does.
+ * the slot dies before the trackable does.
  */
-struct closure_do_unbind
+struct slot_do_unbind
 {
-  closure_rep* rep_;
-  inline closure_do_unbind(closure_rep* rep) : rep_(rep) {}
+  slot_rep* rep_;
+  inline slot_do_unbind(slot_rep* rep) : rep_(rep) {}
   inline void operator()(const trackable* t) const
   { t->remove_dependency(rep_); }
 };
 
-/** A typed closure_rep.
- * A typed closure_rep holds a functor which can be called from
- * operator() of the closure templates.
+/** A typed slot_rep.
+ * A typed slot_rep holds a functor which can be called from
+ * operator() of the slot templates.
  */
 template <class T_functor>
-struct typed_closure_rep : public closure_rep
+struct typed_slot_rep : public slot_rep
 {
   public:
-    inline typed_closure_rep(const T_functor& functor)
+    inline typed_slot_rep(const T_functor& functor)
       : functor_(functor)
-      { visit_each_type<trackable*>(closure_do_bind(this), functor_); }
-    inline typed_closure_rep(const typed_closure_rep& cl)
-      : closure_rep(cl), functor_(cl.functor_)
-      { visit_each_type<trackable*>(closure_do_bind(this), functor_); }
-    virtual ~typed_closure_rep()
-      { visit_each_type<trackable*>(closure_do_unbind(this), functor_); }
-    virtual closure_rep* dup() const
-      { return new typed_closure_rep<T_functor>(*this); }
+      { visit_each_type<trackable*>(slot_do_bind(this), functor_); }
+    inline typed_slot_rep(const typed_slot_rep& cl)
+      : slot_rep(cl), functor_(cl.functor_)
+      { visit_each_type<trackable*>(slot_do_bind(this), functor_); }
+    virtual ~typed_slot_rep()
+      { visit_each_type<trackable*>(slot_do_unbind(this), functor_); }
+    virtual slot_rep* dup() const
+      { return new typed_slot_rep<T_functor>(*this); }
     T_functor functor_;
 };
 
-/** Base type for closures.
- * closure_base integrates most of the interface of the derived
- * closure templates (therefore reducing code size). closures
+/** Base type for slots.
+ * slot_base integrates most of the interface of the derived
+ * slot templates (therefore reducing code size). slots
  * can be connected to signals, be disconnected at some later point
  * (disconnect()) and temporarily be blocked (block(), unblock()).
- * closure_base has a closure_rep* member, rep_, that is filled in
+ * slot_base has a slot_rep* member, rep_, that is filled in
  * from the constructors of its derivations. set_parent() is
  * used to add a notification callback that is executed when the
- * closure gets invalid. The validity of a closure can be tested
+ * slot gets invalid. The validity of a slot can be tested
  * with empty().
  * add_dependency() is used by connection objects to add a notification
  * callback that is executed on destruction.
  */
-class closure_base : public functor_base
+class slot_base : public functor_base
 {
-  typedef internal::closure_rep rep_type;
+  typedef internal::slot_rep rep_type;
 
   public:
-    closure_base()
+    slot_base()
       : rep_(0), blocked_(false) {}
 
-    closure_base(rep_type* rep)
+    slot_base(rep_type* rep)
       : rep_(rep), blocked_(false) {}
 
-    closure_base(const closure_base& cl_)
+    slot_base(const slot_base& cl_)
       : rep_(0), blocked_(cl_.blocked_) { if (cl_.rep_) rep_ = cl_.rep_->dup(); }
 
-    ~closure_base()
+    ~slot_base()
       { if (rep_) delete rep_; }
 
     // hook for signals
@@ -240,37 +240,37 @@ class closure_base : public functor_base
     bool unblock()
       { return block(false); }
 
-    void disconnect()                   // Disconnecting a closure always means destroying it.
+    void disconnect()                   // Disconnecting a slot always means destroying it.
       { if (rep_) rep_->notify(rep_); } // => notify() marks it as invalid and notifies the parent.
 
-    closure_base& operator = (const closure_base& cl);
+    slot_base& operator = (const slot_base& cl);
 
 //  protected:
     mutable rep_type *rep_;
     bool blocked_;
 };
 
-/** closure_call#<>::call_it() executes the functor that is held
- * by the typed_closure_rep. This template is "responsible" for
+/** slot_call#<>::call_it() executes the functor that is held
+ * by the typed_slot_rep. This template is "responsible" for
  * our type safety: If the compiler cannot convert the parameter
- * list of the closure to the parameter list of the functor an
+ * list of the slot to the parameter list of the functor an
  * error will occur here.
  */
-FOR(0,CALL_SIZE,[[CLOSURE_CALL(%1)]])
+FOR(0,CALL_SIZE,[[SLOT_CALL(%1)]])
 } /* namespace internal */
 
 /** Converts an arbitrary functor to a unified type which is opaque.
- * To use simply assign the closure to the desirer functor. When called
+ * To use simply assign the slot to the desirer functor. When called
  * it will launch the functor with minimal copies. Because it is opaque
  * visit_each will not visit any members contained within.
  *
  * Example:
  *   void foo(int) {}
- *   closure<void, long> cl = ptr_fun(&foo);
+ *   slot<void, long> cl = ptr_fun(&foo);
  *
  */
-CLOSURE(CALL_SIZE,CALL_SIZE)
-FOR(0,eval(CALL_SIZE-1),[[CLOSURE(%1,CALL_SIZE)]])
+SLOT(CALL_SIZE,CALL_SIZE)
+FOR(0,eval(CALL_SIZE-1),[[SLOT(%1,CALL_SIZE)]])
 
 } /* namespace functor */
 } /* namespace sigc */

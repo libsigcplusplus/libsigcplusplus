@@ -4,7 +4,7 @@
  */
 
 #include <iostream>
-#include <sigc++/functors/closure.h>
+#include <sigc++/functors/slot.h>
 
 using namespace std;
 using namespace sigc::functor;
@@ -19,13 +19,13 @@ class foo
 
 int main()
 {
-  closure<void,int> c=foo();
+  slot<void,int> c=foo();
   c(1);
   c=foo();
   c(2);
 
   // test reference
-  closure<void,string&> s=foo();
+  slot<void,string&> s=foo();
   string str("guest book");
   s(str);
   cout << str << endl;

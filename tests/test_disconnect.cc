@@ -65,7 +65,7 @@ int main()
    sig(2);
 
    A a;                  // iterators stay valid after further connections.
-   cona = sig.closures().insert(conbar, mem_fun1(&a, &A::foo));
+   cona = sig.slots().insert(conbar, mem_fun1(&a, &A::foo));
    cout << "sig is connected to foo, A::foo, bar (size=" << sig.size() << "): " << endl;
    sig(3);
 

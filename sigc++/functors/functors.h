@@ -20,7 +20,7 @@
 #ifndef _SIGC_FUNCTOR_HPP_
 #define _SIGC_FUNCTOR_HPP_
 
-#include <sigc++/functors/closure.h>
+#include <sigc++/functors/slot.h>
 #include <sigc++/functors/ptr_fun.h>
 #include <sigc++/functors/mem_fun.h>
 

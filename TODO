@@ -1,7 +1,5 @@
 Naming issues:
 
-- Rename closure to slot.
-
 - Shall we move everything from namespace sigc::functor to namespace sigc?
   (Discussion already started on the list - 26.03.2003).
 
@@ -10,7 +8,7 @@ Naming issues:
 - Release 1.9.7 after sorting this out.
 
 
-Compiler checks:
+Configure checks and Makefile issues:
 
 - Most probably needed:
   Configure check for typeof(). Only use typeof() if it's supported.
@@ -36,6 +34,13 @@ Compiler checks:
 - Find out what compiler features apart from typeof() can be made optional.
   Add configure checks.
 
+- When you use a single Makefile.am for
+  several directories (in sigc++2, all under sigc++/ is ruled by a
+  single Makefile.am with the new build system), you have a problem when
+  you do a build where $(srcdir) != $(builddir), since in the build-tree
+  the necessary subdirectories are not created. So I have to find a
+  place where to create this directories, in case they do not exist. (Andy)
+
 
 sigc++-1.2 compatibility:
 
@@ -58,7 +63,7 @@ basic functionality:
 
 - I don't understand what is meant by "stl pointer like functions" (Martin):
 
-  Closure should have the full set of stl pointer like functions. (Karl Nelson)
+  slot should have the full set of stl pointer like functions. (Karl Nelson)
 
 
 lambda functionality:
@@ -88,7 +93,7 @@ Old TODO's that should be almost finished (Martin):
 - Done, but the test suite doesn't check this (Martin):
 
   Verify visit_trait is set up for lambda and propogates to allow 
-  disconnection through a closure.
+  disconnection through a slot.
 
 
 Old TODO's that should be finished (Martin):
@@ -96,7 +101,7 @@ Old TODO's that should be finished (Martin):
 - Improve signal#, it currently is just barely functional.
 - Add iterator support and stl like functionality to signal.
 
-- Add blocking capablity to closure.
+- Add blocking capablity to slot.
 
 - Deinline/move to .cc where possible to move functions into the
   library to reduce resulting binary size.

@@ -25,49 +25,49 @@ namespace sigc {
 /** Convinience class for safe disconnection.
  * Iterators must not be used beyond the lifetime of the list
  * they work on. A connection object can be created from a
- * closure list iterator and may safely be used to disconnect
- * the refered closure at any time (disconnect()). If the closure
+ * slot list iterator and may safely be used to disconnect
+ * the refered slot at any time (disconnect()). If the slot
  * has already been destroyed, disconnect() does nothing. empty() or
  * operator bool() can be used to test whether the connection is
  * still active. The connection can be blocked (block(), unblock()).
  * This is possibly because the connection object gets notified
- * when the refered closure dies (notify()).
+ * when the refered slot dies (notify()).
  */
 struct connection
 {
-  connection() : closure_(0) {}
+  connection() : slot_(0) {}
   
-  connection(const connection& c) : closure_(c.closure_)
-    { if (closure_) closure_->add_dependency(this, &notify); }
+  connection(const connection& c) : slot_(c.slot_)
+    { if (slot_) slot_->add_dependency(this, &notify); }
 
-  template <typename T_closure>
-  connection(const internal::closure_iterator<T_closure>& it) : closure_(&(*it))
-    { if (closure_) closure_->add_dependency(this, &notify); }
+  template <typename T_slot>
+  connection(const internal::slot_iterator<T_slot>& it) : slot_(&(*it))
+    { if (slot_) slot_->add_dependency(this, &notify); }
 
   connection& operator = (const connection& c)
-    { set_closure(c.closure_); }
+    { set_slot(c.slot_); }
 
-  template <typename T_closure>
-  connection& operator = (const internal::closure_iterator<T_closure>& it)
-    { set_closure(&(*it)); }
+  template <typename T_slot>
+  connection& operator = (const internal::slot_iterator<T_slot>& it)
+    { set_slot(&(*it)); }
 
   ~connection()
-    { if (closure_) closure_->remove_dependency(this); }
+    { if (slot_) slot_->remove_dependency(this); }
 
   bool empty() const
-    { return (!closure_ || closure_->empty()); }
+    { return (!slot_ || slot_->empty()); }
 
   inline bool blocked() const
-    { return (closure_ ? closure_->blocked() : 0); }
+    { return (slot_ ? slot_->blocked() : 0); }
 
   bool block(bool should_block = true)
-    { if (closure_) return closure_->block(should_block); }
+    { if (slot_) return slot_->block(should_block); }
 
   bool unblock()
-    { if (closure_) return closure_->unblock(); }
+    { if (slot_) return slot_->unblock(); }
 
   void disconnect()
-    { if (closure_) closure_->disconnect(); }
+    { if (slot_) slot_->disconnect(); }
 
   operator bool()
     { return !empty(); }
@@ -75,9 +75,9 @@ struct connection
   static void* notify(void* d);
 
   private:
-    void set_closure(functor::internal::closure_base* cl);
+    void set_slot(functor::internal::slot_base* cl);
 
-    functor::internal::closure_base* closure_;
+    functor::internal::slot_base* slot_;
 };
 
 } /* namespace sigc */

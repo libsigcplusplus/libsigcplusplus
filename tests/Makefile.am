@@ -13,7 +13,7 @@ noinst_PROGRAMS= \
   test_compose \
   test_bind_return \
   test_bind \
-  test_closure \
+  test_slot \
   test_signal \
   test_accumulated \
   test_disconnect \
@@ -33,7 +33,7 @@ test_compose_SOURCES = test_compose.cc
 test_bind_return_SOURCES = test_bind_return.cc 
 test_bind_SOURCES = test_bind.cc
 test_exception_catch_SOURCES = test_exception_catch.cc 
-test_closure_SOURCES = test_closure.cc 
+test_slot_SOURCES = test_slot.cc 
 test_signal_SOURCES = test_signal.cc 
 test_accumulated_SOURCES = test_accumulated.cc 
 test_disconnect_SOURCES = test_disconnect.cc 

@@ -5,7 +5,7 @@
 
 #include <iostream>
 #include <sigc++/trackable.h>
-#include <sigc++/functors/closure.h>
+#include <sigc++/functors/slot.h>
 #include <sigc++/adaptors/bind.h>
 #include <sigc++/functors/mem_fun.h>
 
@@ -22,7 +22,7 @@ class my_class: public trackable
 
 int main()
 {
-  closure<void> cl;
+  slot<void> cl;
   {
     my_class t;
     t.i=10;

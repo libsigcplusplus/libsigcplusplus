@@ -4,7 +4,7 @@
  */
 
 #include <sigc++/adaptors/bind_return.h>
-#include <sigc++/functors/closure.h>
+#include <sigc++/functors/slot.h>
 #include <iostream>
 
 using namespace std;
@@ -35,7 +35,7 @@ int main()
   bind_return<string&>(foo(),str)(6) = "main";
   cout << str << endl;
 
-  closure<bar,int> c; // bar, not bar&: closures cannot return references
+  slot<bar,int> c; // bar, not bar&: slots cannot return references
   {
     bar choco(-1);
     c = bind_return<bar&>(foo(),choco);

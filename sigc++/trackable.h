@@ -70,8 +70,8 @@ class trackable_dep_list
 
 /** Base class for objects with auto-disconnection.
  * trackable is the class that must be inherited when objects shall
- * automatically invalidate closures that depend on them on destruction.
- * Closures which are built from member functions of a class inheriting
+ * automatically invalidate slots that depend on them on destruction.
+ * slots which are built from member functions of a class inheriting
  * trackable add a dependency to the object thus installing a callback
  * notifying them when the object is destroyed or overwritten.
  * add_dependency() and remove_dependency() are part of the public API

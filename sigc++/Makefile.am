@@ -3,14 +3,14 @@ base_m4 = template.macros.m4 callof.h.m4 signal.h.m4
 base_built_cc =
 base_built_h = callof.h signal.h
 
-signal.cc : signal.h functors/closure.h
+signal.cc : signal.h functors/slot.h
 
 # Functors (functors/)
-functors_m4 = functor_trait.h.m4 closure.h.m4 ptr_fun.h.m4 mem_fun.h.m4
+functors_m4 = functor_trait.h.m4 slot.h.m4 ptr_fun.h.m4 mem_fun.h.m4
 functors_built_cc = 
-functors_built_h = functor_trait.h closure.h ptr_fun.h mem_fun.h
+functors_built_h = functor_trait.h slot.h ptr_fun.h mem_fun.h
 
-functors/closure.cc : functors/closure.h
+functors/slot.cc : functors/slot.h
 
 # Adaptors (adaptors/)
 adaptors_m4 = adaptor_trait.h.m4 compose.h.m4 bind_return.h.m4 \
@@ -56,7 +56,7 @@ nobase_library_include_HEADERS = $(sigc_built_h) \
 # build the library
 lib_LTLIBRARIES = libsigc-2.0.la
 libsigc_2_0_la_SOURCES = signal.cc trackable.cc connection.cc \
-                         functors/closure.cc \
+                         functors/slot.cc \
 			 adaptors/lambda/lambda.cc
 
 BUILT_SOURCES = $(sigc_built_h) $(sigc_built_cc)
