@@ -101,7 +101,7 @@ struct SIGC_API slot_rep : public trackable
    * @return A deep copy of the slot_rep object.
    */
   inline slot_rep* dup() const
-    { return (slot_rep*)(*dup_)(const_cast<slot_rep*>(this)); }
+    { return reinterpret_cast<slot_rep*>((*dup_)(const_cast<slot_rep*>(this))); }
 
   /** Set the parent with a callback.
    * slots have one parent exclusively.

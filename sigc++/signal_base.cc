@@ -78,7 +78,7 @@ void signal_impl::sweep()
 
 void* signal_impl::notify(void* d)
 {
-  signal_impl* self = (signal_impl*)d;
+  signal_impl* self = reinterpret_cast<signal_impl*>(d);
   if (self->exec_count_ == 0)
     self->sweep();
   else                       // This is occuring during signal emission.

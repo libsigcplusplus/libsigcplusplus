@@ -25,14 +25,14 @@ ifelse($1,0,[dnl
   template <LOOP(class T_arg%1, $1)>
   inline T_return operator()(LOOP(T_arg%1 _A_a%1, $1))
     { return T_return(this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<LOOP(typename ::sigc::type_trait<T_type%1>::take, $1)>
-        (LOOP([[(T_type%1)_A_a%1]], $1)));
+        (LOOP([[static_cast<T_type%1>(_A_a%1)]], $1)));
     }
 
   #ifndef SIGC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD
   template <LOOP(class T_arg%1, $1)>
   inline T_return sun_forte_workaround(LOOP(T_arg%1 _A_a%1, $1))
     { return T_return(this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<LOOP(typename ::sigc::type_trait<T_type%1>::take, $1)>
-        (LOOP([[(T_type%1)_A_a%1]], $1)));
+        (LOOP([[static_cast<T_type%1>(_A_a%1)]], $1)));
     }
   #endif
   
@@ -45,14 +45,14 @@ ifelse($1,0,[dnl
   template <LOOP(class T_arg%1, $1)>
   inline void operator()(LOOP(T_arg%1 _A_a%1, $1))
     { T_return(this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<LOOP(typename ::sigc::type_trait<T_type%1>::take, $1)>
-        (LOOP([[(T_type%1)_A_a%1]], $1)));
+        (LOOP([[static_cast<T_type%1>(_A_a%1)]], $1)));
     }
 
   #ifndef SIGC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD
   template <LOOP(class T_arg%1, $1)>
   inline void sun_forte_workaround(LOOP(T_arg%1 _A_a%1, $1))
     { T_return(this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<LOOP(typename ::sigc::type_trait<T_type%1>::take, $1)>
-        (LOOP([[(T_type%1)_A_a%1]], $1)));
+        (LOOP([[static_cast<T_type%1>(_A_a%1)]], $1)));
     }
   #endif
     

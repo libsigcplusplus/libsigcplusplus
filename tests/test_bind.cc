@@ -94,7 +94,7 @@ int main()
     book guest_book("karl");
     sl = sigc::bind(&egon, sigc::ref(guest_book));
     sl();
-    std::cout << (std::string&)guest_book << std::endl;
+    std::cout << static_cast<std::string&>(guest_book) << std::endl;
   }    // auto-disconnect
   sl(); // :-)
 }

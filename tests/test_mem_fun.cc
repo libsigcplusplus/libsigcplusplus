@@ -18,7 +18,7 @@ void foo_const_volatile(double i1) const volatile
   {std::cout << "const test::foo(double "<< i1<< ')' <<std::endl; }
 
 void foo_overloaded(char i1)
-  {std::cout << "const test::foo(char "<< (int)i1<< ')' <<std::endl; }
+  {std::cout << "const test::foo(char "<< int(i1)<< ')' <<std::endl; }
 /* TODO: put something like #ifndef FORTE ... #endif around:
 void foo_overloaded(short i1)
   {std::cout << "const test::foo(char "<< (int)i1<< ')' <<std::endl; } */

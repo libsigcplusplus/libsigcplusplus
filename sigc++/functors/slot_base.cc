@@ -54,7 +54,7 @@ void slot_rep::disconnect()
 //static
 void* slot_rep::notify(void* data)
 {
-  slot_rep* self_ = (slot_rep*)data;
+  slot_rep* self_ = reinterpret_cast<slot_rep*>(data);
   self_->call_ = 0; // Invalidate the slot.
   self_->destroy(); // Detach the stored functor from the other referred trackables and destroy it.
   self_->disconnect(); // Disconnect the slot (might lead to deletion of self_!).

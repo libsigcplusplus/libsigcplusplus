@@ -147,7 +147,7 @@ public:
     : parent_type(_A_func) {}
 
   slot(const slot& src)
-    : parent_type((const parent_type&)src) {}
+    : parent_type(reinterpret_cast<const parent_type&>(src)) {}
 };
 
 ])
@@ -248,7 +248,7 @@ struct typed_slot_rep : public slot_rep
    */
   static void* destroy(void* data)
     {
-      self* self_ = static_cast<self*>((slot_rep*)data);
+      self* self_ = static_cast<self*>(reinterpret_cast<slot_rep*>(data));
       self_->call_ = 0;
       self_->destroy_ = 0;
       visit_each_type<trackable*>(slot_do_unbind(self_), self_->functor_);
@@ -267,7 +267,7 @@ struct typed_slot_rep : public slot_rep
    */
   static void* dup(void* data)
     {
-      slot_rep* rep_ = (slot_rep*)data;
+      slot_rep* rep_ = reinterpret_cast<slot_rep*>(data);
       return static_cast<slot_rep*>(new self(*static_cast<self*>(rep_)));
     }
 };

@@ -106,7 +106,7 @@ private:
 
 public:
   static const bool value =
-    sizeof(test::is_base_class_((typename type_trait<T_derived>::pointer)0)) ==
+    sizeof(test::is_base_class_(reinterpret_cast<typename type_trait<T_derived>::pointer>(0))) ==
     sizeof(char);
 };
 
