@@ -1,3 +1,11 @@
+2.0.5:
+
+2004-09-01  Martin Schulze <mschulze@cvs.gnome.org>
+
+	* MSVC_Net2003/Makefile.am: Add sigc++config.h to EXTRA_DIST.
+	* configure.ac: Bump version number to 2.0.5.
+	* NEWS: Add ChangeLog summary for version 2.0.5.
+
 2.0.4:
 
 2004-08-21  Martin Schulze <mschulze@cvs.gnome.org>

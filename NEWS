@@ -17,6 +17,10 @@ This version of libsigc++ needs GNU g++ 3.2 or higher to compile.
 
 *** ChangeLog summary:
 
+2.0.5:
+
+* Distribute pregenerated configuration header for MSVC .Net.
+
 2.0.4:
 
 * Fixed warnings and compiler errors in the test cases.

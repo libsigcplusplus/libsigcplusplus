@@ -65,6 +65,7 @@ Compatibility:
    * cygwin (gcc >= 3.2)
    * mingw32
    * Microsoft Visual Studio .Net 2003
-   * Sun Forte C++ compiler >= 5.5 (work in progress)
+   * Sun Forte C++ compiler >= 5.5
+   * Compaq C++ compiler
    Please report any troubles you encounter with these compilers!
    You are also invited to try a compiler that is not listed above.
