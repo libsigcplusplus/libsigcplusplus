@@ -57,8 +57,6 @@ dnl    { return _A_slot(LOOP(_A_a%1_, $1)); }
   /** Executes a list of slots using an accumulator of type @e T_accumulator.dnl
 ifelse($1,0,,[
    * The arguments are buffered in a temporary instance of signal_emit$1.])
-   * @param first An iterator pointing to the first slot in the list.
-   * @param last An iterator pointing to the last slot in the list.dnl
 FOR(1, $1,[
    * @param _A_a%1 Argument to be passed on to the slots.])
    * @return The accumulated return values of the slot invocations as processed by the accumulator.

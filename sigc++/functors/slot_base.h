@@ -225,10 +225,10 @@ public:
 
   /** Tests whether a slot is null, because the default constructor was used.
    * Test a slot for null like so:
-   * <code>
+   * @code
    * if(slot)
    *  do_something()
-   * <endcode>
+   * @endcode
    */
   operator bool() const;
 

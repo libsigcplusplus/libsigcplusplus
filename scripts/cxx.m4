@@ -44,7 +44,6 @@ AC_TRY_COMPILE(
   AC_MSG_RESULT([$sigcm_cxx_template_specialization_operator_overload])
 ],[
   sigcm_cxx_template_specialization_operator_overload=no
-  AC_DEFINE([SIGC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD],[0])
   AC_MSG_RESULT([$sigcm_cxx_template_specialization_operator_overload])
 ])
 ])

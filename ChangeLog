@@ -1,3 +1,16 @@
+2004-07-07  Murray Cumming  <murrayc@murrayc.com>
+
+	* scripts/cxx.m4: SIGC_CXX_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD():
+	Don't define the SIGC_TEMPLATE_SPECIALIZATOIN_OPERATOR_OVERLOAD C 
+	macro at all if the test fails. This might fix the build on SUN Forte.
+	* sigc++/functors/macros/mem_fun.h.m4: Default constructor: Initialize 
+	the func_ptr_ member variable. I have no evidence that this solves any 
+	problems, but it worried me.
+	* sigc++/functors/slot_base.h: operator bool(): Correct documentation, 
+	to use @code instead of <code>
+	* sigc++/macros/signal.h.m4: Remove the documentation for the 
+	parameters named first and last, because they do not exist.
+
 2004-05-31  Martin Schulze  <mschulze@cvs.gnome.org>
 
 	* autogen.sh: Add '--force'-flag to the 'libtoolize'-command (bug #143425).
