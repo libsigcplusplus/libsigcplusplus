@@ -20,6 +20,8 @@ This version of libsigc++ needs GNU g++ 3.2 or higher to compile.
 2.0.9:
 
 * sigc::bind() now works with the AIX and Tru64 compilers.
+  See the comments in sigc++/visit_each.h: visit_each_type() 
+  if you have compilation problems.
   (Murray Cumming)
 * sigc::var() is now documented. (Roger Ferrer Ibáñez)
 

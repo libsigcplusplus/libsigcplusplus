@@ -1,3 +1,13 @@
+2.0.9:
+
+2005-02-02  Murray Cumming  <murrayc@murrayc.com>
+
+	* sigc++/visit_each.h: visit_each_type(): Reverted the change, so that 
+	we do not specify the template types ot visit_each<>(), because it 
+	crashes on g++ 3.3.4 (but not g++ 3.4.2). Added a comment telling users 
+	of AIX (and maybe IRIX MipsPro and Tru64) to use the alternative version 
+	if they have compilation problems.
+
 2005-02-01  Murray Cumming  <murrayc@murrayc.com>
 
 	* sigc++/adapators/macros/base.h.m4: Add sigc::var<>() documentation, 

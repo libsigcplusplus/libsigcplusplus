@@ -121,9 +121,18 @@ template <class T_type, class T_action, class T_functor>
 void visit_each_type(const T_action& _A_action, const T_functor& _A_functor)
 { 
   typedef internal::limit_derived_target<T_type, T_action> type_limited_action;
-  
+
   type_limited_action limited_action(_A_action);
-  visit_each<type_limited_action, T_functor>(limited_action,_A_functor);
+
+  //With g++ 3.3.4, 
+  //specifying the types of the template specialization causes a segfault in tests/test_bind.
+  //But there is no segfault with g++ 3.4.2, and this is required by the AIX (and maybe IRIX MipsPro  and Tru64) compilers. 
+  //visit_each<type_limited_action, T_functor>(limited_action, _A_functor);
+  
+  //g++ (even slightly old ones) is our primary platform, so we use the non-crashing version.
+  //Users (and distributors) of libsigc++ on AIX (and maybe IRIX MipsPro  and Tru64) may 
+  //need to use this version above instead, to allow compilation.
+  visit_each(limited_action, _A_functor);
 }
 
 } /* namespace sigc */
