@@ -19,8 +19,8 @@ divert(-1)
 include(template.macros.m4)
 
 define([DEDUCE_RESULT_TYPE_COUNT],[dnl
-  template <LOOP(class T_arg%1, eval(CALL_SIZE-$2))>
-  struct deduce_result_type<LIST(LOOP(T_arg%1,eval(CALL_SIZE-$2)))>
+  template <LOOP(class T_arg%1, eval(CALL_SIZE))>
+  struct deduce_result_type_internal<LIST($2, LOOP(T_arg%1,eval(CALL_SIZE)))>
     { typedef typename adaptor_type::template deduce_result_type<LIST(LOOP(_P_(T_arg%1), eval(CALL_SIZE-$2)), LOOP(_P_(T_type%1), $1))>::type type; };
 ])
 define([BIND_OPERATOR_LOCATION],[dnl
@@ -121,10 +121,16 @@ struct bind_functor<LIST(-1, T_functor, LOOP(T_type%1, $1))> : public adapts<T_f
 {
   typedef typename adapts<T_functor>::adaptor_type adaptor_type;
 
-  template <LOOP(class T_arg%1=void, eval(CALL_SIZE))>
-  struct deduce_result_type
+  template <LIST(int count, LOOP(class T_arg%1, eval(CALL_SIZE)))>
+  struct deduce_result_type_internal
     { typedef typename adaptor_type::template deduce_result_type<LIST(LOOP(_P_(T_arg%1), eval(CALL_SIZE-$1)), LOOP(_P_(T_type%1), $1))>::type type; };
 FOR(eval($1+1),eval(CALL_SIZE-1),[[DEDUCE_RESULT_TYPE_COUNT($1,%1)]])dnl
+
+  template <LOOP(class T_arg%1=void, eval(CALL_SIZE))>
+  struct deduce_result_type {
+    typedef typename deduce_result_type_internal<internal::count_void<LOOP(T_arg%1, eval(CALL_SIZE))>::value,
+                                                 LOOP(T_arg%1, eval(CALL_SIZE))>::type type;
+  };
   typedef typename adaptor_type::result_type  result_type;
 
   /** Invokes the wrapped functor passing on the bound argument only.
@@ -199,6 +205,91 @@ __FIREWALL__
 #include <sigc++/adaptors/adaptor_trait.h>
 
 namespace sigc { 
+
+namespace internal {
+
+#ifdef SIGC_TEMPLATE_SPECIALIZATION_MULTIPLE
+
+template <class T_arg1>
+struct count_void6
+  { static const int value=6; };
+template <>
+struct count_void6<void>
+  { static const int value=7; };
+
+template <class T_arg1,class T_arg2>
+struct count_void5
+  { static const int value=5; };
+template <class T_arg1>
+struct count_void5<T_arg1,void>
+  { static const int value=count_void6<T_arg1>::value; };
+
+template <class T_arg1,class T_arg2,class T_arg3>
+struct count_void4
+  { static const int value=4; };
+template <class T_arg1,class T_arg2>
+struct count_void4<T_arg1,T_arg2,void>
+  { static const int value=count_void5<T_arg1,T_arg2>::value; };
+
+template <class T_arg1,class T_arg2,class T_arg3,class T_arg4>
+struct count_void3
+  { static const int value=3; };
+template <class T_arg1,class T_arg2,class T_arg3>
+struct count_void3<T_arg1,T_arg2,T_arg3,void>
+  { static const int value=count_void4<T_arg1,T_arg2,T_arg3>::value; };
+
+template <class T_arg1,class T_arg2,class T_arg3,class T_arg4,class T_arg5>
+struct count_void2
+  { static const int value=2; };
+template <class T_arg1,class T_arg2,class T_arg3,class T_arg4>
+struct count_void2<T_arg1,T_arg2,T_arg3,T_arg4,void>
+  { static const int value=count_void3<T_arg1,T_arg2,T_arg3,T_arg4>::value; };
+
+template <class T_arg1,class T_arg2,class T_arg3,class T_arg4,class T_arg5,class T_arg6>
+struct count_void1
+  { static const int value=1; };
+template <class T_arg1,class T_arg2,class T_arg3,class T_arg4,class T_arg5>
+struct count_void1<T_arg1,T_arg2,T_arg3,T_arg4,T_arg5,void>
+  { static const int value=count_void2<T_arg1,T_arg2,T_arg3,T_arg4,T_arg5>::value; };
+
+template <class T_arg1,class T_arg2,class T_arg3,class T_arg4,class T_arg5,class T_arg6,class T_arg7>
+struct count_void
+  { static const int value=0; };
+template <class T_arg1,class T_arg2,class T_arg3,class T_arg4,class T_arg5,class T_arg6>
+struct count_void<T_arg1,T_arg2,T_arg3,T_arg4,T_arg5,T_arg6,void>
+  { static const int value=count_void1<T_arg1,T_arg2,T_arg3,T_arg4,T_arg5,T_arg6>::value; };
+
+#else
+
+template <class T_arg1,class T_arg2,class T_arg3,class T_arg4,class T_arg5,class T_arg6,class T_arg7>
+struct count_void
+  { static const int value=0; };
+template <class T_arg1,class T_arg2,class T_arg3,class T_arg4,class T_arg5,class T_arg6>
+struct count_void<T_arg1,T_arg2,T_arg3,T_arg4,T_arg5,T_arg6,void>
+  { static const int value=1; };
+template <class T_arg1,class T_arg2,class T_arg3,class T_arg4,class T_arg5>
+struct count_void<T_arg1,T_arg2,T_arg3,T_arg4,T_arg5,void,void>
+  { static const int value=2; };
+template <class T_arg1,class T_arg2,class T_arg3,class T_arg4>
+struct count_void<T_arg1,T_arg2,T_arg3,T_arg4,void,void,void>
+  { static const int value=3; };
+template <class T_arg1,class T_arg2,class T_arg3>
+struct count_void<T_arg1,T_arg2,T_arg3,void,void,void,void>
+  { static const int value=4; };
+template <class T_arg1,class T_arg2>
+struct count_void<T_arg1,T_arg2,void,void,void,void,void>
+  { static const int value=5; };
+template <class T_arg1>
+struct count_void<T_arg1,void,void,void,void,void,void>
+  { static const int value=6; };
+template <>
+struct count_void<void,void,void,void,void,void,void>
+  { static const int value=7; };
+
+#endif /*SIGC_TEMPLATE_SPECIALIZATION_MULTIPLE*/
+
+} /* namespace internal */
+
 
 /** @defgroup bind bind(), bind_return()
  * sigc::bind() alters an arbitrary functor by fixing arguments to certain values.

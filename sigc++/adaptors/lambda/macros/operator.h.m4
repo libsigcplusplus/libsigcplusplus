@@ -145,8 +145,8 @@ struct lambda_action_unary<$1 >
 {
   template <class T_arg>
   static typename lambda_action_unary_deduce_result_type<$1, T_arg>::type
-  do_action(T_arg _A)
-    { return $2[]_A; }
+  do_action(T_arg _Aa)
+    { return $2[]_Aa; }
 };
 
 divert(2)dnl
@@ -177,8 +177,8 @@ struct lambda_action_convert<$1, T_type>
 {
   template <class T_arg>
   static typename lambda_action_convert_deduce_result_type<$1, T_type, T_arg>::type
-  do_action(T_arg _A)
-    { return $2<T_type>(_A); }
+  do_action(T_arg _Aa)
+    { return $2<T_type>(_Aa); }
 };
 
 divert(2)dnl

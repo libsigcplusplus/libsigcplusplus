@@ -1,4 +1,4 @@
 /* config.h.in.  Generated from configure.ac by autoheader.  */
 
 #undef SIGC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD
-
+#undef SIGC_TEMPLATE_SPECIALIZATION_MULTIPLE
