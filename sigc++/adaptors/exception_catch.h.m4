@@ -20,7 +20,7 @@ include(template.macros.m4)
 
 define([EXCEPTION_CATCH_OPERATOR],[dnl
    template <LOOP(class T_arg%1, $1)>
-   inline typename callof<T_functor, LOOP(T_arg%1, $1)>::result_type
+   inline typename internal::callof<T_functor, LOOP(T_arg%1, $1)>::result_type
      operator()(LOOP(T_arg%1 _A_a%1, $1))
      { 
         try { 

@@ -5,7 +5,7 @@
 
 #include <sigc++/callof.h>
 
-using namespace sigc;
+using namespace sigc::functor::internal;
 
 template <class T>
 void bar(T t)

@@ -65,6 +65,9 @@ namespace sigc {
 struct nil;
 
 
+namespace functor {
+namespace internal {
+
 /** Macro to infer the return type of a functor.
  * The callof<> template can be used to infer a functor's return type at
  * compile time if the argument types are known. callof<> also infers the
@@ -165,4 +168,6 @@ FOR(0,CALL_SIZE,[[HAS_OPERATOR(%1)]])
 // numbered callof_safe
 FOR(0,eval(CALL_SIZE),[[CALLOF_SAFE(%1)]])
 
+} /* namespace internal */
+} /* namespace functor */
 } /* namespace sigc */

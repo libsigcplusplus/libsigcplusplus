@@ -20,8 +20,8 @@ include(template.macros.m4)
 
 define([COMPOSE1_OPERATOR],[dnl
   template <LOOP(class T_arg%1, $1)>
-  typename callof<T_setter,
-    typename callof<LIST(T_getter, LOOP(T_arg%1, $1))>::result_type
+  typename internal::callof<T_setter,
+    typename internal::callof<LIST(T_getter, LOOP(T_arg%1, $1))>::result_type
         >::result_type
   operator()(LOOP(T_arg%1 _A_a%1, $1))
     { return functor_(get_(LOOP(_A_a%1, $1))); }
@@ -29,9 +29,9 @@ define([COMPOSE1_OPERATOR],[dnl
 
 define([COMPOSE2_OPERATOR],[dnl
   template <LOOP(class T_arg%1, $1)>
-  typename callof<T_setter,
-    typename callof<LIST(T_getter1, LOOP(T_arg%1, $1))>::result_type,
-    typename callof<LIST(T_getter2, LOOP(T_arg%1, $1))>::result_type
+  typename internal::callof<T_setter,
+    typename internal::callof<LIST(T_getter1, LOOP(T_arg%1, $1))>::result_type,
+    typename internal::callof<LIST(T_getter2, LOOP(T_arg%1, $1))>::result_type
         >::result_type
   operator()(LOOP(T_arg%1 _A_a%1, $1))
     { return functor_(get1_(LOOP(_A_a%1, $1)), get2_(LOOP(_A_a%1,$1))); }

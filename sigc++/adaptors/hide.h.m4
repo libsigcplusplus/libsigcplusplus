@@ -38,15 +38,15 @@ define([HIDE_OPERATOR],[dnl
 ifelse($2,0,,[dnl
   template <LOOP([class T_arg%1], $2)>
 ifelse($1,0,[dnl
-  ifelse($2,1,[typename callof_ignore_arg<T_functor,T_arg1>::result_type],[typename callof<LIST(T_functor,FOR(1,eval($2-1),[T_arg%1,]))>::result_type])
+  ifelse($2,1,[typename internal::callof_ignore_arg<T_functor,T_arg1>::result_type],[typename internal::callof<LIST(T_functor,FOR(1,eval($2-1),[T_arg%1,]))>::result_type])
   operator()(LOOP(T_arg%1 _A_a%1, $2))
     { return functor_(LIST(FOR(1,eval($2-1),[_A_a%1,]))); }
 ], $2,1,[dnl
-  typename callof_ignore_arg<T_functor,T_arg1>::result_type
+  typename internal::callof_ignore_arg<T_functor,T_arg1>::result_type
   operator()(T_arg1 _A_a1)
     { return functor_(LIST(FOR(1,eval($1-1),[_A_a%1,]),FOR(eval($1+1), $2,[_A_a%1,]))); }
 ],[dnl
-  typename callof<LIST(T_functor,FOR(1,eval($1-1),[T_arg%1,]),FOR(eval($1+1), $2,[T_arg%1,]))>::result_type
+  typename internal::callof<LIST(T_functor,FOR(1,eval($1-1),[T_arg%1,]),FOR(eval($1+1), $2,[T_arg%1,]))>::result_type
   operator()(LOOP(T_arg%1 _A_a%1, $2))
     { return functor_(LIST(FOR(1,eval($1-1),[_A_a%1,]),FOR(eval($1+1), $2,[_A_a%1,]))); }
 ])])dnl

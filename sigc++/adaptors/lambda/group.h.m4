@@ -36,10 +36,10 @@ define([_L_],[LOOP(_A_%1, $2)])dnl
 define([_T_],[LOOP(T_arg%1, $2)])dnl
 dnl Please someone get a gun!
   template <LOOP(class T_arg%1, $2)>
-  typename callof<
-      typename callof<lambda_type,LOOP(T_arg%1,$2)>::result_type,dnl
+  typename internal::callof<
+      typename internal::callof<lambda_type,LOOP(T_arg%1,$2)>::result_type,dnl
 LOOP([[
-      typename callof<value%1_type, _T_>::result_type]], $1)
+      typename internal::callof<value%1_type, _T_>::result_type]], $1)
     >::result_type
   operator() (LOOP(T_arg%1 _A_%1, $2)) const
     { return (func_(LOOP(_A_%1, $2)))(LOOP(value%1_(_L_),$1)); }

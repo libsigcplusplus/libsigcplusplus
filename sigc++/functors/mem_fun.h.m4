@@ -28,11 +28,11 @@ class mem_functor$1 : public functor_base
 
     mem_functor$1() {}
     explicit mem_functor$1(function_type _A_func): func_ptr_(_A_func) {}
-    T_return operator()(LIST(T_obj* _A_obj, LOOP(typename type_trait<T_arg%1>::take _A_a%1, $1))) const 
+    T_return operator()(LIST(T_obj* _A_obj, LOOP(typename type_trait<T_arg%1>::take _A_a%1, $1))) const
       { return (_A_obj->*func_ptr_)(LOOP(_A_a%1, $1)); }
-    T_return operator()(LIST(T_obj& _A_obj, LOOP(typename type_trait<T_arg%1>::take _A_a%1, $1))) const 
+    T_return operator()(LIST(T_obj& _A_obj, LOOP(typename type_trait<T_arg%1>::take _A_a%1, $1))) const
       { return (_A_obj.*func_ptr_)(LOOP(_A_a%1, $1)); }
-  protected: 
+  protected:
     function_type func_ptr_;
 };
 
@@ -45,12 +45,47 @@ class const_mem_functor$1 : public functor_base
 
     const_mem_functor$1() {}
     explicit const_mem_functor$1(function_type _A_func): func_ptr_(_A_func) {}
-    T_return operator()(LIST(const T_obj* _A_obj, LOOP(typename type_trait<T_arg%1>::take _A_a%1, $1))) const 
+    T_return operator()(LIST(const T_obj* _A_obj, LOOP(typename type_trait<T_arg%1>::take _A_a%1, $1))) const
       { return (_A_obj->*func_ptr_)(LOOP(_A_a%1, $1)); }
-    T_return operator()(LIST(const T_obj& _A_obj, LOOP(typename type_trait<T_arg%1>::take _A_a%1, $1))) const 
+    T_return operator()(LIST(const T_obj& _A_obj, LOOP(typename type_trait<T_arg%1>::take _A_a%1, $1))) const
       { return (_A_obj.*func_ptr_)(LOOP(_A_a%1, $1)); }
 
-  protected: 
+  protected:
+    function_type func_ptr_;
+};
+
+template <LIST(LOOP(class T_arg%1, $1), class T_return, class T_obj)>
+class volatile_mem_functor$1 : public functor_base
+{
+  public:
+    typedef T_return (T_obj::*function_type)(LOOP(T_arg%1, $1)) volatile;
+    typedef T_return result_type;
+
+    volatile_mem_functor$1() {}
+    explicit volatile_mem_functor$1(function_type _A_func): func_ptr_(_A_func) {}
+    T_return operator()(LIST(T_obj* _A_obj, LOOP(typename type_trait<T_arg%1>::take _A_a%1, $1))) const
+      { return (_A_obj->*func_ptr_)(LOOP(_A_a%1, $1)); }
+    T_return operator()(LIST(T_obj& _A_obj, LOOP(typename type_trait<T_arg%1>::take _A_a%1, $1))) const
+      { return (_A_obj.*func_ptr_)(LOOP(_A_a%1, $1)); }
+  protected:
+    function_type func_ptr_;
+};
+
+template <LIST(LOOP(class T_arg%1, $1), class T_return, class T_obj)>
+class const_volatile_mem_functor$1 : public functor_base
+{
+  public:
+    typedef T_return (T_obj::*function_type)(LOOP(T_arg%1, $1)) const volatile;
+    typedef T_return result_type;
+
+    const_volatile_mem_functor$1() {}
+    explicit const_volatile_mem_functor$1(function_type _A_func): func_ptr_(_A_func) {}
+    T_return operator()(LIST(const T_obj* _A_obj, LOOP(typename type_trait<T_arg%1>::take _A_a%1, $1))) const
+      { return (_A_obj->*func_ptr_)(LOOP(_A_a%1, $1)); }
+    T_return operator()(LIST(const T_obj& _A_obj, LOOP(typename type_trait<T_arg%1>::take _A_a%1, $1))) const
+      { return (_A_obj.*func_ptr_)(LOOP(_A_a%1, $1)); }
+
+  protected:
     function_type func_ptr_;
 };
 
@@ -64,9 +99,11 @@ class bound_mem_functor$1
 
     explicit bound_mem_functor$1(T_obj* _A_obj, function_type _A_func)
       : base_type_(_A_func), obj_ptr_(_A_obj) {}
-    T_return operator()(LOOP(typename type_trait<T_arg%1>::take _A_a%1, $1)) const 
+    explicit bound_mem_functor$1(T_obj& _A_obj, function_type _A_func)
+      : base_type_(_A_func), obj_ptr_(&_A_obj) {}
+    T_return operator()(LOOP(typename type_trait<T_arg%1>::take _A_a%1, $1)) const
       { return (obj_ptr_->*func_ptr_)(LOOP(_A_a%1, $1)); }
-//  protected: 
+//  protected:
     T_obj *obj_ptr_;
 };
 
@@ -80,9 +117,47 @@ class bound_const_mem_functor$1
 
     explicit bound_const_mem_functor$1(const T_obj* _A_obj, function_type _A_func)
       : base_type_(_A_func), obj_ptr_(_A_obj) {}
+    explicit bound_const_mem_functor$1(const T_obj& _A_obj, function_type _A_func)
+      : base_type_(_A_func), obj_ptr_(&_A_obj) {}
+    T_return operator()(LOOP(typename type_trait<T_arg%1>::take _A_a%1, $1)) const
+      { return (obj_ptr_->*func_ptr_)(LOOP(_A_a%1, $1)); }
+//  protected:
+    const T_obj *obj_ptr_;
+};
+
+template <LIST(LOOP(class T_arg%1, $1), class T_return, class T_obj)>
+class bound_volatile_mem_functor$1
+  : public volatile_mem_functor$1<LIST(LOOP(T_arg%1, $1), T_return, T_obj)>
+{
+  typedef volatile_mem_functor$1<LIST(LOOP(T_arg%1, $1), T_return, T_obj)> base_type_;
+  public:
+    typedef typename base_type_::function_type function_type;
+
+    explicit bound_volatile_mem_functor$1(T_obj* _A_obj, function_type _A_func)
+      : base_type_(_A_func), obj_ptr_(_A_obj) {}
+    explicit bound_volatile_mem_functor$1(T_obj& _A_obj, function_type _A_func)
+      : base_type_(_A_func), obj_ptr_(&_A_obj) {}
+    T_return operator()(LOOP(typename type_trait<T_arg%1>::take _A_a%1, $1)) const
+      { return (obj_ptr_->*func_ptr_)(LOOP(_A_a%1, $1)); }
+//  protected:
+    T_obj *obj_ptr_;
+};
+
+template <LIST(LOOP(class T_arg%1, $1), class T_return, class T_obj)>
+class bound_const_volatile_mem_functor$1
+  : public const_volatile_mem_functor$1<LIST(LOOP(T_arg%1, $1), T_return, T_obj)>
+{
+  typedef const_volatile_mem_functor$1<LIST(LOOP(T_arg%1, $1), T_return, T_obj)> base_type_;
+  public:
+    typedef typename base_type_::function_type function_type;
+
+    explicit bound_const_volatile_mem_functor$1(const T_obj* _A_obj, function_type _A_func)
+      : base_type_(_A_func), obj_ptr_(_A_obj) {}
+    explicit bound_const_volatile_mem_functor$1(const T_obj& _A_obj, function_type _A_func)
+      : base_type_(_A_func), obj_ptr_(&_A_obj) {}
     T_return operator()(LOOP(typename type_trait<T_arg%1>::take _A_a%1, $1)) const 
       { return (obj_ptr_->*func_ptr_)(LOOP(_A_a%1, $1)); }
-//  protected: 
+//  protected:
     const T_obj *obj_ptr_;
 };
 
@@ -100,28 +175,82 @@ void visit_each(const T_action& _A_action,
   visit_each(_A_action, _A_target.obj_ptr_);
 }
 
+template <class T_action, LIST(LOOP(class T_arg%1, $1), class T_return, class T_obj)>
+void visit_each(const T_action& _A_action,
+                const bound_volatile_mem_functor$1<LIST(LOOP(T_arg%1, $1), T_return, T_obj)>& _A_target)
+{
+  visit_each(_A_action, _A_target.obj_ptr_);
+}
+
+template <class T_action, LIST(LOOP(class T_arg%1, $1), class T_return, class T_obj)>
+void visit_each(const T_action& _A_action,
+                const bound_const_volatile_mem_functor$1<LIST(LOOP(T_arg%1, $1), T_return, T_obj)>& _A_target)
+{
+  visit_each(_A_action, _A_target.obj_ptr_);
+}
+
 ])
 
 define([MEM_FUN],[dnl
 template <LIST(LOOP(class T_arg%1, $1), class T_return, class T_obj)>
-inline mem_functor$1<LIST(LOOP(T_arg%1, $1), T_return, T_obj)> 
+inline mem_functor$1<LIST(LOOP(T_arg%1, $1), T_return, T_obj)>
 mem_fun[]ifelse($2,, $1)(T_return (T_obj::*_A_func)(LOOP(T_arg%1,$1)))
 { return mem_functor$1<LIST(LOOP(T_arg%1, $1), T_return, T_obj)>(_A_func); }
 
 template <LIST(LOOP(class T_arg%1, $1), class T_return, class T_obj)>
-inline const_mem_functor$1<LIST(LOOP(T_arg%1, $1), T_return, T_obj)> 
+inline const_mem_functor$1<LIST(LOOP(T_arg%1, $1), T_return, T_obj)>
 mem_fun[]ifelse($2,, $1)(T_return (T_obj::*_A_func)(LOOP(T_arg%1,$1)) const)
 { return const_mem_functor$1<LIST(LOOP(T_arg%1, $1), T_return, T_obj)>(_A_func); }
 
 template <LIST(LOOP(class T_arg%1, $1), class T_return, class T_obj)>
-inline bound_mem_functor$1<LIST(LOOP(T_arg%1, $1), T_return, T_obj)> 
+inline volatile_mem_functor$1<LIST(LOOP(T_arg%1, $1), T_return, T_obj)>
+mem_fun[]ifelse($2,, $1)(T_return (T_obj::*_A_func)(LOOP(T_arg%1,$1)) volatile)
+{ return volatile_mem_functor$1<LIST(LOOP(T_arg%1, $1), T_return, T_obj)>(_A_func); }
+
+template <LIST(LOOP(class T_arg%1, $1), class T_return, class T_obj)>
+inline const_volatile_mem_functor$1<LIST(LOOP(T_arg%1, $1), T_return, T_obj)>
+mem_fun[]ifelse($2,, $1)(T_return (T_obj::*_A_func)(LOOP(T_arg%1,$1)) const volatile)
+{ return const_volatile_mem_functor$1<LIST(LOOP(T_arg%1, $1), T_return, T_obj)>(_A_func); }
+
+template <LIST(LOOP(class T_arg%1, $1), class T_return, class T_obj)>
+inline bound_mem_functor$1<LIST(LOOP(T_arg%1, $1), T_return, T_obj)>
 mem_fun[]ifelse($2,, $1)(T_obj* _A_obj, T_return (T_obj::*_A_func)(LOOP(T_arg%1,$1)))
 { return bound_mem_functor$1<LIST(LOOP(T_arg%1, $1), T_return, T_obj)>(_A_obj, _A_func); }
 
 template <LIST(LOOP(class T_arg%1, $1), class T_return, class T_obj)>
-inline bound_const_mem_functor$1<LIST(LOOP(T_arg%1, $1), T_return, T_obj)> 
+inline bound_mem_functor$1<LIST(LOOP(T_arg%1, $1), T_return, T_obj)>
+mem_fun[]ifelse($2,, $1)(T_obj& _A_obj, T_return (T_obj::*_A_func)(LOOP(T_arg%1,$1)))
+{ return bound_mem_functor$1<LIST(LOOP(T_arg%1, $1), T_return, T_obj)>(_A_obj, _A_func); }
+
+template <LIST(LOOP(class T_arg%1, $1), class T_return, class T_obj)>
+inline bound_const_mem_functor$1<LIST(LOOP(T_arg%1, $1), T_return, T_obj)>
 mem_fun[]ifelse($2,, $1)(const T_obj* _A_obj, T_return (T_obj::*_A_func)(LOOP(T_arg%1,$1)) const)
 { return bound_const_mem_functor$1<LIST(LOOP(T_arg%1, $1), T_return, T_obj)>(_A_obj, _A_func); }
+
+template <LIST(LOOP(class T_arg%1, $1), class T_return, class T_obj)>
+inline bound_const_mem_functor$1<LIST(LOOP(T_arg%1, $1), T_return, T_obj)>
+mem_fun[]ifelse($2,, $1)(const T_obj& _A_obj, T_return (T_obj::*_A_func)(LOOP(T_arg%1,$1)) const)
+{ return bound_const_mem_functor$1<LIST(LOOP(T_arg%1, $1), T_return, T_obj)>(_A_obj, _A_func); }
+
+template <LIST(LOOP(class T_arg%1, $1), class T_return, class T_obj)>
+inline bound_volatile_mem_functor$1<LIST(LOOP(T_arg%1, $1), T_return, T_obj)>
+mem_fun[]ifelse($2,, $1)(T_obj* _A_obj, T_return (T_obj::*_A_func)(LOOP(T_arg%1,$1)) volatile)
+{ return bound_volatile_mem_functor$1<LIST(LOOP(T_arg%1, $1), T_return, T_obj)>(_A_obj, _A_func); }
+
+template <LIST(LOOP(class T_arg%1, $1), class T_return, class T_obj)>
+inline bound_volatile_mem_functor$1<LIST(LOOP(T_arg%1, $1), T_return, T_obj)>
+mem_fun[]ifelse($2,, $1)(T_obj& _A_obj, T_return (T_obj::*_A_func)(LOOP(T_arg%1,$1)) volatile)
+{ return bound_volatile_mem_functor$1<LIST(LOOP(T_arg%1, $1), T_return, T_obj)>(_A_obj, _A_func); }
+
+template <LIST(LOOP(class T_arg%1, $1), class T_return, class T_obj)>
+inline bound_const_volatile_mem_functor$1<LIST(LOOP(T_arg%1, $1), T_return, T_obj)>
+mem_fun[]ifelse($2,, $1)(const T_obj* _A_obj, T_return (T_obj::*_A_func)(LOOP(T_arg%1,$1)) const volatile)
+{ return bound_const_volatile_mem_functor$1<LIST(LOOP(T_arg%1, $1), T_return, T_obj)>(_A_obj, _A_func); }
+
+template <LIST(LOOP(class T_arg%1, $1), class T_return, class T_obj)>
+inline bound_const_volatile_mem_functor$1<LIST(LOOP(T_arg%1, $1), T_return, T_obj)>
+mem_fun[]ifelse($2,, $1)(const T_obj& _A_obj, T_return (T_obj::*_A_func)(LOOP(T_arg%1,$1)) const volatile)
+{ return bound_const_volatile_mem_functor$1<LIST(LOOP(T_arg%1, $1), T_return, T_obj)>(_A_obj, _A_func); }
 ])
 
 divert(0)

@@ -69,21 +69,21 @@ define([BIND_OPERATOR],[dnl
 ifelse($2,0,[dnl
 ], $2,1,[dnl
 dnl  result_type
-dnl  typename callof_safe1<adaptor_type>::result_type // leads to compiler errors if T_functor has an overloaded operator()!
+dnl  typename internal::callof_safe1<adaptor_type>::result_type // leads to compiler errors if T_functor has an overloaded operator()!
 dnl  operator()()
 dnl    { /*return*/ functor_.template operator()<_P_(T_bound)>
 dnl       (bound_); 
 dnl    }
 ], $1,0,[dnl
   template <LOOP([class T_arg%1],eval($2-1))>
-  typename callof<LIST(adaptor_type, LOOP(T_arg%1,eval($2-1)), T_bound)>::result_type
+  typename internal::callof<LIST(adaptor_type, LOOP(T_arg%1,eval($2-1)), T_bound)>::result_type
   operator()(LOOP(T_arg%1 _A_arg%1,eval($2-1)))
     { return functor_.template operator()<LIST(LOOP([_P_(T_arg%1)],eval($2-1)), _P_(T_bound))>
        (LIST(LOOP(_A_arg%1,eval($2-1)), bound_)); 
     }
 ],[dnl
   template <LOOP([class T_arg%1],eval($2-1))>
-  typename callof<LIST(adaptor_type, LOOP(T_arg%1,eval($1-1)), T_bound,FOR($1,eval($2-1),[T_arg%1,]))>::result_type
+  typename internal::callof<LIST(adaptor_type, LOOP(T_arg%1,eval($1-1)), T_bound,FOR($1,eval($2-1),[T_arg%1,]))>::result_type
   operator()(LOOP(T_arg%1 _A_arg%1,eval($2-1)))
     { return functor_.template operator()<LIST(LOOP([_P_(T_arg%1)],eval($1-1)), _P_(T_bound),FOR($1,eval($2-1),[_P_(T_arg%1),]))>
       (LIST(LOOP(_A_arg%1,eval($1-1)), bound_,FOR($1,eval($2-1),[_A_arg%1,]))); 

@@ -1,3 +1,14 @@
+2003-04-06  Martin Schulze  <MHL.Schulze@t-online.de>
+
+	* sigc++/callof.h.m4, sigc++/adaptors/*, tests/test_callof.cc:
+	Move sigc::callof<> to sigc::functor::internal::callof<>.
+
+	* sigc++/functors/mem_fun.h.m4, tests/test_mem_fun.cc:
+	Add new types [bound_][const_]volatile_mem_functor, visit_each()
+	and mem_fun() overloads for volatile qualifier.
+	Add ctor overloads in bound_*mem_functor and mem_fun() overloads
+	that take reference instead of pointer.
+
 2003-03-26  Martin Schulze  <MHL.Schulze@t-online.de>
 
 	* Change "closure" to "slot" throughout sigc++2 (file names,

@@ -3,9 +3,9 @@ Naming issues:
 - Shall we move everything from namespace sigc::functor to namespace sigc?
   (Discussion already started on the list - 26.03.2003).
 
-- Move callof to namespace sigc::internal. Rename it to something sensible.
+- Release 1.9.7 after sorting out the above.
 
-- Release 1.9.7 after sorting this out.
+- Rename callof to something sensible.
 
 
 Configure checks and Makefile issues:

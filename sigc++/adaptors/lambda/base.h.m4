@@ -19,7 +19,7 @@ include(template.macros.m4)
 
 define([LAMBDA_DO],[dnl
   template <LOOP(class T_arg%1, $1)>
-  typename callof<LIST(T_type, LOOP(T_arg%1, $1))>::result_type
+  typename internal::callof<LIST(T_type, LOOP(T_arg%1, $1))>::result_type
   operator ()(LOOP(T_arg%1 _A_%1, $1)) const 
     { return value_.template operator()<LOOP(_P_(T_arg%1), $1)>
              (LOOP(_A_%1, $1)); 

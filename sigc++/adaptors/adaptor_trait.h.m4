@@ -43,13 +43,13 @@ dnl type of a functor when the argument types are known. Martin.
 ])
 define([ADAPTOR_DO],[dnl
 ifelse($1,0,[dnl
-dnl  typename callof_safe0<T_functor>::result_type // leads to compiler errors if T_functor has an overloaded operator()!
+dnl  typename internal::callof_safe0<T_functor>::result_type // leads to compiler errors if T_functor has an overloaded operator()!
 dnl  typename functor_trait<T_functor>::result_type
 dnl  operator()() const
 dnl    { return functor_(); }
 ],[dnl
   template <LOOP([class T_arg%1], $1)>
-  typename callof<LIST(T_functor, LOOP(T_arg%1, $1))>::result_type
+  typename internal::callof<LIST(T_functor, LOOP(T_arg%1, $1))>::result_type
   operator()(LOOP(T_arg%1 _A_arg%1, $1)) const
     { return functor_(LOOP(_A_arg%1, $1)); }
 ])dnl

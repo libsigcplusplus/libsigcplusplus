@@ -22,8 +22,8 @@ dnl Macros to make operators
 define([LAMBDA_OPERATOR_DO],[dnl
   template <LOOP(class T_arg%1, $3)>
   typename $1_calc_type<
-      typename callof<arg1_type, LOOP(T_arg%1, $3)>::result_type,
-      typename callof<arg2_type, LOOP(T_arg%1, $3)>::result_type
+      typename internal::callof<arg1_type, LOOP(T_arg%1, $3)>::result_type,
+      typename internal::callof<arg2_type, LOOP(T_arg%1, $3)>::result_type
     >::result_type
   operator ()(LOOP(T_arg%1 _A_%1, $3)) const
   { 
