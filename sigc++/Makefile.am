@@ -8,9 +8,7 @@ sigc_built_h = callof.h signal.h
 include $(top_srcdir)/sigc++/Makefile.am_fragment
 
 
-EXTRA_DIST = $(sigc_m4) \
-            trackable.h functor.h adaptor.h \
-            Makefile.am_fragment
+EXTRA_DIST = $(sigc_m4) $(sigc_built_h) Makefile.am_fragment
 
 # install the headers
 library_includedir = $(includedir)/sigc++-2.0/sigc++

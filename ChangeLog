@@ -1,3 +1,7 @@
+2003-01-22  Murray Cumming  <murrayc@usa.net>
+
+	* Applied Andreas Rottman's make dist fixes.
+
 2003-01-14  Murray Cumming  <murrayc@usa.net>
 
 	* Added whitespace to make the code more readable.

@@ -2,7 +2,7 @@ M4_DIR = $(top_srcdir)/sigc++
 
 built_sources = $(sigc_built_h) $(sigc_built_cc)
 
-BUILT_sources = $(built_sources)
+BUILT_SOURCES = $(built_sources)
 
 #Generate .h and .cc from .h.m4 and .cc.m4:
 %.h: %.h.m4 $(M4_DIR)/template.macros.m4

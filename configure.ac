@@ -101,6 +101,7 @@ fi
 # Generate output
 AC_OUTPUT([Makefile
     tests/Makefile
+    examples/Makefile
     sigc++/Makefile
     sigc++/functors/Makefile
     sigc++/adaptors/Makefile
