@@ -1,3 +1,8 @@
+2004-09-26  Martin Schulze <mschulze@cvs.gnome.org>
+
+	* sigc++/macros/object_slot.h.m4: Use correct bound_mem_functor
+	variants for const (volatile) methods (fixes #148744).
+
 2004-09-01  Martin Schulze <mschulze@cvs.gnome.org>
 
 	* docs/index.html: Correct link to lambda module.
