@@ -1,3 +1,7 @@
+2003-03-26  Martin Schulze  <MHL.Schulze@t-online.de>
+
+	* TODO: Rewrite to reflect recent changes as well as recent discussions.
+
 2003-03-24  Martin Schulze  <MHL.Schulze@t-online.de>
 
 	* sigc++/adaptors/bind_return.h.m4: Make the adaptor's data member
