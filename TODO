@@ -11,14 +11,14 @@ Naming issues:
 Configure checks and Makefile issues:
 
 - Most probably needed:
-  Configure check for typeof(). Only use typeof() if it's supported.
+  Only use typeof() if it's supported.
   This can be achieved via unsing macros CALLOF#() instead of callof<>
   that are defined to "result_type" if typeof() is not supported.
 
 - Find out whether this is a gcc bug and whether it is already reported:
 
   int& foo();
-  =>  typeof(foo()) == int instead of int& (gcc-3.2)
+  =>  typeof(foo()) == int instead of int& (g++ 3.2, 3.3)
 
   Maybe find a workaround for this for the return type deduction of the
   lambda operators. It really hurts there because a lambda library should
@@ -39,7 +39,8 @@ Configure checks and Makefile issues:
   single Makefile.am with the new build system), you have a problem when
   you do a build where $(srcdir) != $(builddir), since in the build-tree
   the necessary subdirectories are not created. So I have to find a
-  place where to create this directories, in case they do not exist. (Andy)
+  place where to create this directories, in case they do not exist. 
+  This is only an issue for clean CVS checkouts, however (Andy)
 
 
 sigc++-1.2 compatibility:
