@@ -1,5 +1,12 @@
 2004-07-15  Martin Schulze <mschulze@cvs.gnome.org>
 
+	* sigc++/adaptors/lambda/macros/operator.h.m4: Correct return type deduction
+	of lambda expressions in lambda_operator*::operator()(). Might be related to
+	bug #147313.
+	* sigc++/adaptors/lambda/macros/group.h.m4: Use m4 macro _P_().
+
+2004-07-15  Martin Schulze <mschulze@cvs.gnome.org>
+
 	* scripts/cxx.m4, sigc++config.h.in, configure.ac,
 	sigc++/adaptors/lambda/macros/operator.h.m4, tests/test_lambda.cc:
 	Add configure check SIGC_OPERATOR_OVERLOAD_AMBUGUITY for a SUN FORTE

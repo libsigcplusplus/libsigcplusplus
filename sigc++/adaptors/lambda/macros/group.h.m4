@@ -41,7 +41,7 @@ dnl Please someone get a gun!
     { return this->func_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<LOOP([
           typename value%1_type::template deduce_result_type<LOOP(T_arg%1,$2)>::type],$1)>(LOOP([
         this->value%1_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<LOOP([
-          typename type_trait<T_arg%1>::pass],$2)>(_L_)],$1)); }
+          _P_(T_arg%1)],$2)>(_L_)],$1)); }
 
   #ifndef SIGC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD
   template <LOOP(class T_arg%1, $2)>
@@ -67,7 +67,7 @@ FOR(1, $1,[
   struct deduce_result_type
     { typedef typename functor_type::deduce_result_type<LOOP([
           typename value%1_type::template deduce_result_type<LOOP([
-            typename type_trait<T_arg%1>::pass],$2)>::type],$1)
+            _P_(T_arg%1)],$2)>::type],$1)
         >::type type; };
 
   result_type
