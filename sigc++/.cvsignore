@@ -1,0 +1,3 @@
+Makefile Makefile.in
+.libs .deps
+callof.h signal.h

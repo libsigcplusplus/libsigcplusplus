@@ -1,0 +1,3 @@
+Makefile Makefile.in
+.libs .deps
+closure.h mem_fun.h ptr_fun.h

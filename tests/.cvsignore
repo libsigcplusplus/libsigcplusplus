@@ -1,0 +1,12 @@
+Makefile Makefile.in
+.libs .deps
+test_bind test_bind_return
+test_callof test_closure test_compose
+test_exception_catch
+test_functor_trait
+test_hide
+test_lambda
+test_mem_fun
+test_ptr_fun
+test_signal
+test_trackable

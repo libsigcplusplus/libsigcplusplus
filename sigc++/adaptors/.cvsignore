@@ -1,0 +1,3 @@
+Makefile Makefile.in
+.libs .deps
+adaptor_trait.h bind.h bind_return.h compose.h exception_catch.h hide.h

@@ -2,6 +2,8 @@ sigc_m4 = base.h.m4 select.h.m4 operator.h.m4 group.h.m4 lambda.cc.m4
 sigc_built_cc = lambda.cc
 sigc_built_h = base.h select.h operator.h group.h
 
+lambda.cc : $(sigc_built_h)
+
 include $(top_srcdir)/sigc++/Makefile.am_fragment
 
 EXTRA_DIST = $(sigc_m4) lambda.h
