@@ -22,7 +22,7 @@ dnl Initialize automake stuff
 AM_INIT_AUTOMAKE($PACKAGE, $VERSION)
 
 dnl Specify a configuration file:
-AC_CONFIG_HEADERS(config.h)
+AC_CONFIG_HEADER(sigc++config.h)
 
 dnl Macros to support windows platforms
 AC_CYGWIN

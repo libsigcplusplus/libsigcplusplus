@@ -1,3 +1,11 @@
+2004-03-21  Murray Cumming  <murrayc@murrayc.com>
+
+	* Rename config.h.in to sigc++config.h.in so that gtkmm does not 
+	include some other config.h at strange times - fixes a problem in
+	the gtkmm demos. This should really be in the sigc++ directory, but
+	that seems to add that as an include path, which causes the STL
+	headers to include sigc++/signal.h instead of some STL signal.h header.
+
 2004-03-20  Murray Cumming  <murrayc@murrayc.com>
 
 	* Makefile.am: Install the config.h platform-specific header.
