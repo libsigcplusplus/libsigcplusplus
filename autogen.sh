@@ -9,7 +9,7 @@ echo "Adding libtools."
 libtoolize --automake --copy
 
 echo "Building macros."
-aclocal -I scripts $ACLOCAL_FLAGS
+aclocal $ACLOCAL_FLAGS
 
 #echo "Building config header."
 #autoheader

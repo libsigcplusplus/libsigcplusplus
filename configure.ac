@@ -20,7 +20,8 @@ PACKAGE=libsigc++
 
 
 dnl I don't like to look at the automake cruft.
-AC_CONFIG_AUX_DIR(scripts)
+#This just complicates things. murrayc
+#AC_CONFIG_AUX_DIR(scripts)
 
 dnl C++ libraries should generally be static if the interface is subject
 dnl to a lot of change.
@@ -99,7 +100,6 @@ fi
 
 # Generate output
 AC_OUTPUT([Makefile
-    scripts/Makefile
     tests/Makefile
     sigc++/Makefile
     sigc++/functors/Makefile
