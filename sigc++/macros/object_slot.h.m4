@@ -32,8 +32,8 @@ define([SLOT_MEM_FUN],[dnl
 template <LIST(class T_return, LOOP(class T_arg%1, $1), class T_obj1, class T_obj2)>
 inline Slot$1<LIST(T_return, LOOP(T_arg%1, $1))>
 slot($3 T_obj1& _A_obj, T_return (T_obj2::*_A_func)(LOOP(T_arg%1,$1)) $4)
-{ return ::sigc::bound_mem_functor$1<LIST(T_return, T_obj2, LOOP(T_arg%1, $1))>
-             (static_cast<$3 T_obj1&>(static_cast<$3 Object&>(_A_obj)), _A_func); }
+{ $3 Object& test_whether_A_obj_derives_from_trackable = dynamic_cast<$3 Object&>(_A_obj);
+  return ::sigc::bound_mem_functor$1<LIST(T_return, T_obj2, LOOP(T_arg%1, $1))>(_A_obj, _A_func); }
 
 ])
 

@@ -1,5 +1,11 @@
 2004-04-26  Martin Schulze  <mschulze@cvs.gnome.org>
 
+	* sigc++/macros/object_slot.h.m4: Modified test for SigC::Object
+	inheritance so that it also works if SigC::Object is virtual base.
+	(Fixes bug 141094 reported by Jonathan Brandmeyer)
+
+2004-04-26  Martin Schulze  <mschulze@cvs.gnome.org>
+
 	* scripts/cxx.m4: Updated the configure check. It would probably
 	have succeeded on the Apple.
 
