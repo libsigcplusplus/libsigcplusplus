@@ -17,6 +17,13 @@ This version of libsigc++ needs GNU g++ 3.2 or higher to compile.
 
 *** ChangeLog summary:
 
+2.0.8:
+
+* Maybe avoid (incorrect) warning with g++ 3.3.5.
+  (Murray Cumming)
+* Fix namespace ambiguity when using multiple 
+  major versions of libsigc++. (Liza Klerck)
+
 2.0.7:
 
 * Now builds with the following compilers, in addition to 

@@ -1,3 +1,5 @@
+2.0.8:
+
 2005-01-30  Murray Cumming  <murrayc@murrayc.com>
 
 	* sigc++/type_traits.h: is_base_and_derived: Added 
