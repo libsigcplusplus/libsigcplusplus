@@ -1,3 +1,10 @@
+1.9.10:
+
+2003-10-23  Martin Schulze  <teebaum@cvs.gnome.org>
+
+	* configure.ac: Bump version number to 1.9.10.
+	* NEWS: Add ChangeLog summary for version 1.9.10.
+
 2003-10-23  Martin Schulze  <teebaum@cvs.gnome.org>
 
 	* sigc++/functors/{functor_trait,slot}.h.m4:

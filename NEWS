@@ -17,6 +17,13 @@ This version of libsigc++ needs GNU g++ 3.2 or higher to compile.
 
 *** ChangeLog summary:
 
+1.9.10:
+
+* Fix compiler issues with gcc-3.3.2 (patch from Jeff Franks).
+* Remove compiler check for the gcc extension typeof().
+* Simplify bind_functor templates.
+* Move definition of struct nil into functor_trait.h.
+
 1.9.9:
 
 * Add a constructor to sigc::connection that takes a slot_base&
@@ -27,7 +34,7 @@ This version of libsigc++ needs GNU g++ 3.2 or higher to compile.
 
 * Add compatibility module that defines namespace SigC.
   namespace SigC should be API compatible to libsigc++-1.2.
-  Currenctly only the core parts of the library are supported.
+  Currently only the core parts of the library are supported.
   Adaptors are still to follow.
 * Fix connection::operator=(). Include connection.h in sigc++.h.
 * Get rid of namespace functor.
