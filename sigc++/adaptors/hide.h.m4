@@ -29,8 +29,13 @@ ifelse($1,0,[dnl
 ])
 define([HIDE_OPERATOR],[dnl
 ifelse($2,0,,[dnl
-ifelse($2,1,,[dnl
-ifelse($1,0,[dnl
+ifelse($2,1,[dnl
+  template <class T_arg1>
+  typename deduce_result_type<T_arg1>::type
+  operator()(T_arg1 _A_a1)
+    { return functor_(); }
+
+],$1,0,[dnl
   template <LOOP([class T_arg%1], $2)>
   typename deduce_result_type<LOOP(T_arg%1, $2)>::type
   operator()(LOOP(T_arg%1 _A_a%1, $2))
@@ -44,7 +49,7 @@ ifelse($1,0,[dnl
     { return functor_.template operator() <LIST(FOR(1,eval($1-1),[_P_(T_arg%1),]),FOR(eval($1+1), $2,[_P_(T_arg%1),]))>
         (LIST(FOR(1,eval($1-1),[_A_a%1,]),FOR(eval($1+1), $2,[_A_a%1,]))); }
 
-])])])dnl
+])])dnl
 ])
 define([HIDE_FUNCTOR],[dnl
 template <class T_functor>
@@ -54,27 +59,6 @@ DEDUCE_RESULT_TYPE($1,CALL_SIZE)dnl
   typedef typename adapts<T_functor>::result_type  result_type;
   typedef typename adapts<T_functor>::adaptor_type adaptor_type;
 
-ifelse($1,0,[dnl
-  template <class T_arg1>
-#ifdef SIGC_CXX_TYPEOF
-  typename internal::callof_ignore_arg<T_functor,T_arg1>::result_type
-#else
-  result_type
-#endif
-  operator()(T_arg1 _A_a1)
-    { return functor_(); }
-
-],$1,1,[dnl
-  template <class T_arg1>
-#ifdef SIGC_CXX_TYPEOF
-  typename internal::callof_ignore_arg<T_functor,T_arg1>::result_type
-#else
-  result_type
-#endif
-  operator()(T_arg1 _A_a1)
-    { return functor_(); }
-
-])dnl
 FOR($1,CALL_SIZE,[[HIDE_OPERATOR($1,%1)]])dnl
   hide_functor()
     {}

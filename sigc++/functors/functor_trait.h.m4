@@ -44,22 +44,6 @@ struct functor_trait<T_return (T_obj::*)(LOOP(T_arg%1, $1)) const, false>
 };
 
 ])
-define([DEDUCE_RESULT_TYPE_ADAPTOR],[dnl
-template <LIST(class T_functor, LOOP(class T_arg%1, $1))>
-struct deduce_result_type<LIST(T_functor, LOOP(T_arg%1,$1), LOOP(void,eval($2-$1)), true)>
-  { typedef typename T_functor::deduce_result_type<LOOP(T_arg%1,$1)>::type type; };
-
-])
-define([DEDUCE_RESULT_TYPE_TYPEOF],[dnl
-template <LIST(class T_functor, LOOP(class T_arg%1, $1))>
-struct deduce_result_type<LIST(T_functor, LOOP(T_arg%1,$1), LOOP(void,eval($2-$1)), false)>
-{
-  typedef typeof(type_trait<T_functor>::instance().
-                   T_functor::operator()(LOOP([
-                      type_trait<T_arg%1>::instance()], $1))) type;
-};
-
-])
 
 divert(0)dnl
 /*
@@ -97,11 +81,6 @@ namespace functor {
  */
 struct functor_base {};
 
-/** A hint to the compiler.
- * All multi-type functors which define "struct deduce_result_type" should publically inherit from this hint.
- */
-struct adaptor_base : public functor_base {};
-
 
 template <class T_functor, bool I_derives_functor_base=is_base_and_derived<functor_base,T_functor>::value>
 struct functor_trait
@@ -136,18 +115,6 @@ struct functor_trait<T_functor,false>          \
 // detect the return type and the functor version of non-functor types.
 FOR(0,CALL_SIZE,[[FUNCTOR_PTR_FUN(%1)]])
 FOR(0,CALL_SIZE,[[FUNCTOR_MEM_FUN(%1)]])
-
-template <class T_functor,
-          LOOP(class T_arg%1=void, CALL_SIZE),
-          bool I_derives_adaptor_base=is_base_and_derived<adaptor_base,T_functor>::value>
-struct deduce_result_type
-  { typedef typename functor_trait<T_functor>::result_type type; };
-
-FOR(0,CALL_SIZE,[[DEDUCE_RESULT_TYPE_ADAPTOR(%1,CALL_SIZE)]])
-
-#ifdef SIGC_CXX_TYPEOF
-FOR(0,CALL_SIZE,[[DEDUCE_RESULT_TYPE_TYPEOF(%1,CALL_SIZE)]])
-#endif
 
 } /* namespace functor */
 } /* namespace sigc */

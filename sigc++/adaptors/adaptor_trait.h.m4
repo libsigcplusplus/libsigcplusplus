@@ -97,10 +97,10 @@ divert(0)dnl
 */
 __FIREWALL__
 #include <sigc++/visit_each.h>
-#include <sigc++/callof.h>
 #include <sigc++/functors/functor_trait.h>
 #include <sigc++/functors/ptr_fun.h>
 #include <sigc++/functors/mem_fun.h>
+#include <sigc++/adaptors/deduce_result_type.h>
 
 namespace sigc { 
 namespace functor {

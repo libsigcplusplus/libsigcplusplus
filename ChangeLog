@@ -1,3 +1,20 @@
+2003-08-27  Martin Schulze  <teebaum@cvs.gnome.org>
+
+	* sigc++/adaptors/hide.h.m4: Remove usage of callof_ignore_arg<>.
+	* sigc++/callof.h.m4, sigc++/adaptors/deduce_result_type.h.m4,
+	sigc++/functors/functor_trait.h.m4:
+	Remove the first and move deduce_result_type templates from
+	functor_trait.h.m4 into new file deduce_result_type.h.m4.
+	* sigc++/Makefile.am, sigc++/sigc++.h, sigc++/adaptors/adaptor_trait.h.m4:
+	Build and include sigc++/adaptors/deduce_result_type.h instead of callof.h.
+	* sigc++/functors/slot.h.m4: Document struct nil.
+
+2003-08-24  Martin Schulze  <teebaum@cvs.gnome.org>
+
+	* sigc++/functors/functor_trait.h.m4: Simplify usage of convenience
+	macro SIGC_FUNCTORS_HAVE_RESULT_TYPE:
+	namespace sigc{ namespace functor{ SIGC_FUNCTORS_HAVE_RESULT_TYPE }}
+
 2003-08-24  Martin Schulze  <teebaum@cvs.gnome.org>
 
 	* sigc++/functors/functor_trait.h,m4, sigc++/adaptors[/lambda]/*.h.m4:

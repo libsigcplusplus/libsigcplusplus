@@ -21,7 +21,6 @@
 #define SIGCXX_SIGCXX_H
 
 #include <sigc++/signal.h>
-#include <sigc++/callof.h>
 #include <sigc++/trackable.h>
 #include <sigc++/adaptors/adaptors.h>
 #include <sigc++/functors/functors.h>

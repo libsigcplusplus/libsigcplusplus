@@ -1,7 +1,7 @@
 # Base (./)
-base_m4 = template.macros.m4 callof.h.m4 signal.h.m4
+base_m4 = template.macros.m4 signal.h.m4
 base_built_cc =
-base_built_h = callof.h signal.h
+base_built_h = signal.h
 
 signal.cc : signal.h functors/slot.h
 
@@ -13,11 +13,11 @@ functors_built_h = functor_trait.h slot.h ptr_fun.h mem_fun.h
 functors/slot.cc : functors/slot.h
 
 # Adaptors (adaptors/)
-adaptors_m4 = adaptor_trait.h.m4 compose.h.m4 bind_return.h.m4 \
-	      exception_catch.h.m4 bind.h.m4 hide.h.m4
+adaptors_m4 = deduce_result_type.h.m4 adaptor_trait.h.m4 bind.h.m4 bind_return.h.m4 \
+	      compose.h.m4 exception_catch.h.m4 hide.h.m4
 adaptors_built_cc =
-adaptors_built_h = adaptor_trait.h compose.h bind_return.h exception_catch.h \
-                   bind.h hide.h
+adaptors_built_h = deduce_result_type.h adaptor_trait.h bind.h bind_return.h \
+                   compose.h exception_catch.h hide.h
 
 # Lambda (adaptors/lambda)
 lambda_m4 = base.h.m4 select.h.m4 operator.h.m4 group.h.m4 lambda.cc.m4
