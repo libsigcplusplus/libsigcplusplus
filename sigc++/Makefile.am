@@ -76,7 +76,7 @@ M4_DIR = $(top_srcdir)/sigc++
 	        $(M4) $(M4_INCLUDES) $(DEFINES) -I $(M4_DIR) $<  > $@
 
 # This would be a necessary target for VPATH builds from a clean CVS checkout,
-# but I'm not sure where to invoke it...
+# but I'm not sure where to invoke it... [rotty]
 build-subdirs-stamp:
 	for dir in $(build_subdirs); do \
 	  test -d $$dir || mkdir $$dir; \
