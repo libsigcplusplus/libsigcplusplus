@@ -260,10 +260,10 @@
 				RelativePath="..\sigc++\adaptors\lambda\base.h">
 			</File>
 			<File
-				RelativePath="..\sigc++\bind.h">
+				RelativePath="..\sigc++\adaptors\bind.h">
 			</File>
 			<File
-				RelativePath="..\sigc++\adaptors\bind.h">
+				RelativePath="..\sigc++\bind.h">
 			</File>
 			<File
 				RelativePath="..\sigc++\adaptors\bind_return.h">
@@ -299,10 +299,10 @@
 				RelativePath="..\sigc++\adaptors\lambda\group.h">
 			</File>
 			<File
-				RelativePath="..\sigc++\hide.h">
+				RelativePath="..\sigc++\adaptors\hide.h">
 			</File>
 			<File
-				RelativePath="..\sigc++\adaptors\hide.h">
+				RelativePath="..\sigc++\hide.h">
 			</File>
 			<File
 				RelativePath="..\sigc++\adaptors\lambda\lambda.h">
@@ -329,16 +329,19 @@
 				RelativePath="..\sigc++\reference_wrapper.h">
 			</File>
 			<File
+				RelativePath=".\resource.h">
+			</File>
+			<File
 				RelativePath="..\sigc++\retype.h">
 			</File>
 			<File
 				RelativePath="..\sigc++\adaptors\retype.h">
 			</File>
 			<File
-				RelativePath="..\sigc++\retype_return.h">
+				RelativePath="..\sigc++\adaptors\retype_return.h">
 			</File>
 			<File
-				RelativePath="..\sigc++\adaptors\retype_return.h">
+				RelativePath="..\sigc++\retype_return.h">
 			</File>
 			<File
 				RelativePath="..\sigc++\adaptors\lambda\select.h">
@@ -375,6 +378,9 @@
 			Name="Resource Files"
 			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx"
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}">
+			<File
+				RelativePath=".\sigc-2.0.rc">
+			</File>
 		</Filter>
 	</Files>
 	<Globals>

@@ -14,6 +14,10 @@ FP_MINOR_VERSION=0
 FP_MICRO_VERSION=6
 FP_VERSION=$FP_MAJOR_VERSION.$FP_MINOR_VERSION.$FP_MICRO_VERSION
 
+AC_SUBST(FP_MAJOR_VERSION)
+AC_SUBST(FP_MINOR_VERSION)
+AC_SUBST(FP_MICRO_VERSION)
+
 dnl For automake.
 VERSION=$FP_VERSION
 PACKAGE=libsigc++
@@ -92,6 +96,7 @@ AC_OUTPUT([
   tests/Makefile
   examples/Makefile
   MSVC_Net2003/Makefile
+  MSVC_Net2003/sigc-2.0.rc
   libsigc++-2.0.spec
 
   docs/Makefile

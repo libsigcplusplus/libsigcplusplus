@@ -1,7 +1,9 @@
 Makefile
 Makefile.in 
 Debug 
-Release 
+Release
+sigc++config.h
+sigc-2.0.rc
 *.ncb 
 *.suo
 

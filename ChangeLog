@@ -1,3 +1,10 @@
+2004-12-11  Cedric Gustin <cedric.gustin@swing.be>
+
+	* configure.ac : parse version tags at configure time (for
+	sigc-2.0.rc).
+	* MSVC_Net2003/sigc-2.0.rc.in : New resource file.
+	* MSVC_Net2003/Makefile.am: include sigc-2.0.rc in distribution.
+
 2004-12-08  Cedric Gustin <cedric.gustin@swing.be>
 
 	* MSVC_Net2003/Makefile.am: get sigc++config.h from $(top_builddir)
