@@ -2,7 +2,7 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="7.10"
-	Name="test_retype"
+	Name="test_disconnect_during_emit"
 	ProjectGUID="{5CCF0167-D23D-45B9-BCDA-F0B912470126}"
 	Keyword="Win32Proj">
 	<Platforms>
@@ -33,7 +33,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="$(OutDir)/test_retype.exe"
+				OutputFile="$(OutDir)/test_disconnect_during_emit.exe"
 				LinkIncremental="2"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="$(OutDir)/test_disconnect.pdb"
@@ -80,7 +80,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="$(OutDir)/test_retype.exe"
+				OutputFile="$(OutDir)/test_disconnect_during_emit.exe"
 				LinkIncremental="1"
 				GenerateDebugInformation="TRUE"
 				SubSystem="1"
@@ -120,7 +120,7 @@
 				RelativePath="..\..\blank.cpp">
 			</File>
 			<File
-				RelativePath="..\..\..\tests\test_retype.cc">
+				RelativePath="..\..\..\tests\test_disconnect_during_emit.cc">
 			</File>
 		</Filter>
 		<Filter

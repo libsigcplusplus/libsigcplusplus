@@ -89,8 +89,18 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_trackable", "tests\tes
 		{2C30C2D4-314A-400F-A142-E9EEEA800631} = {2C30C2D4-314A-400F-A142-E9EEEA800631}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sigc", "libsigc++2_msvcNet2003.vcproj", "{2C30C2D4-314A-400F-A142-E9EEEA800631}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sigc-2.0", "libsigc++2_msvcNet2003.vcproj", "{2C30C2D4-314A-400F-A142-E9EEEA800631}"
 	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_retype", "tests\test_retype\test_retype.vcproj", "{D5835BCA-D0F1-45FF-81B6-147B9FC75123}"
+	ProjectSection(ProjectDependencies) = postProject
+		{2C30C2D4-314A-400F-A142-E9EEEA800631} = {2C30C2D4-314A-400F-A142-E9EEEA800631}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_disconnect_during_emit", "tests\test_disconnect_during_emit\test_disconnect_during_emit.vcproj", "{5CCF0167-D23D-45B9-BCDA-F0B912470126}"
+	ProjectSection(ProjectDependencies) = postProject
+		{2C30C2D4-314A-400F-A142-E9EEEA800631} = {2C30C2D4-314A-400F-A142-E9EEEA800631}
 	EndProjectSection
 EndProject
 Global
@@ -175,6 +185,14 @@ Global
 		{2C30C2D4-314A-400F-A142-E9EEEA800631}.Debug.Build.0 = Debug|Win32
 		{2C30C2D4-314A-400F-A142-E9EEEA800631}.Release.ActiveCfg = Release|Win32
 		{2C30C2D4-314A-400F-A142-E9EEEA800631}.Release.Build.0 = Release|Win32
+		{D5835BCA-D0F1-45FF-81B6-147B9FC75123}.Debug.ActiveCfg = Debug|Win32
+		{D5835BCA-D0F1-45FF-81B6-147B9FC75123}.Debug.Build.0 = Debug|Win32
+		{D5835BCA-D0F1-45FF-81B6-147B9FC75123}.Release.ActiveCfg = Release|Win32
+		{D5835BCA-D0F1-45FF-81B6-147B9FC75123}.Release.Build.0 = Release|Win32
+		{5CCF0167-D23D-45B9-BCDA-F0B912470126}.Debug.ActiveCfg = Debug|Win32
+		{5CCF0167-D23D-45B9-BCDA-F0B912470126}.Debug.Build.0 = Debug|Win32
+		{5CCF0167-D23D-45B9-BCDA-F0B912470126}.Release.ActiveCfg = Release|Win32
+		{5CCF0167-D23D-45B9-BCDA-F0B912470126}.Release.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection

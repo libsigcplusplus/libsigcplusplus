@@ -1,3 +1,15 @@
+2005-01-24  Cedric Gustin <cedric.gustin@swing.be>
+
+	* sigc++config.h.in : Moved the SIGC_USING_STD macro definition
+	out of the SIGC_CONFIGURE section. We also need it for MSVC.
+	* MSVC_Net2003/.cvsignore : Added .def and .aps files
+	* MSVC_Net2003/Makefile.am: Rewrote rule for local copy of
+	sigc++config.h (required for 'make distcheck').
+	* MSVC_Net2003/libsigc++2_msvcNet2003.sln: Added test_retype and
+	test_disconnect_during_emit tests.
+	* MSVC_Net2003/tests/test_disconnect_during_emit/*,
+	MSVC_Net2003/tests/test_retype/*: Initial commit.
+
 2005-01-21  Murray Cumming  <murrayc@murrayc.com>
 
 	* tests/: Disabled the test_accumulator, test_bind, and test_compose 
