@@ -1,5 +1,13 @@
 2003-03-09  Martin Schulze  <MHL.Schulze@t-online.de>
 
+	* sigc++/connection.{cc,h}, sigc++/Makefile.am:
+	- New files that add a connection class. Objects of this
+	  class are constructed from closure list iterators and can
+	  be used to disconnect the refered closure. As opposed to
+	  iterators they stay valid beyond the lifetime of the closure.
+
+2003-03-09  Martin Schulze  <MHL.Schulze@t-online.de>
+
 	* sigc++/functors/closure.{cc,h.m4}, sigc++/signal.cc:
 	- Rename closure_{base,rep}::[set_]dependency_ -> [set_]parent_.
 	- Make closure_rep inherit trackable. This allows for

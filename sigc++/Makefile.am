@@ -48,14 +48,14 @@ EXTRA_DIST = $(sigc_m4) $(sigc_built_h) $(sigc_built_cc)
 # install the headers
 library_includedir = $(includedir)/sigc++-2.0/sigc++
 nobase_library_include_HEADERS = $(sigc_built_h) \
-  trackable.h type_traits.h visit_each.h \
+  trackable.h connection.h type_traits.h visit_each.h \
   functors/functor_trait.h functors/functors.h \
   adaptors/adaptors.h \
   adaptors/lambda/lambda.h
 
 # build the library
 lib_LTLIBRARIES = libsigc-2.0.la
-libsigc_2_0_la_SOURCES = signal.cc trackable.cc \
+libsigc_2_0_la_SOURCES = signal.cc trackable.cc connection.cc \
                          functors/closure.cc \
 			 adaptors/lambda/lambda.cc
 
