@@ -43,6 +43,7 @@ divert(0)
 __FIREWALL__
 
 #include <sigc++/slot.h>
+#include <sigc++/functors/mem_fun.h>
 
 #ifndef LIBSIGC_DISABLE_DEPRECATED
 

@@ -1,5 +1,10 @@
 2003-11-01  Martin Schulze  <teebaum@cvs.gnome.org>
 
+	* sigc++/[class,method,object]_slot.h.m4: Include
+	sigc++/functors/mem_fun.h (Reported by Ron Steinke).
+
+2003-11-01  Martin Schulze  <teebaum@cvs.gnome.org>
+
 	* sigc++/adaptors/lambda/operator.h.m4: Add negation
 	operator I have completely overlooked until now.
 	* sigc++/tests/test_lambda.cc: Test negation operator.

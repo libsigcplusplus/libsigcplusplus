@@ -45,6 +45,7 @@ __FIREWALL__
 
 #include <sigc++/slot.h>
 #include <sigc++/object.h>
+#include <sigc++/functors/mem_fun.h>
 
 #ifndef LIBSIGC_DISABLE_DEPRECATED
 
