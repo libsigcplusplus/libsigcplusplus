@@ -119,7 +119,7 @@ FOR(0,CALL_SIZE,[[SLOT_N(%1)]])
  *
  * This ugly hack avoids the error:
  */
-#define slot(...) make_slot(__VA_ARGS__)
+// #define slot(...) make_slot(__VA_ARGS__)
 #endif
 
 

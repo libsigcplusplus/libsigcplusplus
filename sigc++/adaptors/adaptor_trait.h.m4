@@ -102,7 +102,13 @@ __FIREWALL__
 #include <sigc++/functors/mem_fun.h>
 #include <sigc++/adaptors/deduce_result_type.h>
 
-namespace sigc { 
+namespace sigc {
+
+#ifdef MSVC
+#define LIBSIGC_TEMPLATE_PREFIX
+#else
+#define LIBSIGC_TEMPLATE_PREFIX template
+#endif
 
 template <class T_functor> struct adapts;
 

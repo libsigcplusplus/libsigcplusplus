@@ -17,23 +17,23 @@ struct set
   typedef int result_type;
   int operator()(int i) 
     {std::cout << "set(int "<<i<<")"<<std::endl; return i*i;}
-  float operator()(float i) 
-    {std::cout << "set(float "<<i<<")"<<std::endl; return i*5;}
+  double operator()(double i) 
+    {std::cout << "set(double "<<i<<")"<<std::endl; return i*5;}
 #else
   // choose a type that can hold all return values
-  typedef float result_type;
-  float operator()(int i) 
+  typedef double result_type;
+  double operator()(int i) 
     {std::cout << "set(int "<<i<<")"<<std::endl; return i*i;}
-  float operator()(float i) 
-    {std::cout << "set(float "<<i<<")"<<std::endl; return i*5;}
+  double operator()(double i) 
+    {std::cout << "set(double "<<i<<")"<<std::endl; return i*5;}
 #endif
 };
 
 struct set_void
 {
   typedef void result_type;
-  void operator()(float i)
-    { std::cout << "set_void(float "<<i<<")"<<std::endl; }
+  void operator()(double i)
+    { std::cout << "set_void(double "<<i<<")"<<std::endl; }
 };
 
 struct get
@@ -43,17 +43,17 @@ struct get
     { std::cout << "get()"<<std::endl; return true; }
   int operator()(int i) 
     { std::cout << "get("<<i<<")"<<std::endl; return i*2; }
-  float operator()(int i,int j) 
-    { std::cout << "get("<<i<<","<<j<<")"<<std::endl; return float(i)/float(j); }
+  double operator()(int i,int j) 
+    { std::cout << "get("<<i<<","<<j<<")"<<std::endl; return double(i)/double(j); }
 #else
   // choose a type that can hold all return values
-  typedef float result_type;
-  float operator()()
+  typedef double result_type;
+  double operator()()
     { std::cout << "get()"<<std::endl; return true; }
-  float operator()(int i) 
+  double operator()(int i) 
     { std::cout << "get("<<i<<")"<<std::endl; return i*2; }
-  float operator()(int i,int j) 
-    { std::cout << "get("<<i<<","<<j<<")"<<std::endl; return float(i)/float(j); }
+  double operator()(int i,int j) 
+    { std::cout << "get("<<i<<","<<j<<")"<<std::endl; return double(i)/double(j); }
 #endif
 };
 

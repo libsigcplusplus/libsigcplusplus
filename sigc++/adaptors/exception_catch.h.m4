@@ -25,7 +25,7 @@ define([EXCEPTION_CATCH_OPERATOR],[dnl
     { 
       try
         {
-          return functor_.template operator() <LOOP(_P_(T_arg%1), $1)>
+          return functor_.LIBSIGC_TEMPLATE_PREFIX operator() <LOOP(_P_(T_arg%1), $1)>
             (LOOP(_A_a%1, $1));
         } 
       catch (...)

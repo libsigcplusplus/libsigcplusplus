@@ -39,14 +39,14 @@ ifelse($2,1,[dnl
   template <LOOP([class T_arg%1], $2)>
   typename deduce_result_type<LOOP(T_arg%1, $2)>::type
   operator()(LOOP(T_arg%1 _A_a%1, $2))
-    { return functor_.template operator() <LIST(FOR(1,eval($2-1),[_P_(T_arg%1),]))>
+    { return functor_.LIBSIGC_TEMPLATE_PREFIX operator() <LIST(FOR(1,eval($2-1),[_P_(T_arg%1),]))>
         (LIST(FOR(1,eval($2-1),[_A_a%1,]))); }
 
 ],[dnl
   template <LOOP([class T_arg%1], $2)>
   typename deduce_result_type<LOOP(T_arg%1, $2)>::type
   operator()(LOOP(T_arg%1 _A_a%1, $2))
-    { return functor_.template operator() <LIST(FOR(1,eval($1-1),[_P_(T_arg%1),]),FOR(eval($1+1), $2,[_P_(T_arg%1),]))>
+    { return functor_.LIBSIGC_TEMPLATE_PREFIX operator() <LIST(FOR(1,eval($1-1),[_P_(T_arg%1),]),FOR(eval($1+1), $2,[_P_(T_arg%1),]))>
         (LIST(FOR(1,eval($1-1),[_A_a%1,]),FOR(eval($1+1), $2,[_A_a%1,]))); }
 
 ])])dnl
@@ -94,7 +94,7 @@ __FIREWALL__
 namespace sigc { 
 
 template <int I_location, class T_functor>
-class hide_functor;
+struct hide_functor;
 
 FOR(0,CALL_SIZE,[[HIDE_FUNCTOR(%1)]])dnl
 

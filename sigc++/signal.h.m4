@@ -342,9 +342,23 @@ class Signal$1
   : public ::sigc::signal$1<LIST(T_return, LOOP(T_arg%1, $1), T_accumulator)>
 {
 public:
+  typedef ::sigc::signal$1<LIST(T_return, LOOP(T_arg%1, $1), T_accumulator)> parent_type;
+  typedef typename parent_type::result_type result_type;
+  typedef typename parent_type::slot_type slot_type;
+
   Signal$1() {}
   Signal$1(const Signal$1& src)
     : ::sigc::signal$1<LIST(T_return, LOOP(T_arg%1, $1), T_accumulator)>(src) {}
+
+  /** Creates a functor that calls emit() on this signal.
+   * @code
+   * sigc::mem_fun(mysignal, &sigc::signal$1::emit)
+   * @endcode
+   * yields the same result.
+   * @return A functor that calls emit() on this signal.
+   */
+  slot_type slot() const
+    { return ::sigc::bound_const_mem_functor$1<LIST(LOOP(typename ::sigc::type_trait<T_arg%1>::take, $1), result_type, parent_type)>(this, &parent_type::emit); }
 };
 
 ])

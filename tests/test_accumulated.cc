@@ -23,8 +23,8 @@ struct arithmetic_mean_accumulator
     }
 };
 
-int foo(int i)   { std::cout << "foo: " << 3*i+1 << std::endl; return 3*i+1;}
-int bar(float i) { std::cout << "bar: " << 5*(int)i-3 << std::endl; return 5*(int)i-3;}
+int foo(int i)    { std::cout << "foo: " << 3*i+1 << std::endl; return 3*i+1;}
+int bar(double i) { std::cout << "bar: " << 5*(int)i-3 << std::endl; return 5*(int)i-3;}
 
 struct A : public sigc::trackable 
 {

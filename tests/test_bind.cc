@@ -6,6 +6,7 @@
 #include <sigc++/adaptors/bind.h>
 #include <sigc++/functors/slot.h>
 #include <iostream>
+#include <string>
 
 struct foo : public sigc::functor_base
 {
@@ -99,6 +100,4 @@ int main()
     std::cout << (std::string&)guest_book << std::endl;
   }    // auto-disconnect
   sl(); // :-)
-
-  const bool b1 = sigc::is_base_and_derived<sigc::trackable, void (*)(std::string&)>::value;
 }

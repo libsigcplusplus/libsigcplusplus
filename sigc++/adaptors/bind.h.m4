@@ -36,7 +36,7 @@ dnl
   template <LOOP([class T_arg%1],eval($2-1))>
   typename deduce_result_type<LOOP(T_arg%1,eval($2-1))>::type
   operator()(LOOP(T_arg%1 _A_arg%1,eval($2-1)))
-    { return functor_.template operator()<LIST(LOOP([_P_(T_arg%1)],eval($2-1)), _P_(T_bound))>
+    { return functor_.LIBSIGC_TEMPLATE_PREFIX operator()<LIST(LOOP([_P_(T_arg%1)],eval($2-1)), _P_(T_bound))>
         (LIST(LOOP(_A_arg%1,eval($2-1)), bound_)); 
     }
 
@@ -44,7 +44,7 @@ dnl
   template <LOOP([class T_arg%1],eval($2-1))>
   typename deduce_result_type<LOOP(T_arg%1,eval($2-1))>::type
   operator()(LOOP(T_arg%1 _A_arg%1,eval($2-1)))
-    { return functor_.template operator()<LIST(LOOP([_P_(T_arg%1)],eval($1-1)), _P_(T_bound),FOR($1,eval($2-1),[_P_(T_arg%1),]))>
+    { return functor_.LIBSIGC_TEMPLATE_PREFIX operator()<LIST(LOOP([_P_(T_arg%1)],eval($1-1)), _P_(T_bound),FOR($1,eval($2-1),[_P_(T_arg%1),]))>
         (LIST(LOOP(_A_arg%1,eval($1-1)), bound_,FOR($1,eval($2-1),[_A_arg%1,]))); 
     }
 
@@ -80,7 +80,7 @@ FOR($1,CALL_SIZE,[[BIND_OPERATOR($1,%1)]])dnl
 template <class T_bound, class T_functor>
 typename bind_functor<$1, T_bound, T_functor>::result_type
 bind_functor<$1, T_bound, T_functor>::operator()()
-  { return functor_.template operator()<_P_(T_bound)> (bound_); }
+  { return functor_.LIBSIGC_TEMPLATE_PREFIX operator()<_P_(T_bound)> (bound_); }
 
 ])
 
@@ -141,20 +141,20 @@ inline bind_functor<I_location, typename unwrap_reference<T_bound1>::type,
 bind(const T_functor& _A_functor, T_bound1 _A_b1, T_bound2 _A_b2)
 { 
   return bind_functor<I_location, typename unwrap_reference<T_bound1>::type,
-         bind_functor<(I_location?I_location+1:0), typename unwrap_reference<T_bound2>::type, T_functor> >
-           (bind<(I_location?I_location+1:0)>(_A_functor, _A_b2), _A_b1); 
+         bind_functor<I_location?I_location+1:0, typename unwrap_reference<T_bound2>::type, T_functor> >
+           (bind<I_location?I_location+1:0>(_A_functor, _A_b2), _A_b1);
 }
 
 template <int I_location, class T_bound1, class T_bound2, class T_bound3, class T_functor>
 inline bind_functor<I_location, typename unwrap_reference<T_bound1>::type,
-       bind_functor<(I_location?I_location+1:0), typename unwrap_reference<T_bound2>::type,
-       bind_functor<(I_location?I_location+2:0), typename unwrap_reference<T_bound3>::type, T_functor> > >
+       bind_functor<I_location?I_location+1:0, typename unwrap_reference<T_bound2>::type,
+       bind_functor<I_location?I_location+2:0, typename unwrap_reference<T_bound3>::type, T_functor> > >
 bind(const T_functor& _A_functor, T_bound1 _A_b1, T_bound2 _A_b2,T_bound3 _A_b3)
 { 
   return bind_functor<I_location, typename unwrap_reference<T_bound1>::type,
-         bind_functor<(I_location?I_location+1:0), typename unwrap_reference<T_bound2>::type,
-         bind_functor<(I_location?I_location+2:0), typename unwrap_reference<T_bound3>::type, T_functor> > >
-           (bind<(I_location?I_location+1:0)>(_A_functor, _A_b2, _A_b3),_A_b1); 
+         bind_functor<I_location?I_location+1:0, typename unwrap_reference<T_bound2>::type,
+         bind_functor<I_location?I_location+2:0, typename unwrap_reference<T_bound3>::type, T_functor> > >
+           (bind<I_location?I_location+1:0>(_A_functor, _A_b2, _A_b3),_A_b1);
 }
 
 } /* namespace sigc */

@@ -1,3 +1,16 @@
+2003-10-30  Martin Schulze  <teebaum@cvs.gnome.org>
+
+	* sigc++/signal.h.m4: Add SigC::Signal#<>::slot().
+	* sigc++/slot.h.m4: Comment out make_slot() work-around.
+	* sigc++/adaptors/bind.h.m4: Remove unnecessary brackets
+	in template argument lists. They are confusing MSVC.
+	* sigc++/adaptors/*.h.m4, sigc++/adaptors/lambda/*.h.m4:
+	Use LIBSIGC_TEMPLATE_PREFIX in explicit function
+	template instantiations.
+	* sigc++/tests/test_*.cc:
+	- Include <string> where std::string is used.
+	- Use double instead of float.
+
 2003-10-27  Martin Schulze  <teebaum@cvs.gnome.org>
 
 	* sigc++/retype.h.m4: Cleanup.

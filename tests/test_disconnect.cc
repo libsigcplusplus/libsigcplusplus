@@ -10,8 +10,8 @@
 #include <sigc++/functors/mem_fun.h>
 #include <iostream>
 
-int foo(int i) { std::cout << "foo: " << i << std::endl; return 1;}
-int bar(float i) { std::cout << "bar: " << i << std::endl; return 1;}
+int foo(int i)    { std::cout << "foo: " << i << std::endl; return 1;}
+int bar(double i) { std::cout << "bar: " << i << std::endl; return 1;}
 
 struct A : public sigc::trackable 
 {

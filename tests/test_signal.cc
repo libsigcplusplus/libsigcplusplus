@@ -8,6 +8,7 @@
 #include <sigc++/functors/ptr_fun.h>
 #include <sigc++/functors/mem_fun.h>
 #include <iostream>
+#include <string>
 
 int foo(int i)   {std::cout << "foo(int "<<i<<")" << std::endl; return 1;}
 int bar(float i) {std::cout << "bar(float "<<i<<")" << std::endl; return 1;}

@@ -6,6 +6,7 @@
 #include <sigc++/adaptors/bind_return.h>
 #include <sigc++/functors/slot.h>
 #include <iostream>
+#include <string>
 
 struct foo 
 {
@@ -31,11 +32,11 @@ int main()
   sigc::bind_return<std::string&>(foo(),str)(6) = "main";
   std::cout << str << std::endl;
 
-  sigc::slot<bar,int> c; // bar, not bar&: slots cannot return references
+  sigc::slot<bar,int> sl; // bar, not bar&: slots cannot return references
   {
     bar choco(-1);
-    c = sigc::bind_return(foo(),sigc::ref(choco));
-    std::cout << c(7) << std::endl;
+    sl = sigc::bind_return(foo(),sigc::ref(choco));
+    std::cout << sl(7) << std::endl;
   } // auto-disconnect
-  std::cout << c(8) << std::endl;
+  std::cout << sl(8) << std::endl;
 }

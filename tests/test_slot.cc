@@ -3,8 +3,9 @@
  *  Assigned to public domain.  Use as you wish without restriction.
  */
 
-#include <iostream>
 #include <sigc++/functors/slot.h>
+#include <iostream>
+#include <string>
 
 class foo
 {
