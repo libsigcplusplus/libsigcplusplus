@@ -252,12 +252,32 @@ dnl template <class T_type>
 dnl lambda<typename internal::convert_array<const T_type>::type> var(const T_type& v)
 dnl { return lambda<typename internal::convert_array<const T_type>::type>(v); }
 
-/// Converts a reference into a lambda object.
+/** Converts a reference into a lambda object.
+ * sigc::var creates a 0-ary functor, returning the value of a referenced variable. 
+ *
+ * @par Example:
+ *   @code
+ *   int main(int argc, char* argv[])
+ *   {
+ *     int data;
+ *     sigc::signal<int> readValue;
+ *
+ *     readValue.connect(sigc::var(data));
+ *
+ *     data = 3;
+ *     std::cout << readValue() << std::endl; //Prints 3.
+ *
+ *    data = 5;
+ *    std::cout << readValue() << std::endl; //Prints 5.
+ *   }
+ *   @endcode
+ */
 template <class T_type>
 lambda<T_type&> var(T_type& v)
 { return lambda<T_type&>(v); }
 
-/// Converts a constant reference into a lambda object.
+/** Converts a constant reference into a lambda object.
+ */
 template <class T_type>
 lambda<const T_type&> var(const T_type& v)
 { return lambda<const T_type&>(v); }

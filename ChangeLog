@@ -1,5 +1,10 @@
 2005-02-01  Murray Cumming  <murrayc@murrayc.com>
 
+	* sigc++/adapators/macros/base.h.m4: Add sigc::var<>() documentation, 
+	from Roger Ferrer Ibáñez in bug #149483.
+
+2005-02-01  Murray Cumming  <murrayc@murrayc.com>
+
 	* sigc++/adaptors/macros/compose.h.m4: In the template specializations 
 	of visit_each(): As before, specify the specific other template 
 	specializations of visit_each that we use. Needed by AIX.
