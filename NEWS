@@ -17,6 +17,20 @@ This version of libsigc++ needs GNU g++ 3.2 or higher to compile.
 
 *** ChangeLog summary:
 
+1.9.13:
+
+* Fixed passing references through sigc::slot (Reported by Jeff Franks).
+* Enabled binding of objects to method slots through sigc::bind().
+* Reworked sigc::bind() API: Added overloads for binding of up to 7
+  arguments from the back (when no template argument is provided).
+  Made the template argument for the parameter position zero-based.
+* Reworked sigc::hide() API: Made the template argument for the
+  parameter position zero-based and optional.
+* Fixed compilation problems with MSVC .Net 2003 (Roel Vanhout).
+* Distribute MSVC .Net 2003 project files in the tarballs.
+* Improved and extended documentation.
+* Minor cleanups.
+
 1.9.12:
 
 * Added adaptor retype(). With this final API addition all adaptors
