@@ -32,7 +32,7 @@ the GNU Library General Public License, <a href="http://www.gnu.org/copyleft/lgp
  <li>A variety of adaptors to change the callback signature:
  bind, hide, retype, compose and lambda call groups</li>
  <li>Various compilers and platforms are supported:
- gcc, cygwin, mingw32, MS .NET 2003, Sun Forte C++, Compaq C++, Intel C++</li>
+ gcc, cygwin, mingw32, MS .NET 2003, Sun Forte C++, Compaq C++, Intel C++, IBM AIX, Tru64, IRIX MipsPro.</li>
 </ul>
 </p>
 <p>
@@ -66,7 +66,7 @@ In particular the API improvements from libsigc++ 1.2 to 2.0 include:
 <p>
 
 The libsigc++-1.2 series still is an alternative because it has less
-prerequisits for the comiler.
+prerequisites for the comiler.
 Andreas Rottmann released some code for CORBA support with libsigc++-1.2.
 Please send <a href="mailto:rottmann@users.sourceforge.net">him</a> an email
 if you think that this is interesting for you!

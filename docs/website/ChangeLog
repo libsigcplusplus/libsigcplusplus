@@ -1,5 +1,10 @@
 2005-03-18  Murray Cumming <murrayc@murrayc.com>
 
+	* index.shtml: Updated the list of supported 
+	compilers.
+
+2005-03-18  Murray Cumming <murrayc@murrayc.com>
+
 	* fragments/footer.html_fragment:
 	* fragments/html_declaration.html_fragment:
 	* link.shtml: Remove links to the sourceforge 
