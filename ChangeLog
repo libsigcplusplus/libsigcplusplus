@@ -1,7 +1,7 @@
 2005-02-20  Murray Cumming  <murrayc@murrayc.com>
 
 	* tests/test_slot.cc, test_disconnect.cc: #included <new> to avoid 
-	an unresolved symbol error with the Tru64 compiler. Solutio found by 
+	an unresolved symbol error with the Tru64 compiler. Solution found by 
 	Tim Mooney in bug #161503.
 
 2005-02-20  Martin Schulze  <mschulze@cvs.gnome.org>
