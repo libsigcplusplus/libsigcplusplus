@@ -1,3 +1,10 @@
+1.9.11:
+
+2003-10-26  Martin Schulze  <teebaum@cvs.gnome.org>
+
+	* configure.ac: Bump version number to 1.9.11.
+	* NEWS: Add ChangeLog summary for version 1.9.11.
+
 2003-10-26  Martin Schulze  <teebaum@cvs.gnome.org>
 
 	Compatiblity module:

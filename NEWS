@@ -17,6 +17,27 @@ This version of libsigc++ needs GNU g++ 3.2 or higher to compile.
 
 *** ChangeLog summary:
 
+1.9.11:
+
+API Additions and important bug fixes:
+* Compatibility module completed. libsigc++-1.2 filenames are preserved.
+* Fixed critical bug in auto-disconnection: don't defer detaching
+  of a slot from all referred trackables during signal emission.
+* Reduced size of slots significantly.
+* Fixed support for sigc::ref() in adaptors.
+* Fixed sigc::visit_each(): only hit targets that are passed by
+  reference; pass bound members in bound_member_functor by reference.
+* Add lambda actions sigc::{reinterpret,static,dynamic}_cast_
+  to support explicit parameter conversion.
+* Add adaptors sigc::retype_return<>() and sigc::hide_return().
+
+Minor fixes:
+* Fixed return type deduction for bind<0>.
+  libsigc++-1.9.11 should compile with gcc-3.3.
+* Fixed copy constructor and operator=() of slot template.
+* Fixed a compiler warning in signal_emit#<>::emit().
+* Improved test case.
+
 1.9.10:
 
 * Fix compiler issues with gcc-3.3.2 (patch from Jeff Franks).
