@@ -66,10 +66,14 @@ int main()
 #endif
   std::cout << "(_1+_2*_3)(1,2,3):  " << (_1+_2*_3)(1,2,3)    << std::endl;
   std::cout << "((++_1)*2)(1):      " << ((++_1)*2)(1)        << std::endl;
-  std::cout << "((++_1)*2)(a):      " << ((++_1)*2)(a)        << "; a: " << a << std::endl;
-  std::cout << "((++_1)*2)(ref(a)): " << ((++_1)*2)(sigc::ref(a)) << "; a: " << a << std::endl;
-  std::cout << "((++(*_1))*2)(&a):  " << ((++(*_1))*2)(&a)    << "; a: " << a << std::endl;
-  std::cout << "((--(*(&_1)))*2)(ref(a)): " << ((--(*(&_1)))*2)(sigc::ref(a)) << "; a: " << a << std::endl;
+  std::cout << "((++_1)*2)(a):      " << ((++_1)*2)(a);
+  std::cout << "; a: "                << a                    << std::endl;
+  std::cout << "((++_1)*2)(ref(a)): " << ((++_1)*2)(sigc::ref(a));
+  std::cout << "; a: "                << a                    << std::endl;
+  std::cout << "((++(*_1))*2)(&a):  " << ((++(*_1))*2)(&a);
+  std::cout << "; a: "                << a                    << std::endl;
+  std::cout << "((--(*(&_1)))*2)(ref(a)): " << ((--(*(&_1)))*2)(sigc::ref(a));
+  std::cout << "; a: "                << a                    << std::endl;
   std::cout << "(-_1)     (-5):     " << (-_1)     (-5)       << std::endl;
   std::cout << "(var(&a)[0])():     " << (sigc::var(&a)[0])() << std::endl;
   std::cout << "(_1[_2])    (&a,0): " << (_1[_2])    (&a,0)   << std::endl;
