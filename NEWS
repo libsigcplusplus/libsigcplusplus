@@ -17,6 +17,14 @@ This version of libsigc++ needs GNU g++ 3.2 or higher to compile.
 
 *** ChangeLog summary:
 
+2.0.2:
+
+* Suppress compiler warning in compatibility module at
+  dynamic_cast<>-test (fix suggested by Timothy M. Shead).
+* If a custom accumulator is specified invoke it on signal
+  emission even if the signal's slot list is empty. (This used
+  to be the case in libsigc++-1.2 as pointed out by Timothy.)
+
 2.0.1:
 
 * Fixed serious bug in reference counting in sigc::signal_base::impl().
