@@ -1,3 +1,12 @@
+2003-03-09  Martin Schulze  <MHL.Schulze@t-online.de>
+
+	* sigc++/functors/closure.{cc,h.m4}, sigc++/signal.cc:
+	- Rename closure_{base,rep}::[set_]dependency_ -> [set_]parent_.
+	- Make closure_rep inherit trackable. This allows for
+	  connection objects that stay valid beyond the life time
+	  of the refered closure.
+	- Make some one-line-functions inline again.
+
 2003-03-08  Martin Schulze  <MHL.Schulze@t-online.de>
 
 	* sigc++/trackable.cc: BUGFIX in trackable_dep_list::clear()

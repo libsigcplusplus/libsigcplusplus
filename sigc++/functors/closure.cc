@@ -26,23 +26,10 @@ namespace internal {
 void* closure_rep::notify(void* p)
 {
   closure_rep* self=(closure_rep*)p;
-  self->call_ = 0;                        // Invalidate the closure.
-  if (self->dependency_)
-    (self->cleanup_)(self->dependency_);  // Notify the dependency.
+  self->call_ = 0;                    // Invalidate the closure.
+  if (self->parent_)
+    (self->cleanup_)(self->parent_);  // Notify the parent.
   return 0;
-}
-
-closure_base::closure_base(const closure_base& cl_)
-: rep_(0), blocked_(cl_.blocked_)
-{
-  if (cl_.rep_)
-    rep_ = cl_.rep_->dup();
-}
-
-void closure_base::set_dependency(void* dependency, void* (*func)(void*)) const
-{ 
-  if (rep_)
-    rep_->set_dependency(dependency, func);
 }
 
 /*bool closure_base::empty() const // having this function not inline is killing performance !!!
@@ -62,12 +49,6 @@ bool closure_base::block(bool should_block)
   return old;
 }
 
-void closure_base::disconnect()
-{
-  if (rep_)               // Disconnection a closure always means destroying it.
-    rep_->notify(rep_);   // So we can mark it as invalid and notify its dependency.
-}                         // This is exactly what closure_rep::notify() does.
-
 // TODO: untested
 closure_base& closure_base::operator=(const closure_base& cl)
 {
@@ -83,7 +64,7 @@ closure_base& closure_base::operator=(const closure_base& cl)
 
   if (rep_)               // Silently exchange the closure_rep.
     {
-      new_rep_->set_dependency(rep_->dependency_, rep_->cleanup_);
+      new_rep_->set_parent(rep_->parent_, rep_->cleanup_);
       delete rep_;
     }
 

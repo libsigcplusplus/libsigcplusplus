@@ -99,11 +99,11 @@ typedef void* (*hook)(void*);
 struct closure_base;
 
 /** Internal representation of a closure.
- * Derivations of this class could also be considered as a
- * link between a closure and the functor that closure should
+ * Derivations of this class can be considered as a link
+ * between a closure and the functor that the closure should
  * execute in operator(). This link is needed because in
  * libsigc++2 the closure doesn't necessarily have exactly the
- * same function signature as the functor to allow for automatic
+ * same function signature as the functor allowing for implicit
  * conversions.
  * The base class closure_rep serves the purpose to
  * - form a common pointer type (closure_rep*),
@@ -111,30 +111,35 @@ struct closure_base;
  * - offer a notification callback (notify()),
  * - implement some of closure_base's interface that depends
  *   on the notification callback, i.e.
- *   -- the possibility to set a single dependency
- *      (set_dependency()) whose callback is executed from notify(),
- *   -- an untyped function pointer, call_, that can be easily
+ *   -- the possibility to set a single parent with a callback
+ *      (set_parent()) that is executed from notify(),
+ *   -- an generic function pointer, call_, that is simply
  *      set to zero in notify() to invalidate the closure.
+ * closure_rep inherits trackable so that connection objects can
+ * refer the closure and are notified when the closure is destroyed.
  */
-struct closure_rep
+struct closure_rep : public trackable
 {
+  /* Instead of closure_rep we could inherit closure_base from trackable.
+     However, this slows down dereferencing of closure list iterators. Martin. */
+
   hook call_; // this can't be virtual, number of arguments must be flexible.
   hook cleanup_; 
-  void* dependency_;
+  void* parent_;
 
   closure_rep()
-    : call_(0), dependency_(0) {}
+    : call_(0), parent_(0) {}
   closure_rep(const closure_rep& cl)
-    : call_(cl.call_), dependency_(0) {}
+    : call_(cl.call_), parent_(0) {}
 
   virtual closure_rep* dup() const = 0;
   virtual ~closure_rep()
     {}
 
-  // closures have one dependency exclusively.
-  void set_dependency(void* dependency, hook cleanup)
+  // closures have one parent exclusively.
+  void set_parent(void* parent, hook cleanup)
     {
-      dependency_ = dependency;
+      parent_ = parent;
       cleanup_ = cleanup;
     }
 
@@ -191,10 +196,12 @@ struct typed_closure_rep : public closure_rep
  * can be connected to signals, be disconnected at some later point
  * (disconnect()) and temporarily be blocked (block(), unblock()).
  * closure_base has a closure_rep* member, rep_, that is filled in
- * from the constructors of its derivations. set_dependency() is
+ * from the constructors of its derivations. set_parent() is
  * used to add a notification callback that is executed when the
  * closure gets invalid. The validity of a closure can be tested
  * with empty().
+ * add_dependency() is used by connection objects to add a notification
+ * callback that is executed on destruction.
  */
 class closure_base /*: public functor_base*/
 {
@@ -207,13 +214,20 @@ class closure_base /*: public functor_base*/
     closure_base(rep_type* rep)
       : rep_(rep), blocked_(false) {}
 
-    closure_base(const closure_base& cl_);
+    closure_base(const closure_base& cl_)
+      : rep_(0), blocked_(cl_.blocked_) { if (cl_.rep_) rep_ = cl_.rep_->dup(); }
 
     ~closure_base()
       { if (rep_) delete rep_; }
 
     // hook for signals
-    void set_dependency(void* dependency, void* (*func)(void*)) const;
+    void set_parent(void* parent, void* (*cleanup)(void*)) const
+      { if (rep_) rep_->set_parent(parent, cleanup); }
+
+    void add_dependency(void* o, void* (f)(void*)) const
+      { if (rep_) rep_->add_dependency(o, f); }
+    void remove_dependency(void* o) const
+      { if (rep_) rep_->remove_dependency(o); }
 
     inline bool empty() const
       { return (!rep_ || !rep_->call_); }
@@ -226,7 +240,8 @@ class closure_base /*: public functor_base*/
     bool unblock()
       { return block(false); }
 
-    void disconnect();
+    void disconnect()                   // Disconnecting a closure always means destroying it.
+      { if (rep_) rep_->notify(rep_); } // => notify() marks it as invalid and notifies the parent.
 
     closure_base& operator = (const closure_base& cl);
 

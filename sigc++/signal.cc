@@ -25,7 +25,7 @@ namespace internal {
 signal_impl::iterator_type signal_impl::insert(signal_impl::iterator_type i, const functor::internal::closure_base& slot_)
 {
   iterator_type temp = slots_.insert(i, slot_);
-  temp->set_dependency(this, &notify);
+  temp->set_parent(this, &notify);
   return temp;
 }
 
