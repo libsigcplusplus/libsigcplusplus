@@ -27,7 +27,7 @@ namespace internal {
 
 void slot_rep::disconnect()
 {
-  if (parent_)
+  if(parent_)
   {
     call_ = 0;          // Invalidate the slot.
                         // _Must_ be done here because parent_ might defer the actual

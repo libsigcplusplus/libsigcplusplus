@@ -16,6 +16,7 @@ noinst_PROGRAMS= \
   test_signal \
   test_accumulated \
   test_disconnect \
+  test_disconnect_during_emit \
   test_bind \
   test_bind_return \
   test_retype_return \
@@ -40,6 +41,7 @@ test_slot_SOURCES = test_slot.cc
 test_signal_SOURCES = test_signal.cc
 test_accumulated_SOURCES = test_accumulated.cc
 test_disconnect_SOURCES = test_disconnect.cc
+test_disconnect_during_emit_SOURCES = test_disconnect_during_emit.cc
 test_bind_SOURCES = test_bind.cc
 test_bind_return_SOURCES = test_bind_return.cc
 test_retype_return_SOURCES = test_retype_return.cc

@@ -20,11 +20,11 @@ int main()
   sigc::slot<void> sl;
   {
     my_class t;
-    t.i=10;
+    t.i = 10;
     sl = sigc::mem_fun0(&t, &my_class::foo);
     sl();
   }
-  int i=0;
+  int i = 0;
 
   sl();
 }

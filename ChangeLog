@@ -1,6 +1,11 @@
+2004-07-09  Murray Cumming  <murrayc@murrayc.com>
+
+	* tests/: Added test_disconnect_during_emit.cc, to prove that this 
+	works.
+
 2004-07-08  Murray Cumming  <murrayc@murrayc.com>
 
-	* sigc++/tests/test_retype_return.cc: foo::operator(int): return a 
+	* tests/test_retype_return.cc: foo::operator(int): return a 
 	value. The SUN Forte 5.5 compiler complains about this, as it should.
 
 2004-07-08  Murray Cumming  <murrayc@murrayc.com>
