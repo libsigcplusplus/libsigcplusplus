@@ -1,3 +1,19 @@
+2004-02-14  Martin Schulze  <teebaum@cvs.gnome.org>
+
+  * sigc++/functors/slot_base.h, sigc++/functors/macros/slot.h.m4:
+  Move some documentation to slot_base.h.
+  * sigc++/signal_base.h, sigc++/macros/signal.h.m4:
+  Move some documentation to signal_base.h.
+
+  API addition:
+  * sigc++/functors/macros/slot.h.m4: Add numbered slot# templates.
+  Make unnumbered slot templates inherit from slot#.
+
+  API change:
+  * sigc++/functors/macros/mem_fun.h.m4: Allow for methods of the object's
+  base types to be passed into sigc::mem_fun(). (Used to be the case in
+  libsigc++-1.2).
+
 2004-02-13  Murray Cumming  <murrayc@usa.net>
 
 	* sigc++/functors/slot_base.[h|cc], sigc++/trackable.[h|cc]: Create 

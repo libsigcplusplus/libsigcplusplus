@@ -151,9 +151,9 @@ define([BOUND_MEM_FUN],[dnl
  *
  * @ingroup mem_fun
  */
-template <LIST(LOOP(class T_arg%1, $1), class T_return, class T_obj)>
+template <LIST(LOOP(class T_arg%1, $1), class T_return, class T_obj, class T_obj2)>
 inline bound_[$3]mem_functor$1<LIST(T_return, T_obj, LOOP(T_arg%1, $1))>
-mem_fun[]ifelse($2,, $1)($4 T_obj* _A_obj, T_return (T_obj::*_A_func)(LOOP(T_arg%1,$1)) $5)
+mem_fun[]ifelse($2,, $1)(/*$4*/ T_obj* _A_obj, T_return (T_obj2::*_A_func)(LOOP(T_arg%1,$1)) $5)
 { return bound_[$3]mem_functor$1<LIST(T_return, T_obj, LOOP(T_arg%1, $1))>(_A_obj, _A_func); }
 
 /** Creates a functor of type sigc::bound_[$3]mem_functor$1 which encapsulates a method and an object instance.
@@ -163,9 +163,9 @@ mem_fun[]ifelse($2,, $1)($4 T_obj* _A_obj, T_return (T_obj::*_A_func)(LOOP(T_arg
  *
  * @ingroup mem_fun
  */
-template <LIST(LOOP(class T_arg%1, $1), class T_return, class T_obj)>
+template <LIST(LOOP(class T_arg%1, $1), class T_return, class T_obj, class T_obj2)>
 inline bound_[$3]mem_functor$1<LIST(T_return, T_obj, LOOP(T_arg%1, $1))>
-mem_fun[]ifelse($2,, $1)($4 T_obj& _A_obj, T_return (T_obj::*_A_func)(LOOP(T_arg%1,$1)) $5)
+mem_fun[]ifelse($2,, $1)(/*$4*/ T_obj& _A_obj, T_return (T_obj2::*_A_func)(LOOP(T_arg%1,$1)) $5)
 { return bound_[$3]mem_functor$1<LIST(T_return, T_obj, LOOP(T_arg%1, $1))>(_A_obj, _A_func); }
 
 ])

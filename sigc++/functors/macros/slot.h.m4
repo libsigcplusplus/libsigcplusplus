@@ -18,8 +18,7 @@ divert(-1)
 
 include(template.macros.m4)
 
-define([SLOT],[dnl
-ifelse($1, $2,[dnl
+define([SLOT_N],[dnl
 /** Converts an arbitrary functor to a unified type which is opaque.
  * sigc::slot itself is a functor or to be more precise a closure. It contains
  * a single, arbitrary functor (or closure) that is executed in operator()().
@@ -36,12 +35,7 @@ FOR(1,$1,[
  * block() and unblock() can be used to block the functor's invocation
  * from operator()() temporarily.
  *
- * @par Example:
- *   @code
- *   void foo(int) {}
- *   sigc::slot<void, long> s = sigc::ptr_fun(&foo);
- *   s(19);
- *   @endcode
+ * You should use the more convenient unnumbered sigc::slot template.
  *
  * @ingroup slot
  */
@@ -50,15 +44,8 @@ FOR(1,$1,[
  *
  * Because slot is opaque, visit_each() will not visit its internal members.
  */
-template <LIST(class T_return, LOOP(class T_arg%1 = nil, $1))>],[dnl
-/** Converts an arbitrary functor to a unified type which is opaque.
- * This is the template specialization of the sigc::slot template
- * for $1 arguments.
-dnl *
-dnl * @ingroup slot
- */
-template <LIST(class T_return, LOOP(class T_arg%1, $1))>])
-class slot ifelse($1, $2,,[<LIST(T_return, LOOP(T_arg%1,$1))>])
+template <LIST(class T_return, LOOP(class T_arg%1, $1))>
+class slot$1
   : public slot_base
 {
 public:
@@ -85,34 +72,83 @@ FOR(1, $1,[
       return T_return();
     }
 
-  /** Constructs an empty slot. */
-  inline slot() 
-    {}
+  inline slot$1() {}
 
   /** Constructs a slot from an arbitrary functor.
    * @param _A_func The desirer functor the new slot should be assigned to.
    */
   template <class T_functor>
-  slot(const T_functor& _A_func)
+  slot$1(const T_functor& _A_func)
     : slot_base(new internal::typed_slot_rep<T_functor>(_A_func))
     { rep_->call_ = internal::slot_call$1<LIST(T_functor, T_return, LOOP(T_arg%1, $1))>::address(); }
 
-  /** Constructs a slot, copying an existing one.
-   * @param src The existing slot to copy.
-   */
-  slot(const slot& src)
+  slot$1(const slot$1& src)
     : slot_base(src) {}
 
   /** Overrides this slot making a copy from another slot.
    * @param src The slot from which to make a copy.
    * @return @p this.
    */
-  slot& operator=(const slot& src)
+  slot$1& operator=(const slot$1& src)
     { slot_base::operator=(src); return *this; }
 };
 
 ])
+define([SLOT],[dnl
+ifelse($1, $2,[dnl
+/** Convenience wrapper for the numbered sigc::slot# templates.
+ * Slots convert arbitrary functors to unified types which are opaque.
+ * sigc::slot itself is a functor or to be more precise a closure. It contains
+ * a single, arbitrary functor (or closure) that is executed in operator()().
+ *
+ * The template arguments determine the function signature of operator()():
+ * - @e T_return The return type of operator()().dnl
+FOR(1,$1,[
+ * - @e T_arg%1 Argument type used in the definition of operator()(). The default @p nil means no argument.])
+ *
+ * To use simply assign the slot to the desired functor. If the functor
+ * is not compatible with the parameter list defined with the template
+ * arguments compiler errors are triggered. When called the slot
+ * will invoke the functor with minimal copies.
+ * block() and unblock() can be used to block the functor's invocation
+ * from operator()() temporarily.
+ *
+ * @par Example:
+ *   @code
+ *   void foo(int) {}
+ *   sigc::slot<void, long> s = sigc::ptr_fun(&foo);
+ *   s(19);
+ *   @endcode
+ *
+ * @ingroup slot
+ */
+template <LIST(class T_return, LOOP(class T_arg%1 = nil, $1))>],[dnl
+/** Convenience wrapper for the numbered sigc::slot$1 template.
+ * See the base class for useful methods.
+ * This is the template specialization of the unnumbered sigc::slot
+ * template for $1 argument(s).
+dnl *
+dnl * @ingroup slot
+ */
+template <LIST(class T_return, LOOP(class T_arg%1, $1))>])
+class slot ifelse($1, $2,,[<LIST(T_return, LOOP(T_arg%1,$1))>])
+  : public slot$1<LIST(T_return, LOOP(T_arg%1, $1))>
+{
+public:
+  inline slot() {}
 
+  /** Constructs a slot from an arbitrary functor.
+   * @param _A_func The desirer functor the new slot should be assigned to.
+   */
+  template <class T_functor>
+  slot(const T_functor& _A_func)
+    : slot$1<LIST(T_return, LOOP(T_arg%1, $1))>(_A_func) {}
+
+  slot(const slot& src)
+    : slot$1<LIST(T_return, LOOP(T_arg%1, $1))>(src) {}
+};
+
+])
 define([SLOT_CALL],[dnl
 /** Abstracts functor execution.
  * call_it() invokes a functor of type @e T_functor with a list of
@@ -220,61 +256,12 @@ struct typed_slot_rep : public slot_rep
     }
 };
 
+
+FOR(0,CALL_SIZE,[[SLOT_CALL(%1)]])dnl
 } /* namespace internal */
 
-/** @defgroup functors Functors
- * Functors are copyable types that define operator()().
- *
- * Types that define operator()() overloads with different return types
- * are referred to as multi-type functors. Multi-type functors are only
- * partly supported in libsigc++.
- *
- * Closures are functors that store all information needed to invoke
- * a callback from operator()().
- *
- * Adaptors are functors that alter the signature of a functor's
- * operator()().
- *
- * libsigc++ defines numerous functors, closures and adaptors.
- * Since libsigc++ is a callback libaray, most functors are also
- * closures. Therefore the documentation doesn't distinguish between
- * functors and closures.
- *
- * The basic functor types libsigc++ provides
- * are created with ptr_fun() and mem_fun() and can be converted into
- * slots implicitly. The set of adaptors that ships with libsigc++ is
- * documented in the equally named module.
- */
 
-/** @defgroup slot Slots
- * Slots are type-safe representations of callback methods and functions.
- * A Slot can be constructed from any function, regardless of whether it is
- * a global function, a member method, static, or virtual.
- *
- * Use the sigc::mem_fun() and sigc::ptr_fun() template functions to get a sigc::slot, like so:
- * @code
- * sigc::slot<void, int> sl = sigc::mem_fun(someobj, &SomeClass::somemethod);
- * @endcode
- * or
- * @code
- * sigc::slot<void, int> sl = sigc::ptr_fun(&somefunction);
- * @endcode
- * or
- * @code
- * m_Button.signal_clicked().connect( sigc::mem_fun(*this, &MyWindow::on_button_clicked) );
- * @endcode
- * The compiler will complain if SomeClass::somemethod, etc. have the wrong signature.
- *
- * You can also pass slots as method parameters where you might normally pass a function pointer.
- *
- * @ingroup functors
- */
-
-namespace internal {
-
-FOR(0,CALL_SIZE,[[SLOT_CALL(%1)]])
-} /* namespace internal */
-
+FOR(0,CALL_SIZE,[[SLOT_N(%1,CALL_SIZE)]])
 SLOT(CALL_SIZE,CALL_SIZE)
 FOR(0,eval(CALL_SIZE-1),[[SLOT(%1,CALL_SIZE)]])
 

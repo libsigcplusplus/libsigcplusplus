@@ -452,34 +452,6 @@ divert(0)
 
 namespace sigc {
 
-/** @defgroup signal Signals
- * Use sigc::signal::connect() with sigc::mem_fun() and sigc::ptr_fun() to connect a method or function with a signal.
- *
- * @code
- * signal_clicked.connect( sigc::mem_fun(*this, &MyWindow::on_clicked) );
- * @endcode
- *
- * When the signal is emitted your method will be called.
- *
- * signal::connect() returns a connection, which you can later use to disconnect your method.
- * If the type of your object inherits from sigc::trackable the method is disconnected
- * automatically when your object is destroyed.
- *
- * When signals are copied they share the underlying information,
- * so you can have a protected/private sigc::signal member and a public accessor method.
- *
- * signal and slot objects provide the core functionality of this
- * library. A slot is a container for an arbitrary functor.
- * A signal is a list of slots that are executed on emission.
- * For compile time type safety a list of template arguments
- * must be provided for the signal template that determines the
- * parameter list for emission. Functors and closures are converted
- * into slots implicitely on connection, triggering compiler errors
- * if the given functor or closure cannot be invoked with the
- * parameter list of the signal to connect to.
- */
-
-
 /** STL-style iterator for slot_list.
  *
  * @ingroup signal
