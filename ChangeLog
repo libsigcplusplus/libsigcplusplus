@@ -1,3 +1,15 @@
+2003-06-23  Andreas Rottmann  <rottmann@users.sourceforge.net>
+
+	* docs/reference/Doxyfile.in: Use these variables.
+	* docs/reference/Makefile.am (html/index.html): Provide doxygen 
+	with SRCDIR and TOP_SRCDIR environment variables.
+	
+	* sigc++/functors/slot.h.m4: Make slot::call_type typedef public;
+	this fixes a g++ 3.3 error in signal.h.
+
+	* sigc++/signal.h.m4: Make the signal::accumulated class public;
+	this fixes a g++ 3.3 error in test_accumulated.cc.
+
 2003-06-15  Martin Schulze  <teebaum@cvs.gnome.org>
 
 	* sigc++/functor/slot.h.m4: Correct typing error in docs.
