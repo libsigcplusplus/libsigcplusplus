@@ -1,4 +1,4 @@
-dnl Copyright 2002, Karl Einar Nelson 
+dnl Copyright 2002, The libsigc++ Development Team 
 dnl 
 dnl This library is free software; you can redistribute it and/or 
 dnl modify it under the terms of the GNU Lesser General Public 
