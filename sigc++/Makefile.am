@@ -31,17 +31,17 @@ build_subdirs = functors adaptors adaptors/lambda
 
 # Combine all the above parts with right directories prefixed
 sigc_m4 = $(base_m4) \
-	  $(patsubst %,functors/%,$(functors_m4)) \
-          $(patsubst %,adaptors/%,$(adaptors_m4)) \
-          $(patsubst %,adaptors/lambda/%,$(lambda_m4)) 
+	  $(functors_m4:%=functors/%) \
+          $(adaptors_m4:%=adaptors/%) \
+          $(lambda_m4:%=adaptors/lambda/%) 
 sigc_built_cc = $(base_built_cc) \
-	  $(patsubst %,functors/%,$(functors_built_cc)) \
-          $(patsubst %,adaptors/%,$(adaptors_built_cc)) \
-          $(patsubst %,adaptors/lambda/%,$(lambda_built_cc)) 
+	  $(functors_built_cc:%=functors/%) \
+          $(adaptors_built_cc:%=adaptors/%) \
+          $(lambda_built_cc:%=adaptors/lambda/%) 
 sigc_built_h = $(base_built_h) \
-	  $(patsubst %,functors/%,$(functors_built_h)) \
-          $(patsubst %,adaptors/%,$(adaptors_built_h)) \
-          $(patsubst %,adaptors/lambda/%,$(lambda_built_h)) 
+	  $(functors_built_h:%=functors/%) \
+          $(adaptors_built_h:%=adaptors/%) \
+          $(lambda_built_h:%=adaptors/lambda/%) 
 
 EXTRA_DIST = $(sigc_m4) $(sigc_built_h) $(sigc_built_cc)
 

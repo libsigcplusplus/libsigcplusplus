@@ -1,3 +1,9 @@
+2003-03-11  Andreas Rottmann  <rottmann@users.sourceforge.net>
+
+	* sigc++/Makefile.am: Use substitution references instead of
+	$(patsubst). Is shorter and fixes the strange-dirs-in-dist-tarball
+	bug.
+
 2003-03-09  Martin Schulze  <MHL.Schulze@t-online.de>
 
 	* sigc++/connection.h: Add block() capability.
