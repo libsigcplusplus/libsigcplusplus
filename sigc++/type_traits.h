@@ -87,7 +87,8 @@ struct type_trait<void>
 };
 
 
-/** From Esa Pulkkin:
+// From Esa Pulkkin:
+/**
  * Compile-time determination of base-class relationship in C++
  * (adapted to match the syntax of boost's type_traits library).
  */
@@ -98,7 +99,7 @@ private:
   struct big {
     char memory[64];
   };
-  
+
   //Allow the test inner class to access the other (big) inner class.
   //The Tru64 compiler needs this. murrayc.
   //struct test;
