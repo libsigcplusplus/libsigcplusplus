@@ -124,15 +124,16 @@ void visit_each_type(const T_action& _A_action, const T_functor& _A_functor)
 
   type_limited_action limited_action(_A_action);
 
-  //With g++ 3.3.4, 
-  //specifying the types of the template specialization causes a segfault in tests/test_bind.
+  //With g++ 3.3.4 and 3.3.5,
+  //specifying the types of the template specialization causes a segfault in tests/test_bind for some uses of sigc::ref().
   //But there is no segfault with g++ 3.4.2, and this is required by the AIX (and maybe IRIX MipsPro  and Tru64) compilers. 
-  //visit_each<type_limited_action, T_functor>(limited_action, _A_functor);
+  visit_each<type_limited_action, T_functor>(limited_action, _A_functor);
   
-  //g++ (even slightly old ones) is our primary platform, so we use the non-crashing version.
-  //Users (and distributors) of libsigc++ on AIX (and maybe IRIX MipsPro  and Tru64) may 
-  //need to use this version above instead, to allow compilation.
-  visit_each(limited_action, _A_functor);
+  //g++ (even slightly old ones) is our primary platform, so we could use the non-crashing version. 
+  //However, the expliict version also fixes a crash in a slightl more common case: http://bugzilla.gnome.org/show_bug.cgi?id=169225
+  //Users (and distributors) of libsigc++ on AIX (and maybe IRIX MipsPro  and Tru64) do 
+  //need to use the version above instead, to allow compilation.
+  //visit_each(limited_action, _A_functor);
 }
 
 } /* namespace sigc */

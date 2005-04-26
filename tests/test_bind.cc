@@ -92,7 +92,7 @@ int main()
 
   // test references
   std::string str("guest book");
-  sigc::bind(&egon,sigc::ref(str))(); // Tell bind that is shall store a reference.
+  sigc::bind(&egon, sigc::ref(str))(); // Tell bind that is shall store a reference.
   std::cout << str << std::endl;     // (This cannot be the default behaviour: just think about what happens if str dies!)
 
   sigc::slot<void> sl;
@@ -102,5 +102,9 @@ int main()
     sl();
     std::cout << static_cast<std::string&>(guest_book) << std::endl;
   }    // auto-disconnect
-  sl(); // :-)
+
+  //sl();
+  // This causes a crash when using g++ 3.3.4 or 3.3.5 (but not 3.4.x) when not specifying the exact template
+  // specialization in visit_each_type() - see the comments there.
+  // It looks like the auto-disconnect does not work, so the last sl() call tries to access the guest_book data again.
 }

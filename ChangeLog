@@ -1,3 +1,14 @@
+2005-04-26  Murray Cumming <murrayc@murrayc.com>
+
+	* sigc++/visit_each.h: Use the explicit template 
+	specialization, needed for Tru64 and AIX compilers. 
+	This causes a crash in some uses of sigc::ref() 
+        (when using g++ 3.3.4 or 3.3.5 , but not with 3.4) but 
+	seems to fix a crash in some uses of multiple inheritance 
+	(bug #169225).
+	* tests/test_bind.cc: Comment out the crashing (not with 
+	g++ 3.4) use of sigc::ref() with an explanatory comment.
+	
 2.0.11:
 
 2005-03-09  Cedric Gustin <cedric.gustin@swing.be>
