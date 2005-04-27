@@ -1,5 +1,12 @@
 2005-04-27  Murray Cumming <murrayc@murrayc.com>
 
+	* tests/Makefile.am:
+	* tests/test_custom.cc:
+	Added a place to put extra test code, so I don't have 
+	to keep installing my crazy libsigc++ versions.
+
+2005-04-27  Murray Cumming <murrayc@murrayc.com>
+
 	* sigc++/visit_each.h: Revert back to the non-explicit 
 	template call, because we can not specify the 
 	template specialization so easily, because the 
