@@ -23,6 +23,7 @@ noinst_PROGRAMS= \
   test_exception_catch \
   test_size \
   test_bind \
+  test_bind_ref \
   test_functor_trait \
   test_compatibility
 
@@ -48,6 +49,7 @@ test_signal_SOURCES = test_signal.cc
 test_disconnect_SOURCES = test_disconnect.cc
 test_disconnect_during_emit_SOURCES = test_disconnect_during_emit.cc
 test_bind_SOURCES = test_bind.cc
+test_bind_ref_SOURCES = test_bind_ref.cc
 test_bind_return_SOURCES = test_bind_return.cc
 test_retype_return_SOURCES = test_retype_return.cc
 test_hide_SOURCES = test_hide.cc

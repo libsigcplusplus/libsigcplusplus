@@ -1,3 +1,13 @@
+2005-04-27  Murray Cumming <murrayc@murrayc.com>
+
+	* sigc++/visit_each.h: Revert back to the non-explicit 
+	template call, because we can not specify the 
+	template specialization so easily, because the 
+	specializations have different numbers of types.
+	* tests/Makefile/am:
+	* tests/test_bind_ref.cc: Add a simple test only for 
+	sigc::ref disconnection.
+
 2005-04-26  Murray Cumming <murrayc@murrayc.com>
 
 	* sigc++/visit_each.h: Use the explicit template 
