@@ -1,5 +1,10 @@
 2005-04-28  Murray Cumming <murrayc@murrayc.com>
 
+	* sigc++/type_traits.h: Added comments for users of 
+	g++ 3.2.
+
+2005-04-28  Murray Cumming <murrayc@murrayc.com>
+
 	* tests/Makefile.am:
 	* tests/test_virtualbase_delete.cc: Added 
 	simplified test case from bug #169225. We have a patch 

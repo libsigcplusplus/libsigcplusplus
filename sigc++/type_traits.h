@@ -105,10 +105,13 @@ private:
   //struct test;
   //friend struct test;
 
-  //The AIX xlC compiles does not like these 2 functions being in the inner class.
+  //The AIX xlC compiler does not like these 2 functions being in the inner class.
   //It says "The incomplete type "test" must no be used as a qualifier.
   //It does not seem necessary anyway. murrayc.
+
   //struct test {
+  //For gcc 3.2, try uncommenting the "struct test" inner class declaration, and also using a test:: prefix below.
+  //If it works then submit a patch. A new configure-time compiler-ability check would be even better. murrayc.
     static big  is_base_class_(...);
     static char is_base_class_(typename type_trait<T_base>::pointer);
   //};
