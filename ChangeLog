@@ -1,3 +1,11 @@
+2005-04-28  Murray Cumming <murrayc@murrayc.com>
+
+	* tests/Makefile.am:
+	* tests/test_virtualbase_delete.cc: Added 
+	simplified test case from bug #169225. We have a patch 
+	to make this succeed but I am not ready to commit it 
+	just yet.
+
 2005-04-27  Murray Cumming <murrayc@murrayc.com>
 
 	* tests/Makefile.am:

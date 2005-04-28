@@ -26,6 +26,7 @@ noinst_PROGRAMS= \
   test_bind_ref \
   test_functor_trait \
   test_compatibility \
+  test_virtualbase_delete \
   test_custom
 
 #Disabled:
@@ -57,9 +58,9 @@ test_hide_SOURCES = test_hide.cc
 test_retype_SOURCES = test_retype.cc
 test_compose_SOURCES = test_compose.cc
 test_exception_catch_SOURCES = test_exception_catch.cc
-test_exception_catch_SOURCES = test_exception_catch.cc
 # test_lambda_SOURCES = test_lambda.cc
 
 test_size_SOURCES = test_size.cc
 test_compatibility_SOURCES = test_compatibility.cc
+test_virtualbase_delete_SOURCES = test_virtualbase_delete.cc
 test_custom_SOURCES = test_custom.cc
