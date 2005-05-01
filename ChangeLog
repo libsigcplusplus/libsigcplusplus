@@ -1,5 +1,15 @@
 2005-05-01  Murray Cumming <murrayc@murrayc.com>
 
+	* sigc++/functors/slot_base.cc: 
+	slot_base::slot_base(src): If the source 
+	slot_base has a null rep->call_, meaning that the 
+	slot is invalid, just return a default-constructed 
+	slot, to prevent the crash shown in 
+	tests/tests_copy_invalid_slot.cc. Bug #302515 by 
+	Régis Duchesne.
+
+2005-05-01  Murray Cumming <murrayc@murrayc.com>
+
 	* sigc++/functors/macros/mem_fun.h.m4: bound_*<>: 
 	Add a new is_base_and_derived<sigc::trackable> 
 	parameter to the template and thereby provide a 

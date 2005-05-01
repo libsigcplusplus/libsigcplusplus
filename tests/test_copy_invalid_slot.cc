@@ -11,6 +11,11 @@ int main(int argc, char **argv)
    // This invalidates foo.
    delete t;
 
+   // Try to crash if the invalid slot parameter is used by libsigc++,
+   // and get a debugger backtrace at the point that it happens.
+   //
+   // Comment this out to get a meaningful backtrace from valgrind.
+   //
    // Try to pollute the memory previously occupied by the sigc::trackable
    // instance. The hope is that with a regular memory allocator (i.e. not
    // valgrind), we end up with buffer == (void *)t.
