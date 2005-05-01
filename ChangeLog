@@ -1,3 +1,20 @@
+2005-05-01  Murray Cumming <murrayc@murrayc.com>
+
+	* sigc++/functors/macros/mem_fun.h.m4: bound_*<>: 
+	Add a new is_base_and_derived<sigc::trackable> 
+	parameter to the template and thereby provide a 
+	specialization for T_Obj types that derive from 
+	sigc::trackable. This prevents a crash when casting 
+	from the derived type to sigc::trackable after the 
+	derived destructor has run. This cast can sometimes 
+	fail when using multiple inheritance, at least with 
+	g++. Bug #169225 by Régis Duchesne and Christian 
+	Hammond.
+	* sigc++/type_traits.h: Add documenation for 
+	the internal is_base_and_derived<> template, which 
+	allows us to specialize other templates for certain 
+	template types.
+
 2005-04-28  Murray Cumming <murrayc@murrayc.com>
 
 	* sigc++/type_traits.h: Added comments for users of 

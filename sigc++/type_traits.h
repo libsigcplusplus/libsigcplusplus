@@ -91,6 +91,23 @@ struct type_trait<void>
 /**
  * Compile-time determination of base-class relationship in C++
  * (adapted to match the syntax of boost's type_traits library).
+ *
+ * Use this to provide a template specialization for a set of types.
+ * For instance,
+ *
+ * template < class T_thing, bool Tval_derives_from_something = sigc::is_base_and_derived<Something, T_thing>::value >
+ * class TheTemplate
+ * {
+ *   //Standard implementation.
+ * }
+ *
+ * //Specialization for T_things that derive from Something (Tval_derives_from_something is true)
+ * template <class T_thing>
+ * class TheTemplate<T_thing, true>
+ * {
+ *   T_thing thing;
+     thing.method_that_is_in_something();
+ * }
  */
 template <class T_base, class T_derived>
 struct is_base_and_derived
