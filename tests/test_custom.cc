@@ -4,7 +4,7 @@
 class Base : virtual public sigc::trackable
 {
 public:
-   sigc::signal<void> signal_something;
+  
 };
 
 class Base2
@@ -14,6 +14,7 @@ public:
   {}
 };
 
+
 class Derived
   : virtual public Base,
     public Base2
@@ -21,18 +22,20 @@ class Derived
 public:
   Derived()
   {
-     signal_something.connect(sigc::mem_fun(this, &Derived::handler));
+    
   }
-
-private:
-   void handler()
-   {}
 };
+
+void handler(Derived &dlg)
+{}
 
 int main(int argc, char **argv)
 {
-   Derived* instance = new Derived();
-   delete instance;
+  sigc::signal<void> signal_something;
 
-   return 0;
+  Derived* param = new Derived();
+  signal_something.connect(sigc::bind( sigc::ptr_fun(&handler), sigc::ref(*param) ));
+  delete param;
+
+  return 0;
 }

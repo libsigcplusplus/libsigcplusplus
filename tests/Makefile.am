@@ -27,6 +27,7 @@ noinst_PROGRAMS= \
   test_functor_trait \
   test_compatibility \
   test_virtualbase_delete \
+  test_virtualbase_delete_ref_param \
   test_copy_invalid_slot \
   test_custom
 
@@ -64,5 +65,6 @@ test_exception_catch_SOURCES = test_exception_catch.cc
 test_size_SOURCES = test_size.cc
 test_compatibility_SOURCES = test_compatibility.cc
 test_virtualbase_delete_SOURCES = test_virtualbase_delete.cc
+test_virtualbase_delete_ref_param_SOURCES = test_virtualbase_delete_ref_param.cc
 test_copy_invalid_slot_SOURCES = test_copy_invalid_slot.cc
 test_custom_SOURCES = test_custom.cc
