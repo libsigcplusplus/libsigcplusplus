@@ -25,16 +25,16 @@ FOR(1, $1),[
    * @return The fixed return value.
    */
   template <LOOP(class T_arg%1, $1)>
-  inline T_return operator()(LOOP(T_arg%1 _A_a%1, $1))
+  inline typename unwrap_reference<T_return>::type operator()(LOOP(T_arg%1 _A_a%1, $1))
     { this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<LOOP(_P_(T_arg%1), $1)>
-        (LOOP(_A_a%1, $1)); return ret_value_;
+        (LOOP(_A_a%1, $1)); return ret_value_.invoke();
     }
 
   #ifndef SIGC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD
   template <LOOP(class T_arg%1, $1)>
-  inline T_return sun_forte_workaround(LOOP(T_arg%1 _A_a%1, $1))
+  inline typename unwrap_reference<T_return>::type sun_forte_workaround(LOOP(T_arg%1 _A_a%1, $1))
     { this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<LOOP(_P_(T_arg%1), $1)>
-        (LOOP(_A_a%1, $1)); return ret_value_;
+        (LOOP(_A_a%1, $1)); return ret_value_.invoke();
     }
   #endif
 
@@ -43,6 +43,7 @@ FOR(1, $1),[
 divert(0)dnl
 __FIREWALL__
 #include <sigc++/adaptors/adaptor_trait.h>
+#include <sigc++/adaptors/bound_argument.h>
 
 namespace sigc {
 
@@ -60,13 +61,13 @@ struct bind_return_functor : public adapts<T_functor>
 {
   template <LOOP(class T_arg%1=void, CALL_SIZE)>
   struct deduce_result_type
-    { typedef T_return type; };
-  typedef T_return result_type;
+    { typedef typename unwrap_reference<T_return>::type type; };
+  typedef typename unwrap_reference<T_return>::type result_type;
 
   /** Invokes the wrapped functor dropping its return value.
    * @return The fixed return value.
    */
-  T_return operator()();
+  typename unwrap_reference<T_return>::type operator()();
 
 FOR(1,CALL_SIZE,[[BIND_RETURN_OPERATOR(%1)]])dnl
 
@@ -79,12 +80,12 @@ FOR(1,CALL_SIZE,[[BIND_RETURN_OPERATOR(%1)]])dnl
     {}
 
   /// The fixed return value.
-  T_return ret_value_; // public, so that visit_each() can access it
+  bound_argument<T_return> ret_value_; // public, so that visit_each() can access it
 };
 
 template <class T_return, class T_functor>
-T_return bind_return_functor<T_return, T_functor>::operator()()
-  { this->functor_(); return ret_value_; }
+typename unwrap_reference<T_return>::type bind_return_functor<T_return, T_functor>::operator()()
+  { this->functor_(); return ret_value_.invoke(); }
 
 
 //template specialization of visit_each<>(action, functor):
@@ -112,8 +113,8 @@ void visit_each(const T_action& _A_action,
  * @ingroup bind
  */
 template <class T_return, class T_functor>
-inline bind_return_functor<typename unwrap_reference<T_return>::type, T_functor>
+inline bind_return_functor<T_return, T_functor>
 bind_return(const T_functor& _A_functor, T_return _A_ret_value)
-{ return bind_return_functor<typename unwrap_reference<T_return>::type, T_functor>(_A_functor, _A_ret_value); }
+{ return bind_return_functor<T_return, T_functor>(_A_functor, _A_ret_value); }
 
 } /* namespace sigc */

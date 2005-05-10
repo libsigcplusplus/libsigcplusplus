@@ -1,9 +1,10 @@
 # Base (./)
 base_m4 = template.macros.m4 signal.h.m4 slot.h.m4 method_slot.h.m4 \
-	  object_slot.h.m4 class_slot.h.m4 hide.h.m4 retype.h.m4
+	  object_slot.h.m4 class_slot.h.m4 hide.h.m4 retype.h.m4 \
+	  limit_reference.h.m4
 base_built_cc =
 base_built_h = signal.h slot.h method_slot.h \
-	       object_slot.h class_slot.h hide.h retype.h
+	       object_slot.h class_slot.h hide.h retype.h limit_reference.h
 
 signal.cc : signal.h signal_base.h functors/slot.h functors/slot_base.h functors/mem_fun.h functors/functor_trait.h
 
@@ -57,6 +58,7 @@ nobase_library_include_HEADERS = $(sigc_m4) $(sigc_built_h) \
   functors/functors.h \
   functors/slot_base.h \
   adaptors/adaptors.h \
+  adaptors/bound_argument.h \
   adaptors/lambda/lambda.h
 
 # Support for DLL on cygwin/mingw using libtool > 1.4

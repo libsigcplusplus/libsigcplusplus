@@ -27,7 +27,7 @@ void handler(Param& param)
 
 int main()
 {
-  sigc::slot< void, sigc::reference_wrapper<Param> > slot_full = sigc::ptr_fun(&handler);
+  sigc::slot<void, Param &> slot_full = sigc::ptr_fun(&handler);
   sigc::slot<void> slot_bound;
 
   //slot_bound();
@@ -35,6 +35,8 @@ int main()
   {
     //Because Param derives from sigc::trackable(), sigc::ref() should disconnect the signal handler when param is destroyed.
     Param param("murrayc");
+    // A convoluted way to do
+    // slot_bound = sigc::bind(slot_full, sigc::ref(param));
     slot_bound = sigc::bind< -1, sigc::reference_wrapper<Param> >(slot_full, sigc::ref(param));
 
     std::cout << "Calling slot when param exists:" << std::endl;

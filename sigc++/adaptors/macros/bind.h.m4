@@ -21,7 +21,7 @@ include(template.macros.m4)
 define([DEDUCE_RESULT_TYPE_COUNT],[dnl
   template <LOOP(class T_arg%1, eval(CALL_SIZE))>
   struct deduce_result_type_internal<LIST($2, LOOP(T_arg%1,eval(CALL_SIZE)))>
-    { typedef typename adaptor_type::template deduce_result_type<LIST(LOOP(_P_(T_arg%1), eval(CALL_SIZE-$2)), LOOP(_P_(T_type%1), $1))>::type type; };
+    { typedef typename adaptor_type::template deduce_result_type<LIST(LOOP(_P_(T_arg%1), eval(CALL_SIZE-$2)), LOOP(_P_(typename unwrap_reference<T_type%1>::type), $1))>::type type; };
 ])
 define([BIND_OPERATOR_LOCATION],[dnl
 ifelse($2,1,,[dnl
@@ -34,16 +34,16 @@ FOR(1, eval($2-1),[
   template <LOOP([class T_arg%1], eval($2-1))>
   typename deduce_result_type<LOOP(T_arg%1,eval($2-1))>::type
   operator()(LOOP(T_arg%1 _A_arg%1,eval($2-1)))
-    { return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<LIST(LOOP([_P_(T_arg%1)],eval($1-1)), _P_(T_bound),FOR($1,eval($2-1),[_P_(T_arg%1),]))>
-        (LIST(LOOP(_A_arg%1,eval($1-1)), bound_, FOR($1,eval($2-1),[_A_arg%1,])));
+    { return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<LIST(LOOP([_P_(T_arg%1)],eval($1-1)), _P_(typename unwrap_reference<T_bound>::type), FOR($1,eval($2-1),[_P_(T_arg%1),]))>
+        (LIST(LOOP(_A_arg%1,eval($1-1)), bound_.invoke(), FOR($1,eval($2-1),[_A_arg%1,])));
     }
 
   #ifndef SIGC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD
   template <LOOP([class T_arg%1], eval($2-1))>
   typename deduce_result_type<LOOP(T_arg%1,eval($2-1))>::type
   sun_forte_workaround(LOOP(T_arg%1 _A_arg%1,eval($2-1)))
-    { return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<LIST(LOOP([_P_(T_arg%1)],eval($1-1)), _P_(T_bound),FOR($1,eval($2-1),[_P_(T_arg%1),]))>
-        (LIST(LOOP(_A_arg%1,eval($1-1)), bound_, FOR($1,eval($2-1),[_A_arg%1,])));
+    { return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<LIST(LOOP([_P_(T_arg%1)],eval($1-1)), _P_(typename unwrap_reference<T_bound>::type), FOR($1,eval($2-1),[_P_(T_arg%1),]))>
+        (LIST(LOOP(_A_arg%1,eval($1-1)), bound_.invoke(), FOR($1,eval($2-1),[_A_arg%1,])));
     }
   #endif
     
@@ -59,16 +59,16 @@ FOR(1, eval($2-1),[
   template <LOOP([class T_arg%1], eval($2-1))>
   typename deduce_result_type<LOOP(T_arg%1,eval($2-1))>::type
   operator()(LOOP(T_arg%1 _A_arg%1, eval($2-1)))
-    { return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<LIST(LOOP([_P_(T_arg%1)],eval($2-1)), LOOP(_P_(T_type%1), $1))>
-        (LIST(LOOP(_A_arg%1,eval($2-1)), LOOP(bound%1_, $1)));
+    { return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<LIST(LOOP([_P_(T_arg%1)],eval($2-1)), LOOP(_P_(typename unwrap_reference<T_type%1>::type), $1))>
+        (LIST(LOOP(_A_arg%1,eval($2-1)), LOOP(bound%1_.invoke(), $1)));
     }
 
   #ifndef SIGC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD
   template <LOOP([class T_arg%1], eval($2-1))>
   typename deduce_result_type<LOOP(T_arg%1,eval($2-1))>::type
   sun_forte_workaround(LOOP(T_arg%1 _A_arg%1, eval($2-1)))
-    { return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<LIST(LOOP([_P_(T_arg%1)],eval($2-1)), LOOP(_P_(T_type%1), $1))>
-        (LIST(LOOP(_A_arg%1,eval($2-1)), LOOP(bound%1_, $1)));
+    { return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<LIST(LOOP([_P_(T_arg%1)],eval($2-1)), LOOP(_P_(typename unwrap_reference<T_type%1>::type), $1))>
+        (LIST(LOOP(_A_arg%1,eval($2-1)), LOOP(bound%1_.invoke(), $1)));
     }
   #endif
     
@@ -87,7 +87,7 @@ struct bind_functor<$1, T_functor, T_bound, LIST(LOOP(nil, 6))> : public adapts<
 
   template <LOOP(class T_arg%1=void, eval(CALL_SIZE))>
   struct deduce_result_type
-    { typedef typename adaptor_type::template deduce_result_type<LIST(LOOP(_P_(T_arg%1),eval($1)), _P_(T_bound),FOR(eval($1+1),eval(CALL_SIZE-1),[_P_(T_arg%1),]))>::type type; };
+    { typedef typename adaptor_type::template deduce_result_type<LIST(LOOP(_P_(T_arg%1),eval($1)), _P_(typename unwrap_reference<T_bound>::type), FOR(eval($1+1),eval(CALL_SIZE-1),[_P_(T_arg%1),]))>::type type; };
   typedef typename adaptor_type::result_type  result_type;
 
   /** Invokes the wrapped functor passing on the bound argument only.
@@ -97,7 +97,7 @@ struct bind_functor<$1, T_functor, T_bound, LIST(LOOP(nil, 6))> : public adapts<
   operator()()
   {
     //Note: The AIX compiler sometimes gives linker errors if we do not define this in the class.
-    return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<_P_(T_bound)> (bound_);
+    return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<_P_(typename unwrap_reference<T_bound>::type)> (bound_.invoke());
   }
 
 FOR(eval($1+1),CALL_SIZE,[[BIND_OPERATOR_LOCATION(eval($1+1),%1)]])dnl
@@ -110,7 +110,7 @@ FOR(eval($1+1),CALL_SIZE,[[BIND_OPERATOR_LOCATION(eval($1+1),%1)]])dnl
     {}
 
   /// The argument bound to the functor.
-  T_bound bound_;
+  bound_argument<T_bound> bound_;
 };
 
 ])
@@ -129,7 +129,7 @@ struct bind_functor<LIST(-1, T_functor, LIST(LOOP(T_type%1, $1), LOOP(nil, 7 - $
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
   template <LIST(int count, LOOP(class T_arg%1, eval(CALL_SIZE)))>
   struct deduce_result_type_internal
-    { typedef typename adaptor_type::template deduce_result_type<LIST(LOOP(_P_(T_arg%1), eval(CALL_SIZE-$1)), LOOP(_P_(T_type%1), $1))>::type type; };
+    { typedef typename adaptor_type::template deduce_result_type<LIST(LOOP(_P_(T_arg%1), eval(CALL_SIZE-$1)), LOOP(_P_(typename unwrap_reference<T_type%1>::type), $1))>::type type; };
 FOR(eval($1+1),eval(CALL_SIZE-1),[[DEDUCE_RESULT_TYPE_COUNT($1,%1)]])dnl
 #endif /*DOXYGEN_SHOULD_SKIP_THIS*/
 
@@ -147,7 +147,7 @@ FOR(eval($1+1),eval(CALL_SIZE-1),[[DEDUCE_RESULT_TYPE_COUNT($1,%1)]])dnl
   operator()()
   {
     //Note: The AIX compiler sometimes gives linker errors if we do not define this in the class.
-    return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<LOOP(_P_(T_type%1),$1)> (LOOP(bound%1_, $1));
+    return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<LOOP(_P_(typename unwrap_reference<T_type%1>::type), $1)> (LOOP(bound%1_.invoke(), $1));
   }
 
 FOR(2,eval(CALL_SIZE-$1+1),[[BIND_OPERATOR_COUNT($1,%1)]])dnl
@@ -161,7 +161,7 @@ FOR(2,eval(CALL_SIZE-$1+1),[[BIND_OPERATOR_COUNT($1,%1)]])dnl
 
   /// The argument bound to the functor.dnl
 FOR(1,$1,[
-  T_type%1 bound%1_;])
+  bound_argument<T_type%1> bound%1_;])
 };
 
 
@@ -196,13 +196,13 @@ FOR(1,$1,[
 template <LIST(LOOP(class T_type%1, $1), class T_functor)>
 inline bind_functor<-1, T_functor,dnl
 FOR(1,eval($1-1),[
-                    typename unwrap_reference<T_type%1>::type,])
-                    typename unwrap_reference<T_type$1>::type>
+                    T_type%1,])
+                    T_type$1>
 bind(const T_functor& _A_func, LOOP(T_type%1 _A_b%1, $1))
 { return bind_functor<-1, T_functor,dnl
 FOR(1,eval($1-1),[
-                    typename unwrap_reference<T_type%1>::type,])
-                    typename unwrap_reference<T_type$1>::type>
+                    T_type%1,])
+                    T_type$1>
                     (_A_func, LOOP(_A_b%1, $1));
 }
 
@@ -211,6 +211,7 @@ FOR(1,eval($1-1),[
 divert(0)dnl
 __FIREWALL__
 #include <sigc++/adaptors/adaptor_trait.h>
+#include <sigc++/adaptors/bound_argument.h>
 
 namespace sigc { 
 
@@ -366,10 +367,10 @@ FOR(1,CALL_SIZE,[[BIND_FUNCTOR_COUNT(%1)]])dnl
  * @ingroup bind
  */
 template <int I_location, class T_bound1, class T_functor>
-inline bind_functor<I_location, T_functor, typename unwrap_reference<T_bound1>::type>
+inline bind_functor<I_location, T_functor, T_bound1>
 bind(const T_functor& _A_func, T_bound1 _A_b1)
 { 
-  return bind_functor<I_location, T_functor, typename unwrap_reference<T_bound1>::type>
+  return bind_functor<I_location, T_functor, T_bound1>
            (_A_func, _A_b1);
 }
 

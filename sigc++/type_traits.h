@@ -19,8 +19,6 @@
 #ifndef _SIGC_TYPE_TRAIT_H_
 #define _SIGC_TYPE_TRAIT_H_
 
-#include <sigc++/reference_wrapper.h>
-
 namespace sigc {
 
 template <class T_type>
@@ -57,24 +55,6 @@ struct type_trait<const T_type&>
   typedef const T_type& pass;
   typedef const T_type& take;
   typedef const T_type* pointer;
-};
-
-template <class T_type>
-struct type_trait<reference_wrapper<T_type> >
-{
-  typedef T_type  type;
-  typedef T_type& pass;
-  typedef T_type& take;
-  typedef T_type* pointer;
-};
-
-template <class T_type>
-struct type_trait<const_reference_wrapper<T_type> >
-{
-  typedef T_type  type;
-  typedef T_type& pass;
-  typedef const T_type& take;
-  typedef T_type* pointer;
 };
 
 template<>

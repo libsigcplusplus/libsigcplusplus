@@ -81,7 +81,7 @@ FOR(1,$1,[
  *
  * @ingroup mem_fun
  */
-template <LIST(class T_return, class T_obj, LOOP(class T_arg%1, $1)), bool I_derives_trackable = is_base_and_derived<sigc::trackable, T_obj>::value>
+template <LIST(class T_return, class T_obj, LOOP(class T_arg%1, $1))>
 class bound_[$2]mem_functor$1
   : public [$2]mem_functor$1<LIST(T_return, T_obj, LOOP(T_arg%1, $1))>
 {
@@ -95,7 +95,7 @@ public:
    */
   bound_[$2]mem_functor$1($3 T_obj* _A_obj, function_type _A_func)
     : base_type_(_A_func),
-    obj_ptr_(_A_obj)
+      obj_(*_A_obj)
     {}
 
   /** Constructs a bound_[$2]mem_functor$1 object that wraps the passed method.
@@ -104,7 +104,7 @@ public:
    */
   bound_[$2]mem_functor$1($3 T_obj& _A_obj, function_type _A_func)
     : base_type_(_A_func),
-    obj_ptr_(&_A_obj)
+      obj_(_A_obj)
     {}
 
   /** Execute the wrapped method operating on the stored instance.dnl
@@ -113,54 +113,12 @@ FOR(1, $1,[
    * @return The return value of the method invocation.
    */
   T_return operator()(LOOP(typename type_trait<T_arg%1>::take _A_a%1, $1)) const
-    { return (obj_ptr_->*(this->func_ptr_))(LOOP(_A_a%1, $1)); }
+    { return (obj_.invoke().*(this->func_ptr_))(LOOP(_A_a%1, $1)); }
 
 //protected:
-  // Pointer to stored object instance.
+  // Reference to stored object instance.
   // This is the handler object, such as TheObject in void TheObject::signal_handler().
-  $3 T_obj *obj_ptr_; //This, and its type is used by the visit_each<> specialization below.
-};
-
-//Specialization for T_obj that derives from sigc::trackable.
-template <LIST(class T_return, class T_obj, LOOP(class T_arg%1, $1))>
-class bound_[$2]mem_functor$1<LIST(T_return, T_obj, LOOP(T_arg%1, $1), true)>
-  : public [$2]mem_functor$1<LIST(T_return, T_obj, LOOP(T_arg%1, $1))>
-{
-  typedef [$2]mem_functor$1<LIST(T_return, T_obj, LOOP(T_arg%1, $1))> base_type_;
-public:
-  typedef typename base_type_::function_type function_type;
-
-  /** Constructs a bound_[$2]mem_functor$1 object that wraps the passed method.
-   * @param _A_obj Pointer to instance the method will operate on.
-   * @param _A_func Pointer to method will be invoked from operator()().
-   */
-  bound_[$2]mem_functor$1($3 T_obj* _A_obj, function_type _A_func)
-    : base_type_(_A_func),
-      obj_ptr_derived_(_A_obj), obj_ptr_(_A_obj)
-    {}
-
-  /** Constructs a bound_[$2]mem_functor$1 object that wraps the passed method.
-   * @param _A_obj Reference to instance the method will operate on.
-   * @param _A_func Pointer to method will be invoked from operator()().
-   */
-  bound_[$2]mem_functor$1($3 T_obj& _A_obj, function_type _A_func)
-    : base_type_(_A_func),
-      obj_ptr_derived_(&_A_obj), obj_ptr_(&_A_obj)
-    {}
-
-  /** Execute the wrapped method operating on the stored instance.dnl
-FOR(1, $1,[
-   * @param _A_a%1 Argument to be passed on to the method.])
-   * @return The return value of the method invocation.
-   */
-  T_return operator()(LOOP(typename type_trait<T_arg%1>::take _A_a%1, $1)) const
-    { return ( (obj_ptr_derived_)->*(this->func_ptr_))(LOOP(_A_a%1, $1)); }
-
-//protected:
-  // Pointer to stored object instance.
-  // This is the handler object, such as TheObject in void TheObject::signal_handler().
-  $3 T_obj* obj_ptr_derived_;
-  $3 sigc::trackable* obj_ptr_; //This, and its type is used by the visit_each<> specialization below.
+  [$2]limit_reference<T_obj> obj_;
 };
 
 //template specialization of visit_each<>(action, functor):
@@ -174,7 +132,7 @@ template <LIST(class T_action, class T_return, class T_obj, LOOP(class T_arg%1, 
 void visit_each(const T_action& _A_action,
                 const bound_[$2]mem_functor$1<LIST(T_return, T_obj, LOOP(T_arg%1, $1))>& _A_target)
 {
-  sigc::visit_each(_A_action, *_A_target.obj_ptr_);
+  sigc::visit_each(_A_action, _A_target.obj_);
 }
 
 ])
@@ -228,7 +186,7 @@ divert(0)
 __FIREWALL__
 #include <sigc++/type_traits.h>
 #include <sigc++/functors/functor_trait.h>
-#include <sigc++/trackable.h>
+#include <sigc++/limit_reference.h>
 
 namespace sigc {
 

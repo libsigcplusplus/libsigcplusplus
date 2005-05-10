@@ -1,3 +1,46 @@
+2005-05-06  Régis Duchesne <hpreg@vmware.com>
+
+	* sigc++/macros/limit_reference.h.m4 (added):
+	* sigc++/Makefile.am:
+	New class that just stores a reference, and makes sure that if the
+	reference derives from trackable, then the trackable reference will be
+	used instead of the derived reference in visit_each().
+	* sigc++/functors/macros/mem_fun.h.m4: Better fix for bug #169225 by
+	Régis Duchesne and Christian Hammond, based on the new limit_reference
+	class.
+	* sigc++/adaptors/bound_argument.h (added): New class (built upon the
+	new limit_reference class) that handles all 3 kinds of bound arguments:
+	by value, by reference, and by constant reference. References are
+	unwrapped in the bound_argument's constructor.
+	* sigc++/adaptors/macros/bind.h.m4: Fix for bug #302327 by Régis
+	Duchesne. Bound arguments now need to know whether they are passed by
+	reference or not. So bind() now builds bind_functor instances using
+	'reference_wrapper<Foo>' types, instead of 'Foo &' types. The
+	bind_functor code is modified to compensate.
+	* sigc++/adaptors/macros/bind_return.h.m4: Similar fix for a similar
+	bug (unfiled) with bound return arguments.
+	* sigc++/reference_wrapper.h:
+	* sigc++/type_traits.h:
+	The reference_wrapper class is only used in bound_argument.h. Put
+	correct but unused code under #if 0.
+	* sigc++/adaptors/lambda/base.h: This file needs reference_wrapper.h,
+	but was incorrectly relying on type_traits.h to include it.
+	* tests/Makefile.am:
+	* tests/test_virtualbase_delete.cc (deleted):
+	* tests/test_virtualbase_delete_ref_param.cc (deleted):
+	* tests/test_limit_reference.cc (added):
+	Replaced test_virtualbase_delete*.cc with a simpler
+	test_limit_reference.cc which checks for all 3 aspects of the same bug
+	in one file.
+	* tests/test_bind_ref.cc: Slots must use 'Foo &' types. We were lucky
+	this broken usage worked before this change. The change in
+	type_traits.h made this bug obvious, by preventing the code to compile.
+	* tests/test_bind_return.cc: After my change, bind() and bind_return()
+	must use 'reference_wrapper<Foo>' types.
+	* tests/test_custom.cc: Made this test a no-op (so it does not perturb
+	'make check' on released versions of the library) and made it a
+	template ready to be modified by hackers.
+
 2005-05-01  Murray Cumming <murrayc@murrayc.com>
 
 	* sigc++/functors/slot_base.cc: 
