@@ -1,3 +1,12 @@
+2.0.12:
+
+* Fixes crashes when using virtual inheritance, particularly 
+  with bound by-reference parameters, caused by casting 
+  from derived to base when the derived destructor has run.
+  (Régis Duchesne)
+  This might affect non-g++ compilers, so do tell us about 
+  any problems.
+
 2.0.11:
 
 * Build fixes for SUN Forte, Tru64

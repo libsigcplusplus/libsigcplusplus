@@ -1,3 +1,5 @@
+2.0.12:
+
 2005-05-06  Régis Duchesne <hpreg@vmware.com>
 
 	* sigc++/macros/limit_reference.h.m4 (added):
