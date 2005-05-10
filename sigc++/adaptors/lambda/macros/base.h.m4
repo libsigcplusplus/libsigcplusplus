@@ -52,6 +52,7 @@ divert(0)dnl
 #ifndef _SIGC_LAMBDA_BASE_HPP_
 #define _SIGC_LAMBDA_BASE_HPP_
 #include <sigc++/adaptors/adaptor_trait.h>
+#include <sigc++/reference_wrapper.h>
 
 namespace sigc {
 
