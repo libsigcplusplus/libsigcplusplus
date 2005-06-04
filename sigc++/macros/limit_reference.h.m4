@@ -120,10 +120,10 @@ private:
  * @param _A_action The functor to invoke.
  * @param _A_argument The visited instance.
  */
-template <class T_action, class T_type>
+template <class T_action, class T_type, bool I_derives_trackable>
 void
 visit_each(const T_action& _A_action,
-           const [$1]limit_reference<T_type>& _A_target)
+           const [$1]limit_reference<T_type, I_derives_trackable>& _A_target)
 {
   visit_each(_A_action, _A_target.visit());
 }

@@ -1,3 +1,11 @@
+2005-06-04  Friedemann Kleint <kleint@bifab.de>
+
+	* sigc++/macros/limit_reference.h.m4: 
+	visit_each() template specializations: 
+	Mention the bool I_derives_trackable 
+	template type, to fix the build on Solaris 
+	Forte 5.5.
+
 2.0.12:
 
 2005-05-06  Régis Duchesne <hpreg@vmware.com>
