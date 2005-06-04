@@ -176,22 +176,22 @@ struct temp_slot_list
 
   temp_slot_list(slot_list &slots) : slots_(slots)
   {
-    temp_slots_.swap(slots_);
+    placeholder = slots_.insert(slots_.end(), slot_base());
   }
 
   ~temp_slot_list()
   {
-    slots_.splice(slots_.begin(), temp_slots_);
+    slots_.erase(placeholder);
   }
 
-  iterator begin() { return temp_slots_.begin(); }
-  iterator end() { return temp_slots_.end(); }
-  const_iterator begin() const { return temp_slots_.begin(); }
-  const_iterator end() const { return temp_slots_.end(); }
+  iterator begin() { return slots_.begin(); }
+  iterator end() { return placeholder; }
+  const_iterator begin() const { return slots_.begin(); }
+  const_iterator end() const { return placeholder; }
 
 private:
   slot_list &slots_;
-  slot_list temp_slots_;
+  slot_list::iterator placeholder;
 };
   
 } /* namespace internal */

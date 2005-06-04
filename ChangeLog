@@ -1,3 +1,12 @@
+2005-05-16  Neal E. Coombes  <nealc@trdlnk.com>
+ 	
+	* sigc++/signal_base.h:  Modified temp_slot_list to be a temporary view
+	into a slot list.  Instead of emptying the original it now simply tacks
+	a placeholder to the end of the original.  It then uses this as it's
+	'end' iterator.  This should allow for conscious recursiveness, as well
+	as inserting a slot to any position in the slot list during emittion.
+	See bug #303896.
+
 2005-06-04  Friedemann Kleint <kleint@bifab.de>
 
 	* sigc++/macros/limit_reference.h.m4: 
