@@ -1,5 +1,11 @@
 2005-06-07  Murray Cumming <murrayc@murrayc.com>
 
+	* sigc++/macros/signal.h.m4: Added comments about commenting-out
+        SIGC_TYPEDEF_REDEFINE_ALLOWED when using SUN Forte CC 5.7, 
+        because I can not seem to create a test for it.
+
+2005-06-07  Murray Cumming <murrayc@murrayc.com>
+
 	* configure.ac:
 	* scripts/cxx_std.m4:
 	* sigc++/macros/signal.h.m4:

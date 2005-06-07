@@ -467,11 +467,13 @@ divert(0)
 #include <sigc++/functors/slot.h>
 #include <sigc++/functors/mem_fun.h>
 
-// TODO: This should have its own test.
+//SIGC_TYPEDEF_REDEFINE_ALLOWED:
+// TODO: This should have its own test, but I can not create one that gives the error instead of just a warning. murrayc.
 // I have just used this because there is a correlation between these two problems.
 #ifdef SIGC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD
-  //Compilers, such as SUN Forte C++, that do not allow this also often
+  //Compilers, such as older versions of SUN Forte C++, that do not allow this also often
   //do not allow a typedef to have the same name as a class in the typedef's definition.
+  //For Sun Forte CC 5.7 (SUN Workshop 10), comment this out to fix the build.
   #define SIGC_TYPEDEF_REDEFINE_ALLOWED 1
 #endif
 
