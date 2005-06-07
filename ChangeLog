@@ -1,5 +1,11 @@
 2005-06-07  Murray Cumming <murrayc@murrayc.com>
 
+	* sigc++/macros/signal.h.m4: signal_emit::emit(): Use scope to 
+	ensure a certain order of destruction of the member variables, to 
+	avoid a leak on MSVC++. Patch by Andreas Ames in Bug #306249.
+
+2005-06-07  Murray Cumming <murrayc@murrayc.com>
+
 	* sigc++/macros/signal.h.m4: Added comments about commenting-out
         SIGC_TYPEDEF_REDEFINE_ALLOWED when using SUN Forte CC 5.7, 
         because I can not seem to create a test for it.

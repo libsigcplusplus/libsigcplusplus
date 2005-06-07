@@ -105,22 +105,32 @@ FOR(1, $1,[
    */
   static result_type emit(LIST(signal_impl* impl, LOOP(typename type_trait<T_arg%1>::take _A_a%1, $1)))
     {
-      if (!impl || impl->slots_.empty()) return T_return();
-      temp_slot_list slots(impl->slots_);
-      iterator_type it = slots.begin();
-      for (; it != slots.end(); ++it)
-        if (!it->empty() && !it->blocked()) break;
-      if (it == slots.end()) return T_return(); // note that 'T_return r_();' doesn't work => define 'r_' after this line and initialize as follows:
-
+      if (!impl || impl->slots_.empty())
+        return T_return();
+        
       signal_exec exec(impl);
-
-      T_return r_ = (reinterpret_cast<call_type>(it->rep_->call_))(LIST(it->rep_, LOOP(_A_a%1, $1)));
-      for (++it; it != slots.end(); ++it)
-        {
-          if (it->empty() || it->blocked())
-            continue;
-          r_ = (reinterpret_cast<call_type>(it->rep_->call_))(LIST(it->rep_, LOOP(_A_a%1, $1)));
-        }
+      T_return r_ = T_return(); 
+      
+      //Use this scope to make sure that "slots" is destroyed before "exec" is destroyed.
+      //This avoids a leak on MSVC++ - see http://bugzilla.gnome.org/show_bug.cgi?id=306249
+      { 
+        temp_slot_list slots(impl->slots_);
+        iterator_type it = slots.begin();
+        for (; it != slots.end(); ++it)
+          if (!it->empty() && !it->blocked()) break;
+          
+        if (it == slots.end())
+          return T_return(); // note that 'T_return r_();' doesn't work => define 'r_' after this line and initialize as follows:
+  
+        r_ = (reinterpret_cast<call_type>(it->rep_->call_))(LIST(it->rep_, LOOP(_A_a%1, $1)));
+        for (++it; it != slots.end(); ++it)
+          {
+            if (it->empty() || it->blocked())
+              continue;
+            r_ = (reinterpret_cast<call_type>(it->rep_->call_))(LIST(it->rep_, LOOP(_A_a%1, $1)));
+          }
+      }
+      
       return r_;
     }
 };

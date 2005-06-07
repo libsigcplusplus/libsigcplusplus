@@ -47,6 +47,7 @@ AC_TRY_COMPILE(
   AC_MSG_RESULT([$sigcm_cxx_gcc_template_specialization_operator_overload])
 ])
 ])
+
 AC_DEFUN([SIGC_CXX_MSVC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD],[
 AC_MSG_CHECKING([if C++ compiler supports the use of a particular specialization when calling operator() template methods omitting the template keyword.])
 AC_TRY_COMPILE(
