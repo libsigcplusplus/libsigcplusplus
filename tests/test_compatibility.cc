@@ -82,7 +82,7 @@ int main() {
 
   // SigC::hide
   sig1.clear();
-  sig1.connect(SigC::hide<int>(SigC::slot(obj2, &bar::test_int)));
+  sig1.connect(SigC::hide<int>(SigC::slot(obj2, &foo::test_int)));
   std::cout << sig1(1) << std::endl;
 
   // SigC::bind

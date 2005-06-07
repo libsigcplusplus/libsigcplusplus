@@ -1,5 +1,12 @@
 2005-06-07  Murray Cumming <murrayc@murrayc.com>
 
+	* tests/test_compatibility.cc: Specify the actual class when 
+	using test_int(), instead of the derived class, to fix the build 
+	on SUN Forte CC 5.5. Patch from Friedemann Kleint in 
+	Bug #305647
+
+2005-06-07  Murray Cumming <murrayc@murrayc.com>
+
 	* sigc++/macros/signal.h.m4: signal_emit::emit(): Use scope to 
 	ensure a certain order of destruction of the member variables, to 
 	avoid a leak on MSVC++. Patch by Andreas Ames in Bug #306249.
