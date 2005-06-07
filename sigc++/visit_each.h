@@ -35,14 +35,14 @@ struct limit_derived_target
   template <bool I_derived, class T_type>
   struct with_type;
 
-  //Specializatoin for I_derived = false
+  //Specialization for I_derived = false
   template <class T_type> struct
   with_type<false, T_type>
   {
     static void execute_(const T_type&, const T_self&) {}
   };
 
-  //Specializatoin for I_derived = true
+  //Specialization for I_derived = true
   template <class T_type> struct
   with_type<true, T_type>
   {
@@ -72,14 +72,14 @@ struct limit_derived_target<T_target*, T_action>
   template <bool I_derived, class T_type>
   struct with_type;
 
-  //Specializatoin for I_derived = false
+  //Specialization for I_derived = false
   template <class T_type>
   struct with_type<false, T_type>
   {
     static void execute_(const T_type&, const T_self&) {}
   };
 
-  //Specializatoin for I_derived = true
+  //Specialization for I_derived = true
   template <class T_type>
   struct with_type<true, T_type>
   {

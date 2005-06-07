@@ -1,3 +1,8 @@
+2005-06-07  Murray Cumming <murrayc@murrayc.com>
+
+	* sigc++/visit_each.h: limit_derived_target(): Just some whitespace 
+        changes.
+
 2005-05-16  Neal E. Coombes  <nealc@trdlnk.com>
  	
 	* sigc++/signal_base.h:  Modified temp_slot_list to be a temporary view
