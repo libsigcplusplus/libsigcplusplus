@@ -63,7 +63,7 @@ struct limit_derived_target
   T_action action_;
 };
 
-// Specialization for T_targte pointer types, to provide a slightly different execute_() implementation.
+// Specialization for T_target pointer types, to provide a slightly different execute_() implementation.
 template <class T_target, class T_action>
 struct limit_derived_target<T_target*, T_action>
 {

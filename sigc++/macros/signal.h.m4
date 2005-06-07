@@ -627,8 +627,20 @@ struct slot_list
 
   typedef slot_iterator<slot_type>              iterator;
   typedef slot_const_iterator<slot_type>        const_iterator;
+  
+  #ifndef SIGC_HAVE_SUN_REVERSE_ITERATOR
   typedef std::reverse_iterator<iterator>       reverse_iterator;
   typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
+  #else
+  typedef std::reverse_iterator<iterator, std::random_access_iterator_tag,
+                                int, int&, int*, ptrdiff_t> reverse_iterator;
+
+  typedef std::reverse_iterator<const_iterator, std::random_access_iterator_tag,
+                                int, const int&, const int*, ptrdiff_t> const_reverse_iterator;
+  #endif /* SIGC_HAVE_SUN_REVERSE_ITERATOR */
+
+
+
 
   slot_list()
     : list_(0) {}

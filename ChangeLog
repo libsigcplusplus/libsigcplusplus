@@ -1,5 +1,15 @@
 2005-06-07  Murray Cumming <murrayc@murrayc.com>
 
+	* configure.ac:
+	* scripts/cxx_std.m4:
+	* sigc++/macros/signal.h.m4:
+	* sigc++config.h.in: Added check for 
+	the non-standard SUN Forte reverse_iterator<>,
+	and used it. This is based on the same stuff in 
+	gtkmm.
+
+2005-06-07  Murray Cumming <murrayc@murrayc.com>
+
 	* sigc++/visit_each.h: limit_derived_target(): Just some whitespace 
         changes.
 
