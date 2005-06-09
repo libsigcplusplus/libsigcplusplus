@@ -1,3 +1,19 @@
+2.0.13:
+
+* signal_emit::emit(): Ensure the correct order of 
+  destruction of the member variables, to avoid a leak.
+  (Andreas Ames, bug #306249)
+* Allow recursive signal emission again.
+  (Neal E. Coombes, bug #303896)
+* SUN Forte CC 5.5 build fixes:
+  - test_compatibility minor fix.
+  - visit_each() template specializations: 
+  Mention the bool I_derives_trackable template type,
+  (Friedemann Kleint, bug #305647)
+ - Check for the non-standard SUN reverse_iterator,
+  and use alternative code if necessary.
+  (Murray Cumming)
+
 2.0.12:
 
 * Fixes crashes when using virtual inheritance, particularly 

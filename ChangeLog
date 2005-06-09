@@ -1,3 +1,5 @@
+2.0.13:
+
 2005-06-07  Murray Cumming <murrayc@murrayc.com>
 
 	* tests/test_compatibility.cc: Specify the actual class when 
