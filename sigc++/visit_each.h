@@ -26,34 +26,39 @@ namespace sigc {
 
 namespace internal {
 
+//This should really be an inner class of limit_derived_target, without the T_limit template type,
+//But the SUN CC 5.7 (not earlier versions) compiler finds it ambiguous when we specify a particular specialization of it.
+//and does not seem to allow us to tell it explicitly that it's an inner class.
+template <bool I_derived, class T_type, class T_limit>
+struct with_type;
+
+//Specialization for I_derived = false
+template <class T_type, class T_limit> struct
+with_type<false, T_type, T_limit>
+{
+  static void execute_(const T_type&, const T_limit&) {}
+};
+
+//Specialization for I_derived = true
+template <class T_type, class T_limit> struct
+with_type<true, T_type, T_limit>
+{
+  static void execute_(const T_type& _A_type, const T_limit& _A_action)
+  { _A_action.action_(_A_type); }
+};
+
+
 /// Helper struct for visit_each_type().
 template <class T_target, class T_action>
 struct limit_derived_target
 {
   typedef limit_derived_target<T_target, T_action> T_self;
 
-  template <bool I_derived, class T_type>
-  struct with_type;
-
-  //Specialization for I_derived = false
-  template <class T_type> struct
-  with_type<false, T_type>
-  {
-    static void execute_(const T_type&, const T_self&) {}
-  };
-
-  //Specialization for I_derived = true
-  template <class T_type> struct
-  with_type<true, T_type>
-  {
-    static void execute_(const T_type& _A_type, const T_self& _A_action)
-    { _A_action.action_(_A_type); }
-  };
-
+ 
   template <class T_type>
   void operator()(const T_type& _A_type) const
   {
-    with_type<is_base_and_derived<T_target,T_type>::value, T_type>::execute_(_A_type, *this);
+    with_type<is_base_and_derived<T_target, T_type>::value, T_type, T_self>::execute_(_A_type, *this);
   }
 
   limit_derived_target(const T_action& _A_action)
