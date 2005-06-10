@@ -1,3 +1,10 @@
+2005-06-10  Murray Cumming  <murrayc@murrayc.com>
+
+	* sigc++/visit_each.h: Make the 
+        limit_derived_target::with_type inner class an outer class, 
+	to satisfy the SUN CC 5.7 compiler, though I think it is a 
+	compiler bug. Bug #302098 has the test case.
+
 2.0.13:
 
 2005-06-07  Murray Cumming <murrayc@murrayc.com>

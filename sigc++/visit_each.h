@@ -40,8 +40,8 @@ with_type<false, T_type, T_limit>
 };
 
 //Specialization for I_derived = true
-template <class T_type, class T_limit> struct
-with_type<true, T_type, T_limit>
+template <class T_type, class T_limit>
+struct with_type<true, T_type, T_limit>
 {
   static void execute_(const T_type& _A_type, const T_limit& _A_action)
   { _A_action.action_(_A_type); }
@@ -69,33 +69,35 @@ struct limit_derived_target
 };
 
 // Specialization for T_target pointer types, to provide a slightly different execute_() implementation.
+
+template <bool I_derived, class T_type, class T_limit>
+struct with_type_pointer;
+
+//Specialization for I_derived = false
+template <class T_type, class T_limit>
+struct with_type_pointer<false, T_type, T_limit>
+{
+ static void execute_(const T_type&, const T_limit&) {}
+};
+
+//Specialization for I_derived = true
+template <class T_type, class T_limit>
+struct with_type_pointer<true, T_type, T_limit>
+{
+  static void execute_(const T_type& _A_type, const T_limit& _A_action) 
+  { _A_action.action_(&_A_type); }
+};
+
 template <class T_target, class T_action>
 struct limit_derived_target<T_target*, T_action>
 {
   typedef limit_derived_target<T_target*, T_action> T_self;
 
-  template <bool I_derived, class T_type>
-  struct with_type;
-
-  //Specialization for I_derived = false
-  template <class T_type>
-  struct with_type<false, T_type>
-  {
-    static void execute_(const T_type&, const T_self&) {}
-  };
-
-  //Specialization for I_derived = true
-  template <class T_type>
-  struct with_type<true, T_type>
-  {
-    static void execute_(const T_type& _A_type, const T_self& _A_action) 
-    { _A_action.action_(&_A_type); }
-  };
 
   template <class T_type>
   void operator()(const T_type& _A_type) const
   {
-    with_type<is_base_and_derived<T_target, T_type>::value, T_type>::execute_(_A_type, *this);
+    with_type_pointer<is_base_and_derived<T_target, T_type>::value, T_type, T_self>::execute_(_A_type, *this);
   }
 
   limit_derived_target(const T_action& _A_action)
