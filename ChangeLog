@@ -1,3 +1,10 @@
+2005-06-10  Murray Cumming  <murrayc@murrayc.com>
+
+	* sigc++/adaptors/macros/bind.h.m4:
+	* sigc++/functors/macros/slot.h.m4:
+	* sigc++/macros/signal.h.m4: Use CALL_SIZE instead of 
+	hard-coded 7s and 6s.
+
 2.0.14:
 
 2005-06-10  Murray Cumming  <murrayc@murrayc.com>

@@ -80,8 +80,7 @@ define([BIND_FUNCTOR_LOCATION],[dnl
  * @ingroup bind
  */
 template <class T_functor, class T_bound>
-dnl TODO: I don't like the hardcoded 6 here. murrayc.
-struct bind_functor<$1, T_functor, T_bound, LIST(LOOP(nil, 6))> : public adapts<T_functor>
+struct bind_functor<$1, T_functor, T_bound, LIST(LOOP(nil, CALL_SIZE - 1))> : public adapts<T_functor>
 {
   typedef typename adapts<T_functor>::adaptor_type adaptor_type;
 
@@ -121,8 +120,7 @@ define([BIND_FUNCTOR_COUNT],[dnl
  * @ingroup bind
  */
 template <LIST(class T_functor, LOOP(class T_type%1, $1))>
-dnl TODO: I don't like the hardcoded 7 here. murrayc.
-struct bind_functor<LIST(-1, T_functor, LIST(LOOP(T_type%1, $1), LOOP(nil, 7 - $1)))> : public adapts<T_functor>
+struct bind_functor<LIST(-1, T_functor, LIST(LOOP(T_type%1, $1), LOOP(nil, CALL_SIZE - $1)))> : public adapts<T_functor>
 {
   typedef typename adapts<T_functor>::adaptor_type adaptor_type;
 

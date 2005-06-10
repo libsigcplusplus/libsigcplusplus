@@ -136,8 +136,7 @@ dnl *
 dnl * @ingroup slot
  */
 template <LIST(class T_return, LOOP(class T_arg%1, $1))>])
-dnl TODO: I don't like the hardcoded 7 here. murrayc.
-class slot ifelse($1, $2,,[<LIST(T_return, LIST(LOOP(T_arg%1, $1), LOOP(nil, 7 - $1)))>])
+class slot ifelse($1, $2,,[<LIST(T_return, LIST(LOOP(T_arg%1, $1), LOOP(nil, CALL_SIZE - $1)))>])
   : public slot$1<LIST(T_return, LOOP(T_arg%1, $1))>
 {
 public:
