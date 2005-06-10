@@ -1,3 +1,9 @@
+2.0.14:
+
+* SUN Forte 5.7 build fix for ambiguity when using 
+  inner template class. However, you still need the 
+  patch in bug #302098 to finish the build.
+
 2.0.13:
 
 * signal_emit::emit(): Ensure the correct order of 

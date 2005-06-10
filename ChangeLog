@@ -1,3 +1,5 @@
+2.0.14:
+
 2005-06-10  Murray Cumming  <murrayc@murrayc.com>
 
 	* sigc++/visit_each.h: Make the 
