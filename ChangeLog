@@ -1,3 +1,17 @@
+2005-06-12  Paul Pogonyshev  <pogonyshev@gmx.net>
+
+	* configure.ac: 
+	* scripts/cxx.m4: 
+	* sigc++config.h.in: Add test for whether the compiler allows
+	referencing to member functions of the class/structure being
+	declared from a definition of a static member variable.
+	Supposedly a generic solution for GCC 3.2 compilation problems.
+
+	* sigc++/type_traits.h: Define SIGC_WRAP_IS_BASE_CLASS_ based on
+	results of the above test.
+	(struct is_base_and_derived): Wrap up is_base_class_() functions
+	in an internal class if SIGC_WRAP_IS_BASE_CLASS_ is defined.
+
 2005-06-10  Murray Cumming  <murrayc@murrayc.com>
 
 	* sigc++/adaptors/macros/bind.h.m4:

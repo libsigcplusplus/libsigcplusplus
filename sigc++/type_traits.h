@@ -19,6 +19,9 @@
 #ifndef _SIGC_TYPE_TRAIT_H_
 #define _SIGC_TYPE_TRAIT_H_
 
+#include <sigc++config.h> //To get SIGC_SELF_REFERENCE_IN_MEMBER_INITIALIZATION
+
+
 namespace sigc {
 
 template <class T_type>
@@ -97,26 +100,38 @@ private:
     char memory[64];
   };
 
-  //Allow the test inner class to access the other (big) inner class.
-  //The Tru64 compiler needs this. murrayc.
-  //struct test;
-  //friend struct test;
+#ifndef SIGC_SELF_REFERENCE_IN_MEMBER_INITIALIZATION
 
-  //The AIX xlC compiler does not like these 2 functions being in the inner class.
-  //It says "The incomplete type "test" must no be used as a qualifier.
-  //It does not seem necessary anyway. murrayc.
+  //Allow the internal inner class to access the other (big) inner
+  //class.  The Tru64 compiler needs this. murrayc.
+  friend struct internal;
 
-  //struct test {
-  //For gcc 3.2, try uncommenting the "struct test" inner class declaration, and also using a test:: prefix below.
-  //If it works then submit a patch. A new configure-time compiler-ability check would be even better. murrayc.
+  //Certain compilers, notably GCC 3.2, require these functions to be inside an inner class.
+  struct internal
+  {
     static big  is_base_class_(...);
     static char is_base_class_(typename type_trait<T_base>::pointer);
-  //};
+  };
+
+public:
+  static const bool value =
+    sizeof(internal::is_base_class_(reinterpret_cast<typename type_trait<T_derived>::pointer>(0))) ==
+    sizeof(char);
+
+#else //SIGC_SELF_REFERENCE_IN_MEMBER_INITIALIZATION
+
+  //The AIX xlC compiler does not like these 2 functions being in the inner class.
+  //It says "The incomplete type "test" must not be used as a qualifier.
+  //It does not seem necessary anyway. murrayc.
+  static big  is_base_class_(...);
+  static char is_base_class_(typename type_trait<T_base>::pointer);
 
 public:
   static const bool value =
     sizeof(is_base_class_(reinterpret_cast<typename type_trait<T_derived>::pointer>(0))) ==
     sizeof(char);
+
+#endif //SIGC_SELF_REFERENCE_IN_MEMBER_INITIALIZATION
 
   void avoid_gcc3_warning_(); //Not implemented. g++ 3.3.5 (but not 3.3.4, and not 3.4) warn that there are no public methods, even though there is a public variable.
 };
