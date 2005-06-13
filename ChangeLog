@@ -1,3 +1,8 @@
+2005-06-13  Marek Rouchal  <marek.rouchal@infineon.com>
+
+	* tests/test_deduce_result_type.cc: Specify int return type 
+	for main(), to be more ISO C++ compliant. Bug #307478.
+
 2005-06-11  Andris Pavenis <pavenis@latnet.lv>
 
 	* sigc++/adaptors/lambda/macros/base.h.m4:

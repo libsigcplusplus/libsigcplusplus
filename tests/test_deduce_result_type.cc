@@ -32,11 +32,13 @@ struct foo : public sigc::functor_base
 struct foo2 :public foo
 {};
 
-main()
+int main()
 {
   bar(sigc::deduce_result_type<foo2,long>::type());
   bar(sigc::deduce_result_type<foo2,int,int>::type());
 #ifdef FAIL
   bar(sigc::deduce_result_type<foo2,int,int,int>::type());
 #endif
+
+  return 0;
 }
