@@ -21,12 +21,13 @@ dnl
 dnl Macros to make select arguments
 define([LAMBDA_SELECT_DO],[dnl
   template <LOOP(class T_arg%1, $2)>
-  T_arg$1 operator ()(LOOP(T_arg%1 _A_%1, $2)) const { return _A_$1; }
+dnl T_arg$1 operator ()(LOOP(T_arg%1 _A_%1, $2)) const { return _A_$1; }
+  T_arg$1 operator ()(LIST(FOR(1,eval($1-1),[T_arg%1,]),T_arg$1 _A_$1,FOR(eval($1+1),$2,[T_arg%1,]))) const { return _A_$1; }
 
   #ifndef SIGC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD
   template <LOOP(class T_arg%1, $2)>
   //Does not work: T_arg$1 sun_forte_workaround(LOOP(T_arg%1 _A_%1, $2)) const { return operator()( LOOP(_A_%1, $2) ); }
-  T_arg$1 sun_forte_workaround(LOOP(T_arg%1 _A_%1, $2)) const { return _A_$1; }
+  T_arg$1 sun_forte_workaround(LIST(FOR(1,eval($1-1),[T_arg%1,]),T_arg$1 _A_$1,FOR(eval($1+1),$2,[T_arg%1,]))) const { return _A_$1; }
   #endif
   
 ])

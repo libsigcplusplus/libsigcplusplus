@@ -1,3 +1,10 @@
+2005-06-11  Andris Pavenis <pavenis@latnet.lv>
+
+	* sigc++/adaptors/lambda/macros/base.h.m4:
+	* sigc++/adaptors/lambda/macros/select.h.m4
+	* sigc++/adaptors/macros/hide.h.m4: Specify only a type (not a
+	parameter name) for unused member function parameters
+
 2005-06-12  Paul Pogonyshev  <pogonyshev@gmx.net>
 
 	* configure.ac: 

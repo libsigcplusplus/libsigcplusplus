@@ -37,12 +37,12 @@ define([LAMBDA_DO],[dnl
 ])dnl
 define([LAMBDA_DO_VALUE],[dnl
   template <LOOP(class T_arg%1, $1)>
-  result_type operator ()(LOOP(T_arg%1 _A_%1, $1)) const 
+  result_type operator ()(LOOP(T_arg%1, $1)) const 
     { return value_; }
 
   #ifndef SIGC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD
   template <LOOP(class T_arg%1, $1)>
-  result_type sun_forte_workaround(LOOP(T_arg%1 _A_%1, $1)) const
+  result_type sun_forte_workaround(LOOP(T_arg%1, $1)) const
     { return value_; }
   #endif //SIGC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD
 
