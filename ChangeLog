@@ -1,3 +1,11 @@
+2005-07-04  Philip Langdale  <plangdale@vmware.com>
+
+	* sigc++/adaptors/macros/compose.h.m4: Add a setter typedef to 
+	compose*_functor and use it instead of the (incorrect) getter 
+	typedef in the compose* specialization of visit_each<>().
+	This corrects the lifetime management of slots created with 
+	compose(). Bug #308433.
+
 2005-06-13  Marek Rouchal  <marek.rouchal@infineon.com>
 
 	* tests/test_deduce_result_type.cc: Specify int return type 

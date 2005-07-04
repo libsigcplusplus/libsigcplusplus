@@ -89,6 +89,7 @@ template <class T_setter, class T_getter>
 struct compose1_functor : public adapts<T_setter>
 {
   typedef typename adapts<T_setter>::adaptor_type adaptor_type;
+  typedef T_setter setter_type;
   typedef T_getter getter_type;
 
   template <LOOP(class T_arg%1 = void, CALL_SIZE)>
@@ -134,6 +135,7 @@ template <class T_setter, class T_getter1, class T_getter2>
 struct compose2_functor : public adapts<T_setter>
 {
   typedef typename adapts<T_setter>::adaptor_type adaptor_type;
+  typedef T_setter setter_type;
   typedef T_getter1 getter1_type;
   typedef T_getter2 getter2_type;
   
@@ -184,7 +186,7 @@ void visit_each(const T_action& _A_action,
   typedef compose1_functor<T_setter, T_getter> type_functor;
   
   //Note that the AIX compiler needs the actual template types of visit_each to be specified:
-  typedef typename type_functor::adaptor_type type_functor1;
+  typedef typename type_functor::setter_type type_functor1;
   visit_each<T_action, type_functor1>(_A_action, _A_target.functor_);
   
   typedef typename type_functor::getter_type type_functor_getter;
@@ -205,7 +207,7 @@ void visit_each(const T_action& _A_action,
   typedef compose2_functor<T_setter, T_getter1, T_getter2> type_functor;
   
   //Note that the AIX compiler needs the actual template types of visit_each to be specified:
-  typedef typename type_functor::adaptor_type type_functor1;
+  typedef typename type_functor::setter_type type_functor1;
   visit_each<T_action, type_functor1>(_A_action, _A_target.functor_);
   
   typedef typename type_functor::getter1_type type_functor_getter1;
