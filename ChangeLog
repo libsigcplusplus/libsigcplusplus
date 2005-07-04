@@ -1,3 +1,5 @@
+2.0.15:
+
 2005-07-04  Philip Langdale  <plangdale@vmware.com>
 
 	* sigc++/adaptors/macros/compose.h.m4: Add a setter typedef to 

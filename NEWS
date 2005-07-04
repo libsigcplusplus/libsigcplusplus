@@ -1,3 +1,13 @@
+2.0.15:
+
+* g++ 3.2 (and Mac OS X g++ 3.3) build fix.
+  (Paul Pogonyshev)
+* Compose: Fix slot lifetime regression introduced in 
+  2.0.9. (Philip Langdale)
+* tests: Small ISO C++ correctness fix (Marek Rouchal)
+* Don't specify unused function parameter names.
+  (Andris Pavenis)
+
 2.0.14:
 
 * SUN Forte 5.7 build fix for ambiguity when using 
