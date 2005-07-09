@@ -1,5 +1,11 @@
 2005-07-09  Murray Cumming  <murrayc@murrayc.com>
 
+	* sigc++/macros/signal.h.m4: Did the same (see 
+	last commit) for slot_const_iterator and 
+	slot_iterator_buf.
+
+2005-07-09  Murray Cumming  <murrayc@murrayc.com>
+
 	* sigc++/macros/signal.h.m4: slot_iterator:
 	operator--() now returns value, not reference, like 
 	operator++() already did. This caused crashes when 

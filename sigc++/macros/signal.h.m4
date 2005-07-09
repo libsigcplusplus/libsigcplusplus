@@ -598,13 +598,13 @@ struct slot_const_iterator
       return __tmp;
     }
 
-  slot_const_iterator& operator--()
+  slot_const_iterator operator--()
     {
       --i_;
       return *this;
     }
 
-  slot_const_iterator& operator--(int)
+  slot_const_iterator operator--(int)
     {
       slot_const_iterator __tmp(*this);
       --i_;
@@ -779,14 +779,14 @@ struct slot_iterator_buf
       return __tmp;
     }
 
-  slot_iterator_buf& operator--()
+  slot_iterator_buf operator--()
     {
       --i_;
       invoked_ = false;
       return *this;
     }
 
-  slot_iterator_buf& operator--(int)
+  slot_iterator_buf operator--(int)
     {
       slot_iterator_buf __tmp(*this);
       --i_;
@@ -855,14 +855,14 @@ struct slot_iterator_buf<T_emitter, void>
       return __tmp;
     }
 
-  slot_iterator_buf& operator--()
+  slot_iterator_buf operator--()
     {
       --i_;
       invoked_ = false;
       return *this;
     }
 
-  slot_iterator_buf& operator--(int)
+  slot_iterator_buf operator--(int)
     {
       slot_iterator_buf __tmp(*this);
       --i_;
