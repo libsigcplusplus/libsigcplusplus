@@ -1,3 +1,11 @@
+2005-07-09  Murray Cumming  <murrayc@murrayc.com>
+
+	* sigc++/macros/signal.h.m4: slot_iterator:
+	operator--() now returns value, not reference, like 
+	operator++() already did. This caused crashes when 
+	using --no-inline with g++. Bug #308651 by 
+	Michael Andres.
+
 2.0.15:
 
 2005-07-04  Philip Langdale  <plangdale@vmware.com>

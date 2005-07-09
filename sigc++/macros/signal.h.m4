@@ -532,13 +532,13 @@ struct slot_iterator
       return __tmp;
     }
 
-  slot_iterator& operator--()
+  slot_iterator operator--()
     {
       --i_;
       return *this;
     }
 
-  slot_iterator& operator--(int)
+  slot_iterator operator--(int)
     {
       slot_iterator __tmp(*this);
       --i_;
