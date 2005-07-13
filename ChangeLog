@@ -1,5 +1,11 @@
 2005-07-13  Murray Cumming  <murrayc@murrayc.com>
 
+	* docs/manual/libsigc_manual.xml: Correct mentions of 
+	1.2 stuff instead of 2.0. Patch in bug #310213 from 
+	pebble.org.uk.  
+
+2005-07-13  Murray Cumming  <murrayc@murrayc.com>
+
 	* docs/manual/libsigc_manual.xml: Fixed typo 
 	found by Antonio Coralles.
 

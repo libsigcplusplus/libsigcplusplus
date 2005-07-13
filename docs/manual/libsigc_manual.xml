@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+p<?xml version="1.0"?>
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" >
 <book>
 
@@ -127,7 +127,7 @@ int main()
 	<literal remap="tt">warn_people()</literal> function to a slot using the <literal remap="tt">slot()</literal> function.</para>
 
 	<para>To compile this example from the downloadable example code, use:</para>
-	<programlisting>g++ example1.cc -o eg1 `pkg-config --cflags --libs sigc++-1.2`</programlisting>
+	<programlisting>g++ example1.cc -o eg1 `pkg-config --cflags --libs sigc++-2.0`</programlisting>
 	<para>Note that those `` characters are backticks, not single quotes. Run it with</para>
 	<programlisting>./eg1</programlisting>
 	<para>(Try not to panic when the aliens land!)</para>
@@ -484,6 +484,6 @@ double average_of_all_connected_slots = mysignal();
 
 <chapter id="sec-reference">
 <title>Reference</title>
-	<para>See the reference documentation <ulink url="http://libsigc.sourceforge.net/libsigc1_2/reference/">online</ulink></para>
+	<para>See the reference documentation <ulink url="http://libsigc.sourceforge.net/libsigc2/docs/index.html">online</ulink></para>
 </chapter>
 </book>
