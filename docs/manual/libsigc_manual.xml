@@ -62,7 +62,7 @@ register_click_handler(okbutton, clicked, somedata);
 
 	<para>All of which can take different numbers and types of arguments.</para>
 
-	<para>To make it easier to construct these, libsigc++ provides 2 the sigc::ptr_fun() and sigc::mem_fun() functions, for creating slots from static functions and member functions, respectively. They return
+	<para>To make it easier to construct these, libsigc++ provides the sigc::ptr_fun() and sigc::mem_fun() functions, for creating slots from static functions and member functions, respectively. They return
 	a generic <literal remap="tt">signal::slot</literal> type that can be invoked with <literal remap="tt">emit()</literal> or <literal remap="tt">operator()</literal>.</para>
 
 	<para>For the other side of the fence, LibSigC++ provides <literal remap="tt">signal</literal>s, to which the
