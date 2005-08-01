@@ -1,3 +1,11 @@
+2005-08-19  Bruno Martinez <brunom@fing.edu.uy>
+
+	* sigc++/type_traits.h: Renamed
+	::sigc::is_base_and_derived::internal to 
+	::sigc::is_base_and_derived::internal_class
+	in order to avoid conflict with
+	namespace internal. 
+
 2005-07-13  Murray Cumming  <murrayc@murrayc.com>
 
 	* docs/manual/libsigc_manual.xml: Correct mentions of 

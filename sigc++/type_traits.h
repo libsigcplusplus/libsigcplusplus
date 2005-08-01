@@ -104,10 +104,10 @@ private:
 
   //Allow the internal inner class to access the other (big) inner
   //class.  The Tru64 compiler needs this. murrayc.
-  friend struct internal;
+  friend struct internal_class;
 
   //Certain compilers, notably GCC 3.2, require these functions to be inside an inner class.
-  struct internal
+  struct internal_class
   {
     static big  is_base_class_(...);
     static char is_base_class_(typename type_trait<T_base>::pointer);
@@ -115,7 +115,7 @@ private:
 
 public:
   static const bool value =
-    sizeof(internal::is_base_class_(reinterpret_cast<typename type_trait<T_derived>::pointer>(0))) ==
+    sizeof(internal_class::is_base_class_(reinterpret_cast<typename type_trait<T_derived>::pointer>(0))) ==
     sizeof(char);
 
 #else //SIGC_SELF_REFERENCE_IN_MEMBER_INITIALIZATION
