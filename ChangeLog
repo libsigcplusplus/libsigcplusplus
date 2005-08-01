@@ -1,4 +1,9 @@
-2005-07-13  Murray Cumming  <murrayc@murrayc.com>
+2005-08-01  Neal E. Coombes  <nealc@trdlnk.com>
+
+ 	* sigc++/signal_base.h: Updated the documentation for temp_slot_list
+ 	as requested in bug #303896.
+
+2005-08-01  Murray Cumming  <murrayc@murrayc.com>
 
 	* sigc++/adaptors/hide.h.m4: Added missing 
 	) in call to sun_forte_workaround(), fixing

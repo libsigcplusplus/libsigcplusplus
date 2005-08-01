@@ -162,11 +162,12 @@ struct SIGC_API signal_exec
 };
 
 /** Temporary slot list used during signal emission.
- * The signal's slot list is swapped into a temp_slot_list
- * object during signal emission. While slots connected during
- * signal emission are stored in the original list the
- * accumulators work on the temp_slot_list object so that
- * new slots are not executed until the next emission occurs.
+ *  Through evolution this class is slightly misnamed.  It is now
+ *  an index into the slot_list passed into it.  It simply keeps track
+ *  of where the end of this list was at construction, and pretends that's
+ *  the end of your list.  This way you may connect during emittion without
+ *  inadvertently entering an infinite loop, as well as make other
+ *  modifications to the slot_list at your own risk.
  */
 struct temp_slot_list
 {
