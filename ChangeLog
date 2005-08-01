@@ -1,3 +1,9 @@
+2005-07-13  Murray Cumming  <murrayc@murrayc.com>
+
+	* sigc++/adaptors/hide.h.m4: Added missing 
+	) in call to sun_forte_workaround(), fixing
+	build on SUN Forte 5.5. Bug #312020.
+
 2005-08-19  Bruno Martinez <brunom@fing.edu.uy>
 
 	* sigc++/type_traits.h: Renamed
