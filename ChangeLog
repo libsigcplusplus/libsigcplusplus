@@ -1,3 +1,5 @@
+2.0.16:
+
 2005-08-01  Neal E. Coombes  <nealc@trdlnk.com>
 
  	* sigc++/signal_base.h: Updated the documentation for temp_slot_list

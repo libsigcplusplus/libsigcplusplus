@@ -1,3 +1,9 @@
+2.0.16:
+
+* Fixed build for SUN Forte C++ 5.5
+* Fixed build for MSVC++ 7.1
+* Fixed crash when using --no-inline with g++.
+
 2.0.15:
 
 * g++ 3.2 (and Mac OS X g++ 3.3) build fix.
