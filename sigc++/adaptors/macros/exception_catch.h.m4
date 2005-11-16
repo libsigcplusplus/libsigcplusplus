@@ -140,7 +140,6 @@ FOR(1,CALL_SIZE,[[EXCEPTION_CATCH_OPERATOR(%1)]])dnl
     {}
   ~exception_catch_functor() {}
 
-  protected: 
     T_catcher catcher_; 
 };
 
