@@ -1,5 +1,16 @@
 2005-12-01  Murray Cumming <murrayc@murrayc.com>
 
+	* sigc++/functors/slot_base.cc: 
+	slot_base::disconnect(): Set call_ to 0, 
+	to invalidate the slot, even if parent_ is 0. 
+	I think parent_ is, for instance, a signal, but 
+	disconnect should still work on a slot that is not 
+	connected to a signal, because a slot can be invoked 
+	directly.
+	Fixes bug #311057 from James Lin.
+
+2005-12-01  Murray Cumming <murrayc@murrayc.com>
+
 	* tests/Makefile.am:
 	* tests/test_slot_disconnect.cc: Added test 
 	case from bug #311057.

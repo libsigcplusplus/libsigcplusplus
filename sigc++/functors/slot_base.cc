@@ -49,6 +49,8 @@ void slot_rep::disconnect()
     parent_ = 0;        // Just a precaution.
     (cleanup_)(data_);  // Notify the parent (might lead to destruction of this!).
   }
+  else
+    call_ = 0;
 }
 
 //static
