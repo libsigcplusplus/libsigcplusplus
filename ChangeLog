@@ -1,3 +1,9 @@
+2005-12-01  Murray Cumming <murrayc@murrayc.com>
+
+	* tests/Makefile.am:
+	* tests/test_slot_disconnect.cc: Added test 
+	case from bug #311057.
+
 2005-11-16  Philipp Berndt  <philipp.berndt@gmx.net>
 
 	* sigc++/adaptors/macros/exception_catch.h.m4: Make member

@@ -28,6 +28,7 @@ noinst_PROGRAMS= \
   test_compatibility \
   test_limit_reference \
   test_copy_invalid_slot \
+  test_slot_disconnect \
   test_custom
 
 #Disabled:
@@ -65,4 +66,5 @@ test_size_SOURCES = test_size.cc
 test_compatibility_SOURCES = test_compatibility.cc
 test_limit_reference_SOURCES = test_limit_reference.cc
 test_copy_invalid_slot_SOURCES = test_copy_invalid_slot.cc
+test_slot_disconnect_SOURCES = test_slot_disconnect.cc
 test_custom_SOURCES = test_custom.cc
