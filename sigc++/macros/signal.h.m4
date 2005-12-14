@@ -32,6 +32,7 @@ struct signal_emit$1
   typedef typename T_accumulator::result_type result_type;
   typedef slot<LIST(T_return, LOOP(T_arg%1, $1))> slot_type;
   typedef internal::slot_iterator_buf<self_type> slot_iterator_buf_type;
+  typedef internal::slot_reverse_iterator_buf<self_type> slot_reverse_iterator_buf_type;
   typedef signal_impl::const_iterator_type iterator_type;
 
 ifelse($1,0,,[dnl
@@ -74,6 +75,28 @@ FOR(1, $1,[
       self_type self ifelse($1,0,,[(LOOP(_A_a%1, $1))]);
       return accumulator(slot_iterator_buf_type(slots.begin(), &self),
                          slot_iterator_buf_type(slots.end(), &self));
+    }
+
+  /** Executes a list of slots using an accumulator of type @e T_accumulator in reverse order.dnl
+ifelse($1,0,,[
+   * The arguments are buffered in a temporary instance of signal_emit$1.])
+FOR(1, $1,[
+   * @param _A_a%1 Argument to be passed on to the slots.])
+   * @return The accumulated return values of the slot invocations as processed by the accumulator.
+   */
+  static result_type emit_reverse(LIST(signal_impl* impl, LOOP(typename type_trait<T_arg%1>::take _A_a%1, $1)))
+    {
+      T_accumulator accumulator;
+
+      if (!impl)
+        return accumulator(slot_iterator_buf_type(), slot_iterator_buf_type());
+
+      signal_exec exec(impl);
+      temp_slot_list slots(impl->slots_);
+
+      self_type self ifelse($1,0,,[(LOOP(_A_a%1, $1))]);
+      return accumulator(slot_reverse_iterator_buf_type(slots.end(), &self),
+                         slot_reverse_iterator_buf_type(slots.begin(), &self));
     }
 dnl
   FOR(1, $1,[
@@ -133,6 +156,48 @@ FOR(1, $1,[
       
       return r_;
     }
+
+  /** Executes a list of slots using an accumulator of type @e T_accumulator in reverse order.dnl
+ifelse($1,0,,[
+   * The arguments are passed directly on to the slots.])
+   * The return value of the last slot invoked is returned.
+   * @param first An iterator pointing to the first slot in the list.
+   * @param last An iterator pointing to the last slot in the list.dnl
+FOR(1, $1,[
+   * @param _A_a%1 Argument to be passed on to the slots.])
+   * @return The return value of the last slot invoked.
+   */
+  static result_type emit_reverse(LIST(signal_impl* impl, LOOP(typename type_trait<T_arg%1>::take _A_a%1, $1)))
+    {
+      if (!impl || impl->slots_.empty())
+        return T_return();
+        
+      signal_exec exec(impl);
+      T_return r_ = T_return(); 
+      
+      //Use this scope to make sure that "slots" is destroyed before "exec" is destroyed.
+      //This avoids a leak on MSVC++ - see http://bugzilla.gnome.org/show_bug.cgi?id=306249
+      { 
+        typedef std::reverse_iterator<signal_impl::iterator_type> reverse_iterator_type;
+        temp_slot_list slots(impl->slots_);
+        reverse_iterator_type it(slots.end());
+        for (; it != slots.end(); ++it)
+          if (!it->empty() && !it->blocked()) break;
+          
+        if (it == reverse_iterator_type(slots.begin()))
+          return T_return(); // note that 'T_return r_();' doesn't work => define 'r_' after this line and initialize as follows:
+  
+        r_ = (reinterpret_cast<call_type>(it->rep_->call_))(LIST(it->rep_, LOOP(_A_a%1, $1)));
+        for (++it; it != reverse_iterator_type(slots.begin()); ++it)
+          {
+            if (it->empty() || it->blocked())
+              continue;
+            r_ = (reinterpret_cast<call_type>(it->rep_->call_))(LIST(it->rep_, LOOP(_A_a%1, $1)));
+          }
+      }
+      
+      return r_;
+    }
 };
 
 /** Abstracts signal emission.
@@ -164,6 +229,29 @@ FOR(1, $1,[
       temp_slot_list slots(impl->slots_);
 
       for (iterator_type it = slots.begin(); it != slots.end(); ++it)
+        {
+          if (it->empty() || it->blocked())
+            continue;
+          (reinterpret_cast<call_type>(it->rep_->call_))(LIST(it->rep_, LOOP(_A_a%1, $1)));
+        }
+    }
+
+  /** Executes a list of slots using an accumulator of type @e T_accumulator in reverse order.dnl
+ifelse($1,0,,[
+   * The arguments are passed directly on to the slots.])
+   * @param first An iterator pointing to the first slot in the list.
+   * @param last An iterator pointing to the last slot in the list.dnl
+FOR(1, $1,[
+   * @param _A_a%1 Argument to be passed on to the slots.])
+   */
+  static result_type emit_reverse(LIST(signal_impl* impl, LOOP(typename type_trait<T_arg%1>::take _A_a%1, $1)))
+    {
+      if (!impl || impl->slots_.empty()) return;
+      signal_exec exec(impl);
+      temp_slot_list slots(impl->slots_);
+
+      typedef std::reverse_iterator<signal_impl::iterator_type> reverse_iterator_type;
+      for (reverse_iterator_type it = reverse_iterator_type(slots.end()); it != reverse_iterator_type(slots.begin()); ++it)
         {
           if (it->empty() || it->blocked())
             continue;
@@ -251,6 +339,10 @@ FOR(1, $1,[
    */
   result_type emit(LOOP(typename type_trait<T_arg%1>::take _A_a%1, $1)) const
     { return emitter_type::emit(LIST(impl_, LOOP(_A_a%1, $1))); }
+
+  /** Triggers the emission of the signal in reverse order (see emit()). */
+  result_type emit_reverse(LOOP(typename type_trait<T_arg%1>::take _A_a%1, $1)) const
+    { return emitter_type::emit_reverse(LIST(impl_, LOOP(_A_a%1, $1))); }
 
   /** Triggers the emission of the signal (see emit()). */
   result_type operator()(LOOP(typename type_trait<T_arg%1>::take _A_a%1, $1)) const
@@ -874,6 +966,158 @@ struct slot_iterator_buf<T_emitter, void>
     { return i_ == other.i_; }
 
   bool operator != (const slot_iterator_buf& other) const
+    { return i_ != other.i_; }
+
+private:
+  iterator_type i_;
+  const emitter_type* c_;
+  mutable bool invoked_;
+};
+
+/** Reverse version of sigc::internal::slot_iterator_buf. */
+template <class T_emitter, class T_result = typename T_emitter::result_type>
+struct slot_reverse_iterator_buf
+{
+  typedef size_t                           size_type;
+  typedef ptrdiff_t                        difference_type;
+  typedef std::bidirectional_iterator_tag  iterator_category;
+
+  typedef T_emitter                        emitter_type;
+  typedef T_result                         result_type;
+  typedef typename T_emitter::slot_type    slot_type;
+
+  typedef signal_impl::const_iterator_type iterator_type;
+
+  slot_reverse_iterator_buf()
+    : c_(0), invoked_(false) {}
+
+  slot_reverse_iterator_buf(const iterator_type& i, const emitter_type* c)
+    : i_(i), c_(c), invoked_(false) {}
+
+  result_type operator*() const
+    {
+      iterator_type __tmp(i_);
+	  --__tmp;
+      if (!__tmp->empty() && !__tmp->blocked() && !invoked_)
+        {
+          r_ = (*c_)(static_cast<const slot_type&>(*__tmp));
+          invoked_ = true;
+        }
+      return r_;
+    }
+
+  slot_reverse_iterator_buf& operator++()
+    {
+      --i_;
+      invoked_ = false;
+      return *this;
+    }
+
+  slot_reverse_iterator_buf operator++(int)
+    { 
+      slot_reverse_iterator_buf __tmp(*this);
+      --i_;
+      invoked_ = false;
+      return __tmp;
+    }
+
+  slot_reverse_iterator_buf operator--()
+    {
+      ++i_;
+      invoked_ = false;
+      return *this;
+    }
+
+  slot_reverse_iterator_buf operator--(int)
+    {
+      slot_reverse_iterator_buf __tmp(*this);
+      ++i_;
+      invoked_ = false;
+      return __tmp;
+    }
+
+  bool operator == (const slot_reverse_iterator_buf& other) const
+    { return (!c_ || (i_ == other.i_)); } /* If '!c_' the iterators are empty.
+                                           * Unfortunately, empty stl iterators are not equal.
+                                           * We are forcing equality so that 'first==last'
+                                           * in the accumulator's emit function yields true. */
+
+  bool operator != (const slot_reverse_iterator_buf& other) const
+    { return (c_ && (i_ != other.i_)); }
+
+private:
+  iterator_type i_;
+  const emitter_type* c_;
+  mutable result_type r_;
+  mutable bool invoked_;
+};
+
+/** Template specialization of slot_reverse_iterator_buf for void return signals.
+ */
+template <class T_emitter>
+struct slot_reverse_iterator_buf<T_emitter, void>
+{
+  typedef size_t                           size_type;
+  typedef ptrdiff_t                        difference_type;
+  typedef std::bidirectional_iterator_tag  iterator_category;
+
+  typedef T_emitter                        emitter_type;
+  typedef void                             result_type;
+  typedef typename T_emitter::slot_type    slot_type;
+
+  typedef signal_impl::const_iterator_type iterator_type;
+
+  slot_reverse_iterator_buf()
+    : c_(0), invoked_(false) {}
+
+  slot_reverse_iterator_buf(const iterator_type& i, const emitter_type* c)
+    : i_(i), c_(c), invoked_(false) {}
+
+  void operator*() const
+    {
+      iterator_type __tmp(i_);
+	  --__tmp;
+	  if (!__tmp->empty() && !__tmp->blocked() && !invoked_)
+        {
+          (*c_)(static_cast<const slot_type&>(*__tmp));
+          invoked_ = true;
+        }
+    }
+
+  slot_reverse_iterator_buf& operator++()
+    {
+      --i_;
+      invoked_ = false;
+      return *this;
+    }
+
+  slot_reverse_iterator_buf operator++(int)
+    { 
+      slot_reverse_iterator_buf __tmp(*this);
+      --i_;
+      invoked_ = false;
+      return __tmp;
+    }
+
+  slot_reverse_iterator_buf operator--()
+    {
+      ++i_;
+      invoked_ = false;
+      return *this;
+    }
+
+  slot_reverse_iterator_buf operator--(int)
+    {
+      slot_reverse_iterator_buf __tmp(*this);
+      ++i_;
+      invoked_ = false;
+      return __tmp;
+    }
+
+  bool operator == (const slot_reverse_iterator_buf& other) const
+    { return i_ == other.i_; }
+
+  bool operator != (const slot_reverse_iterator_buf& other) const
     { return i_ != other.i_; }
 
 private:

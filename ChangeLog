@@ -1,3 +1,7 @@
+2005-12-14  John Profic <profic@kursknet.ru>
+
+	* sigc++/macros/signal.h.m4: Added emit_reverse().
+
 This is the HEAD branch, for API/ABI-compatible API additions.
 See also the libsigc-2-0 branch.
 
