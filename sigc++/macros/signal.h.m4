@@ -181,7 +181,7 @@ FOR(1, $1,[
         typedef std::reverse_iterator<signal_impl::iterator_type> reverse_iterator_type;
         temp_slot_list slots(impl->slots_);
         reverse_iterator_type it(slots.end());
-        for (; it != slots.end(); ++it)
+        for (; it != reverse_iterator_type(slots.begin()); ++it)
           if (!it->empty() && !it->blocked()) break;
           
         if (it == reverse_iterator_type(slots.begin()))
