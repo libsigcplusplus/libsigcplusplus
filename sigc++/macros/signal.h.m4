@@ -1021,7 +1021,7 @@ struct slot_reverse_iterator_buf
       return __tmp;
     }
 
-  slot_reverse_iterator_buf operator--()
+  slot_reverse_iterator_buf& operator--()
     {
       ++i_;
       invoked_ = false;
@@ -1099,7 +1099,7 @@ struct slot_reverse_iterator_buf<T_emitter, void>
       return __tmp;
     }
 
-  slot_reverse_iterator_buf operator--()
+  slot_reverse_iterator_buf& operator--()
     {
       ++i_;
       invoked_ = false;

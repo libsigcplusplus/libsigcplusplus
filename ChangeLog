@@ -1,3 +1,10 @@
+2005-12-21  Murray Cumming  <murrayc@murrayc.com>
+
+	* sigc++/macros/signal.h.m4: Make remaining 
+	reverse_iterator_buf operator--() methods 
+	return by reference, like the operator++() methods. 
+	Bug #304402 from John Profic.
+
 2005-12-20  Murray Cumming  <murrayc@murrayc.com>
 
 	* sigc++/macros/signal.h.m4: Make all operator--() methods 
