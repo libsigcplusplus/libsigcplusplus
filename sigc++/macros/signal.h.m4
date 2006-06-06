@@ -23,7 +23,7 @@ define([SIGNAL_EMIT_N],[dnl
  * This template implements the emit() function of signal$1.
  * Template specializations are available to optimize signal
  * emission when no accumulator is used, i.e. the template
- * argument @e T_accumulator is @p nil.
+ * argument @e T_accumulator is @p none.
  */
 template <LIST(class T_return, LOOP(class T_arg%1, $1), class T_accumulator)>
 struct signal_emit$1
@@ -108,9 +108,9 @@ dnl
  * function for the case that no accumulator is used.
  */
 template <LIST(class T_return, LOOP(class T_arg%1, $1))>
-struct signal_emit$1<LIST(T_return, LOOP(T_arg%1, $1), nil)>
+struct signal_emit$1<LIST(T_return, LOOP(T_arg%1, $1), none)>
 {
-  typedef signal_emit$1<LIST(T_return, LOOP(T_arg%1, $1), nil) > self_type;
+  typedef signal_emit$1<LIST(T_return, LOOP(T_arg%1, $1), none) > self_type;
   typedef T_return result_type;
   typedef slot<LIST(T_return, LOOP(T_arg%1, $1))> slot_type;
   typedef signal_impl::const_iterator_type iterator_type;
@@ -206,9 +206,9 @@ FOR(1, $1,[
  * return type is @p void.
  */
 template <LOOP(class T_arg%1, $1)>
-struct signal_emit$1<LIST(void, LOOP(T_arg%1, $1), nil)>
+struct signal_emit$1<LIST(void, LOOP(T_arg%1, $1), none)>
 {
-  typedef signal_emit$1<LIST(void, LOOP(T_arg%1, $1), nil)> self_type;
+  typedef signal_emit$1<LIST(void, LOOP(T_arg%1, $1), none)> self_type;
   typedef void result_type;
   typedef slot<LIST(void, LOOP(T_arg%1, $1))> slot_type;
   typedef signal_impl::const_iterator_type iterator_type;
@@ -284,13 +284,13 @@ define([SIGNAL_N],[dnl
  * - @e T_return The desired return type for the emit() function (may be overridden by the accumulator).dnl
 FOR(1,$1,[
  * - @e T_arg%1 Argument type used in the definition of emit().])
- * - @e T_accumulator The accumulator type used for emission. The default @p nil means that no accumulator should be used, i.e. signal emission returns the return value of the last slot invoked.
+ * - @e T_accumulator The accumulator type used for emission. The default @p none means that no accumulator should be used, i.e. signal emission returns the return value of the last slot invoked.
  *
  * You should use the more convenient unnumbered sigc::signal template.
  *
  * @ingroup signal
  */
-template <LIST(class T_return, LOOP(class T_arg%1, $1), class T_accumulator=nil)>
+template <LIST(class T_return, LOOP(class T_arg%1, $1), class T_accumulator=none)>
 class signal$1
   : public signal_base
 {
@@ -330,7 +330,7 @@ public:
    * During signal emission all slots that have been connected
    * to the signal are invoked unless they are manually set into
    * a blocking state. The parameters are passed on to the slots.
-   * If @e T_accumulated is not @p nil, an accumulator of this type
+   * If @e T_accumulated is not @p none, an accumulator of this type
    * is used to process the return values of the slot invocations.
    * Otherwise, the return value of the last slot invoked is returned.dnl
 FOR(1, $1,[
@@ -403,7 +403,7 @@ ifelse($1, $2,[dnl
  * the emit() function:
  * - @e T_return The desired return type of the emit() function.dnl
 FOR(1,$1,[
- * - @e T_arg%1 Argument type used in the definition of emit(). The default @p nil means no argument.])
+ * - @e T_arg%1 Argument type used in the definition of emit(). The default @p none means no argument.])
  *
  * To specify an accumulator type the nested class signal::accumulated can be used.
  *
@@ -417,7 +417,7 @@ FOR(1,$1,[
  *
  * @ingroup signal
  */
-template <LIST(class T_return, LOOP(class T_arg%1 = nil, $1))>],[dnl
+template <LIST(class T_return, LOOP(class T_arg%1 = none, $1))>],[dnl
 
 /** Convenience wrapper for the numbered sigc::signal$1 template.
  * See the base class for useful methods.
@@ -429,8 +429,8 @@ ifelse($1, $2,[dnl
 ])dnl
  */
 template <LIST(class T_return, LOOP(class T_arg%1, $1))>])
-class signal ifelse($1, $2,,[<LIST(T_return, LOOP(T_arg%1,$1), LOOP(nil, CALL_SIZE - $1))>])
-  : public signal$1<LIST(T_return, LOOP(T_arg%1, $1),nil)>
+class signal ifelse($1, $2,,[<LIST(T_return, LOOP(T_arg%1,$1), LOOP(none, CALL_SIZE - $1))>])
+  : public signal$1<LIST(T_return, LOOP(T_arg%1, $1),none)>
 {
 public:
 ifelse($1, $2,[dnl
@@ -498,7 +498,7 @@ ifelse($1, $2,[dnl
 
   signal() {}
   signal(const signal& src)
-    : signal$1<LIST(T_return, LOOP(T_arg%1, $1),nil)>(src) {}
+    : signal$1<LIST(T_return, LOOP(T_arg%1, $1),none)>(src) {}
 };
 
 ])
@@ -525,12 +525,12 @@ define([SIGNAL_COMPAT_N],[dnl
  * - @e T_return The desired return type for the emit() function (may be overridden by the accumulator).dnl
 FOR(1,$1,[
  * - @e T_arg%1 Argument type used in the definition of emit().])
- * - @e T_accumulator The accumulator type used for emission. The default @p nil means that no accumulator should be used. Signal emission returns the return value of the last slot invoked.
+ * - @e T_accumulator The accumulator type used for emission. The default @p none means that no accumulator should be used. Signal emission returns the return value of the last slot invoked.
  *
  * @deprecated Use the unnumbered template sigc::signal instead.
  * @ingroup compat
  */
-template <LIST(class T_return, LOOP(class T_arg%1, $1), class T_accumulator=::sigc::nil)>
+template <LIST(class T_return, LOOP(class T_arg%1, $1), class T_accumulator=::sigc::none)>
 class Signal$1
   : public ::sigc::signal$1<LIST(T_return, LOOP(T_arg%1, $1), T_accumulator)>
 {

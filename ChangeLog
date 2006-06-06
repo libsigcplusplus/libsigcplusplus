@@ -1,3 +1,14 @@
+2006-05-26  Régis Duchesne <hpreg@vmware.com>
+
+	* sigc++/adaptors/macros/bind.h.m4:
+	* sigc++/adaptors/macros/retype.h.m4:
+	* sigc++/functors/macros/functor_trait.h.m4:
+	* sigc++/functors/macros/slot.h.m4:
+	* sigc++/macros/retype.h.m4:
+	* sigc++/macros/signal.h.m4:
+	Renamed 'nil' to 'none' to allow an Objective-C++ compiler to compile
+	the library header files.
+
 2005-12-21  Murray Cumming  <murrayc@murrayc.com>
 
 	* sigc++/macros/signal.h.m4: Make remaining 
