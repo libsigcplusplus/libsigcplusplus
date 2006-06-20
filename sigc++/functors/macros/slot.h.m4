@@ -26,7 +26,7 @@ define([SLOT_N],[dnl
  * The template arguments determine the function signature of operator()():
  * - @e T_return The return type of operator()().dnl
 FOR(1,$1,[
- * - @e T_arg%1 Argument type used in the definition of operator()(). The default @p none means no argument.])
+ * - @e T_arg%1 Argument type used in the definition of operator()(). The default @p nil means no argument.])
  *
  * To use simply assign the slot to the desired functor. If the functor
  * is not compatible with the parameter list defined with the template
@@ -107,7 +107,7 @@ ifelse($1, $2,[dnl
  * The template arguments determine the function signature of operator()():
  * - @e T_return The return type of operator()().dnl
 FOR(1,$1,[
- * - @e T_arg%1 Argument type used in the definition of operator()(). The default @p none means no argument.])
+ * - @e T_arg%1 Argument type used in the definition of operator()(). The default @p nil means no argument.])
  *
  * To use simply assign the slot to the desired functor. If the functor
  * is not compatible with the parameter list defined with the template
@@ -125,18 +125,18 @@ FOR(1,$1,[
  *
  * @ingroup slot
  */
-template <LIST(class T_return, LOOP(class T_arg%1 = none, $1))>],[dnl
+template <LIST(class T_return, LOOP(class T_arg%1 = nil, $1))>],[dnl
 
 /** Convenience wrapper for the numbered sigc::slot$1 template.
  * See the base class for useful methods.
  * This is the template specialization of the unnumbered sigc::slot
  * template for $1 argument(s), specialized for different numbers of arguments
- * This is possible because the template has default (none) template types.
+ * This is possible because the template has default (nil) template types.
 dnl *
 dnl * @ingroup slot
  */
 template <LIST(class T_return, LOOP(class T_arg%1, $1))>])
-class slot ifelse($1, $2,,[<LIST(T_return, LIST(LOOP(T_arg%1, $1), LOOP(none, CALL_SIZE - $1)))>])
+class slot ifelse($1, $2,,[<LIST(T_return, LIST(LOOP(T_arg%1, $1), LOOP(nil, CALL_SIZE - $1)))>])
   : public slot$1<LIST(T_return, LOOP(T_arg%1, $1))>
 {
 public:

@@ -133,7 +133,7 @@ FOR(1, CALL_SIZE,[
  *
  * @ingroup retype
  */
-template <LIST(class T_functor, LOOP(class T_type%1=none, CALL_SIZE))>
+template <LIST(class T_functor, LOOP(class T_type%1=nil, CALL_SIZE))>
 struct retype_functor
   : public adapts<T_functor>
 {

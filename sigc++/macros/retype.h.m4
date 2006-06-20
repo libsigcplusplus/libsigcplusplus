@@ -77,7 +77,7 @@ __FIREWALL__
 
 namespace SigC {
 
-template <LIST(class T_functor, class T_return, LOOP(class T_type%1=::sigc::none, CALL_SIZE))>
+template <LIST(class T_functor, class T_return, LOOP(class T_type%1=::sigc::nil, CALL_SIZE))>
 struct retype_slot_functor
   : public ::sigc::adapts<T_functor>
 {

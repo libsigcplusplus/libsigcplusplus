@@ -77,25 +77,14 @@ __FIREWALL__
 
 namespace sigc {
 
-/** none struct type.
- * The none struct type is used as default template argument in the
+/** nil struct type.
+ * The nil struct type is used as default template argument in the
  * unnumbered sigc::signal and sigc::slot templates.
  *
  * @ingroup signal
  * @ingroup slot
  */
-struct none;
-
-/** nil type (deprecated).
- * The nil type is an alias for the none struct type. It is not available when
- * using an Objective-C++ compiler (because nil has a different meaning in
- * Objective-C). Otherwise its use is deprecated, but it is defined so that
- * source code written against libsigc++ versions <= 2.0.17 still compiles.
- * @deprecated Use none instead.
- */
-#ifndef __OBJC__
-typedef none nil;
-#endif
+struct nil;
 
 
 /** @defgroup functors Functors
