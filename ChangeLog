@@ -1,3 +1,13 @@
+2006-11-14  Daniel Elstner  <daniel.kitta@gmail.com>
+
+	* autogen.sh: Wholly replace this script with a critter from one
+	of my personal projects, with slight modifications.  This one does
+	some sophisticated stuff like probing version numbers of available
+	automake and aclocal executables, in order to choose the right one
+	accordingly.  All this is necessary to make the build system work
+	robustly in custom environments such as Maemo where automake-1.9
+	doesn't come preinstalled.
+
 2006-06-20  Murray Cumming  <murrayc@murrayc.com>
 
 	* sigc++/adaptors/macros/bind.h.m4:
