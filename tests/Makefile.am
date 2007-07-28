@@ -29,7 +29,8 @@ noinst_PROGRAMS= \
   test_limit_reference \
   test_copy_invalid_slot \
   test_slot_disconnect \
-  test_custom
+  test_custom \
+  test_accum_iter
 
 #Disabled:
 #   test_lambda - The Tru64 compiler can't build this when not using -std strict_ansi -model ansi, so let's not worry about it.
@@ -68,3 +69,4 @@ test_limit_reference_SOURCES = test_limit_reference.cc
 test_copy_invalid_slot_SOURCES = test_copy_invalid_slot.cc
 test_slot_disconnect_SOURCES = test_slot_disconnect.cc
 test_custom_SOURCES = test_custom.cc
+test_accum_iter_SOURCES = test_accum_iter.cc

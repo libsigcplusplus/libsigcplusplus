@@ -834,6 +834,12 @@ struct slot_iterator_buf
   typedef ptrdiff_t                        difference_type;
   typedef std::bidirectional_iterator_tag  iterator_category;
 
+  //These are needed just to make this a proper C++ iterator, 
+  //that can be used with standard C++ algorithms.
+  typedef T_result                         value_type;
+  typedef T_result&                        reference;
+  typedef T_result*                        pointer;
+
   typedef T_emitter                        emitter_type;
   typedef T_result                         result_type;
   typedef typename T_emitter::slot_type    slot_type;
@@ -981,6 +987,12 @@ struct slot_reverse_iterator_buf
   typedef size_t                           size_type;
   typedef ptrdiff_t                        difference_type;
   typedef std::bidirectional_iterator_tag  iterator_category;
+
+  //These are needed just to make this a proper C++ iterator, 
+  //that can be used with standard C++ algorithms.
+  typedef T_result                         value_type;
+  typedef T_result&                        reference;
+  typedef T_result*                        pointer;
 
   typedef T_emitter                        emitter_type;
   typedef T_result                         result_type;

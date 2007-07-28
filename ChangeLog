@@ -1,3 +1,14 @@
+2007-07-28  Michael Elkstrand  <michael@elehack.net>
+
+	* sigc++/macros/signal.h.m4: slot_iterator_buf, 
+	slot_reverse_iterator_buf: Added typedefs for 
+	value_type, reference, and pointer, so that these 
+	iterators are more like standard C++ iterators, so they can 
+	be used with standard C++ algorithms.  
+	* tests/Makefile.am:
+	* tests/test_accum_iter.cc: Added a test for this.
+	Bug #417926.
+
 2006-11-14  Daniel Elstner  <daniel.kitta@gmail.com>
 
 	* autogen.sh: Wholly replace this script with a critter from one
