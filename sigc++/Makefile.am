@@ -54,7 +54,7 @@ EXTRA_DIST = $(sigc_m4) $(sigc_built_h) $(sigc_built_cc)
 library_includedir = $(includedir)/sigc++-2.0/sigc++
 nobase_library_include_HEADERS = $(sigc_m4) $(sigc_built_h) \
   sigc++.h connection.h trackable.h reference_wrapper.h type_traits.h visit_each.h \
-  object.h retype_return.h bind.h bind_return.h compatibility.h signal_base.h \
+  object.h retype_return.h bind.h bind_return.h signal_base.h \
   functors/functors.h \
   functors/slot_base.h \
   adaptors/adaptors.h \

@@ -1,3 +1,27 @@
+2007-08-14  Murray Cumming  <murrayc@murrayc.com>
+
+	* sigc++/Makefile.am:
+	* sigc++/compatibility.h: Removed this header.
+	* sigc++/bind.h:
+	* sigc++/bind_return.h:
+	* sigc++/connection.h:
+	* sigc++/macros/class_slot.h.m4:
+	* sigc++/macros/hide.h.m4:
+	* sigc++/macros/method_slot.h.m4:
+	* sigc++/macros/object_slot.h.m4:
+	* sigc++/macros/retype.h.m4:
+	* sigc++/macros/signal.h.m4:
+	* sigc++/macros/slot.h.m4:
+	* sigc++/object.h:
+	* sigc++/retype_return.h: Removed deprecated 
+	compatibility API, to probably fix the build with 
+	some compilers, such as some versions of the Sun Forte C++ 
+	CC compiler. This API has been deprecated April 2004, and 
+	is not widely used, so it seems safe to do this now.
+
+	* tests/Makefile.am:
+	* tests/test_compatibility.cc: Removed this test.
+
 2007-07-28  Michael Elkstrand  <michael@elehack.net>
 
 	* sigc++/macros/signal.h.m4: slot_iterator_buf, 

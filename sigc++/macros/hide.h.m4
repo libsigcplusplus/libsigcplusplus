@@ -18,33 +18,6 @@ divert(-1)
 
 include(template.macros.m4)
 
-define([HIDE_N],[dnl
-template <LIST(LOOP(class T_hidden%1, $2), class T_return, LOOP(class T_arg%1, $1))>
-inline SigC::Slot[]eval($1+$2)<LIST(T_return, LOOP(T_arg%1, $1), LOOP(T_hidden%1, $2))>
-hide(const SigC::Slot$1<LIST(T_return, LOOP(T_arg%1, $1))>& _A_slot)
-{ return FOR(0,eval($2-2),[[::sigc::hide<0>(
-    ]])dnl
-::sigc::hide_functor<0, SigC::Slot$1<LIST(T_return, LOOP(T_arg%1, $1))> >
-      (_A_slot)FOR(0,eval($2-2),[[)]]); }
-
-])
-
-
 divert(0)dnl
 
 __FIREWALL__
-
-#include <sigc++/slot.h>
-#include <sigc++/adaptors/hide.h>
-
-
-#ifndef LIBSIGC_DISABLE_DEPRECATED
-
-namespace SigC {
-
-FOR(0,eval(CALL_SIZE-1),[[HIDE_N(%1,1)]])
-FOR(0,eval(CALL_SIZE-2),[[HIDE_N(%1,2)]])
-
-} /* namespace SigC */
-
-#endif /* LIBSIGC_DISABLE_DEPRECATED */

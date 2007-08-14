@@ -21,15 +21,4 @@
 
 #include <sigc++/trackable.h>
 
-#ifndef LIBSIGC_DISABLE_DEPRECATED
-
-namespace SigC {
-
-// Object
-typedef ::sigc::trackable Object;
-
-}
-
-#endif /* LIBSIGC_DISABLE_DEPRECATED */
-
 #endif /* _SIGC_OBJECT_HPP_ */

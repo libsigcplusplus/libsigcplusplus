@@ -21,15 +21,5 @@
 
 #include <sigc++/adaptors/retype_return.h>
 
-#ifndef LIBSIGC_DISABLE_DEPRECATED
-
-namespace SigC {
-
-using ::sigc::retype_return;
-using ::sigc::hide_return;
-
-}
-
-#endif /* LIBSIGC_DISABLE_DEPRECATED */
 
 #endif /* _SIGC_RETYPE_RETURN_HPP_ */

@@ -304,14 +304,6 @@ public:
   typedef typename slot_list_type::reverse_iterator       reverse_iterator;
   typedef typename slot_list_type::const_reverse_iterator const_reverse_iterator;
 
-#ifdef SIGC_TYPEDEF_REDEFINE_ALLOWED
-  /** This typedef is only for backwards-compatibility.
-   * It is not available when using the SUN Forte compiler.
-   * @deprecated slot_list_type;
-   */
-  typedef slot_list_type slot_list;
-#endif
-
   /** Add a slot to the list of slots.
    * Any functor or slot may be passed into connect().
    * It will be converted into a slot implicitely.
@@ -502,60 +494,6 @@ ifelse($1, $2,[dnl
 };
 
 ])
-define([SIGNAL_COMPAT_N],[dnl
-/** Signal declaration.
- * Signal$1 can be used to connect() slots that are invoked
- * during subsequent calls to emit(). Any functor or slot
- * can be passed into connect(). It is converted into a slot
- * implicitely.
- *
- * If you want to connect one signal to another, use slot()
- * to retrieve a functor that emits the signal when invoked.
- *
- * Be careful if you directly pass one signal into the connect()
- * method of another: a shallow copy of the signal is made and
- * the signal's slots are not disconnected until both the signal
- * and its clone are destroyed which is probably not what you want!
- *
- * An STL-style list interface for the signal's list of slots
- * can be retrieved with slots(). This interface supports
- * iteration, insertion and removal of slots.
- *
- * The following template arguments are used:
- * - @e T_return The desired return type for the emit() function (may be overridden by the accumulator).dnl
-FOR(1,$1,[
- * - @e T_arg%1 Argument type used in the definition of emit().])
- * - @e T_accumulator The accumulator type used for emission. The default @p nil means that no accumulator should be used. Signal emission returns the return value of the last slot invoked.
- *
- * @deprecated Use the unnumbered template sigc::signal instead.
- * @ingroup compat
- */
-template <LIST(class T_return, LOOP(class T_arg%1, $1), class T_accumulator=::sigc::nil)>
-class Signal$1
-  : public ::sigc::signal$1<LIST(T_return, LOOP(T_arg%1, $1), T_accumulator)>
-{
-public:
-  typedef ::sigc::signal$1<LIST(T_return, LOOP(T_arg%1, $1), T_accumulator)> parent_type;
-  typedef typename parent_type::result_type result_type;
-  typedef typename parent_type::slot_type slot_type;
-
-  Signal$1() {}
-  Signal$1(const Signal$1& src)
-    : ::sigc::signal$1<LIST(T_return, LOOP(T_arg%1, $1), T_accumulator)>(src) {}
-
-  /** Creates a functor that calls emit() on this signal.
-   * @code
-   * sigc::mem_fun(mysignal, &sigc::signal$1::emit)
-   * @endcode
-   * yields the same result.
-   * @return A functor that calls emit() on this signal.
-   */
-  slot_type slot() const
-    { return ::sigc::bound_const_mem_functor$1<LIST(result_type, parent_type, LOOP(typename ::sigc::type_trait<T_arg%1>::take, $1))>(this, &parent_type::emit); }
-};
-
-])
-
 
 divert(0)
 #ifndef _SIGC_SIGNAL_H_
@@ -1147,16 +1085,5 @@ SIGNAL(CALL_SIZE,CALL_SIZE)
 FOR(0,eval(CALL_SIZE-1),[[SIGNAL(%1)]])
 
 } /* namespace sigc */
-
-
-#ifndef LIBSIGC_DISABLE_DEPRECATED
-
-namespace SigC {
-
-// SignalN
-FOR(0,CALL_SIZE,[[SIGNAL_COMPAT_N(%1)]])
-}
-
-#endif /* LIBSIGC_DISABLE_DEPRECATED */
 
 #endif /* _SIGC_SIGNAL_H_ */

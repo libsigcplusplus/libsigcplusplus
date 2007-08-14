@@ -21,14 +21,5 @@
 
 #include <sigc++/adaptors/bind_return.h>
 
-#ifndef LIBSIGC_DISABLE_DEPRECATED
-
-namespace SigC {
-
-using ::sigc::bind_return;
-
-}
-
-#endif /* LIBSIGC_DISABLE_DEPRECATED */
 
 #endif /* _SIGC_BIND_RETURN_HPP_ */
