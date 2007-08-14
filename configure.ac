@@ -6,8 +6,8 @@ dnl
 #We use pushdef here because we can't use shell variables before AC_INIT, but we want to use a variable with AC_INIT:
 dnl   thus make format_package-0.0.1.tar.gz 
 pushdef([FP_MAJOR_VERSION],     [2])
-pushdef([FP_MINOR_VERSION],     [0])
-pushdef([FP_MICRO_VERSION],     [16])
+pushdef([FP_MINOR_VERSION],     [1])
+pushdef([FP_MICRO_VERSION],     [1])
 pushdef([FP_EXTRA_VERSION],     [])
 pushdef([FP_VERSION], FP_MAJOR_VERSION.FP_MINOR_VERSION.FP_MICRO_VERSION[]FP_EXTRA_VERSION)
 # package name, version, support contact, tarball name.

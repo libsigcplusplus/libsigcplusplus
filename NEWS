@@ -1,3 +1,31 @@
+2.1.1 (unstable)
+
+WARNING: This is an unstable release and should not yet be 
+packaged by distributions unless libsigc++ 2.0.x does not 
+build for some reason (Please report such bugs).
+
+* Removed the SigC:: namespace and other compatibility API, 
+  to fix the build with some versions of some compilers, 
+  such as the SUN Forte C++ CC compiler.
+  See bug #302098, for instance 
+  (Murray Cumming)
+* sigc::signal<>:
+  - Added Added typedefs for 
+  value_type, reference, and pointer, so that these 
+  iterators are more like standard C++ iterators, so they can 
+  be used with standard C++ algorithms.  
+  (Michael Elkstrand) (Bug #417926).
+  - Added emit_reverse().
+  (John Profic)
+
+2.0.17:
+
+* slot::disconnect(): Make this work.
+  sigc::connection::disconnect() already worked.
+  (James Lin, Murray Cumming)
+* visit_each compilation problem fixed.
+  (Philipp Berndt)
+
 2.0.16:
 
 * Fixed build for SUN Forte C++ 5.5

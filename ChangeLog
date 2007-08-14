@@ -16,9 +16,11 @@
 	* sigc++/retype_return.h: Removed deprecated 
 	compatibility API, to probably fix the build with 
 	some compilers, such as some versions of the Sun Forte C++ 
-	CC compiler. This API has been deprecated April 2004, and 
+	CC compiler. Some of these headers are now mostly empty and 
+	should be removed later.
+	This API has been deprecated April 2004, and 
 	is not widely used, so it seems safe to do this now.
-
+	
 	* tests/Makefile.am:
 	* tests/test_compatibility.cc: Removed this test.
 
