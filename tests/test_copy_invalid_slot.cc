@@ -1,6 +1,9 @@
 #include <iostream>
 #include <sigc++/sigc++.h>
 
+#include <stdlib.h>
+#include <string.h>
+
 void Foo(sigc::trackable &t) {}
 
 int main(int argc, char **argv)

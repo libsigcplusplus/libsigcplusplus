@@ -1,3 +1,9 @@
+2007-08-31  Murray Cumming  <murrayc@murrayc.com>
+
+	* tests/test_copy_invalid_slot.cc: Added some includes to 
+	fix the build in some environments, such as when using Sun CC.
+	Thanks to Vladimir Marek in bug #469872.
+
 2.1.1:
 
 2007-08-14  Murray Cumming  <murrayc@murrayc.com>
