@@ -1,4 +1,6 @@
 #include <iostream>
+#include <cstdlib>
+#include <cstring>
 #include <sigc++/sigc++.h>
 
 #include <stdlib.h>
