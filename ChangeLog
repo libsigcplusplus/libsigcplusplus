@@ -1,3 +1,5 @@
+2.2.0:
+
 2008-01-01  Ryan Hill  <dirtyepic@gentoo.>
 
 	* tests/test_copy_invalid_slot.cc: Include the cstdlib 
