@@ -1,3 +1,11 @@
+2008-02-28  Elaine Xiong  <elaine.xiong@sun.com>
+
+	* sigc++/macros/signal.h.m4:
+	* tests/test_accum_iter.cc: Add ifdefs around uses of 
+	reverse_iterator to really fix the build with recent 
+	versions of Sun CC.
+	Bug #302098.
+
 2.2.0:
 
 2008-01-01  Ryan Hill  <dirtyepic@gentoo.>

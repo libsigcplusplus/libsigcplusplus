@@ -178,7 +178,13 @@ FOR(1, $1,[
       //Use this scope to make sure that "slots" is destroyed before "exec" is destroyed.
       //This avoids a leak on MSVC++ - see http://bugzilla.gnome.org/show_bug.cgi?id=306249
       { 
+#ifndef SIGC_HAVE_SUN_REVERSE_ITERATOR
         typedef std::reverse_iterator<signal_impl::iterator_type> reverse_iterator_type;
+#else
+        typedef std::reverse_iterator<signal_impl::iterator_type, std::random_access_iterator_tag,
+                                       slot_base, slot_base&, slot_base*, ptrdiff_t> reverse_iterator_type;
+#endif
+
         temp_slot_list slots(impl->slots_);
         reverse_iterator_type it(slots.end());
         for (; it != reverse_iterator_type(slots.begin()); ++it)
@@ -250,7 +256,12 @@ FOR(1, $1,[
       signal_exec exec(impl);
       temp_slot_list slots(impl->slots_);
 
+#ifndef SIGC_HAVE_SUN_REVERSE_ITERATOR
       typedef std::reverse_iterator<signal_impl::iterator_type> reverse_iterator_type;
+#else
+      typedef std::reverse_iterator<signal_impl::iterator_type, std::random_access_iterator_tag,
+                                     slot_base, slot_base&, slot_base*, ptrdiff_t> reverse_iterator_type;
+#endif
       for (reverse_iterator_type it = reverse_iterator_type(slots.end()); it != reverse_iterator_type(slots.begin()); ++it)
         {
           if (it->empty() || it->blocked())
