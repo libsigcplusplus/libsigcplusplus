@@ -1,9 +1,14 @@
-2.2.0 (stable)
+2.2.1 (stable):
+
+* Really fix the build with Sun CC.
+  (Elaine Xiong. Bug #302098)
+
+2.2.0 (stable):
 
 * Build fixes when using gcc 4.3 pre-releases.
   (Ryan Hill, Vladimir Marek)
 
-2.1.1 (unstable)
+2.1.1 (unstable):
 
 WARNING: This is an unstable release and should not yet be 
 packaged by distributions unless libsigc++ 2.0.x does not 

@@ -1,3 +1,5 @@
+2.2.1:
+
 2008-02-28  Elaine Xiong  <elaine.xiong@sun.com>
 
 	* sigc++/macros/signal.h.m4:
