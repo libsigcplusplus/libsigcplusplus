@@ -1,3 +1,9 @@
+2.2.2 (stable)
+
+* Added an include of functors/slot.h that was mistakenly removed 
+  during the 2.1 series.
+  (Deng Xiyue) Bug #521418.
+
 2.2.1 (stable):
 
 * Really fix the build with Sun CC.

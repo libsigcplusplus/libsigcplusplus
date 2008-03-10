@@ -1,3 +1,12 @@
+2.2.2:
+
+2008-03-10  Deng Xiyue  <manphiz@gmail.com
+
+	* sigc++/macros/slot.h.m4:
+	Added an include of functors/slot.h that was mistakenly removed 
+	during the 2.1 series, apparently breaking API slightly.
+	Bug #521418.
+
 2.2.1:
 
 2008-02-28  Elaine Xiong  <elaine.xiong@sun.com>

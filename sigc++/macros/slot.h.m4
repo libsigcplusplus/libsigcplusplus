@@ -22,3 +22,4 @@ divert(0)
 
 __FIREWALL__
 
+#include <sigc++/functors/slot.h>
