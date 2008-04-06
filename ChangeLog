@@ -1,3 +1,10 @@
+2008-04-06 Cedric Gustin <cedric.gustin@gmail.com>
+
+	* MSVC_Net2003/sigc-2.0.rc.in: Removed ATL/MFC header files 
+	dependency as afxres.h is not part of the Microsoft Platform
+	SDK provided with Visual C++ Express 2008.
+	Bug #503933.
+
 2.2.2:
 
 2008-03-10  Deng Xiyue  <manphiz@gmail.com
