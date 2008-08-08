@@ -1,5 +1,14 @@
 2008-08-08  Armin Burgmeier  <armin@arbur.net>
 
+	* MSVC_Net2005/libsigc++2.sln: Enable the disconnect_during_emit test
+	by default.
+
+	* MSVC_Net2005/libsigc++2.vcproj: Renamed the generated debug database
+	file to sigc-2.0d.pdb (the default), to stay consistent with the *mm
+	wrapper libraries.
+
+2008-08-08  Armin Burgmeier  <armin@arbur.net>
+
 	* MSVC_Net2005/: Moved from MSVC_Net2003.
 
 	* MSVC_Net2005/libsigc++2.sln:

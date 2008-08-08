@@ -63,7 +63,7 @@
 				Name="VCLinkerTool"
 				OutputFile="$(OutDir)/$(ProjectName)d.dll"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile="$(OutDir)/$(ProjectName).pdb"
+				ProgramDatabaseFile=""
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -367,11 +367,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\sigc++\bind.h"
+				RelativePath="..\sigc++\adaptors\bind.h"
 				>
 			</File>
 			<File
-				RelativePath="..\sigc++\adaptors\bind.h"
+				RelativePath="..\sigc++\bind.h"
 				>
 			</File>
 			<File
@@ -419,11 +419,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\sigc++\hide.h"
+				RelativePath="..\sigc++\adaptors\hide.h"
 				>
 			</File>
 			<File
-				RelativePath="..\sigc++\adaptors\hide.h"
+				RelativePath="..\sigc++\hide.h"
 				>
 			</File>
 			<File
@@ -463,19 +463,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\sigc++\adaptors\retype.h"
-				>
-			</File>
-			<File
 				RelativePath="..\sigc++\retype.h"
 				>
 			</File>
 			<File
-				RelativePath="..\sigc++\retype_return.h"
+				RelativePath="..\sigc++\adaptors\retype.h"
 				>
 			</File>
 			<File
 				RelativePath="..\sigc++\adaptors\retype_return.h"
+				>
+			</File>
+			<File
+				RelativePath="..\sigc++\retype_return.h"
 				>
 			</File>
 			<File
