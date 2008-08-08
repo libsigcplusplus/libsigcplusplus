@@ -123,8 +123,8 @@ AC_OUTPUT([
   scripts/Makefile
   tests/Makefile
   examples/Makefile
-  MSVC_Net2003/Makefile
-  MSVC_Net2003/sigc-2.0.rc
+  MSVC_Net2005/Makefile
+  MSVC_Net2005/sigc-2.0.rc
   libsigc++-2.0.spec
 
   docs/Makefile

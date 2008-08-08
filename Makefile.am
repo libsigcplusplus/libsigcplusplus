@@ -4,7 +4,7 @@
 EXTRA_DIST = autogen.sh sigc++config.h.in libsigc++-2.0.spec.in
 # ACLOCAL_FLAGS = -I scripts
 
-SUBDIRS      = sigc++ tests docs examples scripts MSVC_Net2003
+SUBDIRS      = sigc++ tests docs examples scripts MSVC_Net2005
 DIST_SUBDIRS = $(SUBDIRS)
 
 sigc_configdir = $(libdir)/sigc++-2.0/include
