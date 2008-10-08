@@ -1,3 +1,14 @@
+2008-10-08  Armin Burgmeier  <armin@arbur.net>
+
+	* MSVN_Net2005/libsigc++2.vcproj: Changed output name to match the new
+	naming convention.
+
+	* MSVC_Net2008/: Added MSVC 2008 project files. These are basically
+	the same as for MSVC 2005, but converted to MSVC 2008 projects.
+
+	* configure.ac:
+	* Makefile.am: Added the new files to the build.
+
 2008-08-08  Armin Burgmeier  <armin@arbur.net>
 
 	* MSVC_Net2005/libsigc++2.sln: Enable the disconnect_during_emit test
