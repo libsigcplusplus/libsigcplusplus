@@ -1,4 +1,14 @@
-2.2.2 (stable)
+2.2.3 (stable):
+
+* Windows:
+  - Added project files (and property sheets) for 
+  MSVC++ 2005 and 2008.
+  (Armin Burgmeier)
+  - Removed unnecessary dependency on afxrefs.h, so it builds 
+  with MSVC++ Express editions. 
+  (Cedric Gustin)
+
+2.2.2 (stable):
 
 * Added an include of functors/slot.h that was mistakenly removed 
   during the 2.1 series.
