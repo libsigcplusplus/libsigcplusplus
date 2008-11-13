@@ -7,7 +7,7 @@
 <a name="sources"><h3>Source Packages</h3></a>
 
 <p>
-The source packages for libsigc++ are available on the <a href="http://ftp.gnome.org/pub/GNOME/sources/libsigc++/2.0/">Gnome ftp site</a>.
+The source packages for libsigc++ are available on the <a href="http://ftp.gnome.org/pub/GNOME/sources/libsigc++/">GNOME ftp site</a>.
 </p>
 
 <a name="binaries"><h3>Binary Packages</h3></a>
@@ -26,7 +26,7 @@ libsigc++ is built and tested for a standards-compliant C++ compiler. Luckily, t
 libsigc++ is known to build and work with the following compilers:
 <ul>
 <li>g++ (>= 3.2, including Apple and Cygwin versions)</li>
-<li>Microsoft Visual C++ .NET 2003<li>
+<li>Microsoft Visual C++ .NET 2003-2008<li>
 <li>Intel C++ compiler</li>
 <li>SUN Forte C++ CC<li>
 <li>IBM AIX xlC<li>

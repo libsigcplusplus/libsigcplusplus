@@ -1,3 +1,8 @@
+2008-11-13  Murray Cumming  <murrayc@murrayc.com>
+
+	* docs/website/stable.shtml: Correct the download link so it shows all 
+	versions, not just 2.0.
+
 2.2.3:
 
 2008-10-08  Armin Burgmeier  <armin@arbur.net>
