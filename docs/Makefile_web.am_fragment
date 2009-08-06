@@ -1,7 +1,0 @@
-
-web_path_libsigc2 = /home/groups/l/li/libsigc/htdocs/libsigc2/
-web_path_docs = $(web_path_libsigc2)docs/
-rsync_args = -vz --rsh ssh --delete --delete-after
-
-libsigc_docdir = $(datadir)/doc/libsigc-2.0/docs
-

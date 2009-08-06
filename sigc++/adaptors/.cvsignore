@@ -1,3 +1,0 @@
-Makefile Makefile.in
-.libs .deps
-adaptor_trait.h bind.h bind_return.h retype_return.h hide.h retype.h compose.h exception_catch.h deduce_result_type.h

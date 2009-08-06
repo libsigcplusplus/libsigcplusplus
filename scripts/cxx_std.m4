@@ -69,7 +69,8 @@ AC_DEFUN([SIGC_CXX_HAS_SUN_REVERSE_ITERATOR],
 
   if test "x${sigc_cv_cxx_has_sun_reverse_iterator}" = "xyes"; then
   {
-    AC_DEFINE([SIGC_HAVE_SUN_REVERSE_ITERATOR],[1])
+    AC_DEFINE([SIGC_HAVE_SUN_REVERSE_ITERATOR], [1],
+              [Define if the non-standard Sun reverse_iterator must be used.])
   }
   fi
 ])

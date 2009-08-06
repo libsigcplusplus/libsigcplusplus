@@ -1,0 +1,72 @@
+## Copyright (c) 2009  Openismus GmbH  <http://www.openismus.com/>
+##
+## This file is part of libsigc++.
+##
+## libsigc++ is free software: you can redistribute it and/or modify it
+## under the terms of the GNU Lesser General Public License as published
+## by the Free Software Foundation, either version 2.1 of the License,
+## or (at your option) any later version.
+##
+## libsigc++ is distributed in the hope that it will be useful, but
+## WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+## See the GNU Lesser General Public License for more details.
+##
+## You should have received a copy of the GNU Lesser General Public License
+## along with this library.  If not, see <http://www.gnu.org/licenses/>.
+
+# Base (./)
+base_m4 = template.macros.m4 signal.h.m4 slot.h.m4 method_slot.h.m4 \
+	  object_slot.h.m4 class_slot.h.m4 hide.h.m4 retype.h.m4 \
+	  limit_reference.h.m4
+base_built_cc =
+base_built_h = signal.h slot.h method_slot.h \
+	       object_slot.h class_slot.h hide.h retype.h limit_reference.h
+
+# Functors (functors/)
+functors_m4 = functor_trait.h.m4 slot.h.m4 ptr_fun.h.m4 mem_fun.h.m4
+functors_built_cc = 
+functors_built_h = functor_trait.h slot.h ptr_fun.h mem_fun.h
+
+# Adaptors (adaptors/)
+adaptors_m4 = deduce_result_type.h.m4 adaptor_trait.h.m4 bind.h.m4 bind_return.h.m4 \
+	      retype_return.h.m4 hide.h.m4 retype.h.m4 compose.h.m4 exception_catch.h.m4
+adaptors_built_cc =
+adaptors_built_h = deduce_result_type.h adaptor_trait.h bind.h bind_return.h \
+                   retype_return.h hide.h retype.h compose.h exception_catch.h
+
+# Lambda (adaptors/lambda)
+lambda_m4 = base.h.m4 select.h.m4 operator.h.m4 group.h.m4 lambda.cc.m4
+lambda_built_cc = lambda.cc
+lambda_built_h = base.h select.h operator.h group.h
+
+# Combine all the above parts with right directories prefixed
+sigc_m4 = $(base_m4:%=macros/%) \
+	  $(functors_m4:%=functors/macros/%) \
+          $(adaptors_m4:%=adaptors/macros/%) \
+          $(lambda_m4:%=adaptors/lambda/macros/%)
+sigc_built_cc = $(base_built_cc) \
+	  $(functors_built_cc:%=functors/%) \
+          $(adaptors_built_cc:%=adaptors/%) \
+          $(lambda_built_cc:%=adaptors/lambda/%)
+sigc_built_h = $(base_built_h) \
+	  $(functors_built_h:%=functors/%) \
+          $(adaptors_built_h:%=adaptors/%) \
+          $(lambda_built_h:%=adaptors/lambda/%)
+
+sigc_public_h =				\
+	bind.h				\
+	bind_return.h			\
+	connection.h			\
+	object.h			\
+	reference_wrapper.h		\
+	retype_return.h			\
+	signal_base.h			\
+	trackable.h			\
+	type_traits.h			\
+	visit_each.h			\
+	adaptors/adaptors.h		\
+	adaptors/bound_argument.h	\
+	adaptors/lambda/lambda.h	\
+	functors/functors.h		\
+	functors/slot_base.h

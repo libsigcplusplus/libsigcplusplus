@@ -1,36 +1,38 @@
-## Based on on:
+## Copyright (c) 2009  Openismus GmbH  <http://www.openismus.com/>
+##
+## This file is part of libsigc++.
+##
+## libsigc++ is free software: you can redistribute it and/or modify it
+## under the terms of the GNU Lesser General Public License as published
+## by the Free Software Foundation, either version 2.1 of the License,
+## or (at your option) any later version.
+##
+## libsigc++ is distributed in the hope that it will be useful, but
+## WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+## See the GNU Lesser General Public License for more details.
+##
+## You should have received a copy of the GNU Lesser General Public License
+## along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
-## Copyright (c) 2001
-## The gtkmm development team.
+include $(top_srcdir)/sigc++/filelist.am
 
-SUBDIRS = images reference manual
+book_name  = libsigc++-$(SIGCXX_API_VERSION)
+pubdocbase = http://libsigc.sourceforge.net/
+htmlrefpub = $(pubdocbase)libsigc2/docs/reference/html
 
-EXTRA_DIST = Makefile_web.am_fragment index.html
+doc_input = $(addprefix $(top_srcdir)/sigc++/,$(sigc_public_h)) \
+	    $(addprefix $(top_builddir)/sigc++/,$(sigc_built_h))
 
-libsigc_doc_DATA = index.html
+doc_install         = $(top_srcdir)/scripts/doc-install.pl
+doc_postprocess     = $(top_srcdir)/scripts/doc-postprocess.pl
+tagfile_to_devhelp2 = $(top_srcdir)/scripts/tagfile-to-devhelp2.xsl
 
-include $(top_srcdir)/docs/Makefile_web.am_fragment
+include $(top_srcdir)/scripts/doc-reference.am
 
-# Post to the website.
+doc_imagesdir = $(libdocdir)/images
 
-post-html-recursive:
-	list='$(SUBDIRS)'; for subdir in $$list; do \
-	  test "$$subdir" = . || (cd $$subdir && $(MAKE) $(AM_MAKEFLAGS) post-html); \
-	done
+dist_libdoc_DATA = index.html
+dist_doc_images_DATA = images/libsigc_logo.gif images/top.gif
 
-post-html-local: index.html
-	scp $$SSH_OPT $^ $$USER@shell.sourceforge.net:$(web_path_docs)
-
-post-html: post-html-recursive post-html-local
-
-doc-clean-recursive:
-	list='$(SUBDIRS)'; for subdir in $$list; do \
-	  test "$$subdir" = . || (cd $$subdir && $(MAKE) $(AM_MAKEFLAGS) doc-clean); \
-	done
-
-doc-clean: doc-clean-recursive
-
-doc-rebuild: doc-clean all
-
-.PHONY: post-html post-html-recursive doc-clean doc-clean-recursive doc-rebuild
-
+include doc-manual.am

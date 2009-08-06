@@ -1,0 +1,46 @@
+## Copyright (c) 2009  Openismus GmbH  <http://www.openismus.com/>
+##
+## This file is part of libsigc++.
+##
+## libsigc++ is free software: you can redistribute it and/or modify it
+## under the terms of the GNU Lesser General Public License as published
+## by the Free Software Foundation, either version 2.1 of the License,
+## or (at your option) any later version.
+##
+## libsigc++ is distributed in the hope that it will be useful, but
+## WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+## See the GNU Lesser General Public License for more details.
+##
+## You should have received a copy of the GNU Lesser General Public License
+## along with this library.  If not, see <http://www.gnu.org/licenses/>.
+
+DOCBOOK_STYLESHEET ?= http://docbook.sourceforge.net/release/xsl/current/html/chunk.xsl
+
+html_tutorialdir = $(libdocdir)/tutorial/html
+dist_html_tutorial_DATA = $(sort manual/html/index.html $(call vpath_listall,manual/html/*.html))
+
+dist_noinst_DATA += manual/README manual/libsigc_manual.xml
+
+DISTCLEANFILES += $(addprefix manual/libsigc_manual.,dvi pdf ps)
+MAINTAINERCLEANFILES += manual/html/*
+
+manual_srcfile = $(srcdir)/manual/libsigc_manual.xml
+
+# Make sure that the documentation will always have been generated before
+# executing the commands of a rule that depends on files in reference/html/.
+reference/html/%: | manual/html/index.html
+
+manual/html/index.html: $(manual_srcfile)
+	-rm -f manual/html/*
+	$(MKDIR_P) manual/html
+	xsltproc -o 'manual/html/' --catalogs '$(DOCBOOK_STYLESHEET)' $(manual_srcfile)
+
+manual/libsigc_manual.dvi: $(manual_srcfile)
+	db2dvi -o manual $(manual_srcfile)
+
+manual/libsigc_manual.pdf: $(manual_srcfile)
+	db2pdf -o manual $(manual_srcfile)
+
+manual/libsigc_manual.ps: $(manual_srcfile)
+	db2ps -o manual $(manual_srcfile)

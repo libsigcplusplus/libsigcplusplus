@@ -2,9 +2,16 @@ prefix=@prefix@
 exec_prefix=@exec_prefix@
 libdir=@libdir@
 includedir=@includedir@
+datarootdir=@datarootdir@
 
-Name: libsigc++ 2
+docdir=${datarootdir}/doc/libsigc++-@SIGCXX_API_VERSION@
+doxytagfile=${docdir}/reference/libsigc++-@SIGCXX_API_VERSION@.tag
+htmlrefdir=${docdir}/reference/html
+htmlrefpub=http://libsigc.sourceforge.net/libsigc2/docs/reference/html
+
+Name: libsigc++
 Description: Typesafe signal and callback system for C++
-Version: @VERSION@
-Libs: -L${libdir} -lsigc-2.0
-Cflags: -I${includedir}/sigc++-2.0 -I${libdir}/sigc++-2.0/include
+Version: @PACKAGE_VERSION@
+URL: http://libsigc.sourceforge.net/
+Libs: -L${libdir} -lsigc-@SIGCXX_API_VERSION@
+Cflags: -I${includedir}/sigc++-@SIGCXX_API_VERSION@ -I${libdir}/sigc++-@SIGCXX_API_VERSION@/include

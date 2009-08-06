@@ -1,3 +1,44 @@
+2009-08-06  Daniel Elstner  <danielk@openismus.com>
+
+	Transition to new mm-common build infrastructure
+
+	* autogen.sh: Replace with a minimal script that simply executes
+	mm-common-prepare, autoreconf and configure.
+	* configure.ac: Get rid of an enormous amount of old cruft.  Use
+	macros from the new mm-common module to set up Doxygen for building
+	the documentation.  Add option to enable more compiler warnings.
+	* sigc++-2.0-uninstalled.pc.in: New pkg-config data file to allow
+	linking to an uninstalled libsigc++.
+	* sigc++-2.0.pc.in: Modernize.  Provide the location of the
+	installed reference documentation and the Doxygen tag file.
+	* sigc++config.h.in: Modernize and update for new build
+	infrastructure.
+	* Makefile.am, */Makefile.am: Modernize and adapt to the new C++
+	binding build infrastructure in the mm-common module.
+	* sigc++/filelist.am: New Automake include file.  Defines lists
+	of C++ and M4 source files.
+	* docs/Makefile.am: Rewrite using doc-reference.am from the
+	mm-common module.
+	* docs/doc-manual.am: New Automake include file for building the
+	libsigc++ Docbook manual.
+	* docs/images/Makefile.am: Remove file.
+	* docs/manual/Makefile.am: ditto,
+	* docs/reference/Makefile.am: ditto.
+	* docs/Makefile_web.am_fragment: Remove for now, to be taken care
+	of later.
+	* docs/reference/Doxyfile.in: Modernize and adapt to new build
+	infrastructure.
+	* docs/reference/beautify_docs.pl: Remove and use the more recent
+	scripts/doc-postprocess.pl instead.
+	* libsigc++-2.0.spec.in: Remove, to be resurrected only if someone
+	complains.
+	* scripts/Makefile.am: Remove file.  Distribute the files from the
+	toplevel Makefile.am instead.
+	* scripts/cxx_std.m4: Add missing third argument to AC_DEFINE().
+	* scripts/doc-install.pl: New file, copied from mm-common.
+	* scripts/doc-postprocess.pl: ditto,
+	* scripts/tagfile-to-devhelp2.xsl: ditto.
+
 2008-11-13  Murray Cumming  <murrayc@murrayc.com>
 
 	* docs/website/stable.shtml: Correct the download link so it shows all 
