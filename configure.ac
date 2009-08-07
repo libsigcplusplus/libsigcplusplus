@@ -15,7 +15,9 @@
 ## You should have received a copy of the GNU Lesser General Public License
 ## along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
-AC_INIT([libsigc++], [2.2.3], [libsigc-list@gnome.org], [libsigc++])
+AC_INIT([libsigc++], [2.2.3],
+        [http://bugzilla.gnome.org/enter_bug.cgi?product=libsigc%2B%2B],
+        [libsigc++], [http://libsigc.sourceforge.net/])
 AC_PREREQ([2.59])
 m4_pattern_forbid([^_?MM_])
 

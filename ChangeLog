@@ -1,5 +1,14 @@
 2009-08-07  Daniel Elstner  <danielk@openismus.com>
 
+	Change bug report URL to point to Bugzilla
+
+	* configure.ac (AC_INIT): Change the bug-report argument to the
+	URL for filing a new libsigc++ bug on bugzilla.gnome.org.  Also
+	name the website URL as fifth argument.  It will simply be ignored
+	if the installed Autoconf does not support this new feature.
+
+2009-08-07  Daniel Elstner  <danielk@openismus.com>
+
 	Do not enable -pedantic mode by default
 
 	* configure.ac (MM_ARG_ENABLE_WARNINGS): Remove -pedantic from the
