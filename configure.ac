@@ -55,7 +55,7 @@ AS_IF([test "x$config_error" = xyes],
       [AC_MSG_FAILURE([[One or more of the required C++ compiler features is missing.]])])
 
 MM_ARG_ENABLE_WARNINGS([SIGC_WXXFLAGS],
-                       [-pedantic -Wall],
+                       [-Wall],
                        [-pedantic -Wall -Wextra])
 
 AC_CONFIG_FILES([Makefile

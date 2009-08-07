@@ -1,5 +1,12 @@
 2009-08-07  Daniel Elstner  <danielk@openismus.com>
 
+	Do not enable -pedantic mode by default
+
+	* configure.ac (MM_ARG_ENABLE_WARNINGS): Remove -pedantic from the
+	list of compiler flags to use at warning level "min" (the default).
+
+2009-08-07  Daniel Elstner  <danielk@openismus.com>
+
 	Correct M4 forbidden tokens pattern
 
 	* configure.ac (m4_pattern_forbid): Take into account that the
