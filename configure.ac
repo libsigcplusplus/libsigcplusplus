@@ -17,7 +17,7 @@
 
 AC_INIT([libsigc++], [2.2.3], [libsigc-list@gnome.org], [libsigc++])
 AC_PREREQ([2.59])
-m4_pattern_forbid([\<MM_])
+m4_pattern_forbid([^_?MM_])
 
 AC_CONFIG_SRCDIR([sigc++/sigc++.h])
 AC_CONFIG_AUX_DIR([scripts])

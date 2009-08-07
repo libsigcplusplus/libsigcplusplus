@@ -1,3 +1,11 @@
+2009-08-07  Daniel Elstner  <danielk@openismus.com>
+
+	Correct M4 forbidden tokens pattern
+
+	* configure.ac (m4_pattern_forbid): Take into account that the
+	pattern is applied to tokens, not lines.  Also catch unexpanded
+	calls to underscore-prefixed private macros.
+
 2009-08-06  Daniel Elstner  <danielk@openismus.com>
 
 	Transition to new mm-common build infrastructure
