@@ -1,5 +1,13 @@
 2009-08-07  Daniel Elstner  <danielk@openismus.com>
 
+	Use #error explicitly instead of broken code
+
+	* sigc++config.h.in: Do use the #error preprocessor directive,
+	instead of an errornous piece of code.  This code does not need
+	the same level of obfuscation as an Autoconf feature test.
+
+2009-08-07  Daniel Elstner  <danielk@openismus.com>
+
 	Change bug report URL to point to Bugzilla
 
 	* configure.ac (AC_INIT): Change the bug-report argument to the
