@@ -16,13 +16,9 @@ ABBREVIATE_BRIEF       =
 ALWAYS_DETAILED_SEC    = NO
 INLINE_INHERITED_MEMB  = NO
 FULL_PATH_NAMES        = YES
-STRIP_FROM_PATH        = "@abs_top_builddir@/sigc++/" \
-                         "@abs_top_srcdir@/sigc++/" \
-                         "@abs_top_builddir@/" \
+STRIP_FROM_PATH        = "@abs_top_builddir@/" \
                          "@abs_top_srcdir@/"
-STRIP_FROM_INC_PATH    = "@abs_top_builddir@/sigc++/" \
-                         "@abs_top_srcdir@/sigc++/" \
-                         "@abs_top_builddir@/" \
+STRIP_FROM_INC_PATH    = "@abs_top_builddir@/" \
                          "@abs_top_srcdir@/"
 SHORT_NAMES            = NO
 JAVADOC_AUTOBRIEF      = YES
@@ -48,15 +44,15 @@ SYMBOL_CACHE_SIZE      = 0
 #---------------------------------------------------------------------------
 # Build related configuration options
 #---------------------------------------------------------------------------
-EXTRACT_ALL            = YES
+EXTRACT_ALL            = NO
 EXTRACT_PRIVATE        = NO
-EXTRACT_STATIC         = YES
-EXTRACT_LOCAL_CLASSES  = YES
+EXTRACT_STATIC         = NO
+EXTRACT_LOCAL_CLASSES  = NO
 EXTRACT_LOCAL_METHODS  = NO
 EXTRACT_ANON_NSPACES   = NO
 HIDE_UNDOC_MEMBERS     = NO
-HIDE_UNDOC_CLASSES     = NO
-HIDE_FRIEND_COMPOUNDS  = NO
+HIDE_UNDOC_CLASSES     = YES
+HIDE_FRIEND_COMPOUNDS  = YES
 HIDE_IN_BODY_DOCS      = YES
 INTERNAL_DOCS          = NO
 CASE_SENSE_NAMES       = YES
@@ -67,10 +63,10 @@ SORT_MEMBER_DOCS       = YES
 SORT_BRIEF_DOCS        = NO
 SORT_GROUP_NAMES       = NO
 SORT_BY_SCOPE_NAME     = YES
-GENERATE_TODOLIST      = YES
-GENERATE_TESTLIST      = YES
-GENERATE_BUGLIST       = YES
-GENERATE_DEPRECATEDLIST= YES
+GENERATE_TODOLIST      = NO
+GENERATE_TESTLIST      = NO
+GENERATE_BUGLIST       = NO
+GENERATE_DEPRECATEDLIST= NO
 ENABLED_SECTIONS       =
 MAX_INITIALIZER_LINES  = 2
 SHOW_USED_FILES        = YES
@@ -229,9 +225,18 @@ INCLUDE_PATH           = "@abs_top_builddir@" \
 INCLUDE_FILE_PATTERNS  = *.h
 PREDEFINED             = __cplusplus \
                          DOXYGEN_SHOULD_SKIP_THIS \
-                         SIGC_USING_STD(x)= \
-                         SIGC_API=
-EXPAND_AS_DEFINED      =
+                         "SIGC_API=" \
+                         SIGC_CONFIGURE \
+                         SIGC_GCC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD \
+                         SIGC_HAVE_NAMESPACE_STD \
+                         SIGC_MSVC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD \
+                         SIGC_SELF_REFERENCE_IN_MEMBER_INITIALIZATION \
+                         SIGC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD \
+                         "SIGC_USING_STD(Symbol)="
+EXPAND_AS_DEFINED      = SIGC_WORKAROUND_OPERATOR_PARENTHESES \
+                         SIGCXX_MAJOR_VERSION \
+                         SIGCXX_MINOR_VERSION \
+                         SIGCXX_MICRO_VERSION
 SKIP_FUNCTION_MACROS   = YES
 #---------------------------------------------------------------------------
 # Configuration::additions related to external references

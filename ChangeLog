@@ -1,3 +1,15 @@
+2009-08-08  Daniel Elstner  <danielk@openismus.com>
+
+	Disable extraction of undocumented identifiers
+
+	* docs/reference/Doxyfile.in (EXTRACT_ALL): Change setting to
+	NO, and adapt a number of related options accordingly.  The
+	result is a net loss of about 300 generated .html files.  The
+	roughly 450 files which remain now are still an insanely high
+	number, though.
+	(PREDEFINED): Predefine the Autoconf configuration defines to
+	nudge Doxygen towards documenting the canonical code paths.
+
 2009-08-07  Daniel Elstner  <danielk@openismus.com>
 
 	Use #error explicitly instead of broken code
