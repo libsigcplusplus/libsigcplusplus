@@ -24,15 +24,15 @@ htmlrefpub = $(pubdocbase)libsigc2/docs/reference/html
 doc_input = $(addprefix $(top_srcdir)/sigc++/,$(sigc_public_h)) \
 	    $(addprefix $(top_builddir)/sigc++/,$(sigc_built_h))
 
-doc_install         = $(top_srcdir)/scripts/doc-install.pl
-doc_postprocess     = $(top_srcdir)/scripts/doc-postprocess.pl
+# Override utility locations to point to the local files.
+doc_install         = $(PERL) -- $(top_srcdir)/scripts/doc-install.pl
+doc_postprocess     = $(PERL) -- $(top_srcdir)/scripts/doc-postprocess.pl
 tagfile_to_devhelp2 = $(top_srcdir)/scripts/tagfile-to-devhelp2.xsl
 
 include $(top_srcdir)/scripts/doc-reference.am
 
 doc_imagesdir = $(libdocdir)/images
-
 dist_libdoc_DATA = index.html
 dist_doc_images_DATA = images/libsigc_logo.gif images/top.gif
 
-include doc-manual.am
+include $(srcdir)/doc-manual.am

@@ -1,6 +1,6 @@
 package main;
 
-# Copyright (c) 2009  Daniel Elstner <daniel.kitta@gmail.com>
+# Copyright (c) 2009  Openismus GmbH  <http://www.openismus.com/>
 #
 # This file is part of mm-common.
 #
@@ -30,7 +30,8 @@ my $book_base;
 my $perm_mode;
 my $target_dir;
 my $target_nodir = '';
-my $verbose = '';
+my $expand_glob  = '';
+my $verbose      = '';
 
 sub path_basename ($)
 {
@@ -54,11 +55,12 @@ while setting permission modes.  For HTML files, translate references to
 external documentation.
 
 Mandatory arguments to long options are mandatory for short options, too.
-  -k, --book-base=BASEPATH          use reference BASEPATH for Devhelp book
+      --book-base=BASEPATH          use reference BASEPATH for Devhelp book
   -l, --tag-base=TAGFILE\@BASEPATH   use BASEPATH for references from TAGFILE
   -m, --mode=MODE                   override file permission MODE (octal)
   -t, --target-directory=DIRECTORY  copy all SOURCE arguments into DIRECTORY
   -T, --no-target-directory         treat DEST as normal file
+      --glob                        expand SOURCE as filename glob pattern
   -v, --verbose                     enable informational messages
   -?, --help                        display this help and exit
 EOF
@@ -156,11 +158,12 @@ $message_prefix = ($message_prefix || 'doc-install') . ': ';
   my @tags = ();
   my $mode = '0644';
 
-  GetOptions('book-base|k=s'         => \$book_base,
+  GetOptions('book-base=s'           => \$book_base,
              'tag-base|l=s'          => \@tags,
              'mode|m=s'              => \$mode,
              'target-directory|t=s'  => \$target_dir,
              'no-target-directory|T' => \$target_nodir,
+             'glob'                  => \$expand_glob,
              'verbose|v'             => \$verbose,
              'help|?'                => \&exit_help)
     or exit 2;
@@ -176,6 +179,7 @@ if ($target_nodir)
 {
   error('Conflicting target directory options') if (defined $target_dir);
   error('Source and destination filenames expected') unless ($#ARGV == 1);
+  error('Filename globbing requires target directory') if ($expand_glob);
 
   install_file($ARGV[0], $ARGV[1], path_basename($ARGV[1]));
   exit;
@@ -183,7 +187,7 @@ if ($target_nodir)
 
 unless (defined $target_dir)
 {
-  if ($#ARGV == 1)
+  if (!$expand_glob and $#ARGV == 1)
   {
     my $basename = path_basename($ARGV[1]);
 
@@ -197,11 +201,21 @@ unless (defined $target_dir)
 }
 error('No target directory specified') unless (defined($target_dir) and $target_dir ne '');
 
+@ARGV = map(glob, @ARGV) if ($expand_glob);
+my %basename_hash = ();
+
 foreach my $in_name (@ARGV)
 {
   my $basename = path_basename($in_name);
   my $out_name = File::Spec->catfile($target_dir, $basename);
 
-  install_file($in_name, $out_name, $basename);
+  # If there are multiple files with the same base name in the list, only
+  # the first one will be installed.  This behavior makes it very easy to
+  # implement a VPATH search for each individual file.
+  unless (exists $basename_hash{$basename})
+  {
+    $basename_hash{$basename} = undef;
+    install_file($in_name, $out_name, $basename);
+  }
 }
 exit;

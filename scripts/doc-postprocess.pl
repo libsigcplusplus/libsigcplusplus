@@ -21,7 +21,7 @@ use strict;
 use warnings;
 use bytes;
 
-foreach my $filename (@ARGV)
+foreach my $filename (map(glob, @ARGV))
 {
   my @outbuf = ();
   my $file;

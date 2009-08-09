@@ -1,3 +1,12 @@
+2009-08-09  Daniel Elstner  <danielk@openismus.com>
+
+	Refresh doc-install and doc-postprocess copies
+
+	* scripts/doc-install.pl, scripts/doc-postprocess.pl: Copy
+	latest versions from the mm-common module.
+	* docs/Makefile.am (doc_install), (doc_postprocess): Include
+	$(PERL) interpreter command in front of the script name.
+
 2009-08-08  Daniel Elstner  <danielk@openismus.com>
 
 	Disable extraction of undocumented identifiers
