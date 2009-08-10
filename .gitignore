@@ -21,15 +21,3 @@ sigc++config.h
 /sigc++config.h
 /sigc++-*.pc
 /stamp-h?
-/scripts/compile-binding.am
-/scripts/config.guess
-/scripts/config.sub
-/scripts/depcomp
-/scripts/dist-changelog.am
-/scripts/doc-reference.am
-/scripts/generate-binding.am
-/scripts/install-sh
-/scripts/libtool.m4
-/scripts/lt*.m4
-/scripts/ltmain.sh
-/scripts/missing

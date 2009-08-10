@@ -1,0 +1,15 @@
+/compile-binding.am
+/config.guess
+/config.sub
+/depcomp
+/dist-changelog.am
+/doc-install.pl
+/doc-postprocess.pl
+/doc-reference.am
+/generate-binding.am
+/install-sh
+/libtool.m4
+/lt*.m4
+/ltmain.sh
+/missing
+/tagfile-to-devhelp2.xsl
