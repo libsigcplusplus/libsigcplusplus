@@ -19,7 +19,6 @@ AC_INIT([libsigc++], [2.2.3],
         [http://bugzilla.gnome.org/enter_bug.cgi?product=libsigc%2B%2B],
         [libsigc++], [http://libsigc.sourceforge.net/])
 AC_PREREQ([2.59])
-m4_pattern_forbid([^_?MM_])
 
 AC_CONFIG_SRCDIR([sigc++/sigc++.h])
 AC_CONFIG_AUX_DIR([scripts])
@@ -31,6 +30,7 @@ AM_MAINTAINER_MODE
 AC_ARG_VAR([ACLOCAL_FLAGS], [aclocal flags, e.g. -I <macro dir>])
 
 MM_INIT_MODULE([sigc++-2.0], m4_expand([AC_PACKAGE_VERSION]))
+MM_CONFIG_DOCTOOL_DIR([scripts])
 
 AC_PROG_CXX
 AC_DISABLE_STATIC

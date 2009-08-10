@@ -1,5 +1,16 @@
 2009-08-09  Daniel Elstner  <danielk@openismus.com>
 
+	Have mm-common-prepare install the doc utils
+
+	* configure.ac: Call MM_CONFIG_DOCTOOL_DIR([scripts]) to set
+	up the destination directory for mm-common-prepare to copy
+	the documentation utilities to.
+	* scripts/doc-install.pl: Delete file.
+	* scripts/doc-postprocess.pl: ditto,
+	* scripts/tagfile-to-devhelp2.xsl: ditto.
+
+2009-08-09  Daniel Elstner  <danielk@openismus.com>
+
 	Refresh doc-install and doc-postprocess copies
 
 	* scripts/doc-install.pl, scripts/doc-postprocess.pl: Copy
