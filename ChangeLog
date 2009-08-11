@@ -1,5 +1,20 @@
 2009-08-11  Daniel Elstner  <danielk@openismus.com>
 
+	Do not recurse into MSVC subdirectories
+
+	* MSVC_Net200[58]/filelist.am: New Automake include files, defining
+	the lists of files to ship from the MSVC project directories.
+	* MSVC_Net200[58]/Makefile.am: Delete recursive Makefile.am files.
+	* Makefile.am: Include MSVC_Net200[58]/filelist.am.
+	(dist_noinst_DATA): Distribute MSVC project files.
+	(SUBDIRS): Do not recurse into the MSVC_Net200[58] subdirectories.
+	* configure.ac (AC_CONFIG_FILES): Remove the output files
+	MSVC_Net200[58]/Makefile.am from the list.
+	(AC_CONFIG_COMMANDS): Copy sigc++config.h into the MSVC project
+	directories at the end of config.status.
+
+2009-08-11  Daniel Elstner  <danielk@openismus.com>
+
 	Remove now superfluous doctool overrides
 
 	* docs/Makefile.am: Remove overrides for the documentation

@@ -22,9 +22,9 @@ doc_subdirs = docs
 else
 doc_subdirs =
 endif
-SUBDIRS = sigc++ tests examples $(doc_subdirs) MSVC_Net2005 MSVC_Net2008
+SUBDIRS = sigc++ tests examples $(doc_subdirs)
 
-sigc_configdir = $(libdir)/sigc++-2.0/include
+sigc_configdir = $(libdir)/$(SIGCXX_MODULE_NAME)/include
 nodist_sigc_config_HEADERS = sigc++config.h
 
 pkgconfigdir = $(libdir)/pkgconfig
@@ -33,7 +33,16 @@ noinst_DATA = sigc++-2.0-uninstalled.pc
 
 dist_noinst_SCRIPTS = autogen.sh
 
+include $(srcdir)/MSVC_Net2005/filelist.am
+include $(srcdir)/MSVC_Net2008/filelist.am
+
+msvc_files = $(addprefix MSVC_Net2005/,$(msvc_net2005_data)) \
+	     $(addprefix MSVC_Net2008/,$(msvc_net2008_data))
+
 dist_noinst_DATA =			\
 	scripts/doc-install.pl		\
 	scripts/doc-postprocess.pl	\
-	scripts/tagfile-to-devhelp2.xsl
+	scripts/tagfile-to-devhelp2.xsl	\
+	$(msvc_files)
+
+DISTCLEANFILES = MSVC_Net2005/sigc++config.h MSVC_Net2008/sigc++config.h
