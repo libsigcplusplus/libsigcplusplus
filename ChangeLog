@@ -1,4 +1,13 @@
-2009-08-09  Daniel Elstner  <danielk@openismus.com>
+2009-08-11  Daniel Elstner  <danielk@openismus.com>
+
+	Remove now superfluous doctool overrides
+
+	* docs/Makefile.am: Remove overrides for the documentation
+	utilities, since MM_CONFIG_DOCTOOL_DIR() already takes care
+	of setting MMDOCTOOLDIR to the local directory.
+	* sigc++-2.0.pc.in (datadir): Substitute value, just in case.
+
+2009-08-10  Daniel Elstner  <danielk@openismus.com>
 
 	Have mm-common-prepare install the doc utils
 

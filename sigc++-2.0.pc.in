@@ -1,8 +1,9 @@
 prefix=@prefix@
 exec_prefix=@exec_prefix@
 libdir=@libdir@
-includedir=@includedir@
 datarootdir=@datarootdir@
+datadir=@datadir@
+includedir=@includedir@
 
 docdir=${datarootdir}/doc/libsigc++-@SIGCXX_API_VERSION@
 doxytagfile=${docdir}/reference/libsigc++-@SIGCXX_API_VERSION@.tag
