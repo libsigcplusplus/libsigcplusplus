@@ -36,13 +36,7 @@ dist_noinst_SCRIPTS = autogen.sh
 include $(srcdir)/MSVC_Net2005/filelist.am
 include $(srcdir)/MSVC_Net2008/filelist.am
 
-msvc_files = $(addprefix MSVC_Net2005/,$(msvc_net2005_data)) \
-	     $(addprefix MSVC_Net2008/,$(msvc_net2008_data))
-
-dist_noinst_DATA =			\
-	scripts/doc-install.pl		\
-	scripts/doc-postprocess.pl	\
-	scripts/tagfile-to-devhelp2.xsl	\
-	$(msvc_files)
+dist_noinst_DATA = $(addprefix MSVC_Net2005/,$(msvc_net2005_data)) \
+                   $(addprefix MSVC_Net2008/,$(msvc_net2008_data))
 
 DISTCLEANFILES = MSVC_Net2005/sigc++config.h MSVC_Net2008/sigc++config.h

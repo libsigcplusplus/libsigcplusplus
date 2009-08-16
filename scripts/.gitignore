@@ -3,8 +3,6 @@
 /config.sub
 /depcomp
 /dist-changelog.am
-/doc-install.pl
-/doc-postprocess.pl
 /doc-reference.am
 /generate-binding.am
 /install-sh
@@ -12,4 +10,3 @@
 /lt*.m4
 /ltmain.sh
 /missing
-/tagfile-to-devhelp2.xsl

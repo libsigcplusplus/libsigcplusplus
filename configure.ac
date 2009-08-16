@@ -29,8 +29,9 @@ AM_INIT_AUTOMAKE([1.9 -Wno-portability no-define nostdinc tar-pax])
 AM_MAINTAINER_MODE
 AC_ARG_VAR([ACLOCAL_FLAGS], [aclocal flags, e.g. -I <macro dir>])
 
-MM_INIT_MODULE([sigc++-2.0], m4_expand([AC_PACKAGE_VERSION]))
-MM_CONFIG_DOCTOOL_DIR([scripts])
+MM_PREREQ([0.4])
+MM_INIT_MODULE([sigc++-2.0])
+MM_CONFIG_DOCTOOL_DIR([docs])
 
 AC_PROG_CXX
 AC_DISABLE_STATIC

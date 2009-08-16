@@ -19,15 +19,23 @@ include $(top_srcdir)/sigc++/filelist.am
 
 book_name  = libsigc++-$(SIGCXX_API_VERSION)
 pubdocbase = http://libsigc.sourceforge.net/
-htmlrefpub = $(pubdocbase)libsigc2/docs/reference/html
+htmlrefpub = $(pubdocbase)libsigc2/docs/reference/html/
 
-doc_input = $(addprefix $(top_srcdir)/sigc++/,$(sigc_public_h)) \
-	    $(addprefix $(top_builddir)/sigc++/,$(sigc_built_h))
+# For each header file, test whether it exists in the build directory.
+# If it does, return its relative path.  Otherwise, assume the file is
+# present in the source directory and return the relative path to that
+# location.
+libsigc_h = $(sigc_public_h) $(sigc_built_h)
+vp_select = $(or $(wildcard $(top_builddir)/sigc++/$(file)),$(top_srcdir)/sigc++/$(file))
+vp_search = $(foreach file,$(libsigc_h),$(vp_select))
+doc_input = $(if $(srcdir:.=),$(vp_search),$(addprefix $(top_builddir)/sigc++/,$(libsigc_h)))
 
 include $(top_srcdir)/scripts/doc-reference.am
 
 doc_imagesdir = $(libdocdir)/images
 dist_libdoc_DATA = index.html
 dist_doc_images_DATA = images/libsigc_logo.gif images/top.gif
+
+dist_noinst_DATA += doc-install.pl doc-postprocess.pl tagfile-to-devhelp2.xsl
 
 include $(srcdir)/doc-manual.am
