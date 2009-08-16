@@ -1,3 +1,20 @@
+2009-08-16  Daniel Elstner  <danielk@openismus.com>
+
+	Update for latest mm-common 0.4
+
+	* configure.ac (MM_PREREQ): Require mm-common 0.4.
+	(MM_INIT_MODULE): Omit now optional version number argument.
+	(MM_CONFIG_DOCTOOL_DIR): Copy the documentation utilities into docs/
+	instead of scripts/.
+	* Makefile.am (dist_noinst_DATA): Remove documentation utilities.
+	* sigc++-2.0.pc.in (htmlrefpub): Append trailing slash.
+	* sigc++-2.0-uninstalled.pc.in (htmlrefpub): ditto,
+	* docs/Makefile.am (htmlrefpub): ditto.
+	(doc_input): Perform a VPATH search for each input file, to correctly
+	handle the case of rebuilding the documentation of a tarball release
+	which includes the generated sources.
+	(dist_noinst_DATA): List documentation utilities.
+
 2009-08-11  Daniel Elstner  <danielk@openismus.com>
 
 	Do not recurse into MSVC subdirectories
