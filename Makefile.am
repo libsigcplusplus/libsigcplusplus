@@ -15,7 +15,7 @@
 ## You should have received a copy of the GNU Lesser General Public License
 ## along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
-ACLOCAL_AMFLAGS = -I scripts ${ACLOCAL_FLAGS}
+ACLOCAL_AMFLAGS = -I build ${ACLOCAL_FLAGS}
 
 if ENABLE_DOCUMENTATION
 doc_subdirs = docs

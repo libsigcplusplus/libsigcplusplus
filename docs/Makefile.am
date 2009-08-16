@@ -30,7 +30,7 @@ vp_select = $(or $(wildcard $(top_builddir)/sigc++/$(file)),$(top_srcdir)/sigc++
 vp_search = $(foreach file,$(libsigc_h),$(vp_select))
 doc_input = $(if $(srcdir:.=),$(vp_search),$(addprefix $(top_builddir)/sigc++/,$(libsigc_h)))
 
-include $(top_srcdir)/scripts/doc-reference.am
+include $(top_srcdir)/build/doc-reference.am
 
 doc_imagesdir = $(libdocdir)/images
 dist_libdoc_DATA = index.html

@@ -46,7 +46,7 @@ Overview of the distribution:
       sigc++/adpators/lambda/        source for library (lambda library)
       sigc++/adpators/lambda/macros/ .m4 files used to auto-generate source files
    
-   scripts/                          automake junk
+   build/                            auxiliary files for building
    
    tests/                            programs testing and verifying proper behaviour
    

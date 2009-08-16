@@ -1,3 +1,15 @@
+2009-08-16  Daniel Elstner  <daniel.kitta@gmail.com>
+
+	Rename scripts/ to build/ for consistency
+
+	* build/: Rename directory from scripts/ for consistency with most
+	of the other modules that switched to the new build infrastructure.
+	* Makefile.am (ACLOCAL_AMFLAGS): Adjust M4 include directory.
+	* README: Adjust a reference to scripts/ in the text.
+	* configure.ac (AC_CONFIG_AUX_DIR): Copy auxiliary files to build/.
+	(AC_CONFIG_MACRO_DIR): Place Autoconf M4 files into build/.
+	* docs/Makefile.am: Include $(top_srcdir)/build/doc-reference.am.
+
 2009-08-16  Daniel Elstner  <danielk@openismus.com>
 
 	Update for latest mm-common 0.4
