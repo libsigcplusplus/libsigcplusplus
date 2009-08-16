@@ -1,5 +1,8 @@
 #include <sigc++/sigc++.h>
 
+namespace
+{
+
 class Base
   : virtual public sigc::trackable
 {
@@ -21,7 +24,9 @@ public:
   {}
 };
 
-int main(int argc, char **argv)
+} // anonymous namespace
+
+int main(int, char**)
 {
   Derived *instance = new Derived();
   sigc::slot<void> handler = sigc::mem_fun(instance, &Derived::method);

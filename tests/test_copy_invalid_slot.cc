@@ -6,9 +6,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-void Foo(sigc::trackable &t) {}
+static void Foo(sigc::trackable&) {}
 
-int main(int argc, char **argv)
+int main(int, char**)
 {
    sigc::trackable *t = new sigc::trackable();
    std::cout << "sigc::trackable instance at " << t << std::endl;

@@ -4,22 +4,24 @@
  */
 
 #include <iostream>
-//#include <sigc++/adaptors/deduce_result_type.h>
 #include <sigc++/sigc++.h>
 
 SIGC_USING_STD(cout)
 SIGC_USING_STD(endl)
 
+namespace
+{
+
 template <class T>
-void bar(T t)
+void bar(T)
 { std::cout << "unknown" << std::endl; }
 
 template <>
-void bar<int>(int i)
+void bar<int>(int)
 { std::cout << "int" << std::endl; }
 
 template <>
-void bar<double>(double d)
+void bar<double>(double)
 { std::cout << "double" << std::endl; }
 
 struct foo : public sigc::functor_base
@@ -32,7 +34,9 @@ struct foo : public sigc::functor_base
 struct foo2 :public foo
 {};
 
-int main()
+} // anonymous namespace
+
+int main(int, char**)
 {
   bar(sigc::deduce_result_type<foo2,long>::type());
   bar(sigc::deduce_result_type<foo2,int,int>::type());

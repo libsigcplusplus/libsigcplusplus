@@ -12,6 +12,9 @@
 SIGC_USING_STD(cout)
 SIGC_USING_STD(endl)
 
+namespace
+{
+
 class trackable {};
 struct A: public trackable { A() {} };
 
@@ -21,18 +24,18 @@ struct with_trackable;
 template <class T_type>
 struct with_trackable<T_type,false>
 {
-  static void perform(const T_type& t) 
+  static void perform(const T_type&)
   { std::cout << "other" <<std::endl; }
 };
 
 template <class T_type>
 struct with_trackable<T_type,true>
 {
-  static void perform(const T_type& t) 
+  static void perform(const T_type&)
   { std::cout << "trackable" << std::endl; }
-  static void perform(T_type* t) 
+  static void perform(T_type*)
   { std::cout << "trackable*" << std::endl; }
-  static void perform(const T_type* t) 
+  static void perform(const T_type*)
   { std::cout << "const trackable*" << std::endl; }
 };
 
@@ -45,20 +48,22 @@ struct print
     { with_trackable<T>::perform(t); }
 };
 
-void foo(int i,int j,int k)
+void foo(int, int, int)
 {}
 
-void bar(int i)
+void bar(int)
 {}
 
-int main()
+} // anonymous namespace
+
+int main(int, char**)
 {
   int i = 1, j = 2, k = 3;
   A a;
   std::cout << "hit all targets" << std::endl;
-  sigc::visit_each(print(), sigc::compose(sigc::bind(sigc::ptr_fun3(&foo), sigc::ref(a), j), sigc::ptr_fun1(&bar)));
+  sigc::visit_each(print(), sigc::compose(sigc::bind(sigc::ptr_fun3(&foo), sigc::ref(a), i), sigc::ptr_fun1(&bar)));
   std::cout << "hit all ints" << std::endl;
   sigc::visit_each_type<int>(print(), sigc::compose(sigc::bind(sigc::ptr_fun3(&foo), sigc::ref(a), j),sigc::ptr_fun1(&bar)));
   std::cout << "hit all trackable" << std::endl;
-  sigc::visit_each_type<trackable>(print(), sigc::compose(sigc::bind(sigc::ptr_fun3(&foo), sigc::ref(a), j),sigc::ptr_fun1(&bar)));
+  sigc::visit_each_type<trackable>(print(), sigc::compose(sigc::bind(sigc::ptr_fun3(&foo), sigc::ref(a), k),sigc::ptr_fun1(&bar)));
 }
