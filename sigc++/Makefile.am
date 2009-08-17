@@ -40,7 +40,8 @@ libsigc_2_0_la_SOURCES =	\
 
 EXTRA_libsigc_2_0_la_SOURCES = $(sigc_built_cc)
 
-libsigc_2_0_la_LDFLAGS = -no-undefined
+# http://www.gnu.org/software/libtool/manual/html_node/Updating-version-info.html
+libsigc_2_0_la_LDFLAGS = -no-undefined -version-info 0:0:0
 
 AM_CPPFLAGS = -I$(top_builddir) -I$(top_srcdir)
 AM_CXXFLAGS = $(SIGC_WXXFLAGS)

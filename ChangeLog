@@ -1,3 +1,10 @@
+2009-08-17  Daniel Elstner  <danielk@openismus.com>
+
+	Set libtool version information
+
+	* sigc++/Makefile.am (libsigc_2_0_la_LDFLAGS): Add libtool option
+	-version-info 0:0:0 to specify the version information explicitly.
+
 2009-08-16  Daniel Elstner  <daniel.kitta@gmail.com>
 
 	Remove unused parameter names for correctness
