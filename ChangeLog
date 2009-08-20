@@ -1,5 +1,14 @@
 2009-08-20  Daniel Elstner  <danielk@openismus.com>
 
+	Use new version component substitutions
+
+	* MSVC_Net200[58]/sigc.rc.in: Replace the no longer defined
+	@FP_*_VERSION@ substitutions by the new @SIGCXX_*_VERSION@
+	substitutions for the version number components.  These are
+	defined by MM_INIT_MODULE() from mm-common.
+
+2009-08-20  Daniel Elstner  <danielk@openismus.com>
+
 	Substitute API version in filenames dynamically
 
 	* sigc++.pc.in: Rename file from sigc++-2.0.pc.in.
