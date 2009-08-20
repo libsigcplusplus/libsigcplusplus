@@ -27,21 +27,21 @@ dist_noinst_DATA = $(sigc_m4)
 library_includedir = $(includedir)/$(SIGCXX_MODULE_NAME)/sigc++
 nobase_library_include_HEADERS = sigc++.h $(sigc_public_h) $(sigc_built_h)
 
-lib_LTLIBRARIES = libsigc-2.0.la
+lib_LTLIBRARIES = libsigc-@SIGCXX_API_VERSION@.la
 
-libsigc_2_0_la_SOURCES =	\
-	signal.cc		\
-	signal_base.cc		\
-	trackable.cc		\
-	connection.cc		\
-	functors/slot.cc	\
-	functors/slot_base.cc	\
+libsigc_@SIGCXX_API_VERSION@_la_SOURCES =	\
+	signal.cc				\
+	signal_base.cc				\
+	trackable.cc				\
+	connection.cc				\
+	functors/slot.cc			\
+	functors/slot_base.cc			\
 	adaptors/lambda/lambda.cc
 
-EXTRA_libsigc_2_0_la_SOURCES = $(sigc_built_cc)
+EXTRA_libsigc_@SIGCXX_API_VERSION@_la_SOURCES = $(sigc_built_cc)
 
 # http://www.gnu.org/software/libtool/manual/html_node/Updating-version-info.html
-libsigc_2_0_la_LDFLAGS = -no-undefined -version-info 0:0:0
+libsigc_@SIGCXX_API_VERSION@_la_LDFLAGS = -no-undefined -version-info 0:0:0
 
 AM_CPPFLAGS = -I$(top_builddir) -I$(top_srcdir)
 AM_CXXFLAGS = $(SIGC_WXXFLAGS)

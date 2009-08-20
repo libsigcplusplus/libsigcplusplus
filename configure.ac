@@ -62,15 +62,15 @@ MM_ARG_ENABLE_WARNINGS([SIGC_WXXFLAGS],
                        [-pedantic -Wall -Wextra])
 
 AC_CONFIG_FILES([Makefile
-                 sigc++-2.0.pc
-                 sigc++-2.0-uninstalled.pc
+                 ${SIGCXX_MODULE_NAME}.pc:sigc++.pc.in
+                 ${SIGCXX_MODULE_NAME}-uninstalled.pc:sigc++-uninstalled.pc.in
                  sigc++/Makefile
                  examples/Makefile
                  tests/Makefile
                  docs/Makefile
                  docs/reference/Doxyfile
-                 MSVC_Net2005/sigc-2.0.rc
-                 MSVC_Net2008/sigc-2.0.rc])
+                 MSVC_Net2005/sigc.rc
+                 MSVC_Net2008/sigc.rc])
 
 # Copy the generated configuration headers into the MSVC project directories.
 AC_CONFIG_COMMANDS([MSVC_Net2005/sigc++config.h],

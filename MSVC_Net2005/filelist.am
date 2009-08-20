@@ -5,7 +5,7 @@ msvc_net2005_data =								\
 	libsigc++2.sln								\
 	libsigc++2.vcproj							\
 	sigc++config.h								\
-	sigc-2.0.rc								\
+	sigc.rc									\
 	tests/test_accumulated/test_accumulated.vcproj				\
 	tests/test_bind/test_bind.vcproj					\
 	tests/test_bind_return/test_bind_return.vcproj				\

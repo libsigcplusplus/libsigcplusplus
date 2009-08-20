@@ -16,11 +16,11 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "The libsigc++ development team (see AUTHORS)"
             VALUE "FileDescription", "The Typesafe Callback Framework for C++"
-            VALUE "FileVersion", "@VERSION@"
+            VALUE "FileVersion", "@PACKAGE_VERSION@"
             VALUE "LegalCopyright", "Distribution is under the LGPL (see COPYING)"
-            VALUE "OriginalFilename", "sigc-2.0"
+            VALUE "OriginalFilename", "sigc-@SIGCXX_API_VERSION@.dll"
             VALUE "ProductName", "libsigc++"
-            VALUE "ProductVersion", "@VERSION@"
+            VALUE "ProductVersion", "@PACKAGE_VERSION@"
         END
     END
     BLOCK "VarFileInfo"

@@ -2,7 +2,7 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="sigc-2.0"
+	Name="libsigc++"
 	ProjectGUID="{83997EF6-02D6-4CDB-8B3C-DBCA3018CC72}"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="131072"
@@ -525,7 +525,7 @@
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
 			<File
-				RelativePath=".\sigc-2.0.rc"
+				RelativePath=".\sigc.rc"
 				>
 			</File>
 		</Filter>

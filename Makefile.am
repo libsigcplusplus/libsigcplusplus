@@ -28,8 +28,8 @@ sigc_configdir = $(libdir)/$(SIGCXX_MODULE_NAME)/include
 nodist_sigc_config_HEADERS = sigc++config.h
 
 pkgconfigdir = $(libdir)/pkgconfig
-nodist_pkgconfig_DATA = sigc++-2.0.pc
-noinst_DATA = sigc++-2.0-uninstalled.pc
+nodist_pkgconfig_DATA = $(SIGCXX_MODULE_NAME).pc
+noinst_DATA = $(SIGCXX_MODULE_NAME)-uninstalled.pc
 
 dist_noinst_SCRIPTS = autogen.sh
 

@@ -85,7 +85,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_disconnect_during_emit
 		{83997EF6-02D6-4CDB-8B3C-DBCA3018CC72} = {83997EF6-02D6-4CDB-8B3C-DBCA3018CC72}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sigc-2.0", "libsigc++2.vcproj", "{83997EF6-02D6-4CDB-8B3C-DBCA3018CC72}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libsigc++", "libsigc++2.vcproj", "{83997EF6-02D6-4CDB-8B3C-DBCA3018CC72}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

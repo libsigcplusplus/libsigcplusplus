@@ -1,3 +1,25 @@
+2009-08-20  Daniel Elstner  <danielk@openismus.com>
+
+	Substitute API version in filenames dynamically
+
+	* sigc++.pc.in: Rename file from sigc++-2.0.pc.in.
+	* sigc++-uninstalled.pc.in: Rename file from
+	sigc++-2.0-uninstalled.pc.in.
+	* MSVC_Net200[58]/sigc.rc.in: Rename files from sigc-2.0.rc.in
+	and use @SIGCXX_API_VERSION@ substitution for the API version.
+	Also replace @VERSION@ with @PACKAGE_VERSION@.
+	* MSVC_Net200[58]/libsigc++2.{sln,vcproj}: Remove version from
+	the project name and filenames.
+	* MSVC_Net200[58]/filelist.am: Remove version from filenames.
+	* configure.ac (AC_CONFIG_FILES): Insert ${SIGCXX_MODULE_NAME}
+	into output filenames and remove the version from the input
+	filenames.
+	* Makefile.am: Use $(SIGCXX_MODULE_NAME) in pkg-config file
+	names instead of hard-coding the API version.
+	* sigc++/Makefile.am (lib_LTLIBRARIES): Instead of hard-coding
+	the libtool archive name, substitute @SIGCXX_API_VERSION@ into
+	it, as well as into the derived variable names.
+
 2009-08-17  Daniel Elstner  <danielk@openismus.com>
 
 	Set libtool version information
