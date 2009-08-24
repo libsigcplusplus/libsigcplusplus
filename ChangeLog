@@ -1,3 +1,11 @@
+2009-08-24  Daniel Elstner  <danielk@openismus.com>
+
+	Add id="content" element to documentation index
+
+	* docs/reference/libsigc_header.html_fragment: Start <div> element
+	with attribute id="content" to match the other C++ binding modules.
+	* docs/reference/libsigc_footer.html_fragment: Close <div> element.
+
 2009-08-20  Daniel Elstner  <danielk@openismus.com>
 
 	Use new version component substitutions
