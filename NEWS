@@ -1,3 +1,11 @@
+2.2.4 (stable):
+
+* New build system based on mm-common. The mm-common module is now
+  required for building from the git repository, but not for builds
+  of release archives. (Daniel Elstner)
+* The public reference documentation is now hosted on library.gnome.org.
+  (Frederic Peters, Daniel Elstner)
+
 2.2.3 (stable):
 
 * Windows:

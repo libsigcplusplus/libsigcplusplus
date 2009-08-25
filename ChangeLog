@@ -1,5 +1,9 @@
 2009-08-25  Daniel Elstner  <danielk@openismus.com>
 
+	Update NEWS for libsigc++ 2.2.4 release
+
+2009-08-25  Daniel Elstner  <danielk@openismus.com>
+
 	Bump version to 2.2.4 and require mm-common 0.6.1
 
 	* configure.ac (AC_INIT): Increase version number to 2.2.4.
