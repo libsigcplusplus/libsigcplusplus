@@ -484,6 +484,6 @@ double average_of_all_connected_slots = mysignal();
 
 <chapter id="sec-reference">
 <title>Reference</title>
-	<para>See the reference documentation <ulink url="http://libsigc.sourceforge.net/libsigc2/docs/index.html">online</ulink></para>
+	<para>See the reference documentation <ulink url="http://library.gnome.org/devel/libsigc++/unstable/">online</ulink></para>
 </chapter>
 </book>

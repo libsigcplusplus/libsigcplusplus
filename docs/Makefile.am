@@ -17,9 +17,7 @@
 
 include $(top_srcdir)/sigc++/filelist.am
 
-book_name  = libsigc++-$(SIGCXX_API_VERSION)
-pubdocbase = http://libsigc.sourceforge.net/
-htmlrefpub = $(pubdocbase)libsigc2/docs/reference/html/
+book_name = libsigc++-$(SIGCXX_API_VERSION)
 
 # For each header file, test whether it exists in the build directory.
 # If it does, return its relative path.  Otherwise, assume the file is

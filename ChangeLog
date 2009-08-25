@@ -1,3 +1,13 @@
+2009-08-25  Daniel Elstner  <danielk@openismus.com>
+
+	Change documentation host to library.gnome.org
+
+	* README, docs/manual/libsigc_manual.xml: Adjust links to the
+	reference documentation in the text.
+	* docs/Makefile.am (pubdocbase), (htmlrefpub): Remove override
+	and use the updated mm-common default values.
+	* sigc++{,-uninstalled}.pc.in (htmlrefpub): Adjust link.
+
 2009-08-24  Daniel Elstner  <danielk@openismus.com>
 
 	Add id="content" element to documentation index
