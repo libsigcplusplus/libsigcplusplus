@@ -1,5 +1,12 @@
 2009-08-25  Daniel Elstner  <danielk@openismus.com>
 
+	Have Automake check NEWS and use bzip2
+
+	* configure.ac (AM_INIT_AUTOMAKE): Add options check-news and
+	dist-bzip2.
+
+2009-08-25  Daniel Elstner  <danielk@openismus.com>
+
 	Update NEWS for libsigc++ 2.2.4 release
 
 2009-08-25  Daniel Elstner  <danielk@openismus.com>
