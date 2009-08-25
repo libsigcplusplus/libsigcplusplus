@@ -1,5 +1,13 @@
 2009-08-25  Daniel Elstner  <danielk@openismus.com>
 
+	Bump version to 2.2.4 and require mm-common 0.6.1
+
+	* configure.ac (AC_INIT): Increase version number to 2.2.4.
+	(MM_PREREQ): Require mm-common 0.6.1 for the updated default
+	location of the reference documentation.
+
+2009-08-25  Daniel Elstner  <danielk@openismus.com>
+
 	Change documentation host to library.gnome.org
 
 	* README, docs/manual/libsigc_manual.xml: Adjust links to the
