@@ -1,5 +1,12 @@
 2009-08-26  Daniel Elstner  <danielk@openismus.com>
 
+	Bump version to 2.2.5 and update NEWS
+
+	* configure.ac (AC_INIT): Increment version number to 2.2.5.
+	* NEWS: Write news entry for libsigc++ 2.2.5.
+
+2009-08-26  Daniel Elstner  <danielk@openismus.com>
+
 	Reenable hierarchy graphs for each class
 
 	* docs/reference/Doxyfile.in (COLLABORATION_GRAPH): Set option

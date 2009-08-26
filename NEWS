@@ -1,3 +1,8 @@
+2.2.5 (stable):
+
+* Reenable the per-class hierarchy graphs in the reference documentation.
+  (Daniel Elstner)
+
 2.2.4 (stable):
 
 * New build system based on mm-common. The mm-common module is now
