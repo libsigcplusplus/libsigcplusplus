@@ -1,3 +1,10 @@
+2009-08-26  Daniel Elstner  <danielk@openismus.com>
+
+	Reenable hierarchy graphs for each class
+
+	* docs/reference/Doxyfile.in (COLLABORATION_GRAPH): Set option
+	to YES to enable the per-class inheritance graphs.
+
 2009-08-25  Daniel Elstner  <danielk@openismus.com>
 
 	Have Automake check NEWS and use bzip2
