@@ -5,8 +5,8 @@
 # Project related configuration options
 #---------------------------------------------------------------------------
 DOXYFILE_ENCODING      = UTF-8
-PROJECT_NAME           = libsigc++
-PROJECT_NUMBER         = @SIGCXX_API_VERSION@
+PROJECT_NAME           = @PACKAGE_NAME@
+PROJECT_NUMBER         = @PACKAGE_VERSION@
 OUTPUT_DIRECTORY       = reference
 CREATE_SUBDIRS         = NO
 OUTPUT_LANGUAGE        = English
@@ -61,7 +61,7 @@ SHOW_INCLUDE_FILES     = NO
 INLINE_INFO            = YES
 SORT_MEMBER_DOCS       = YES
 SORT_BRIEF_DOCS        = NO
-SORT_GROUP_NAMES       = NO
+SORT_GROUP_NAMES       = YES
 SORT_BY_SCOPE_NAME     = YES
 GENERATE_TODOLIST      = NO
 GENERATE_TESTLIST      = NO
@@ -135,8 +135,8 @@ IGNORE_PREFIX          =
 GENERATE_HTML          = YES
 HTML_OUTPUT            = html
 HTML_FILE_EXTENSION    = .html
-HTML_HEADER            = "@abs_top_srcdir@/docs/reference/libsigc_header.html_fragment"
-HTML_FOOTER            = "@abs_top_srcdir@/docs/reference/libsigc_footer.html_fragment"
+HTML_HEADER            =
+HTML_FOOTER            =
 HTML_STYLESHEET        =
 HTML_ALIGN_MEMBERS     = YES
 HTML_DYNAMIC_SECTIONS  = NO

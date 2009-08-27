@@ -1,3 +1,19 @@
+2009-08-27  Daniel Elstner  <danielk@openismus.com>
+
+	Remove header and footer HTML fragments
+
+	* docs/reference/libsigc_{header,footer}.html_fragment: Delete
+	files.  These custom fragments were an unnecessary maintenance
+	hassle.  Also, the files were out of date with respect to the
+	encoding and CSS classes used by Doxygen.
+	* docs/reference/Doxyfile.in (HTML_HEADER), (HTML_FOOTER): Set
+	to the empty string.
+	(PROJECT_NAME): Substitute @PACKAGE_NAME@.
+	(PROJECT_NUMBER): Substitute @PACKAGE_VERSION@.  It does look
+	nicer in the generated HTML pages, and is probably also less
+	confusing.
+	(SORT_GROUP_NAMES): Enable for predictability.
+
 2009-08-26  Daniel Elstner  <danielk@openismus.com>
 
 	Bump version to 2.2.4.1 and update NEWS
