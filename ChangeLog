@@ -1,9 +1,9 @@
 2009-08-26  Daniel Elstner  <danielk@openismus.com>
 
-	Bump version to 2.2.5 and update NEWS
+	Bump version to 2.2.4.1 and update NEWS
 
-	* configure.ac (AC_INIT): Increment version number to 2.2.5.
-	* NEWS: Write news entry for libsigc++ 2.2.5.
+	* configure.ac (AC_INIT): Increment version number to 2.2.4.1.
+	* NEWS: Write news entry for libsigc++ 2.2.4.1.
 
 2009-08-26  Daniel Elstner  <danielk@openismus.com>
 
