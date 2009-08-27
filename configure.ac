@@ -29,7 +29,7 @@ AM_INIT_AUTOMAKE([1.9 -Wno-portability check-news dist-bzip2 no-define nostdinc 
 AM_MAINTAINER_MODE
 AC_ARG_VAR([ACLOCAL_FLAGS], [aclocal flags, e.g. -I <macro dir>])
 
-MM_PREREQ([0.6.1])
+MM_PREREQ([0.7])
 MM_INIT_MODULE([sigc++-2.0])
 MM_CONFIG_DOCTOOL_DIR([docs])
 
