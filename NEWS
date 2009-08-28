@@ -2,6 +2,8 @@
 
 * Reenable the per-class hierarchy graphs in the reference documentation.
   (Daniel Elstner)
+* Drop the custom HTML header and footer, and use the shared doxygen.css
+  file from mm-common. (Daniel Elstner)
 
 2.2.4 (stable):
 
@@ -9,7 +11,7 @@
   required for building from the git repository, but not for builds
   of release archives. (Daniel Elstner)
 * The public reference documentation is now hosted on library.gnome.org.
-  (Frederic Peters, Daniel Elstner)
+  (Frédéric Péters, Daniel Elstner)
 
 2.2.3 (stable):
 

@@ -1,3 +1,10 @@
+2009-08-28  Daniel Elstner  <danielk@openismus.com>
+
+	Update news entry for libsigc++ 2.2.4.1 release
+
+	* NEWS: Update top entry for release 2.2.4.1 of libsigc++.
+	(2.2.4): Correct spelling of Frédéric Péters' name.
+
 2009-08-27  Daniel Elstner  <danielk@openismus.com>
 
 	Use shared mm-common Doxygen style sheet
