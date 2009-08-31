@@ -61,7 +61,7 @@ define([_LOOP],
 
 define([LOOP],
 [pushdef([_LOOP_FORMAT], translit([$1],%, $))dnl
-pushdef([_LOOP_SEP],ifelse([$3],[],[[, ]],[$3]))dnl
+pushdef([_LOOP_SEP],ifelse([$3],[],[[[, ]]],[$3]))dnl
 ifelse(eval($2>0),1,[PROT(_LOOP(1, $2))],[PROT()])dnl
 popdef([_LOOP_SEP])dnl
 popdef([_LOOP_FORMAT])dnl

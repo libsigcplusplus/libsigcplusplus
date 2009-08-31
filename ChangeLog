@@ -1,3 +1,13 @@
+2009-08-31  Daniel Elstner  <danielk@openismus.com>
+
+	Protect space after comma in M4 output
+
+	* sigc++/macros/template.macros.m4 (_LOOP_SEP): Triple-quote the
+	list separator in this hairy construct, since the macro definition
+	itself is not quoted at all and the space after the comma got lost
+	in the output.  This, in turn, produced overlong lines in the HTML
+	reference documentation.
+
 2009-08-28  Daniel Elstner  <danielk@openismus.com>
 
 	Update news entry for libsigc++ 2.2.4.1 release
