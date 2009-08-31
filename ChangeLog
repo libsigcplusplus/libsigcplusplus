@@ -1,5 +1,13 @@
 2009-08-31  Daniel Elstner  <danielk@openismus.com>
 
+	Update Doxygen configuration for Doxygen 1.6.1
+
+	* docs/reference/Doxyfile.in: Update configuration template using
+	Doxygen 1.6.1.
+	(SORT_MEMBERS_CTORS_1ST): Enable.
+
+2009-08-31  Daniel Elstner  <danielk@openismus.com>
+
 	Protect space after comma in M4 output
 
 	* sigc++/macros/template.macros.m4 (_LOOP_SEP): Triple-quote the
