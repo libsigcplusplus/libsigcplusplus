@@ -28,6 +28,8 @@
 #include <sigc++/functors/slot.h>
 #include <sigc++/functors/mem_fun.h>
 
+/** The libsigc++ namespace.
+ */
 namespace sigc
 {
 
