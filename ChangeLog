@@ -1,5 +1,13 @@
 2009-09-02  Daniel Elstner  <danielk@openismus.com>
 
+	Bump version to 2.2.4.2 and update NEWS
+
+	* configure.ac (AC_INIT): Increment version number to 2.2.4.2.
+	(MM_PREREQ): Require mm-common 0.7.2.
+	* NEWS: Write news entry for libsigc++ 2.2.4.2.
+
+2009-09-02  Daniel Elstner  <danielk@openismus.com>
+
 	Document namespace sigc briefly
 
 	* sigc++/signal_base.h (sigc): Prepend documentation comment to

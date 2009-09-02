@@ -1,3 +1,13 @@
+2.2.4.2 (stable):
+
+* Namespace sigc is now documented, in order to make large chunks of the
+  reference reappear.  (Daniel Elstner)
+* The shipped reference documentation has been regenerated using Doxygen
+  1.6.1, so that the document type is now XHTML 1.0.  (Daniel Elstner)
+* The shipped Devhelp file has been generated with a newer version of the
+  XSLT script in mm-common, so that documentation groups no longer appear
+  as namespace prefixes in the keyword list.  (Daniel Elstner)
+
 2.2.4.1 (stable):
 
 * Reenable the per-class hierarchy graphs in the reference documentation.
