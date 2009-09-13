@@ -1,3 +1,9 @@
+2009-09-13  Daniel Elstner  <daniel.kitta@gmail.com>
+
+	Enable verbose output of autoreconf
+
+	* autogen.sh: Pass --verbose option to autoreconf.
+
 2009-09-02  Daniel Elstner  <danielk@openismus.com>
 
 	Bump version to 2.2.4.2 and update NEWS
