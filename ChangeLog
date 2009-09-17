@@ -1,3 +1,13 @@
+2009-09-17  Michael Hasselmann  <michaelh@openismus.com>
+
+	Documentation cleanup: sigc::hide() always only hides one signal argument
+	
+	* sigc++/adaptors/macros/hide.h.m4: The documentation stated that sigc::hide()
+	could discard multiple signal arguments when in fact the whole API only allows
+	control over one (dummy) signal argument at a time. The  "multiple argument
+	hiding" example lives in it own section now to make it clearer you have to nest
+	sigc::hide() for that.
+
 2009-09-13  Daniel Elstner  <daniel.kitta@gmail.com>
 
 	Enable verbose output of autoreconf

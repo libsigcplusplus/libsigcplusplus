@@ -127,7 +127,7 @@ namespace sigc {
 /** @defgroup hide hide(), hide_return()
  * sigc::hide() alters an arbitrary functor in that it adds a parameter
  * whose value is ignored on invocation of the returned functor.
- * Thus you can discard one or more of the arguments of a signal.
+ * Thus you can discard one argument of a signal.
  *
  * You may optionally specify the zero-based position of the parameter
  * to ignore as a template argument. The default is to ignore the last
@@ -145,8 +145,6 @@ namespace sigc {
  *   sigc::hide<0>(&foo)(1,2,3);  // adds a dummy parameter at the beginning and calls foo(2,3)
  *   sigc::hide<1>(&foo)(1,2,3);  // adds a dummy parameter in the middle and calls foo(1,3)
  *   sigc::hide<2>(&foo)(1,2,3);  // adds a dummy parameter at the back and calls foo(1,2)
- *   // multiple argument hiding ...
- *   sigc::hide(sigc::hide(&foo))(1,2,3,4); // adds two dummy parameters at the back and calls foo(1,2)
  *   @endcode
  *
  * The functor sigc::hide() returns can be passed into
@@ -159,6 +157,13 @@ namespace sigc {
  *   some_signal.connect(sigc::hide(&foo));
  *   @endcode
  *
+ * sigc::hide() can be nested in order to discard multiple arguments.
+ * @par Example:
+ *   @code
+ *   // multiple argument hiding ...
+ *   sigc::hide(sigc::hide(&foo))(1,2,3,4); // adds two dummy parameters at the back and calls foo(1,2)
+ *   @endcode
+
  * sigc::hide_return() alters an arbitrary functor by
  * dropping its return value, thus converting it to a void functor.
  *
