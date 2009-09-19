@@ -32,15 +32,15 @@ manual_srcfile = $(srcdir)/manual/libsigc_manual.xml
 reference/html/%: | manual/html/index.html
 
 manual/html/index.html: $(manual_srcfile)
-	-rm -f manual/html/*
-	$(MKDIR_P) manual/html
-	xsltproc -o 'manual/html/' --catalogs '$(DOCBOOK_STYLESHEET)' $(manual_srcfile)
+	-$(AM_V_at)rm -f manual/html/*
+	$(AM_V_at)$(MKDIR_P) manual/html
+	$(AM_V_GEN)xsltproc -o manual/html/ --catalogs '$(DOCBOOK_STYLESHEET)' $(manual_srcfile)
 
 manual/libsigc_manual.dvi: $(manual_srcfile)
-	db2dvi -o manual $(manual_srcfile)
+	$(AM_V_GEN)db2dvi -o manual $(manual_srcfile)
 
 manual/libsigc_manual.pdf: $(manual_srcfile)
-	db2pdf -o manual $(manual_srcfile)
+	$(AM_V_GEN)db2pdf -o manual $(manual_srcfile)
 
 manual/libsigc_manual.ps: $(manual_srcfile)
-	db2ps -o manual $(manual_srcfile)
+	$(AM_V_GEN)db2ps -o manual $(manual_srcfile)

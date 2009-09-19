@@ -52,7 +52,7 @@ MAINTAINERCLEANFILES = $(sigc_built_h) $(sigc_built_cc)
 m4_dir = $(srcdir)/macros
 
 $(build_subdirs):
-	$(MKDIR_P) $@
+	$(AM_V_at)$(MKDIR_P) $@
 
 signal.cc:			\
 	signal.h		\
@@ -77,7 +77,7 @@ functors/slot.cc:		\
 	functors/functor_trait.h
 
 %.h: macros/%.h.m4 $(m4_dir)/template.macros.m4 | $(build_subdirs)
-	$(M4) -I $(m4_dir) -I macros $< >$@
+	$(AM_V_GEN)$(M4) -I $(m4_dir) -I macros $< >$@
 
 %.cc: macros/%.cc.m4 $(m4_dir)/template.macros.m4 | $(build_subdirs)
-	$(M4) -I $(m4_dir) -I macros $< >$@
+	$(AM_V_GEN)$(M4) -I $(m4_dir) -I macros $< >$@

@@ -1,3 +1,12 @@
+2009-09-19  Daniel Elstner  <daniel.kitta@gmail.com>
+
+	Support Automake silent rules
+
+	* configure.ac: Call the AM_SILENT_RULES macro if it is defined.
+	* docs/doc-manual.am, sigc++/Makefile.am: Prefix the commands of
+	custom rules with $(AM_V_GEN) or $(AM_V_at) in order to support
+	the silent rules feature of Automake.
+
 2009-09-17  Michael Hasselmann  <michaelh@openismus.com>
 
 	Documentation cleanup: sigc::hide() always only hides one signal argument
