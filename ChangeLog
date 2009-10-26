@@ -1,3 +1,9 @@
+2009-10-26  Armin Burgmeier  <armin@arbur.net>
+
+	* sigc++config.h: Move the first five definitions to the !SIGC_MSC
+	ifdef block, so MSVC does not see them and only uses the definitions
+	from the SIGC_MSC block. This fixes the build with MSVC.
+
 2009-09-19  Daniel Elstner  <daniel.kitta@gmail.com>
 
 	Support Automake silent rules
