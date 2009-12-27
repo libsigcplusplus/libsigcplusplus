@@ -1,3 +1,14 @@
+2009-12-27  Daniel Elstner  <daniel.kitta@gmail.com>
+
+	Disable collaboration graphs in documentation
+
+	* docs/reference/Doxyfile.in (CLASS_DIAGRAMS): Enable.  Contrary to
+	what the Doxygen documentation says, no dot class inheritance graphs
+	will be generated if both CLASS_DIAGRAMS and COLLABORATION_GRAPH are
+	set to NO.
+	(COLLABORATION_GRAPH), (GROUP_GRAPHS): Turn off additional graphs to
+	reduce the noise.
+
 2009-10-26  Armin Burgmeier  <armin@arbur.net>
 
 	* sigc++config.h: Move the first five definitions to the !SIGC_MSC

@@ -253,7 +253,7 @@ PERL_PATH              = @PERL@
 #---------------------------------------------------------------------------
 # Configuration options related to the dot tool
 #---------------------------------------------------------------------------
-CLASS_DIAGRAMS         = NO
+CLASS_DIAGRAMS         = YES
 MSCGEN_PATH            =
 HIDE_UNDOC_RELATIONS   = NO
 HAVE_DOT               = YES
@@ -261,8 +261,8 @@ DOT_FONTNAME           = FreeSans
 DOT_FONTSIZE           = 10
 DOT_FONTPATH           =
 CLASS_GRAPH            = YES
-COLLABORATION_GRAPH    = YES
-GROUP_GRAPHS           = YES
+COLLABORATION_GRAPH    = NO
+GROUP_GRAPHS           = NO
 UML_LOOK               = NO
 TEMPLATE_RELATIONS     = YES
 INCLUDE_GRAPH          = NO
