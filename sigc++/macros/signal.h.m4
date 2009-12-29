@@ -31,8 +31,8 @@ struct signal_emit$1
   typedef signal_emit$1<LIST(T_return, LOOP(T_arg%1, $1), T_accumulator)> self_type;
   typedef typename T_accumulator::result_type result_type;
   typedef slot<LIST(T_return, LOOP(T_arg%1, $1))> slot_type;
-  typedef internal::slot_iterator_buf<self_type> slot_iterator_buf_type;
-  typedef internal::slot_reverse_iterator_buf<self_type> slot_reverse_iterator_buf_type;
+  typedef internal::slot_iterator_buf<self_type, T_return> slot_iterator_buf_type;
+  typedef internal::slot_reverse_iterator_buf<self_type, T_return> slot_reverse_iterator_buf_type;
   typedef signal_impl::const_iterator_type iterator_type;
 
 ifelse($1,0,,[dnl

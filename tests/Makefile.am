@@ -21,6 +21,7 @@ LDADD       = $(top_builddir)/sigc++/libsigc-$(SIGCXX_API_VERSION).la
 
 check_PROGRAMS =			\
 	test_accum_iter			\
+	test_accumulated		\
 	test_bind			\
 	test_bind_ref			\
 	test_bind_return		\
@@ -47,6 +48,7 @@ check_PROGRAMS =			\
 TESTS = $(check_PROGRAMS)
 
 test_accum_iter_SOURCES			= test_accum_iter.cc
+test_accumulated_SOURCES = test_accumulated.cc
 test_bind_SOURCES			= test_bind.cc
 test_bind_ref_SOURCES			= test_bind_ref.cc
 test_bind_return_SOURCES		= test_bind_return.cc
@@ -72,9 +74,5 @@ test_trackable_SOURCES			= test_trackable.cc
 
 # Disabled: test_lambda - The Tru64 compiler can't build this when not using
 #  -std strict_ansi -model ansi, so let's not worry about it.
-# Disabled: test_accumulated - The AIX xlC compiler can't build this. It says 
-#  xlC_r  -I. -I. -I.. -I.. -I..    -AA -c -o test_accumulated.o test_accumulated.cc
-#  "../sigc++/signal.h", line 534.39: 1540-1110 (S) The referenced type
-#  "sigc::internal::signal_emit1" contains a circular reference back to ""
 
-dist_noinst_DATA = test_accumulated.cc test_lambda.cc
+dist_noinst_DATA = test_lambda.cc

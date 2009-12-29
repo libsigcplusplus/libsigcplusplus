@@ -1,3 +1,18 @@
+2009-12-29  Krzysztof Kosiński  <tweenk.pl@gmail.com>
+
+  Accumulators: Allow return types that are different to the signal's.
+	
+	* sigc++/macros/signal.h.m4: signal_emit*: Correct the slot_iterator_buf_type 
+	and slot_reverse_iterator_buf_type typedefs to allow accumulators with 
+	return types that are different to the signal's return type.
+	* tests/Makefile.am: Reenable test_accumulated, so we can test the fix.
+	It should be manually disabled if building on AIX (if the AIX problem cannot 
+	be fixed properly).
+	* tests/test_accumulated.cc: Add an accumulator with a return type that is 
+	different to the signal's return type. In this case it's a vector listing 
+	all results.
+	Bug #586436.
+
 2009-12-27  Daniel Elstner  <daniel.kitta@gmail.com>
 
 	Disable collaboration graphs in documentation
