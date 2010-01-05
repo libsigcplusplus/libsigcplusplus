@@ -1,3 +1,13 @@
+2010-01-05  Daniel Elstner  <daniel.kitta@gmail.com>
+
+	Use non-blurry font for dot graph labels
+
+	* docs/reference/Doxyfile.in (SHOW_INCLUDE_FILES): Enable.
+	(SHOW_USED_FILES): Disable.
+	(DOT_FONTNAME): Change from FreeSans to Sans, as the hinting for the
+	former appears to be rather bad.
+	(TEMPLATE_RELATIONS): Disable to reduce noise.
+
 2009-12-29  Krzysztof Kosiński  <tweenk.pl@gmail.com>
 
   Accumulators: Allow return types that are different to the signal's.
