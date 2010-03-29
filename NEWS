@@ -1,3 +1,16 @@
+2.2.5:
+
+* Accumulators: Allow return types that are different to the signal's.
+  (Krzysztof Kosiński)
+* Documentation:
+  - Disable collaboration graphs in documentation
+  - Use non-blurry font for graph labels.
+  (Daniel Elstner)
+  - sigc::hide() correction: It always only hides one signal argument.
+  (Michael Hasselmann)
+* Fix the MSVC++ build.
+  (Armin Burgmeier)
+
 2.2.4.2 (stable):
 
 * Namespace sigc is now documented, in order to make large chunks of the
@@ -26,16 +39,16 @@
 2.2.3 (stable):
 
 * Windows:
-  - Added project files (and property sheets) for 
+  - Added project files (and property sheets) for
   MSVC++ 2005 and 2008.
   (Armin Burgmeier)
-  - Removed unnecessary dependency on afxrefs.h, so it builds 
-  with MSVC++ Express editions. 
+  - Removed unnecessary dependency on afxrefs.h, so it builds
+  with MSVC++ Express editions.
   (Cedric Gustin)
 
 2.2.2 (stable):
 
-* Added an include of functors/slot.h that was mistakenly removed 
+* Added an include of functors/slot.h that was mistakenly removed
   during the 2.1 series.
   (Deng Xiyue) Bug #521418.
 
@@ -51,20 +64,20 @@
 
 2.1.1 (unstable):
 
-WARNING: This is an unstable release and should not yet be 
-packaged by distributions unless libsigc++ 2.0.x does not 
+WARNING: This is an unstable release and should not yet be
+packaged by distributions unless libsigc++ 2.0.x does not
 build for some reason (Please report such bugs).
 
-* Removed the SigC:: namespace and other compatibility API, 
-  to fix the build with some versions of some compilers, 
+* Removed the SigC:: namespace and other compatibility API,
+  to fix the build with some versions of some compilers,
   such as the SUN Forte C++ CC compiler.
-  See bug #302098, for instance 
+  See bug #302098, for instance
   (Murray Cumming)
 * sigc::signal<>:
-  - Added Added typedefs for 
-  value_type, reference, and pointer, so that these 
-  iterators are more like standard C++ iterators, so they can 
-  be used with standard C++ algorithms.  
+  - Added Added typedefs for
+  value_type, reference, and pointer, so that these
+  iterators are more like standard C++ iterators, so they can
+  be used with standard C++ algorithms.
   (Michael Elkstrand) (Bug #417926).
   - Added emit_reverse().
   (John Profic)
@@ -87,7 +100,7 @@ build for some reason (Please report such bugs).
 
 * g++ 3.2 (and Mac OS X g++ 3.3) build fix.
   (Paul Pogonyshev)
-* Compose: Fix slot lifetime regression introduced in 
+* Compose: Fix slot lifetime regression introduced in
   2.0.9. (Philip Langdale)
 * tests: Small ISO C++ correctness fix (Marek Rouchal)
 * Don't specify unused function parameter names.
@@ -95,20 +108,20 @@ build for some reason (Please report such bugs).
 
 2.0.14:
 
-* SUN Forte 5.7 build fix for ambiguity when using 
-  inner template class. However, you still need the 
+* SUN Forte 5.7 build fix for ambiguity when using
+  inner template class. However, you still need the
   patch in bug #302098 to finish the build.
 
 2.0.13:
 
-* signal_emit::emit(): Ensure the correct order of 
+* signal_emit::emit(): Ensure the correct order of
   destruction of the member variables, to avoid a leak.
   (Andreas Ames, bug #306249)
 * Allow recursive signal emission again.
   (Neal E. Coombes, bug #303896)
 * SUN Forte CC 5.5 build fixes:
   - test_compatibility minor fix.
-  - visit_each() template specializations: 
+  - visit_each() template specializations:
   Mention the bool I_derives_trackable template type,
   (Friedemann Kleint, bug #305647)
  - Check for the non-standard SUN reverse_iterator,
@@ -117,11 +130,11 @@ build for some reason (Please report such bugs).
 
 2.0.12:
 
-* Fixes crashes when using virtual inheritance, particularly 
-  with bound by-reference parameters, caused by casting 
+* Fixes crashes when using virtual inheritance, particularly
+  with bound by-reference parameters, caused by casting
   from derived to base when the derived destructor has run.
   (Régis Duchesne)
-  This might affect non-g++ compilers, so do tell us about 
+  This might affect non-g++ compilers, so do tell us about
   any problems.
 
 2.0.11:
@@ -143,7 +156,7 @@ build for some reason (Please report such bugs).
 2.0.9:
 
 * sigc::bind() now works with the AIX and Tru64 compilers.
-  See the comments in sigc++/visit_each.h: visit_each_type() 
+  See the comments in sigc++/visit_each.h: visit_each_type()
   if you have compilation problems.
   (Murray Cumming)
 * sigc::var() is now documented. (Roger Ferrer Ibáñez)
@@ -152,14 +165,14 @@ build for some reason (Please report such bugs).
 
 * Maybe avoid (incorrect) warning with g++ 3.3.5.
   (Murray Cumming)
-* Fix namespace ambiguity when using multiple 
+* Fix namespace ambiguity when using multiple
   major versions of libsigc++. (Liza Klerck)
 
 2.0.7:
 
-* Now builds with the following compilers, in addition to 
-the existing GNU g++, SUN Forte CC 5.5, MSVC++ .Net 2003, 
-and Intel compilers: 
+* Now builds with the following compilers, in addition to
+the existing GNU g++, SUN Forte CC 5.5, MSVC++ .Net 2003,
+and Intel compilers:
 - IBM AIX xlC v7
 - Tru64 C++ V6.5-042
 - IRIX MIPSpro 7.4.2m
@@ -167,9 +180,9 @@ and Intel compilers:
   (Murray Cumming, www.thewrittenword.com)
 * MSVC++ .Net 2003 build improvements.
   (Cedric Gustin, Timothy M. Shead)
-* Replace C-style casts with reinterpret_cast<> and 
+* Replace C-style casts with reinterpret_cast<> and
   static_cast<>. (e97_far at e.kth.se).
-* Documentation: Added manual, based on the manual in 
+* Documentation: Added manual, based on the manual in
   libsigc++ 1.2, but updated for the new API.
   (Murray Cumming)
 
@@ -357,15 +370,15 @@ Minor fixes:
 * Made adaptors' operator()() (overload with no arguments) return a value.
 * Made visit_each() support adaptors.
 * Overhauled return type deduction to make it work without typeof().
-* Added convinience macros SIGC_FUNCTORS_HAVE_RESULT_TYPE and 
-SIGC_FUNCTOR_TRAIT(T_functor, T_result) to make return type deduction system 
+* Added convinience macros SIGC_FUNCTORS_HAVE_RESULT_TYPE and
+SIGC_FUNCTOR_TRAIT(T_functor, T_result) to make return type deduction system
 support 3rd-party funtors.
 * Changed syntax of group adaptor from "[functor] % grp([lambdas])" to "group
 ([functor], [lambdas])".
 * Made many fixes to lambda functionality.
 * Added var() and constant() lambda creators.
 * Added many lambda operators.
-* Added ref() which creates a reference wrapper to enable storage of 
+* Added ref() which creates a reference wrapper to enable storage of
 references in bind and group adaptors.
 * Expanded test suite.
 * Added documentation. (Corrections by Murray Cumming)

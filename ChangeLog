@@ -1,3 +1,5 @@
+2.2.5:
+
 2010-01-05  Daniel Elstner  <daniel.kitta@gmail.com>
 
 	Use non-blurry font for dot graph labels
@@ -10,16 +12,16 @@
 
 2009-12-29  Krzysztof Kosiński  <tweenk.pl@gmail.com>
 
-  Accumulators: Allow return types that are different to the signal's.
-	
-	* sigc++/macros/signal.h.m4: signal_emit*: Correct the slot_iterator_buf_type 
-	and slot_reverse_iterator_buf_type typedefs to allow accumulators with 
+	Accumulators: Allow return types that are different to the signal's.
+
+	* sigc++/macros/signal.h.m4: signal_emit*: Correct the slot_iterator_buf_type
+	and slot_reverse_iterator_buf_type typedefs to allow accumulators with
 	return types that are different to the signal's return type.
 	* tests/Makefile.am: Reenable test_accumulated, so we can test the fix.
-	It should be manually disabled if building on AIX (if the AIX problem cannot 
+	It should be manually disabled if building on AIX (if the AIX problem cannot
 	be fixed properly).
-	* tests/test_accumulated.cc: Add an accumulator with a return type that is 
-	different to the signal's return type. In this case it's a vector listing 
+	* tests/test_accumulated.cc: Add an accumulator with a return type that is
+	different to the signal's return type. In this case it's a vector listing
 	all results.
 	Bug #586436.
 
@@ -52,7 +54,7 @@
 2009-09-17  Michael Hasselmann  <michaelh@openismus.com>
 
 	Documentation cleanup: sigc::hide() always only hides one signal argument
-	
+
 	* sigc++/adaptors/macros/hide.h.m4: The documentation stated that sigc::hide()
 	could discard multiple signal arguments when in fact the whole API only allows
 	control over one (dummy) signal argument at a time. The  "multiple argument
@@ -64,6 +66,8 @@
 	Enable verbose output of autoreconf
 
 	* autogen.sh: Pass --verbose option to autoreconf.
+
+2.2.4.2:
 
 2009-09-02  Daniel Elstner  <danielk@openismus.com>
 
@@ -98,6 +102,8 @@
 	itself is not quoted at all and the space after the comma got lost
 	in the output.  This, in turn, produced overlong lines in the HTML
 	reference documentation.
+
+2.2.4.1:
 
 2009-08-28  Daniel Elstner  <danielk@openismus.com>
 
@@ -390,7 +396,7 @@
 
 2008-11-13  Murray Cumming  <murrayc@murrayc.com>
 
-	* docs/website/stable.shtml: Correct the download link so it shows all 
+	* docs/website/stable.shtml: Correct the download link so it shows all
 	versions, not just 2.0.
 
 2.2.3:
@@ -430,7 +436,7 @@
 
 2008-04-06 Cedric Gustin <cedric.gustin@gmail.com>
 
-	* MSVC_Net2003/sigc-2.0.rc.in: Removed ATL/MFC header files 
+	* MSVC_Net2003/sigc-2.0.rc.in: Removed ATL/MFC header files
 	dependency as afxres.h is not part of the Microsoft Platform
 	SDK provided with Visual C++ Express 2008.
 	Bug #503933.
@@ -440,7 +446,7 @@
 2008-03-10  Deng Xiyue  <manphiz@gmail.com
 
 	* sigc++/macros/slot.h.m4:
-	Added an include of functors/slot.h that was mistakenly removed 
+	Added an include of functors/slot.h that was mistakenly removed
 	during the 2.1 series, apparently breaking API slightly.
 	Bug #521418.
 
@@ -449,8 +455,8 @@
 2008-02-28  Elaine Xiong  <elaine.xiong@sun.com>
 
 	* sigc++/macros/signal.h.m4:
-	* tests/test_accum_iter.cc: Add ifdefs around uses of 
-	reverse_iterator to really fix the build with recent 
+	* tests/test_accum_iter.cc: Add ifdefs around uses of
+	reverse_iterator to really fix the build with recent
 	versions of Sun CC.
 	Bug #302098.
 
@@ -458,13 +464,13 @@
 
 2008-01-01  Ryan Hill  <dirtyepic@gentoo.>
 
-	* tests/test_copy_invalid_slot.cc: Include the cstdlib 
-	and cstring headers to fix the build with the gcc 4.3 
+	* tests/test_copy_invalid_slot.cc: Include the cstdlib
+	and cstring headers to fix the build with the gcc 4.3
 	pre-release. Bug #454882.
 
 2007-08-31  Murray Cumming  <murrayc@murrayc.com>
 
-	* tests/test_copy_invalid_slot.cc: Added some includes to 
+	* tests/test_copy_invalid_slot.cc: Added some includes to
 	fix the build in some environments, such as when using Sun CC.
 	Thanks to Vladimir Marek in bug #469872.
 
@@ -485,24 +491,24 @@
 	* sigc++/macros/signal.h.m4:
 	* sigc++/macros/slot.h.m4:
 	* sigc++/object.h:
-	* sigc++/retype_return.h: Removed deprecated 
-	compatibility API, to probably fix the build with 
-	some compilers, such as some versions of the Sun Forte C++ 
-	CC compiler. Some of these headers are now mostly empty and 
+	* sigc++/retype_return.h: Removed deprecated
+	compatibility API, to probably fix the build with
+	some compilers, such as some versions of the Sun Forte C++
+	CC compiler. Some of these headers are now mostly empty and
 	should be removed later.
-	This API has been deprecated April 2004, and 
+	This API has been deprecated April 2004, and
 	is not widely used, so it seems safe to do this now.
-	
+
 	* tests/Makefile.am:
 	* tests/test_compatibility.cc: Removed this test.
 
 2007-07-28  Michael Elkstrand  <michael@elehack.net>
 
-	* sigc++/macros/signal.h.m4: slot_iterator_buf, 
-	slot_reverse_iterator_buf: Added typedefs for 
-	value_type, reference, and pointer, so that these 
-	iterators are more like standard C++ iterators, so they can 
-	be used with standard C++ algorithms.  
+	* sigc++/macros/signal.h.m4: slot_iterator_buf,
+	slot_reverse_iterator_buf: Added typedefs for
+	value_type, reference, and pointer, so that these
+	iterators are more like standard C++ iterators, so they can
+	be used with standard C++ algorithms.
 	* tests/Makefile.am:
 	* tests/test_accum_iter.cc: Added a test for this.
 	Bug #417926.
@@ -524,8 +530,8 @@
 	* sigc++/functors/macros/functor_trait.h.m4:
 	* sigc++/functors/macros/slot.h.m4:
 	* sigc++/macros/retype.h.m4:
-	* sigc++/macros/signal.h.m4: Revert the previous changes, because none is 
-	used in the exported symbol names from gtkmm, so this would break the ABI 
+	* sigc++/macros/signal.h.m4: Revert the previous changes, because none is
+	used in the exported symbol names from gtkmm, so this would break the ABI
 	of gtkmm.
 
 2006-05-26  Régis Duchesne <hpreg@vmware.com>
@@ -541,20 +547,20 @@
 
 2005-12-21  Murray Cumming  <murrayc@murrayc.com>
 
-	* sigc++/macros/signal.h.m4: Make remaining 
-	reverse_iterator_buf operator--() methods 
-	return by reference, like the operator++() methods. 
+	* sigc++/macros/signal.h.m4: Make remaining
+	reverse_iterator_buf operator--() methods
+	return by reference, like the operator++() methods.
 	Bug #304402 from John Profic.
 
 2005-12-20  Murray Cumming  <murrayc@murrayc.com>
 
-	* sigc++/macros/signal.h.m4: Make all operator--() methods 
-	return by reference, like the operator++() methods. 
+	* sigc++/macros/signal.h.m4: Make all operator--() methods
+	return by reference, like the operator++() methods.
 	Bug #304402 from John Profic.
 
 2005-12-14  John Profic <profic@kursknet.ru>
 
-	* sigc++/macros/signal.h.m4: Fix compilation problem in 
+	* sigc++/macros/signal.h.m4: Fix compilation problem in
 	the last patch.
 
 2005-12-14  John Profic <profic@kursknet.ru>
@@ -566,19 +572,19 @@ See also the libsigc-2-0 branch.
 
 2005-12-01  Murray Cumming <murrayc@murrayc.com>
 
-	* sigc++/functors/slot_base.cc: 
-	slot_base::disconnect(): Set call_ to 0, 
-	to invalidate the slot, even if parent_ is 0. 
-	I think parent_ is, for instance, a signal, but 
-	disconnect should still work on a slot that is not 
-	connected to a signal, because a slot can be invoked 
+	* sigc++/functors/slot_base.cc:
+	slot_base::disconnect(): Set call_ to 0,
+	to invalidate the slot, even if parent_ is 0.
+	I think parent_ is, for instance, a signal, but
+	disconnect should still work on a slot that is not
+	connected to a signal, because a slot can be invoked
 	directly.
 	Fixes bug #311057 from James Lin.
 
 2005-12-01  Murray Cumming <murrayc@murrayc.com>
 
 	* tests/Makefile.am:
-	* tests/test_slot_disconnect.cc: Added test 
+	* tests/test_slot_disconnect.cc: Added test
 	case from bug #311057.
 
 2005-11-16  Philipp Berndt  <philipp.berndt@gmx.net>
@@ -597,56 +603,56 @@ See also the libsigc-2-0 branch.
 
 2005-08-01  Murray Cumming  <murrayc@murrayc.com>
 
-	* sigc++/adaptors/hide.h.m4: Added missing 
+	* sigc++/adaptors/hide.h.m4: Added missing
 	) in call to sun_forte_workaround(), fixing
 	build on SUN Forte 5.5. Bug #312020.
 
 2005-08-19  Bruno Martinez <brunom@fing.edu.uy>
 
 	* sigc++/type_traits.h: Renamed
-	::sigc::is_base_and_derived::internal to 
+	::sigc::is_base_and_derived::internal to
 	::sigc::is_base_and_derived::internal_class
 	in order to avoid conflict with
-	namespace internal. 
+	namespace internal.
 
 2005-07-13  Murray Cumming  <murrayc@murrayc.com>
 
-	* docs/manual/libsigc_manual.xml: Correct mentions of 
-	1.2 stuff instead of 2.0. Patch in bug #310213 from 
-	pebble.org.uk.  
+	* docs/manual/libsigc_manual.xml: Correct mentions of
+	1.2 stuff instead of 2.0. Patch in bug #310213 from
+	pebble.org.uk.
 
 2005-07-13  Murray Cumming  <murrayc@murrayc.com>
 
-	* docs/manual/libsigc_manual.xml: Fixed typo 
+	* docs/manual/libsigc_manual.xml: Fixed typo
 	found by Antonio Coralles.
 
 2005-07-09  Murray Cumming  <murrayc@murrayc.com>
 
-	* sigc++/macros/signal.h.m4: Did the same (see 
-	last commit) for slot_const_iterator and 
+	* sigc++/macros/signal.h.m4: Did the same (see
+	last commit) for slot_const_iterator and
 	slot_iterator_buf.
 
 2005-07-09  Murray Cumming  <murrayc@murrayc.com>
 
 	* sigc++/macros/signal.h.m4: slot_iterator:
-	operator--() now returns value, not reference, like 
-	operator++() already did. This caused crashes when 
-	using --no-inline with g++. Bug #308651 by 
+	operator--() now returns value, not reference, like
+	operator++() already did. This caused crashes when
+	using --no-inline with g++. Bug #308651 by
 	Michael Andres.
 
 2.0.15:
 
 2005-07-04  Philip Langdale  <plangdale@vmware.com>
 
-	* sigc++/adaptors/macros/compose.h.m4: Add a setter typedef to 
-	compose*_functor and use it instead of the (incorrect) getter 
+	* sigc++/adaptors/macros/compose.h.m4: Add a setter typedef to
+	compose*_functor and use it instead of the (incorrect) getter
 	typedef in the compose* specialization of visit_each<>().
-	This corrects the lifetime management of slots created with 
+	This corrects the lifetime management of slots created with
 	compose(). Bug #308433.
 
 2005-06-13  Marek Rouchal  <marek.rouchal@infineon.com>
 
-	* tests/test_deduce_result_type.cc: Specify int return type 
+	* tests/test_deduce_result_type.cc: Specify int return type
 	for main(), to be more ISO C++ compliant. Bug #307478.
 
 2005-06-11  Andris Pavenis <pavenis@latnet.lv>
@@ -658,8 +664,8 @@ See also the libsigc-2-0 branch.
 
 2005-06-12  Paul Pogonyshev  <pogonyshev@gmx.net>
 
-	* configure.ac: 
-	* scripts/cxx.m4: 
+	* configure.ac:
+	* scripts/cxx.m4:
 	* sigc++config.h.in: Add test for whether the compiler allows
 	referencing to member functions of the class/structure being
 	declared from a definition of a static member variable.
@@ -674,37 +680,37 @@ See also the libsigc-2-0 branch.
 
 	* sigc++/adaptors/macros/bind.h.m4:
 	* sigc++/functors/macros/slot.h.m4:
-	* sigc++/macros/signal.h.m4: Use CALL_SIZE instead of 
+	* sigc++/macros/signal.h.m4: Use CALL_SIZE instead of
 	hard-coded 7s and 6s.
 
 2.0.14:
 
 2005-06-10  Murray Cumming  <murrayc@murrayc.com>
 
-	* sigc++/visit_each.h: Make the 
-        limit_derived_target::with_type inner class an outer class, 
-	to satisfy the SUN CC 5.7 compiler, though I think it is a 
+	* sigc++/visit_each.h: Make the
+        limit_derived_target::with_type inner class an outer class,
+	to satisfy the SUN CC 5.7 compiler, though I think it is a
 	compiler bug. Bug #302098 has the test case.
 
 2.0.13:
 
 2005-06-07  Murray Cumming <murrayc@murrayc.com>
 
-	* tests/test_compatibility.cc: Specify the actual class when 
-	using test_int(), instead of the derived class, to fix the build 
-	on SUN Forte CC 5.5. Patch from Friedemann Kleint in 
+	* tests/test_compatibility.cc: Specify the actual class when
+	using test_int(), instead of the derived class, to fix the build
+	on SUN Forte CC 5.5. Patch from Friedemann Kleint in
 	Bug #305647
 
 2005-06-07  Murray Cumming <murrayc@murrayc.com>
 
-	* sigc++/macros/signal.h.m4: signal_emit::emit(): Use scope to 
-	ensure a certain order of destruction of the member variables, to 
+	* sigc++/macros/signal.h.m4: signal_emit::emit(): Use scope to
+	ensure a certain order of destruction of the member variables, to
 	avoid a leak on MSVC++. Patch by Andreas Ames in Bug #306249.
 
 2005-06-07  Murray Cumming <murrayc@murrayc.com>
 
 	* sigc++/macros/signal.h.m4: Added comments about commenting-out
-        SIGC_TYPEDEF_REDEFINE_ALLOWED when using SUN Forte CC 5.7, 
+        SIGC_TYPEDEF_REDEFINE_ALLOWED when using SUN Forte CC 5.7,
         because I can not seem to create a test for it.
 
 2005-06-07  Murray Cumming <murrayc@murrayc.com>
@@ -712,18 +718,18 @@ See also the libsigc-2-0 branch.
 	* configure.ac:
 	* scripts/cxx_std.m4:
 	* sigc++/macros/signal.h.m4:
-	* sigc++config.h.in: Added check for 
+	* sigc++config.h.in: Added check for
 	the non-standard SUN Forte reverse_iterator<>,
-	and used it. This is based on the same stuff in 
+	and used it. This is based on the same stuff in
 	gtkmm.
 
 2005-06-07  Murray Cumming <murrayc@murrayc.com>
 
-	* sigc++/visit_each.h: limit_derived_target(): Just some whitespace 
+	* sigc++/visit_each.h: limit_derived_target(): Just some whitespace
         changes.
 
 2005-05-16  Neal E. Coombes  <nealc@trdlnk.com>
- 	
+
 	* sigc++/signal_base.h:  Modified temp_slot_list to be a temporary view
 	into a slot list.  Instead of emptying the original it now simply tacks
 	a placeholder to the end of the original.  It then uses this as it's
@@ -733,10 +739,10 @@ See also the libsigc-2-0 branch.
 
 2005-06-04  Friedemann Kleint <kleint@bifab.de>
 
-	* sigc++/macros/limit_reference.h.m4: 
-	visit_each() template specializations: 
-	Mention the bool I_derives_trackable 
-	template type, to fix the build on Solaris 
+	* sigc++/macros/limit_reference.h.m4:
+	visit_each() template specializations:
+	Mention the bool I_derives_trackable
+	template type, to fix the build on Solaris
 	Forte 5.5.
 
 2.0.12:
@@ -786,72 +792,72 @@ See also the libsigc-2-0 branch.
 
 2005-05-01  Murray Cumming <murrayc@murrayc.com>
 
-	* sigc++/functors/slot_base.cc: 
-	slot_base::slot_base(src): If the source 
-	slot_base has a null rep->call_, meaning that the 
-	slot is invalid, just return a default-constructed 
-	slot, to prevent the crash shown in 
-	tests/tests_copy_invalid_slot.cc. Bug #302515 by 
+	* sigc++/functors/slot_base.cc:
+	slot_base::slot_base(src): If the source
+	slot_base has a null rep->call_, meaning that the
+	slot is invalid, just return a default-constructed
+	slot, to prevent the crash shown in
+	tests/tests_copy_invalid_slot.cc. Bug #302515 by
 	Régis Duchesne.
 
 2005-05-01  Murray Cumming <murrayc@murrayc.com>
 
-	* sigc++/functors/macros/mem_fun.h.m4: bound_*<>: 
-	Add a new is_base_and_derived<sigc::trackable> 
-	parameter to the template and thereby provide a 
-	specialization for T_Obj types that derive from 
-	sigc::trackable. This prevents a crash when casting 
-	from the derived type to sigc::trackable after the 
-	derived destructor has run. This cast can sometimes 
-	fail when using multiple inheritance, at least with 
-	g++. Bug #169225 by Régis Duchesne and Christian 
+	* sigc++/functors/macros/mem_fun.h.m4: bound_*<>:
+	Add a new is_base_and_derived<sigc::trackable>
+	parameter to the template and thereby provide a
+	specialization for T_Obj types that derive from
+	sigc::trackable. This prevents a crash when casting
+	from the derived type to sigc::trackable after the
+	derived destructor has run. This cast can sometimes
+	fail when using multiple inheritance, at least with
+	g++. Bug #169225 by Régis Duchesne and Christian
 	Hammond.
-	* sigc++/type_traits.h: Add documenation for 
-	the internal is_base_and_derived<> template, which 
-	allows us to specialize other templates for certain 
+	* sigc++/type_traits.h: Add documenation for
+	the internal is_base_and_derived<> template, which
+	allows us to specialize other templates for certain
 	template types.
 
 2005-04-28  Murray Cumming <murrayc@murrayc.com>
 
-	* sigc++/type_traits.h: Added comments for users of 
+	* sigc++/type_traits.h: Added comments for users of
 	g++ 3.2.
 
 2005-04-28  Murray Cumming <murrayc@murrayc.com>
 
 	* tests/Makefile.am:
-	* tests/test_virtualbase_delete.cc: Added 
-	simplified test case from bug #169225. We have a patch 
-	to make this succeed but I am not ready to commit it 
+	* tests/test_virtualbase_delete.cc: Added
+	simplified test case from bug #169225. We have a patch
+	to make this succeed but I am not ready to commit it
 	just yet.
 
 2005-04-27  Murray Cumming <murrayc@murrayc.com>
 
 	* tests/Makefile.am:
 	* tests/test_custom.cc:
-	Added a place to put extra test code, so I don't have 
+	Added a place to put extra test code, so I don't have
 	to keep installing my crazy libsigc++ versions.
 
 2005-04-27  Murray Cumming <murrayc@murrayc.com>
 
-	* sigc++/visit_each.h: Revert back to the non-explicit 
-	template call, because we can not specify the 
-	template specialization so easily, because the 
+	* sigc++/visit_each.h: Revert back to the non-explicit
+	template call, because we can not specify the
+	template specialization so easily, because the
 	specializations have different numbers of types.
 	* tests/Makefile/am:
-	* tests/test_bind_ref.cc: Add a simple test only for 
+	* tests/test_bind_ref.cc: Add a simple test only for
 	sigc::ref disconnection.
 
 2005-04-26  Murray Cumming <murrayc@murrayc.com>
 
-	* sigc++/visit_each.h: Use the explicit template 
-	specialization, needed for Tru64 and AIX compilers. 
-	This causes a crash in some uses of sigc::ref() 
-        (when using g++ 3.3.4 or 3.3.5 , but not with 3.4) but 
-	seems to fix a crash in some uses of multiple inheritance 
+	* sigc++/visit_each.h: Use the explicit template
+	specialization, needed for Tru64 and AIX compilers.
+	This causes a crash in some uses of sigc::ref()
+        (when using g++ 3.3.4 or 3.3.5 , but not with 3.4) but
+	seems to fix a crash in some uses of multiple inheritance
 	(bug #169225).
-	* tests/test_bind.cc: Comment out the crashing (not with 
+	* tests/test_bind.cc: Comment out the crashing (not with
 	g++ 3.4) use of sigc::ref() with an explanatory comment.
-	
+
 2.0.11:
 
 2005-03-09  Cedric Gustin <cedric.gustin@swing.be>
@@ -867,20 +873,20 @@ See also the libsigc-2-0 branch.
 2005-03-05  Murray Cumming  <murrayc@murrayc.com>
 
 	* docs/website/stable.html: Mention actual supported compilers.
-	* docs/website/docs.html: Removed broken examples links. Change 
+	* docs/website/docs.html: Removed broken examples links. Change
 	reference link to the reference overview page.
 
 2005-02-23  Murray Cumming  <murrayc@murrayc.com>
 
-	* sigc++/functors/slot_base.h: Make slot_base::operator=() public, to 
+	* sigc++/functors/slot_base.h: Make slot_base::operator=() public, to
 	fix the build with SUN Forte C++ 5.5 and Tru64.
 
 2.0.10:
 
 2005-02-20  Murray Cumming  <murrayc@murrayc.com>
 
-	* tests/test_slot.cc, test_disconnect.cc: #included <new> to avoid 
-	an unresolved symbol error with the Tru64 compiler. Solution found by 
+	* tests/test_slot.cc, test_disconnect.cc: #included <new> to avoid
+	an unresolved symbol error with the Tru64 compiler. Solution found by
 	Tim Mooney in bug #161503.
 
 2005-02-20  Martin Schulze  <mschulze@cvs.gnome.org>
@@ -898,12 +904,12 @@ See also the libsigc-2-0 branch.
 
 2005-02-11  Murray Cumming  <murrayc@murrayc.com>
 
-	* docs/website/doc.shtml: Fix typo in url for reference docs. Found by 
+	* docs/website/doc.shtml: Fix typo in url for reference docs. Found by
 	James Lin.
 
 2005-02-06  Murray Cumming  <murrayc@murrayc.com>
 
-	* sigc++/signal_base.h: temp_slot_list::begin(), end(): Actually 
+	* sigc++/signal_base.h: temp_slot_list::begin(), end(): Actually
 	return the iterators.
 
 2005-02-03  Neal E. Coombes <nealc@trdlnk.com>
@@ -917,62 +923,62 @@ See also the libsigc-2-0 branch.
 	infinite loops).  This guarantees an emittion will be finite, as well
 	as maintaining any order of emittion guarantees that may have already
 	been in place.
-	
+
 2.0.9:
 
 2005-02-02  Murray Cumming  <murrayc@murrayc.com>
 
-	* sigc++/visit_each.h: visit_each_type(): Reverted the change, so that 
-	we do not specify the template types ot visit_each<>(), because it 
-	crashes on g++ 3.3.4 (but not g++ 3.4.2). Added a comment telling users 
-	of AIX (and maybe IRIX MipsPro and Tru64) to use the alternative version 
+	* sigc++/visit_each.h: visit_each_type(): Reverted the change, so that
+	we do not specify the template types ot visit_each<>(), because it
+	crashes on g++ 3.3.4 (but not g++ 3.4.2). Added a comment telling users
+	of AIX (and maybe IRIX MipsPro and Tru64) to use the alternative version
 	if they have compilation problems.
 
 2005-02-01  Murray Cumming  <murrayc@murrayc.com>
 
-	* sigc++/adapators/macros/base.h.m4: Add sigc::var<>() documentation, 
+	* sigc++/adapators/macros/base.h.m4: Add sigc::var<>() documentation,
 	from Roger Ferrer Ibáñez in bug #149483.
 
 2005-02-01  Murray Cumming  <murrayc@murrayc.com>
 
-	* sigc++/adaptors/macros/compose.h.m4: In the template specializations 
-	of visit_each(): As before, specify the specific other template 
+	* sigc++/adaptors/macros/compose.h.m4: In the template specializations
+	of visit_each(): As before, specify the specific other template
 	specializations of visit_each that we use. Needed by AIX.
-	* tests/Makefile.am: Reenabled most tests, because AIX can now 
+	* tests/Makefile.am: Reenabled most tests, because AIX can now
 	build them.
 
 2005-02-01  Murray Cumming  <murrayc@murrayc.com>
 
-	* sigc++/visit_each.h: visit_each_type(): Specify the specific 
-	template specialization of visit_each<>() to use. The AIX compiler, 
+	* sigc++/visit_each.h: visit_each_type(): Specify the specific
+	template specialization of visit_each<>() to use. The AIX compiler,
 	and possibly the Tru64 compiler, need this extra hint.
 
 2005-02-01  Murray Cumming  <murrayc@murrayc.com>
 
-	* bind.h.m4: Define bind_functor::operator() inline because the AIX 
-	compiler/linker sometimes fails to find it when it is defined 
+	* bind.h.m4: Define bind_functor::operator() inline because the AIX
+	compiler/linker sometimes fails to find it when it is defined
 	outside of the class.
 
 2.0.8:
 
 2005-01-30  Murray Cumming  <murrayc@murrayc.com>
 
-	* sigc++/type_traits.h: is_base_and_derived: Added 
-	avoid_gcc3_warning_(), to avoid an incorrect warning when using 
+	* sigc++/type_traits.h: is_base_and_derived: Added
+	avoid_gcc3_warning_(), to avoid an incorrect warning when using
 	g++ 3.3.5
 
 2005-01-28  Liza Klerck   <liza@trdlnk.com>
 
-	* sigc++/functors/macros/mem_fun.h.m4: Add a sigc:: namespace 
-	prefix to the nested use of visit_each(), to avoid ambiguity when 
+	* sigc++/functors/macros/mem_fun.h.m4: Add a sigc:: namespace
+	prefix to the nested use of visit_each(), to avoid ambiguity when
 	using 2 versions of the libsigc++ API inside different namespace.
-	
+
 2005-01-27  Murray Cumming  <murrayc@murrayc.com>
 
-	* sigc++/adaptors/macros/adaptor_trait.h.m4: Add a sigc:: namespace 
-	prefix to the nested use of visit_each(), to avoid ambiguity when 
-	using 2 versions of the libsigc++ API inside different namespace, 
-	which is not very advisable anyway. Bug #165222 from 
+	* sigc++/adaptors/macros/adaptor_trait.h.m4: Add a sigc:: namespace
+	prefix to the nested use of visit_each(), to avoid ambiguity when
+	using 2 versions of the libsigc++ API inside different namespace,
+	which is not very advisable anyway. Bug #165222 from
 	liza at trdlnk.com.
 
 2.0.7:
@@ -991,109 +997,109 @@ See also the libsigc-2-0 branch.
 
 2005-01-21  Murray Cumming  <murrayc@murrayc.com>
 
-	* tests/: Disabled the test_accumulator, test_bind, and test_compose 
-	tests, and part of test_mem_fun because the AIX xlC compiler can not 
+	* tests/: Disabled the test_accumulator, test_bind, and test_compose
+	tests, and part of test_mem_fun because the AIX xlC compiler can not
 	build them, but it can still do most things, including the examples.
 	See the comments in tests/Makefile.am.
 
 2005-01-21  Murray Cumming  <murrayc@murrayc.com>
 
-	* sigc++/adaptors/bind.h.m4: non-member operator()(): Specify the 
-	extra nil arguments in the templated class name prefix. Oddly, the 
-	AIX xlC compiler says that the type of the first parameter does not 
+	* sigc++/adaptors/bind.h.m4: non-member operator()(): Specify the
+	extra nil arguments in the templated class name prefix. Oddly, the
+	AIX xlC compiler says that the type of the first parameter does not
 	match the template if you don't do this.
 
 2005-01-21  Murray Cumming  <murrayc@murrayc.com>
 
-	* sigc++/type_traits.h: is_base_and_derived struct: Move the 
-	is_base_class_() functions out of the inner class, because the AIX 
+	* sigc++/type_traits.h: is_base_and_derived struct: Move the
+	is_base_class_() functions out of the inner class, because the AIX
 	xlC compiler does not like that - see the comments in the code.
-	* sigc++/adaptors/bind.h.m4: Add the extra nil template types to 
+	* sigc++/adaptors/bind.h.m4: Add the extra nil template types to
 	the template specializations, as in slot and signal.
-	
+
 2005-01-21  Murray Cumming  <murrayc@murrayc.com>
 
-	* sigc++/functors/macros/slot.h.m4, sigc++/macros/signal.h.m4: 
-	slot and signal template specialization for 
-	various numbers of template args: In the class slot line, specify 
-	all the remaining template types as null, instead of expecting the 
-	compiler to guess them in itself. This partly fixes the build on 
+	* sigc++/functors/macros/slot.h.m4, sigc++/macros/signal.h.m4:
+	slot and signal template specialization for
+	various numbers of template args: In the class slot line, specify
+	all the remaining template types as null, instead of expecting the
+	compiler to guess them in itself. This partly fixes the build on
 	AIX with the xlC compiler. Bug #164685.
 
 2005-01-19  Murray Cumming  <murrayc@murrayc.com>
 
-	* sigc++/type_traits: struct is_base_and_derived: Make the test inner 
-	struct a friend, so that it can use the big inner struct. This is 
+	* sigc++/type_traits: struct is_base_and_derived: Make the test inner
+	struct a friend, so that it can use the big inner struct. This is
 	required by the Tru64 compiler.
-	* sigc++/adaptors/lambda/base.h: Put the unwrap_lambda_value() 
-	definitions at the top, because Tru64 (understandably) needs them to 
+	* sigc++/adaptors/lambda/base.h: Put the unwrap_lambda_value()
+	definitions at the top, because Tru64 (understandably) needs them to
 	be declared before use.
 
 2005-01-19  Murray Cumming  <murrayc@murrayc.com>
 
-	* scripts/: Added cxx_std.m4, with a test copied from 
-	glibmm/scripts/cxx_std.m4 to check if the compiler has the std:: 
+	* scripts/: Added cxx_std.m4, with a test copied from
+	glibmm/scripts/cxx_std.m4 to check if the compiler has the std::
 	namespace.
-	* sigcconfig.h: #undef the new #define and add SIGC_USING_STD(), 
-	like GLIBMM_USING_STD, to put stuff in the std:: namespace when it 
+	* sigcconfig.h: #undef the new #define and add SIGC_USING_STD(),
+	like GLIBMM_USING_STD, to put stuff in the std:: namespace when it
 	is not there already,
 	* configure.in: Used the new test.
 	* tests/*: Uses SIG_USING_STD() for every std:: thing that we use.
-	This is needed by the Tru64 and HP-UX compilers when using their 
+	This is needed by the Tru64 and HP-UX compilers when using their
 	defaults.
 
 2005-01-19  Murray Cumming  <murrayc@murrayc.com>
 
-	* configure.in: AC_INIT(): Provide the extra tarball name parameter, 
+	* configure.in: AC_INIT(): Provide the extra tarball name parameter,
 	so that it does not create a libsigc--- tarball.
 
 2005-01-19  Murray Cumming  <murrayc@murrayc.com>
 
-	* configure.in: AC_INIT(): Use libsigc++ instead of sigc++, attempting 
+	* configure.in: AC_INIT(): Use libsigc++ instead of sigc++, attempting
 	to get the correct tarball name.
 
 2005-01-18  Murray Cumming  <murrayc@murrayc.com>
 
-	* configure.in: Used the autoconf 2.93 and AM_INIT_AUTOMAKE() 
-	technique to specify ustar format for the tarball, to prevent files 
-	with long file names from appearing at the top of the tarball. 
+	* configure.in: Used the autoconf 2.93 and AM_INIT_AUTOMAKE()
+	technique to specify ustar format for the tarball, to prevent files
+	with long file names from appearing at the top of the tarball.
 	Based on the same fix in gtkmm 2.6.
 
 2005-01-18  Murray Cumming  <murrayc@murrayc.com>
 
-	* sigc++/functors/macros/slot_h.m4: Specify the base class when 
-	using the rep_ member variable. This stops the HP-UX aCC compiler 
-	from saying that a Nonstatic member  is referenced in a nested class, 
+	* sigc++/functors/macros/slot_h.m4: Specify the base class when
+	using the rep_ member variable. This stops the HP-UX aCC compiler
+	from saying that a Nonstatic member  is referenced in a nested class,
 	local class or static member initializer. Bug #150719.
 
 2005-01-18  Murray Cumming  <murrayc@murrayc.com>
 
-	* Bug #159597 - patch from e97_far at e.kth.se to replace C-style 
+	* Bug #159597 - patch from e97_far at e.kth.se to replace C-style
 	casts with reinterpret_cast<> and static_cast<> to avoid warnings.
 
 2005-01-17  Murray Cumming  <murrayc@murrayc.com>
 
-	* docs/manual/Makefile.am: Specifying html/index.html instead of 
+	* docs/manual/Makefile.am: Specifying html/index.html instead of
 	just the html directory as a target seems to fix distcheck problems.
-	I can also now confirm that the install works on solaris, when using 
+	I can also now confirm that the install works on solaris, when using
 	gmake, though not when using make.
 
 2005-01-17  Murray Cumming  <murrayc@murrayc.com>
 
-	* MSVC_Net2004/Makefile.am: Add built files to DISTCLEANFILES to fix 
+	* MSVC_Net2004/Makefile.am: Add built files to DISTCLEANFILES to fix
 	the distcheck.
-	* docs/reference/Makefile.am, manual/Makefile.am: Specify $srcdir in 
-	paths, to fix distcheck of the manual, and maybe fix install problems 
+	* docs/reference/Makefile.am, manual/Makefile.am: Specify $srcdir in
+	paths, to fix distcheck of the manual, and maybe fix install problems
 	on Solaris.
 
 2005-01-11  Murray Cumming  <murrayc@murrayc.com>
 
 	* docs/website/stable.html: Updated the text about binary packages.
-	* docs/website/docs.html: Link to the 2.0 documentation instead of the 
+	* docs/website/docs.html: Link to the 2.0 documentation instead of the
 	1.2 documentation.
 
 2004-12-17  GregSchussman  <schussman@slac.stanford.edu>
- 
+
  	* glossary.shtml: Clean up punctuation, make definitions complete
         sentences, and add clarifications for certain definitions according to
         what Murray Cumming's suggestions and answers to my questions.
@@ -1101,7 +1107,7 @@ See also the libsigc-2-0 branch.
 
 2005-01-11  Murray Cumming  <murrayc@murrayc.com>
 
-	* docs/: Added manual, copied from the libsigc++-1.2 cvs module, 
+	* docs/: Added manual, copied from the libsigc++-1.2 cvs module,
 	and updated it for the new 2.0 API.
 
 2005-01-11  Murray Cumming  <murrayc@murrayc.com>
@@ -1135,7 +1141,7 @@ See also the libsigc-2-0 branch.
 2004-11-27  Murray Cumming  <murrayc@murrayc.com>
 
 	* configure.in: Revert the AC_PROG_LIBTOOL change, so that this builds
-	with actually released libtool versions, and in jhbuild, so that it 
+	with actually released libtool versions, and in jhbuild, so that it
 	gets testing.
 
 2004-11-06  Martin Schulze  <mschulze@cvs.gnome.org>
@@ -1251,7 +1257,7 @@ See also the libsigc-2-0 branch.
 
 2004-08-03  James Lin <slimjimmy@mail.com>
 
-	* Added SIGC_API qualifier to all externally-visible non-template 
+	* Added SIGC_API qualifier to all externally-visible non-template
 	classes/structs.
 	* Added #include <sigc++config.h> to the files that use SIGC_API.
 	* Added empty SIGC_API definition to sigc++config.h.in for non-MSVC
@@ -1259,9 +1265,9 @@ See also the libsigc-2-0 branch.
 	(probably not).
 	* Added MSVC-specific sigc++config.h to the MSVC project directory.
 	(The comment in it probably should be edited.)
-	* Changed MSVC project settings to output a multi-threaded DLL, set 
+	* Changed MSVC project settings to output a multi-threaded DLL, set
 	the include paths to work (hopefully) out-of-the-box.  Disabled
-	precompiled headers, since they just complicate things and 
+	precompiled headers, since they just complicate things and
 	shouldn't be necessary for such a relatively project.
 
 2004-08-01  Martin Schulze <mschulze@cvs.gnome.org>
@@ -1337,39 +1343,39 @@ See also the libsigc-2-0 branch.
 2004-07-11  Murray Cumming  <murrayc@murrayc.com>
 
 	* sigc++/connection.cc: Added some comments.
-	* sigc++/trackable.cc: operator=(): Check for self-asignment, though I 
+	* sigc++/trackable.cc: operator=(): Check for self-asignment, though I
 	do not know of any actual bug that this fixes. Added some comments.
 	* sigc++/trackable.h Added some doxygen documentation.
 
 2004-07-09  Murray Cumming  <murrayc@murrayc.com>
 
-	* tests/: Added test_disconnect_during_emit.cc, to prove that this 
+	* tests/: Added test_disconnect_during_emit.cc, to prove that this
 	works.
 
 2004-07-08  Murray Cumming  <murrayc@murrayc.com>
 
-	* tests/test_retype_return.cc: foo::operator(int): return a 
+	* tests/test_retype_return.cc: foo::operator(int): return a
 	value. The SUN Forte 5.5 compiler complains about this, as it should.
 
 2004-07-08  Murray Cumming  <murrayc@murrayc.com>
 
-	* sigc++/macros/signal.h.m4: class signal*: Rename the slot_list 
-	typedef to slot_list_type, because there is already a template class 
-	called slot_type. SUN Forte 5.5 seems to complain about this and I am 
-	not surprised. The old typdef is still there for backwards 
+	* sigc++/macros/signal.h.m4: class signal*: Rename the slot_list
+	typedef to slot_list_type, because there is already a template class
+	called slot_type. SUN Forte 5.5 seems to complain about this and I am
+	not surprised. The old typdef is still there for backwards
 	compatibility, except when building with SUN Forte.
 
 2004-07-07  Murray Cumming  <murrayc@murrayc.com>
 
 	* scripts/cxx.m4: SIGC_CXX_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD():
-	Don't define the SIGC_TEMPLATE_SPECIALIZATOIN_OPERATOR_OVERLOAD C 
+	Don't define the SIGC_TEMPLATE_SPECIALIZATOIN_OPERATOR_OVERLOAD C
 	macro at all if the test fails. This might fix the build on SUN Forte.
-	* sigc++/functors/macros/mem_fun.h.m4: Default constructor: Initialize 
-	the func_ptr_ member variable. I have no evidence that this solves any 
+	* sigc++/functors/macros/mem_fun.h.m4: Default constructor: Initialize
+	the func_ptr_ member variable. I have no evidence that this solves any
 	problems, but it worried me.
-	* sigc++/functors/slot_base.h: operator bool(): Correct documentation, 
+	* sigc++/functors/slot_base.h: operator bool(): Correct documentation,
 	to use @code instead of <code>
-	* sigc++/macros/signal.h.m4: Remove the documentation for the 
+	* sigc++/macros/signal.h.m4: Remove the documentation for the
 	parameters named first and last, because they do not exist.
 
 2004-05-31  Martin Schulze  <mschulze@cvs.gnome.org>
@@ -1467,7 +1473,7 @@ See also the libsigc-2-0 branch.
 
 2004-04-10  Murray Cumming  <murrayc@murrayc.com>
 
-	* sigc++/connection.[h|cc]: Implement blocked() to avoid undefined 
+	* sigc++/connection.[h|cc]: Implement blocked() to avoid undefined
 	symbol linker error.
 
 2004-04-08  Murray Cumming  <murrayc@murrayc.com>
@@ -1483,13 +1489,13 @@ See also the libsigc-2-0 branch.
 
 2004-04-02  Murray Cumming  <murrayc@murrayc.com>
 
-	* sigc++/connection.cc: Make block() and unblock() always return a 
+	* sigc++/connection.cc: Make block() and unblock() always return a
 	value, to fix compiler warnings. Patch from bug #138620 by
 	Alexander Nedotsukov.
 
 2004-04-02  Murray Cumming  <murrayc@murrayc.com>
 
-	* Fix the compile of examples/member_method.cc. Bug #131701 from 
+	* Fix the compile of examples/member_method.cc. Bug #131701 from
 	Kirill Smelkov. I also made the examples build as part of the regular
 	build.
 
@@ -1500,14 +1506,14 @@ See also the libsigc-2-0 branch.
 
 2004-03-25  Murray Cumming  <murrayc@murrayc.com>
 
-	* scripts/cxx.m4, configure.in, sigc++config.h.in: Rename the 
+	* scripts/cxx.m4, configure.in, sigc++config.h.in: Rename the
 	template_keyword check to template_specialization, because the problem
 	is with or without the keyword.
-	* sigc++/adaptors/macros/adaptor_trait.h.m4: Define 
-	SIGC_WORKAROUND_OPERATOR_PARENTHESES, which calls either operator() or 
+	* sigc++/adaptors/macros/adaptor_trait.h.m4: Define
+	SIGC_WORKAROUND_OPERATOR_PARENTHESES, which calls either operator() or
 	sun_forte_workaround() depending on the result of the compiler test.
-	* many .m4 files: Add sun_forte_workaround methods that call the 
-	operator() methods. Put them in #ifdefs so that only SUN Forte C++ 
+	* many .m4 files: Add sun_forte_workaround methods that call the
+	operator() methods. Put them in #ifdefs so that only SUN Forte C++
 	sees them.
 
 2004-03-22  Murray Cumming  <murrayc@murrayc.com>
@@ -1517,7 +1523,7 @@ See also the libsigc-2-0 branch.
 
 2004-03-21  Murray Cumming  <murrayc@murrayc.com>
 
-	* Rename config.h.in to sigc++config.h.in so that gtkmm does not 
+	* Rename config.h.in to sigc++config.h.in so that gtkmm does not
 	include some other config.h at strange times - fixes a problem in
 	the gtkmm demos. This should really be in the sigc++ directory, but
 	that seems to add that as an include path, which causes the STL
@@ -1530,12 +1536,12 @@ See also the libsigc-2-0 branch.
 
 2004-03-20  Murray Cumming  <murrayc@murrayc.com>
 
-	* Added config.h.in, using autoheader, from which config.h will be 
+	* Added config.h.in, using autoheader, from which config.h will be
 	generated, so we can detect compiler features.
 	* configure.ac: Added AC_CONFIG_HEADER(config.h) to generate config.h
 	from config.h.in.
-	* scripts/cxx.m4: Added this directory and file, with a 
-	SIGC_CXX_TEMPLATE_KEYWORD_OPERATOR_OVERLOAD macro that defines 
+	* scripts/cxx.m4: Added this directory and file, with a
+	SIGC_CXX_TEMPLATE_KEYWORD_OPERATOR_OVERLOAD macro that defines
 	the SIGC_TEMPLATE_KEYWORD_OPERATOR_OVERLOAD C macro.
 	* autogen.sh: Added -I scripts to the aclocal call, so that it finds
 	the m4 macro for configure.ac.
@@ -1556,17 +1562,17 @@ See also the libsigc-2-0 branch.
 	* g++ 3.4 (pre-release) build fixes:
 	* sigc++/macros/signal.h.m4: slot_iterator_buf::operator*():
 	Use blocked() and empty() instead of non-existant blocked_and_empty().
-	* sigc++/functors/macros/mem_fun.h.m4: memfun_functor*::operator()(): 
+	* sigc++/functors/macros/mem_fun.h.m4: memfun_functor*::operator()():
 	Use this->func_ptr_ instead of just func_ptr_.
-	* sigc++/adaptors/macros/deduce_result_type.h.m4: Use 
+	* sigc++/adaptors/macros/deduce_result_type.h.m4: Use
 	T_functor::template deduce_result_type<> instead of just
 	T_functor::deduce_result_type<>.
-	* sigc++/adaptors/lambda/macros/base.h.m4, operator.h.m4, group.h.m4:: 
-	Use template keyword again. operator[](): Use this->value_ instead of 
+	* sigc++/adaptors/lambda/macros/base.h.m4, operator.h.m4, group.h.m4::
+	Use template keyword again. operator[](): Use this->value_ instead of
 	just value_.
-	* sigc++/adaptors/lambda/macros/bind/m4: Use template keyword, and 
+	* sigc++/adaptors/lambda/macros/bind/m4: Use template keyword, and
 	this-> again.
-	* sigc++/adaptors/macros/compose.h.m4, hide.h.m4, bind_return.h.m4, 
+	* sigc++/adaptors/macros/compose.h.m4, hide.h.m4, bind_return.h.m4,
 	exception_catch.h.m4:
 	rettype.h.m4, rettype_return.h.m4: Use template keyword,and this-> again
 
@@ -1616,7 +1622,7 @@ See also the libsigc-2-0 branch.
 
 2004-02-13  Murray Cumming  <murrayc@usa.net>
 
-	* sigc++/functors/slot_base.[h|cc], sigc++/trackable.[h|cc]: Create 
+	* sigc++/functors/slot_base.[h|cc], sigc++/trackable.[h|cc]: Create
 	and use a typedef for the destroy_notify callback functions, to avoid
 	confusion function pointer declaration syntax in the API.
 
@@ -1624,12 +1630,12 @@ See also the libsigc-2-0 branch.
 
 	* Moved implementation to .cc files:
 	* sigc++/functors/: Added slot_base.[h|cc] which contains non-template
-	code that was previsouly in the generated functors/slot.h and 
-	non-generated slot.cc files. All non-inline implementation is now in 
+	code that was previsouly in the generated functors/slot.h and
+	non-generated slot.cc files. All non-inline implementation is now in
 	the .cc file.
 	* sigc++/functors/macros/slot.m4: Removed the code that has been moved
 	to slot_base.[h|cc].
-	* sigc++/: Added signal_base.[h|cc] which contains non-template code 
+	* sigc++/: Added signal_base.[h|cc] which contains non-template code
 	that was previously in the generated signal.h and non-generated
 	signal.cc file. All non-inline implementation is now in the .cc file.
 	* sigc++/macros/signal.m4: Removed the code that ahs been moved to
@@ -1795,7 +1801,7 @@ See also the libsigc-2-0 branch.
 	it any more and it is completely non-standard!
 
 2003-10-30  Cedric Gustin <cedric.gustin@swing.be>
- 
+
  	* configure.ac: Added test of win32 platform. Commented
  	out AM_DISABLE_SHARED (DLLs are shared libraries).
  	* sigc++/Makefile.am: added a few LDFLAGS for win32
@@ -2114,9 +2120,9 @@ See also the libsigc-2-0 branch.
 2003-06-23  Andreas Rottmann  <rottmann@users.sourceforge.net>
 
 	* docs/reference/Doxyfile.in: Use these variables.
-	* docs/reference/Makefile.am (html/index.html): Provide doxygen 
+	* docs/reference/Makefile.am (html/index.html): Provide doxygen
 	with SRCDIR and TOP_SRCDIR environment variables.
-	
+
 	* sigc++/functors/slot.h.m4: Make slot::call_type typedef public;
 	this fixes a g++ 3.3 error in signal.h.
 
@@ -2302,7 +2308,7 @@ See also the libsigc-2-0 branch.
 	* configure.ac (AC_OUTPUT): Remove the above Makefiles.
 
 	* tests/Makefile.am: Re-included lambda test.
-	
+
 2003-03-07  Martin Schulze  <MHL.Schulze@t-online.de>
 
 	* sigc++/signal.{cc,h.m4}:
@@ -2402,4 +2408,3 @@ See also the libsigc-2-0 branch.
 2003-01-14  Murray Cumming  <murrayc@usa.net>
 
 	* Added whitespace to make the code more readable.
-
