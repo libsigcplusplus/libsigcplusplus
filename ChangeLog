@@ -1,3 +1,15 @@
+2010-04-06  Murray Cumming  <murrayc@murrayc.com>
+ 
+    Website: Update the reference API link.
+
+	* docs/website/doc.shtml: Update the reference API link to use 
+    library.gnome.org. We should make sure that the tutorial docbook is there 
+    too.
+    * docs/website/devel.shtml: Remove CVS-specific instructions, quickly 
+    mentioning the git module instead.
+    However, the Makefile must be updated to cope with sourceforge's changes.
+    I was not able to upload this yet.
+
 2.2.5:
 
 2010-01-05  Daniel Elstner  <daniel.kitta@gmail.com>

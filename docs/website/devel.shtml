@@ -30,47 +30,8 @@ Submit a new libsigc++ bug <a href="http://bugzilla.gnome.org/enter_bug.cgi?prod
 </p>
 
 <p>
-Patches should be created with the "cvs diff -up" command, and you must patch the ChangeLog. See below for cvs instructions. Ask on the mailing list if you need help with this.
+libsigc++ is in the <a href="http://git.gnome.org/browse/libsigc++2/">libsigc++2</a> module in gnome's git.
 </p>
-
-<a name="cvs"><h3>CVS</h3></a>
-CVS is a powerful tool for maintain version control with multiple
-developers produced by <a href="http://www.cyclic.com">Cyclic</a>.
-Developer versions of Libsigc++ are housed in the 
-<a href="http://www.gnome.org">Gnome</a> CVS repository. 
-<p>
-Documentation for CVS is available at 
-<a href="http://www.cyclic.com/cvs/doc-blandy-text.html">Introduction to CVS</a> or the 
-<a href="http://www.loria.fr/~molli/cvs/doc/cvs_toc.html">CVS manual</a>. CVS is available on a wide
-number of plaforms including Unix, Window 95/NT, and Macintosh. 
-<p>
-The main CVS repository is located at cvs.gnome.org and requires 
-a gnome developer login. For those who do not have a login on the
-gnome developer tree, anonymous CVS checkouts are available from 
-anoncvs.gnome.org.  Development versions from CVS may or may
-not work depending on the current state of revision.  Users
-who do not need some functionality being added should stick
-to a released version.
-<p>
-To obtain the latest development source for libsigc++:
-
-<br/>
-Stable branch:
-<pre>
-export CVSROOT=:pserver:anonymous@anoncvs.gnome.org:/cvs/gnome
-cvs login 
-(hit return as the password)
-cvs -z3 co libsigc++-1.2
-</pre>
-
-<br/>
-Unstable branch:
-<pre>
-export CVSROOT=:pserver:anonymous@anoncvs.gnome.org:/cvs/gnome
-cvs login 
-(hit return as the password)
-cvs -z3 co libsigc++2
-</pre>
 
 <!-- SSI fragments/footer.html_fragment begin -->
 <!--#include virtual="fragments/footer.html_fragment" -->
