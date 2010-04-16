@@ -1,3 +1,8 @@
+2.2.6:
+
+* Slight documentation changes.
+  (Murray Cumming) Bug #614741 (Armin Burgmeier)
+
 2.2.5:
 
 * Accumulators: Allow return types that are different to the signal's.
