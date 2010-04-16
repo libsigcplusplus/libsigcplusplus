@@ -5,14 +5,14 @@
 <a name="doc"><h3>Documentation</h3></a>
 
 <p>
-We have both <a href="libsigc2/docs/manual/html/index.html">tutorial-style</a> and <a href="http://library.gnome.org/devel/libsigc++/stable/">reference</a> documentation.</p>
+We have both <a href="libsigc2/docs/manual/html/index.html">tutorial-style</a> and <a href="libsigc2/docs/index.html">reference</a> documentation.</p>
 
 
 <a name="glossary"><h3>Glossary of terms</h3></a>
 <p>
 For those which just want a quick look at the terms used in
 the system, glance over the <a href="glossary.shtml">glossary</a>
-<p> 
+<p>
 
 
 <!-- SSI fragments/footer.html_fragment begin -->

@@ -137,7 +137,7 @@ struct limit_derived_target<T_target*, T_action>
  *   }
  *   @endcode
  *
- * @ingroup functors
+ * @ingroup sigcfunctors
  */
 template <class T_action, class T_functor>
 void visit_each(const T_action& _A_action, const T_functor& _A_functor)
@@ -146,7 +146,7 @@ void visit_each(const T_action& _A_action, const T_functor& _A_functor)
 /** This function performs a functor on each of the targets
  * of a functor limited to a restricted type.
  *
- * @ingroup functors
+ * @ingroup sigcfunctors
  */
 template <class T_type, class T_action, class T_functor>
 void visit_each_type(const T_action& _A_action, const T_functor& _A_functor)

@@ -196,7 +196,7 @@ struct SIGC_API slot_do_unbind
  *
  * You can also pass slots as method parameters where you might normally pass a function pointer.
  *
- * @ingroup functors
+ * @ingroup sigcfunctors
  */
 
 /** Base type for slots.

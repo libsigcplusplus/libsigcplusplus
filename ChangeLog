@@ -1,3 +1,15 @@
+2010-04-16  Murray Cumming  <murrayc@murrayc-desktop>
+
+	Docs: Fix the functors group and the link from the overview.
+
+	* docs/website/doc.shtml: Revert this to point to the overview page at
+    docs/indeex.html, which I have manually uploaded to the website, until
+    we add this overview to the doxygen-generated documentation itself.
+	* sigc++/functors/slot_base.h:
+	* sigc++/visit_each.h: Rename the functors doxygen group to sigcfunctors,
+    because doxygen seems to confuse it with the one in libstdc++.
+	* docs/index.html: Update the links.
+
 2010-04-16  Murray Cumming  <murrayc@murrayc.com>
 
     Website: Fix the Makefile so upload works with sourceforge again.
