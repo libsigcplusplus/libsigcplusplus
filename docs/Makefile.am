@@ -26,7 +26,8 @@ book_name = libsigc++-$(SIGCXX_API_VERSION)
 libsigc_h = $(sigc_public_h) $(sigc_built_h)
 vp_select = $(or $(wildcard $(top_builddir)/sigc++/$(file)),$(top_srcdir)/sigc++/$(file))
 vp_search = $(foreach file,$(libsigc_h),$(vp_select))
-doc_input = $(if $(srcdir:.=),$(vp_search),$(addprefix $(top_builddir)/sigc++/,$(libsigc_h)))
+doc_input = $(if $(srcdir:.=),$(vp_search),$(addprefix $(top_builddir)/sigc++/,$(libsigc_h))) \
+            $(top_srcdir)/sigc++/sigc++.h
 
 include $(top_srcdir)/build/doc-reference.am
 

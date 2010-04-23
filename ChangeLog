@@ -1,5 +1,12 @@
 2010-04-23  David King  <davidk@openismus.com>
 
+	Add main page to Doxygen documentation
+
+	* docs/Makefile.am: Parse sigc++/sigc++.h for documentation.
+	* sigc++/sigc++.h: Add main page to Doxygen documentation.
+
+2010-04-23  David King  <davidk@openismus.com>
+
 	Fix the functors Doxygen group in the m4 files
 
 	* sigc++/functors/macros/functor_trait.h.m4:
