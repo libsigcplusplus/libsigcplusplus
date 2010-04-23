@@ -87,7 +87,7 @@ namespace sigc {
 struct nil;
 
 
-/** @defgroup functors Functors
+/** @defgroup sigcfunctors Functors
  * Functors are copyable types that define operator()().
  *
  * Types that define operator()() overloads with different return types are referred to
@@ -109,7 +109,7 @@ struct nil;
 /** A hint to the compiler.
  * All functors which define @p result_type should publically inherit from this hint.
  *
- * @ingroup functors
+ * @ingroup sigcfunctors
  */
 struct functor_base {};
 
@@ -134,7 +134,7 @@ struct functor_trait<T_functor,true>
  * namespace sigc { SIGC_FUNCTORS_HAVE_RESULT_TYPE }
  * @endcode
  *
- * @ingroup functors
+ * @ingroup sigcfunctors
  */
 #define SIGC_FUNCTORS_HAVE_RESULT_TYPE                 \
 template <class T_functor>                             \
@@ -155,7 +155,7 @@ struct functor_trait<T_functor,false>                  \
  * }
  * @endcode
  *
- * @ingroup functors
+ * @ingroup sigcfunctors
  */
 #define SIGC_FUNCTOR_TRAIT(T_functor,T_return) \
 template <>                                    \

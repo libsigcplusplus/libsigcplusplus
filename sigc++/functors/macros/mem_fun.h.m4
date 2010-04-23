@@ -237,7 +237,7 @@ namespace sigc {
  *   sigc::slot<void, int> sl = sigc::mem_fun1<int>(my_foo, &foo::bar);
  *   @endcode
  *
- * @ingroup functors
+ * @ingroup sigcfunctors
  */
 
 FOR(0,CALL_SIZE,[[MEMBER_FUNCTOR(%1,[],[],[])]])dnl

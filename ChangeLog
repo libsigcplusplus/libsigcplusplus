@@ -1,3 +1,12 @@
+2010-04-23  David King  <davidk@openismus.com>
+
+	Fix the functors Doxygen group in the m4 files
+
+	* sigc++/functors/macros/functor_trait.h.m4:
+	* sigc++/functors/macros/mem_fun.h.m4:
+	* sigc++/functors/macros/ptr_fun.h.m4: Rename functors to
+	sigcfunctors.
+
 2.2.6:
 
 2010-04-16  Murray Cumming  <murrayc@murrayc-desktop>

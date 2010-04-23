@@ -112,7 +112,7 @@ namespace sigc {
  *   sigc::slot<void, int> sl = sigc::ptr_fun(&foo::bar);
  *   @endcode
  *
- * @ingroup functors
+ * @ingroup sigcfunctors
  */
 
 FOR(0,CALL_SIZE,[[POINTER_FUNCTOR(%1)]])dnl
