@@ -33,7 +33,7 @@
  * For instance, see @ref adaptors "Adaptors", @ref sigcfunctors "Functors",
  * @ref lambdas "Lambdas", @ref signal "Signals" and @ref slot "Slots".
  *
- * See also the libsigc++ website: http://libsigc.sourceforge.net/
+ * See also <a href="http://libsigc.sourceforge.net/">the libsigc++ website</a>.
  *
  * @section features Features
  *
@@ -49,18 +49,19 @@
  * - A variety of adaptors to change the callback signature: bind, hide,
  *   retype, compose and lambda call groups
  *
- * @section basics Basic usage
+ * @section basics Basic Usage
  *
  * Include the libsigc++ header:
  * @code
  * #include <sigc++/sigc++.h>
  * @endcode
- * This includes every header installed by libsigc++, so can slow down
- * compilation, but suffices for this simple example. Assuming that your
- * program source file is @c program.cc, compile it with:
+ * (You may include individual headers, such as @c sigc++/bind.h instead.)
+ *
+ * If your source file is @c program.cc, you can compile it with:
  * @code
  * g++ program.cc -o program `pkg-config --cflags --libs sigc++-2.0`
  * @endcode
+ *
  * Alternatively, if using autoconf, use the following in @c configure.ac:
  * @code
  * PKG_CHECK_MODULES([LIBSIGCXX], [sigc++-2.0])

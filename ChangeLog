@@ -1,3 +1,9 @@
+2010-04-27  David King  <davidk@openismus.com>
+
+	Improvements to main page documentation
+
+	* sigc++/sigc++.h: Minor improvements.
+
 2010-04-23  David King  <davidk@openismus.com>
 
 	Add main page to Doxygen documentation
