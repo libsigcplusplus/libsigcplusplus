@@ -1,3 +1,13 @@
+2.2.7:
+
+* Documentation:
+  - Added main page text with doxygen.
+  (David King, Murray Cumming)
+  - Fix the functors Doxygen group.
+  (David King)
+  - Tutorial: Removed outdated marshallers section that had no working example.
+  (Murray Cumming) Bug #417924 (Michael Ekstrand)
+  
 2.2.6:
 
 * Slight documentation changes.
