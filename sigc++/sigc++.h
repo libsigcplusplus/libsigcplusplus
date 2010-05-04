@@ -24,28 +24,31 @@
  *
  * @section description Description
  *
- * libsigc++ implements a typesafe callback system for standard C++. It allows
- * you to define signals and to connect those signals to any callback function,
- * either a global or a member function, regardless of whether it is static or
- * virtual. It also contains adaptor classes for connection of dissimilar
- * callbacks and has an ease of use unmatched by other C++ callback libraries.
+ * libsigc++ provides a typesafe (at compile time) callback system for standard 
+ * C++. It allows you to define signals and to connect those signals to any 
+ * callback function, either a global or a member function, regardless of whether 
+ * it is static or virtual. It also contains adaptor classes for connection of 
+ * dissimilar callbacks.
  *
- * For instance, see @ref adaptors "Adaptors", @ref sigcfunctors "Functors",
- * @ref lambdas "Lambdas", @ref signal "Signals" and @ref slot "Slots".
+ * For instance, see the @ref signal "Signals", @ref sigcfunctors "Functors", 
+ * @ref slot "Slots", @ref adaptors "Adaptors", and @ref lambdas "Lambdas".
  *
- * See also <a href="http://libsigc.sourceforge.net/">the libsigc++ website</a>.
+ * See also the 
+ * <a href="http://libsigc.sourceforge.net/libsigc2/docs/manual/html/index.html">libsigc++ tutorial</a>, 
+ * the <a href="http://libsigc.sourceforge.net/">the libsigc++ website</a>, and 
+ * the <a href="http://library.gnome.org/devel/gtkmm-tutorial/unstable/chapter-signals.html">Signals appendix of the Programming with gtkmm book</a>.
  *
  * @section features Features
  *
- * - Compile time typesafe callbacks (faster than run time checks)
- * - Typesafety violations report line number correctly with template names (no
- *   tracing template failures into headers)
+ * - Compile-time typesafe callbacks (also faster than run time checks)
+ * - Type-safety violations report the line number correctly with template names 
+ *   (no tracing template failures into headers)
  * - No compiler extensions or meta compilers required
  * - Proper handling of dynamic objects and signals (deleted objects will not
- *   cause seg faults)
+ *   cause crashes)
  * - Extendable API at any level: signal, slot, connection and trackable
  * - Extensions do not require alteration of basic components
- * - User definable accumulators
+ * - User-definable accumulators
  * - A variety of adaptors to change the callback signature: bind, hide,
  *   retype, compose and lambda call groups
  *
@@ -64,13 +67,13 @@
  *
  * Alternatively, if using autoconf, use the following in @c configure.ac:
  * @code
- * PKG_CHECK_MODULES([LIBSIGCXX], [sigc++-2.0])
+ * PKG_CHECK_MODULES([LIBSIGC], [sigc++-2.0])
  * @endcode
- * Then use the generated @c LIBSIGCXX_CFLAGS and @c LIBSIGCXX_LIBS variables
+ * Then use the generated @c LIBSIGC_CFLAGS and @c LIBSIGC_LIBS variables
  * in the project @c Makefile.am files. For example:
  * @code
- * program_CPPFLAGS = $(LIBSIGCXX_CFLAGS)
- * program_LDADD = $(LIBSIGCXX_LIBS)
+ * program_CPPFLAGS = $(LIBSIGC_CFLAGS)
+ * program_LDADD = $(LIBSIGC_LIBS)
  * @endcode
  */
 

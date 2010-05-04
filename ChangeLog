@@ -1,3 +1,12 @@
+2010-05-04  Murray Cumming  <murrayc@murrayc.com>
+
+	Documentation improvements.
+	
+	* docs/manual/libsigc_manual.xml: Remove Marshallers section because 
+	it is apparently outdated and there is no example code to test it.
+	This fixes bug #417924 (Michael Ekstrand)
+	* sigc++/sigc++.h: Main page text: Rearranged slightly.
+
 2010-04-27  David King  <davidk@openismus.com>
 
 	Improvements to main page documentation
