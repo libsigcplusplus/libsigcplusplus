@@ -1,3 +1,7 @@
+2.2.8:
+
+Nothing interesting. Just a small change for library.gnome.org.
+
 2.2.7:
 
 * Documentation:
@@ -7,7 +11,7 @@
   (David King)
   - Tutorial: Removed outdated marshallers section that had no working example.
   (Murray Cumming) Bug #417924 (Michael Ekstrand)
-  
+
 2.2.6:
 
 * Slight documentation changes.
