@@ -1,10 +1,16 @@
+2010-06-04  Murray Cumming  <murrayc@murrayc.com>
+
+	Manual: Add an id="index" attribute in case that helps library.gnome.org.
+
+	* docs/manual/libsigc_manual.xml: Add it to the <book> tag.
+
 2.2.7:
 
 2010-05-04  Murray Cumming  <murrayc@murrayc.com>
 
 	Documentation improvements.
-	
-	* docs/manual/libsigc_manual.xml: Remove Marshallers section because 
+
+	* docs/manual/libsigc_manual.xml: Remove Marshallers section because
 	it is apparently outdated and there is no example code to test it.
 	This fixes bug #417924 (Michael Ekstrand)
 	* sigc++/sigc++.h: Main page text: Rearranged slightly.

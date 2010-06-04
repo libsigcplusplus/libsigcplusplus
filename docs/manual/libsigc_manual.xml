@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" >
-<book>
+<book id="index" lang="en">
 
 <bookinfo>
 	<title>libsigc++</title>
@@ -266,7 +266,7 @@ int main()
 	<para>We've already covered the way the types of signals are made up, but lets
 	recap:</para>
 
-	<para>A signal is an instance of a template, named <literal remap="tt">sigc::signal</literal>. 
+	<para>A signal is an instance of a template, named <literal remap="tt">sigc::signal</literal>.
         The template arguments are the types,
 	in the order they appear in the function signature that can be connected to that
 	signal; that is the return type, then the argument types.</para>
