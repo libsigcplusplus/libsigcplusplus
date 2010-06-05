@@ -1,3 +1,11 @@
+2010-06-05  David King  <davidk@openismus.com>
+
+	Small website updates
+
+	* docs/index.html: Remove broken namespace links.
+	* docs/website/doc.shtml: Link to library.gnome.org tutorial and API
+	reference.
+
 2.2.8:
 
 2010-06-04  Murray Cumming  <murrayc@murrayc.com>
