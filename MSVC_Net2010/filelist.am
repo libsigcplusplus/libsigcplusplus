@@ -1,0 +1,44 @@
+## This file is part of libsigc++.
+
+msvc_net2010_data =									\
+	libsigc++2.sln									\
+	libsigc++2.vcxproj								\
+	libsigc++2.vcxproj.filters							\
+	sigc++config.h									\
+	sigc.rc										\
+	tests/test_accumulated/test_accumulated.vcxproj					\
+	tests/test_accumulated/test_accumulated.vcxproj.filters				\
+	tests/test_bind/test_bind.vcxproj						\
+	tests/test_bind/test_bind.vcxproj.filters					\
+	tests/test_bind_return/test_bind_return.vcxproj					\
+	tests/test_bind_return/test_bind_return.vcxproj.filters				\
+	tests/test_compose/test_compose.vcxproj						\
+	tests/test_compose/test_compose.vcxproj.filters					\
+	tests/test_deduce_result_type/test_deduce_result_type.vcxproj			\
+	tests/test_deduce_result_type/test_deduce_result_type.vcxproj.filters		\
+	tests/test_disconnect/test_disconnect.vcxproj					\
+	tests/test_disconnect/test_disconnect.vcxproj.filters				\
+	tests/test_disconnect_during_emit/test_disconnect_during_emit.vcxproj		\
+	tests/test_disconnect_during_emit/test_disconnect_during_emit.vcxproj.filters	\
+	tests/test_exception_catch/test_exception_catch.vcxproj				\
+	tests/test_exception_catch/test_exception_catch.vcxproj.filters			\
+	tests/test_functor_trait/test_functor_trait.vcxproj				\
+	tests/test_functor_trait/test_functor_trait.vcxproj.filters			\
+	tests/test_hide/test_hide.vcxproj						\
+	tests/test_hide/test_hide.vcxproj.filters					\
+	tests/test_mem_fun/test_mem_fun.vcxproj						\
+	tests/test_mem_fun/test_mem_fun.vcxproj.filters					\
+	tests/test_ptr_fun/test_ptr_fun.vcxproj						\
+	tests/test_ptr_fun/test_ptr_fun.vcxproj.filters					\
+	tests/test_retype/test_retype.vcxproj						\
+	tests/test_retype/test_retype.vcxproj.filters					\
+	tests/test_retype_return/test_retype_return.vcxproj				\
+	tests/test_retype_return/test_retype_return.vcxproj.filters			\
+	tests/test_signal/test_signal.vcxproj						\
+	tests/test_signal/test_signal.vcxproj.filters					\
+	tests/test_size/test_size.vcxproj						\
+	tests/test_size/test_size.vcxproj.filters					\
+	tests/test_slot/test_slot.vcxproj						\
+	tests/test_slot/test_slot.vcxproj.filters					\
+	tests/test_trackable/test_trackable.vcxproj					\
+	tests/test_trackable/test_trackable.vcxproj.filters

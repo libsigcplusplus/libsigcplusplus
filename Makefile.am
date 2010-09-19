@@ -35,8 +35,11 @@ dist_noinst_SCRIPTS = autogen.sh
 
 include $(srcdir)/MSVC_Net2005/filelist.am
 include $(srcdir)/MSVC_Net2008/filelist.am
+include $(srcdir)/MSVC_Net2010/filelist.am
 
 dist_noinst_DATA = $(addprefix MSVC_Net2005/,$(msvc_net2005_data)) \
-                   $(addprefix MSVC_Net2008/,$(msvc_net2008_data))
+                   $(addprefix MSVC_Net2008/,$(msvc_net2008_data)) \
+                   $(addprefix MSVC_Net2010/,$(msvc_net2010_data))
 
-DISTCLEANFILES = MSVC_Net2005/sigc++config.h MSVC_Net2008/sigc++config.h
+DISTCLEANFILES = MSVC_Net2005/sigc++config.h MSVC_Net2008/sigc++config.h \
+                 MSVC_Net2010/sigc++config.h

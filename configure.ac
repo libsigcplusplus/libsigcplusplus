@@ -71,11 +71,14 @@ AC_CONFIG_FILES([Makefile
                  docs/Makefile
                  docs/reference/Doxyfile
                  MSVC_Net2005/sigc.rc
-                 MSVC_Net2008/sigc.rc])
+                 MSVC_Net2008/sigc.rc
+                 MSVC_Net2010/sigc.rc])
 
 # Copy the generated configuration headers into the MSVC project directories.
 AC_CONFIG_COMMANDS([MSVC_Net2005/sigc++config.h],
                    [cp -f sigc++config.h MSVC_Net2005/sigc++config.h])
 AC_CONFIG_COMMANDS([MSVC_Net2008/sigc++config.h],
                    [cp -f sigc++config.h MSVC_Net2008/sigc++config.h])
+AC_CONFIG_COMMANDS([MSVC_Net2010/sigc++config.h],
+                   [cp -f sigc++config.h MSVC_Net2010/sigc++config.h])
 AC_OUTPUT

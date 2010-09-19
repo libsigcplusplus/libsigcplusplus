@@ -1,3 +1,50 @@
+2010-09-19  Armin Burgmeier  <armin@arbur.net>
+
+	* MSVC_Net2010/filelist.am:
+	* MSVC_Net2010/libsigc++2.sln:
+	* MSVC_Net2010/libsigc++2.vcxproj:
+	* MSVC_Net2010/libsigc++2.vcxproj.filters:
+	* MSVC_Net2010/sigc.rc.in:
+	* MSVC_Net2010/tests/test_accumulated/test_accumulated.vcxproj:
+	* MSVC_Net2010/tests/test_accumulated/test_accumulated.vcxproj.filters:
+	* MSVC_Net2010/tests/test_bind/test_bind.vcxproj:
+	* MSVC_Net2010/tests/test_bind/test_bind.vcxproj.filters:
+	* MSVC_Net2010/tests/test_bind_return/test_bind_return.vcxproj:
+	* MSVC_Net2010/tests/test_bind_return/test_bind_return.vcxproj.filters:
+	* MSVC_Net2010/tests/test_compose/test_compose.vcxproj:
+	* MSVC_Net2010/tests/test_compose/test_compose.vcxproj.filters:
+	* MSVC_Net2010/tests/test_deduce_result_type/test_deduce_result_type.vcxproj:
+	* MSVC_Net2010/tests/test_deduce_result_type/test_deduce_result_type.vcxproj.filters:
+	* MSVC_Net2010/tests/test_disconnect/test_disconnect.vcxproj:
+	* MSVC_Net2010/tests/test_disconnect/test_disconnect.vcxproj.filters:
+	* MSVC_Net2010/tests/test_disconnect_during_emit/test_disconnect_during_emit.vcxproj:
+	* MSVC_Net2010/tests/test_disconnect_during_emit/test_disconnect_during_emit.vcxproj.filters:
+	* MSVC_Net2010/tests/test_exception_catch/test_exception_catch.vcxproj:
+	* MSVC_Net2010/tests/test_exception_catch/test_exception_catch.vcxproj.filters:
+	* MSVC_Net2010/tests/test_functor_trait/test_functor_trait.vcxproj:
+	* MSVC_Net2010/tests/test_functor_trait/test_functor_trait.vcxproj.filters:
+	* MSVC_Net2010/tests/test_hide/test_hide.vcxproj:
+	* MSVC_Net2010/tests/test_hide/test_hide.vcxproj.filters:
+	* MSVC_Net2010/tests/test_mem_fun/test_mem_fun.vcxproj:
+	* MSVC_Net2010/tests/test_mem_fun/test_mem_fun.vcxproj.filters:
+	* MSVC_Net2010/tests/test_ptr_fun/test_ptr_fun.vcxproj:
+	* MSVC_Net2010/tests/test_ptr_fun/test_ptr_fun.vcxproj.filters:
+	* MSVC_Net2010/tests/test_retype/test_retype.vcxproj:
+	* MSVC_Net2010/tests/test_retype/test_retype.vcxproj.filters:
+	* MSVC_Net2010/tests/test_retype_return/test_retype_return.vcxproj:
+	* MSVC_Net2010/tests/test_retype_return/test_retype_return.vcxproj.filters:
+	* MSVC_Net2010/tests/test_signal/test_signal.vcxproj:
+	* MSVC_Net2010/tests/test_signal/test_signal.vcxproj.filters:
+	* MSVC_Net2010/tests/test_size/test_size.vcxproj:
+	* MSVC_Net2010/tests/test_size/test_size.vcxproj.filters:
+	* MSVC_Net2010/tests/test_slot/test_slot.vcxproj:
+	* MSVC_Net2010/tests/test_slot/test_slot.vcxproj.filters:
+	* MSVC_Net2010/tests/test_trackable/test_trackable.vcxproj:
+	* MSVC_Net2010/tests/test_trackable/test_trackable.vcxproj.filters:
+
+	* Makefile.am:
+	* configure.ac: Added project files for Visual Studio 2010.
+
 2010-06-05  David King  <davidk@openismus.com>
 
 	Small website updates
