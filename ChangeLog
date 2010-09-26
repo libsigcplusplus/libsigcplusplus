@@ -1,3 +1,11 @@
+2010-09-27  Armin Burgmeier  <armin@arbur.net>
+
+	* MSVC_Net2005/libsigc++2.sln:
+	* MSVC_Net2005/tests/test_accumulated/test_accumulated.vcproj:
+	* MSVC_Net2008/libsigc++2.sln:
+	* MSVC_Net2008/tests/test_accumulated/test_accumulated.vcproj: Add
+	test_accumulated to the MSVC projects.
+
 2010-09-19  Armin Burgmeier  <armin@arbur.net>
 
 	* MSVC_Net2010/filelist.am:
