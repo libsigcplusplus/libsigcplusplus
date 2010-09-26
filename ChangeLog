@@ -1,6 +1,69 @@
 2010-09-27  Armin Burgmeier  <armin@arbur.net>
 
 	* MSVC_Net2005/libsigc++2.sln:
+	* MSVC_Net2005/libsigc++2.vcproj:
+	* MSVC_Net2005/tests/test_accumulated/test_accumulated.vcproj:
+	* MSVC_Net2005/tests/test_bind/test_bind.vcproj:
+	* MSVC_Net2005/tests/test_bind_return/test_bind_return.vcproj:
+	* MSVC_Net2005/tests/test_compose/test_compose.vcproj:
+	* MSVC_Net2005/tests/test_deduce_result_type/test_deduce_result_type.vcproj:
+	* MSVC_Net2005/tests/test_disconnect/test_disconnect.vcproj:
+	* MSVC_Net2005/tests/test_disconnect_during_emit/test_disconnect_during_emit.vcproj:
+	* MSVC_Net2005/tests/test_exception_catch/test_exception_catch.vcproj:
+	* MSVC_Net2005/tests/test_functor_trait/test_functor_trait.vcproj:
+	* MSVC_Net2005/tests/test_hide/test_hide.vcproj:
+	* MSVC_Net2005/tests/test_mem_fun/test_mem_fun.vcproj:
+	* MSVC_Net2005/tests/test_ptr_fun/test_ptr_fun.vcproj:
+	* MSVC_Net2005/tests/test_retype/test_retype.vcproj:
+	* MSVC_Net2005/tests/test_retype_return/test_retype_return.vcproj:
+	* MSVC_Net2005/tests/test_signal/test_signal.vcproj:
+	* MSVC_Net2005/tests/test_size/test_size.vcproj:
+	* MSVC_Net2005/tests/test_slot/test_slot.vcproj:
+	* MSVC_Net2005/tests/test_trackable/test_trackable.vcproj:
+	* MSVC_Net2008/libsigc++2.sln:
+	* MSVC_Net2008/libsigc++2.vcproj:
+	* MSVC_Net2008/tests/test_accumulated/test_accumulated.vcproj:
+	* MSVC_Net2008/tests/test_bind/test_bind.vcproj:
+	* MSVC_Net2008/tests/test_bind_return/test_bind_return.vcproj:
+	* MSVC_Net2008/tests/test_compose/test_compose.vcproj:
+	* MSVC_Net2008/tests/test_deduce_result_type/test_deduce_result_type.vcproj:
+	* MSVC_Net2008/tests/test_disconnect/test_disconnect.vcproj:
+	* MSVC_Net2008/tests/test_disconnect_during_emit/test_disconnect_during_emit.vcproj:
+	* MSVC_Net2008/tests/test_exception_catch/test_exception_catch.vcproj:
+	* MSVC_Net2008/tests/test_functor_trait/test_functor_trait.vcproj:
+	* MSVC_Net2008/tests/test_hide/test_hide.vcproj:
+	* MSVC_Net2008/tests/test_mem_fun/test_mem_fun.vcproj:
+	* MSVC_Net2008/tests/test_ptr_fun/test_ptr_fun.vcproj:
+	* MSVC_Net2008/tests/test_retype/test_retype.vcproj:
+	* MSVC_Net2008/tests/test_retype_return/test_retype_return.vcproj:
+	* MSVC_Net2008/tests/test_signal/test_signal.vcproj:
+	* MSVC_Net2008/tests/test_size/test_size.vcproj:
+	* MSVC_Net2008/tests/test_slot/test_slot.vcproj:
+	* MSVC_Net2008/tests/test_trackable/test_trackable.vcproj:
+	* MSVC_Net2010/libsigc++2.vcxproj:
+	* MSVC_Net2010/tests/test_accumulated/test_accumulated.vcxproj:
+	* MSVC_Net2010/tests/test_bind/test_bind.vcxproj:
+	* MSVC_Net2010/tests/test_bind_return/test_bind_return.vcxproj:
+	* MSVC_Net2010/tests/test_compose/test_compose.vcxproj:
+	* MSVC_Net2010/tests/test_deduce_result_type/test_deduce_result_type.vcxproj:
+	* MSVC_Net2010/tests/test_disconnect/test_disconnect.vcxproj:
+	* MSVC_Net2010/tests/test_disconnect_during_emit/test_disconnect_during_emit.vcxproj:
+	* MSVC_Net2010/tests/test_exception_catch/test_exception_catch.vcxproj:
+	* MSVC_Net2010/tests/test_functor_trait/test_functor_trait.vcxproj:
+	* MSVC_Net2010/tests/test_hide/test_hide.vcxproj:
+	* MSVC_Net2010/tests/test_mem_fun/test_mem_fun.vcxproj:
+	* MSVC_Net2010/tests/test_ptr_fun/test_ptr_fun.vcxproj:
+	* MSVC_Net2010/tests/test_retype/test_retype.vcxproj:
+	* MSVC_Net2010/tests/test_retype_return/test_retype_return.vcxproj:
+	* MSVC_Net2010/tests/test_signal/test_signal.vcxproj:
+	* MSVC_Net2010/tests/test_size/test_size.vcxproj:
+	* MSVC_Net2010/tests/test_slot/test_slot.vcxproj:
+	* MSVC_Net2010/tests/test_trackable/test_trackable.vcxproj: Add 64
+	bit support to MSVC project files.
+
+2010-09-27  Armin Burgmeier  <armin@arbur.net>
+
+	* MSVC_Net2005/libsigc++2.sln:
 	* MSVC_Net2005/tests/test_accumulated/test_accumulated.vcproj:
 	* MSVC_Net2008/libsigc++2.sln:
 	* MSVC_Net2008/tests/test_accumulated/test_accumulated.vcproj: Add
