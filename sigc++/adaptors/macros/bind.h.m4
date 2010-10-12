@@ -250,72 +250,72 @@ struct count_void<void,void,void,void,void,void,void>
 /** @defgroup bind bind(), bind_return()
  * sigc::bind() alters an arbitrary functor by fixing arguments to certain values.
  * Up to CALL_SIZE arguments can be bound at a time.
- * For single argument binding overloads of sigc::bind() are provided that let you
+ * For single argument binding, overloads of sigc::bind() are provided that let you
  * specify the zero-based position of the argument to fix with the first template parameter.
  * (A value of @p -1 fixes the last argument so sigc::bind<-1>() gives the same result as sigc::bind().)
  * The types of the arguments can optionally be specified if not deduced.
  *
  * @par Examples:
- *   @code
- *   void foo(int, int, int);
- *   // single argument binding ...
- *   sigc::bind(&foo,1)(2,3);     //fixes the last (third) argument and calls foo(2,3,1)
- *   sigc::bind<-1>(&foo,1)(2,3); //same as bind(&foo,1)(2,3) (calls foo(2,3,1))
- *   sigc::bind<0>(&foo,1)(2,3);  //fixes the first argument and calls foo(1,2,3)
- *   sigc::bind<1>(&foo,1)(2,3);  //fixes the second argument and calls foo(2,1,3)
- *   sigc::bind<2>(&foo,1)(2,3);  //fixes the third argument and calls foo(2,3,1)
- *   // multi argument binding ...
- *   sigc::bind(&foo,1,2)(3);     //fixes the last two arguments and calls foo(3,1,2)
- *   sigc::bind(&foo,1,2,3)();    //fixes all three arguments and calls foo(1,2,3)
- *   @endcode
+ * @code
+ * void foo(int, int, int);
+ * // single argument binding ...
+ * sigc::bind(&foo,1)(2,3);     //fixes the last (third) argument and calls foo(2,3,1)
+ * sigc::bind<-1>(&foo,1)(2,3); //same as bind(&foo,1)(2,3) (calls foo(2,3,1))
+ * sigc::bind<0>(&foo,1)(2,3);  //fixes the first argument and calls foo(1,2,3)
+ * sigc::bind<1>(&foo,1)(2,3);  //fixes the second argument and calls foo(2,1,3)
+ * sigc::bind<2>(&foo,1)(2,3);  //fixes the third argument and calls foo(2,3,1)
+ * // multi argument binding ...
+ * sigc::bind(&foo,1,2)(3);     //fixes the last two arguments and calls foo(3,1,2)
+ * sigc::bind(&foo,1,2,3)();    //fixes all three arguments and calls foo(1,2,3)
+ * @endcode
  *
  * The functor sigc::bind() returns can be passed into
  * sigc::signal::connect() directly.
  *
  * @par Example:
- *   @code
- *   sigc::signal<void> some_signal;
- *   void foo(int);
- *   some_signal.connect(sigc::bind(&foo,1));
- *   @endcode
+ * @code
+ * sigc::signal<void> some_signal;
+ * void foo(int);
+ * some_signal.connect(sigc::bind(&foo,1));
+ * @endcode
  *
  * sigc::bind_return() alters an arbitrary functor by
  * fixing its return value to a certain value.
  *
  * @par Example:
- *   @code
- *   void foo();
- *   std::cout << sigc::bind_return(&foo, 5)(); // calls foo() and returns 5
- *   @endcode
+ * @code
+ * void foo();
+ * std::cout << sigc::bind_return(&foo, 5)(); // calls foo() and returns 5
+ * @endcode
  *
  * You can bind references to functors by passing the objects through
  * the sigc::ref() helper function.
  *
  * @par Example:
- *   @code
- *   int some_int;
- *   sigc::signal<void> some_signal;
- *   void foo(int&);
- *   some_signal.connect(sigc::bind(&foo,sigc::ref(some_int)));
- *   @endcode
+ * @code
+ * int some_int;
+ * sigc::signal<void> some_signal;
+ * void foo(int&);
+ * some_signal.connect(sigc::bind(&foo,sigc::ref(some_int)));
+ * @endcode
  *
  * If you bind an object of a sigc::trackable derived type to a functor
  * by reference, a slot assigned to the bind adaptor is cleared automatically
  * when the object goes out of scope.
  *
  * @par Example:
- *   @code
- *   struct bar : public sigc::trackable {} some_bar;
- *   sigc::signal<void> some_signal;
- *   void foo(bar&);
- *   some_signal.connect(sigc::bind(&foo,sigc::ref(some_bar)));
- *     // disconnected automatically if some_bar goes out of scope
- *   @endcode
+ * @code
+ * struct bar : public sigc::trackable {} some_bar;
+ * sigc::signal<void> some_signal;
+ * void foo(bar&);
+ * some_signal.connect(sigc::bind(&foo,sigc::ref(some_bar)));
+ *   // disconnected automatically if some_bar goes out of scope
+ * @endcode
  *
  * For a more powerful version of this functionality see the lambda
  * library adaptor sigc::group() which can bind, hide and reorder
- * arguments arbitrarily.  Although sigc::group() is more flexible,
- * sigc::bind() provides a means of binding parameters when then total
+ * arguments arbitrarily. Although sigc::group() is more flexible,
+ * sigc::bind() provides a means of binding parameters when the total
  * number of parameters called is variable.
  *
  * @ingroup adaptors

@@ -22,7 +22,7 @@ define([SIGNAL_EMIT_N],[dnl
 /** Abstracts signal emission.
  * This template implements the emit() function of signal$1.
  * Template specializations are available to optimize signal
- * emission when no accumulator is used, i.e. the template
+ * emission when no accumulator is used, for example when the template
  * argument @e T_accumulator is @p nil.
  */
 template <LIST(class T_return, LOOP(class T_arg%1, $1), class T_accumulator)>
@@ -277,7 +277,7 @@ define([SIGNAL_N],[dnl
  * signal$1 can be used to connect() slots that are invoked
  * during subsequent calls to emit(). Any functor or slot
  * can be passed into connect(). It is converted into a slot
- * implicitely.
+ * implicitly.
  *
  * If you want to connect one signal to another, use make_slot()
  * to retrieve a functor that emits the signal when invoked.
@@ -285,7 +285,7 @@ define([SIGNAL_N],[dnl
  * Be careful if you directly pass one signal into the connect()
  * method of another: a shallow copy of the signal is made and
  * the signal's slots are not disconnected until both the signal
- * and its clone are destroyed which is probably not what you want!
+ * and its clone are destroyed, which is probably not what you want!
  *
  * An STL-style list interface for the signal's list of slots
  * can be retrieved with slots(). This interface supports
@@ -295,7 +295,9 @@ define([SIGNAL_N],[dnl
  * - @e T_return The desired return type for the emit() function (may be overridden by the accumulator).dnl
 FOR(1,$1,[
  * - @e T_arg%1 Argument type used in the definition of emit().])
- * - @e T_accumulator The accumulator type used for emission. The default @p nil means that no accumulator should be used, i.e. signal emission returns the return value of the last slot invoked.
+ * - @e T_accumulator The accumulator type used for emission. The default
+ * @p nil means that no accumulator should be used, for example if signal
+ * emission returns the return value of the last slot invoked.
  *
  * You should use the more convenient unnumbered sigc::signal template.
  *
@@ -396,7 +398,7 @@ ifelse($1, $2,[dnl
  * Be careful if you directly pass one signal into the connect()
  * method of another: a shallow copy of the signal is made and
  * the signal's slots are not disconnected until both the signal
- * and its clone are destroyed which is probably not what you want!
+ * and its clone are destroyed, which is probably not what you want!
  *
  * An STL-style list interface for the signal's list of slots
  * can be retrieved with slots(). This interface supports
@@ -411,12 +413,12 @@ FOR(1,$1,[
  * To specify an accumulator type the nested class signal::accumulated can be used.
  *
  * @par Example:
- *   @code
- *   void foo(int) {}
- *   sigc::signal<void, long> sig;
- *   sig.connect(sigc::ptr_fun(&foo));
- *   sig.emit(19);
- *   @endcode
+ * @code
+ * void foo(int) {}
+ * sigc::signal<void, long> sig;
+ * sig.connect(sigc::ptr_fun(&foo));
+ * sig.emit(19);
+ * @endcode
  *
  * @ingroup signal
  */
@@ -449,38 +451,38 @@ ifelse($1, $2,[dnl
    * The accumulator must define its return value as @p result_type.
    * 
    * @par Example 1:
-   *   This accumulator calculates the arithmetic mean value:
-   *   @code
-   *   struct arithmetic_mean_accumulator
+   * This accumulator calculates the arithmetic mean value:
+   * @code
+   * struct arithmetic_mean_accumulator
+   * {
+   *   typedef double result_type;
+   *   template<typename T_iterator>
+   *   result_type operator()(T_iterator first, T_iterator last) const
    *   {
-   *     typedef double result_type;
-   *     template<typename T_iterator>
-   *     result_type operator()(T_iterator first, T_iterator last) const
-   *     {
-   *       result_type value_ = 0;
-   *       int n_ = 0;
-   *       for (; first != last; ++first, ++n_)
-   *         value_ += *first;
-   *       return value_ / n_;
-   *     }
-   *   };
-   *   @endcode
+   *     result_type value_ = 0;
+   *     int n_ = 0;
+   *     for (; first != last; ++first, ++n_)
+   *       value_ += *first;
+   *     return value_ / n_;
+   *   }
+   * };
+   * @endcode
    *
    * @par Example 2:
-   *   This accumulator stops signal emission when a slot returns zero:
-   *   @code
-   *   struct interruptable_accumulator
+   * This accumulator stops signal emission when a slot returns zero:
+   * @code
+   * struct interruptable_accumulator
+   * {
+   *   typedef bool result_type;
+   *   template<typename T_iterator>
+   *   result_type operator()(T_iterator first, T_iterator last) const
    *   {
-   *     typedef bool result_type;
-   *     template<typename T_iterator>
-   *     result_type operator()(T_iterator first, T_iterator last) const
-   *     {
-   *       for (; first != last; ++first, ++n_)
-   *         if (!*first) return false;
-   *       return true;
-   *     }
-   *   };
-   *   @endcode
+   *     for (; first != last; ++first, ++n_)
+   *       if (!*first) return false;
+   *     return true;
+   *   }
+   * };
+   * @endcode
    *
    * @ingroup signal
 ],[

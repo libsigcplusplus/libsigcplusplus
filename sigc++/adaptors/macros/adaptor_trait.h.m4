@@ -113,7 +113,7 @@ template <class T_functor> struct adapts;
  * All adaptor tyes in libsigc++ are unnumbered and have
  * a <tt>template operator()</tt> member of every argument count
  * they support. These functions in turn invoke a stored adaptor's
- * <tt>template operator()</tt> processing the arguments and return
+ * <tt>template operator()</tt>, processing the arguments and return
  * value in a characteristic manner. Explicit function template
  * instantiation is used to pass type hints thus saving copy costs.
  *
@@ -239,32 +239,32 @@ struct adaptor_trait<T_functor, false>
  * inherits from sigc::adaptor_base.
  *
  * @par Example of a simple adaptor:
- *   @code
- *   template <T_functor>
- *   struct my_adpator : public sigc::adapts<T_functor>
- *   {
- *     template <class T_arg1=void, class T_arg2=void>
- *     struct deduce_result_type
- *     { typedef typename sigc::deduce_result_type<T_functor, T_arg1, T_arg2>::type type; };
- *     typedef typename sigc::functor_trait<T_functor>::result_type result_type;
+ * @code
+ * template <T_functor>
+ * struct my_adpator : public sigc::adapts<T_functor>
+ * {
+ *   template <class T_arg1=void, class T_arg2=void>
+ *   struct deduce_result_type
+ *   { typedef typename sigc::deduce_result_type<T_functor, T_arg1, T_arg2>::type type; };
+ *   typedef typename sigc::functor_trait<T_functor>::result_type result_type;
  *
- *     result_type
- *     operator()() const;
+ *   result_type
+ *   operator()() const;
  *
- *     template <class T_arg1>
- *     typename deduce_result_type<T_arg1>::type
- *     operator()(T_arg1 _A_arg1) const;
+ *   template <class T_arg1>
+ *   typename deduce_result_type<T_arg1>::type
+ *   operator()(T_arg1 _A_arg1) const;
  *
- *     template <class T_arg1, class T_arg2>
- *     typename deduce_result_type<T_arg1, T_arg2>::type
- *     operator()(T_arg1 _A_arg1, class T_arg2) const;
+ *   template <class T_arg1, class T_arg2>
+ *   typename deduce_result_type<T_arg1, T_arg2>::type
+ *   operator()(T_arg1 _A_arg1, class T_arg2) const;
  *
- *     explicit adaptor_functor(const T_functor& _A_functor) // Constructs a my_functor object that wraps the passed functor.
- *       : sigc::adapts<T_functor>(_A_functor) {}
+ *   explicit adaptor_functor(const T_functor& _A_functor) // Constructs a my_functor object that wraps the passed functor.
+ *     : sigc::adapts<T_functor>(_A_functor) {}
  *
- *     mutable T_functor functor_; // Functor that is invoked from operator()().
- *   };
- *   @endcode
+ *   mutable T_functor functor_; // Functor that is invoked from operator()().
+ * };
+ * @endcode
  *
  * @ingroup adaptors
  */

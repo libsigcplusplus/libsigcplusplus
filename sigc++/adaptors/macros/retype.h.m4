@@ -90,35 +90,35 @@ namespace sigc {
  *
  * Use this adaptor for inline conversion between numeric or other simple types.
  * @par Example:
- *   @code
- *   void foo(int);
- *   sigc::retype(sigc::ptr_fun(&foo))(5.7F); // calls foo(5)
- *   @endcode
+ * @code
+ * void foo(int);
+ * sigc::retype(sigc::ptr_fun(&foo))(5.7F); // calls foo(5)
+ * @endcode
  *
- * The functor sigc::retype() returns can be passed into
- * sigc::signal::connect() directly.
+ * The functor that sigc::retype() returns can be passed directly into
+ * sigc::signal::connect().
  *
  * @par Example:
- *   @code
- *   sigc::signal<void,float> some_signal;
- *   void foo(int);
- *   some_signal.connect(sigc::retype(sigc::ptr_fun(&foo)));
- *   @endcode
+ * @code
+ * sigc::signal<void,float> some_signal;
+ * void foo(int);
+ * some_signal.connect(sigc::retype(sigc::ptr_fun(&foo)));
+ * @endcode
  *
  * This adaptor builds an exception in that it only works on sig::pointer_functor,
  * sigc::mem_functor and sigc::slot because it needs sophisticated information about
  * the parameter types that cannot be deduced from arbitrary functor types.
  *
  * sigc::retype_return() alters the return type of an arbitrary functor.
- * Like in sigc::retype() a C-style cast is preformed. Usage sigc::retype_return() is
+ * Like in sigc::retype() a C-style cast is performed. Usage sigc::retype_return() is
  * not restricted to libsigc++ functor types but you need to
  * specify the new return type as a template parameter.
  *
  * @par Example:
- *   @code
- *   float foo();
- *   std::cout << sigc::retype_return<int>(&foo)(); // converts foo's return value to an integer
- *   @endcode
+ * @code
+ * float foo();
+ * std::cout << sigc::retype_return<int>(&foo)(); // converts foo's return value to an integer
+ * @endcode
  *
  * @ingroup adaptors
  */

@@ -193,49 +193,49 @@ namespace sigc {
 /** @defgroup mem_fun mem_fun()
  * mem_fun() is used to convert a pointer to a method to a functor.
  *
- * Optionally a reference or pointer to an object can be bound to the functor.
- * Note that only if the object type inherits from sigc::trackable
- * the slot is cleared automatically when the object goes out of scope!
+ * Optionally, a reference or pointer to an object can be bound to the functor.
+ * Note that only if the object type inherits from sigc::trackable is
+ * the slot automatically cleared when the object goes out of scope!
  *
  * If the member function pointer is to an overloaded type, you must specify
  * the types using template arguments starting with the first argument.
  * It is not necessary to supply the return type.
  *
  * @par Example:
- *   @code
- *   struct foo : public sigc::trackable
- *   {
- *     void bar(int) {}
- *   };
- *   foo my_foo;
- *   sigc::slot<void, int> sl = sigc::mem_fun(my_foo, &foo::bar);
- *   @endcode
+ * @code
+ * struct foo : public sigc::trackable
+ * {
+ *   void bar(int) {}
+ * };
+ * foo my_foo;
+ * sigc::slot<void, int> sl = sigc::mem_fun(my_foo, &foo::bar);
+ * @endcode
  *
  * For const methods mem_fun() takes a const reference or pointer to an object.
  *
  * @par Example:
- *   @code
- *   struct foo : public sigc::trackable
- *   {
- *     void bar(int) const {}
- *   };
- *   const foo my_foo;
- *   sigc::slot<void, int> sl = sigc::mem_fun(my_foo, &foo::bar);
- *   @endcode
+ * @code
+ * struct foo : public sigc::trackable
+ * {
+ *   void bar(int) const {}
+ * };
+ * const foo my_foo;
+ * sigc::slot<void, int> sl = sigc::mem_fun(my_foo, &foo::bar);
+ * @endcode
  *
- * Use mem_fun#() if there is an abiguity as to the number of arguments.
+ * Use mem_fun#() if there is an ambiguity as to the number of arguments.
  *
  * @par Example:
- *   @code
- *   struct foo : public sigc::trackable
- *   {
- *     void bar(int) {}
- *     void bar(float) {}
- *     void bar(int, int) {}
- *   };
- *   foo my_foo;
- *   sigc::slot<void, int> sl = sigc::mem_fun1<int>(my_foo, &foo::bar);
- *   @endcode
+ * @code
+ * struct foo : public sigc::trackable
+ * {
+ *   void bar(int) {}
+ *   void bar(float) {}
+ *   void bar(int, int) {}
+ * };
+ * foo my_foo;
+ * sigc::slot<void, int> sl = sigc::mem_fun1<int>(my_foo, &foo::bar);
+ * @endcode
  *
  * @ingroup sigcfunctors
  */

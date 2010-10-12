@@ -91,7 +91,7 @@ struct nil;
  * Functors are copyable types that define operator()().
  *
  * Types that define operator()() overloads with different return types are referred to
- * as multi-type functors. Multi-type functors are only partly supported in libsigc++.
+ * as multi-type functors. Multi-type functors are only partially supported in libsigc++.
  *
  * Closures are functors that store all information needed to invoke a callback from operator()().
  *
@@ -103,7 +103,7 @@ struct nil;
  *
  * The basic functor types libsigc++ provides are created with ptr_fun() and mem_fun()
  * and can be converted into slots implicitly.
- * The set of adaptors that ships with libsigc++ is documented in the equally named module. 
+ * The set of adaptors that ships with libsigc++ is documented in the @ref adaptors module.
  */
 
 /** A hint to the compiler.

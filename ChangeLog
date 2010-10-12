@@ -1,3 +1,11 @@
+2010-10-12  David King  <davidk@openismus.com>
+
+	Documentation changes
+
+	* *.h.m4: Minor changes to documentation to fix up code example
+	formatting, by removing the additional two spaces of indentation.
+	Additionally, fix some spelling and grammar mistakes and typos.
+
 2010-09-27  Armin Burgmeier  <armin@arbur.net>
 
 	* MSVC_Net2005/libsigc++2.sln:

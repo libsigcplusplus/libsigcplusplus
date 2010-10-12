@@ -57,7 +57,7 @@ __FIREWALL__
 
 namespace sigc {
 
-/** Adaptor that perform a C-style cast on the return value of a functor.
+/** Adaptor that performs a C-style cast on the return value of a functor.
  * Use the convenience function sigc::retype_return() to create an instance of retype_return_functor.
  *
  * The following template arguments are used:
@@ -92,13 +92,13 @@ T_return retype_return_functor<T_return, T_functor>::operator()()
   { return T_return(this->functor_()); }
 
 
-/** Adaptor that perform a C-style cast on the return value of a functor.
+/** Adaptor that performs a C-style cast on the return value of a functor.
  * This template specialization is for a void return. It drops the return value of the functor it invokes.
  * Use the convenience function sigc::hide_return() to create an instance of sigc::retype_return_functor<void>.
  *
  * @ingroup retype
  */
-/* The void specialization needed because of explicit cast to T_return.
+/* The void specialization is needed because of explicit cast to T_return.
  */
 template <class T_functor>
 struct retype_return_functor<void, T_functor> : public adapts<T_functor>
@@ -141,7 +141,7 @@ void visit_each(const T_action& _A_action,
  * The template argument @e T_return specifies the target type of the cast.
  *
  * @param _A_functor Functor that should be wrapped.
- * @return Adaptor that executes @e _A_functor performing a C-style casts on the return value.
+ * @return Adaptor that executes @e _A_functor performing a C-style cast on the return value.
  *
  * @ingroup retype
  */

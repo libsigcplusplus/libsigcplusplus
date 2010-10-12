@@ -75,7 +75,7 @@ FOR(1, $1,[
   inline slot$1() {}
 
   /** Constructs a slot from an arbitrary functor.
-   * @param _A_func The desirer functor the new slot should be assigned to.
+   * @param _A_func The desired functor the new slot should be assigned to.
    */
   template <class T_functor>
   slot$1(const T_functor& _A_func)
@@ -109,19 +109,19 @@ ifelse($1, $2,[dnl
 FOR(1,$1,[
  * - @e T_arg%1 Argument type used in the definition of operator()(). The default @p nil means no argument.])
  *
- * To use simply assign the slot to the desired functor. If the functor
+ * To use, simply assign the slot to the desired functor. If the functor
  * is not compatible with the parameter list defined with the template
- * arguments compiler errors are triggered. When called the slot
+ * arguments, compiler errors are triggered. When called, the slot
  * will invoke the functor with minimal copies.
- * block() and unblock() can be used to block the functor's invocation
- * from operator()() temporarily.
+ * block() and unblock() can be used to temporarily block the functor's
+ * invocation from operator()().
  *
  * @par Example:
- *   @code
- *   void foo(int) {}
- *   sigc::slot<void, long> s = sigc::ptr_fun(&foo);
- *   s(19);
- *   @endcode
+ * @code
+ * void foo(int) {}
+ * sigc::slot<void, long> s = sigc::ptr_fun(&foo);
+ * s(19);
+ * @endcode
  *
  * @ingroup slot
  */
@@ -145,7 +145,7 @@ public:
   inline slot() {}
 
   /** Constructs a slot from an arbitrary functor.
-   * @param _A_func The desirer functor the new slot should be assigned to.
+   * @param _A_func The desired functor the new slot should be assigned to.
    */
   template <class T_functor>
   slot(const T_functor& _A_func)

@@ -57,26 +57,26 @@ divert(0)dnl
 namespace sigc {
 
 /** @defgroup lambdas Lambdas
- * libsigc++ ships with basic lambda functionality and the sigc::group adaptor that uses lambdas to transform a functor's parameter list.
+ * libsigc++ ships with basic lambda functionality and the sigc::group adaptor, which uses lambdas to transform a functor's parameter list.
  *
  * The lambda selectors sigc::_1, sigc::_2, ..., sigc::_9 are used to select the
  * first, second, ..., nineth argument from a list.
  *
  * @par Examples:
- *   @code
- *   std::cout << sigc::_1(10,20,30); // returns 10
- *   std::cout << sigc::_2(10,20,30); // returns 20
- *   ...
- *   @endcode
+ * @code
+ * std::cout << sigc::_1(10,20,30); // returns 10
+ * std::cout << sigc::_2(10,20,30); // returns 20
+ * ...
+ * @endcode
  *
- * Operators are defined so that lambda selectors can be used e.g. as placeholders in
- * arithmetic expressions.
+ * Operators are defined so that, for example, lambda selectors can be used as
+ * placeholders in arithmetic expressions.
  *
  * @par Examples:
- *   @code
- *   std::cout << (sigc::_1 + 5)(3); // returns (3 + 5)
- *   std::cout << (sigc::_1 * sigc::_2)(7,10); // returns (7 * 10)
- *   @endcode
+ * @code
+ * std::cout << (sigc::_1 + 5)(3); // returns (3 + 5)
+ * std::cout << (sigc::_1 * sigc::_2)(7,10); // returns (7 * 10)
+ * @endcode
  */
 
 /** A hint to the compiler.
@@ -257,21 +257,21 @@ dnl { return lambda<typename internal::convert_array<const T_type>::type>(v); }
  * sigc::var creates a 0-ary functor, returning the value of a referenced variable. 
  *
  * @par Example:
- *   @code
- *   int main(int argc, char* argv[])
- *   {
- *     int data;
- *     sigc::signal<int> readValue;
+ * @code
+ * int main(int argc, char* argv[])
+ * {
+ *   int data;
+ *   sigc::signal<int> readValue;
  *
- *     readValue.connect(sigc::var(data));
+ *   readValue.connect(sigc::var(data));
  *
- *     data = 3;
- *     std::cout << readValue() << std::endl; //Prints 3.
+ *   data = 3;
+ *   std::cout << readValue() << std::endl; //Prints 3.
  *
- *    data = 5;
- *    std::cout << readValue() << std::endl; //Prints 5.
- *   }
- *   @endcode
+ *  data = 5;
+ *  std::cout << readValue() << std::endl; //Prints 5.
+ * }
+ * @endcode
  */
 template <class T_type>
 lambda<T_type&> var(T_type& v)
@@ -285,7 +285,7 @@ lambda<const T_type&> var(const T_type& v)
 
 
 /** Deduces the type of the object stored in an object of the passed lambda type.
- * If the type passed as template argument is no lambda type,
+ * If the type passed as template argument is not of lambda type,
  * type is defined to unwrap_reference<T_type>::type.
  */
 template <class T_type>
@@ -298,7 +298,7 @@ struct unwrap_lambda_type<lambda<T_type> >
 
 
 /** Gets the object stored inside a lambda object.
- * Returns the object passed as argument if it is not of type lambda.
+ * Returns the object passed as argument, if it is not of type lambda.
  */
 template <class T_type>
 T_type& unwrap_lambda_value(T_type& a)

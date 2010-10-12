@@ -85,32 +85,32 @@ namespace sigc {
  * It is not necessary to supply the return type.
  *
  * @par Example:
- *   @code
- *   void foo(int) {}
- *   sigc::slot<void, int> sl = sigc::ptr_fun(&foo);
- *   @endcode
+ * @code
+ * void foo(int) {}
+ * sigc::slot<void, int> sl = sigc::ptr_fun(&foo);
+ * @endcode
  *
- * Use ptr_fun#() if there is an abiguity as to the number of arguments.
+ * Use ptr_fun#() if there is an ambiguity as to the number of arguments.
  *
  * @par Example:
- *   @code
- *   void foo(int) {}  // choose this one
- *   void foo(float) {}
- *   void foo(int, int) {}
- *   sigc::slot<void, long> sl = sigc::ptr_fun1<int>(&foo);
- *   @endcode
+ * @code
+ * void foo(int) {}  // choose this one
+ * void foo(float) {}
+ * void foo(int, int) {}
+ * sigc::slot<void, long> sl = sigc::ptr_fun1<int>(&foo);
+ * @endcode
  *
  * ptr_fun() can also be used to convert a pointer to a static member
  * function to a functor, like so:
  *
  * @par Example:
- *   @code
- *   struct foo
- *   {
- *     static void bar(int) {}
- *   };
- *   sigc::slot<void, int> sl = sigc::ptr_fun(&foo::bar);
- *   @endcode
+ * @code
+ * struct foo
+ * {
+ *   static void bar(int) {}
+ * };
+ * sigc::slot<void, int> sl = sigc::ptr_fun(&foo::bar);
+ * @endcode
  *
  * @ingroup sigcfunctors
  */

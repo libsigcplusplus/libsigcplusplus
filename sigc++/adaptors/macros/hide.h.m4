@@ -47,7 +47,7 @@ ifelse($2,1,[dnl
   #endif
 
 ],$1,0,[dnl
-  /** Invokes the wrapped functor ignoring the last argument.dnl
+  /** Invokes the wrapped functor, ignoring the last argument.dnl
 FOR(1, eval($2-1),[
    * @param _A_arg%1 Argument to be passed on to the functor.])
    * @param _A_arg$2 Argument to be ignored.
@@ -68,7 +68,7 @@ FOR(1, eval($2-1),[
   #endif
 
 ],[dnl
-  /** Invokes the wrapped functor ignoring the $1[]th argument.dnl
+  /** Invokes the wrapped functor, ignoring the $1[]th argument.dnl
 FOR(1, eval($1-1),[
    * @param _A_arg%1 Argument to be passed on to the functor.])
    * @param _A_arg$1 Argument to be ignored.dnl
@@ -137,40 +137,40 @@ namespace sigc {
  * The type of the parameter can optionally be specified if not deduced.
  *
  * @par Examples:
- *   @code
- *   void foo(int, int);
- *   // single argument hiding ...
- *   sigc::hide(&foo)(1,2,3);     // adds a dummy parameter at the back and calls foo(1,2)
- *   sigc::hide<-1>(&foo)(1,2,3); // same as sigc::hide(&foo)(1,2,3) (calls foo(1,2))
- *   sigc::hide<0>(&foo)(1,2,3);  // adds a dummy parameter at the beginning and calls foo(2,3)
- *   sigc::hide<1>(&foo)(1,2,3);  // adds a dummy parameter in the middle and calls foo(1,3)
- *   sigc::hide<2>(&foo)(1,2,3);  // adds a dummy parameter at the back and calls foo(1,2)
- *   @endcode
+ * @code
+ * void foo(int, int);
+ * // single argument hiding ...
+ * sigc::hide(&foo)(1,2,3);     // adds a dummy parameter at the back and calls foo(1,2)
+ * sigc::hide<-1>(&foo)(1,2,3); // same as sigc::hide(&foo)(1,2,3) (calls foo(1,2))
+ * sigc::hide<0>(&foo)(1,2,3);  // adds a dummy parameter at the beginning and calls foo(2,3)
+ * sigc::hide<1>(&foo)(1,2,3);  // adds a dummy parameter in the middle and calls foo(1,3)
+ * sigc::hide<2>(&foo)(1,2,3);  // adds a dummy parameter at the back and calls foo(1,2)
+ * @endcode
  *
- * The functor sigc::hide() returns can be passed into
- * sigc::signal::connect() directly.
+ * The functor sigc::hide() returns can be directly passed into
+ * sigc::signal::connect().
  *
  * @par Example:
- *   @code
- *   sigc::signal<void,int> some_signal;
- *   void foo();
- *   some_signal.connect(sigc::hide(&foo));
- *   @endcode
+ * @code
+ * sigc::signal<void,int> some_signal;
+ * void foo();
+ * some_signal.connect(sigc::hide(&foo));
+ * @endcode
  *
  * sigc::hide() can be nested in order to discard multiple arguments.
  * @par Example:
- *   @code
- *   // multiple argument hiding ...
- *   sigc::hide(sigc::hide(&foo))(1,2,3,4); // adds two dummy parameters at the back and calls foo(1,2)
- *   @endcode
+ * @code
+ * // multiple argument hiding ...
+ * sigc::hide(sigc::hide(&foo))(1,2,3,4); // adds two dummy parameters at the back and calls foo(1,2)
+ * @endcode
 
  * sigc::hide_return() alters an arbitrary functor by
  * dropping its return value, thus converting it to a void functor.
  *
  * For a more powerful version of this functionality see the lambda
  * library adaptor sigc::group() which can bind, hide and reorder
- * arguments arbitrarily.  Although sigc::group() is more flexible,
- * sigc::hide() provides a means of hiding parameters when then total
+ * arguments arbitrarily. Although sigc::group() is more flexible,
+ * sigc::hide() provides a means of hiding parameters when the total
  * number of parameters called is variable.
  *
  * @ingroup adaptors
@@ -211,7 +211,7 @@ void visit_each(const T_action& _A_action,
  * position of the dummy parameter in the returned functor (@p -1 stands for the last parameter).
  *
  * @param _A_func Functor that should be wrapped.
- * @return Adaptor that executes @e _A_func ignoring the value of the dummy parameter.
+ * @return Adaptor that executes @e _A_func, ignoring the value of the dummy parameter.
  *
  * @ingroup hide
  */
@@ -224,7 +224,7 @@ hide(const T_functor& _A_func)
  * This overload adds a dummy parameter at the back of the functor's parameter list.
  *
  * @param _A_func Functor that should be wrapped.
- * @return Adaptor that executes @e _A_func ignoring the value of the last parameter.
+ * @return Adaptor that executes @e _A_func, ignoring the value of the last parameter.
  *
  * @ingroup hide
  */

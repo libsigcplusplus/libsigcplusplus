@@ -47,30 +47,30 @@ namespace sigc {
 
 /** @defgroup compose compose()
  * sigc::compose() combines two or three arbitrary functors.
- * On invokation parameters are passed on to one or two getter functor(s).
+ * On invokation, parameters are passed on to one or two getter functor(s).
  * The return value(s) are then passed on to the setter function.
  *
  * @par Examples:
- *   @code
- *   float square_root(float a)  { return sqrtf(a); }
- *   float sum(float a, float b) { return a+b; }
- *   std::cout << sigc::compose(&square_root, &sum)(9, 16); // calls square_root(sum(3,6))
- *   std::cout << sigc::compose(&sum, &square_root, &square_root)(9); // calls sum(square_root(9), square_root(9))
- *   @endcode
+ * @code
+ * float square_root(float a)  { return sqrtf(a); }
+ * float sum(float a, float b) { return a+b; }
+ * std::cout << sigc::compose(&square_root, &sum)(9, 16); // calls square_root(sum(3,6))
+ * std::cout << sigc::compose(&sum, &square_root, &square_root)(9); // calls sum(square_root(9), square_root(9))
+ * @endcode
  *
- * The functor sigc::compose() returns can be passed into
- * sigc::signal::connect() directly.
+ * The functor sigc::compose() returns can be passed directly into
+ * sigc::signal::connect().
  *
  * @par Example:
- *   @code
- *   sigc::signal<float,float,float> some_signal;
- *   some_signal.connect(sigc::compose(&square_root, &sum));
- *   @endcode
+ * @code
+ * sigc::signal<float,float,float> some_signal;
+ * some_signal.connect(sigc::compose(&square_root, &sum));
+ * @endcode
  *
  * For a more powerful version of this functionality see the lambda
  * library adaptor sigc::group() which can bind, hide and reorder
- * arguments arbitrarily.  Although sigc::group() is more flexible,
- * sigc::bind() provides a means of binding parameters when then total
+ * arguments arbitrarily. Although sigc::group() is more flexible,
+ * sigc::bind() provides a means of binding parameters when the total
  * number of parameters called is variable.
  *
  * @ingroup adaptors

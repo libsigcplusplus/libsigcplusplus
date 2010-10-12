@@ -59,33 +59,33 @@ namespace sigc {
  * Note that the catcher is expected to return the same type
  * as the wrapped functor so that normal flow can continue.
  *
- * Catchers can be cascaded to catch multiple types because uncaught
+ * Catchers can be cascaded to catch multiple types, because uncaught
  * rethrown exceptions proceed to the next catcher adaptor.
  *
  * @par Examples:
- *   @code
- *   struct my_catch
+ * @code
+ * struct my_catch
+ * {
+ *   int operator()()
  *   {
- *     int operator()()
- *     {
- *       try { throw; }
- *       catch (std::range_error e) // catch what types we know
- *         { std::cerr << "caught " << e.what() << std::endl; }
- *       return 1;
- *     }
+ *     try { throw; }
+ *     catch (std::range_error e) // catch what types we know
+ *       { std::cerr << "caught " << e.what() << std::endl; }
+ *     return 1;
  *   }
- *   int foo(); // throws std::range_error
- *   sigc::exception_catch(&foo, my_catch())();
- *   @endcode
+ * }
+ * int foo(); // throws std::range_error
+ * sigc::exception_catch(&foo, my_catch())();
+ * @endcode
  *
- * The functor sigc::execption_catch() returns can be passed into
- * sigc::signal::connect() directly.
+ * The functor sigc::exception_catch() returns can be directly passed into
+ * sigc::signal::connect().
  *
  * @par Example:
- *   @code
- *   sigc::signal<int> some_signal;
- *   some_signal.connect(sigc::exception_catch(&foo, my_catch));
- *   @endcode
+ * @code
+ * sigc::signal<int> some_signal;
+ * some_signal.connect(sigc::exception_catch(&foo, my_catch));
+ * @endcode
  *
  * @ingroup adaptors
  */
