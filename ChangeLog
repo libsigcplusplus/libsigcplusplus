@@ -1,3 +1,9 @@
+2011-02-04  Kalev Lember  <kalev@smartlink.ee>
+
+	Fix the build with GCC 4.6
+
+	* sigc++/signal_base.h: Include <cstddef> for size_t.
+
 2010-10-12  David King  <davidk@openismus.com>
 
 	Documentation changes

@@ -21,6 +21,7 @@
 #ifndef _SIGC_SIGNAL_BASE_H_
 #define _SIGC_SIGNAL_BASE_H_
 
+#include <cstddef>
 #include <list>
 #include <sigc++config.h>
 #include <sigc++/type_traits.h>
