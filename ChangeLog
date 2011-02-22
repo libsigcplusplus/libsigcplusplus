@@ -1,3 +1,11 @@
+2011-02-22  Kjell Ahlstedt  <kjell.ahlstedt@bredband.net>
+
+	trackable: Avoid calling the same callback function twice
+
+	* sigc++/trackable.cc: Invalidate a callback function entry in
+	trackable_callback_list::remove_callback() when the list is being cleared.
+	Bug 589202.
+
 2011-02-04  Kalev Lember  <kalev@smartlink.ee>
 
 	Fix the build with GCC 4.6
