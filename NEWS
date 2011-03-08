@@ -1,3 +1,15 @@
+2.2.9:
+
+* trackable: Avoid calling the same callback function twice, fixing some
+	memory corruption.
+	(Kjell Ahlstedt) Bug #589202
+* Minor documentation corrections.
+  (David King)
+* Fix the build with GCC 4.6
+	(Kalev Lember)
+* Windows build fixes for MSVC++ .Net 2005 and 2010
+  (Armin Burgmeier)
+
 2.2.8:
 
 Nothing interesting. Just a small change for library.gnome.org.

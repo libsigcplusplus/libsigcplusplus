@@ -1,3 +1,5 @@
+2.2.9:
+
 2011-02-22  Kjell Ahlstedt  <kjell.ahlstedt@bredband.net>
 
 	trackable: Avoid calling the same callback function twice
