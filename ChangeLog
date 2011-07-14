@@ -1,3 +1,11 @@
+2011-07-14  Kjell Ahlstedt  <kjell.ahlstedt@bredband.net>
+
+	slot_rep: Avoid access to deleted object in notify().
+
+	* sigc++/functors/slot_base.cc: slot_rep::notify() calls disconnect() before
+	destroy(). If disconnect() has deleted the slot_rep object, destroy() is not
+	called. Bug #564005.
+
 2.2.9:
 
 2011-02-22  Kjell Ahlstedt  <kjell.ahlstedt@bredband.net>

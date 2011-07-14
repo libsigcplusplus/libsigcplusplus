@@ -56,12 +56,35 @@ void slot_rep::disconnect()
 //static
 void* slot_rep::notify(void* data)
 {
+  struct destroy_notify_struct
+  {
+    destroy_notify_struct() : deleted_(false) { }
+
+    static void* notify(void* data)
+    {
+      destroy_notify_struct* self_ = reinterpret_cast<destroy_notify_struct*>(data);
+      self_->deleted_ = true;
+      return 0;
+    }
+
+    bool deleted_;
+  };
+
   slot_rep* self_ = reinterpret_cast<slot_rep*>(data);
 
   self_->call_ = 0; // Invalidate the slot.
-  self_->destroy(); // Detach the stored functor from the other referred trackables and destroy it.
+  
+  // Make sure we are notified if disconnect() deletes self_, which is trackable.
+  destroy_notify_struct notifier;
+  self_->add_destroy_notify_callback(&notifier, destroy_notify_struct::notify);
   self_->disconnect(); // Disconnect the slot (might lead to deletion of self_!).
-
+  // If self_ has been deleted, the destructor has called destroy().
+  if (!notifier.deleted_)
+  {
+    self_->remove_destroy_notify_callback(&notifier);
+    self_->destroy(); // Detach the stored functor from the other referred trackables and destroy it.
+                      // destroy() might lead to deletion of self_. Bug #564005.
+  }
   return 0;
 }
 
