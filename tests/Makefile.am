@@ -24,6 +24,7 @@ check_PROGRAMS =			\
 	test_accumulated		\
 	test_bind			\
 	test_bind_ref			\
+	test_bind_refptr \
 	test_bind_return		\
 	test_compose			\
 	test_copy_invalid_slot		\
@@ -51,6 +52,7 @@ test_accum_iter_SOURCES			= test_accum_iter.cc
 test_accumulated_SOURCES = test_accumulated.cc
 test_bind_SOURCES			= test_bind.cc
 test_bind_ref_SOURCES			= test_bind_ref.cc
+test_bind_refptr_SOURCES			= test_bind_refptr.cc
 test_bind_return_SOURCES		= test_bind_return.cc
 test_compose_SOURCES			= test_compose.cc
 test_copy_invalid_slot_SOURCES		= test_copy_invalid_slot.cc
