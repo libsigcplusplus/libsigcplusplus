@@ -240,8 +240,8 @@ struct adaptor_trait<T_functor, false>
  *
  * @par Example of a simple adaptor:
  * @code
- * template <T_functor>
- * struct my_adpator : public sigc::adapts<T_functor>
+ * template <class T_functor>
+ * struct my_adaptor : public sigc::adapts<T_functor>
  * {
  *   template <class T_arg1=void, class T_arg2=void>
  *   struct deduce_result_type
@@ -259,12 +259,28 @@ struct adaptor_trait<T_functor, false>
  *   typename deduce_result_type<T_arg1, T_arg2>::type
  *   operator()(T_arg1 _A_arg1, class T_arg2) const;
  *
- *   explicit adaptor_functor(const T_functor& _A_functor) // Constructs a my_functor object that wraps the passed functor.
+ *   // Constructs a my_adaptor object that wraps the passed functor.
+ *   // Initializes adapts<T_functor>::functor_, which is invoked from operator()().
+ *   explicit my_adaptor(const T_functor& _A_functor)
  *     : sigc::adapts<T_functor>(_A_functor) {}
- *
- *   mutable T_functor functor_; // Functor that is invoked from operator()().
  * };
+ *
+ * template <class T_action, class T_functor>
+ * void visit_each(const T_action& _A_action,
+ *                 const my_adaptor<T_functor>& _A_target)
+ * {
+ *   visit_each(_A_action, _A_target.functor_);
+ * }
  * @endcode
+ *
+ * If you implement your own adaptor, you must also provide your specialization
+ * of visit_each<>() that will forward the call to the functor(s) your
+ * adapter is wrapping. Otherwise, pointers stored within the functor won't be
+ * invalidated when a sigc::trackable object is destroyed and you can end up
+ * executing callbacks on destroyed objects.
+ *
+ * Your adaptor and your specialization of visit_each<>() must be in the same
+ * namespace.
  *
  * @ingroup adaptors
  */
