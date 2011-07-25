@@ -1,3 +1,11 @@
+2.2.10:
+
+* slot_rep: Avoid access to deleted object in notify(),
+	and test case.
+	(Kjell Ahlstedt ) Bug #564005 (Alexander Shaduri)
+* Mention visit_each() in the documentation of sigc::adapts.
+  (Thomas Rydzynski)
+	
 2.2.9:
 
 * trackable: Avoid calling the same callback function twice, fixing some

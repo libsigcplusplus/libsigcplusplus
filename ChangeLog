@@ -1,3 +1,5 @@
+2.2.10:
+
 2011-07-21  Thomas Rydzynski  <qsorix@rydznet.pl>
 
 	Mention visit_each() in the documentation of sigc::adapts.
@@ -5,7 +7,7 @@
 	* sigc++/adaptors/macros/adaptor_trait.h.m4: Mention that a user-supplied
 	adaptor must be accompanied by a specialization of template function
 	visit_each(). Correct some minor errors in the example of a user-supplied
-	adaptor. Bug #486373.
+	adaptor. Bug #48637.
 
 2011-07-19  Kjell Ahlstedt  <kjell.ahlstedt@bredband.net>
 
@@ -14,7 +16,7 @@
 	* tests/Makefile.am:
 	* tests/test_bind_refptr.cc: A version of this test is also in glibmm.
 	Note that this includes a copy/paste of RefPtr.
-	See Bug #564005#14
+	See Bug #564005#14 (Alexander Shaduri)
 
 2011-07-14  Kjell Ahlstedt  <kjell.ahlstedt@bredband.net>
 
