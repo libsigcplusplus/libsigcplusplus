@@ -13,13 +13,13 @@ AC_DEFUN([SIGC_CXX_HAS_NAMESPACE_STD],
     [whether C++ library symbols are declared in namespace std],
     [sigc_cv_cxx_has_namespace_std],
   [
-    AC_TRY_COMPILE(
-    [
+    AC_COMPILE_IFELSE([AC_LANG_PROGRAM(
+    [[
       #include <algorithm>
       #include <iterator>
       #include <iostream>
       #include <string>
-    ],[
+    ]],[[
       using std::min;
       using std::find;
       using std::copy;
@@ -27,17 +27,14 @@ AC_DEFUN([SIGC_CXX_HAS_NAMESPACE_STD],
       using std::string;
       using std::istream;
       using std::cout;
-    ],
-      [sigc_cv_cxx_has_namespace_std="yes"],
-      [sigc_cv_cxx_has_namespace_std="no"]
+    ]])],
+      [sigc_cv_cxx_has_namespace_std='yes'],
+      [sigc_cv_cxx_has_namespace_std='no']
     )
   ])
 
-  if test "x${sigc_cv_cxx_has_namespace_std}" = "xyes"; then
-  {
-    AC_DEFINE([SIGC_HAVE_NAMESPACE_STD],[1], [Defined when the libstdc++ declares the std-namespace])
-  }
-  fi
+  AS_IF([test "x${sigc_cv_cxx_has_namespace_std}" = 'xyes'],
+  [AC_DEFINE([SIGC_HAVE_NAMESPACE_STD],[1], [Defined when the libstdc++ declares the std-namespace])])
 ])
 
 ## SIGC_CXX_HAS_SUN_REVERSE_ITERATOR()
@@ -53,26 +50,20 @@ AC_DEFUN([SIGC_CXX_HAS_SUN_REVERSE_ITERATOR],
     [for non-standard Sun libCstd reverse_iterator],
     [sigc_cv_cxx_has_sun_reverse_iterator],
   [
-    AC_TRY_COMPILE(
-    [
+    AC_COMPILE_IFELSE([AC_LANG_PROGRAM(
+    [[
       #include <iterator>
       #ifdef SIGC_HAVE_NAMESPACE_STD
       using namespace std;
       #endif
-    ],[
+    ]],[[
       typedef reverse_iterator<char*,random_access_iterator_tag,char,char&,char*,int> ReverseIter;
-    ],
-      [sigc_cv_cxx_has_sun_reverse_iterator="yes"],
-      [sigc_cv_cxx_has_sun_reverse_iterator="no"]
+    ]])],
+      [sigc_cv_cxx_has_sun_reverse_iterator='yes'],
+      [sigc_cv_cxx_has_sun_reverse_iterator='no']
     )
   ])
 
-  if test "x${sigc_cv_cxx_has_sun_reverse_iterator}" = "xyes"; then
-  {
-    AC_DEFINE([SIGC_HAVE_SUN_REVERSE_ITERATOR], [1],
-              [Define if the non-standard Sun reverse_iterator must be used.])
-  }
-  fi
+  AS_IF([test "x${sigc_cv_cxx_has_sun_reverse_iterator}" = 'xyes'],
+  [AC_DEFINE([SIGC_HAVE_SUN_REVERSE_ITERATOR], [1], [Define if the non-standard Sun reverse_iterator must be used.])])
 ])
-
-

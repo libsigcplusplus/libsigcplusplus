@@ -4,8 +4,8 @@ dnl
 dnl
 AC_DEFUN([SIGC_CXX_GCC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD],[
 AC_MSG_CHECKING([if C++ compiler supports the use of a particular specialization when calling operator() template methods.])
-AC_TRY_COMPILE(
-[
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM(
+[[
   #include <iostream>
 
   class Thing
@@ -33,25 +33,24 @@ AC_TRY_COMPILE(
        //This fails with or without the template keyword, on SUN Forte C++ 5.3, 5.4, and 5.5:
     }
   };
-],
-[
+]],
+[[
   OtherThing<int> thing;
   thing.do_something();
-],
+]])],
 [
   sigcm_cxx_gcc_template_specialization_operator_overload=yes
   AC_DEFINE([SIGC_GCC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD],[1],[does the C++ compiler support the use of a particular specialization when calling operator() template methods.])
-  AC_MSG_RESULT([$sigcm_cxx_gcc_template_specialization_operator_overload])
 ],[
   sigcm_cxx_gcc_template_specialization_operator_overload=no
-  AC_MSG_RESULT([$sigcm_cxx_gcc_template_specialization_operator_overload])
 ])
+AC_MSG_RESULT([$sigcm_cxx_gcc_template_specialization_operator_overload])
 ])
 
 AC_DEFUN([SIGC_CXX_MSVC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD],[
 AC_MSG_CHECKING([if C++ compiler supports the use of a particular specialization when calling operator() template methods omitting the template keyword.])
-AC_TRY_COMPILE(
-[
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM(
+[[
   #include <iostream>
 
   class Thing
@@ -79,26 +78,25 @@ AC_TRY_COMPILE(
        //This fails with or without the template keyword, on SUN Forte C++ 5.3, 5.4, and 5.5:
     }
   };
-],
-[
+]],
+[[
   OtherThing<int> thing;
   thing.do_something();
-],
+]])],
 [
   sigcm_cxx_msvc_template_specialization_operator_overload=yes
   AC_DEFINE([SIGC_MSVC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD],[1],[does the C++ compiler support the use of a particular specialization when calling operator() template methods omitting the template keyword.])
-  AC_MSG_RESULT([$sigcm_cxx_msvc_template_specialization_operator_overload])
 ],[
   sigcm_cxx_msvc_template_specialization_operator_overload=no
-  AC_MSG_RESULT([$sigcm_cxx_msvc_template_specialization_operator_overload])
 ])
+AC_MSG_RESULT([$sigcm_cxx_msvc_template_specialization_operator_overload])
 ])
 
 
 AC_DEFUN([SIGC_CXX_SELF_REFERENCE_IN_MEMBER_INITIALIZATION], [
 AC_MSG_CHECKING([if C++ compiler allows usage of member function in initialization of static member field.])
-AC_TRY_COMPILE(
-[
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM(
+[[
   struct test
   {
     static char  test_function();
@@ -108,15 +106,14 @@ AC_TRY_COMPILE(
     static const bool  test_value
       = (sizeof(test_function()) == sizeof(char));
   };
-],
-[],
+]],
+[[]])],
 [
   sigcm_cxx_self_reference_in_member_initialization=yes
   AC_DEFINE([SIGC_SELF_REFERENCE_IN_MEMBER_INITIALIZATION],[1],
             [does c++ compiler allows usage of member function in initialization of static member field.])
-  AC_MSG_RESULT([$sigcm_cxx_self_reference_in_member_initialization])
 ],[
   sigcm_cxx_self_reference_in_member_initialization=no
-  AC_MSG_RESULT([$sigcm_cxx_self_reference_in_member_initialization])
 ])
+AC_MSG_RESULT([$sigcm_cxx_self_reference_in_member_initialization])
 ])
