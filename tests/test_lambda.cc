@@ -71,12 +71,15 @@ int main()
   std::cout << "((++_1)*2)(1):      " << ((++_1)*2)(1)        << std::endl;
   std::cout << "((++_1)*2)(a):      " << ((++_1)*2)(a);
   std::cout << "; a: "                << a                    << std::endl;
-  std::cout << "((++_1)*2)(ref(a)): " << ((++_1)*2)(sigc::ref(a));
-  std::cout << "; a: "                << a                    << std::endl;
+// gcc can't compile lambda functions with sigc::ref() parameters.
+// See https://bugzilla.gnome.org/show_bug.cgi?id=669128
+// TODO: Can the compilation problems be fixed?
+//  std::cout << "((++_1)*2)(ref(a)): " << ((++_1)*2)(sigc::ref(a));
+//  std::cout << "; a: "                << a                    << std::endl;
   std::cout << "((++(*_1))*2)(&a):  " << ((++(*_1))*2)(&a);
   std::cout << "; a: "                << a                    << std::endl;
-  std::cout << "((--(*(&_1)))*2)(ref(a)): " << ((--(*(&_1)))*2)(sigc::ref(a));
-  std::cout << "; a: "                << a                    << std::endl;
+//  std::cout << "((--(*(&_1)))*2)(ref(a)): " << ((--(*(&_1)))*2)(sigc::ref(a));
+//  std::cout << "; a: "                << a                    << std::endl;
   std::cout << "(-_1)     (-5):     " << (-_1)     (-5)       << std::endl;
   std::cout << "(var(&a)[0])():     " << (sigc::var(&a)[0])() << std::endl;
   std::cout << "(_1[_2])    (&a,0): " << (_1[_2])    (&a,0)   << std::endl;

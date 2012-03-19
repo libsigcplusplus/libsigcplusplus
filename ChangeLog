@@ -1,3 +1,11 @@
+2012-03-19  Kjell Ahlstedt  <kjell.ahlstedt@bredband.net>
+
+	Enable test_lambda in 'make check'.
+
+	* tests/Makefile.am: Enable test_lambda in 'make check'.
+	* tests/test_lambda.cc: Comment out the tests with sigc::ref() in lambda
+	functions' parameter lists. See Bug #669128.
+
 2.2.10:
 
 2011-07-21  Thomas Rydzynski  <qsorix@rydznet.pl>

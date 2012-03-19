@@ -24,7 +24,7 @@ check_PROGRAMS =			\
 	test_accumulated		\
 	test_bind			\
 	test_bind_ref			\
-	test_bind_refptr \
+	test_bind_refptr 		\
 	test_bind_return		\
 	test_compose			\
 	test_copy_invalid_slot		\
@@ -35,6 +35,7 @@ check_PROGRAMS =			\
 	test_exception_catch		\
 	test_functor_trait		\
 	test_hide			\
+	test_lambda			\
 	test_limit_reference		\
 	test_mem_fun			\
 	test_ptr_fun			\
@@ -49,10 +50,10 @@ check_PROGRAMS =			\
 TESTS = $(check_PROGRAMS)
 
 test_accum_iter_SOURCES			= test_accum_iter.cc
-test_accumulated_SOURCES = test_accumulated.cc
+test_accumulated_SOURCES 		= test_accumulated.cc
 test_bind_SOURCES			= test_bind.cc
 test_bind_ref_SOURCES			= test_bind_ref.cc
-test_bind_refptr_SOURCES			= test_bind_refptr.cc
+test_bind_refptr_SOURCES		= test_bind_refptr.cc
 test_bind_return_SOURCES		= test_bind_return.cc
 test_compose_SOURCES			= test_compose.cc
 test_copy_invalid_slot_SOURCES		= test_copy_invalid_slot.cc
@@ -63,6 +64,7 @@ test_disconnect_during_emit_SOURCES	= test_disconnect_during_emit.cc
 test_exception_catch_SOURCES		= test_exception_catch.cc
 test_functor_trait_SOURCES		= test_functor_trait.cc
 test_hide_SOURCES			= test_hide.cc
+test_lambda_SOURCES			= test_lambda.cc
 test_limit_reference_SOURCES		= test_limit_reference.cc
 test_mem_fun_SOURCES			= test_mem_fun.cc
 test_ptr_fun_SOURCES			= test_ptr_fun.cc
@@ -74,7 +76,11 @@ test_slot_SOURCES			= test_slot.cc
 test_slot_disconnect_SOURCES		= test_slot_disconnect.cc
 test_trackable_SOURCES			= test_trackable.cc
 
+# 2005-01-19
 # Disabled: test_lambda - The Tru64 compiler can't build this when not using
 #  -std strict_ansi -model ansi, so let's not worry about it.
+# 2012-03-19
+# Enabled test_lambda. See https://bugzilla.gnome.org/show_bug.cgi?id=669128
+# TODO: Disable once again, if some compiler still can't build it (tested with gcc 4.6.1)
 
-dist_noinst_DATA = test_lambda.cc
+#dist_noinst_DATA = test_lambda.cc
