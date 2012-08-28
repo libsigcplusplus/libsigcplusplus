@@ -1,5 +1,12 @@
 2012-08-28  Kjell Ahlstedt  <kjell.ahlstedt@bredband.net>
 
+	Update .gitignore and tests/.gitignore
+
+	* .gitignore: Add *~ (gedit's backup files).
+	* tests/.gitignore: Add missing executable test files.
+
+2012-08-28  Kjell Ahlstedt  <kjell.ahlstedt@bredband.net>
+
 	Add SIGC_FUNCTORS_DEDUCE_RESULT_TYPE_WITH for C++11 lambda expressions.
 
 	* sigc++/functors/macros/functor_trait.h.m4: Add the preprocessor macro

@@ -5,6 +5,7 @@ Makefile
 Makefile.in
 *.[ao]
 *.l[ao]
+*~
 /INSTALL
 /MSVC_Net200[58]/sigc.rc
 /MSVC_Net200[58]/sigc++config.h
