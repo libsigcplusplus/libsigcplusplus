@@ -1,3 +1,19 @@
+2012-08-28  Kjell Ahlstedt  <kjell.ahlstedt@bredband.net>
+
+	Add SIGC_FUNCTORS_DEDUCE_RESULT_TYPE_WITH for C++11 lambda expressions.
+
+	* sigc++/functors/macros/functor_trait.h.m4: Add the preprocessor macro
+	SIGC_FUNCTORS_DEDUCE_RESULT_TYPE_WITH(C_keyword), which makes it possible to
+	assign C++11 lambda expressions with any return type to slots.
+	Thanks to Chow Loong Jin, who posted similar code on libsigc-list.
+	* sigc++/adaptors/lambda/macros/base.h.m4:
+	* sigc++/adaptors/lambda/macros/group.h.m4: Add information on C++11 lambda
+	expressions to the documentation of lambda expressions and sigc::group().
+	* tests/Makefile.am: Add test_cpp11_lambda.cc.
+	* tests/test_cpp11_lambda.cc: New test case, showing that most uses of
+	libsigc++'s lambda expressions can be replaced by standard C++11 lambda
+	expressions. Bug #672555.
+
 2012-03-19  Kjell Ahlstedt  <kjell.ahlstedt@bredband.net>
 
 	Enable test_lambda in 'make check'.

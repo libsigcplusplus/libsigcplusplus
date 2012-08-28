@@ -114,31 +114,43 @@ __FIREWALL__
  * arguments passed into the new functor. Arguments that don't have a placeholder in one
  * of the lambda expressions are dropped.
  *
+ * If you have a C++11 compiler, a C++11 lambda expression and/or std::bind() is
+ * often a good alternative to sigc::group(). Such alternatives are shown in the
+ * following examples, marked with the comment <tt>//C++11</tt>.
+ *
  * @par Examples:
  * @code
  * void foo(int, int);
  * int bar(int);
  * // argument binding ...
  * sigc::group(&foo,10,sigc::_1)(20); //fixes the first argument and calls foo(10,20)
+ * std::bind(&foo, 10, std::placeholders::_1)(20); //C++11
  * sigc::group(&foo,sigc::_1,30)(40); //fixes the second argument and calls foo(40,30)
+ * std::bind(&foo, std::placeholders::_1, 30)(40); //C++11
  * // argument reordering ...
  * sigc::group(&foo,sigc::_2,sigc::_1)(1,2); //calls foo(2,1)
+ * std::bind(&foo, std::placeholders::_2, std::placeholders::_1)(1,2); //C++11
  * // argument hiding ...
  * sigc::group(&foo,sigc::_1,sigc::_2)(1,2,3); //calls foo(1,2)
+ * std::bind(&foo, std::placeholders::_1, std::placeholders::_2)(1,2,3); //C++11
  * // functor composition ...
  * sigc::group(&foo,sigc::_1,sigc::group(&bar,sigc::_2))(1,2); //calls foo(1,bar(2))
+ * std::bind(&foo,  std::placeholders::_1, std::bind(&bar, std::placeholders::_2))(1,2); //C++11
  * // algebraic expressions ...
  * sigc::group(&foo,sigc::_1*sigc::_2,sigc::_1/sigc::_2)(6,3); //calls foo(6*3,6/3)
+ * [[&foo]] (int x, int y) { foo(x*y, x/y); }(6,3); //C++11
  * @endcode
  *
- * The functor sigc::group() returns can be passed into
- * sigc::signal::connect() directly.
+ * The functor sigc::group() returns can be passed into sigc::signal::connect() directly.
+ * A C++11 lambda expression can be passed into sigc::signal::connect() directly,
+ * if either it returns <tt>void</tt>, or you use SIGC_FUNCTORS_DEDUCE_RESULT_TYPE_WITH().
  *
  * @par Example:
  * @code
  * sigc::signal<void,int,int> some_signal;
  * void foo(int);
  * some_signal.connect(sigc::group(&foo,sigc::_2));
+ * some_signal.connect([[&foo]](int, int y) { foo(y); }); //C++11
  * @endcode
  *
  * Like in sigc::bind(), you can bind references to functors by passing the objects
@@ -150,6 +162,7 @@ __FIREWALL__
  * sigc::signal<void> some_signal;
  * void foo(int&);
  * some_signal.connect(sigc::group(&foo,sigc::ref(some_int)));
+ * some_signal.connect([[&foo, &some_int]](){ foo(some_int); }); //C++11
  * @endcode
  *
  * If you bind an object of a sigc::trackable derived type to a functor
@@ -165,7 +178,22 @@ __FIREWALL__
  *   // disconnected automatically if some_bar goes out of scope
  * @endcode
  *
- * @ingroup adaptors, lambdas
+ * std::bind() and C++11 lambda expressions fail here. If you store a
+ * reference to a sigc::trackable derived object in a C++11 lambda expression,
+ * and assign this expression to a slot or signal, it will not be disconnected
+ * automatically when the object goes out of scope. The previous example can
+ * still be rewritten without sigc::group().
+ * @code
+ * struct bar : public sigc::trackable {} some_bar;
+ * sigc::signal<void> some_signal;
+ * void foo(bar&);
+ * some_signal.connect(sigc::bind(&foo, sigc::ref(some_bar)));
+ *   // disconnected automatically if some_bar goes out of scope
+ * some_signal.connect([[&foo, &some_bar]](){ foo(some_bar); }); //C++11
+ *   // NOT disconnected automatically if some_bar goes out of scope
+ * @endcode
+ *
+ * @ingroup adaptors lambdas
  */
 
 namespace sigc {

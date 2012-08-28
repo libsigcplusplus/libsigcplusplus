@@ -26,6 +26,7 @@ check_PROGRAMS =			\
 	test_bind_ref			\
 	test_bind_refptr 		\
 	test_bind_return		\
+	test_cpp11_lambda		\
 	test_compose			\
 	test_copy_invalid_slot		\
 	test_custom			\
@@ -55,6 +56,7 @@ test_bind_SOURCES			= test_bind.cc
 test_bind_ref_SOURCES			= test_bind_ref.cc
 test_bind_refptr_SOURCES		= test_bind_refptr.cc
 test_bind_return_SOURCES		= test_bind_return.cc
+test_cpp11_lambda_SOURCES   = test_cpp11_lambda.cc
 test_compose_SOURCES			= test_compose.cc
 test_copy_invalid_slot_SOURCES		= test_copy_invalid_slot.cc
 test_custom_SOURCES			= test_custom.cc

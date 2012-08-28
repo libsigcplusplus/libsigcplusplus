@@ -57,7 +57,8 @@ divert(0)dnl
 namespace sigc {
 
 /** @defgroup lambdas Lambdas
- * libsigc++ ships with basic lambda functionality and the sigc::group adaptor, which uses lambdas to transform a functor's parameter list.
+ * libsigc++ ships with basic lambda functionality and the sigc::group adaptor,
+ * which uses lambdas to transform a functor's parameter list.
  *
  * The lambda selectors sigc::_1, sigc::_2, ..., sigc::_9 are used to select the
  * first, second, ..., nineth argument from a list.
@@ -66,7 +67,6 @@ namespace sigc {
  * @code
  * std::cout << sigc::_1(10,20,30); // returns 10
  * std::cout << sigc::_2(10,20,30); // returns 20
- * ...
  * @endcode
  *
  * Operators are defined so that, for example, lambda selectors can be used as
@@ -76,6 +76,16 @@ namespace sigc {
  * @code
  * std::cout << (sigc::_1 + 5)(3); // returns (3 + 5)
  * std::cout << (sigc::_1 * sigc::_2)(7,10); // returns (7 * 10)
+ * @endcode
+ *
+ * If your compiler supports C++11 lambda expressions, they are often a good
+ * alternative to libsigc++'s lambda expressions. The following examples are
+ * equivalent to the previous ones.
+ * @code
+ * [[]] (int x, int, int) -> int { return x; }(10,20,30); // returns 10
+ * [[]] (int, int y, int) -> int { return y; }(10,20,30); // returns 20
+ * [[]] (int x) -> int { return x + 5; }(3); // returns (3 + 5)
+ * [[]] (int x, int y) -> int { return x * y; }(7,10); // returns (7 * 10)
  * @endcode
  */
 
@@ -268,9 +278,19 @@ dnl { return lambda<typename internal::convert_array<const T_type>::type>(v); }
  *   data = 3;
  *   std::cout << readValue() << std::endl; //Prints 3.
  *
- *  data = 5;
- *  std::cout << readValue() << std::endl; //Prints 5.
+ *   data = 5;
+ *   std::cout << readValue() << std::endl; //Prints 5.
  * }
+ * @endcode
+ *
+ * If your compiler supports C++11 lambda expressions, and you use the macro
+ * SIGC_FUNCTORS_DEDUCE_RESULT_TYPE_WITH(), you can replace
+ * @code
+ * readValue.connect(sigc::var(data));
+ * @endcode
+ * in the example by
+ * @code
+ * readValue.connect([[&data]] () -> int { return data; });
  * @endcode
  */
 template <class T_type>
