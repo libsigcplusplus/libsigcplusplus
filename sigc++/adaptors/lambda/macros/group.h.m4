@@ -138,7 +138,7 @@ __FIREWALL__
  * std::bind(&foo,  std::placeholders::_1, std::bind(&bar, std::placeholders::_2))(1,2); //C++11
  * // algebraic expressions ...
  * sigc::group(&foo,sigc::_1*sigc::_2,sigc::_1/sigc::_2)(6,3); //calls foo(6*3,6/3)
- * [[&foo]] (int x, int y) { foo(x*y, x/y); }(6,3); //C++11
+ * [[]] (int x, int y) { foo(x*y, x/y); }(6,3); //C++11
  * @endcode
  *
  * The functor sigc::group() returns can be passed into sigc::signal::connect() directly.
@@ -150,7 +150,7 @@ __FIREWALL__
  * sigc::signal<void,int,int> some_signal;
  * void foo(int);
  * some_signal.connect(sigc::group(&foo,sigc::_2));
- * some_signal.connect([[&foo]](int, int y) { foo(y); }); //C++11
+ * some_signal.connect([[]](int, int y) { foo(y); }); //C++11
  * @endcode
  *
  * Like in sigc::bind(), you can bind references to functors by passing the objects
@@ -162,7 +162,7 @@ __FIREWALL__
  * sigc::signal<void> some_signal;
  * void foo(int&);
  * some_signal.connect(sigc::group(&foo,sigc::ref(some_int)));
- * some_signal.connect([[&foo, &some_int]](){ foo(some_int); }); //C++11
+ * some_signal.connect([[&some_int]](){ foo(some_int); }); //C++11
  * @endcode
  *
  * If you bind an object of a sigc::trackable derived type to a functor
@@ -189,7 +189,7 @@ __FIREWALL__
  * void foo(bar&);
  * some_signal.connect(sigc::bind(&foo, sigc::ref(some_bar)));
  *   // disconnected automatically if some_bar goes out of scope
- * some_signal.connect([[&foo, &some_bar]](){ foo(some_bar); }); //C++11
+ * some_signal.connect([[&some_bar]](){ foo(some_bar); }); //C++11
  *   // NOT disconnected automatically if some_bar goes out of scope
  * @endcode
  *

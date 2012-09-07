@@ -246,27 +246,27 @@ int main()
   // - cannot use std::endl without much hackery because it is defined as a template function
   // - cannot use "\n" without var() because arrays cannot be copied
   //  (sigc::ref(std::cout) << sigc::constant(1) << sigc::var("\n"))();
-  [&result_stream](){ result_stream << 1 << "\n"; }();
+  [](){ result_stream << 1 << "\n"; }();
   check_result("1\n");
 
   //(sigc::ref(std::cout) << _1 << std::string("\n"))("hello world");
-  [&result_stream](const char* a){ result_stream << a << std::string("\n"); }("hello world");
+  [](const char* a){ result_stream << a << std::string("\n"); }("hello world");
   check_result("hello world\n");
 
   //(sigc::ref(std::cout) << sigc::static_cast_<int>(_1) << std::string("\n"))(1.234);
-  [&result_stream](double a){ result_stream << static_cast<int>(a) << std::string("\n"); }(1.234);
+  [](double a){ result_stream << static_cast<int>(a) << std::string("\n"); }(1.234);
   check_result("1\n");
 
   //  (sigc::var(std::cout) << 1 << sigc::var("\n"))();
-  [&result_stream](){ result_stream << 1 << "\n"; }();
+  [](){ result_stream << 1 << "\n"; }();
   check_result("1\n");
 
   //(sigc::var(std::cout) << _1 << std::string("\n"))("hello world");
-  [&result_stream](const char* a){ result_stream << a << std::string("\n"); }("hello world");
+  [](const char* a){ result_stream << a << std::string("\n"); }("hello world");
   check_result("hello world\n");
 
   // auto-disconnect
-  // Here's an area where the libsigc++ lambda expressions has an advantage.
+  // Here's an area where the libsigc++ lambda expressions are advantageous.
   // It can be more difficult to auto-disconnect slots without them.
   sigc::slot<void, std::ostringstream&> sl1;
   {
@@ -278,7 +278,7 @@ int main()
     //book guest_book("karl");
     printable_book printable_guest_book("karl");
     // sl1 = (sigc::var(std::cout) << sigc::ref(guest_book) << sigc::var("\n"));
-    // sl1 = [&result_stream, &guest_book](){ result_stream << guest_book << "\n"; }; // no auto-disconnect
+    // sl1 = [&guest_book](){ result_stream << guest_book << "\n"; }; // no auto-disconnect
     // sl1 = printable_guest_book; // no auto-disconnect, no error; a copy is stored in sl1
     sl1 = sigc::mem_fun(printable_guest_book, &printable_book::operator());
     sl1(result_stream);
@@ -322,8 +322,8 @@ int main()
   {
     book guest_book("karl");
     //sl2 = sigc::group(&egon, sigc::ref(guest_book));
-    // sl2 = [&egon, &guest_book] () { egon(guest_book); }; // no auto-disconnect
-    // sl2 = std::bind(&egon, std::ref(guest_book));        // does not compile (gcc 4.6.3)
+    // sl2 = [&guest_book] () { egon(guest_book); }; // no auto-disconnect
+    // sl2 = std::bind(&egon, std::ref(guest_book)); // does not compile (gcc 4.6.3)
     sl2 = sigc::bind(&egon, sigc::ref(guest_book));
     sl2();
     check_result("egon(string 'karl')");
@@ -354,7 +354,7 @@ int main()
 
   // same functionality as retype
   //std::cout << (sigc::group(&foo, sigc::static_cast_<int>(_1), 2)) (1.234) << std::endl;
-  result_stream << ([&foo] (double x) -> int { return foo(static_cast<int>(x), 2); }(1.234));
+  result_stream << ([] (double x) -> int { return foo(static_cast<int>(x), 2); }(1.234));
   check_result("foo(int 1, int 2)6");
 
   // Code examples with C++11 lambda expressions and std::bind, which can replace
@@ -435,14 +435,14 @@ int main()
 
   // algebraic expressions ...
   // sigc::group(&foo,sigc::_1*sigc::_2,sigc::_1/sigc::_2)(6,3); //calls foo(6*3,6/3)
-  [&foo_group1] (int x, int y) { foo_group1(x*y, x/y); }(6,3);
+  [] (int x, int y) { foo_group1(x*y, x/y); }(6,3);
   check_result("foo_group1(int 18, int 2)");
 
   {
     sigc::signal<void,int,int> some_signal;
     //some_signal.connect(sigc::group(&foo,sigc::_2));
     //some_signal.connect(std::bind(&foo_group2, std::placeholders::_2)); // does not compile (gcc 4.6.3)
-    some_signal.connect([&foo_group2](int, int y) { foo_group2(y); });
+    some_signal.connect([](int, int y) { foo_group2(y); });
     some_signal.emit(1,2);
     check_result("foo_group2(int 2)");
   }
@@ -453,7 +453,7 @@ int main()
     //some_signal.connect(sigc::group(&foo,sigc::ref(some_int)));
     //some_signal.connect(std::bind(&foo_group3, std::ref(some_int))); // does not compile (gcc 4.6.3)
     //some_signal.connect(sigc::bind(&foo_group3, sigc::ref(some_int))); // compiles, but we prefer std::bind() or C++11 lambda
-    some_signal.connect([&foo_group3, &some_int](){ foo_group3(some_int); });
+    some_signal.connect([&some_int](){ foo_group3(some_int); });
     some_signal.emit();
     result_stream << some_int;
     check_result("foo_group3(int 0)1");
@@ -466,7 +466,7 @@ int main()
       bar_group4 some_bar;
       //some_signal.connect(sigc::group(&foo,sigc::ref(some_bar)));
       // disconnected automatically if some_bar goes out of scope
-      //some_signal.connect([&foo_group4, &some_bar](){ foo_group4(some_bar); }); // no auto-disconnect
+      //some_signal.connect([&some_bar](){ foo_group4(some_bar); }); // no auto-disconnect
       some_signal.connect(sigc::bind(&foo_group4, sigc::ref(some_bar)));
       some_signal.emit();
       check_result("foo_group4(bar_group4&)");

@@ -185,6 +185,22 @@ template <class T_type>
 struct unwrap_lambda_type;
 
 
+/** Gets the object stored inside a lambda object.
+ * Returns the object passed as argument, if it is not of type lambda.
+ */
+template <class T_type>
+T_type& unwrap_lambda_value(T_type& a)
+{ return a; }
+
+template <class T_type>
+const T_type& unwrap_lambda_value(const T_type& a)
+{ return a; }
+
+template <class T_type>
+const T_type& unwrap_lambda_value(const lambda<T_type>& a)
+{ return a.value_; }
+
+
 /** Lambda type.
  * Objects of this type store a value that may be of type lambda itself.
  * In this case, operator()() executes the lambda (a lambda is always a functor at the same time).
@@ -315,22 +331,6 @@ struct unwrap_lambda_type
 template <class T_type>
 struct unwrap_lambda_type<lambda<T_type> >
 { typedef T_type type; };
-
-
-/** Gets the object stored inside a lambda object.
- * Returns the object passed as argument, if it is not of type lambda.
- */
-template <class T_type>
-T_type& unwrap_lambda_value(T_type& a)
-{ return a; }
-
-template <class T_type>
-const T_type& unwrap_lambda_value(const T_type& a)
-{ return a; }
-
-template <class T_type>
-const T_type& unwrap_lambda_value(const lambda<T_type>& a)
-{ return a.value_; }
 
 } /* namespace sigc */
 

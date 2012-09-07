@@ -1,3 +1,14 @@
+2012-09-07  Kjell Ahlstedt  <kjell.ahlstedt@bredband.net>
+
+	Fix 'make check' with gcc 4.7.
+
+	* sigc++/adaptors/lambda/macros/base.h.m4: Define sigc::unwrap_lambda_value()
+	before it's used in sigc::lambda::operator[]() and operator=().
+	* sigc++/adaptors/lambda/macros/group.h.m4: Fix the C++11 examples in the
+	documentation as in test_cpp11_lambda.cc.
+	* tests/test_cpp11_lambda.cc: Only variables with automatic storage duration
+	shall be captured in C++11 lambda expressions.
+
 2012-08-28  Kjell Ahlstedt  <kjell.ahlstedt@bredband.net>
 
 	Update .gitignore and tests/.gitignore
