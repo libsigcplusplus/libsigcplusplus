@@ -59,7 +59,7 @@
 	* sigc++/adaptors/macros/adaptor_trait.h.m4: Mention that a user-supplied
 	adaptor must be accompanied by a specialization of template function
 	visit_each(). Correct some minor errors in the example of a user-supplied
-	adaptor. Bug #48637.
+	adaptor. Bug #486373.
 
 2011-07-19  Kjell Ahlstedt  <kjell.ahlstedt@bredband.net>
 
