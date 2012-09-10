@@ -1,3 +1,13 @@
+2012-09-10  Kjell Ahlstedt  <kjell.ahlstedt@bredband.net>
+
+	Use std::size_t and std::ptrdiff_t.
+
+	* sigc++/macros/signal.h.m4: Use std::size_t and std::ptrdiff_t instead
+	of ::size_t and ::ptrdiff_t. Only the std versions are required to be
+	declared in <cstddef>.
+	* sigc++/signal_base.h: Use std::size_t instead of ::size_t. (I did not change
+	MSVC++-only code in this file and other files.)
+
 2012-09-07  Kjell Ahlstedt  <kjell.ahlstedt@bredband.net>
 
 	Fix 'make check' with gcc 4.7.

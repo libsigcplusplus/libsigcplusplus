@@ -46,7 +46,7 @@ namespace internal
  */
 struct SIGC_API signal_impl
 {
-  typedef size_t size_type;
+  typedef std::size_t size_type;
   typedef std::list<slot_base> slot_list;
   typedef slot_list::iterator       iterator_type;
   typedef slot_list::const_iterator const_iterator_type;
@@ -239,7 +239,7 @@ private:
  */
 struct SIGC_API signal_base : public trackable
 {
-  typedef size_t size_type;
+  typedef std::size_t size_type;
 
   signal_base();
 

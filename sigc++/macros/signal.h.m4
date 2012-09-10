@@ -182,7 +182,7 @@ FOR(1, $1,[
         typedef std::reverse_iterator<signal_impl::iterator_type> reverse_iterator_type;
 #else
         typedef std::reverse_iterator<signal_impl::iterator_type, std::random_access_iterator_tag,
-                                       slot_base, slot_base&, slot_base*, ptrdiff_t> reverse_iterator_type;
+                                       slot_base, slot_base&, slot_base*, std::ptrdiff_t> reverse_iterator_type;
 #endif
 
         temp_slot_list slots(impl->slots_);
@@ -260,7 +260,7 @@ FOR(1, $1,[
       typedef std::reverse_iterator<signal_impl::iterator_type> reverse_iterator_type;
 #else
       typedef std::reverse_iterator<signal_impl::iterator_type, std::random_access_iterator_tag,
-                                     slot_base, slot_base&, slot_base*, ptrdiff_t> reverse_iterator_type;
+                                     slot_base, slot_base&, slot_base*, std::ptrdiff_t> reverse_iterator_type;
 #endif
       for (reverse_iterator_type it = reverse_iterator_type(slots.end()); it != reverse_iterator_type(slots.begin()); ++it)
         {
@@ -538,8 +538,8 @@ namespace sigc {
 template <typename T_slot>
 struct slot_iterator
 {
-  typedef size_t                          size_type;
-  typedef ptrdiff_t                       difference_type;
+  typedef std::size_t                     size_type;
+  typedef std::ptrdiff_t                  difference_type;
   typedef std::bidirectional_iterator_tag iterator_category;
 
   typedef T_slot  slot_type;
@@ -604,8 +604,8 @@ struct slot_iterator
 template <typename T_slot>
 struct slot_const_iterator
 {
-  typedef size_t                          size_type;
-  typedef ptrdiff_t                       difference_type;
+  typedef std::size_t                     size_type;
+  typedef std::ptrdiff_t                  difference_type;
   typedef std::bidirectional_iterator_tag iterator_category;
 
   typedef T_slot        slot_type;
@@ -687,10 +687,10 @@ struct slot_list
   typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
   #else
   typedef std::reverse_iterator<iterator, std::random_access_iterator_tag,
-                                int, int&, int*, ptrdiff_t> reverse_iterator;
+                                int, int&, int*, std::ptrdiff_t> reverse_iterator;
 
   typedef std::reverse_iterator<const_iterator, std::random_access_iterator_tag,
-                                int, const int&, const int*, ptrdiff_t> const_reverse_iterator;
+                                int, const int&, const int*, std::ptrdiff_t> const_reverse_iterator;
   #endif /* SIGC_HAVE_SUN_REVERSE_ITERATOR */
 
 
@@ -781,8 +781,8 @@ namespace internal {
 template <class T_emitter, class T_result = typename T_emitter::result_type>
 struct slot_iterator_buf
 {
-  typedef size_t                           size_type;
-  typedef ptrdiff_t                        difference_type;
+  typedef std::size_t                      size_type;
+  typedef std::ptrdiff_t                   difference_type;
   typedef std::bidirectional_iterator_tag  iterator_category;
 
   //These are needed just to make this a proper C++ iterator, 
@@ -864,8 +864,8 @@ private:
 template <class T_emitter>
 struct slot_iterator_buf<T_emitter, void>
 {
-  typedef size_t                           size_type;
-  typedef ptrdiff_t                        difference_type;
+  typedef std::size_t                      size_type;
+  typedef std::ptrdiff_t                   difference_type;
   typedef std::bidirectional_iterator_tag  iterator_category;
 
   typedef T_emitter                        emitter_type;
@@ -935,8 +935,8 @@ private:
 template <class T_emitter, class T_result = typename T_emitter::result_type>
 struct slot_reverse_iterator_buf
 {
-  typedef size_t                           size_type;
-  typedef ptrdiff_t                        difference_type;
+  typedef std::size_t                      size_type;
+  typedef std::ptrdiff_t                   difference_type;
   typedef std::bidirectional_iterator_tag  iterator_category;
 
   //These are needed just to make this a proper C++ iterator, 
@@ -1020,8 +1020,8 @@ private:
 template <class T_emitter>
 struct slot_reverse_iterator_buf<T_emitter, void>
 {
-  typedef size_t                           size_type;
-  typedef ptrdiff_t                        difference_type;
+  typedef std::size_t                      size_type;
+  typedef std::ptrdiff_t                   difference_type;
   typedef std::bidirectional_iterator_tag  iterator_category;
 
   typedef T_emitter                        emitter_type;
