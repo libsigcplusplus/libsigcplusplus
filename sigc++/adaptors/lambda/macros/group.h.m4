@@ -143,7 +143,7 @@ __FIREWALL__
  *
  * The functor sigc::group() returns can be passed into sigc::signal::connect() directly.
  * A C++11 lambda expression can be passed into sigc::signal::connect() directly,
- * if either it returns <tt>void</tt>, or you use SIGC_FUNCTORS_DEDUCE_RESULT_TYPE_WITH().
+ * if either it returns <tt>void</tt>, or you use #SIGC_FUNCTORS_DEDUCE_RESULT_TYPE_WITH_DECLTYPE.
  *
  * @par Example:
  * @code

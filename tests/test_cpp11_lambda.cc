@@ -35,7 +35,7 @@
 // lambda expression, connected to the slot.
 //
 // To test the C++11 lambda expressions with gcc 4.6.3 (and probably some later
-// versions of gcc):
+// versions of gcc; gcc 4.7.x also understands -std=c++11):
 //   make CXXFLAGS='-g -O2 -std=c++0x' test_cpp11_lambda
 //   ./test_cpp11_lambda
 //   echo $?
@@ -58,7 +58,7 @@
 #ifdef USING_CPP11_LAMBDA_EXPRESSIONS
 namespace sigc
 {
-  SIGC_FUNCTORS_DEDUCE_RESULT_TYPE_WITH(decltype)
+  SIGC_FUNCTORS_DEDUCE_RESULT_TYPE_WITH_DECLTYPE
 }
 #endif
 

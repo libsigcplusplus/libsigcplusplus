@@ -300,7 +300,7 @@ dnl { return lambda<typename internal::convert_array<const T_type>::type>(v); }
  * @endcode
  *
  * If your compiler supports C++11 lambda expressions, and you use the macro
- * SIGC_FUNCTORS_DEDUCE_RESULT_TYPE_WITH(), you can replace
+ * #SIGC_FUNCTORS_DEDUCE_RESULT_TYPE_WITH_DECLTYPE, you can replace
  * @code
  * readValue.connect(sigc::var(data));
  * @endcode

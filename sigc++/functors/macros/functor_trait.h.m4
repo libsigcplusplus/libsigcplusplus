@@ -88,10 +88,10 @@ struct nil;
  *   <tt>typedef T_return result_type;</tt> in the class definition.
  * - Use the macro SIGC_FUNCTOR_TRAIT(T_functor,T_return) in namespace sigc.
  *   Multi-type functors are only partly supported.
- * - Use the macro #SIGC_FUNCTORS_HAVE_RESULT_TYPE, if you want sigc++ to assume
+ * - Use the macro #SIGC_FUNCTORS_HAVE_RESULT_TYPE, if you want libsigc++ to assume
  *   that result_type is defined in all user-defined or third party functors,
  *   except those for which you specify a return type explicitly with SIGC_FUNCTOR_TRAIT().
- * - Use the macro SIGC_FUNCTORS_DEDUCE_RESULT_TYPE_WITH(C_keyword), if your
+ * - Use the macro #SIGC_FUNCTORS_DEDUCE_RESULT_TYPE_WITH_DECLTYPE, if your
  *   compiler makes it possible. Functors with overloaded operator()() are not
  *   supported.
  *
@@ -99,7 +99,7 @@ struct nil;
  * expression with any return type. Example:
  * @code
  * namespace sigc {
- *   SIGC_FUNCTORS_DEDUCE_RESULT_TYPE_WITH(decltype)
+ *   SIGC_FUNCTORS_DEDUCE_RESULT_TYPE_WITH_DECLTYPE
  * }
  * sigc::slot<bool, int> slot1 = [[]](int n)-> bool
  *                               {
@@ -147,7 +147,7 @@ struct functor_trait<T_functor,true>
  * @endcode
  *
  * You can't use both SIGC_FUNCTORS_HAVE_RESULT_TYPE and
- * SIGC_FUNCTORS_DEDUCE_RESULT_TYPE_WITH in the same compilation unit.
+ * SIGC_FUNCTORS_DEDUCE_RESULT_TYPE_WITH_DECLTYPE in the same compilation unit.
  *
  * @ingroup sigcfunctors
  */
@@ -184,32 +184,25 @@ struct functor_trait<T_functor,false>          \
 
 /** Helper macro, if you want to mix user-defined and third party functors with libsigc++.
  *
- * If you want to mix functors not derived from sigc::functor_base with libsigc++, and
- * your compiler can deduce the result type of the functor, use this macro inside
- * namespace sigc like so:
+ * If you want to mix functors not derived from sigc::functor_base with libsigc++,
+ * and your compiler can deduce the result type of the functor with the C++11
+ * keyword <tt>decltype</tt>, use this macro inside namespace sigc like so:
  * @code
  * namespace sigc {
- *   SIGC_FUNCTORS_DEDUCE_RESULT_TYPE_WITH(compiler_keyword)
- * }
- * @endcode
- *
- * For example, if your compiler understands the C++11 keyword <tt>decltype</tt>:
- * @code
- * namespace sigc {
- *   SIGC_FUNCTORS_DEDUCE_RESULT_TYPE_WITH(decltype)
+ *   SIGC_FUNCTORS_DEDUCE_RESULT_TYPE_WITH_DECLTYPE
  * }
  * @endcode
  *
  * You can't use both SIGC_FUNCTORS_HAVE_RESULT_TYPE and
- * SIGC_FUNCTORS_DEDUCE_RESULT_TYPE_WITH in the same compilation unit.
+ * SIGC_FUNCTORS_DEDUCE_RESULT_TYPE_WITH_DECLTYPE in the same compilation unit.
  *
  * @ingroup sigcfunctors
  */
-#define SIGC_FUNCTORS_DEDUCE_RESULT_TYPE_WITH(C_keyword) \
+#define SIGC_FUNCTORS_DEDUCE_RESULT_TYPE_WITH_DECLTYPE \
 template <typename T_functor>          \
 struct functor_trait<T_functor, false> \
 {                                      \
-  typedef typename functor_trait<C_keyword(&T_functor::operator()), false>::result_type result_type; \
+  typedef typename functor_trait<decltype(&T_functor::operator()), false>::result_type result_type; \
   typedef T_functor functor_type;      \
 };
 

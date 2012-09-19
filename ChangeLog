@@ -1,3 +1,14 @@
+2012-09-19  Kjell Ahlstedt  <kjell.ahlstedt@bredband.net>
+
+	Add SIGC_FUNCTORS_DEDUCE_RESULT_TYPE_WITH_DECLTYPE.
+
+	* sigc++/adaptors/lambda/macros/base.h.m4:
+	* sigc++/adaptors/lambda/macros/group.h.m4:
+	* sigc++/functors/macros/functor_trait.h.m4:
+	* tests/test_cpp11_lambda.cc: Replace the preprocessor macro
+	SIGC_FUNCTORS_DEDUCE_RESULT_TYPE_WITH(C_keyword) with
+	SIGC_FUNCTORS_DEDUCE_RESULT_TYPE_WITH_DECLTYPE. Bug #672555.
+
 2012-09-10  Kjell Ahlstedt  <kjell.ahlstedt@bredband.net>
 
 	Use std::size_t and std::ptrdiff_t.
