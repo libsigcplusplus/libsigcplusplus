@@ -49,7 +49,7 @@
 #include <iostream>
 #include <sstream>
 #include <functional>
-#include <stdlib.h>
+#include <cstdlib>
 #include <sigc++/functors/functors.h>
 #include <sigc++/bind.h>
 #include <sigc++/reference_wrapper.h>
@@ -238,6 +238,17 @@ int main()
   //std::cout << "(*_1=_2)    (&a,1): " << (*_1=_2)    (&a,1)   << std::endl;
   result_stream << ([] (int* x, int y) -> int { *x = y; return *x; }(&a,1));
   check_result("1");
+
+  // Comma operator, https://bugzilla.gnome.org/show_bug.cgi?id=342911
+  a = -1;
+  int b = -1;
+  int c = -1;
+  //std::cout << "(var(c) = (var(a) = _1, var(b) = _2))(2,3): "
+  //          << (sigc::var(c) = (sigc::var(a) = _1, sigc::var(b) = _2))(2,3);
+  //std::cout << "; a: " << a << "; b: " << b << "; c: " << c << std::endl;
+  result_stream << ([&a,&b,&c](int x, int y) -> int { return c = (a = x, b = y); }(2,3));
+  result_stream << " " << a << " " << b << " " << c;
+  check_result("3 2 3 3");
 
   // c++ restrictions:
   // - ref() must be used to indicate that the value shall not be copied

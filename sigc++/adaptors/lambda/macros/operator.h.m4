@@ -128,6 +128,26 @@ operator $2 (const T_arg1& a1, const lambda<T_arg2>& a2)
 
 divert(0)dnl
 ])
+define([LAMBDA_OPERATOR_COMMA],[dnl
+divert(1)dnl
+template <>
+struct lambda_action<$1 >
+{
+  template <class T_arg1, class T_arg2>
+  static typename lambda_action_deduce_result_type<$1, T_arg1, T_arg2>::type
+  do_action(T_arg1 _A_1, T_arg2 _A_2)
+    { return (void)_A_1 $2 _A_2; }
+};
+
+divert(2)dnl
+// Operators for lambda action $1. For comma we require that both arguments needs to be of type lamdba
+template <class T_arg1, class T_arg2>
+lambda<lambda_operator<$1, T_arg1, T_arg2> >
+operator $2 (const lambda<T_arg1>& a1, const lambda<T_arg2>& a2)
+{ typedef lambda_operator<$1, T_arg1, T_arg2> operator_type;
+  return lambda<operator_type>(operator_type(a1.value_,a2.value_)); }
+divert(0)dnl
+])
 define([LAMBDA_OPERATOR_UNARY],[dnl
 divert(1)dnl
 template <>
@@ -271,6 +291,7 @@ struct dereference {};
 struct reinterpret_ {};
 struct static_ {};
 struct dynamic_ {};
+struct comma {};
 
 template <class T_action, class T_test1, class T_test2>
 struct lambda_action_deduce_result_type
@@ -344,6 +365,7 @@ LAMBDA_OPERATOR(bitwise_assign<rightshift>,>>=)dnl
 LAMBDA_OPERATOR(bitwise_assign<and_>,&=)dnl
 LAMBDA_OPERATOR(bitwise_assign<or_>,|=)dnl
 LAMBDA_OPERATOR(bitwise_assign<xor_>,^=)dnl
+LAMBDA_OPERATOR_COMMA(comma,[,])dnl
 divert(1)dnl
 template <>
 struct lambda_action<other<subscript> >

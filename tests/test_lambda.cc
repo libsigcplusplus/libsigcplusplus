@@ -85,6 +85,14 @@ int main()
   std::cout << "(_1[_2])    (&a,0): " << (_1[_2])    (&a,0)   << std::endl;
   std::cout << "(*_1=_2)    (&a,1): " << (*_1=_2)    (&a,1)   << std::endl;
 
+  // Comma operator, https://bugzilla.gnome.org/show_bug.cgi?id=342911
+  a = -1;
+  int b = -1;
+  int c = -1;
+  std::cout << "(var(c) = (var(a) = _1, var(b) = _2))(2,3): "
+            << (sigc::var(c) = (sigc::var(a) = _1, sigc::var(b) = _2))(2,3);
+  std::cout << "; a: " << a << "; b: " << b << "; c: " << c << std::endl;
+
        // c++ restrictions:
        // - ref() must be used to indicate that the value shall not be copied
        // - constant() is used to create a lambda and delay execution of "std::cout << 1"

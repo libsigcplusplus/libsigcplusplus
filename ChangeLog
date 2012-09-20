@@ -1,3 +1,12 @@
+2012-09-20  Andris Pavenis  <andris.pavenis@iki.fi>
+
+	Fix comma operator in lambda expressions.
+
+	* sigc++/adaptors/lambda/macros/operator.h.m4: Add lambda_action<>
+	specialization for comma operator (operator,()).
+	* tests/test_cpp11_lambda.cc:
+	* tests/test_lambda.cc: Add a test case for the comma operator. Bug #342911.
+
 2012-09-19  Kjell Ahlstedt  <kjell.ahlstedt@bredband.net>
 
 	Add SIGC_FUNCTORS_DEDUCE_RESULT_TYPE_WITH_DECLTYPE.
