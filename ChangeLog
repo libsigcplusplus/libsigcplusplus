@@ -1,3 +1,5 @@
+2.2.11:
+
 2012-09-20  Andris Pavenis  <andris.pavenis@iki.fi>
 
 	Fix comma operator in lambda expressions.

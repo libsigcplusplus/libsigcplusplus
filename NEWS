@@ -1,3 +1,20 @@
+2.2.11 (stable):
+
+* Fix comma operator in libsigc++ lambda expressions.
+  Andris Pavenis) Bug #342911
+* Added SIGC_FUNCTORS_DEDUCE_RESULT_TYPE_WITH_DECLTYPE.
+  This allows most uses of libsigc++'s lambda expressions to be 
+  replaced by standard C++11 lambda expressions.
+  (Kjell Ahlstedt) Bug #672555.
+  Thanks to Chow Loong Jin, who posted similar code on libsigc-list.
+* Use std::size_t and std::ptrdiff_t instead
+  (Kjell Ahlstedt)
+* Fix 'make check' with gcc 4.7.
+  (Kjell Ahlstedt)
+* Enable test_lambda in 'make check'.
+  (Kjell Ahlstedt) Bug #669128.
+
+
 2.2.10:
 
 * slot_rep: Avoid access to deleted object in notify(),
