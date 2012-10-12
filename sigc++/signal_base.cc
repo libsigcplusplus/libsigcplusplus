@@ -49,6 +49,24 @@ signal_impl::size_type signal_impl::size() const
   return slots_.size();
 }
 
+bool signal_impl::blocked() const
+{
+  for (const_iterator_type iter = slots_.begin(); iter != slots_.end(); ++iter)
+  {
+    if (!iter->blocked())
+      return false;
+  }
+  return true;
+}
+
+void signal_impl::block(bool should_block)
+{
+  for (iterator_type iter = slots_.begin(); iter != slots_.end(); ++iter)
+  {
+    iter->block(should_block);
+  }
+}
+
 signal_impl::iterator_type signal_impl::connect(const slot_base& slot_)
 {
   return insert(slots_.end(), slot_);
@@ -115,6 +133,23 @@ void signal_base::clear()
 signal_base::size_type signal_base::size() const
 {
   return (impl_ ? impl_->size() : 0);
+}
+
+bool signal_base::blocked() const
+{
+  return (impl_ ? impl_->blocked() : true);
+}
+
+void signal_base::block(bool should_block)
+{
+  if (impl_)
+    impl_->block(should_block);
+}
+
+void signal_base::unblock()
+{
+  if (impl_)
+    impl_->block(false);
 }
 
 signal_base::iterator_type signal_base::connect(const slot_base& slot_)

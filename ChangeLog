@@ -1,3 +1,10 @@
+2012-10-12  Kjell Ahlstedt  <kjell.ahlstedt@bredband.net>
+
+	signal_base: Add blocked(), block(), unblock().
+
+	* sigc++/signal_base.[h|cc]: Add signal_impl::blocked(), block() and
+	signal_base::blocked(), block(), unblock(). Bug #153780.
+
 2.2.11:
 
 2012-09-20  Andris Pavenis  <andris.pavenis@iki.fi>
