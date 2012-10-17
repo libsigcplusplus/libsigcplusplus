@@ -1,3 +1,13 @@
+2012-10-17  Kjell Ahlstedt  <kjell.ahlstedt@bredband.net>
+
+	Add some missing newin{}.
+
+	* docs/reference/Doxyfile.in: Add ALIASES newin.
+	* sigc++/functors/macros/functor_trait.h.m4: Add newin{2,2,11} to
+	SIGC_FUNCTORS_DEDUCE_RESULT_TYPE_WITH_DECLTYPE.
+	* sigc++/signal_base.h: Add newin{2,4} to signal_impl::blocked(), block() and
+	signal_base::blocked(), block(), unblock(). Bug #153780.
+
 2012-10-12  Kjell Ahlstedt  <kjell.ahlstedt@bredband.net>
 
 	signal_base: Add blocked(), block(), unblock().

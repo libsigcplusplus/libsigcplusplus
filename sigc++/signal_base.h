@@ -99,6 +99,8 @@ struct SIGC_API signal_impl
 
   /** Returns whether all slots in the list are blocked.
    * @return @p true if all slots are blocked or the list is empty.
+   *
+   * @newin{2,4}
    */
   bool blocked() const;
 
@@ -109,6 +111,8 @@ struct SIGC_API signal_impl
    * sigc::slot_base::block() and sigc::slot_base::unblock() can change the
    * blocking state of individual slots.
    * @param should_block Indicates whether the blocking state should be set or unset.
+   *
+   * @newin{2,4}
    */
   void block(bool should_block = true);
 
@@ -280,6 +284,8 @@ struct SIGC_API signal_base : public trackable
 
   /** Returns whether all slots in the list are blocked.
    * @return @p true if all slots are blocked or the list is empty.
+   *
+   * @newin{2,4}
    */
   bool blocked() const;
 
@@ -291,10 +297,14 @@ struct SIGC_API signal_base : public trackable
    * sigc::slot_base::block() and sigc::slot_base::unblock() can change the
    * blocking state of individual slots.
    * @param should_block Indicates whether the blocking state should be set or unset.
+   *
+   * @newin{2,4}
    */
   void block(bool should_block = true);
 
   /** Unsets the blocking state of all slots in the list..
+   *
+   * @newin{2,4}
    */
   void unblock();
 

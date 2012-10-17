@@ -193,6 +193,8 @@ struct functor_trait<T_functor,false>          \
  * }
  * @endcode
  *
+ * @newin{2,2,11}
+ *
  * You can't use both SIGC_FUNCTORS_HAVE_RESULT_TYPE and
  * SIGC_FUNCTORS_DEDUCE_RESULT_TYPE_WITH_DECLTYPE in the same compilation unit.
  *
