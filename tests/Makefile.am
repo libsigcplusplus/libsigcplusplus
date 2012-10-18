@@ -19,64 +19,66 @@ AM_CPPFLAGS = -I$(top_builddir) -I$(top_srcdir)
 AM_CXXFLAGS = $(SIGC_WXXFLAGS)
 LDADD       = $(top_builddir)/sigc++/libsigc-$(SIGCXX_API_VERSION).la
 
-check_PROGRAMS =			\
-	test_accum_iter			\
-	test_accumulated		\
-	test_bind			\
-	test_bind_ref			\
-	test_bind_refptr 		\
-	test_bind_return		\
-	test_cpp11_lambda		\
-	test_compose			\
-	test_copy_invalid_slot		\
-	test_custom			\
-	test_deduce_result_type		\
-	test_disconnect			\
-	test_disconnect_during_emit	\
-	test_exception_catch		\
-	test_functor_trait		\
-	test_hide			\
-	test_lambda			\
-	test_limit_reference		\
-	test_mem_fun			\
-	test_ptr_fun			\
-	test_retype			\
-	test_retype_return		\
-	test_signal			\
-	test_size			\
-	test_slot			\
-	test_slot_disconnect		\
-	test_trackable
+check_PROGRAMS = \
+  test_accum_iter \
+  test_accumulated \
+  test_bind \
+  test_bind_ref \
+  test_bind_refptr \
+  test_bind_return \
+  test_compose \
+  test_copy_invalid_slot \
+  test_cpp11_lambda \
+  test_custom \
+  test_deduce_result_type \
+  test_disconnect \
+  test_disconnect_during_emit \
+  test_exception_catch \
+  test_functor_trait \
+  test_hide \
+  test_lambda \
+  test_limit_reference \
+  test_mem_fun \
+  test_ptr_fun \
+  test_retype \
+  test_retype_return \
+  test_signal \
+  test_size \
+  test_slot \
+  test_slot_disconnect \
+  test_trackable
 
 TESTS = $(check_PROGRAMS)
 
-test_accum_iter_SOURCES			= test_accum_iter.cc
-test_accumulated_SOURCES 		= test_accumulated.cc
-test_bind_SOURCES			= test_bind.cc
-test_bind_ref_SOURCES			= test_bind_ref.cc
-test_bind_refptr_SOURCES		= test_bind_refptr.cc
-test_bind_return_SOURCES		= test_bind_return.cc
-test_cpp11_lambda_SOURCES   = test_cpp11_lambda.cc
-test_compose_SOURCES			= test_compose.cc
-test_copy_invalid_slot_SOURCES		= test_copy_invalid_slot.cc
-test_custom_SOURCES			= test_custom.cc
-test_deduce_result_type_SOURCES		= test_deduce_result_type.cc
-test_disconnect_SOURCES			= test_disconnect.cc
-test_disconnect_during_emit_SOURCES	= test_disconnect_during_emit.cc
-test_exception_catch_SOURCES		= test_exception_catch.cc
-test_functor_trait_SOURCES		= test_functor_trait.cc
-test_hide_SOURCES			= test_hide.cc
-test_lambda_SOURCES			= test_lambda.cc
-test_limit_reference_SOURCES		= test_limit_reference.cc
-test_mem_fun_SOURCES			= test_mem_fun.cc
-test_ptr_fun_SOURCES			= test_ptr_fun.cc
-test_retype_SOURCES			= test_retype.cc
-test_retype_return_SOURCES		= test_retype_return.cc
-test_signal_SOURCES			= test_signal.cc
-test_size_SOURCES			= test_size.cc
-test_slot_SOURCES			= test_slot.cc
-test_slot_disconnect_SOURCES		= test_slot_disconnect.cc
-test_trackable_SOURCES			= test_trackable.cc
+sigc_test_util = testutilities.h testutilities.cc
+
+test_accum_iter_SOURCES      = test_accum_iter.cc $(sigc_test_util)
+test_accumulated_SOURCES     = test_accumulated.cc $(sigc_test_util)
+test_bind_SOURCES            = test_bind.cc $(sigc_test_util)
+test_bind_ref_SOURCES        = test_bind_ref.cc $(sigc_test_util)
+test_bind_refptr_SOURCES     = test_bind_refptr.cc $(sigc_test_util)
+test_bind_return_SOURCES     = test_bind_return.cc $(sigc_test_util)
+test_compose_SOURCES         = test_compose.cc $(sigc_test_util)
+test_copy_invalid_slot_SOURCES = test_copy_invalid_slot.cc $(sigc_test_util)
+test_cpp11_lambda_SOURCES    = test_cpp11_lambda.cc $(sigc_test_util)
+test_custom_SOURCES          = test_custom.cc $(sigc_test_util)
+test_deduce_result_type_SOURCES = test_deduce_result_type.cc $(sigc_test_util)
+test_disconnect_SOURCES      = test_disconnect.cc $(sigc_test_util)
+test_disconnect_during_emit_SOURCES = test_disconnect_during_emit.cc $(sigc_test_util)
+test_exception_catch_SOURCES = test_exception_catch.cc $(sigc_test_util)
+test_functor_trait_SOURCES   = test_functor_trait.cc $(sigc_test_util)
+test_hide_SOURCES            = test_hide.cc $(sigc_test_util)
+test_lambda_SOURCES          = test_lambda.cc $(sigc_test_util)
+test_limit_reference_SOURCES = test_limit_reference.cc $(sigc_test_util)
+test_mem_fun_SOURCES         = test_mem_fun.cc $(sigc_test_util)
+test_ptr_fun_SOURCES         = test_ptr_fun.cc $(sigc_test_util)
+test_retype_SOURCES          = test_retype.cc $(sigc_test_util)
+test_retype_return_SOURCES   = test_retype_return.cc $(sigc_test_util)
+test_signal_SOURCES          = test_signal.cc $(sigc_test_util)
+test_size_SOURCES            = test_size.cc $(sigc_test_util)
+test_slot_SOURCES            = test_slot.cc $(sigc_test_util)
+test_slot_disconnect_SOURCES = test_slot_disconnect.cc $(sigc_test_util)
+test_trackable_SOURCES       = test_trackable.cc $(sigc_test_util)
 
 # 2005-01-19
 # Disabled: test_lambda - The Tru64 compiler can't build this when not using

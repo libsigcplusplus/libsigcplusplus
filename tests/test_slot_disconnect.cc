@@ -3,35 +3,47 @@
  *  Assigned to public domain.  Use as you wish without restriction.
  */
 
+#include "testutilities.h"
 #include <sigc++/functors/slot.h>
-#include <iostream>
+#include <sstream>
 #include <string>
+#include <cstdlib>
 
-SIGC_USING_STD(cout)
-SIGC_USING_STD(endl)
-SIGC_USING_STD(string)
-
-
-void Foo() { std::cout << "Foo" << std::endl; }
-void Bar() { std::cout << "Bar" << std::endl; }
-
-
-int main(void)
+namespace
 {
-   //sigc::slot<void> nullSlot;
-   
-   sigc::slot<void> theSlot(sigc::ptr_fun(&Foo)); //Note that sigc::ptr_fun() creates a sig::pointer_functor0.
-   theSlot(); //This should output "Foo"
+std::ostringstream result_stream;
 
-   theSlot.disconnect(); // This seems to do nothing. (because rep::parent_ is 0).
-   theSlot(); //This should cause no output.
+void Foo()
+{
+  result_stream << "Foo";
+}
 
-   theSlot = sigc::ptr_fun(&Bar); // ... but this works.
-   theSlot(); //This should output "Bar".
+void Bar()
+{
+  result_stream << "Bar";
+}
 
-   // Expected output:
-   // Foo
-   // Bar
+} // end anonymous namespace
 
-   return 0;
+int main(int argc, char* argv[])
+{
+  TestUtilities* util = TestUtilities::get_instance();
+
+  if (!util->check_command_args(argc, argv))
+    return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;
+
+  //Note that sigc::ptr_fun() creates a sig::pointer_functor0.
+  sigc::slot<void> theSlot(sigc::ptr_fun(&Foo));
+  theSlot();
+  util->check_result(result_stream, "Foo");
+
+  theSlot.disconnect();
+  theSlot();
+  util->check_result(result_stream, "");
+
+  theSlot = sigc::ptr_fun(&Bar);
+  theSlot();
+  util->check_result(result_stream, "Bar");
+
+  return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;
 }

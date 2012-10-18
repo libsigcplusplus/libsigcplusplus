@@ -1,3 +1,13 @@
+2012-10-18  Kjell Ahlstedt  <kjell.ahlstedt@bredband.net>
+
+	Test cases: Report pass/fail with exit status.
+
+	* tests/testutilities.[h|cc]: New files. Code common to all test cases.
+	* tests/*.cc: Use class TestUtilities. Don't print anything
+	if the test passes. Return EXIT_FAILURE if the test fails.
+	* tests/Makefile.am: Add testutilities.[h|cc] to all test cases.
+	Bug #684956.
+
 2.3.1:
 
 2012-10-18  Murray Cumming  <murrayc@murray.com>

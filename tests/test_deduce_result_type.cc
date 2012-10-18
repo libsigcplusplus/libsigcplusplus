@@ -3,46 +3,63 @@
  *  Assigned to public domain.  Use as you wish without restriction.
  */
 
-#include <iostream>
+#include "testutilities.h"
+#include <sstream>
+#include <cstdlib>
 #include <sigc++/sigc++.h>
-
-SIGC_USING_STD(cout)
-SIGC_USING_STD(endl)
 
 namespace
 {
+std::ostringstream result_stream;
 
 template <class T>
 void bar(T)
-{ std::cout << "unknown" << std::endl; }
+{
+  result_stream << "unknown";
+}
 
 template <>
 void bar<int>(int)
-{ std::cout << "int" << std::endl; }
+{
+  result_stream << "int";
+}
 
 template <>
 void bar<double>(double)
-{ std::cout << "double" << std::endl; }
+{
+  result_stream << "double";
+}
 
 struct foo : public sigc::functor_base
 {
   typedef double result_type;
-  int operator()(int i=1);
-  double operator()(const int&,int);
+
+  int operator()(int i = 1);
+  double operator()(const int&, int);
 };
 
 struct foo2 :public foo
 {};
 
-} // anonymous namespace
+} // end anonymous namespace
 
-int main(int, char**)
+int main(int argc, char* argv[])
 {
-  bar(sigc::deduce_result_type<foo2,long>::type());
-  bar(sigc::deduce_result_type<foo2,int,int>::type());
+  TestUtilities* util = TestUtilities::get_instance();
+
+  if (!util->check_command_args(argc, argv))
+    return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;
+
+  bar(sigc::deduce_result_type<foo2, long>::type());
+  util->check_result(result_stream, "double");
+
+  bar(sigc::deduce_result_type<foo2, int, int>::type());
+  util->check_result(result_stream, "double");
+
 #ifdef FAIL
-  bar(sigc::deduce_result_type<foo2,int,int,int>::type());
+  bar(sigc::deduce_result_type<foo2, int, int, int>::type());
+  util->check_result(result_stream, "double");
 #endif
 
-  return 0;
+  return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;
 }

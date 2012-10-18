@@ -3,38 +3,86 @@
  *  Assigned to public domain.  Use as you wish without restriction.
  */
 
-#include <iostream>
-//#include <sigc++/functors/ptr_fun.h>
+#include "testutilities.h"
+#include <sstream>
 #include <sigc++/sigc++.h>
+#include <cstdlib>
 
-SIGC_USING_STD(cout)
-SIGC_USING_STD(endl)
+//TODO: put something like #ifndef FORTE ... #else ... #endif around:
+#define ENABLE_TEST_OF_OVERLOADED_FUNCTIONS 0
+
+namespace
+{
+std::ostringstream result_stream;
 
 int foo()
-  {std::cout << "foo()" << std::endl; return 1;}
+{
+  result_stream << "foo()";
+  return 1;
+}
+
 void foo(int i1)
-  {std::cout << "foo(int "<<i1<<")" << std::endl;}
+{
+  result_stream << "foo(int " << i1 << ")";
+}
 
-/* TODO: put something like #ifndef FORTE ... #endif around:
+#if ENABLE_TEST_OF_OVERLOADED_FUNCTIONS
 void bar(char i1)
-  {std::cout << "foo(char "<<(int)i1<<")" << std::endl;} */
-void bar(float i1)
-  {std::cout << "foo(float "<<i1<<")" << std::endl;}
-double bar(int i1,int i2)
-  {std::cout << "foo(int "<<i1<<", int "<<i2<< ")" <<std::endl; return 1.0f;}
+{
+  result_stream << "bar(char " << (int)i1 << ")";
+}
+#endif
 
-struct test {
-  static void foo() {std::cout << "test::foo()" <<std::endl;}
+void bar(float i1)
+{
+  result_stream << "bar(float " << i1 << ")";
+}
+
+double bar(int i1, int i2)
+{
+  result_stream << "bar(int " << i1 << ", int " << i2 << ")";
+  return 1.0f;
+}
+
+struct test
+{
+  static void foo()
+  {
+    result_stream << "test::foo()";
+  }
 };
 
-int main()
+} // end anonymous namespace
+
+int main(int argc, char* argv[])
 {
+  TestUtilities* util = TestUtilities::get_instance();
+
+  if (!util->check_command_args(argc, argv))
+    return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;
+
   sigc::ptr_fun0(&foo)();
+  util->check_result(result_stream, "foo()");
+
   sigc::ptr_fun1(&foo)(1);
-/* TODO: put something like #ifndef FORTE ... #else ... #endif around:
+  util->check_result(result_stream, "foo(int 1)");
+
+#if ENABLE_TEST_OF_OVERLOADED_FUNCTIONS
   sigc::ptr_fun1<char>(&bar)(2);
-  sigc::ptr_fun1<float>(&bar)(2.0f); and: */
+  util->check_result(result_stream, "bar(char 2)");
+
+  sigc::ptr_fun1<float>(&bar)(2.0f);
+  util->check_result(result_stream, "bar(float 2)");
+#else
   sigc::ptr_fun1(&bar)(2.0f);
-  sigc::ptr_fun2(&bar)(3,5);
+  util->check_result(result_stream, "bar(float 2)");
+#endif
+
+  sigc::ptr_fun2(&bar)(3, 5);
+  util->check_result(result_stream, "bar(int 3, int 5)");
+
   sigc::ptr_fun(&test::foo)();
+  util->check_result(result_stream, "test::foo()");
+
+  return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;
 }

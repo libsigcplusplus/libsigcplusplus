@@ -3,59 +3,110 @@
  *  Assigned to public domain.  Use as you wish without restriction.
  */
 
+#include "testutilities.h"
 #include <sigc++/adaptors/compose.h>
-#include <iostream>
-
-SIGC_USING_STD(cout)
-SIGC_USING_STD(endl)
+#include <sstream>
+#include <cstdlib>
 
 // assume existance of T_functor::result_type for unknown functor types:
 namespace sigc { SIGC_FUNCTORS_HAVE_RESULT_TYPE }
 
+namespace
+{
+std::ostringstream result_stream;
 
-struct set 
+struct set
 {
   // choose a type that can hold all return values
   typedef double result_type;
-  double operator()(int i) 
-    {std::cout << "set(int "<<i<<")"<<std::endl; return i*i;}
-  double operator()(double i) 
-    {std::cout << "set(double "<<i<<")"<<std::endl; return i*5;}
+
+  double operator()(int i)
+  {
+    result_stream << "set(int " << i << ") ";
+    return i*i;
+  }
+
+  double operator()(double i)
+  {
+    result_stream << "set(double " << i << ") ";
+    return i*5;
+  }
 };
 
 struct set_void
 {
   typedef void result_type;
+
   void operator()(double i)
-    { std::cout << "set_void(double "<<i<<")"<<std::endl; }
+  {
+    result_stream << "set_void(double " << i << ")";
+  }
 };
 
 struct get
 {
 #ifdef SIGC_CXX_TYPEOF
   bool operator()()
-    { std::cout << "get()"<<std::endl; return true; }
-  int operator()(int i) 
-    { std::cout << "get("<<i<<")"<<std::endl; return i*2; }
-  double operator()(int i,int j) 
-    { std::cout << "get("<<i<<","<<j<<")"<<std::endl; return double(i)/double(j); }
+  {
+    result_stream << "get() ";
+    return true;
+  }
+
+  int operator()(int i)
+  {
+    result_stream << "get(" << i << ") ";
+    return i*2;
+  }
+
+  double operator()(int i, int j)
+  {
+    result_stream << "get(" << i << ", " << j << ") ";
+    return double(i)/double(j);
+  }
 #else
   // choose a type that can hold all return values
   typedef double result_type;
+
   double operator()()
-    { std::cout << "get()"<<std::endl; return true; }
-  double operator()(int i) 
-    { std::cout << "get("<<i<<")"<<std::endl; return i*2; }
-  double operator()(int i,int j) 
-    { std::cout << "get("<<i<<","<<j<<")"<<std::endl; return double(i)/double(j); }
+  {
+    result_stream << "get() ";
+    return true;
+  }
+
+  double operator()(int i)
+  {
+    result_stream << "get(" << i << ") ";
+    return i*2;
+  }
+
+  double operator()(int i, int j)
+  {
+    result_stream << "get(" << i << ", " << j << ") ";
+    return double(i)/double(j);
+  }
 #endif
 };
 
+} // end anonymous namespace
 
-int main()
+int main(int argc, char* argv[])
 {
-  std::cout << sigc::compose(set(),get())() << std::endl;
-  std::cout << sigc::compose(set(),get())(1) << std::endl;
-  std::cout << sigc::compose(set(),get())(1,2) << std::endl;
-  sigc::compose(set_void(),get())(3); //void test
+  TestUtilities* util = TestUtilities::get_instance();
+
+  if (!util->check_command_args(argc, argv))
+    return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;
+
+  result_stream << sigc::compose(set(), get())();
+  util->check_result(result_stream, "get() set(double 1) 5");
+
+  result_stream << sigc::compose(set(), get())(1);
+  util->check_result(result_stream, "get(1) set(double 2) 10");
+
+  result_stream << sigc::compose(set(), get())(1, 2);
+  util->check_result(result_stream, "get(1, 2) set(double 0.5) 2.5");
+
+  sigc::compose(set_void(), get())(3); //void test
+  util->check_result(result_stream, "get(3) set_void(double 6)");
+
+  return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;
 }

@@ -3,6 +3,15 @@
 
 // libsigc++-only test case. (Or almost so. RefPtr is stolen from glibmm.)
 
+// This test case is much more useful if it's run under valgrind.
+
+#include "testutilities.h"
+#include <sigc++/sigc++.h>
+#include <sstream>
+#include <cstdlib>
+
+#define ACTIVATE_BUG 1
+
 // -*- c++ -*-
 #ifndef _GLIBMM_REFPTR_H
 #define _GLIBMM_REFPTR_H
@@ -60,7 +69,7 @@ public:
    * Afterwards it will be null and use of -> will cause a segmentation fault.
    */
   inline RefPtr();
-  
+
   /// Destructor - decrements reference count.
   inline ~RefPtr();
 
@@ -99,7 +108,7 @@ public:
 
   /// Tests whether the RefPtr<> point to the same underlying instance.
   inline bool operator==(const RefPtr<T_CppObject>& src) const;
-  
+
   /// See operator==().
   inline bool operator!=(const RefPtr<T_CppObject>& src) const;
 
@@ -142,7 +151,7 @@ public:
 
   /** Static cast to derived class.
    *
-   * Like the dynamic cast; the notation is 
+   * Like the dynamic cast; the notation is
    * @code
    *   ptr_derived = RefPtr<Derived>::cast_static(ptr_base);
    * @endcode
@@ -160,7 +169,7 @@ public:
   template <class T_CastFrom>
   static inline RefPtr<T_CppObject> cast_const(const RefPtr<T_CastFrom>& src);
 
-  //TODO: Maybe remove these if we replace operator bool() with operator const void* after 
+  //TODO: Maybe remove these if we replace operator bool() with operator const void* after
   //an API/ABI break, as suggested by Daniel Elstner? murrayc.
   //See bug https://bugzilla.gnome.org/show_bug.cgi?id=626858
 
@@ -406,11 +415,9 @@ void swap(RefPtr<T_CppObject>& lhs, RefPtr<T_CppObject>& rhs)
 #endif /* _GLIBMM_REFPTR_H */
 
 
-#include <sigc++/sigc++.h>
-#include <iostream>
-#include <stdlib.h>
-
-#define ACTIVATE_BUG 1
+namespace
+{
+std::ostringstream result_stream;
 
 class Action : public sigc::trackable
 {
@@ -436,8 +443,8 @@ public:
   Test()
   : action(new Action)
   {
-    //std::cout << "new Test" << std::endl;
-#ifdef ACTIVATE_BUG //See https://bugzilla.gnome.org/show_bug.cgi?id=564005#c15s
+    result_stream << "new Test; ";
+#ifdef ACTIVATE_BUG //See https://bugzilla.gnome.org/show_bug.cgi?id=564005#c14
     action->signal_sig1().connect(sigc::bind(sigc::mem_fun(this, &Test::on_sig1), action));
 #else
     Glib::RefPtr<Action> action2(new Action);
@@ -447,24 +454,32 @@ public:
 
   ~Test()
   {
-    //std::cout << "delete Test" << std::endl;
+    result_stream << "delete Test; ";
   }
 
-  void on_sig1(int /* n */, Glib::RefPtr<Action> /* action */)
+  void on_sig1(int n, Glib::RefPtr<Action> /* action */)
   {
-    //std::cout << "Test::on_sig1, n=" << n << std::endl;
+    result_stream << "Test::on_sig1, n=" << n << "; ";
   }
-  
+
   Glib::RefPtr<Action> action;
 
 }; // end Test
 
-int main(int, char**)
+} // end anonymous namespace
+
+int main(int argc, char* argv[])
 {
+  TestUtilities* util = TestUtilities::get_instance();
+
+  if (!util->check_command_args(argc, argv))
+    return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;
+
   Test* test = new Test;
 
   test->action->emit_sig1(23);
   delete test;
+  util->check_result(result_stream, "new Test; Test::on_sig1, n=23; delete Test; ");
 
-  return EXIT_SUCCESS;
+  return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;
 }

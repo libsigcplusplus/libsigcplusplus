@@ -45,6 +45,7 @@
 #  define USING_CPP11_LAMBDA_EXPRESSIONS
 #endif
 
+#include "testutilities.h"
 #include <string>
 #include <iostream>
 #include <sstream>
@@ -64,25 +65,11 @@ namespace sigc
 
 namespace
 {
-bool result_ok = true;
-int test_number = 0;
 std::ostringstream result_stream;
-
-void check_result(const std::string& expected_result)
-{
-  ++test_number;
-  if (expected_result != result_stream.str())
-  {
-    std::cout << "Test " << test_number << ". Expected \"" << expected_result
-      << "\", got \"" << result_stream.str() << "\"" << std::endl;
-    result_ok = false;
-  }
-  result_stream.str("");
-}
 
 int foo(int i, int j)
 {
-  result_stream << "foo(int " << i << ", int " << j << ")";
+  result_stream << "foo(int " << i << ", int " << j << ") ";
   return 4*i + j;
 }
 
@@ -95,7 +82,7 @@ struct bar
 {
   int test(int i, int j)
   {
-    result_stream << "bar::test(int " << i << ", int " << j << ")";
+    result_stream << "bar::test(int " << i << ", int " << j << ") ";
     return 4*i + j;
   }
 
@@ -131,7 +118,7 @@ void foo_group1(int i, int j)
 
 int bar_group1(int i)
 {
-  result_stream << "bar_group1(int " << i << ")";
+  result_stream << "bar_group1(int " << i << ") ";
   return i + 2;
 }
 
@@ -158,44 +145,49 @@ void foo_group4(bar_group4&)
 } // end anonymous namespace
 
 
-int main()
+int main(int argc, char* argv[])
 {
+  TestUtilities* util = TestUtilities::get_instance();
+
+  if (!util->check_command_args(argc, argv))
+    return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;
+
 #ifdef USING_CPP11_LAMBDA_EXPRESSIONS
 
   // test lambda operators
   int a = 1;
   //std::cout << "(_1 + _2) (3,4):    " << (_1 + _2) (3,4)      << std::endl;
   result_stream << ([] (int a, int b) -> int { return a + b; }(3,4));
-  check_result("7");
+  util->check_result(result_stream, "7");
 
   //std::cout << "(_1 + 1)  (3,4):    " << (_1 + 1)  (3,4)      << std::endl;
   result_stream << ([] (int a, int) -> int { return a + 1; }(3,4));
-  check_result("4");
+  util->check_result(result_stream, "4");
 
   //std::cout << "(_2 + 1)  (3,4):    " << (_2 + 1)  (3,4)      << std::endl;
   result_stream << ([] (int, int b) -> int { return b + 1; }(3,4));
-  check_result("5");
+  util->check_result(result_stream, "5");
 
   //std::cout << "(2 + _1)  (3,4):    " << (2 + _1)  (3,4)      << std::endl;
   result_stream << ([] (int a, int) -> int { return 2 + a; }(3,4));
-  check_result("5");
+  util->check_result(result_stream, "5");
 
   //std::cout << "(2 + _2)  (3,4):    " << (2 + _2)  (3,4)      << std::endl;
   result_stream << ([] (int, int b) -> int { return 2 + b; }(3,4));
-  check_result("6");
+  util->check_result(result_stream, "6");
 
   //std::cout << "(_1+_2*_3)(1,2,3):  " << (_1+_2*_3)(1,2,3)    << std::endl;
   result_stream << ([] (int a, int b, int c) -> int { return a + b*c; }(1,2,3));
-  check_result("7");
+  util->check_result(result_stream, "7");
 
   //std::cout << "((++_1)*2)(1):      " << ((++_1)*2)(1)        << std::endl;
   result_stream << ([] (int a) -> int { return ++a * 2; }(1));
-  check_result("4");
+  util->check_result(result_stream, "4");
 
   //std::cout << "((++_1)*2)(a):      " << ((++_1)*2)(a);
   //std::cout << "; a: "                << a                    << std::endl;
   result_stream << ([] (int x) -> int { return ++x * 2; }(a)) << " " << a;
-  check_result("4 1");
+  util->check_result(result_stream, "4 1");
 
   // gcc can't compile libsigc++ lambda expressions with sigc::ref() parameters.
   // See https://bugzilla.gnome.org/show_bug.cgi?id=669128
@@ -203,41 +195,41 @@ int main()
   //  std::cout << "; a: "                << a                    << std::endl;
   result_stream << ([] (std::reference_wrapper<int> x) -> int { return ++x * 2; }(std::ref(a)));
   result_stream << " " << a;
-  check_result("4 2");
+  util->check_result(result_stream, "4 2");
   result_stream << ([] (int& x) -> int { return ++x * 2; }(a));
   result_stream << " " << a;
-  check_result("6 3");
+  util->check_result(result_stream, "6 3");
 
   //std::cout << "((++(*_1))*2)(&a):  " << ((++(*_1))*2)(&a);
   //std::cout << "; a: "                << a                    << std::endl;
   result_stream << ([] (int* x) -> int { return ++(*x) * 2; }(&a));
   result_stream << " " << a;
-  check_result("8 4");
+  util->check_result(result_stream, "8 4");
 
   //  std::cout << "((--(*(&_1)))*2)(ref(a)): " << ((--(*(&_1)))*2)(sigc::ref(a));
   //  std::cout << "; a: "                << a                    << std::endl;
   result_stream << ([] (std::reference_wrapper<int> x) -> int { return --(*(&x)) * 2; }(std::ref(a)));
   result_stream << " " << a;
-  check_result("6 3");
+  util->check_result(result_stream, "6 3");
   result_stream << ([] (int& x) -> int { return --(*(&x)) * 2; }(a));
   result_stream << " " << a;
-  check_result("4 2");
+  util->check_result(result_stream, "4 2");
 
   //std::cout << "(-_1)     (-5):     " << (-_1)     (-5)       << std::endl;
   result_stream << ([] (int x) -> int { return -x; }(-5));
-  check_result("5");
+  util->check_result(result_stream, "5");
 
   //std::cout << "(var(&a)[0])():     " << (sigc::var(&a)[0])() << std::endl;
   result_stream << ([&a]() -> int { return a; }());
-  check_result("2");
+  util->check_result(result_stream, "2");
 
   //std::cout << "(_1[_2])    (&a,0): " << (_1[_2])    (&a,0)   << std::endl;
   result_stream << ([] (int* x, int y) -> int { return x[y]; }(&a,0));
-  check_result("2");
+  util->check_result(result_stream, "2");
 
   //std::cout << "(*_1=_2)    (&a,1): " << (*_1=_2)    (&a,1)   << std::endl;
   result_stream << ([] (int* x, int y) -> int { *x = y; return *x; }(&a,1));
-  check_result("1");
+  util->check_result(result_stream, "1");
 
   // Comma operator, https://bugzilla.gnome.org/show_bug.cgi?id=342911
   a = -1;
@@ -248,7 +240,7 @@ int main()
   //std::cout << "; a: " << a << "; b: " << b << "; c: " << c << std::endl;
   result_stream << ([&a,&b,&c](int x, int y) -> int { return c = (a = x, b = y); }(2,3));
   result_stream << " " << a << " " << b << " " << c;
-  check_result("3 2 3 3");
+  util->check_result(result_stream, "3 2 3 3");
 
   // c++ restrictions:
   // - ref() must be used to indicate that the value shall not be copied
@@ -258,23 +250,23 @@ int main()
   // - cannot use "\n" without var() because arrays cannot be copied
   //  (sigc::ref(std::cout) << sigc::constant(1) << sigc::var("\n"))();
   [](){ result_stream << 1 << "\n"; }();
-  check_result("1\n");
+  util->check_result(result_stream, "1\n");
 
   //(sigc::ref(std::cout) << _1 << std::string("\n"))("hello world");
   [](const char* a){ result_stream << a << std::string("\n"); }("hello world");
-  check_result("hello world\n");
+  util->check_result(result_stream, "hello world\n");
 
   //(sigc::ref(std::cout) << sigc::static_cast_<int>(_1) << std::string("\n"))(1.234);
   [](double a){ result_stream << static_cast<int>(a) << std::string("\n"); }(1.234);
-  check_result("1\n");
+  util->check_result(result_stream, "1\n");
 
   //  (sigc::var(std::cout) << 1 << sigc::var("\n"))();
   [](){ result_stream << 1 << "\n"; }();
-  check_result("1\n");
+  util->check_result(result_stream, "1\n");
 
   //(sigc::var(std::cout) << _1 << std::string("\n"))("hello world");
   [](const char* a){ result_stream << a << std::string("\n"); }("hello world");
-  check_result("hello world\n");
+  util->check_result(result_stream, "hello world\n");
 
   // auto-disconnect
   // Here's an area where the libsigc++ lambda expressions are advantageous.
@@ -293,40 +285,40 @@ int main()
     // sl1 = printable_guest_book; // no auto-disconnect, no error; a copy is stored in sl1
     sl1 = sigc::mem_fun(printable_guest_book, &printable_book::operator());
     sl1(result_stream);
-    check_result("karl\n");
+    util->check_result(result_stream, "karl\n");
 
   } // auto-disconnect
 
   sl1(result_stream);
-  check_result("");
+  util->check_result(result_stream, "");
 
   // test group adaptor, here replaced by std::bind
   bar the_bar;
   //std::cout << (sigc::group(&foo, _1, _2)) (1, 2) << std::endl;
   result_stream << std::bind(&foo, std::placeholders::_1, std::placeholders::_2)(1, 2);
-  check_result("foo(int 1, int 2)6");
+  util->check_result(result_stream, "foo(int 1, int 2) 6");
 
   //std::cout << (sigc::group(&foo, _2, _1)) (1, 2) << std::endl;
   result_stream << std::bind(&foo, std::placeholders::_2, std::placeholders::_1)(1, 2);
-  check_result("foo(int 2, int 1)9");
+  util->check_result(result_stream, "foo(int 2, int 1) 9");
 
   //std::cout << (sigc::group(sigc::mem_fun(&bar::test), _1, _2, _3)) (sigc::ref(the_bar), 1, 2) << std::endl;
   result_stream << std::bind(std::mem_fn(&bar::test), std::placeholders::_1,
     std::placeholders::_2, std::placeholders::_3)(std::ref(the_bar), 1, 2);
-  check_result("bar::test(int 1, int 2)6");
+  util->check_result(result_stream, "bar::test(int 1, int 2) 6");
 
   // same functionality as bind
   //std::cout << (sigc::group(&foo, _1, 2))  (1)    << std::endl;
   result_stream << std::bind(&foo, std::placeholders::_1, 2)(1);
-  check_result("foo(int 1, int 2)6");
+  util->check_result(result_stream, "foo(int 1, int 2) 6");
 
   //std::cout << (sigc::group(&foo, 1, 2))   ()     << std::endl;
   result_stream << std::bind(&foo, 1, 2)();
-  check_result("foo(int 1, int 2)6");
+  util->check_result(result_stream, "foo(int 1, int 2) 6");
 
   //(sigc::group(sigc::ptr_fun(&foo_void), 1)) ();
   std::bind(sigc::ptr_fun(&foo_void), 1)();
-  check_result("foo_void(int 1)");
+  util->check_result(result_stream, "foo_void(int 1)");
 
   // auto-disconnect
   sigc::slot<void> sl2;
@@ -337,36 +329,36 @@ int main()
     // sl2 = std::bind(&egon, std::ref(guest_book)); // does not compile (gcc 4.6.3)
     sl2 = sigc::bind(&egon, sigc::ref(guest_book));
     sl2();
-    check_result("egon(string 'karl')");
+    util->check_result(result_stream, "egon(string 'karl')");
 
     //std::cout << static_cast<std::string&>(guest_book) << std::endl;
     result_stream << static_cast<std::string&>(guest_book);
-    check_result("egon was here");
+    util->check_result(result_stream, "egon was here");
 
   } // auto-disconnect
 
   sl2();
-  check_result("");
+  util->check_result(result_stream, "");
 
   // same functionality as hide
   //std::cout << (sigc::group(&foo, _1, _2)) (1,2,3) << std::endl;
   result_stream << std::bind(&foo, std::placeholders::_1, std::placeholders::_2)(1,2,3);
-  check_result("foo(int 1, int 2)6");
+  util->check_result(result_stream, "foo(int 1, int 2) 6");
 
   //(sigc::group(sigc::ptr_fun(&foo_void), _2)) (1, 2);
   std::bind(&foo_void, std::placeholders::_2)(1, 2);
-  check_result("foo_void(int 2)");
+  util->check_result(result_stream, "foo_void(int 2)");
 
   // same functionality as compose
   //std::cout << (sigc::group(&foo, sigc::group(&foo, _1, _2), _3)) (1,2,3) << std::endl;
   result_stream << std::bind(&foo, std::bind(&foo, std::placeholders::_1, std::placeholders::_2),
     std::placeholders::_3)(1,2,3);
-  check_result("foo(int 1, int 2)foo(int 6, int 3)27");
+  util->check_result(result_stream, "foo(int 1, int 2) foo(int 6, int 3) 27");
 
   // same functionality as retype
   //std::cout << (sigc::group(&foo, sigc::static_cast_<int>(_1), 2)) (1.234) << std::endl;
   result_stream << ([] (double x) -> int { return foo(static_cast<int>(x), 2); }(1.234));
-  check_result("foo(int 1, int 2)6");
+  util->check_result(result_stream, "foo(int 1, int 2) 6");
 
   // Code examples with C++11 lambda expressions and std::bind, which can replace
   // libsigc++ examples in the documentation of libsigc++ lambdas and sigc::group.
@@ -376,19 +368,19 @@ int main()
 
   //std::cout << sigc::_1(10,20,30); // returns 10
   result_stream << ([] (int x, int, int) -> int { return x; }(10,20,30));
-  check_result("10");
+  util->check_result(result_stream, "10");
 
   //std::cout << sigc::_2(10,20,30); // returns 20
   result_stream << ([] (int, int y, int) -> int { return y; }(10,20,30));
-  check_result("20");
+  util->check_result(result_stream, "20");
 
   //std::cout << (sigc::_1 + 5)(3); // returns (3 + 5)
   result_stream << ([] (int x) -> int { return x + 5; }(3));
-  check_result("8");
+  util->check_result(result_stream, "8");
 
   //std::cout << (sigc::_1 * sigc::_2)(7,10); // returns (7 * 10)
   result_stream << ([] (int x, int y) -> int { return x * y; }(7,10));
-  check_result("70");
+  util->check_result(result_stream, "70");
 
   //int main(int argc, char* argv[])
   //{
@@ -411,11 +403,11 @@ int main()
 
     data = 3;
     result_stream << readValue();
-    check_result("3");
+    util->check_result(result_stream, "3");
 
     data = 5;
     result_stream << readValue();
-    check_result("5");
+    util->check_result(result_stream, "5");
   }
 
   //--- sigc++/adaptors/lambda/macros/group.h.m4
@@ -423,31 +415,31 @@ int main()
   // argument binding ...
   //sigc::group(&foo,10,sigc::_1)(20); //fixes the first argument and calls foo(10,20)
   std::bind(&foo_group1, 10, std::placeholders::_1)(20);
-  check_result("foo_group1(int 10, int 20)");
+  util->check_result(result_stream, "foo_group1(int 10, int 20)");
 
   //sigc::group(&foo,sigc::_1,30)(40); //fixes the second argument and calls foo(40,30)
   std::bind(&foo_group1, std::placeholders::_1, 30)(40);
-  check_result("foo_group1(int 40, int 30)");
+  util->check_result(result_stream, "foo_group1(int 40, int 30)");
 
   // argument reordering ...
   //sigc::group(&foo,sigc::_2,sigc::_1)(1,2); //calls foo(2,1)
   std::bind(&foo_group1, std::placeholders::_2, std::placeholders::_1)(1,2);
-  check_result("foo_group1(int 2, int 1)");
+  util->check_result(result_stream, "foo_group1(int 2, int 1)");
 
   // argument hiding ...
   //sigc::group(&foo,sigc::_1,sigc::_2)(1,2,3); //calls foo(1,2)
   std::bind(&foo_group1, std::placeholders::_1, std::placeholders::_2)(1,2,3);
-  check_result("foo_group1(int 1, int 2)");
+  util->check_result(result_stream, "foo_group1(int 1, int 2)");
 
   // functor composition ...
   //sigc::group(&foo,sigc::_1,sigc::group(&bar,sigc::_2))(1,2); //calls foo(1,bar(2))
   std::bind(&foo_group1,  std::placeholders::_1, std::bind(&bar_group1, std::placeholders::_2))(1,2);
-  check_result("bar_group1(int 2)foo_group1(int 1, int 4)");
+  util->check_result(result_stream, "bar_group1(int 2) foo_group1(int 1, int 4)");
 
   // algebraic expressions ...
   // sigc::group(&foo,sigc::_1*sigc::_2,sigc::_1/sigc::_2)(6,3); //calls foo(6*3,6/3)
   [] (int x, int y) { foo_group1(x*y, x/y); }(6,3);
-  check_result("foo_group1(int 18, int 2)");
+  util->check_result(result_stream, "foo_group1(int 18, int 2)");
 
   {
     sigc::signal<void,int,int> some_signal;
@@ -455,7 +447,7 @@ int main()
     //some_signal.connect(std::bind(&foo_group2, std::placeholders::_2)); // does not compile (gcc 4.6.3)
     some_signal.connect([](int, int y) { foo_group2(y); });
     some_signal.emit(1,2);
-    check_result("foo_group2(int 2)");
+    util->check_result(result_stream, "foo_group2(int 2)");
   }
 
   {
@@ -466,8 +458,8 @@ int main()
     //some_signal.connect(sigc::bind(&foo_group3, sigc::ref(some_int))); // compiles, but we prefer std::bind() or C++11 lambda
     some_signal.connect([&some_int](){ foo_group3(some_int); });
     some_signal.emit();
-    result_stream << some_int;
-    check_result("foo_group3(int 0)1");
+    result_stream << " " << some_int;
+    util->check_result(result_stream, "foo_group3(int 0) 1");
   }
 
   {
@@ -480,15 +472,15 @@ int main()
       //some_signal.connect([&some_bar](){ foo_group4(some_bar); }); // no auto-disconnect
       some_signal.connect(sigc::bind(&foo_group4, sigc::ref(some_bar)));
       some_signal.emit();
-      check_result("foo_group4(bar_group4&)");
+      util->check_result(result_stream, "foo_group4(bar_group4&)");
     }
     some_signal.emit();
-    check_result("");
+    util->check_result(result_stream, "");
   }
 
 #else // not USING_CPP11_LAMBDA_EXPRESSIONS
   std::cout << "The compiler capabilities don't allow test of C++11 lambda expressions." << std::endl;
 #endif
 
-  return result_ok ? EXIT_SUCCESS : EXIT_FAILURE;
+  return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;
 }
