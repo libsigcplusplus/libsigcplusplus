@@ -1,3 +1,8 @@
+2.3.1 (unstable):
+
+* signal_base: Add blocked(), block(), unblock().
+  (Kjell Ahlstedt) Bug #153780
+
 2.2.11 (stable):
 
 * Fix comma operator in libsigc++ lambda expressions.
