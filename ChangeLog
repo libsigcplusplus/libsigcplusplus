@@ -1,3 +1,10 @@
+2012-10-18  Murray Cumming  <murrayc@murray.com>
+
+	Update the Doxyfile.in syntax.
+
+	* docs/reference/Doxyfile.in: By running doxygen -u
+	on it.
+
 2012-10-17  Kjell Ahlstedt  <kjell.ahlstedt@bredband.net>
 
 	Add some missing newin{}.
