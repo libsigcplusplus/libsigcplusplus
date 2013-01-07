@@ -1,3 +1,19 @@
+2013-01-07  Kjell Ahlstedt  <kjell.ahlstedt@bredband.net>
+
+	Documentation: Fix many warnings from Doxygen.
+
+	* configure.ac: Require mm-common 0.9.6 or later.
+	* docs/reference/Doxyfile.in: Don't warn for undocumented classes and structs.
+	* sigc++/adaptors/macros/bind.h.m4:
+	* sigc++/adaptors/macros/bind_return.h.m4:
+	* sigc++/adaptors/macros/compose.h.m4:
+	* sigc++/adaptors/macros/hide.h.m4:
+	* sigc++/connection.h:
+	* sigc++/macros/limit_reference.h.m4: Make all parameter names in @param
+	commands equal to the corresponding names in the function declarations.
+	* sigc++/signal_base.h: Remove an extraneous period that confuses Doxygen.
+	* sigc++/type_traits.h: Add a missing @code/@endcode pair.
+
 2012-10-18  Kjell Ahlstedt  <kjell.ahlstedt@bredband.net>
 
 	Test cases: Report pass/fail with exit status.

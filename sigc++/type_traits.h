@@ -78,6 +78,7 @@ struct type_trait<void>
  * Use this to provide a template specialization for a set of types.
  * For instance,
  *
+ * @code
  * template < class T_thing, bool Tval_derives_from_something = sigc::is_base_and_derived<Something, T_thing>::value >
  * class TheTemplate
  * {
@@ -89,8 +90,9 @@ struct type_trait<void>
  * class TheTemplate<T_thing, true>
  * {
  *   T_thing thing;
-     thing.method_that_is_in_something();
+ *   thing.method_that_is_in_something();
  * }
+ * @endcode
  */
 template <class T_base, class T_derived>
 struct is_base_and_derived

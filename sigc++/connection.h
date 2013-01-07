@@ -110,7 +110,7 @@ struct SIGC_API connection
   operator bool();
 
   /** Callback that is executed when the referred slot is destroyed.
-   * @param d The connection object notified (@p this).
+   * @param data The connection object notified (@p this).
    */
   static void* notify(void* data);
 

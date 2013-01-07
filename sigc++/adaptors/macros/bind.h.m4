@@ -101,7 +101,7 @@ struct bind_functor<$1, T_functor, T_bound, LIST(LOOP(nil, CALL_SIZE - 1))> : pu
 
 FOR(eval($1+1),CALL_SIZE,[[BIND_OPERATOR_LOCATION(eval($1+1),%1)]])dnl
   /** Constructs a bind_functor object that binds an argument to the passed functor.
-   * @param _A_functor Functor to invoke from operator()().
+   * @param _A_func Functor to invoke from operator()().
    * @param _A_bound Argument to bind to the functor.
    */
   bind_functor(_R_(T_functor) _A_func, _R_(T_bound) _A_bound)
@@ -150,8 +150,9 @@ FOR(eval($1+1),eval(CALL_SIZE-1),[[DEDUCE_RESULT_TYPE_COUNT($1,%1)]])dnl
 
 FOR(2,eval(CALL_SIZE-$1+1),[[BIND_OPERATOR_COUNT($1,%1)]])dnl
   /** Constructs a bind_functor object that binds an argument to the passed functor.
-   * @param _A_functor Functor to invoke from operator()().
-   * @param _A_bound Argument to bind to the functor.
+   * @param _A_func Functor to invoke from operator()().dnl
+FOR(1,$1,[
+   * @param _A_bound%1 Argument to bind to the functor.])
    */
   bind_functor(_R_(T_functor) _A_func, LOOP(_R_(T_type%1) _A_bound%1, $1))
     : adapts<T_functor>(_A_func), LOOP(bound%1_(_A_bound%1), $1)

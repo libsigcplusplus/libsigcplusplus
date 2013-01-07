@@ -118,7 +118,7 @@ private:
  * - @e T_action The type of functor to invoke.
  * - @e T_type The type of the reference.
  * @param _A_action The functor to invoke.
- * @param _A_argument The visited instance.
+ * @param _A_target The visited instance.
  */
 template <class T_action, class T_type, bool I_derives_trackable>
 void

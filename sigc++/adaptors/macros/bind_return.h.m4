@@ -20,8 +20,8 @@ include(template.macros.m4)
 
 define([BIND_RETURN_OPERATOR],[dnl
   /** Invokes the wrapped functor passing on the arguments.dnl
-FOR(1, $1),[
-   * @param _A_arg%1 Argument to be passed on to the functor.])
+FOR(1, $1,[
+   * @param _A_a%1 Argument to be passed on to the functor.])
    * @return The fixed return value.
    */
   template <LOOP(class T_arg%1, $1)>

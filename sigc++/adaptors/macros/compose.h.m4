@@ -106,8 +106,7 @@ FOR(1,CALL_SIZE, [[COMPOSE1_OPERATOR(%1)]])dnl
 
   /** Constructs a compose1_functor object that combines the passed functors.
    * @param _A_setter Functor that receives the return values of the invokation of @e _A_getter1 and @e _A_getter2.
-   * @param _A_getter1 Functor to invoke from operator()().
-   * @param _A_getter2 Functor to invoke from operator()().
+   * @param _A_getter Functor to invoke from operator()().
    */
   compose1_functor(const T_setter& _A_setter, const T_getter& _A_getter)
     : adapts<T_setter>(_A_setter), get_(_A_getter)

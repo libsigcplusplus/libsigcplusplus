@@ -31,7 +31,7 @@ define([HIDE_OPERATOR],[dnl
 ifelse($2,0,,[dnl
 ifelse($2,1,[dnl
   /** Invokes the wrapped functor ignoring the only argument.
-   * @param _A_arg%1 Argument to be ignored.
+   * @param _A_a1 Argument to be ignored.
    * @return The return value of the functor invocation.
    */
   template <class T_arg1>
@@ -49,8 +49,8 @@ ifelse($2,1,[dnl
 ],$1,0,[dnl
   /** Invokes the wrapped functor, ignoring the last argument.dnl
 FOR(1, eval($2-1),[
-   * @param _A_arg%1 Argument to be passed on to the functor.])
-   * @param _A_arg$2 Argument to be ignored.
+   * @param _A_a%1 Argument to be passed on to the functor.])
+   * @param _A_a$2 Argument to be ignored.
    * @return The return value of the functor invocation.
    */
   template <LOOP([class T_arg%1], $2)>
@@ -70,10 +70,10 @@ FOR(1, eval($2-1),[
 ],[dnl
   /** Invokes the wrapped functor, ignoring the $1[]th argument.dnl
 FOR(1, eval($1-1),[
-   * @param _A_arg%1 Argument to be passed on to the functor.])
-   * @param _A_arg$1 Argument to be ignored.dnl
+   * @param _A_a%1 Argument to be passed on to the functor.])
+   * @param _A_a$1 Argument to be ignored.dnl
 FOR(eval($1+1), $2,[
-   * @param _A_arg%1 Argument to be passed on to the functor.])
+   * @param _A_a%1 Argument to be passed on to the functor.])
    * @return The return value of the functor invocation.
    */
   template <LOOP([class T_arg%1], $2)>
@@ -109,7 +109,7 @@ DEDUCE_RESULT_TYPE(eval($1+1),CALL_SIZE)dnl
 FOR(eval($1+1),CALL_SIZE,[[HIDE_OPERATOR(eval($1+1),%1)]])dnl
 
   /** Constructs a hide_functor object that adds a dummy parameter to the passed functor.
-   * @param _A_functor Functor to invoke from operator()().
+   * @param _A_func Functor to invoke from operator()().
    */
   explicit hide_functor(const T_functor& _A_func)
     : adapts<T_functor>(_A_func)

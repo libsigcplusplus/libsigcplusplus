@@ -302,7 +302,7 @@ struct SIGC_API signal_base : public trackable
    */
   void block(bool should_block = true);
 
-  /** Unsets the blocking state of all slots in the list..
+  /** Unsets the blocking state of all slots in the list.
    *
    * @newin{2,4}
    */

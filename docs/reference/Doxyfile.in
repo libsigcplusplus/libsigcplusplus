@@ -1,4 +1,5 @@
 # Doxyfile 1.8.2
+# @configure_input@
 
 # This file describes the settings to be used by the documentation system
 # doxygen (www.doxygen.org) for a project.
@@ -358,6 +359,13 @@ LOOKUP_CACHE_SIZE      = 0
 # Build related configuration options
 #---------------------------------------------------------------------------
 
+# TODO: Most mm packages have EXTRACT_ALL = YES and WARN_IF_UNDOCUMENTED = YES,
+#       and they use DOXYGEN_SHOULD_SKIP_THIS to mark what Doxygen shall not
+#       extract. libsigc++ ought to use this method, but at present (2013-01-07)
+#       it does not use DOXYGEN_SHOULD_SKIP_THIS consistently, and
+#       EXTRACT_ALL = YES includes scores of undocumented uninteresting template
+#       specializations in the documentation.
+
 # If the EXTRACT_ALL tag is set to YES doxygen will assume all entities in
 # documentation are documented, even if no documentation was available.
 # Private class members and static file members will be hidden unless
@@ -539,7 +547,7 @@ GENERATE_BUGLIST       = NO
 # disable (NO) the deprecated list. This list is created by putting
 # \deprecated commands in the documentation.
 
-GENERATE_DEPRECATEDLIST= NO
+GENERATE_DEPRECATEDLIST= YES
 
 # The ENABLED_SECTIONS tag can be used to enable conditional
 # documentation sections, marked by \if sectionname ... \endif.
@@ -623,7 +631,7 @@ WARNINGS               = YES
 # for undocumented members. If EXTRACT_ALL is set to YES then this flag will
 # automatically be disabled.
 
-WARN_IF_UNDOCUMENTED   = YES
+WARN_IF_UNDOCUMENTED   = NO
 
 # If WARN_IF_DOC_ERROR is set to YES, doxygen will generate warnings for
 # potential errors in the documentation, such as not documenting some
