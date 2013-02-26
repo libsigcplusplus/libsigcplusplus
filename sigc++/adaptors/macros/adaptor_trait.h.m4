@@ -104,13 +104,14 @@ template <class T_functor> struct adapts;
  *
  * The adaptor types libsigc++ provides
  * are created with bind(), bind_return(), hide(), hide_return(),
- * retype_return(), retype(), compose(), exception_catch() and group().
+ * retype_return(), retype(), compose(), exception_catch(), track_obj()
+ * and group().
  *
  * You can easily derive your own adaptor type from sigc::adapts.
  */
 
 /** Converts an arbitrary functor into an adaptor type.
- * All adaptor tyes in libsigc++ are unnumbered and have
+ * All adaptor types in libsigc++ have
  * a <tt>template operator()</tt> member of every argument count
  * they support. These functions in turn invoke a stored adaptor's
  * <tt>template operator()</tt>, processing the arguments and return

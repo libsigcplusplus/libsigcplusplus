@@ -27,6 +27,7 @@
 #include <sigc++/adaptors/retype.h>
 #include <sigc++/adaptors/compose.h>
 #include <sigc++/adaptors/exception_catch.h>
+#include <sigc++/adaptors/track_obj.h>
 #include <sigc++/adaptors/lambda/lambda.h>
 
 #endif /* _SIGC_ADAPTOR_HPP_ */

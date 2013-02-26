@@ -32,7 +32,8 @@
 // The only real disadvantage of the C++11 lambda expressions is that a slot that
 // contains an object derived from sigc::trackable is not automatically disconnected
 // when the object is deleted, if a reference to the object is stored in a C++11
-// lambda expression, connected to the slot.
+// lambda expression, connected to the slot. But if you use sigc::track_obj(),
+// the slot is automatically disconnected. Thus, the disadvantage is insignificant.
 //
 // To test the C++11 lambda expressions with gcc 4.6.3 (and probably some later
 // versions of gcc; gcc 4.7.x also understands -std=c++11):
@@ -54,6 +55,7 @@
 #include <sigc++/functors/functors.h>
 #include <sigc++/bind.h>
 #include <sigc++/reference_wrapper.h>
+#include <sigc++/adaptors/track_obj.h>
 #include <sigc++/signal.h>
 
 #ifdef USING_CPP11_LAMBDA_EXPRESSIONS
@@ -270,20 +272,15 @@ int main(int argc, char* argv[])
 
   // auto-disconnect
   // Here's an area where the libsigc++ lambda expressions are advantageous.
-  // It can be more difficult to auto-disconnect slots without them.
+  // If you want to auto-disconnect a slot with a C++11 lambda expression
+  // that contains references to sigc::trackable-derived objects, you must use
+  // sigc::track_obj().
   sigc::slot<void, std::ostringstream&> sl1;
   {
-    struct printable_book : public book
-    {
-      explicit printable_book(const std::string& name) : book(name) {}
-      void operator()(std::ostringstream& stream) { stream << *this << "\n"; }
-    };
-    //book guest_book("karl");
-    printable_book printable_guest_book("karl");
-    // sl1 = (sigc::var(std::cout) << sigc::ref(guest_book) << sigc::var("\n"));
-    // sl1 = [&guest_book](){ result_stream << guest_book << "\n"; }; // no auto-disconnect
-    // sl1 = printable_guest_book; // no auto-disconnect, no error; a copy is stored in sl1
-    sl1 = sigc::mem_fun(printable_guest_book, &printable_book::operator());
+    book guest_book("karl");
+    //sl1 = (sigc::var(std::cout) << sigc::ref(guest_book) << sigc::var("\n"));
+    // sl1 = [&guest_book](std::ostringstream& stream){ stream << guest_book << "\n"; }; // no auto-disconnect
+    sl1 = sigc::track_obj([&guest_book](std::ostringstream& stream){ stream << guest_book << "\n"; }, guest_book);
     sl1(result_stream);
     util->check_result(result_stream, "karl\n");
 
@@ -327,7 +324,7 @@ int main(int argc, char* argv[])
     //sl2 = sigc::group(&egon, sigc::ref(guest_book));
     // sl2 = [&guest_book] () { egon(guest_book); }; // no auto-disconnect
     // sl2 = std::bind(&egon, std::ref(guest_book)); // does not compile (gcc 4.6.3)
-    sl2 = sigc::bind(&egon, sigc::ref(guest_book));
+    sl2 = sigc::track_obj([&guest_book] () { egon(guest_book); }, guest_book);
     sl2();
     util->check_result(result_stream, "egon(string 'karl')");
 
@@ -463,14 +460,15 @@ int main(int argc, char* argv[])
   }
 
   {
-    struct bar : public sigc::trackable {} some_bar;
+    //struct bar : public sigc::trackable {} some_bar;
     sigc::signal<void> some_signal;
     {
       bar_group4 some_bar;
       //some_signal.connect(sigc::group(&foo,sigc::ref(some_bar)));
       // disconnected automatically if some_bar goes out of scope
       //some_signal.connect([&some_bar](){ foo_group4(some_bar); }); // no auto-disconnect
-      some_signal.connect(sigc::bind(&foo_group4, sigc::ref(some_bar)));
+      //some_signal.connect(sigc::bind(&foo_group4, sigc::ref(some_bar))); // auto-disconnects, but we prefer C++11 lambda
+      some_signal.connect(sigc::track_obj([&some_bar](){ foo_group4(some_bar); }, some_bar));
       some_signal.emit();
       util->check_result(result_stream, "foo_group4(bar_group4&)");
     }

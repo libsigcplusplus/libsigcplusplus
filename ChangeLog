@@ -1,3 +1,20 @@
+2013-02-26  Kjell Ahlstedt  <kjell.ahlstedt@bredband.net>
+
+	Add track_obj() and test_track_obj.
+
+	* sigc++/.gitignore: Add adaptors/track_obj.h.
+	* sigc++/adaptors/adaptors.h: Add sigc++/adaptors/track_obj.h.
+	* sigc++/adaptors/lambda/macros/group.h.m4:
+	* sigc++/adaptors/macros/adaptor_trait.h.m4: Mention track_obj() in the
+	documentation.
+	* sigc++/adaptors/macros/track_obj.h.m4: New file.
+	* sigc++/filelist.am: Add track_obj.h.m4 and track_obj.h.
+	* tests/.gitignore:
+	* tests/Makefile.am: Add test_track_obj.
+	* tests/test_cpp11_lambda.cc: Use track_obj() to test auto-disconnection.
+	* tests/test_track_obj.cc: New test case.
+	Bug #672555.
+
 2013-01-07  Kjell Ahlstedt  <kjell.ahlstedt@bredband.net>
 
 	Documentation: Fix many warnings from Doxygen.

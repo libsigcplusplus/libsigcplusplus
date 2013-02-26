@@ -169,6 +169,10 @@ __FIREWALL__
  * by reference, a slot assigned to the group adaptor is cleared automatically
  * when the object goes out of scope.
  *
+ * If you bind an object of a sigc::trackable derived type to a C++11 lambda expression
+ * by reference, a slot assigned to the lambda expression is cleared automatically
+ * when the object goes out of scope only if you use sigc::track_obj().
+ *
  * @par Example:
  * @code
  * struct bar : public sigc::trackable {} some_bar;
@@ -176,21 +180,10 @@ __FIREWALL__
  * void foo(bar&);
  * some_signal.connect(sigc::group(&foo,sigc::ref(some_bar)));
  *   // disconnected automatically if some_bar goes out of scope
- * @endcode
- *
- * std::bind() and C++11 lambda expressions fail here. If you store a
- * reference to a sigc::trackable derived object in a C++11 lambda expression,
- * and assign this expression to a slot or signal, it will not be disconnected
- * automatically when the object goes out of scope. The previous example can
- * still be rewritten without sigc::group().
- * @code
- * struct bar : public sigc::trackable {} some_bar;
- * sigc::signal<void> some_signal;
- * void foo(bar&);
- * some_signal.connect(sigc::bind(&foo, sigc::ref(some_bar)));
- *   // disconnected automatically if some_bar goes out of scope
  * some_signal.connect([[&some_bar]](){ foo(some_bar); }); //C++11
  *   // NOT disconnected automatically if some_bar goes out of scope
+ * some_signal.connect(sigc::track_obj([[&some_bar]](){ foo(some_bar); }, some_bar)); //C++11
+ *   // disconnected automatically if some_bar goes out of scope
  * @endcode
  *
  * @ingroup adaptors lambdas
