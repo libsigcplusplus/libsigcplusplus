@@ -54,14 +54,16 @@ divert(0)dnl
 #include <sigc++/adaptors/adaptor_trait.h>
 #include <sigc++/reference_wrapper.h>
 
+_DEPRECATE_IFDEF_START
+
 namespace sigc {
 
 /** @defgroup lambdas Lambdas
  * libsigc++ ships with basic lambda functionality and the sigc::group adaptor,
  * which uses lambdas to transform a functor's parameter list.
  *
- * The lambda selectors sigc::_1, sigc::_2, ..., sigc::_9 are used to select the
- * first, second, ..., nineth argument from a list.
+ * The lambda selectors sigc::_1, sigc::_2, ..., sigc::_7 are used to select the
+ * first, second, ..., seventh argument from a list.
  *
  * @par Examples:
  * @code
@@ -87,10 +89,14 @@ namespace sigc {
  * [[]] (int x) -> int { return x + 5; }(3); // returns (3 + 5)
  * [[]] (int x, int y) -> int { return x * y; }(7,10); // returns (7 * 10)
  * @endcode
+ *
+ * @deprecated Use C++11 lambda expressions or std::bind() instead.
  */
 
 /** A hint to the compiler.
  * All lambda types publically inherit from this hint.
+ *
+ * @deprecated Use C++11 lambda expressions instead.
  *
  * @ingroup lambdas
  */
@@ -106,10 +112,19 @@ namespace internal {
  * Objects of this type store a value that may be of type lambda itself.
  * In this case, operator()() executes the lambda (a lambda is always a functor at the same time).
  * Otherwise, operator()() simply returns the stored value.
+ *
+ * @deprecated Use C++11 lambda expressions instead.
+ *
+ * @ingroup lambdas
  */
 template <class T_type, bool I_islambda = is_base_and_derived<lambda_base, T_type>::value> struct lambda_core;
 
-/// Abstracts lambda functionality (template specialization for lambda values).
+/** Abstracts lambda functionality (template specialization for lambda values).
+ *
+ * @deprecated Use C++11 lambda expressions instead.
+ *
+ * @ingroup lambdas
+ */
 template <class T_type>
 struct lambda_core<T_type, true> : public lambda_base
 {
@@ -131,13 +146,19 @@ FOR(1,CALL_SIZE,[[LAMBDA_DO(%1)]])dnl
   T_type value_;
 };
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 template <class T_type>
 typename lambda_core<T_type, true>::result_type
 lambda_core<T_type, true>::operator()() const
   { return value_(); }
+#endif // DOXYGEN_SHOULD_SKIP_THIS
 
-
-/// Abstracts lambda functionality (template specialization for other value types).
+/** Abstracts lambda functionality (template specialization for other value types).
+ *
+ * @deprecated Use C++11 lambda expressions instead.
+ *
+ * @ingroup lambdas
+ */
 template <class T_type>
 struct lambda_core<T_type, false> : public lambda_base
 {
@@ -156,13 +177,16 @@ FOR(1,CALL_SIZE,[[LAMBDA_DO_VALUE(%1)]])dnl
   T_type value_;
 };
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 template <class T_type>
 typename lambda_core<T_type, false>::result_type lambda_core<T_type, false>::operator()() const
   { return value_; }
+#endif // DOXYGEN_SHOULD_SKIP_THIS
 
 } /* namespace internal */
 
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 //template specialization of visit_each<>(action, functor):
 template <class T_action, class T_functor, bool I_islambda>
 void visit_each(const T_action& _A_action,
@@ -170,7 +194,7 @@ void visit_each(const T_action& _A_action,
 {
   visit_each(_A_action, _A_target.value_);
 }
-
+#endif // DOXYGEN_SHOULD_SKIP_THIS
 
 // forward declarations for lambda operators other<subscript> and other<assign>
 template <class T_type>
@@ -187,15 +211,32 @@ struct unwrap_lambda_type;
 
 /** Gets the object stored inside a lambda object.
  * Returns the object passed as argument, if it is not of type lambda.
+ *
+ * @deprecated Use C++11 lambda expressions instead of libsigc++ lambdas.
+ *
+ * @ingroup lambdas
  */
 template <class T_type>
 T_type& unwrap_lambda_value(T_type& a)
 { return a; }
 
+/** Gets the object stored inside a lambda object.
+ * Returns the object passed as argument, if it is not of type lambda.
+ *
+ * @deprecated Use C++11 lambda expressions instead of libsigc++ lambdas.
+ *
+ * @ingroup lambdas
+ */
 template <class T_type>
 const T_type& unwrap_lambda_value(const T_type& a)
 { return a; }
 
+/** Gets the object stored inside a lambda object.
+ *
+ * @deprecated Use C++11 lambda expressions instead of libsigc++ lambdas.
+ *
+ * @ingroup lambdas
+ */
 template <class T_type>
 const T_type& unwrap_lambda_value(const lambda<T_type>& a)
 { return a.value_; }
@@ -206,6 +247,8 @@ const T_type& unwrap_lambda_value(const lambda<T_type>& a)
  * In this case, operator()() executes the lambda (a lambda is always a functor at the same time).
  * Otherwise, operator()() simply returns the stored value.
  * The assign and subscript operators are defined to return a lambda operator.
+ *
+ * @deprecated Use C++11 lambda expressions instead.
  *
  * @ingroup lambdas
  */
@@ -236,7 +279,7 @@ struct lambda : public internal::lambda_core<T_type>
       return lambda<lambda_operator_type>(lambda_operator_type(this->value_, unwrap_lambda_value(a))); }
 };
 
-
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 //template specialization of visit_each<>(action, functor):
 template <class T_action, class T_type>
 void visit_each(const T_action& _A_action,
@@ -244,6 +287,7 @@ void visit_each(const T_action& _A_action,
 {
   visit_each(_A_action, _A_target.value_);
 }
+#endif // DOXYGEN_SHOULD_SKIP_THIS
 
 dnl /* With the Sun FORTE and the Compaq C++ compiler,
 dnl  * sigc::var() doesn't work with string constants.
@@ -308,12 +352,20 @@ dnl { return lambda<typename internal::convert_array<const T_type>::type>(v); }
  * @code
  * readValue.connect([[&data]] () -> int { return data; });
  * @endcode
+ *
+ * @deprecated Use C++11 lambda expressions instead of libsigc++ lambdas.
+ *
+ * @ingroup lambdas
  */
 template <class T_type>
 lambda<T_type&> var(T_type& v)
 { return lambda<T_type&>(v); }
 
 /** Converts a constant reference into a lambda object.
+ *
+ * @deprecated Use C++11 lambda expressions instead of libsigc++ lambdas.
+ *
+ * @ingroup lambdas
  */
 template <class T_type>
 lambda<const T_type&> var(const T_type& v)
@@ -323,15 +375,27 @@ lambda<const T_type&> var(const T_type& v)
 /** Deduces the type of the object stored in an object of the passed lambda type.
  * If the type passed as template argument is not of lambda type,
  * type is defined to unwrap_reference<T_type>::type.
+ *
+ * @deprecated Use C++11 lambda expressions instead of libsigc++ lambdas.
+ *
+ * @ingroup lambdas
  */
 template <class T_type>
 struct unwrap_lambda_type
 { typedef typename unwrap_reference<T_type>::type type; };
 
+/** Deduces the type of the object stored in an object of the passed lambda type.
+ *
+ * @deprecated Use C++11 lambda expressions instead of libsigc++ lambdas.
+ *
+ * @ingroup lambdas
+ */
 template <class T_type>
 struct unwrap_lambda_type<lambda<T_type> >
 { typedef T_type type; };
 
 } /* namespace sigc */
+
+_DEPRECATE_IFDEF_END
 
 #endif /* _SIGC_LAMBDA_BASE_HPP_ */

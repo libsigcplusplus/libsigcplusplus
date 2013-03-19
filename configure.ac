@@ -57,9 +57,13 @@ SIGC_CXX_HAS_SUN_REVERSE_ITERATOR
 AS_IF([test "x$config_error" = xyes],
       [AC_MSG_FAILURE([[One or more of the required C++ compiler features is missing.]])])
 
+# Evaluate the --enable-warnings=level option.
 MM_ARG_ENABLE_WARNINGS([SIGC_WXXFLAGS],
                        [-Wall],
                        [-pedantic -Wall -Wextra])
+
+# Offer the ability to omit some API from the library.
+MM_ARG_DISABLE_DEPRECATED_API([SIGCXX])
 
 AC_CONFIG_FILES([Makefile
                  ${SIGCXX_MODULE_NAME}.pc:sigc++.pc.in

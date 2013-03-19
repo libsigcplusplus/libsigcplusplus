@@ -45,6 +45,13 @@ divert(0)dnl
 define([_R_],[typename type_trait<$1>::take])
 define([_P_],[typename type_trait<$1>::pass])
 
+define([__DEPRECATION_GUARD__],[SIGCXX_DISABLE_DEPRECATED])dnl
+dnl Start deprecation
+define([_DEPRECATE_IFDEF_START],[dnl
+#ifndef __DEPRECATION_GUARD__])dnl
+dnl End deprecation
+define([_DEPRECATE_IFDEF_END],[dnl
+#endif // __DEPRECATION_GUARD__])dnl
 
 dnl
 dnl General macros

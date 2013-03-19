@@ -4,11 +4,14 @@
  */
 
 #include "testutilities.h"
+#include <iostream>
 #include <sstream>
 #include <string>
 #include <cstdlib>
 #include <sigc++/functors/functors.h>
 #include <sigc++/adaptors/lambda/lambda.h>
+
+#ifndef SIGCXX_DISABLE_DEPRECATED
 
 using sigc::_1;
 using sigc::_2;
@@ -87,12 +90,16 @@ inline std::ostringstream& operator << (std::ostringstream& s, const book& b)
 
 } // end anonymous namespace
 
+#endif // SIGCXX_DISABLE_DEPRECATED
+
 int main(int argc, char* argv[])
 {
   TestUtilities* util = TestUtilities::get_instance();
 
   if (!util->check_command_args(argc, argv))
     return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;
+
+#ifndef SIGCXX_DISABLE_DEPRECATED
 
   // test lambda operators
   int a = 1;
@@ -248,6 +255,10 @@ int main(int argc, char* argv[])
   // same functionality as retype
   result_stream << (sigc::group(&foo, sigc::static_cast_<int>(_1), 2)) (1.234);
   util->check_result(result_stream, "foo(int 1, int 2) 6");
+
+#else // SIGCXX_DISABLE_DEPRECATED
+  std::cout << "libsigc++ lambdas are deprecated. They are not tested." << std::endl;
+#endif
 
   return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;
 }

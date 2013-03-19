@@ -19,8 +19,12 @@ include(template.macros.m4)
 divert(0)dnl
 #include <sigc++/adaptors/lambda/select.h>
 
+_DEPRECATE_IFDEF_START
+
 namespace sigc {
 
 FOR(1,CALL_SIZE,[[const lambda<internal::lambda_select%1> _%1;
 ]])
 } /* namespace sigc */
+
+_DEPRECATE_IFDEF_END

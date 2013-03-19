@@ -1,4 +1,7 @@
 
+/* Define to omit deprecated API from the library. */
+#undef SIGCXX_DISABLE_DEPRECATED
+
 /* Major version number of sigc++. */
 #undef SIGCXX_MAJOR_VERSION
 

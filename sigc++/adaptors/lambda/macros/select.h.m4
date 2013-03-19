@@ -44,21 +44,33 @@ FOR($1, $2,[[LAMBDA_SELECT_DO($1,%1)]])dnl
 };
 
 ])
+define([LAMBDA_SELECTOR],[dnl
+/** Lambda selector.
+ *
+ * @deprecated Use C++11 lambda expressions or std::bind() instead of libsigc++ lambdas and sigc::group().
+ *
+ * @ingroup lambdas
+ */
+extern SIGC_API const lambda<internal::lambda_select$1> _$1;
+
+])
 
 divert(0)dnl
 #ifndef _SIGC_LAMBDA_SELECT_HPP_
 #define _SIGC_LAMBDA_SELECT_HPP_
 #include <sigc++/adaptors/lambda/base.h>
 
+_DEPRECATE_IFDEF_START
+
 namespace sigc {
 
 namespace internal {
-FOR(1,CALL_SIZE,[[LAMBDA_SELECT(%1,CALL_SIZE)]])
+FOR(1,CALL_SIZE,[[LAMBDA_SELECT(%1,CALL_SIZE)]])dnl
 } /* namespace internal */
 
-FOR(1,CALL_SIZE,[[extern SIGC_API const lambda<internal::lambda_select%1> _%1;
-]])
-
+FOR(1,CALL_SIZE,[[LAMBDA_SELECTOR(%1)]])dnl
 } /* namespace sigc */
+
+_DEPRECATE_IFDEF_END
 
 #endif /* _SIGC_LAMBDA_SELECT_HPP_ */

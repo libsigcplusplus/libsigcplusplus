@@ -20,6 +20,12 @@ include(template.macros.m4)
 dnl
 dnl  How to call the darn thing!
 define([LAMBDA_GROUP_FACTORY],[dnl
+/** Alters an arbitrary functor by rebuilding its arguments from $1 lambda expressions.
+ *
+ * @deprecated Use C++11 lambda expressions or std::bind() instead.
+ *
+ * @ingroup lambdas
+ */
 template <class T_functor, LOOP(class T_type%1, $1)>
 lambda<lambda_group$1<T_functor, LOOP(typename unwrap_reference<T_type%1>::type, $1)> >
 group(const T_functor& _A_func, LOOP(T_type%1 _A_%1, $1))
@@ -58,6 +64,13 @@ dnl
 dnl This really doesn't have much to do with lambda other than
 dnl holding lambdas with in itself.
 define([LAMBDA_GROUP],[dnl
+/** lambda_group$1 wraps a functor and rebuilds its arguments from $1 lambda expressions.
+ * Use the convenience function group() to create an instance of lambda_group$1.
+ *
+ * @deprecated Use C++11 lambda expressions or std::bind() instead.
+ *
+ * @ingroup lambdas
+ */
 template <class T_functor, LOOP(class T_type%1, $1)>
 struct lambda_group$1 : public lambda_base
 {
@@ -85,11 +98,11 @@ FOR(1, $1,[
   mutable functor_type func_;
 };
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 template <class T_functor, LOOP(class T_type%1, $1)>
 typename lambda_group$1<T_functor, LOOP(T_type%1, $1)>::result_type
 lambda_group$1<T_functor, LOOP(T_type%1, $1)>::operator ()() const
   { return func_(LOOP(value%1_(), $1)); }
-
 
 //template specialization of visit_each<>(action, functor):
 template <class T_action, class T_functor, LOOP(class T_type%1, $1)>
@@ -100,12 +113,14 @@ FOR(1, $1,[
   visit_each(_A_action, _A_target.value%1_);])
   visit_each(_A_action, _A_target.func_);
 }
-
+#endif // DOXYGEN_SHOULD_SKIP_THIS
 
 ])
 divert(0)dnl
 __FIREWALL__
 #include <sigc++/adaptors/lambda/base.h>
+
+_DEPRECATE_IFDEF_START
 
 /** @defgroup group_ group()
  * sigc::group() alters an arbitrary functor by rebuilding its arguments from one or more lambda expressions.
@@ -186,6 +201,8 @@ __FIREWALL__
  *   // disconnected automatically if some_bar goes out of scope
  * @endcode
  *
+ * @deprecated Use C++11 lambda expressions or std::bind() instead.
+ *
  * @ingroup adaptors lambdas
  */
 
@@ -195,3 +212,5 @@ FOR(1,3,[[LAMBDA_GROUP(%1, CALL_SIZE)]])
 FOR(1,3,[[LAMBDA_GROUP_FACTORY(%1)]])
 
 } /* namespace sigc */
+
+_DEPRECATE_IFDEF_END

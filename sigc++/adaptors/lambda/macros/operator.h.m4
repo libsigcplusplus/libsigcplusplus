@@ -195,6 +195,10 @@ divert(0)dnl
 #define _SIGC_LAMBDA_OPERATOR_HPP_
 #include <sigc++/adaptors/lambda/base.h>
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+
+_DEPRECATE_IFDEF_START
+
 namespace sigc {
 
 /** Deduces the base type of a reference or a pointer.
@@ -537,9 +541,12 @@ void visit_each(const T_action& _A_action,
   visit_each(_A_action, _A_target.arg_);
 }
 
-
 undivert(2)dnl
 
 } /* namespace sigc */
+
+_DEPRECATE_IFDEF_END
+
+#endif // DOXYGEN_SHOULD_SKIP_THIS
 
 #endif /* _SIGC_LAMBDA_OPERATOR_HPP_ */

@@ -1,3 +1,18 @@
+2013-03-19  Kjell Ahlstedt  <kjell.ahlstedt@bredband.net>
+
+	Deprecate libsigc++ lambdas, sigc::group(), sigc::var().
+
+	* configure.ac: Add MM_ARG_DISABLE_DEPRECATED_API(SIGCXX).
+	* sigc++/adaptors/lambda/macros/base.h.m4:
+	* sigc++/adaptors/lambda/macros/group.h.m4:
+	* sigc++/adaptors/lambda/macros/lambda.cc.m4:
+	* sigc++/adaptors/lambda/macros/operator.h.m4:
+	* sigc++/adaptors/lambda/macros/select.h.m4: Deprecate everything.
+	* sigc++/macros/template.macros.m4: Add deprecation macros.
+	* sigc++config.h.in: Add #undef SIGCXX_DISABLE_DEPRECATED.
+	* tests/test_lambda.cc: Skip test if SIGCXX_DISABLE_DEPRECATED is defined.
+	Bug #672555.
+
 2013-02-26  Kjell Ahlstedt  <kjell.ahlstedt@bredband.net>
 
 	Add track_obj() and test_track_obj.
