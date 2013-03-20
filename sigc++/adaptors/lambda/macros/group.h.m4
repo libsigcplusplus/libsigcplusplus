@@ -22,7 +22,7 @@ dnl  How to call the darn thing!
 define([LAMBDA_GROUP_FACTORY],[dnl
 /** Alters an arbitrary functor by rebuilding its arguments from $1 lambda expressions.
  *
- * @deprecated Use C++11 lambda expressions or std::bind() instead.
+ * @deprecated Use C++11 lambda expressions or %std::bind() instead.
  *
  * @ingroup lambdas
  */
@@ -67,7 +67,7 @@ define([LAMBDA_GROUP],[dnl
 /** lambda_group$1 wraps a functor and rebuilds its arguments from $1 lambda expressions.
  * Use the convenience function group() to create an instance of lambda_group$1.
  *
- * @deprecated Use C++11 lambda expressions or std::bind() instead.
+ * @deprecated Use C++11 lambda expressions or %std::bind() instead.
  *
  * @ingroup lambdas
  */
@@ -129,7 +129,7 @@ _DEPRECATE_IFDEF_START
  * arguments passed into the new functor. Arguments that don't have a placeholder in one
  * of the lambda expressions are dropped.
  *
- * If you have a C++11 compiler, a C++11 lambda expression and/or std::bind() is
+ * If you have a C++11 compiler, a C++11 lambda expression and/or %std::bind() is
  * often a good alternative to sigc::group(). Such alternatives are shown in the
  * following examples, marked with the comment <tt>//C++11</tt>.
  *
@@ -201,7 +201,7 @@ _DEPRECATE_IFDEF_START
  *   // disconnected automatically if some_bar goes out of scope
  * @endcode
  *
- * @deprecated Use C++11 lambda expressions or std::bind() instead.
+ * @deprecated Use C++11 lambda expressions or %std::bind() instead.
  *
  * @ingroup adaptors lambdas
  */

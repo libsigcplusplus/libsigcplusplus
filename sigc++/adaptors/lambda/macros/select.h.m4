@@ -47,7 +47,7 @@ FOR($1, $2,[[LAMBDA_SELECT_DO($1,%1)]])dnl
 define([LAMBDA_SELECTOR],[dnl
 /** Lambda selector.
  *
- * @deprecated Use C++11 lambda expressions or std::bind() instead of libsigc++ lambdas and sigc::group().
+ * @deprecated Use C++11 lambda expressions or %std::bind() instead of libsigc++ lambdas and sigc::group().
  *
  * @ingroup lambdas
  */

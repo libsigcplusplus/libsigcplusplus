@@ -90,7 +90,7 @@ namespace sigc {
  * [[]] (int x, int y) -> int { return x * y; }(7,10); // returns (7 * 10)
  * @endcode
  *
- * @deprecated Use C++11 lambda expressions or std::bind() instead.
+ * @deprecated Use C++11 lambda expressions or %std::bind() instead.
  */
 
 /** A hint to the compiler.

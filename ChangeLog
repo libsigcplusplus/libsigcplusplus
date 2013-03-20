@@ -1,3 +1,12 @@
+2013-03-20  Kjell Ahlstedt  <kjell.ahlstedt@bredband.net>
+
+	Suppress erroneous links in documentation.
+
+	* sigc++/adaptors/lambda/macros/base.h.m4:
+	* sigc++/adaptors/lambda/macros/group.h.m4:
+	* sigc++/adaptors/lambda/macros/select.h.m4: Doxygen links std::bind to
+	sigc::bind. Suppress these links. No link is better than the wrong link.
+
 2013-03-19  Kjell Ahlstedt  <kjell.ahlstedt@bredband.net>
 
 	Deprecate libsigc++ lambdas, sigc::group(), sigc::var().
