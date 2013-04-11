@@ -180,9 +180,11 @@ class track_obj_functor1 : public adapts<T_functor>
 public:
   typedef typename adapts<T_functor>::adaptor_type adaptor_type;
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
   template <LOOP(typename T_arg%1=void, CALL_SIZE)>
   struct deduce_result_type
     { typedef typename adaptor_type::template deduce_result_type<LOOP(_P_(T_arg%1), CALL_SIZE)>::type type; };
+#endif
   typedef typename adaptor_type::result_type result_type;
 
   /** Constructs a track_obj_functor1 object that wraps the passed functor and
@@ -211,7 +213,9 @@ FOR(1,CALL_SIZE,[[TRACK_OBJECT_OPERATOR(%1)]])dnl
 
 FOR(2,CALL_SIZE,[[TRACK_OBJECT_FUNCTOR(%1)]])dnl
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 FOR(1,CALL_SIZE,[[TRACK_OBJECT_VISIT_EACH(%1)]])dnl
+#endif // DOXYGEN_SHOULD_SKIP_THIS
 
 FOR(1,CALL_SIZE,[[TRACK_OBJECT(%1)]])dnl
 

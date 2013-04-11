@@ -35,7 +35,7 @@
  *
  * See also the 
  * <a href="http://libsigc.sourceforge.net/libsigc2/docs/manual/html/index.html">libsigc++ tutorial</a>, 
- * the <a href="http://libsigc.sourceforge.net/">the libsigc++ website</a>, and 
+ * the <a href="http://libsigc.sourceforge.net/">libsigc++ website</a>, and 
  * the <a href="http://library.gnome.org/devel/gtkmm-tutorial/unstable/chapter-signals.html">Signals appendix of the Programming with gtkmm book</a>.
  *
  * @section features Features
@@ -75,6 +75,12 @@
  * program_CPPFLAGS = $(LIBSIGC_CFLAGS)
  * program_LDADD = $(LIBSIGC_LIBS)
  * @endcode
+ *
+ * @section scope Scope of Documentation
+ *
+ * libsigc++ contains many template functions and template classes/structs,
+ * some with many specializations. This reference manual does not show all
+ * specializations of those templates that hardly any user will use directly.
  */
 
 #include <sigc++/signal.h>

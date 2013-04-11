@@ -18,6 +18,9 @@ divert(-1)
 
 include(template.macros.m4)
 
+define([ORDINAL],[dnl
+$1[]ifelse($1,1,[st],$1,2,[nd],$1,3,[rd],[th])[]dnl
+])
 define([DEDUCE_RESULT_TYPE_COUNT],[dnl
   template <LOOP(class T_arg%1, eval(CALL_SIZE))>
   struct deduce_result_type_internal<LIST($2, LOOP(T_arg%1,eval(CALL_SIZE)))>
@@ -26,7 +29,7 @@ define([DEDUCE_RESULT_TYPE_COUNT],[dnl
 define([BIND_OPERATOR_LOCATION],[dnl
 ifelse($2,1,,[dnl
   /** Invokes the wrapped functor passing on the arguments.
-   * bound_ is passed as the $1[]th argument.dnl
+   * bound_ is passed as the ORDINAL($1) argument.dnl
 FOR(1, eval($2-1),[
    * @param _A_arg%1 Argument to be passed on to the functor.])
    * @return The return value of the functor invocation.
@@ -74,8 +77,10 @@ FOR(1, eval($2-1),[
     
 ])
 define([BIND_FUNCTOR_LOCATION],[dnl
+ifelse($1,1,[#ifndef DOXYGEN_SHOULD_SKIP_THIS
+],)dnl Include only the first template specialization in the documentation. ($1 = 0..CALL_SIZE-1)
 /** Adaptor that binds an argument to the wrapped functor.
- * This template specialization fixes the eval($1+1)[]th argument of the wrapped functor.
+ * This template specialization fixes the ORDINAL(eval($1+1)) argument of the wrapped functor.
  *
  * @ingroup bind
  */
@@ -84,9 +89,13 @@ struct bind_functor<$1, T_functor, T_bound, LIST(LOOP(nil, CALL_SIZE - 1))> : pu
 {
   typedef typename adapts<T_functor>::adaptor_type adaptor_type;
 
+ifelse($1,0,[#ifndef DOXYGEN_SHOULD_SKIP_THIS
+],)dnl
   template <LOOP(class T_arg%1=void, eval(CALL_SIZE))>
   struct deduce_result_type
     { typedef typename adaptor_type::template deduce_result_type<LIST(LOOP(_P_(T_arg%1),eval($1)), _P_(typename unwrap_reference<T_bound>::type), FOR(eval($1+1),eval(CALL_SIZE-1),[_P_(T_arg%1),]))>::type type; };
+ifelse($1,0,[#endif
+],)dnl
   typedef typename adaptor_type::result_type  result_type;
 
   /** Invokes the wrapped functor passing on the bound argument only.
@@ -111,8 +120,11 @@ FOR(eval($1+1),CALL_SIZE,[[BIND_OPERATOR_LOCATION(eval($1+1),%1)]])dnl
   /// The argument bound to the functor.
   bound_argument<T_bound> bound_;
 };
+ifelse($1,eval(CALL_SIZE-1),[#endif // DOXYGEN_SHOULD_SKIP_THIS
+],)dnl Include only the first template specialization in the documentation. ($1 = 0..CALL_SIZE-1)
 
-])
+])dnl end BIND_FUNCTOR_LOCATION
+
 define([BIND_FUNCTOR_COUNT],[dnl
 /** Adaptor that binds $1 argument(s) to the wrapped functor.
  * This template specialization fixes the last $1 argument(s) of the wrapped functor.
@@ -124,18 +136,20 @@ struct bind_functor<LIST(-1, T_functor, LIST(LOOP(T_type%1, $1), LOOP(nil, CALL_
 {
   typedef typename adapts<T_functor>::adaptor_type adaptor_type;
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
+ifelse($1,1,[#ifndef DOXYGEN_SHOULD_SKIP_THIS
+],)dnl
   template <LIST(int count, LOOP(class T_arg%1, eval(CALL_SIZE)))>
   struct deduce_result_type_internal
     { typedef typename adaptor_type::template deduce_result_type<LIST(LOOP(_P_(T_arg%1), eval(CALL_SIZE-$1)), LOOP(_P_(typename unwrap_reference<T_type%1>::type), $1))>::type type; };
 FOR(eval($1+1),eval(CALL_SIZE-1),[[DEDUCE_RESULT_TYPE_COUNT($1,%1)]])dnl
-#endif /*DOXYGEN_SHOULD_SKIP_THIS*/
 
   template <LOOP(class T_arg%1=void, eval(CALL_SIZE))>
   struct deduce_result_type {
     typedef typename deduce_result_type_internal<internal::count_void<LOOP(T_arg%1, eval(CALL_SIZE))>::value,
                                                  LOOP(T_arg%1, eval(CALL_SIZE))>::type type;
   };
+ifelse($1,1,[#endif // DOXYGEN_SHOULD_SKIP_THIS
+],)dnl
   typedef typename adaptor_type::result_type  result_type;
 
   /** Invokes the wrapped functor passing on the bound argument only.
@@ -163,7 +177,9 @@ FOR(1,$1,[
   bound_argument<T_type%1> bound%1_;])
 };
 
-
+ifelse($1,1,[#ifndef DOXYGEN_SHOULD_SKIP_THIS
+],)dnl Include only the first template specialization of bind_functor and no
+dnl template specialization of visit_each in the documentation. ($1 = 1..CALL_SIZE)
 //template specialization of visit_each<>(action, functor):
 /** Performs a functor on each of the targets of a functor.
  * The function overload for sigc::bind_functor performs a functor on the
@@ -179,8 +195,11 @@ void visit_each(const T_action& _A_action,
 FOR(1,$1,[
   visit_each(_A_action, _A_target.bound%1_);])
 }
+ifelse($1,CALL_SIZE,[#endif // DOXYGEN_SHOULD_SKIP_THIS
+],)dnl
 
-])
+])dnl end BIND_FUNCTOR_COUNT
+
 define([BIND_COUNT],[dnl
 /** Creates an adaptor of type sigc::bind_functor which fixes the last $1 argument(s) of the passed functor.
  * This function overload fixes the last $1 argument(s) of @e _A_func.
@@ -326,18 +345,23 @@ struct count_void<void,void,void,void,void,void,void>
  * Use the convenience function sigc::bind() to create an instance of sigc::bind_functor.
  *
  * The following template arguments are used:
- * - @e I_location Zero-based position of the argument to fix (@p -1 for the last argument).
+ * - @e I_location Zero-based position of the argument to fix (@p -1 for the last argument).dnl
 FOR(1, CALL_SIZE,[
- * - @e T_type%1 Type of the %1st bound argument.])
+ * - @e T_type%1 Type of the [ORDINAL(%1)] bound argument.])
  * - @e T_functor Type of the functor to wrap.
  *
  * @ingroup bind
  */
 template <LIST(int I_location, class T_functor, LOOP(class T_type%1=nil, CALL_SIZE))>
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 struct bind_functor;
+#else
+struct bind_functor {};
+#endif
 
 FOR(0,eval(CALL_SIZE-1),[[BIND_FUNCTOR_LOCATION(%1)]])dnl
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 //template specialization of visit_each<>(action, functor):
 /** Performs a functor on each of the targets of a functor.
  * The function overload for sigc::bind_functor performs a functor on the
@@ -352,6 +376,7 @@ void visit_each(const T_action& _A_action,
   visit_each(_A_action, _A_target.functor_);
   visit_each(_A_action, _A_target.bound_);
 }
+#endif // DOXYGEN_SHOULD_SKIP_THIS
 
 FOR(1,CALL_SIZE,[[BIND_FUNCTOR_COUNT(%1)]])dnl
 

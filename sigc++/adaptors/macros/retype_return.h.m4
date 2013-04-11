@@ -69,9 +69,11 @@ namespace sigc {
 template <class T_return, class T_functor>
 struct retype_return_functor : public adapts<T_functor>
 {
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
   template <LOOP(class T_arg%1=void, CALL_SIZE)>
   struct deduce_result_type
     { typedef T_return type; };
+#endif
   typedef T_return result_type;
 
   T_return operator()();
@@ -103,9 +105,11 @@ T_return retype_return_functor<T_return, T_functor>::operator()()
 template <class T_functor>
 struct retype_return_functor<void, T_functor> : public adapts<T_functor>
 {
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
   template <LOOP(class T_arg%1=void, CALL_SIZE)>
   struct deduce_result_type
     { typedef void type; };
+#endif
   typedef void result_type;
 
   void operator()();
@@ -121,7 +125,7 @@ template <class T_functor>
 void retype_return_functor<void, T_functor>::operator()()
   { this->functor_(); }
 
-  
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 //template specialization of visit_each<>(action, functor):
 /** Performs a functor on each of the targets of a functor.
  * The function overload for sigc::retype_return_functor performs a functor on the
@@ -135,7 +139,7 @@ void visit_each(const T_action& _A_action,
 {
   visit_each(_A_action, _A_target.functor_);
 }
-
+#endif // DOXYGEN_SHOULD_SKIP_THIS
 
 /** Creates an adaptor of type sigc::retype_return_functor which performs a C-style cast on the return value of the passed functor.
  * The template argument @e T_return specifies the target type of the cast.

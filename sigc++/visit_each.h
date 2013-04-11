@@ -24,6 +24,7 @@
 
 namespace sigc {
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 namespace internal {
 
 //This should really be an inner class of limit_derived_target, without the T_limit template type,
@@ -108,7 +109,7 @@ struct limit_derived_target<T_target*, T_action>
 };
 
 } /* namespace internal */
-
+#endif // DOXYGEN_SHOULD_SKIP_THIS
 
 /** This function performs a functor on each of the targets of a functor.
  * All unknown types just call @e _A_action on them.

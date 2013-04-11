@@ -142,6 +142,7 @@ private:
   const_limit_reference<T_wrapped> visited_;
 };
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 /** Implementation of visit_each() specialized for the bound_argument class.
  * Call visit_each() on the entity returned by the bound_argument's visit()
  * method.
@@ -157,7 +158,7 @@ visit_each(const T_action& _A_action,
 {
   visit_each(_A_action, _A_argument.visit());
 }
-
+#endif // DOXYGEN_SHOULD_SKIP_THIS
 
 } /* namespace sigc */
 

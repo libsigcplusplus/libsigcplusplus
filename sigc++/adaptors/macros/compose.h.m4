@@ -92,11 +92,13 @@ struct compose1_functor : public adapts<T_setter>
   typedef T_setter setter_type;
   typedef T_getter getter_type;
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
   template <LOOP(class T_arg%1 = void, CALL_SIZE)>
   struct deduce_result_type
     { typedef typename adaptor_type::template deduce_result_type<
         typename sigc::deduce_result_type<LIST(T_getter, LOOP(T_arg%1,CALL_SIZE))>::type
           >::type type; };
+#endif
   typedef typename adaptor_type::result_type  result_type;
 
   result_type
@@ -138,12 +140,14 @@ struct compose2_functor : public adapts<T_setter>
   typedef T_getter1 getter1_type;
   typedef T_getter2 getter2_type;
   
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
   template <LOOP(class T_arg%1=void, CALL_SIZE)>
   struct deduce_result_type
     { typedef typename adaptor_type::template deduce_result_type<
         typename sigc::deduce_result_type<LIST(T_getter1, LOOP(T_arg%1,CALL_SIZE))>::type,
         typename sigc::deduce_result_type<LIST(T_getter2, LOOP(T_arg%1,CALL_SIZE))>::type
           >::type result_type; };
+#endif
   typedef typename adaptor_type::result_type  result_type;
 
   result_type
@@ -171,6 +175,7 @@ typename compose2_functor<T_setter, T_getter1, T_getter2>::result_type
 compose2_functor<T_setter, T_getter1, T_getter2>::operator()()
   { return this->functor_(get1_(), get2_()); }
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 //template specialization of visit_each<>(action, functor):
 /** Performs a functor on each of the targets of a functor.
  * The function overload for sigc::compose1_functor performs a functor on the
@@ -215,7 +220,7 @@ void visit_each(const T_action& _A_action,
   typedef typename type_functor::getter2_type type_functor_getter2;
   visit_each<T_action, type_functor_getter2>(_A_action, _A_target.get2_);
 }
-
+#endif // DOXYGEN_SHOULD_SKIP_THIS
 
 /** Creates an adaptor of type sigc::compose1_functor which combines two functors.
  *

@@ -93,6 +93,10 @@ struct type_trait<void>
  *   thing.method_that_is_in_something();
  * }
  * @endcode
+ *
+ * sigc::is_base_and_derived<> is used internally in libsigc++. If you need such a
+ * template class elsewhere, and you have a C++11 compiler, std::is_base_of<>
+ * is recommended.
  */
 template <class T_base, class T_derived>
 struct is_base_and_derived
@@ -135,7 +139,9 @@ public:
 
 #endif //SIGC_SELF_REFERENCE_IN_MEMBER_INITIALIZATION
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
   void avoid_gcc3_warning_(); //Not implemented. g++ 3.3.5 (but not 3.3.4, and not 3.4) warn that there are no public methods, even though there is a public variable.
+#endif
 };
 
 template <class T_base>

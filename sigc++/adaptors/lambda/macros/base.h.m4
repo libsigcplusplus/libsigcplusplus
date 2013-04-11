@@ -102,9 +102,9 @@ namespace sigc {
  */
 struct lambda_base : public adaptor_base {};
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 // Forward declaration of lambda.
 template <class T_type> struct lambda;
-
 
 namespace internal {
 
@@ -146,12 +146,10 @@ FOR(1,CALL_SIZE,[[LAMBDA_DO(%1)]])dnl
   T_type value_;
 };
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
 template <class T_type>
 typename lambda_core<T_type, true>::result_type
 lambda_core<T_type, true>::operator()() const
   { return value_(); }
-#endif // DOXYGEN_SHOULD_SKIP_THIS
 
 /** Abstracts lambda functionality (template specialization for other value types).
  *
@@ -177,16 +175,13 @@ FOR(1,CALL_SIZE,[[LAMBDA_DO_VALUE(%1)]])dnl
   T_type value_;
 };
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
 template <class T_type>
 typename lambda_core<T_type, false>::result_type lambda_core<T_type, false>::operator()() const
   { return value_; }
-#endif // DOXYGEN_SHOULD_SKIP_THIS
 
 } /* namespace internal */
 
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
 //template specialization of visit_each<>(action, functor):
 template <class T_action, class T_functor, bool I_islambda>
 void visit_each(const T_action& _A_action,
@@ -194,7 +189,6 @@ void visit_each(const T_action& _A_action,
 {
   visit_each(_A_action, _A_target.value_);
 }
-#endif // DOXYGEN_SHOULD_SKIP_THIS
 
 // forward declarations for lambda operators other<subscript> and other<assign>
 template <class T_type>
@@ -207,7 +201,7 @@ struct lambda_operator;
 
 template <class T_type>
 struct unwrap_lambda_type;
-
+#endif // DOXYGEN_SHOULD_SKIP_THIS
 
 /** Gets the object stored inside a lambda object.
  * Returns the object passed as argument, if it is not of type lambda.

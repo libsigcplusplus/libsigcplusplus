@@ -18,7 +18,12 @@ divert(-1)
 
 include(template.macros.m4)
 
+define([ORDINAL],[dnl
+ifelse($1,0,,$1)ifelse($1,0,[last],$1,1,[st],$1,2,[nd],$1,3,[rd],[th])[]dnl
+])
 define([DEDUCE_RESULT_TYPE],[dnl
+ifelse(eval($1 < 2),1,[#ifndef DOXYGEN_SHOULD_SKIP_THIS
+],)dnl Only for the first two template specializations. ($1 = 0..CALL_SIZE)
   template <LOOP(class T_arg%1=void, CALL_SIZE)>
   struct deduce_result_type
 ifelse($1,0,[dnl
@@ -26,6 +31,8 @@ ifelse($1,0,[dnl
 ],[dnl
     { typedef typename adaptor_type::template deduce_result_type<LIST(LOOP(_P_(T_arg%1),eval($1-1)), FOR(eval($1+1),$2,[_P_(T_arg%1),]))>::type type; };
 ])dnl
+ifelse(eval($1 < 2),1,[#endif // DOXYGEN_SHOULD_SKIP_THIS
+],)dnl
 ])
 define([HIDE_OPERATOR],[dnl
 ifelse($2,0,,[dnl
@@ -68,7 +75,7 @@ FOR(1, eval($2-1),[
   #endif
 
 ],[dnl
-  /** Invokes the wrapped functor, ignoring the $1[]th argument.dnl
+  /** Invokes the wrapped functor, ignoring the ORDINAL($1) argument.dnl
 FOR(1, eval($1-1),[
    * @param _A_a%1 Argument to be passed on to the functor.])
    * @param _A_a$1 Argument to be ignored.dnl
@@ -91,10 +98,13 @@ FOR(eval($1+1), $2,[
   #endif
     
 ])])dnl
-])
+])dnl end HIDE_OPERATOR
+
 define([HIDE_FUNCTOR],[dnl
+ifelse($1,1,[#ifndef DOXYGEN_SHOULD_SKIP_THIS
+],)dnl Include only the first two template specializations in the documentation. ($1 = -1..CALL_SIZE-1)
 /** Adaptor that adds a dummy parameter to the wrapped functor.
- * This template specialization ignores the value of the ifelse($1,-1,[last],[$1[]th]) parameter in operator()().
+ * This template specialization ignores the value of the ORDINAL(eval($1+1)) parameter in operator()().
  *
  * @ingroup hide
  */
@@ -115,8 +125,10 @@ FOR(eval($1+1),CALL_SIZE,[[HIDE_OPERATOR(eval($1+1),%1)]])dnl
     : adapts<T_functor>(_A_func)
     {}
 };
+ifelse($1,eval(CALL_SIZE-1),[#endif // DOXYGEN_SHOULD_SKIP_THIS
+],)dnl Include only the first two template specializations in the documentation. ($1 = -1..CALL_SIZE-1)
 
-])
+])dnl end HIDE_FUNCTOR
 
 divert(0)dnl
 __FIREWALL__
@@ -187,10 +199,15 @@ namespace sigc {
  * @ingroup hide
  */
 template <int I_location, class T_functor>
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 struct hide_functor;
+#else
+struct hide_functor {};
+#endif
 
 FOR(-1,eval(CALL_SIZE-1),[[HIDE_FUNCTOR(%1)]])dnl
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 //template specialization of visit_each<>(action, functor):
 /** Performs a functor on each of the targets of a functor.
  * The function overload for sigc::hide_functor performs a functor on the
@@ -204,7 +221,7 @@ void visit_each(const T_action& _A_action,
 {
   visit_each(_A_action, _A_target.functor_);
 }
-
+#endif // DOXYGEN_SHOULD_SKIP_THIS
 
 /** Creates an adaptor of type sigc::hide_functor which adds a dummy parameter to the passed functor.
  * The optional template argument @e I_location specifies the zero-based

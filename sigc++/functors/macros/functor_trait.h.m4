@@ -59,8 +59,11 @@ namespace sigc {
  * @ingroup signal
  * @ingroup slot
  */
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 struct nil;
-
+#else
+struct nil {};
+#endif
 
 /** @defgroup sigcfunctors Functors
  * Functors are copyable types that define operator()().
@@ -131,12 +134,14 @@ struct functor_trait
   typedef T_functor functor_type;
 };
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 template <class T_functor>
 struct functor_trait<T_functor,true>
 {
   typedef typename T_functor::result_type result_type;
   typedef T_functor functor_type;
 };
+#endif // DOXYGEN_SHOULD_SKIP_THIS
 
 /** Helper macro, if you want to mix user-defined and third party functors with libsigc++.
  *
@@ -208,8 +213,10 @@ struct functor_trait<T_functor, false> \
   typedef T_functor functor_type;      \
 };
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 // detect the return type and the functor version of non-functor types.
 FOR(0,CALL_SIZE,[[FUNCTOR_PTR_FUN(%1)]])
 FOR(0,CALL_SIZE,[[FUNCTOR_MEM_FUN(%1)]])
+#endif // DOXYGEN_SHOULD_SKIP_THIS
 
 } /* namespace sigc */

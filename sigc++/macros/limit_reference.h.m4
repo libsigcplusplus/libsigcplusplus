@@ -112,6 +112,7 @@ private:
   [$2]T_type& invoked;
 };
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 /** Implementation of visit_each() specialized for the [$1]limit_reference
  * class, to call visit_each() on the entity returned by the [$1]limit_reference's
  * visit() method.
@@ -127,6 +128,7 @@ visit_each(const T_action& _A_action,
 {
   visit_each(_A_action, _A_target.visit());
 }
+#endif // DOXYGEN_SHOULD_SKIP_THIS
 ])
 
 divert(0)

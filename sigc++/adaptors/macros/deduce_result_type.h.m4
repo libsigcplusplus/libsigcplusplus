@@ -91,7 +91,9 @@ template <class T_functor,
 struct deduce_result_type
   { typedef typename functor_trait<T_functor>::result_type type; };
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 FOR(0,CALL_SIZE,[[DEDUCE_RESULT_TYPE_ADAPTOR(%1,CALL_SIZE)]])dnl
+#endif // DOXYGEN_SHOULD_SKIP_THIS
 
 dnl #ifdef SIGC_CXX_TYPEOF
 dnl FOR(0,CALL_SIZE,[[DEDUCE_RESULT_TYPE_TYPEOF(%1,CALL_SIZE)]])

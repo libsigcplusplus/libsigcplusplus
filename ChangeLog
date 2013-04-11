@@ -1,3 +1,30 @@
+2013-04-11  Kjell Ahlstedt  <kjell.ahlstedt@bredband.net>
+
+	Use DOXYGEN_SHOULD_SKIP_THIS consistently.
+
+	* docs/reference/Doxyfile.in: EXTRACT_ALL=YES, like in most mm packages.
+	* sigc++/sigc++.h: Mention that the reference manual contains only some of
+	the template specializations.
+	* sigc++/adaptors/bound_argument.h:
+	* sigc++/adaptors/lambda/macros/base.h.m4:
+	* sigc++/adaptors/lambda/macros/group.h.m4:
+	* sigc++/adaptors/macros/adaptor_trait.h.m4:
+	* sigc++/adaptors/macros/bind.h.m4:
+	* sigc++/adaptors/macros/bind_return.h.m4:
+	* sigc++/adaptors/macros/compose.h.m4:
+	* sigc++/adaptors/macros/deduce_result_type.h.m4:
+	* sigc++/adaptors/macros/exception_catch.h.m4:
+	* sigc++/adaptors/macros/hide.h.m4:
+	* sigc++/adaptors/macros/retype.h.m4:
+	* sigc++/adaptors/macros/retype_return.h.m4:
+	* sigc++/adaptors/macros/track_obj.h.m4:
+	* sigc++/functors/macros/functor_trait.h.m4:
+	* sigc++/functors/macros/mem_fun.h.m4:
+	* sigc++/macros/limit_reference.h.m4:
+	* sigc++/type_traits.h:
+	* sigc++/visit_each.h: Use DOXYGEN_SHOULD_SKIP_THIS to mark what Doxygen
+	shall not extract.
+
 2013-03-20  Kjell Ahlstedt  <kjell.ahlstedt@bredband.net>
 
 	Suppress erroneous links in documentation.

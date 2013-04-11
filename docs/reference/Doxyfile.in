@@ -359,19 +359,12 @@ LOOKUP_CACHE_SIZE      = 0
 # Build related configuration options
 #---------------------------------------------------------------------------
 
-# TODO: Most mm packages have EXTRACT_ALL = YES and WARN_IF_UNDOCUMENTED = YES,
-#       and they use DOXYGEN_SHOULD_SKIP_THIS to mark what Doxygen shall not
-#       extract. libsigc++ ought to use this method, but at present (2013-01-07)
-#       it does not use DOXYGEN_SHOULD_SKIP_THIS consistently, and
-#       EXTRACT_ALL = YES includes scores of undocumented uninteresting template
-#       specializations in the documentation.
-
 # If the EXTRACT_ALL tag is set to YES doxygen will assume all entities in
 # documentation are documented, even if no documentation was available.
 # Private class members and static file members will be hidden unless
 # the EXTRACT_PRIVATE and EXTRACT_STATIC tags are set to YES
 
-EXTRACT_ALL            = NO
+EXTRACT_ALL            = YES
 
 # If the EXTRACT_PRIVATE tag is set to YES all private members of a class
 # will be included in the documentation.
@@ -422,7 +415,7 @@ HIDE_UNDOC_MEMBERS     = NO
 # If set to NO (the default) these classes will be included in the various
 # overviews. This option has no effect if EXTRACT_ALL is enabled.
 
-HIDE_UNDOC_CLASSES     = YES
+HIDE_UNDOC_CLASSES     = NO
 
 # If the HIDE_FRIEND_COMPOUNDS tag is set to YES, Doxygen will hide all
 # friend (class|struct|union) declarations.
@@ -488,7 +481,7 @@ SORT_MEMBER_DOCS       = YES
 # by member name. If set to NO (the default) the members will appear in
 # declaration order.
 
-SORT_BRIEF_DOCS        = NO
+SORT_BRIEF_DOCS        = YES
 
 # If the SORT_MEMBERS_CTORS_1ST tag is set to YES then doxygen
 # will sort the (brief and detailed) documentation of class members so that
@@ -631,7 +624,7 @@ WARNINGS               = YES
 # for undocumented members. If EXTRACT_ALL is set to YES then this flag will
 # automatically be disabled.
 
-WARN_IF_UNDOCUMENTED   = NO
+WARN_IF_UNDOCUMENTED   = YES
 
 # If WARN_IF_DOC_ERROR is set to YES, doxygen will generate warnings for
 # potential errors in the documentation, such as not documenting some
@@ -727,11 +720,8 @@ EXCLUDE_PATTERNS       =
 # AClass::ANamespace, ANamespace::*Test
 
 EXCLUDE_SYMBOLS        = _* \
-                         adaptor_trait \
                          basic_filebuf \
-                         basic_streambuf \
                          binary_function \
-                         char_traits \
                          internal \
                          pair \
                          unary_function
@@ -869,7 +859,7 @@ ALPHABETICAL_INDEX     = YES
 # the COLS_IN_ALPHA_INDEX tag can be used to specify the number of columns
 # in which this list will be split (can be a number in the range [1..20])
 
-COLS_IN_ALPHA_INDEX    = 5
+COLS_IN_ALPHA_INDEX    = 1
 
 # In case all classes in a project start with a common prefix, all
 # classes will be put under the same header in the alphabetical index.

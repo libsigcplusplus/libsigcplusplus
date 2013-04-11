@@ -62,7 +62,7 @@ dnl Please someone get a gun!
 ])
 dnl
 dnl This really doesn't have much to do with lambda other than
-dnl holding lambdas with in itself.
+dnl holding lambdas within itself.
 define([LAMBDA_GROUP],[dnl
 /** lambda_group$1 wraps a functor and rebuilds its arguments from $1 lambda expressions.
  * Use the convenience function group() to create an instance of lambda_group$1.
@@ -79,12 +79,14 @@ FOR(1, $1,[
   typedef typename lambda<T_type%1>::lambda_type   value%1_type;])
   typedef typename adaptor_trait<T_functor>::adaptor_type functor_type;
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
   template <LOOP(class T_arg%1=void,$2)>
   struct deduce_result_type
     { typedef typename functor_type::template deduce_result_type<LOOP([
           typename value%1_type::template deduce_result_type<LOOP([
             _P_(T_arg%1)],$2)>::type],$1)
         >::type type; };
+#endif
 
   result_type
   operator ()() const;

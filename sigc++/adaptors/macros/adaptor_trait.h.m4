@@ -96,7 +96,9 @@ namespace sigc {
 #endif
 
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 template <class T_functor> struct adapts;
+#endif
 
 /** @defgroup adaptors Adaptors
  * Adaptors are functors that alter the signature of a functor's
@@ -129,9 +131,11 @@ template <class T_functor> struct adapts;
 template <class T_functor>
 struct adaptor_functor : public adaptor_base
 {
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
   template <LOOP(class T_arg%1=void, CALL_SIZE)>
   struct deduce_result_type
     { typedef typename sigc::deduce_result_type<LIST(T_functor, LOOP(T_arg%1,CALL_SIZE))>::type type; };
+#endif
   typedef typename functor_trait<T_functor>::result_type result_type;
 
   /** Invokes the wrapped functor passing on the arguments.
@@ -175,7 +179,7 @@ typename adaptor_functor<T_functor>::result_type
 adaptor_functor<T_functor>::operator()() const
   { return functor_(); }
 
-
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 //template specialization of visit_each<>(action, functor):
 /** Performs a functor on each of the targets of a functor.
  * The function overload for sigc::adaptor_functor performs a functor
@@ -191,7 +195,7 @@ void visit_each(const T_action& _A_action,
   //situations.
   sigc::visit_each(_A_action, _A_target.functor_);
 }
-
+#endif // DOXYGEN_SHOULD_SKIP_THIS
 
 /** Trait that specifies what is the adaptor version of a functor type.
  * Template specializations for sigc::adaptor_base derived functors,
@@ -202,7 +206,11 @@ void visit_each(const T_action& _A_action,
  *
  * @ingroup adaptors
  */
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 template <class T_functor, bool I_isadaptor = is_base_and_derived<adaptor_base, T_functor>::value> struct adaptor_trait;
+#else
+template <class T_functor, bool I_isadaptor = is_base_and_derived<adaptor_base, T_functor>::value> struct adaptor_trait {};
+#endif
 
 /** Trait that specifies what is the adaptor version of a functor type.
  * This template specialization is used for types that inherit from adaptor_base.

@@ -59,9 +59,11 @@ namespace sigc {
 template <class T_return, class T_functor>
 struct bind_return_functor : public adapts<T_functor>
 {
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
   template <LOOP(class T_arg%1=void, CALL_SIZE)>
   struct deduce_result_type
     { typedef typename unwrap_reference<T_return>::type type; };
+#endif
   typedef typename unwrap_reference<T_return>::type result_type;
 
   /** Invokes the wrapped functor dropping its return value.
@@ -87,7 +89,7 @@ template <class T_return, class T_functor>
 typename unwrap_reference<T_return>::type bind_return_functor<T_return, T_functor>::operator()()
   { this->functor_(); return ret_value_.invoke(); }
 
-
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 //template specialization of visit_each<>(action, functor):
 /** Performs a functor on each of the targets of a functor.
  * The function overload for sigc::bind_return_functor performs a functor on the
@@ -102,7 +104,7 @@ void visit_each(const T_action& _A_action,
   visit_each(_A_action, _A_target.ret_value_);
   visit_each(_A_action, _A_target.functor_);
 }
-
+#endif // DOXYGEN_SHOULD_SKIP_THIS
 
 /** Creates an adaptor of type sigc::bind_return_functor which fixes the return value of the passed functor to the passed argument.
  *

@@ -139,9 +139,11 @@ struct retype_functor
 {
   typedef typename adapts<T_functor>::adaptor_type adaptor_type;
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
   template <LOOP(class T_arg%1=void, CALL_SIZE)>
   struct deduce_result_type
     { typedef typename adaptor_type::template deduce_result_type<LOOP(_P_(T_arg%1),CALL_SIZE)>::type type; };
+#endif
   typedef typename adapts<T_functor>::result_type result_type;
 
 FOR(0,CALL_SIZE,[[RETYPE_OPERATOR(%1)]])dnl
@@ -159,7 +161,7 @@ typename retype_functor<LIST(T_functor, LOOP(T_type%1, CALL_SIZE))>::result_type
 retype_functor<LIST(T_functor, LOOP(T_type%1, CALL_SIZE))>::operator()()
   { return this->functor_(); }
 
-  
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 //template specialization of visit_each<>(action, functor):
 /** Performs a functor on each of the targets of a functor.
  * The function overload for sigc::retype_functor performs a functor on the
@@ -173,7 +175,7 @@ void visit_each(const T_action& _A_action,
 {
   visit_each(_A_action, _A_target.functor_);
 }
-
+#endif // DOXYGEN_SHOULD_SKIP_THIS
 
 /** Creates an adaptor of type sigc::retype_functor which performs C-style casts on the parameters passed on to the functor.
  * This function template specialization works on sigc::slot.

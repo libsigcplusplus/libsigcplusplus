@@ -121,6 +121,7 @@ FOR(1, $1,[
   [$2]limit_reference<T_obj> obj_;
 };
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 //template specialization of visit_each<>(action, functor):
 /** Performs a functor on each of the targets of a functor.
  * The function overload for sigc::bound_[$2]mem_functor performs a functor
@@ -134,7 +135,7 @@ void visit_each(const T_action& _A_action,
 {
   sigc::visit_each(_A_action, _A_target.obj_);
 }
-
+#endif // DOXYGEN_SHOULD_SKIP_THIS
 ])
 
 define([MEM_FUN],[dnl

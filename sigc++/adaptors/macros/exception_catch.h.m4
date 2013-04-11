@@ -95,9 +95,11 @@ struct exception_catch_functor : public adapts<T_functor>
 {
   typedef typename adapts<T_functor>::adaptor_type adaptor_type;
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
   template <LOOP(class T_arg%1=void, CALL_SIZE)>
   struct deduce_result_type
     { typedef typename adaptor_type::template deduce_result_type<LOOP(_P_(T_arg%1),CALL_SIZE)>::type type; };
+#endif
   typedef T_return result_type;
 
   result_type
@@ -152,7 +154,7 @@ void exception_catch_functor<T_functor, T_catcher, void>::operator()()
       { this->catcher_(); }
   }
 
-  
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 //template specialization of visit_each<>(action, functor):
 template <class T_action, class T_functor, class T_catcher, class T_return>
 void visit_each(const T_action& _A_action,
@@ -161,7 +163,7 @@ void visit_each(const T_action& _A_action,
   visit_each(_A_action, _A_target.functor_);
   visit_each(_A_action, _A_target.catcher_);
 }
-
+#endif // DOXYGEN_SHOULD_SKIP_THIS
 
 template <class T_functor, class T_catcher>
 inline exception_catch_functor<T_functor, T_catcher>
