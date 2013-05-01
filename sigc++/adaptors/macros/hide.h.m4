@@ -131,7 +131,7 @@ ifelse($1,eval(CALL_SIZE-1),[#endif // DOXYGEN_SHOULD_SKIP_THIS
 ])dnl end HIDE_FUNCTOR
 
 divert(0)dnl
-__FIREWALL__
+_FIREWALL([ADAPTORS_HIDE])
 #include <sigc++/adaptors/adaptor_trait.h>
 
 namespace sigc { 

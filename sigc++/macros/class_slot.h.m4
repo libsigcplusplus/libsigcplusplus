@@ -20,7 +20,7 @@ include(template.macros.m4)
 
 divert(0)
 
-__FIREWALL__
+_FIREWALL([CLASS_SLOT])
 
 #include <sigc++/slot.h>
 #include <sigc++/functors/mem_fun.h>

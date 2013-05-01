@@ -75,7 +75,7 @@ retype(const $2[]mem_functor$1<LIST(T_return, T_obj, LOOP(T_arg%1, $1))>& _A_fun
 ])
 
 divert(0)dnl
-__FIREWALL__
+_FIREWALL([ADAPTORS_RETYPE])
 #include <sigc++/adaptors/adaptor_trait.h>
 #include <sigc++/functors/ptr_fun.h>
 #include <sigc++/functors/mem_fun.h>

@@ -46,9 +46,8 @@ struct functor_trait<T_return (T_obj::*)(LOOP(T_arg%1, $1)) const, false>
 ])
 
 divert(0)dnl
-__FIREWALL__
+_FIREWALL([FUNCTORS_FUNCTOR_TRAIT])
 #include <sigc++/type_traits.h>
-
 
 namespace sigc {
 

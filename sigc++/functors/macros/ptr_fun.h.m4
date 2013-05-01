@@ -72,7 +72,7 @@ ptr_fun[]ifelse($2,, $1)(T_return (*_A_func)(LOOP(T_arg%1,$1)))
 ])
 
 divert(0)
-__FIREWALL__
+_FIREWALL([FUNCTORS_PTR_FUN])
 #include <sigc++/type_traits.h>
 #include <sigc++/functors/functor_trait.h>
 

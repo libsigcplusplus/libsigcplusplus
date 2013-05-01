@@ -119,7 +119,7 @@ FOR(1, $1,[
 
 ])
 divert(0)dnl
-__FIREWALL__
+_FIREWALL([LAMBDA_GROUP])
 #include <sigc++/adaptors/lambda/base.h>
 
 _DEPRECATE_IFDEF_START

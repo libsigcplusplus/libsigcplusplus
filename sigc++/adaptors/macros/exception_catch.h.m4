@@ -35,7 +35,7 @@ define([EXCEPTION_CATCH_OPERATOR],[dnl
 ])
 
 divert(0)dnl
-__FIREWALL__
+_FIREWALL([ADAPTORS_EXCEPTION_CATCH])
 #include <sigc++/adaptors/adaptor_trait.h>
 
 namespace sigc {

@@ -133,15 +133,12 @@ visit_each(const T_action& _A_action,
 
 divert(0)
 
-__FIREWALL__
-
+_FIREWALL([LIMIT_REFERENCE])
 
 #include <sigc++/type_traits.h>
 #include <sigc++/trackable.h>
 
-
 namespace sigc {
-
 
 LIMIT_REFERENCE([],[],[])dnl
 
@@ -154,7 +151,5 @@ LIMIT_REFERENCE([volatile_],[],[volatile ])dnl
 
 LIMIT_REFERENCE([const_volatile_],[const ],[const volatile ])dnl
 
-
 } /* namespace sigc */
-
 

@@ -31,14 +31,11 @@ dnl
 define([CALL_SIZE],7)
 
 #Generate header guards:
-define([__FIREWALL__],[dnl
-define(__hfile_temp__,[translit(__file__,/., _)])dnl
-define(__hfile_temp2__,[translit(__hfile_temp__,+., _)])dnl
-define(__hfile__,[_SIGC_[]patsubst(translit(__hfile_temp2__,a-z.,A-Z_), _M4$)_])dnl
-#ifndef __hfile__
-#define __hfile__[]dnl
+define([_FIREWALL],[dnl
+#ifndef _SIGC_$1_H_
+#define _SIGC_$1_H_[]dnl
 divert(1)dnl
-#endif /* __hfile__ */
+#endif /* _SIGC_$1_H_ */
 divert(0)dnl
 ])
 

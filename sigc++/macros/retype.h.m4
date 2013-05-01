@@ -69,7 +69,7 @@ retype(const Slot$1<LIST(T_ret, LOOP(T_type%1, $1))>& _A_slot)
 ])
 
 divert(0)dnl
-__FIREWALL__
+_FIREWALL([RETYPE])
 #include <sigc++/adaptors/adaptor_trait.h>
 #include <sigc++/slot.h>
 

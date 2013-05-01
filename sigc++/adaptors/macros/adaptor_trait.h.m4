@@ -71,7 +71,7 @@ FOR(1, $1,[
 ])
 
 divert(0)dnl
-__FIREWALL__
+_FIREWALL([ADAPTORS_ADAPTOR_TRAIT])
 #include <sigc++config.h> //To get SIGC_TEMPLATE_KEYWORD_OPERATOR_OVERLOAD
 #include <sigc++/visit_each.h>
 #include <sigc++/functors/functor_trait.h>

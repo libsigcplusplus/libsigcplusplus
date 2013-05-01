@@ -200,7 +200,7 @@ ifelse($1,0,[
 ])
 
 divert(0)dnl
-__FIREWALL__
+_FIREWALL([FUNCTORS_SLOT])
 #include <sigc++/trackable.h>
 #include <sigc++/visit_each.h>
 #include <sigc++/adaptors/adaptor_trait.h>

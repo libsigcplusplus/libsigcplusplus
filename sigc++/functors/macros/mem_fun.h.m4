@@ -184,7 +184,7 @@ divert(0)
 //  - we do not use bind here, because it would introduce
 //    an extra copy and complicate the header include order if bind is
 //    to have automatic conversion for member pointers.
-__FIREWALL__
+_FIREWALL([FUNCTORS_MEM_FUN])
 #include <sigc++/type_traits.h>
 #include <sigc++/functors/functor_trait.h>
 #include <sigc++/limit_reference.h>

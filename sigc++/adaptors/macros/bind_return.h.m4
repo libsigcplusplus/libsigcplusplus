@@ -41,7 +41,7 @@ FOR(1, $1,[
 ])
 
 divert(0)dnl
-__FIREWALL__
+_FIREWALL([ADAPTORS_BIND_RETURN])
 #include <sigc++/adaptors/adaptor_trait.h>
 #include <sigc++/adaptors/bound_argument.h>
 

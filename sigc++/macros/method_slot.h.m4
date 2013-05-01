@@ -20,4 +20,4 @@ include(template.macros.m4)
 
 divert(0)
 
-__FIREWALL__
+_FIREWALL([METHOD_SLOT])

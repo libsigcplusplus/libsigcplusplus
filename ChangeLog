@@ -1,3 +1,22 @@
+2013-05-01  Kjell Ahlstedt  <kjell.ahlstedt@bredband.net>
+
+	Don't use __file__ in the FIREWALL m4 macro.
+
+	* sigc++/adaptors/lambda/macros/group.h.m4:
+	* sigc++/adaptors/macros/*.h.m4:
+	* sigc++/functors/macros/*.h.m4:
+	* sigc++/macros/class_slot.h.m4:
+	* sigc++/macros/hide.h.m4:
+	* sigc++/macros/limit_reference.h.m4:
+	* sigc++/macros/method_slot.h.m4:
+	* sigc++/macros/retype.h.m4:
+	* sigc++/macros/slot.h.m4: Replace __FIREWALL__ with _FIREWALL(filename).
+	* sigc++/macros/template.macros.m4: Replace __FIREWALL__ with _FIREWALL,
+	taking a parameter. Don't use __file__ to generate the name of the C++
+	preprocessor macro. __file__ may expand to an absolute path, containing
+	almost all sorts of special characters and being excessively long.
+	Bug #699168.
+
 2013-04-11  Kjell Ahlstedt  <kjell.ahlstedt@bredband.net>
 
 	Use DOXYGEN_SHOULD_SKIP_THIS consistently.

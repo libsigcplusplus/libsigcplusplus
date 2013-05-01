@@ -40,7 +40,7 @@ define([COMPOSE2_OPERATOR],[dnl
 ])
 
 divert(0)
-__FIREWALL__
+_FIREWALL([ADAPTORS_COMPOSE])
 #include <sigc++/adaptors/adaptor_trait.h>
 
 namespace sigc {

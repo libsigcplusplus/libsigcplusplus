@@ -52,7 +52,7 @@ define([RETYPE_RETURN_VOID_OPERATOR],[dnl
 ])
 
 divert(0)dnl
-__FIREWALL__
+_FIREWALL([ADAPTORS_RETYPE_RETURN])
 #include <sigc++/adaptors/adaptor_trait.h>
 
 namespace sigc {

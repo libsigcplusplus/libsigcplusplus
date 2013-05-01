@@ -42,9 +42,8 @@ dnl ])
 divert(0)dnl
 /*
 */
-__FIREWALL__
+_FIREWALL([ADAPTORS_DEDUCE_RESULT_TYPE])
 #include <sigc++/functors/functor_trait.h>
-
 
 namespace sigc {
 

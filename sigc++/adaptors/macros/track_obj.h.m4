@@ -128,7 +128,7 @@ track_obj(const T_functor& _A_func, LOOP(const T_obj%1& _A_obj%1, $1))
 ])dnl end TRACK_OBJECT
 
 divert(0)dnl
-__FIREWALL__
+_FIREWALL([ADAPTORS_TRACK_OBJ])
 #include <sigc++/adaptors/adaptor_trait.h>
 #include <sigc++/limit_reference.h>
 
