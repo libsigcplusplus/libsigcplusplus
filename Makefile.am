@@ -43,3 +43,6 @@ dist_noinst_DATA = $(addprefix MSVC_Net2005/,$(msvc_net2005_data)) \
 
 DISTCLEANFILES = MSVC_Net2005/sigc++config.h MSVC_Net2008/sigc++config.h \
                  MSVC_Net2010/sigc++config.h
+
+# Optional: auto-generate the ChangeLog file from the git log on make dist
+include $(top_srcdir)/build/dist-changelog.am
