@@ -18,9 +18,22 @@
  *
  */
 #include <sigc++/signal_base.h>
+#include <memory> // std::auto_ptr
 
 namespace sigc {
 namespace internal {
+
+// Data sent from signal_impl::insert() to slot_rep::set_parent() when a slot is
+// connected, and then sent from slot_rep::disconnect() to signal_impl::notify()
+// when the slot is disconnected. Bug 167714.
+struct self_and_iter
+{
+  signal_impl* self_;
+  signal_impl::iterator_type iter_;
+
+  self_and_iter(signal_impl* self, signal_impl::iterator_type iter)
+    : self_(self), iter_(iter) {}
+};
 
 signal_impl::signal_impl()
 : ref_count_(0), exec_count_(0), deferred_(0)
@@ -41,6 +54,18 @@ void signal_impl::operator delete(void* p)
 
 void signal_impl::clear()
 {
+  // Don't let signal_impl::notify() erase the slots. It would invalidate the
+  // iterator in the following loop.
+  const bool saved_deferred = deferred_;
+  signal_exec exec(this);
+
+  // Disconnect all connected slots before they are deleted.
+  // signal_impl::notify() will be called and delete the self_and_iter structs.
+  for (iterator_type i = slots_.begin(); i != slots_.end(); ++i)
+    i->disconnect();
+
+  deferred_ = saved_deferred;
+
   slots_.clear();
 }
 
@@ -74,13 +99,25 @@ signal_impl::iterator_type signal_impl::connect(const slot_base& slot_)
 
 signal_impl::iterator_type signal_impl::erase(iterator_type i)
 {
+  // Don't let signal_impl::notify() erase the slot. It would be more
+  // difficult to get the correct return value from signal_impl::erase().
+  const bool saved_deferred = deferred_;
+  signal_exec exec(this);
+
+  // Disconnect the slot before it is deleted.
+  // signal_impl::notify() will be called and delete the self_and_iter struct.
+  i->disconnect();
+
+  deferred_ = saved_deferred;
+
   return slots_.erase(i);
 }
     
 signal_impl::iterator_type signal_impl::insert(signal_impl::iterator_type i, const slot_base& slot_)
 {
   iterator_type temp = slots_.insert(i, slot_);
-  temp->set_parent(this, &notify);
+  self_and_iter* si = new self_and_iter(this, temp);
+  temp->set_parent(si, &notify);
   return temp;
 }
 
@@ -95,14 +132,17 @@ void signal_impl::sweep()
       ++i;
 }
 
+//static
 void* signal_impl::notify(void* d)
 {
-  signal_impl* self = reinterpret_cast<signal_impl*>(d);
-  if (self->exec_count_ == 0)
-    self->sweep();
-  else                       // This is occuring during signal emission.
-    self->deferred_ = true;  // => sweep() will be called from ~signal_exec().
-  return 0;                  // This is safer because we don't have to care about our iterators in emit().
+  std::auto_ptr<self_and_iter> si(static_cast<self_and_iter*>(d));
+
+  if (si->self_->exec_count_ == 0)
+    si->self_->slots_.erase(si->iter_);
+  else                           // This is occuring during signal emission or slot erasure.
+    si->self_->deferred_ = true; // => sweep() will be called from ~signal_exec() after signal emission.
+  return 0;                      // This is safer because we don't have to care about our
+                                 // iterators in emit(), clear(), and erase().
 }
 
 } /* namespace internal */
@@ -121,7 +161,14 @@ signal_base::signal_base(const signal_base& src)
 signal_base::~signal_base()
 {
   if (impl_)
+  {
+    // Disconnect all slots before impl_ is deleted.
+    // TODO: Move the signal_impl::clear() call to ~signal_impl() when ABI can be broken.
+    if (impl_->ref_count_ == 1)
+      impl_->clear();
+
     impl_->unreference();
+  }
 }
 
 void signal_base::clear()
@@ -169,7 +216,17 @@ signal_base::iterator_type signal_base::erase(iterator_type i)
 
 signal_base& signal_base::operator = (const signal_base& src)
 {
-  if (impl_) impl_->unreference();
+  if (src.impl_ == impl_) return *this;
+
+  if (impl_)
+  {
+    // Disconnect all slots before impl_ is deleted.
+    // TODO: Move the signal_impl::clear() call to ~signal_impl() when ABI can be broken.
+    if (impl_->ref_count_ == 1)
+      impl_->clear();
+
+    impl_->unreference();
+  }
   impl_ = src.impl();
   impl_->reference();
   return *this;
