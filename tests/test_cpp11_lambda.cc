@@ -300,8 +300,10 @@ int main(int argc, char* argv[])
   util->check_result(result_stream, "foo(int 2, int 1) 9");
 
   //std::cout << (sigc::group(sigc::mem_fun(&bar::test), _1, _2, _3)) (sigc::ref(the_bar), 1, 2) << std::endl;
+  // std::ref(the_bar) is not necessary. It can make the call ambiguous.
+  // Even without std::ref() the_bar is not copied.
   result_stream << std::bind(std::mem_fn(&bar::test), std::placeholders::_1,
-    std::placeholders::_2, std::placeholders::_3)(std::ref(the_bar), 1, 2);
+    std::placeholders::_2, std::placeholders::_3)(the_bar, 1, 2);
   util->check_result(result_stream, "bar::test(int 1, int 2) 6");
 
   // same functionality as bind
@@ -317,6 +319,13 @@ int main(int argc, char* argv[])
   std::bind(sigc::ptr_fun(&foo_void), 1)();
   util->check_result(result_stream, "foo_void(int 1)");
 
+  // std::bind() does not work well together with sigc::slot and sigc::signal::connect().
+  // std::bind() typically creates a functor whose operator()() is a variadic template.
+  // SIGC_FUNCTORS_DEDUCE_RESULT_TYPE_WITH_DECLTYPE can't deduce the result type
+  // of such a functor.
+  // If the result of std::bind() is assigned to a std::function, the created
+  // functor has an unambiguous operator()().
+
   // auto-disconnect
   sigc::slot<void> sl2;
   {
@@ -327,6 +336,26 @@ int main(int argc, char* argv[])
     sl2 = sigc::track_obj([&guest_book] () { egon(guest_book); }, guest_book);
     sl2();
     util->check_result(result_stream, "egon(string 'karl')");
+
+    //std::cout << static_cast<std::string&>(guest_book) << std::endl;
+    result_stream << static_cast<std::string&>(guest_book);
+    util->check_result(result_stream, "egon was here");
+
+  } // auto-disconnect
+
+  sl2();
+  util->check_result(result_stream, "");
+
+  // More auto-disconnect
+  {
+    book guest_book("charlie");
+    //sl2 = sigc::group(&egon, sigc::ref(guest_book));
+    // sl2 = std::bind(&egon, std::ref(guest_book)); // does not compile (gcc 4.6.3)
+    std::function<void()> fn2 = std::bind(&egon, std::ref(guest_book));
+    //sl2 = fn2; // no auto-disconnect
+    sl2 = sigc::track_obj(fn2, guest_book);
+    sl2();
+    util->check_result(result_stream, "egon(string 'charlie')");
 
     //std::cout << static_cast<std::string&>(guest_book) << std::endl;
     result_stream << static_cast<std::string&>(guest_book);
