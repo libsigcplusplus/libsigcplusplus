@@ -319,12 +319,22 @@ public:
 
   /** Add a slot to the list of slots.
    * Any functor or slot may be passed into connect().
-   * It will be converted into a slot implicitely.
+   * It will be converted into a slot implicitly.
    * The returned iterator may be stored for disconnection
    * of the slot at some later point. It stays valid until
    * the slot is removed from the list of slots. The iterator
-   * can also be implicitely converted into a sigc::connection object
+   * can also be implicitly converted into a sigc::connection object
    * that may be used safely beyond the life time of the slot.
+   *
+   * std::function<> and C++11 lambda expressions are functors.
+   * These are examples of functors that can be connected to a signal.
+   *
+   * %std::bind() creates a functor, but this functor typically has an
+   * %operator()() which is a variadic template.
+   * #SIGC_FUNCTORS_DEDUCE_RESULT_TYPE_WITH_DECLTYPE can't deduce the result type
+   * of such a functor. If you first assign the return value of %std::bind()
+   * to a std::function, you can connect the std::function to a signal.
+   *
    * @param slot_ The slot to add to the list of slots.
    * @return An iterator pointing to the new slot in the list.
    */

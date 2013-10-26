@@ -177,7 +177,7 @@ struct SIGC_API slot_do_unbind
  * Use the sigc::mem_fun() and sigc::ptr_fun() template functions to get a sigc::slot, like so:
  *
  * @code
- * sigc::slot<void, int> sl = sigc::mem_fun(someobj,& SomeClass::somemethod);
+ * sigc::slot<void, int> sl = sigc::mem_fun(someobj, &SomeClass::somemethod);
  * @endcode
  *
  * or
@@ -195,6 +195,17 @@ struct SIGC_API slot_do_unbind
  * The compiler will complain if SomeClass::somemethod, etc. have the wrong signature.
  *
  * You can also pass slots as method parameters where you might normally pass a function pointer.
+ *
+ * It is often possible to replace sigc::slot<> by the C++11 class std::function<>, for instance:
+ * @code
+ * std::function<void(int)> fn = &somefunction;
+ * m_Dialog.signal_response().connect(fn);
+ * @endcode
+ *
+ * If you connect an std::function<> instance to a signal or assign it to a slot,
+ * - if the return type is not void, you must use the #SIGC_FUNCTORS_DEDUCE_RESULT_TYPE_WITH_DECLTYPE macro;
+ * - if your function, somefunction(), contains references to sigc::trackable derived objects,
+ *   those objects will not be tracked, unless you also use sigc::track_obj().
  *
  * @ingroup sigcfunctors
  */

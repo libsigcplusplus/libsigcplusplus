@@ -242,9 +242,12 @@ private:
  * For compile time type safety a list of template arguments
  * must be provided for the signal template that determines the
  * parameter list for emission. Functors and closures are converted
- * into slots implicitely on connection, triggering compiler errors
+ * into slots implicitly on connection, triggering compiler errors
  * if the given functor or closure cannot be invoked with the
  * parameter list of the signal to connect to.
+ *
+ * Almost any functor with the correct signature can be converted to a sigc::slot
+ * and connected to a signal. See @ref slot "Slots" and sigc::signal::connect().
  */
 
 /** Base class for the sigc::signal# templates.

@@ -28,7 +28,7 @@ define([SLOT_N],[dnl
 FOR(1,$1,[
  * - @e T_arg%1 Argument type used in the definition of operator()(). The default @p nil means no argument.])
  *
- * To use simply assign the slot to the desired functor. If the functor
+ * To use simply assign the desired functor to the slot. If the functor
  * is not compatible with the parameter list defined with the template
  * arguments compiler errors are triggered. When called the slot
  * will invoke the functor with minimal copies.
@@ -109,7 +109,7 @@ ifelse($1, $2,[dnl
 FOR(1,$1,[
  * - @e T_arg%1 Argument type used in the definition of operator()(). The default @p nil means no argument.])
  *
- * To use, simply assign the slot to the desired functor. If the functor
+ * To use, simply assign the desired functor to the slot. If the functor
  * is not compatible with the parameter list defined with the template
  * arguments, compiler errors are triggered. When called, the slot
  * will invoke the functor with minimal copies.
@@ -119,8 +119,17 @@ FOR(1,$1,[
  * @par Example:
  * @code
  * void foo(int) {}
- * sigc::slot<void, long> s = sigc::ptr_fun(&foo);
+ * sigc::slot<void, int> s = sigc::ptr_fun(&foo);
  * s(19);
+ * @endcode
+ *
+ * It is often possible to replace sigc::slot<> by the C++11 class std::function<>.
+ *
+ * @par Example:
+ * @code
+ * void foo(int) {}
+ * std::function<void(int)> f = &foo;
+ * f(19);
  * @endcode
  *
  * @ingroup slot

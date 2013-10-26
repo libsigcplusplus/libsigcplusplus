@@ -197,6 +197,8 @@ struct functor_trait<T_functor,false>          \
  * }
  * @endcode
  *
+ * Functors with overloaded operator()() are not supported.
+ *
  * @newin{2,2,11}
  *
  * You can't use both SIGC_FUNCTORS_HAVE_RESULT_TYPE and

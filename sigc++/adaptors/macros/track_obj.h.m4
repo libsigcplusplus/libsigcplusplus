@@ -136,9 +136,9 @@ namespace sigc {
 
 /** @defgroup track_obj track_obj()
  * track_obj() tracks trackable objects, referenced from a functor.
- * It can be useful when you assign a C++11 lambda expression to a slot, or connect
- * it to a signal, and the lambda expression contains references to sigc::trackable
- * derived objects.
+ * It can be useful when you assign a C++11 lambda expression or a std::function<>
+ * to a slot, or connect it to a signal, and the lambda expression or std::function<>
+ * contains references to sigc::trackable derived objects.
  *
  * The functor returned by sigc::track_obj() is formally an adaptor, but it does
  * not alter the signature, return type or behaviour of the supplied functor.
