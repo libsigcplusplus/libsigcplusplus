@@ -171,8 +171,8 @@ struct SIGC_API slot_do_unbind
 
 /** @defgroup slot Slots
  * Slots are type-safe representations of callback methods and functions.
- * A Slot can be constructed from any function, regardless of whether it is a global function,
- * a member method, static, or virtual.
+ * A Slot can be constructed from any function object or function, regardless of
+ * whether it is a global function, a member method, static, or virtual.
  *
  * Use the sigc::mem_fun() and sigc::ptr_fun() template functions to get a sigc::slot, like so:
  *
@@ -196,15 +196,21 @@ struct SIGC_API slot_do_unbind
  *
  * You can also pass slots as method parameters where you might normally pass a function pointer.
  *
- * It is often possible to replace sigc::slot<> by the C++11 class std::function<>, for instance:
+ * A C++11 lambda expression is a functor (function object). It is automatically
+ * wrapped in a slot, if it is connected to a signal.
  * @code
- * std::function<void(int)> fn = &somefunction;
- * m_Dialog.signal_response().connect(fn);
+ * auto on_response = [&someobj] (int response_id)
+ *   {
+ *     someobj.somemethod(response_id);
+ *     somefunction(response_id);
+ *   };
+ * m_Dialog.signal_response().connect(on_response);
  * @endcode
  *
- * If you connect an std::function<> instance to a signal or assign it to a slot,
- * - if the return type is not void, you must use the #SIGC_FUNCTORS_DEDUCE_RESULT_TYPE_WITH_DECLTYPE macro;
- * - if your function, somefunction(), contains references to sigc::trackable derived objects,
+ * If you connect a C++11 lambda expression or a std::function<> instance to
+ * a signal or assign it to a slot,
+ * - if the return type is not void, you must use the #SIGC_FUNCTORS_DEDUCE_RESULT_TYPE_WITH_DECLTYPE macro,
+ * - if your functor contains references to sigc::trackable derived objects,
  *   those objects will not be tracked, unless you also use sigc::track_obj().
  *
  * @ingroup sigcfunctors

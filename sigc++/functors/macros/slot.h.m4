@@ -123,14 +123,9 @@ FOR(1,$1,[
  * s(19);
  * @endcode
  *
- * It is often possible to replace sigc::slot<> by the C++11 class std::function<>.
- *
- * @par Example:
- * @code
- * void foo(int) {}
- * std::function<void(int)> f = &foo;
- * f(19);
- * @endcode
+ * sigc::slot<> is similar to std::function<>. If you're going to assign the
+ * resulting functor to a sigc::slot or connect it to a sigc::signal, it's better
+ * not to use std::function. It would become un unnecessary extra wrapper.
  *
  * @ingroup slot
  */
