@@ -56,12 +56,6 @@ namespace
 {
 std::ostringstream result_stream;
 
-void egon(std::string& str)
-{
-  result_stream << "egon(string '" << str << "')";
-  str = "egon was here";
-}
-
 struct book : public sigc::trackable
 {
   explicit book(const std::string& name) : name_(name) {}
@@ -69,12 +63,6 @@ struct book : public sigc::trackable
   operator const std::string& () const { return name_; }
   std::string name_;
 };
-
-inline std::ostringstream& operator << (std::ostringstream& s, const book& b)
-{
-  s << b.name_;
-  return s;
-}
 
 struct bar_group4 : public sigc::trackable
 {
@@ -118,10 +106,25 @@ private:
   const book& aBook_;
 };
 
+#ifdef USING_CPP11_LAMBDA_EXPRESSIONS
+
+inline std::ostringstream& operator << (std::ostringstream& s, const book& b)
+{
+  s << b.name_;
+  return s;
+}
+
+void egon(std::string& str)
+{
+  result_stream << "egon(string '" << str << "')";
+  str = "egon was here";
+}
+
 void foo_group4(bar_group4&)
 {
   result_stream << "foo_group4(bar_group4&)";
 }
+#endif // USING_CPP11_LAMBDA_EXPRESSIONS
 
 } // end anonymous namespace
 

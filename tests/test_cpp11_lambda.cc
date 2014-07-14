@@ -63,7 +63,6 @@ namespace sigc
 {
   SIGC_FUNCTORS_DEDUCE_RESULT_TYPE_WITH_DECLTYPE
 }
-#endif
 
 namespace
 {
@@ -145,6 +144,8 @@ void foo_group4(bar_group4&)
 }
 
 } // end anonymous namespace
+
+#endif // USING_CPP11_LAMBDA_EXPRESSIONS
 
 
 int main(int argc, char* argv[])
@@ -504,10 +505,11 @@ int main(int argc, char* argv[])
     some_signal.emit();
     util->check_result(result_stream, "");
   }
+  return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;
 
 #else // not USING_CPP11_LAMBDA_EXPRESSIONS
   std::cout << "The compiler capabilities don't allow test of C++11 lambda expressions." << std::endl;
+  // Return code 77 tells automake's test harness to skip this test.
+  return util->get_result_and_delete_instance() ? 77 : EXIT_FAILURE;
 #endif
-
-  return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;
-}
+} // end main()
