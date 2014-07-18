@@ -303,13 +303,14 @@
   <ItemGroup>
     <ClInclude Include="..\sigc++\adaptors\adaptor_trait.h" />
     <ClInclude Include="..\sigc++\adaptors\adaptors.h" />
+    <ClInclude Include="..\sigc++\adaptors\bound_argument.h" />
     <ClInclude Include="..\sigc++\adaptors\lambda\base.h" />
+    <ClInclude Include="..\sigc++\adaptors\track_obj.h" />
     <ClInclude Include="..\sigc++\bind.h" />
     <ClInclude Include="..\sigc++\adaptors\bind.h" />
     <ClInclude Include="..\sigc++\adaptors\bind_return.h" />
     <ClInclude Include="..\sigc++\bind_return.h" />
     <ClInclude Include="..\sigc++\class_slot.h" />
-    <ClInclude Include="..\sigc++\compatibility.h" />
     <ClInclude Include="..\sigc++\adaptors\compose.h" />
     <ClInclude Include="..\sigc++\connection.h" />
     <ClInclude Include="..\sigc++\adaptors\deduce_result_type.h" />
@@ -321,6 +322,7 @@
     <ClInclude Include="..\sigc++\adaptors\hide.h" />
     <ClInclude Include="..\sigc++\adaptors\lambda\lambda.h" />
     <ClInclude Include="..\sigc++\functors\mem_fun.h" />
+    <ClInclude Include="..\sigc++\limit_reference.h" />
     <ClInclude Include="..\sigc++\method_slot.h" />
     <ClInclude Include="..\sigc++\object.h" />
     <ClInclude Include="..\sigc++\object_slot.h" />

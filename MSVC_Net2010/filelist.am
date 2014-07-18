@@ -6,14 +6,26 @@ msvc_net2010_data =									\
 	libsigc++2.vcxproj.filters							\
 	sigc++config.h									\
 	sigc.rc										\
+	tests/test_accum_iter/test_accum_iter.vcxproj					\
+	tests/test_accum_iter/test_accum_iter.vcxproj.filters				\
 	tests/test_accumulated/test_accumulated.vcxproj					\
 	tests/test_accumulated/test_accumulated.vcxproj.filters				\
 	tests/test_bind/test_bind.vcxproj						\
 	tests/test_bind/test_bind.vcxproj.filters					\
+	tests/test_bind_ref/test_bind_ref.vcxproj						\
+	tests/test_bind_ref/test_bind_ref.vcxproj.filters					\
+	tests/test_bind_refptr/test_bind_refptr.vcxproj						\
+	tests/test_bind_refptr/test_bind_refptr.vcxproj.filters					\
 	tests/test_bind_return/test_bind_return.vcxproj					\
 	tests/test_bind_return/test_bind_return.vcxproj.filters				\
 	tests/test_compose/test_compose.vcxproj						\
 	tests/test_compose/test_compose.vcxproj.filters					\
+	tests/test_copy_invalid_slot/test_copy_invalid_slot.vcxproj						\
+	tests/test_copy_invalid_slot/test_copy_invalid_slot.vcxproj.filters		\
+	tests/test_cpp11_lambda/test_cpp11_lambda.vcxproj						\
+	tests/test_cpp11_lambda/test_cpp11_lambda.vcxproj.filters					\
+	tests/test_custom/test_custom.vcxproj						\
+	tests/test_custom/test_custom.vcxproj.filters					\
 	tests/test_deduce_result_type/test_deduce_result_type.vcxproj			\
 	tests/test_deduce_result_type/test_deduce_result_type.vcxproj.filters		\
 	tests/test_disconnect/test_disconnect.vcxproj					\
@@ -26,6 +38,10 @@ msvc_net2010_data =									\
 	tests/test_functor_trait/test_functor_trait.vcxproj.filters			\
 	tests/test_hide/test_hide.vcxproj						\
 	tests/test_hide/test_hide.vcxproj.filters					\
+	tests/test_lambda/test_lambda.vcxproj						\
+	tests/test_lambda/test_lambda.vcxproj.filters					\
+	tests/test_limit_reference/test_limit_reference.vcxproj						\
+	tests/test_limit_reference/test_limit_reference.vcxproj.filters					\
 	tests/test_mem_fun/test_mem_fun.vcxproj						\
 	tests/test_mem_fun/test_mem_fun.vcxproj.filters					\
 	tests/test_ptr_fun/test_ptr_fun.vcxproj						\
@@ -40,5 +56,9 @@ msvc_net2010_data =									\
 	tests/test_size/test_size.vcxproj.filters					\
 	tests/test_slot/test_slot.vcxproj						\
 	tests/test_slot/test_slot.vcxproj.filters					\
+	tests/test_slot_disconnect/test_slot_disconnect.vcxproj						\
+	tests/test_slot_disconnect/test_slot_disconnect.vcxproj.filters		\
 	tests/test_trackable/test_trackable.vcxproj					\
-	tests/test_trackable/test_trackable.vcxproj.filters
+	tests/test_trackable/test_trackable.vcxproj.filters \
+	tests/test_track_obj/test_track_obj.vcxproj					\
+	tests/test_track_obj/test_track_obj.vcxproj.filters

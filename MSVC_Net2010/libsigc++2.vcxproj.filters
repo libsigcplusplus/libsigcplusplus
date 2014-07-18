@@ -62,9 +62,6 @@
     <ClInclude Include="..\sigc++\class_slot.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\sigc++\compatibility.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\sigc++\adaptors\compose.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -159,6 +156,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\sigc++\visit_each.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\sigc++\limit_reference.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\sigc++\adaptors\bound_argument.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\sigc++\adaptors\track_obj.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
