@@ -18,4 +18,11 @@
       <gnome:userid>murrayc</gnome:userid>
     </foaf:Person>
   </maintainer>
+  <maintainer>
+    <foaf:Person>
+      <foaf:name>Kjell Ahlstedt</foaf:name>
+      <foaf:mbox rdf:resource="mailto:kjell.ahlstedt@bredband.net" />
+      <gnome:userid>kjellahl</gnome:userid>
+    </foaf:Person>
+  </maintainer>
 </Project>
