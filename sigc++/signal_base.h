@@ -1,4 +1,3 @@
-// -*- c++ -*-
 /*
  * Copyright 2002, The libsigc++ Development Team
  *
@@ -15,7 +14,6 @@
  *  You should have received a copy of the GNU Lesser General Public
  *  License along with this library; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
- *
  */
 
 #ifndef _SIGC_SIGNAL_BASE_H_
@@ -40,9 +38,9 @@ namespace internal
 /** Implementation of the signal interface.
  * signal_impl manages a list of slots. When a slot becomes
  * invalid (because some referred object dies), notify() is executed.
- * notify() either calls sweep() directly or defers the execution of
- * sweep() when the signal is being emitted. sweep() removes all
- * invalid slot from the list.
+ * notify() either calls slots_.erase() directly or defers the execution of
+ * erase() to sweep() when the signal is being emitted. sweep() removes all
+ * invalid slots from the list.
  */
 struct SIGC_API signal_impl
 {
@@ -142,9 +140,9 @@ struct SIGC_API signal_impl
    * This callback is registered in every slot when inserted into
    * the list of slots. It is executed when a slot becomes invalid
    * because of some referred object being destroyed.
-   * It either calls sweep() directly or defers the execution of
-   * sweep() when the signal is being emitted.
-   * @param d The signal object (@p this).
+   * It either calls slots_.erase() directly or defers the execution of
+   * erase() to sweep() when the signal is being emitted.
+   * @param d A local structure, created in insert().
    */
   static void* notify(void* d);
 
@@ -187,7 +185,7 @@ struct SIGC_API signal_exec
  *  Through evolution this class is slightly misnamed.  It is now
  *  an index into the slot_list passed into it.  It simply keeps track
  *  of where the end of this list was at construction, and pretends that's
- *  the end of your list.  This way you may connect during emittion without
+ *  the end of your list.  This way you may connect during emission without
  *  inadvertently entering an infinite loop, as well as make other
  *  modifications to the slot_list at your own risk.
  */
