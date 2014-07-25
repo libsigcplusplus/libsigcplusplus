@@ -1,4 +1,3 @@
-// -*- c++ -*-
 /*
  * Copyright 2003, The libsigc++ Development Team
  *
@@ -15,7 +14,6 @@
  *  You should have received a copy of the GNU Lesser General Public
  *  License along with this library; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
- *
  */
 #include <sigc++/signal_base.h>
 #include <memory> // std::auto_ptr
@@ -123,6 +121,11 @@ signal_impl::iterator_type signal_impl::insert(signal_impl::iterator_type i, con
 
 void signal_impl::sweep()
 {
+  // The deletion of a slot may cause the deletion of a signal_base,
+  // a decrementation of ref_count_, and the deletion of this.
+  // In that case, the deletion of this is deferred to ~signal_exec().
+  signal_exec exec(this);
+
   deferred_ = false;
   iterator_type i = slots_.begin();
   while (i != slots_.end())
@@ -138,7 +141,13 @@ void* signal_impl::notify(void* d)
   std::auto_ptr<self_and_iter> si(static_cast<self_and_iter*>(d));
 
   if (si->self_->exec_count_ == 0)
+  {
+    // The deletion of a slot may cause the deletion of a signal_base,
+    // a decrementation of si->self_->ref_count_, and the deletion of si->self_.
+    // In that case, the deletion of si->self_ is deferred to ~signal_exec().
+    signal_exec exec(si->self_);
     si->self_->slots_.erase(si->iter_);
+  }
   else                           // This is occuring during signal emission or slot erasure.
     si->self_->deferred_ = true; // => sweep() will be called from ~signal_exec() after signal emission.
   return 0;                      // This is safer because we don't have to care about our
