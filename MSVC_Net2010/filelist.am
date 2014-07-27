@@ -61,4 +61,6 @@ msvc_net2010_data =									\
 	tests/test_trackable/test_trackable.vcxproj					\
 	tests/test_trackable/test_trackable.vcxproj.filters \
 	tests/test_track_obj/test_track_obj.vcxproj					\
-	tests/test_track_obj/test_track_obj.vcxproj.filters
+	tests/test_track_obj/test_track_obj.vcxproj.filters \
+	tests/test_visit_each/test_visit_each.vcxproj					\
+	tests/test_visit_each/test_visit_each.vcxproj.filters
