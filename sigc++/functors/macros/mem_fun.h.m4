@@ -1,18 +1,18 @@
-dnl Copyright 2002, The libsigc++ Development Team 
-dnl 
-dnl This library is free software; you can redistribute it and/or 
-dnl modify it under the terms of the GNU Lesser General Public 
-dnl License as published by the Free Software Foundation; either 
-dnl version 2.1 of the License, or (at your option) any later version. 
-dnl 
-dnl This library is distributed in the hope that it will be useful, 
-dnl but WITHOUT ANY WARRANTY; without even the implied warranty of 
-dnl MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU 
-dnl Lesser General Public License for more details. 
-dnl 
-dnl You should have received a copy of the GNU Lesser General Public 
-dnl License along with this library; if not, write to the Free Software 
-dnl Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA 
+dnl Copyright 2002, The libsigc++ Development Team
+dnl
+dnl This library is free software; you can redistribute it and/or
+dnl modify it under the terms of the GNU Lesser General Public
+dnl License as published by the Free Software Foundation; either
+dnl version 2.1 of the License, or (at your option) any later version.
+dnl
+dnl This library is distributed in the hope that it will be useful,
+dnl but WITHOUT ANY WARRANTY; without even the implied warranty of
+dnl MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+dnl Lesser General Public License for more details.
+dnl
+dnl You should have received a copy of the GNU Lesser General Public
+dnl License along with this library; if not, write to the Free Software
+dnl Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 dnl
 divert(-1)
 
@@ -122,19 +122,23 @@ FOR(1, $1,[
 };
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-//template specialization of visit_each<>(action, functor):
+//template specialization of visitor<>::do_visit_each<>(action, functor):
 /** Performs a functor on each of the targets of a functor.
  * The function overload for sigc::bound_[$2]mem_functor performs a functor
  * on the object instance stored in the sigc::bound_[$2]mem_functor object.
  *
  * @ingroup mem_fun
  */
-template <LIST(class T_action, class T_return, class T_obj, LOOP(class T_arg%1, $1))>
-void visit_each(const T_action& _A_action,
-                const bound_[$2]mem_functor$1<LIST(T_return, T_obj, LOOP(T_arg%1, $1))>& _A_target)
+template <LIST(class T_return, class T_obj, LOOP(class T_arg%1, $1))>
+struct visitor<bound_[$2]mem_functor$1<LIST(T_return, T_obj, LOOP(T_arg%1, $1))> >
 {
-  sigc::visit_each(_A_action, _A_target.obj_);
-}
+  template <class T_action>
+  static void do_visit_each(const T_action& _A_action,
+                            const bound_[$2]mem_functor$1<LIST(T_return, T_obj, LOOP(T_arg%1, $1))>& _A_target)
+  {
+    sigc::visit_each(_A_action, _A_target.obj_);
+  }
+};
 #endif // DOXYGEN_SHOULD_SKIP_THIS
 ])
 
@@ -180,7 +184,7 @@ mem_fun[]ifelse($2,, $1)(/*$4*/ T_obj& _A_obj, T_return (T_obj2::*_A_func)(LOOP(
 
 divert(0)
 
-// implementation notes:  
+// implementation notes:
 //  - we do not use bind here, because it would introduce
 //    an extra copy and complicate the header include order if bind is
 //    to have automatic conversion for member pointers.

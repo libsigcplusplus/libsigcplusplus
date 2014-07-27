@@ -1,18 +1,18 @@
-dnl Copyright 2002, The libsigc++ Development Team 
-dnl 
-dnl This library is free software; you can redistribute it and/or 
-dnl modify it under the terms of the GNU Lesser General Public 
-dnl License as published by the Free Software Foundation; either 
-dnl version 2.1 of the License, or (at your option) any later version. 
-dnl 
-dnl This library is distributed in the hope that it will be useful, 
-dnl but WITHOUT ANY WARRANTY; without even the implied warranty of 
-dnl MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU 
-dnl Lesser General Public License for more details. 
-dnl 
-dnl You should have received a copy of the GNU Lesser General Public 
-dnl License along with this library; if not, write to the Free Software 
-dnl Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA 
+dnl Copyright 2002, The libsigc++ Development Team
+dnl
+dnl This library is free software; you can redistribute it and/or
+dnl modify it under the terms of the GNU Lesser General Public
+dnl License as published by the Free Software Foundation; either
+dnl version 2.1 of the License, or (at your option) any later version.
+dnl
+dnl This library is distributed in the hope that it will be useful,
+dnl but WITHOUT ANY WARRANTY; without even the implied warranty of
+dnl MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+dnl Lesser General Public License for more details.
+dnl
+dnl You should have received a copy of the GNU Lesser General Public
+dnl License along with this library; if not, write to the Free Software
+dnl Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 dnl
 divert(-1)
 
@@ -96,7 +96,7 @@ FOR(eval($1+1), $2,[
     { return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<LIST(FOR(1,eval($1-1),[_P_(T_arg%1),]),FOR(eval($1+1), $2,[_P_(T_arg%1),]))>
         (LIST(FOR(1,eval($1-1),[_A_a%1,]),FOR(eval($1+1),$2,[_A_a%1,]))); }
   #endif
-    
+
 ])])dnl
 ])dnl end HIDE_OPERATOR
 
@@ -134,7 +134,7 @@ divert(0)dnl
 _FIREWALL([ADAPTORS_HIDE])
 #include <sigc++/adaptors/adaptor_trait.h>
 
-namespace sigc { 
+namespace sigc {
 
 /** @defgroup hide hide(), hide_return()
  * sigc::hide() alters an arbitrary functor in that it adds a parameter
@@ -208,19 +208,23 @@ struct hide_functor {};
 FOR(-1,eval(CALL_SIZE-1),[[HIDE_FUNCTOR(%1)]])dnl
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-//template specialization of visit_each<>(action, functor):
+//template specialization of visitor<>::do_visit_each<>(action, functor):
 /** Performs a functor on each of the targets of a functor.
  * The function overload for sigc::hide_functor performs a functor on the
  * functor stored in the sigc::hide_functor object.
  *
  * @ingroup hide
  */
-template <class T_action, int I_location, class T_functor>
-void visit_each(const T_action& _A_action,
-                const hide_functor<I_location, T_functor>& _A_target)
+template <int I_location, class T_functor>
+struct visitor<hide_functor<I_location, T_functor> >
 {
-  visit_each(_A_action, _A_target.functor_);
-}
+  template <typename T_action>
+  static void do_visit_each(const T_action& _A_action,
+                            const hide_functor<I_location, T_functor>& _A_target)
+  {
+    sigc::visit_each(_A_action, _A_target.functor_);
+  }
+};
 #endif // DOXYGEN_SHOULD_SKIP_THIS
 
 /** Creates an adaptor of type sigc::hide_functor which adds a dummy parameter to the passed functor.

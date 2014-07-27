@@ -1,23 +1,23 @@
-dnl Copyright 2002, The libsigc++ Development Team 
-dnl 
-dnl This library is free software; you can redistribute it and/or 
-dnl modify it under the terms of the GNU Lesser General Public 
-dnl License as published by the Free Software Foundation; either 
-dnl version 2.1 of the License, or (at your option) any later version. 
-dnl 
-dnl This library is distributed in the hope that it will be useful, 
-dnl but WITHOUT ANY WARRANTY; without even the implied warranty of 
-dnl MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU 
-dnl Lesser General Public License for more details. 
-dnl 
-dnl You should have received a copy of the GNU Lesser General Public 
-dnl License along with this library; if not, write to the Free Software 
-dnl Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA 
+dnl Copyright 2002, The libsigc++ Development Team
+dnl
+dnl This library is free software; you can redistribute it and/or
+dnl modify it under the terms of the GNU Lesser General Public
+dnl License as published by the Free Software Foundation; either
+dnl version 2.1 of the License, or (at your option) any later version.
+dnl
+dnl This library is distributed in the hope that it will be useful,
+dnl but WITHOUT ANY WARRANTY; without even the implied warranty of
+dnl MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+dnl Lesser General Public License for more details.
+dnl
+dnl You should have received a copy of the GNU Lesser General Public
+dnl License along with this library; if not, write to the Free Software
+dnl Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 dnl
 divert(-1)
 include(template.macros.m4)
 
-dnl 
+dnl
 dnl Macros to make operators
 define([LAMBDA_OPERATOR_DO],[dnl
   template <LOOP(class T_arg%1, $1)>
@@ -450,14 +450,18 @@ lambda_operator<T_action, T_type1, T_type2>::operator ()() const
       typename arg2_type::result_type>
       (arg1_(), arg2_()); }
 
-//template specialization of visit_each<>(action, functor):      
-template <class T_action, class T_lambda_action, class T_arg1, class T_arg2>
-void visit_each(const T_action& _A_action,
-                const lambda_operator<T_lambda_action, T_arg1, T_arg2>& _A_target)
+//template specialization of visitor<>::do_visit_each<>(action, functor):
+template <class T_lambda_action, class T_arg1, class T_arg2>
+struct visitor<lambda_operator<T_lambda_action, T_arg1, T_arg2> >
 {
-  visit_each(_A_action, _A_target.arg1_);
-  visit_each(_A_action, _A_target.arg2_);
-}
+  template <class T_action>
+  static void do_visit_each(const T_action& _A_action,
+                            const lambda_operator<T_lambda_action, T_arg1, T_arg2>& _A_target)
+  {
+    sigc::visit_each(_A_action, _A_target.arg1_);
+    sigc::visit_each(_A_action, _A_target.arg2_);
+  }
+};
 
 
 template <class T_action, class T_type>
@@ -492,13 +496,17 @@ lambda_operator_unary<T_action, T_type>::operator ()() const
       typename arg_type::result_type>
       (arg_()); }
 
-//template specialization of visit_each<>(action, functor):
-template <class T_action, class T_lambda_action, class T_arg>
-void visit_each(const T_action& _A_action,
-                const lambda_operator_unary<T_lambda_action, T_arg>& _A_target)
+//template specialization of visitor<>::do_visit_each<>(action, functor):
+template <class T_lambda_action, class T_arg>
+struct visitor<lambda_operator_unary<T_lambda_action, T_arg> >
 {
-  visit_each(_A_action, _A_target.arg_);
-}
+  template <class T_action>
+  static void do_visit_each(const T_action& _A_action,
+                            const lambda_operator_unary<T_lambda_action, T_arg>& _A_target)
+  {
+    sigc::visit_each(_A_action, _A_target.arg_);
+  }
+};
 
 
 template <class T_action, class T_type, class T_arg>
@@ -533,13 +541,17 @@ lambda_operator_convert<T_action, T_type, T_arg>::operator ()() const
       typename arg_type::result_type>
       (arg_()); }
 
-//template specialization of visit_each<>(action, functor):
-template <class T_action, class T_lambda_action, class T_type, class T_arg>
-void visit_each(const T_action& _A_action,
-                const lambda_operator_convert<T_lambda_action, T_type, T_arg>& _A_target)
+//template specialization of visitor<>::do_visit_each<>(action, functor):
+template <class T_lambda_action, class T_type, class T_arg>
+struct visitor<lambda_operator_convert<T_lambda_action, T_type, T_arg> >
 {
-  visit_each(_A_action, _A_target.arg_);
-}
+  template <class T_action>
+  static void do_visit_each(const T_action& _A_action,
+                            const lambda_operator_convert<T_lambda_action, T_type, T_arg>& _A_target)
+  {
+    sigc::visit_each(_A_action, _A_target.arg_);
+  }
+};
 
 undivert(2)dnl
 

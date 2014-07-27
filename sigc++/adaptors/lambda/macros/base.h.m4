@@ -1,18 +1,18 @@
-dnl Copyright 2002, The libsigc++ Development Team 
-dnl 
-dnl This library is free software; you can redistribute it and/or 
-dnl modify it under the terms of the GNU Lesser General Public 
-dnl License as published by the Free Software Foundation; either 
-dnl version 2.1 of the License, or (at your option) any later version. 
-dnl 
-dnl This library is distributed in the hope that it will be useful, 
-dnl but WITHOUT ANY WARRANTY; without even the implied warranty of 
-dnl MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU 
-dnl Lesser General Public License for more details. 
-dnl 
-dnl You should have received a copy of the GNU Lesser General Public 
-dnl License along with this library; if not, write to the Free Software 
-dnl Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA 
+dnl Copyright 2002, The libsigc++ Development Team
+dnl
+dnl This library is free software; you can redistribute it and/or
+dnl modify it under the terms of the GNU Lesser General Public
+dnl License as published by the Free Software Foundation; either
+dnl version 2.1 of the License, or (at your option) any later version.
+dnl
+dnl This library is distributed in the hope that it will be useful,
+dnl but WITHOUT ANY WARRANTY; without even the implied warranty of
+dnl MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+dnl Lesser General Public License for more details.
+dnl
+dnl You should have received a copy of the GNU Lesser General Public
+dnl License along with this library; if not, write to the Free Software
+dnl Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 dnl
 divert(-1)
 include(template.macros.m4)
@@ -20,9 +20,9 @@ include(template.macros.m4)
 define([LAMBDA_DO],[dnl
   template <LOOP(class T_arg%1, $1)>
   typename deduce_result_type<LOOP(T_arg%1,$1)>::type
-  operator ()(LOOP(T_arg%1 _A_%1, $1)) const 
+  operator ()(LOOP(T_arg%1 _A_%1, $1)) const
     { return value_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<LOOP(_P_(T_arg%1), $1)>
-             (LOOP(_A_%1, $1)); 
+             (LOOP(_A_%1, $1));
     }
 
   #ifndef SIGC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD
@@ -30,14 +30,14 @@ define([LAMBDA_DO],[dnl
   typename deduce_result_type<LOOP(T_arg%1,$1)>::type
   sun_forte_workaround(LOOP(T_arg%1 _A_%1, $1)) const
     { return value_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<LOOP(_P_(T_arg%1), $1)>
-             (LOOP(_A_%1, $1)); 
+             (LOOP(_A_%1, $1));
     }
   #endif //SIGC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD
 
 ])dnl
 define([LAMBDA_DO_VALUE],[dnl
   template <LOOP(class T_arg%1, $1)>
-  result_type operator ()(LOOP(T_arg%1, $1)) const 
+  result_type operator ()(LOOP(T_arg%1, $1)) const
     { return value_; }
 
   #ifndef SIGC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD
@@ -181,14 +181,17 @@ typename lambda_core<T_type, false>::result_type lambda_core<T_type, false>::ope
 
 } /* namespace internal */
 
-
-//template specialization of visit_each<>(action, functor):
-template <class T_action, class T_functor, bool I_islambda>
-void visit_each(const T_action& _A_action,
-                const internal::lambda_core<T_functor, I_islambda>& _A_target)
+//template specialization of visitor<>::do_visit_each<>(action, functor):
+template <class T_functor, bool I_islambda>
+struct visitor<internal::lambda_core<T_functor, I_islambda> >
 {
-  visit_each(_A_action, _A_target.value_);
-}
+  template <class T_action>
+  static void do_visit_each(const T_action& _A_action,
+                            const internal::lambda_core<T_functor, I_islambda>& _A_target)
+  {
+    sigc::visit_each(_A_action, _A_target.value_);
+  }
+};
 
 // forward declarations for lambda operators other<subscript> and other<assign>
 template <class T_type>
@@ -255,7 +258,7 @@ struct lambda : public internal::lambda_core<T_type>
     {}
 
   lambda(typename type_trait<T_type>::take v)
-    : internal::lambda_core<T_type>(v) 
+    : internal::lambda_core<T_type>(v)
     {}
 
   // operators for other<subscript>
@@ -274,13 +277,17 @@ struct lambda : public internal::lambda_core<T_type>
 };
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-//template specialization of visit_each<>(action, functor):
-template <class T_action, class T_type>
-void visit_each(const T_action& _A_action,
-                const lambda<T_type>& _A_target)
+//template specialization of visitor<>::do_visit_each<>(action, functor):
+template <class T_type>
+struct visitor<lambda<T_type> >
 {
-  visit_each(_A_action, _A_target.value_);
-}
+  template <class T_action>
+  static void do_visit_each(const T_action& _A_action,
+                            const lambda<T_type>& _A_target)
+  {
+    sigc::visit_each(_A_action, _A_target.value_);
+  }
+};
 #endif // DOXYGEN_SHOULD_SKIP_THIS
 
 dnl /* With the Sun FORTE and the Compaq C++ compiler,
@@ -291,34 +298,34 @@ dnl  * but neither with the Sun FORTE nor with the Compaq C++ compiler
 dnl  * (for the gcc the work-around is not needed, anyway):
 dnl  */
 dnl namespace internal {
-dnl 
+dnl
 dnl template <class T_type>
 dnl struct convert_array
 dnl { typedef T_type& type; };
-dnl 
+dnl
 dnl template <class T_type, int N>
 dnl struct convert_array<T_type[[N]]>
 dnl { typedef T_type* type; };
-dnl 
+dnl
 dnl } /* namespace internal */
-dnl 
+dnl
 dnl /// Converts a constant variable into a lambda object.
 dnl template <class T_type>
 dnl lambda<T_type> constant(const T_type& v)
 dnl { return lambda<T_type>(v); }
-dnl 
+dnl
 dnl /// Converts a reference into a lambda object.
 dnl template <class T_type>
 dnl lambda<typename internal::convert_array<T_type>::type> var(T_type& v)
 dnl { return lambda<typename internal::convert_array<T_type>::type>(v); }
-dnl 
+dnl
 dnl /// Converts a constant reference into a lambda object.
 dnl template <class T_type>
 dnl lambda<typename internal::convert_array<const T_type>::type> var(const T_type& v)
 dnl { return lambda<typename internal::convert_array<const T_type>::type>(v); }
 
 /** Converts a reference into a lambda object.
- * sigc::var creates a 0-ary functor, returning the value of a referenced variable. 
+ * sigc::var creates a 0-ary functor, returning the value of a referenced variable.
  *
  * @par Example:
  * @code

@@ -1,18 +1,18 @@
-dnl Copyright 2002, The libsigc++ Development Team 
-dnl 
-dnl This library is free software; you can redistribute it and/or 
-dnl modify it under the terms of the GNU Lesser General Public 
-dnl License as published by the Free Software Foundation; either 
-dnl version 2.1 of the License, or (at your option) any later version. 
-dnl 
-dnl This library is distributed in the hope that it will be useful, 
-dnl but WITHOUT ANY WARRANTY; without even the implied warranty of 
-dnl MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU 
-dnl Lesser General Public License for more details. 
-dnl 
-dnl You should have received a copy of the GNU Lesser General Public 
-dnl License along with this library; if not, write to the Free Software 
-dnl Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA 
+dnl Copyright 2002, The libsigc++ Development Team
+dnl
+dnl This library is free software; you can redistribute it and/or
+dnl modify it under the terms of the GNU Lesser General Public
+dnl License as published by the Free Software Foundation; either
+dnl version 2.1 of the License, or (at your option) any later version.
+dnl
+dnl This library is distributed in the hope that it will be useful,
+dnl but WITHOUT ANY WARRANTY; without even the implied warranty of
+dnl MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+dnl Lesser General Public License for more details.
+dnl
+dnl You should have received a copy of the GNU Lesser General Public
+dnl License along with this library; if not, write to the Free Software
+dnl Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 dnl
 divert(-1)
 
@@ -49,7 +49,7 @@ FOR(1, eval($2-1),[
         (LIST(LOOP(_A_arg%1,eval($1-1)), bound_.invoke(), FOR($1,eval($2-1),[_A_arg%1,])));
     }
   #endif
-    
+
 ])dnl
 ])
 define([BIND_OPERATOR_COUNT],[dnl
@@ -74,7 +74,7 @@ FOR(1, eval($2-1),[
         (LIST(LOOP(_A_arg%1,eval($2-1)), LOOP(bound%1_.invoke(), $1)));
     }
   #endif
-    
+
 ])
 define([BIND_FUNCTOR_LOCATION],[dnl
 ifelse($1,1,[#ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -179,22 +179,26 @@ FOR(1,$1,[
 
 ifelse($1,1,[#ifndef DOXYGEN_SHOULD_SKIP_THIS
 ],)dnl Include only the first template specialization of bind_functor and no
-dnl template specialization of visit_each in the documentation. ($1 = 1..CALL_SIZE)
-//template specialization of visit_each<>(action, functor):
+dnl template specialization of visitor in the documentation. ($1 = 1..CALL_SIZE)
+//template specialization of visitor<>::do_visit_each<>(action, functor):
 /** Performs a functor on each of the targets of a functor.
  * The function overload for sigc::bind_functor performs a functor on the
  * functor and on the object instances stored in the sigc::bind_functor object.
  *
  * @ingroup bind
  */
-template <class T_action, class T_functor, LOOP(class T_type%1, $1)>
-void visit_each(const T_action& _A_action,
-                const bind_functor<-1, T_functor, LOOP(T_type%1, $1)>& _A_target)
+template <class T_functor, LOOP(class T_type%1, $1)>
+struct visitor<bind_functor<-1, T_functor, LOOP(T_type%1, $1)> >
 {
-  visit_each(_A_action, _A_target.functor_);dnl
+  template <typename T_action>
+  static void do_visit_each(const T_action& _A_action,
+                            const bind_functor<-1, T_functor,  LOOP(T_type%1, $1)>& _A_target)
+  {
+    sigc::visit_each(_A_action, _A_target.functor_);dnl
 FOR(1,$1,[
-  visit_each(_A_action, _A_target.bound%1_);])
-}
+    sigc::visit_each(_A_action, _A_target.bound%1_);])
+  }
+};
 ifelse($1,CALL_SIZE,[#endif // DOXYGEN_SHOULD_SKIP_THIS
 ],)dnl
 
@@ -231,7 +235,7 @@ _FIREWALL([ADAPTORS_BIND])
 #include <sigc++/adaptors/adaptor_trait.h>
 #include <sigc++/adaptors/bound_argument.h>
 
-namespace sigc { 
+namespace sigc {
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
@@ -362,20 +366,24 @@ struct bind_functor {};
 FOR(0,eval(CALL_SIZE-1),[[BIND_FUNCTOR_LOCATION(%1)]])dnl
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-//template specialization of visit_each<>(action, functor):
+//template specialization of visitor<>::do_visit_each<>(action, functor):
 /** Performs a functor on each of the targets of a functor.
  * The function overload for sigc::bind_functor performs a functor on the
  * functor and on the object instances stored in the sigc::bind_functor object.
  *
  * @ingroup bind
  */
-template <class T_action, int T_loc, class T_functor, class T_bound>
-void visit_each(const T_action& _A_action,
-                const bind_functor<T_loc, T_functor, T_bound>& _A_target)
+template <int T_loc, class T_functor, class T_bound>
+struct visitor<bind_functor<T_loc, T_functor, T_bound> >
 {
-  visit_each(_A_action, _A_target.functor_);
-  visit_each(_A_action, _A_target.bound_);
-}
+  template <class T_action>
+  static void do_visit_each(const T_action& _A_action,
+                            const bind_functor<T_loc, T_functor, T_bound>& _A_target)
+  {
+    sigc::visit_each(_A_action, _A_target.functor_);
+    sigc::visit_each(_A_action, _A_target.bound_);
+  }
+};
 #endif // DOXYGEN_SHOULD_SKIP_THIS
 
 FOR(1,CALL_SIZE,[[BIND_FUNCTOR_COUNT(%1)]])dnl
@@ -393,7 +401,7 @@ FOR(1,CALL_SIZE,[[BIND_FUNCTOR_COUNT(%1)]])dnl
 template <int I_location, class T_bound1, class T_functor>
 inline bind_functor<I_location, T_functor, T_bound1>
 bind(const T_functor& _A_func, T_bound1 _A_b1)
-{ 
+{
   return bind_functor<I_location, T_functor, T_bound1>
            (_A_func, _A_b1);
 }

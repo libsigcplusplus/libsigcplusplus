@@ -1,18 +1,18 @@
-dnl Copyright 2002, The libsigc++ Development Team 
-dnl 
-dnl This library is free software; you can redistribute it and/or 
-dnl modify it under the terms of the GNU Lesser General Public 
-dnl License as published by the Free Software Foundation; either 
-dnl version 2.1 of the License, or (at your option) any later version. 
-dnl 
-dnl This library is distributed in the hope that it will be useful, 
-dnl but WITHOUT ANY WARRANTY; without even the implied warranty of 
-dnl MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU 
-dnl Lesser General Public License for more details. 
-dnl 
-dnl You should have received a copy of the GNU Lesser General Public 
-dnl License along with this library; if not, write to the Free Software 
-dnl Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA 
+dnl Copyright 2002, The libsigc++ Development Team
+dnl
+dnl This library is free software; you can redistribute it and/or
+dnl modify it under the terms of the GNU Lesser General Public
+dnl License as published by the Free Software Foundation; either
+dnl version 2.1 of the License, or (at your option) any later version.
+dnl
+dnl This library is distributed in the hope that it will be useful,
+dnl but WITHOUT ANY WARRANTY; without even the implied warranty of
+dnl MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+dnl Lesser General Public License for more details.
+dnl
+dnl You should have received a copy of the GNU Lesser General Public
+dnl License along with this library; if not, write to the Free Software
+dnl Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 dnl
 divert(-1)
 
@@ -197,7 +197,7 @@ ifelse($1,0,[
   /** Forms a function pointer from call_it().
    * @return A function pointer formed from call_it().
    */
-  static hook address() 
+  static hook address()
     { return reinterpret_cast<hook>(&call_it); }
 };
 
@@ -239,17 +239,17 @@ struct typed_slot_rep : public slot_rep
    */
   inline typed_slot_rep(const T_functor& functor)
     : slot_rep(0, &destroy, &dup), functor_(functor)
-    { visit_each_type<trackable*>(slot_do_bind(this), functor_); }
+    { sigc::visit_each_type<trackable*>(slot_do_bind(this), functor_); }
 
   inline typed_slot_rep(const typed_slot_rep& cl)
     : slot_rep(cl.call_, &destroy, &dup), functor_(cl.functor_)
-    { visit_each_type<trackable*>(slot_do_bind(this), functor_); }
+    { sigc::visit_each_type<trackable*>(slot_do_bind(this), functor_); }
 
   inline ~typed_slot_rep()
     {
       call_ = 0;
       destroy_ = 0;
-      visit_each_type<trackable*>(slot_do_unbind(this), functor_);
+      sigc::visit_each_type<trackable*>(slot_do_unbind(this), functor_);
     }
 
   /** Detaches the stored functor from the other referred trackables and destroys it.
@@ -260,7 +260,7 @@ struct typed_slot_rep : public slot_rep
       self* self_ = static_cast<self*>(reinterpret_cast<slot_rep*>(data));
       self_->call_ = 0;
       self_->destroy_ = 0;
-      visit_each_type<trackable*>(slot_do_unbind(self_), self_->functor_);
+      sigc::visit_each_type<trackable*>(slot_do_unbind(self_), self_->functor_);
       self_->functor_.~adaptor_type();
       /* don't call disconnect() here: destroy() is either called
        * a) from the parent itself (in which case disconnect() leads to a segfault) or

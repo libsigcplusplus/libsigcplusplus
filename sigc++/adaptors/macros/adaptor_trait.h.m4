@@ -1,29 +1,29 @@
-dnl Copyright 2002, The libsigc++ Development Team 
-dnl 
-dnl This library is free software; you can redistribute it and/or 
-dnl modify it under the terms of the GNU Lesser General Public 
-dnl License as published by the Free Software Foundation; either 
-dnl version 2.1 of the License, or (at your option) any later version. 
-dnl 
-dnl This library is distributed in the hope that it will be useful, 
-dnl but WITHOUT ANY WARRANTY; without even the implied warranty of 
-dnl MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU 
-dnl Lesser General Public License for more details. 
-dnl 
-dnl You should have received a copy of the GNU Lesser General Public 
-dnl License along with this library; if not, write to the Free Software 
-dnl Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA 
+dnl Copyright 2002, The libsigc++ Development Team
+dnl
+dnl This library is free software; you can redistribute it and/or
+dnl modify it under the terms of the GNU Lesser General Public
+dnl License as published by the Free Software Foundation; either
+dnl version 2.1 of the License, or (at your option) any later version.
+dnl
+dnl This library is distributed in the hope that it will be useful,
+dnl but WITHOUT ANY WARRANTY; without even the implied warranty of
+dnl MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+dnl Lesser General Public License for more details.
+dnl
+dnl You should have received a copy of the GNU Lesser General Public
+dnl License along with this library; if not, write to the Free Software
+dnl Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 dnl
 divert(-1)
 include(template.macros.m4)
 
 dnl
-dnl The idea here is simple.  To prevent the need to 
+dnl The idea here is simple.  To prevent the need to
 dnl specializing every adaptor for every type of functor
 dnl and worse non-functors like function pointers, we
 dnl will make an adaptor trait which can take ordinary
-dnl functors and make them adaptor functors for which 
-dnl we will of course be able to avoid excess copies. 
+dnl functors and make them adaptor functors for which
+dnl we will of course be able to avoid excess copies.
 dnl (in theory)
 dnl
 dnl this all depends on partial specialization to allow
@@ -66,7 +66,7 @@ FOR(1, $1,[
       return functor_(LOOP(_A_arg%1, $1));
     }
   #endif
-  
+
 ])dnl
 ])
 
@@ -148,7 +148,7 @@ struct adaptor_functor : public adaptor_base
   result_type sun_forte_workaround() const
     { return operator(); }
   #endif
-  
+
 FOR(0,CALL_SIZE,[[ADAPTOR_DO(%1)]])dnl
   /// Constructs an invalid functor.
   adaptor_functor()
@@ -180,21 +180,23 @@ adaptor_functor<T_functor>::operator()() const
   { return functor_(); }
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-//template specialization of visit_each<>(action, functor):
+//template specialization of visitor<>::do_visit_each<>(action, functor):
 /** Performs a functor on each of the targets of a functor.
  * The function overload for sigc::adaptor_functor performs a functor
  * on the functor stored in the sigc::adaptor_functor object.
  *
  * @ingroup adaptors
  */
-template <class T_action, class T_functor>
-void visit_each(const T_action& _A_action,
-                const adaptor_functor<T_functor>& _A_target)
+template <class T_functor>
+struct visitor<adaptor_functor<T_functor> >
 {
-  //The extra sigc:: prefix avoids ambiguity in some strange
-  //situations.
-  sigc::visit_each(_A_action, _A_target.functor_);
-}
+  template <class T_action>
+  static void do_visit_each(const T_action& _A_action,
+                            const adaptor_functor<T_functor>& _A_target)
+  {
+    sigc::visit_each(_A_action, _A_target.functor_);
+  }
+};
 #endif // DOXYGEN_SHOULD_SKIP_THIS
 
 /** Trait that specifies what is the adaptor version of a functor type.
@@ -216,7 +218,7 @@ template <class T_functor, bool I_isadaptor = is_base_and_derived<adaptor_base, 
  * This template specialization is used for types that inherit from adaptor_base.
  * adaptor_type is equal to @p T_functor in this case.
  */
-template <class T_functor> 
+template <class T_functor>
 struct adaptor_trait<T_functor, true>
 {
   typedef typename T_functor::result_type result_type;
@@ -238,17 +240,20 @@ struct adaptor_trait<T_functor, false>
   typedef adaptor_functor<functor_type> adaptor_type;
 };
 
-
+// Doxygen (at least version 1.8.4) removes blank lines in a code block.
+// That's why there are empty comment lines in the following code block.
 /** Base type for adaptors.
- * adapts wraps adaptors, functors, function pointers and class methods.
+ * sigc::adapts wraps adaptors, functors, function pointers and class methods.
  * It contains a single member functor which is always a sigc::adaptor_base.
  * The typedef adaptor_type defines the exact type that is used
  * to store the adaptor, functor, function pointer or class method passed
- * into the constructor. It differs from @e T_functor unless @e T_functor
+ * into the constructor. It differs from @a T_functor unless @a T_functor
  * inherits from sigc::adaptor_base.
  *
  * @par Example of a simple adaptor:
  * @code
+ * namespace my_ns
+ * {
  * template <class T_functor>
  * struct my_adaptor : public sigc::adapts<T_functor>
  * {
@@ -256,40 +261,48 @@ struct adaptor_trait<T_functor, false>
  *   struct deduce_result_type
  *   { typedef typename sigc::deduce_result_type<T_functor, T_arg1, T_arg2>::type type; };
  *   typedef typename sigc::functor_trait<T_functor>::result_type result_type;
- *
+ *   //
  *   result_type
  *   operator()() const;
- *
+ *   //
  *   template <class T_arg1>
  *   typename deduce_result_type<T_arg1>::type
  *   operator()(T_arg1 _A_arg1) const;
- *
+ *   //
  *   template <class T_arg1, class T_arg2>
  *   typename deduce_result_type<T_arg1, T_arg2>::type
- *   operator()(T_arg1 _A_arg1, class T_arg2) const;
- *
+ *   operator()(T_arg1 _A_arg1, T_arg2 _A_arg2) const;
+ *   //
  *   // Constructs a my_adaptor object that wraps the passed functor.
  *   // Initializes adapts<T_functor>::functor_, which is invoked from operator()().
  *   explicit my_adaptor(const T_functor& _A_functor)
  *     : sigc::adapts<T_functor>(_A_functor) {}
  * };
- *
- * template <class T_action, class T_functor>
- * void visit_each(const T_action& _A_action,
- *                 const my_adaptor<T_functor>& _A_target)
+ * } // end namespace my_ns
+ * //
+ * // Specialization of sigc::visitor for my_adaptor.
+ * namespace sigc
  * {
- *   visit_each(_A_action, _A_target.functor_);
- * }
+ * template <class T_functor>
+ * struct visitor<my_ns::my_adaptor<T_functor> >
+ * {
+ *   template <class T_action>
+ *   static void do_visit_each(const T_action& _A_action,
+ *                             const my_ns::my_adaptor<T_functor>& _A_target)
+ *   {
+ *     sigc::visit_each(_A_action, _A_target.functor_);
+ *   }
+ * };
+ * } // end namespace sigc
  * @endcode
  *
  * If you implement your own adaptor, you must also provide your specialization
- * of visit_each<>() that will forward the call to the functor(s) your
- * adapter is wrapping. Otherwise, pointers stored within the functor won't be
+ * of sigc::visitor<>::do_visit_each<>() that will forward the call to the functor(s)
+ * your adapter is wrapping. Otherwise, pointers stored within the functor won't be
  * invalidated when a sigc::trackable object is destroyed and you can end up
  * executing callbacks on destroyed objects.
  *
- * Your adaptor and your specialization of visit_each<>() must be in the same
- * namespace.
+ * Your specialization of sigc::visitor<> must be in namespace sigc.
  *
  * @ingroup adaptors
  */

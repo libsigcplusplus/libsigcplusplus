@@ -1,4 +1,3 @@
-// -*- c++ -*-
 /* Copyright 2002, The libsigc++ Development Team
  *  Assigned to public domain.  Use as you wish without restriction.
  */
@@ -54,7 +53,7 @@ struct print
 {
   void operator()(int i) const
   {
-    result_stream << "int: " << i;
+    result_stream << "int: " << i << " ";
   }
 
   template <class T>
@@ -85,15 +84,15 @@ int main(int argc, char* argv[])
   A a;
   result_stream << "hit all targets: ";
   sigc::visit_each(print(), sigc::compose(sigc::bind(sigc::ptr_fun3(&foo), sigc::ref(a), i), sigc::ptr_fun1(&bar)));
-  util->check_result(result_stream, "hit all targets: other other ");
+  util->check_result(result_stream, "hit all targets: other trackable int: 1 other ");
 
   result_stream << "hit all ints: ";
   sigc::visit_each_type<int>(print(), sigc::compose(sigc::bind(sigc::ptr_fun3(&foo), sigc::ref(a), j),sigc::ptr_fun1(&bar)));
-  util->check_result(result_stream, "hit all ints: ");
+  util->check_result(result_stream, "hit all ints: int: 2 ");
 
   result_stream << "hit all trackable: ";
   sigc::visit_each_type<trackable>(print(), sigc::compose(sigc::bind(sigc::ptr_fun3(&foo), sigc::ref(a), k),sigc::ptr_fun1(&bar)));
-  util->check_result(result_stream, "hit all trackable: ");
+  util->check_result(result_stream, "hit all trackable: trackable ");
 
   return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;
 }

@@ -85,7 +85,7 @@ FOR(2,$1,[
 ])dnl end TRACK_OBJECT_FUNCTOR
 
 define([TRACK_OBJECT_VISIT_EACH],[dnl
-//template specialization of visit_each<>(action, functor):
+//template specialization of visitor<>::do_visit_each<>(action, functor):
 /** Performs a functor on each of the targets of a functor.
  * The function overload for sigc::track_obj_functor$1 performs a functor
  * on the functor and on the trackable object instances stored in the
@@ -95,14 +95,18 @@ define([TRACK_OBJECT_VISIT_EACH],[dnl
  *
  * @ingroup track_obj
  */
-template <typename T_action, typename T_functor, LOOP(typename T_obj%1, $1)>
-void visit_each(const T_action& _A_action,
-                const track_obj_functor$1<T_functor, LOOP(T_obj%1, $1)>& _A_target)
+template <typename T_functor, LOOP(typename T_obj%1, $1)>
+struct visitor<track_obj_functor$1<T_functor, LOOP(T_obj%1, $1)> >
 {
-  sigc::visit_each(_A_action, _A_target.functor_);dnl
+  template <typename T_action>
+  static void do_visit_each(const T_action& _A_action,
+                            const track_obj_functor$1<T_functor, LOOP(T_obj%1, $1)>& _A_target)
+  {
+    sigc::visit_each(_A_action, _A_target.functor_);dnl
 FOR(1,$1,[
-  sigc::visit_each(_A_action, _A_target.obj%1_);])
-}
+    sigc::visit_each(_A_action, _A_target.obj%1_);])
+  }
+};
 
 ])dnl end TRACK_OBJECT_VISIT_EACH
 
@@ -135,7 +139,7 @@ _FIREWALL([ADAPTORS_TRACK_OBJ])
 namespace sigc {
 
 /** @defgroup track_obj track_obj()
- * track_obj() tracks trackable objects, referenced from a functor.
+ * sigc::track_obj() tracks trackable objects, referenced from a functor.
  * It can be useful when you assign a C++11 lambda expression or a std::function<>
  * to a slot, or connect it to a signal, and the lambda expression or std::function<>
  * contains references to sigc::trackable derived objects.

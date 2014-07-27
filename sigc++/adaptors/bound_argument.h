@@ -36,10 +36,10 @@ namespace sigc {
  *
  * Likewise, If Foo is a wrapped const reference to a class Bar (const_reference_wrapper<Bar>)
  * then this object is implemented on top of a const_limit_reference.
- * 
+ *
  * If Foo is something else (such as an argument that is bound by value) bound_argument just
  * stores a cop of that value, and both invoke() and visit() simply return it.
- * 
+ *
  * This object is used by the bind_functor<> and bind_return_functor<> objects,
  * depending on whether the argument is bound as a parameter or as a return value.
  *
@@ -143,21 +143,24 @@ private:
 };
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-/** Implementation of visit_each() specialized for the bound_argument class.
+/** Implementation of visitor<>::do_visit_each<>() specialized for the bound_argument class.
  * Call visit_each() on the entity returned by the bound_argument's visit()
  * method.
- * @e T_action The type of functor to invoke.
- * @e T_type The type of bound_argument.
+ * @tparam T_type The type of bound_argument.
+ * @tparam T_action The type of functor to invoke.
  * @param _A_action The functor to invoke.
  * @param _A_argument The visited instance.
  */
-template <class T_action, class T_type>
-void
-visit_each(const T_action& _A_action,
-           const bound_argument<T_type>& _A_argument)
+template <class T_type>
+struct visitor<bound_argument<T_type> >
 {
-  visit_each(_A_action, _A_argument.visit());
-}
+  template <class T_action>
+  static void do_visit_each(const T_action& _A_action,
+                            const bound_argument<T_type>& _A_argument)
+  {
+    sigc::visit_each(_A_action, _A_argument.visit());
+  }
+};
 #endif // DOXYGEN_SHOULD_SKIP_THIS
 
 } /* namespace sigc */
