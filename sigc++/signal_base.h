@@ -233,6 +233,20 @@ private:
  *
  * When signals are copied they share the underlying information,
  * so you can have a protected/private sigc::signal member and a public accessor method.
+ * A sigc::signal is a kind of reference-counting pointer. It's similar to
+ * std::shared_ptr<>, although sigc::signal is restricted to holding a pointer to
+ * a sigc::internal::signal_impl object that contains the implementation of the signal.
+ *
+ * @code
+ * class MyClass
+ * {
+ * public:
+ *   typedef sigc::signal<void> MySignalType;
+ *   MySignalType get_my_signal() { return m_my_signal; }
+ * private:
+ *   MySignalType m_my_signal;
+ * };
+ * @endcode
  *
  * signal and slot objects provide the core functionality of this
  * library. A slot is a container for an arbitrary functor.
@@ -254,6 +268,11 @@ private:
  * A sigc::internal::signal_impl object is dynamically allocated from signal_base
  * when first connecting a slot to the signal. This ensures that empty signals
  * don't waste memory.
+ *
+ * sigc::internal::signal_impl is reference-counted. When a sigc::signal# object
+ * is copied, the reference count of its sigc::internal::signal_impl object is
+ * incremented. Both sigc::signal# objects then refer to the same
+ * sigc::internal::signal_impl object.
  *
  * @ingroup signal
  */
