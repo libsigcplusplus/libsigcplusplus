@@ -33,7 +33,7 @@
 //   echo $?
 // If test_track_obj writes nothing and the return code is 0, the test has passed.
 
-#if __cplusplus >= 201103L || defined(__GXX_EXPERIMENTAL_CXX0X__)
+#if __cplusplus >= 201103L || defined(__GXX_EXPERIMENTAL_CXX0X__) || _MSC_VER >= 1700
 #  define USING_CPP11_LAMBDA_EXPRESSIONS
 #endif
 
