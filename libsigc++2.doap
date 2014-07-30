@@ -9,7 +9,7 @@
   <homepage rdf:resource="http://www.gtkmm.org/" />
   <bug-database rdf:resource="http://bugzilla.gnome.org/browse.cgi?product=libsigc%2B%2B" />
   <mailing-list rdf:resource="mailto:libsigc-list@gnome.org" />
-  <category rdf:resource="http://api.gnome.org/doap-extensions#platform" />
+  <category rdf:resource="http://api.gnome.org/doap-extensions#core" />
 
   <maintainer>
     <foaf:Person>
