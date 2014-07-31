@@ -9,10 +9,10 @@ General information:
    whether it is static or virtual.
 
    libsigc++ is used by gtkmm to wrap the GTK+ signal system. It does not
-   depend on GTK or gtkmm.
+   depend on GTK+ or gtkmm.
 
-   Further information about the major release 2.0 is available on the
-   libsigc++ project home page: http://libsigc.sourceforge.net/
+   Further information is available on the libsigc++ project home page:
+   http://libsigc.sourceforge.net/
 
 
 License information:
@@ -22,12 +22,12 @@ License information:
 
 
 Contact information:
-   Maintainer: mailto: mschulze@cvs.gnome.org
+   Maintainer: mailto: murrayc@murrayc.com
    Maillist: mailto: libsigc-list@gnome.org
    Homepage: http://libsigc.sourceforge.net
-   Online reference documentation: http://library.gnome.org/devel/libsigc++/unstable/
-   Ftp: http://ftp.gnome.org/pub/GNOME/sources/libsigc++/2.0/
-   CVS:
+   Online reference documentation: https://developer.gnome.org/libsigc++/unstable/
+   Ftp: http://ftp.gnome.org/pub/GNOME/sources/libsigc++/
+   Git: https://git.gnome.org/browse/libsigc++2/
 
 
 Overview of the distribution:
@@ -43,24 +43,26 @@ Overview of the distribution:
       sigc++/functors/macros/        .m4 files used to auto-generate source files
       sigc++/adaptors/               source for library (various adaptors)
       sigc++/adaptors/macros/        .m4 files used to auto-generate source files
-      sigc++/adpators/lambda/        source for library (lambda library)
-      sigc++/adpators/lambda/macros/ .m4 files used to auto-generate source files
+      sigc++/adaptors/lambda/        source for library (lambda library, deprecated)
+      sigc++/adaptors/lambda/macros/ .m4 files used to auto-generate source files
    
    build/                            auxiliary files for building
    
    tests/                            programs testing and verifying proper behaviour
    
-   MSVC_Net2003/                     project files for building the library with MSVC .NET 2003
+   MSVC_Net2010/                     project files for building the library with MSVC++ 2010
 
 
 Compatibility:
 
-   Compatible compilers must supports the following recent c++ techniques:
-   * Partial template (function) specialization.
+   Compatible compilers must supports the following C++ techniques:
+   * Partial template (class) specialization.
    * Explicit template (member) function instantiation.
    * Treat void return as normal return.
 
-   This release has only been tested with gcc-3.3. It should at least also compile with:
+   All releases are tested with the gcc compiler.
+   Release 2.3.2 has been tested with gcc 4.8.2, clang 3.4 and MS Visual C++ 2010.
+   It should also compile with:
    * gcc >= 3.2
    * cygwin (gcc >= 3.2)
    * mingw32

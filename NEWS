@@ -1,3 +1,46 @@
+2.3.2 (unstable):
+
+Note: The implementation of bug #724496 breaks API for some users,
+but it does not break ABI.
+Only users who have added their own visit_each() overloads are affected by
+the API break. Their programs will still compile, but there will be run-time
+errors, if they rely on auto-disconnection of slots.
+Updated instructions for users who implement their own adaptors are found
+in the description of sigc::adapts<>. 
+
+* Replace visit_each() overloads by struct visitor<>.
+  Add the test_visit_each test case.
+  (Ryan Beasley, Kjell Ahlstedt) Bug #724496
+* signal_impl::notify(): Don't delete signal_impl during erase().
+  (Kjell Ahlstedt) Bug #564005 (Alexander Shaduri)
+* Fix 'make check' with clang++ 3.4 and --enable-warnings=fatal
+  (Kjell Ahlstedt) Bug #724496 (Ryan Beasley)
+* Fix test_cpp11_lambda for gcc 4.8
+  (Kjell Ahlstedt)
+* Speed up disconnection of slots.
+  (Kjell Ahlstedt) Bug #167714 (Neal E. Coombes)
+* Auto-generate the ChangeLog from the git log for 'make dist'.
+  (José Alburquerque)
+* Don't use __file__ in the FIREWALL m4 macro.
+  (Kjell Ahlstedt) Bug #699168 (John Ralls)
+* Add the track_obj() adaptor and test_track_obj test case.
+  Deprecate libsigc++ lambdas, sigc::group() and sigc::var().
+  Use C++11 lambda expressions instead.
+  (Kjell Ahlstedt) Bug #672555
+* Documentation:
+  - Emphasize that signals are reference counted.
+    (Kjell Ahlstedt) Bug #611941 (Jonathon Jongsma)
+  - Mention std::function<> and std::bind() where appropriate.
+    (Kjell Ahlstedt, Chris Vine)
+  - Use DOXYGEN_SHOULD_SKIP_THIS consistently to exclude internal
+    functions from the reference documentation.
+    (Kjell Ahlstedt)
+* Windows:
+  - Enable C++11 lambda expressions with MS Visual Studio 2012 and later
+    (Ryan Beasley) Bug #733752
+  - Update MSVC_Net2010
+    (Kjell Ahlstedt) Bug #724496 (Ryan Beasley)
+
 2.3.1 (unstable):
 
 * signal_base: Add blocked(), block(), unblock().
