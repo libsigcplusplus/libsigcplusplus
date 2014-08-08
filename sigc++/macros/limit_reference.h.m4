@@ -137,6 +137,7 @@ divert(0)
 
 _FIREWALL([LIMIT_REFERENCE])
 
+#include <sigc++/visit_each.h>
 #include <sigc++/type_traits.h>
 #include <sigc++/trackable.h>
 
