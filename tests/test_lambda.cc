@@ -1,4 +1,3 @@
-// -*- c++ -*-
 /* Copyright 2002, The libsigc++ Development Team
  *  Assigned to public domain.  Use as you wish without restriction.
  */
@@ -10,6 +9,7 @@
 #include <cstdlib>
 #include <sigc++/functors/functors.h>
 #include <sigc++/adaptors/lambda/lambda.h>
+#include <sigc++/adaptors/retype_return.h>
 
 #ifndef SIGCXX_DISABLE_DEPRECATED
 
@@ -191,18 +191,16 @@ int main(int argc, char* argv[])
 
   // auto-disconnect
   //
-  // The functor returns std::ostream&, but the compiler dislikes both
-  // slot<std::ostream>, slot<std::ostream&> and slot<std::ostream*>.
-  // std::ostream can be implicitly converted to bool, because it has either
-  // operator void*() (before C++11) or operator bool() (since C++11).
-  sigc::slot<bool> sl1;
+  // sigc::var(result_stream) returns std::ostream&, but the compiler dislikes
+  // both slot<std::ostream>, slot<std::ostream&> and slot<std::ostream*>.
+  sigc::slot<void> sl1;
   {
     book guest_book("karl");
-    sl1 = (sigc::var(result_stream) << sigc::ref(guest_book) << sigc::var("\n"));
+    sl1 = sigc::hide_return(sigc::var(result_stream) << sigc::ref(guest_book) << sigc::var("\n"));
     sl1();
     util->check_result(result_stream, "karl\n");
   } // auto-disconnect
-  sl1(); // :-)
+  sl1();
   util->check_result(result_stream, "");
 
   // test group adaptor
@@ -256,9 +254,11 @@ int main(int argc, char* argv[])
   result_stream << (sigc::group(&foo, sigc::static_cast_<int>(_1), 2)) (1.234);
   util->check_result(result_stream, "foo(int 1, int 2) 6");
 
+  return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;
+
 #else // SIGCXX_DISABLE_DEPRECATED
   std::cout << "libsigc++ lambdas are deprecated. They are not tested." << std::endl;
+  // Return code 77 tells automake's test harness to skip this test.
+  return util->get_result_and_delete_instance() ? 77 : EXIT_FAILURE;
 #endif
-
-  return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;
-}
+} // end main()
