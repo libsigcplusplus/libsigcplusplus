@@ -30,7 +30,7 @@ m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES])
 AM_MAINTAINER_MODE
 AC_ARG_VAR([ACLOCAL_FLAGS], [aclocal flags, e.g. -I <macro dir>])
 
-MM_PREREQ([0.9.6])
+MM_PREREQ([0.9.7])
 MM_INIT_MODULE([sigc++-2.0])
 MM_CONFIG_DOCTOOL_DIR([docs])
 
