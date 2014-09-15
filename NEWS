@@ -1,3 +1,19 @@
+2.4.0 (stable):
+
+Note: API/ABI is the same as in release 2.3.2. Compared to stable
+releases 2.2.x, the API has been broken regarding visit_each() functions.
+See the NEWS entry for libsigc++ 2.3.2.
+
+* Fix the test_lambda test case for MS Visual C++ 2013 and other
+  C++11-compliant compilers.
+  (Kjell Ahlstedt) Bug #734368 (Ryan Beasley)
+* Add a missing #include in limit_reference.h.
+  (Kjell Ahlstedt)
+* Documentation:
+  - Use doxygen-extra.css from the mm-common package.
+    Requires mm-common 0.9.7 when configured to use maintainer-mode.
+    (Kjell Ahlstedt)
+
 2.3.2 (unstable):
 
 Note: The implementation of bug #724496 breaks API for some users,
