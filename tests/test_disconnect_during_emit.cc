@@ -1,4 +1,3 @@
-// -*- c++ -*-
 /* Copyright 2002, The libsigc++ Development Team
  *  Assigned to public domain.  Use as you wish without restriction.
  */
@@ -41,8 +40,12 @@ int main(int argc, char* argv[])
 
   sigc::signal<void> signal_test;
   connection = signal_test.connect(sigc::mem_fun(instance, &HandlerClass::handler));
+  result_stream << "Number of signal handlers before signal emission: " << signal_test.size();
+  util->check_result(result_stream, "Number of signal handlers before signal emission: 1");
   signal_test.emit();
   util->check_result(result_stream, "handler called");
+  result_stream << "Number of signal handlers after signal emission: " << signal_test.size();
+  util->check_result(result_stream, "Number of signal handlers after signal emission: 0");
 
   return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;
 }
