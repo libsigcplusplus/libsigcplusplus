@@ -1,4 +1,3 @@
-// -*- c++ -*-
 /*
  * Copyright 2003, The libsigc++ Development Team
  *
@@ -20,11 +19,29 @@
 
 #include <sigc++/functors/slot_base.h>
 
+namespace
+{
+// Used by slot_rep::notify() and slot_base::operator=(). They must be
+// notified, if the slot_rep is deleted when they call disconnect().
+struct destroy_notify_struct
+{
+  destroy_notify_struct() : deleted_(false) { }
+
+  static void* notify(void* data)
+  {
+    destroy_notify_struct* self_ = reinterpret_cast<destroy_notify_struct*>(data);
+    self_->deleted_ = true;
+    return 0;
+  }
+
+  bool deleted_;
+};
+} // anonymous namespace
+
 namespace sigc
 {
-
-namespace internal {
-
+namespace internal
+{
 // only MSVC needs this to guarantee that all new/delete are executed from the DLL module
 #ifdef SIGC_NEW_DELETE_IN_LIBRARY_ONLY
 void* slot_rep::operator new(size_t size_)
@@ -38,6 +55,10 @@ void slot_rep::operator delete(void* p)
 }
 #endif
 
+//TODO: When we can break API: Is it necessary to invalidate the slot here?
+// If the parent misbehaves, when the slot is not invalidated, isn't that
+// a problem that should be fixed in the parent?
+// See discussion in https://bugzilla.gnome.org/show_bug.cgi?id=738602
 void slot_rep::disconnect()
 {
   if (parent_)
@@ -56,20 +77,6 @@ void slot_rep::disconnect()
 //static
 void* slot_rep::notify(void* data)
 {
-  struct destroy_notify_struct
-  {
-    destroy_notify_struct() : deleted_(false) { }
-
-    static void* notify(void* data)
-    {
-      destroy_notify_struct* self_ = reinterpret_cast<destroy_notify_struct*>(data);
-      self_->deleted_ = true;
-      return 0;
-    }
-
-    bool deleted_;
-  };
-
   slot_rep* self_ = reinterpret_cast<slot_rep*>(data);
 
   self_->call_ = 0; // Invalidate the slot.
@@ -135,16 +142,34 @@ slot_base& slot_base::operator=(const slot_base& src)
 
   if (src.empty())
   {
-    disconnect();
+    if (rep_)
+    {
+      // Make sure we are notified if disconnect() deletes rep_, which is trackable.
+      // Compare slot_rep::notify().
+      destroy_notify_struct notifier;
+      rep_->add_destroy_notify_callback(&notifier, destroy_notify_struct::notify);
+      rep_->disconnect(); // Disconnect the slot (might lead to deletion of rep_!).
+
+      // If rep_ has been deleted, don't try to delete it again.
+      // If it has been deleted, this slot_base has probably also been deleted, so
+      // don't clear the rep_ pointer. It's the responsibility of the code that
+      // deletes rep_ to either clear the rep_ pointer or delete this slot_base.
+      if (!notifier.deleted_)
+      {
+        rep_->remove_destroy_notify_callback(&notifier);
+        delete rep_; // Detach the stored functor from the other referred trackables and destroy it.
+        rep_ = 0;
+      }
+    }
     return *this;
   }
 
   internal::slot_rep* new_rep_ = src.rep_->dup();
 
-  if (rep_)               // Silently exchange the slot_rep.
+  if (rep_) // Silently exchange the slot_rep.
   {
     new_rep_->set_parent(rep_->parent_, rep_->cleanup_);
-    delete rep_;
+    delete rep_; // Calls destroy(), but does not call disconnect().
   }
 
   rep_ = new_rep_;
