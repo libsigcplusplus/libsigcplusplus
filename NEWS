@@ -1,3 +1,11 @@
+2.4.1 (stable):
+
+* A slot's functor is destroyed when an empty slot is assigned to the slot.
+  (Kjell Ahlstedt) Bug #738602 (James Lin)
+* test_disconnect_during_emit tests that the slot is really disconnected
+  during signal emission.
+  (Kjell Ahlstedt)
+
 2.4.0 (stable):
 
 Note: API/ABI is the same as in release 2.3.2. Compared to stable
