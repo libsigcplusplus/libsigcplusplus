@@ -150,7 +150,6 @@ namespace sigc {
  *
  * @par Example:
  * @code
- * namespace sigc { SIGC_FUNCTORS_DEDUCE_RESULT_TYPE_WITH_DECLTYPE }
  * struct bar : public sigc::trackable {};
  * sigc::signal<void> some_signal;
  * void foo(bar&);

@@ -209,7 +209,8 @@ struct SIGC_API slot_do_unbind
  *
  * If you connect a C++11 lambda expression or a std::function<> instance to
  * a signal or assign it to a slot,
- * - if the return type is not void, you must use the #SIGC_FUNCTORS_DEDUCE_RESULT_TYPE_WITH_DECLTYPE macro,
+ * - With libsigc++ versions before 2.6, if the return type is not void,
+     you must use the #SIGC_FUNCTORS_DEDUCE_RESULT_TYPE_WITH_DECLTYPE macro,
  * - if your functor contains references to sigc::trackable derived objects,
  *   those objects will not be tracked, unless you also use sigc::track_obj().
  *

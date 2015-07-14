@@ -33,9 +33,6 @@
 //   echo $?
 // If test_track_obj writes nothing and the return code is 0, the test has passed.
 
-#if __cplusplus >= 201103L || defined(__GXX_EXPERIMENTAL_CXX0X__) || _MSC_VER >= 1700
-#  define USING_CPP11_LAMBDA_EXPRESSIONS
-#endif
 
 #include "testutilities.h"
 #include <string>
@@ -45,12 +42,6 @@
 #include <sigc++/adaptors/track_obj.h>
 #include <sigc++/signal.h>
 
-#ifdef USING_CPP11_LAMBDA_EXPRESSIONS
-namespace sigc
-{
-  SIGC_FUNCTORS_DEDUCE_RESULT_TYPE_WITH_DECLTYPE
-}
-#endif
 
 namespace
 {
@@ -106,7 +97,7 @@ private:
   const book& aBook_;
 };
 
-#ifdef USING_CPP11_LAMBDA_EXPRESSIONS
+//C++11 lamba expressions:
 
 inline std::ostringstream& operator << (std::ostringstream& s, const book& b)
 {
@@ -124,7 +115,6 @@ void foo_group4(bar_group4&)
 {
   result_stream << "foo_group4(bar_group4&)";
 }
-#endif // USING_CPP11_LAMBDA_EXPRESSIONS
 
 } // end anonymous namespace
 
@@ -166,7 +156,8 @@ int main(int argc, char* argv[])
   delete pbar4;
   pbar4 = 0;
 
-#ifdef USING_CPP11_LAMBDA_EXPRESSIONS
+
+//C++11 lambda expressions:
 
   // auto-disconnect
   // If you want to auto-disconnect a slot with a C++11 lambda expression
@@ -225,9 +216,6 @@ int main(int argc, char* argv[])
     util->check_result(result_stream, "");
   }
 
-#else // not USING_CPP11_LAMBDA_EXPRESSIONS
-  std::cout << "The compiler capabilities don't allow test of C++11 lambda expressions." << std::endl;
-#endif
 
   return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;
 }

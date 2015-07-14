@@ -42,9 +42,6 @@
 //   echo $?
 // If test_cpp11_lambda writes nothing and the return code is 0, the test has passed.
 
-#if __cplusplus >= 201103L || defined(__GXX_EXPERIMENTAL_CXX0X__) || _MSC_VER >= 1700
-#  define USING_CPP11_LAMBDA_EXPRESSIONS
-#endif
 
 #include "testutilities.h"
 #include <string>
@@ -58,11 +55,6 @@
 #include <sigc++/adaptors/track_obj.h>
 #include <sigc++/signal.h>
 
-#ifdef USING_CPP11_LAMBDA_EXPRESSIONS
-namespace sigc
-{
-  SIGC_FUNCTORS_DEDUCE_RESULT_TYPE_WITH_DECLTYPE
-}
 
 namespace
 {
@@ -145,7 +137,6 @@ void foo_group4(bar_group4&)
 
 } // end anonymous namespace
 
-#endif // USING_CPP11_LAMBDA_EXPRESSIONS
 
 
 int main(int argc, char* argv[])
@@ -155,7 +146,6 @@ int main(int argc, char* argv[])
   if (!util->check_command_args(argc, argv))
     return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;
 
-#ifdef USING_CPP11_LAMBDA_EXPRESSIONS
 
   // test lambda operators
   int a = 1;
@@ -322,8 +312,7 @@ int main(int argc, char* argv[])
 
   // std::bind() does not work well together with sigc::slot and sigc::signal::connect().
   // std::bind() typically creates a functor whose operator()() is a variadic template.
-  // SIGC_FUNCTORS_DEDUCE_RESULT_TYPE_WITH_DECLTYPE can't deduce the result type
-  // of such a functor.
+  // Our functor_trait can't deduce the result type of such a functor.
   // If the result of std::bind() is assigned to a std::function, the created
   // functor has an unambiguous operator()().
 
@@ -505,11 +494,6 @@ int main(int argc, char* argv[])
     some_signal.emit();
     util->check_result(result_stream, "");
   }
-  return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;
 
-#else // not USING_CPP11_LAMBDA_EXPRESSIONS
-  std::cout << "The compiler capabilities don't allow test of C++11 lambda expressions." << std::endl;
-  // Return code 77 tells automake's test harness to skip this test.
-  return util->get_result_and_delete_instance() ? 77 : EXIT_FAILURE;
-#endif
+  return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;
 } // end main()

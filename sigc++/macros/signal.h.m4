@@ -331,7 +331,7 @@ public:
    *
    * %std::bind() creates a functor, but this functor typically has an
    * %operator()() which is a variadic template.
-   * #SIGC_FUNCTORS_DEDUCE_RESULT_TYPE_WITH_DECLTYPE can't deduce the result type
+   * Our functor_trait can't deduce the result type
    * of such a functor. If you first assign the return value of %std::bind()
    * to a std::function, you can connect the std::function to a signal.
    *
