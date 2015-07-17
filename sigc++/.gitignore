@@ -16,11 +16,6 @@
 /adaptors/retype.h
 /adaptors/retype_return.h
 /adaptors/track_obj.h
-/adaptors/lambda/base.h
-/adaptors/lambda/group.h
-/adaptors/lambda/lambda.cc
-/adaptors/lambda/operator.h
-/adaptors/lambda/select.h
 /functors/functor_trait.h
 /functors/mem_fun.h
 /functors/ptr_fun.h

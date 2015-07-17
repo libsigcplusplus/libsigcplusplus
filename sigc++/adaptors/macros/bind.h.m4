@@ -336,12 +336,6 @@ struct count_void<void,void,void,void,void,void,void>
  *   // disconnected automatically if some_bar goes out of scope
  * @endcode
  *
- * For a more powerful version of this functionality see the lambda
- * library adaptor sigc::group() which can bind, hide and reorder
- * arguments arbitrarily. Although sigc::group() is more flexible,
- * sigc::bind() provides a means of binding parameters when the total
- * number of parameters called is variable.
- *
  * @ingroup adaptors
  */
 

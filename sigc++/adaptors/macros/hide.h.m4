@@ -179,12 +179,6 @@ namespace sigc {
  * sigc::hide_return() alters an arbitrary functor by
  * dropping its return value, thus converting it to a void functor.
  *
- * For a more powerful version of this functionality see the lambda
- * library adaptor sigc::group() which can bind, hide and reorder
- * arguments arbitrarily. Although sigc::group() is more flexible,
- * sigc::hide() provides a means of hiding parameters when the total
- * number of parameters called is variable.
- *
  * @ingroup adaptors
  */
 
