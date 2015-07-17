@@ -69,7 +69,6 @@ test_disconnect_during_emit_SOURCES = test_disconnect_during_emit.cc $(sigc_test
 test_exception_catch_SOURCES = test_exception_catch.cc $(sigc_test_util)
 test_functor_trait_SOURCES   = test_functor_trait.cc $(sigc_test_util)
 test_hide_SOURCES            = test_hide.cc $(sigc_test_util)
-test_lambda_SOURCES          = test_lambda.cc $(sigc_test_util)
 test_limit_reference_SOURCES = test_limit_reference.cc $(sigc_test_util)
 test_mem_fun_SOURCES         = test_mem_fun.cc $(sigc_test_util)
 test_ptr_fun_SOURCES         = test_ptr_fun.cc $(sigc_test_util)
@@ -82,12 +81,3 @@ test_slot_disconnect_SOURCES = test_slot_disconnect.cc $(sigc_test_util)
 test_trackable_SOURCES       = test_trackable.cc $(sigc_test_util)
 test_track_obj_SOURCES       = test_track_obj.cc $(sigc_test_util)
 test_visit_each_SOURCES      = test_visit_each.cc $(sigc_test_util)
-
-# 2005-01-19
-# Disabled: test_lambda - The Tru64 compiler can't build this when not using
-#  -std strict_ansi -model ansi, so let's not worry about it.
-# 2012-03-19
-# Enabled test_lambda. See https://bugzilla.gnome.org/show_bug.cgi?id=669128
-# TODO: Disable once again, if some compiler still can't build it (tested with gcc 4.6.1)
-
-#dist_noinst_DATA = test_lambda.cc

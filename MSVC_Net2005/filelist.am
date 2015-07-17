@@ -17,7 +17,6 @@ msvc_net2005_data =								\
 	tests/test_exception_catch/test_exception_catch.vcproj			\
 	tests/test_functor_trait/test_functor_trait.vcproj			\
 	tests/test_hide/test_hide.vcproj					\
-	tests/test_lambda/test_lambda.vcproj					\
 	tests/test_mem_fun/test_mem_fun.vcproj					\
 	tests/test_ptr_fun/test_ptr_fun.vcproj					\
 	tests/test_retype/test_retype.vcproj					\

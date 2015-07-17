@@ -38,8 +38,6 @@ msvc_net2010_data =									\
 	tests/test_functor_trait/test_functor_trait.vcxproj.filters			\
 	tests/test_hide/test_hide.vcxproj						\
 	tests/test_hide/test_hide.vcxproj.filters					\
-	tests/test_lambda/test_lambda.vcxproj						\
-	tests/test_lambda/test_lambda.vcxproj.filters					\
 	tests/test_limit_reference/test_limit_reference.vcxproj						\
 	tests/test_limit_reference/test_limit_reference.vcxproj.filters					\
 	tests/test_mem_fun/test_mem_fun.vcxproj						\
