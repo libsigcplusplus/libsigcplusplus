@@ -146,52 +146,9 @@ FOR(1,CALL_SIZE,[[LAMBDA_DO(%1)]])dnl
   T_type value_;
 };
 
-template <class T_type>
-typename lambda_core<T_type, true>::result_type
-lambda_core<T_type, true>::operator()() const
-  { return value_(); }
-
-/** Abstracts lambda functionality (template specialization for other value types).
- *
- * @deprecated Use C++11 lambda expressions instead.
- *
- * @ingroup lambdas
- */
-template <class T_type>
-struct lambda_core<T_type, false> : public lambda_base
-{
-  template <LOOP(class T_arg%1=void,CALL_SIZE)>
-  struct deduce_result_type
-    { typedef T_type type; };
-  typedef T_type result_type; // all operator() overloads return T_type.
-  typedef lambda<T_type> lambda_type;
-
-  result_type operator()() const;
-
-FOR(1,CALL_SIZE,[[LAMBDA_DO_VALUE(%1)]])dnl
-  explicit lambda_core(typename type_trait<T_type>::take v)
-    : value_(v) {}
-
-  T_type value_;
-};
-
-template <class T_type>
-typename lambda_core<T_type, false>::result_type lambda_core<T_type, false>::operator()() const
-  { return value_; }
 
 } /* namespace internal */
 
-//template specialization of visitor<>::do_visit_each<>(action, functor):
-template <class T_functor, bool I_islambda>
-struct visitor<internal::lambda_core<T_functor, I_islambda> >
-{
-  template <class T_action>
-  static void do_visit_each(const T_action& _A_action,
-                            const internal::lambda_core<T_functor, I_islambda>& _A_target)
-  {
-    sigc::visit_each(_A_action, _A_target.value_);
-  }
-};
 
 // forward declarations for lambda operators other<subscript> and other<assign>
 template <class T_type>
@@ -205,39 +162,6 @@ struct lambda_operator;
 template <class T_type>
 struct unwrap_lambda_type;
 #endif // DOXYGEN_SHOULD_SKIP_THIS
-
-/** Gets the object stored inside a lambda object.
- * Returns the object passed as argument, if it is not of type lambda.
- *
- * @deprecated Use C++11 lambda expressions instead of libsigc++ lambdas.
- *
- * @ingroup lambdas
- */
-template <class T_type>
-T_type& unwrap_lambda_value(T_type& a)
-{ return a; }
-
-/** Gets the object stored inside a lambda object.
- * Returns the object passed as argument, if it is not of type lambda.
- *
- * @deprecated Use C++11 lambda expressions instead of libsigc++ lambdas.
- *
- * @ingroup lambdas
- */
-template <class T_type>
-const T_type& unwrap_lambda_value(const T_type& a)
-{ return a; }
-
-/** Gets the object stored inside a lambda object.
- *
- * @deprecated Use C++11 lambda expressions instead of libsigc++ lambdas.
- *
- * @ingroup lambdas
- */
-template <class T_type>
-const T_type& unwrap_lambda_value(const lambda<T_type>& a)
-{ return a.value_; }
-
 
 /** Lambda type.
  * Objects of this type store a value that may be of type lambda itself.
@@ -275,124 +199,6 @@ struct lambda : public internal::lambda_core<T_type>
     { typedef lambda_operator<other<assign>, self, typename unwrap_lambda_type<T_arg>::type> lambda_operator_type;
       return lambda<lambda_operator_type>(lambda_operator_type(this->value_, unwrap_lambda_value(a))); }
 };
-
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-//template specialization of visitor<>::do_visit_each<>(action, functor):
-template <class T_type>
-struct visitor<lambda<T_type> >
-{
-  template <class T_action>
-  static void do_visit_each(const T_action& _A_action,
-                            const lambda<T_type>& _A_target)
-  {
-    sigc::visit_each(_A_action, _A_target.value_);
-  }
-};
-#endif // DOXYGEN_SHOULD_SKIP_THIS
-
-dnl /* With the Sun FORTE and the Compaq C++ compiler,
-dnl  * sigc::var() doesn't work with string constants.
-dnl  * Some work-araound is needed to convert 'const (&) char[N]'
-dnl  * into 'const char*'. The following work-around works with gcc
-dnl  * but neither with the Sun FORTE nor with the Compaq C++ compiler
-dnl  * (for the gcc the work-around is not needed, anyway):
-dnl  */
-dnl namespace internal {
-dnl
-dnl template <class T_type>
-dnl struct convert_array
-dnl { typedef T_type& type; };
-dnl
-dnl template <class T_type, int N>
-dnl struct convert_array<T_type[[N]]>
-dnl { typedef T_type* type; };
-dnl
-dnl } /* namespace internal */
-dnl
-dnl /// Converts a constant variable into a lambda object.
-dnl template <class T_type>
-dnl lambda<T_type> constant(const T_type& v)
-dnl { return lambda<T_type>(v); }
-dnl
-dnl /// Converts a reference into a lambda object.
-dnl template <class T_type>
-dnl lambda<typename internal::convert_array<T_type>::type> var(T_type& v)
-dnl { return lambda<typename internal::convert_array<T_type>::type>(v); }
-dnl
-dnl /// Converts a constant reference into a lambda object.
-dnl template <class T_type>
-dnl lambda<typename internal::convert_array<const T_type>::type> var(const T_type& v)
-dnl { return lambda<typename internal::convert_array<const T_type>::type>(v); }
-
-/** Converts a reference into a lambda object.
- * sigc::var creates a 0-ary functor, returning the value of a referenced variable.
- *
- * @par Example:
- * @code
- * int main(int argc, char* argv[])
- * {
- *   int data;
- *   sigc::signal<int> readValue;
- *
- *   readValue.connect(sigc::var(data));
- *
- *   data = 3;
- *   std::cout << readValue() << std::endl; //Prints 3.
- *
- *   data = 5;
- *   std::cout << readValue() << std::endl; //Prints 5.
- * }
- * @endcode
- *
- * If you prefer to use C++11 lambda expressions, you can replace
- * @code
- * readValue.connect(sigc::var(data));
- * @endcode
- * in the example by
- * @code
- * readValue.connect([[&data]] () -> int { return data; });
- * @endcode
- *
- * @deprecated Use C++11 lambda expressions instead of libsigc++ lambdas.
- *
- * @ingroup lambdas
- */
-template <class T_type>
-lambda<T_type&> var(T_type& v)
-{ return lambda<T_type&>(v); }
-
-/** Converts a constant reference into a lambda object.
- *
- * @deprecated Use C++11 lambda expressions instead of libsigc++ lambdas.
- *
- * @ingroup lambdas
- */
-template <class T_type>
-lambda<const T_type&> var(const T_type& v)
-{ return lambda<const T_type&>(v); }
-
-
-/** Deduces the type of the object stored in an object of the passed lambda type.
- * If the type passed as template argument is not of lambda type,
- * type is defined to unwrap_reference<T_type>::type.
- *
- * @deprecated Use C++11 lambda expressions instead of libsigc++ lambdas.
- *
- * @ingroup lambdas
- */
-template <class T_type>
-struct unwrap_lambda_type
-{ typedef typename unwrap_reference<T_type>::type type; };
-
-/** Deduces the type of the object stored in an object of the passed lambda type.
- *
- * @deprecated Use C++11 lambda expressions instead of libsigc++ lambdas.
- *
- * @ingroup lambdas
- */
-template <class T_type>
-struct unwrap_lambda_type<lambda<T_type> >
-{ typedef T_type type; };
 
 } /* namespace sigc */
 

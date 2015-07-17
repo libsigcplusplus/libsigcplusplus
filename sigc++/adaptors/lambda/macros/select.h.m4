@@ -68,7 +68,6 @@ namespace internal {
 FOR(1,CALL_SIZE,[[LAMBDA_SELECT(%1,CALL_SIZE)]])dnl
 } /* namespace internal */
 
-FOR(1,CALL_SIZE,[[LAMBDA_SELECTOR(%1)]])dnl
 } /* namespace sigc */
 
 _DEPRECATE_IFDEF_END

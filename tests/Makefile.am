@@ -36,7 +36,6 @@ check_PROGRAMS = \
   test_exception_catch \
   test_functor_trait \
   test_hide \
-  test_lambda \
   test_limit_reference \
   test_mem_fun \
   test_ptr_fun \

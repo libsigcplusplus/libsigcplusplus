@@ -23,6 +23,7 @@ _DEPRECATE_IFDEF_START
 
 namespace sigc {
 
+//These are declared in select.h.
 FOR(1,CALL_SIZE,[[const lambda<internal::lambda_select%1> _%1;
 ]])
 } /* namespace sigc */

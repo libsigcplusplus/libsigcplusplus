@@ -31,7 +31,7 @@
  * dissimilar callbacks.
  *
  * For instance, see the @ref signal "Signals", @ref sigcfunctors "Functors", 
- * @ref slot "Slots", @ref adaptors "Adaptors", and @ref lambdas "Lambdas".
+ * @ref slot "Slots" and @ref adaptors "Adaptors".
  *
  * See also the 
  * <a href="http://libsigc.sourceforge.net/libsigc2/docs/manual/html/index.html">libsigc++ tutorial</a>, 
@@ -50,7 +50,7 @@
  * - Extensions do not require alteration of basic components
  * - User-definable accumulators
  * - A variety of adaptors to change the callback signature: bind, hide,
- *   retype, compose and lambda call groups
+ *   retype, and compose
  *
  * @section basics Basic Usage
  *

@@ -38,9 +38,9 @@ adaptors_built_h = deduce_result_type.h adaptor_trait.h bind.h bind_return.h \
                    track_obj.h
 
 # Lambda (adaptors/lambda)
-lambda_m4 = base.h.m4 select.h.m4 operator.h.m4 group.h.m4 lambda.cc.m4
+lambda_m4 = base.h.m4 select.h.m4 lambda.cc.m4
 lambda_built_cc = lambda.cc
-lambda_built_h = base.h select.h operator.h group.h
+lambda_built_h = base.h select.h
 
 # Combine all the above parts with right directories prefixed
 sigc_m4 = $(base_m4:%=macros/%) \
@@ -69,6 +69,5 @@ sigc_public_h =				\
 	visit_each.h			\
 	adaptors/adaptors.h		\
 	adaptors/bound_argument.h	\
-	adaptors/lambda/lambda.h	\
 	functors/functors.h		\
 	functors/slot_base.h
