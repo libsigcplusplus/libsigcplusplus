@@ -85,9 +85,9 @@ trackable_callback_list::~trackable_callback_list()
 {
   clearing_ = true;
 
-  for (callback_list::iterator i = callbacks_.begin(); i != callbacks_.end(); ++i)
-    if ((*i).func_) 
-      (*i).func_((*i).data_);
+  for (auto& callback : callbacks_)
+    if (callback.func_)
+      callback.func_(callback.data_);
 }
 
 void trackable_callback_list::add_callback(void* data, func_destroy_notify func)
@@ -102,9 +102,9 @@ void trackable_callback_list::clear()
 {
   clearing_ = true;
 
-  for (callback_list::iterator i = callbacks_.begin(); i != callbacks_.end(); ++i)
-    if ((*i).func_) 
-      (*i).func_((*i).data_);
+  for (auto& callback : callbacks_)
+    if (callback.func_) 
+      callback.func_(callback.data_);
 
   callbacks_.clear();
 
@@ -114,17 +114,20 @@ void trackable_callback_list::clear()
 void trackable_callback_list::remove_callback(void* data)
 {
   for (callback_list::iterator i = callbacks_.begin(); i != callbacks_.end(); ++i)
-    if ((*i).data_ == data && (*i).func_ != nullptr)
+  {
+    auto& callback = *i;
+    if (callback.data_ == data && callback.func_ != nullptr)
     {
       //Don't remove a list element while the list is being cleared.
       //It could invalidate the iterator in ~trackable_callback_list() or clear().
       //But it may be necessary to invalidate the callback. See bug 589202.
       if (clearing_)
-        (*i).func_ = nullptr;
+        callback.func_ = nullptr;
       else
         callbacks_.erase(i);
       return;
     }
+  }
 }
 
 } /* namespace internal */

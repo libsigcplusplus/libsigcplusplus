@@ -110,15 +110,15 @@ int main(int argc, char* argv[])
 
   auto res1 = sig_vec(1);
   result_stream << "Vector accumulator: Result (i=1): ";
-  for (std::vector<int>::iterator i = res1.begin(); i != res1.end(); ++i)
-    result_stream << *i << " ";
+  for (auto num : res1)
+    result_stream << num << " ";
   util->check_result(result_stream,
     "foo: 4, A::foo: 6, bar: 2, Vector accumulator: Result (i=1): 4 6 2 ");
 
   auto res3 = sig_vec(3);
   result_stream << "Vector accumulator: Result (i=3): ";
-  for (std::vector<int>::iterator i = res3.begin(); i != res3.end(); ++i)
-    result_stream << *i << " ";
+  for (auto num : res3)
+    result_stream << num << " ";
   util->check_result(result_stream,
     "foo: 10, A::foo: 46, bar: 12, Vector accumulator: Result (i=3): 10 46 12 ");
 

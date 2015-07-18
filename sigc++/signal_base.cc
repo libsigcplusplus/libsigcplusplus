@@ -59,8 +59,8 @@ void signal_impl::clear()
 
   // Disconnect all connected slots before they are deleted.
   // signal_impl::notify() will be called and delete the self_and_iter structs.
-  for (iterator_type i = slots_.begin(); i != slots_.end(); ++i)
-    i->disconnect();
+  for (auto& slot : slots_)
+    slot.disconnect();
 
   deferred_ = saved_deferred;
 
@@ -74,9 +74,9 @@ signal_impl::size_type signal_impl::size() const
 
 bool signal_impl::blocked() const
 {
-  for (const_iterator_type iter = slots_.begin(); iter != slots_.end(); ++iter)
+  for (const auto& slot : const_cast<const std::list<slot_base>&>(slots_))
   {
-    if (!iter->blocked())
+    if (!slot.blocked())
       return false;
   }
   return true;
@@ -84,9 +84,9 @@ bool signal_impl::blocked() const
 
 void signal_impl::block(bool should_block)
 {
-  for (iterator_type iter = slots_.begin(); iter != slots_.end(); ++iter)
+  for (auto& slot : slots_)
   {
-    iter->block(should_block);
+    slot.block(should_block);
   }
 }
 
