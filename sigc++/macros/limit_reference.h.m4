@@ -41,7 +41,7 @@ define([LIMIT_REFERENCE],[dnl
  */
 template <class T_type,
           bool I_derives_trackable =
-            is_base_and_derived<trackable, T_type>::value>
+            std::is_base_of<trackable, T_type>::value>
 class [$1]limit_reference
 {
 public:

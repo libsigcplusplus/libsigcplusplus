@@ -209,9 +209,9 @@ struct visitor<adaptor_functor<T_functor> >
  * @ingroup adaptors
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-template <class T_functor, bool I_isadaptor = is_base_and_derived<adaptor_base, T_functor>::value> struct adaptor_trait;
+template <class T_functor, bool I_isadaptor = std::is_base_of<adaptor_base, T_functor>::value> struct adaptor_trait;
 #else
-template <class T_functor, bool I_isadaptor = is_base_and_derived<adaptor_base, T_functor>::value> struct adaptor_trait {};
+template <class T_functor, bool I_isadaptor = std::is_base_of<adaptor_base, T_functor>::value> struct adaptor_trait {};
 #endif
 
 /** Trait that specifies what is the adaptor version of a functor type.

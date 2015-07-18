@@ -18,7 +18,7 @@ class trackable {};
 
 struct A : public trackable { A() {} };
 
-template <class T_type, bool I_derived = sigc::is_base_and_derived<trackable,T_type>::value>
+template <class T_type, bool I_derived = std::is_base_of<trackable,T_type>::value>
 struct with_trackable;
 
 template <class T_type>
