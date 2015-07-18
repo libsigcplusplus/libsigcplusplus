@@ -18,13 +18,13 @@ void Foo(sigc::trackable&)
 
 int main(int argc, char* argv[])
 {
-  TestUtilities* util = TestUtilities::get_instance();
+  auto util = TestUtilities::get_instance();
 
   if (!util->check_command_args(argc, argv))
     return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;
 
   std::ostringstream pointer_stream;
-  sigc::trackable* t = new sigc::trackable();
+  auto t = new sigc::trackable();
   pointer_stream << t;
   result_stream << "sigc::trackable instance at " << pointer_stream.str();
   util->check_result(result_stream, "sigc::trackable instance at " + pointer_stream.str());

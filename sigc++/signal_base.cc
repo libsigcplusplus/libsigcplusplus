@@ -127,7 +127,7 @@ void signal_impl::sweep()
   signal_exec exec(this);
 
   deferred_ = false;
-  iterator_type i = slots_.begin();
+  auto i = slots_.begin();
   while (i != slots_.end())
     if ((*i).empty())
       i = slots_.erase(i);

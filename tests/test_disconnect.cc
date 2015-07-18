@@ -78,7 +78,7 @@ struct B : public sigc::trackable
 
 int main(int argc, char* argv[])
 {
-  TestUtilities* util = TestUtilities::get_instance();
+  auto util = TestUtilities::get_instance();
 
   if (!util->check_command_args(argc, argv))
     return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;
@@ -128,7 +128,7 @@ int main(int argc, char* argv[])
   cona.disconnect();    // already disconnected -> legal with connection objects, however, nothing happens ...
 
   result_stream << "deleting a signal during emission... ";
-  B* b = new B;
+  auto b = new B;
   b->emit();
   util->check_result(result_stream, "deleting a signal during emission... Good bye world!");
 

@@ -73,7 +73,7 @@ void bar(int)
 
 int main(int argc, char* argv[])
 {
-  TestUtilities* util = TestUtilities::get_instance();
+  auto util = TestUtilities::get_instance();
 
   if (!util->check_command_args(argc, argv))
     return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;

@@ -29,7 +29,7 @@ struct destroy_notify_struct
 
   static void* notify(void* data)
   {
-    destroy_notify_struct* self_ = reinterpret_cast<destroy_notify_struct*>(data);
+    auto self_ = reinterpret_cast<destroy_notify_struct*>(data);
     self_->deleted_ = true;
     return 0;
   }
@@ -66,7 +66,7 @@ void slot_rep::disconnect()
     call_ = nullptr;          // Invalidate the slot.
                         // _Must_ be done here because parent_ might defer the actual
                         // destruction of the slot_rep and try to invoke it before that point.
-    void* data_ = parent_;
+    auto data_ = parent_;
     parent_ = nullptr;        // Just a precaution.
     (cleanup_)(data_);  // Notify the parent (might lead to destruction of this!).
   }
@@ -77,7 +77,7 @@ void slot_rep::disconnect()
 //static
 void* slot_rep::notify(void* data)
 {
-  slot_rep* self_ = reinterpret_cast<slot_rep*>(data);
+  auto self_ = reinterpret_cast<slot_rep*>(data);
 
   self_->call_ = nullptr; // Invalidate the slot.
   
@@ -164,7 +164,7 @@ slot_base& slot_base::operator=(const slot_base& src)
     return *this;
   }
 
-  internal::slot_rep* new_rep_ = src.rep_->dup();
+  auto new_rep_ = src.rep_->dup();
 
   if (rep_) // Silently exchange the slot_rep.
   {

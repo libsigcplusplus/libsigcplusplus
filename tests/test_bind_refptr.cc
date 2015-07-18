@@ -257,7 +257,7 @@ RefPtr<T_CppObject>::RefPtr(const RefPtr<T_CastFrom>& src)
 template <class T_CppObject> inline
 void RefPtr<T_CppObject>::swap(RefPtr<T_CppObject>& other)
 {
-  T_CppObject *const temp = pCppObject_;
+  const auto temp = pCppObject_;
   pCppObject_ = other.pCppObject_;
   other.pCppObject_ = temp;
 }
@@ -342,7 +342,7 @@ template <class T_CppObject>
 inline
 RefPtr<T_CppObject> RefPtr<T_CppObject>::cast_dynamic(const RefPtr<T_CastFrom>& src)
 {
-  T_CppObject *const pCppObject = dynamic_cast<T_CppObject*>(src.operator->());
+  const auto pCppObject = dynamic_cast<T_CppObject*>(src.operator->());
 
   if(pCppObject)
     pCppObject->reference();
@@ -355,7 +355,7 @@ template <class T_CppObject>
 inline
 RefPtr<T_CppObject> RefPtr<T_CppObject>::cast_static(const RefPtr<T_CastFrom>& src)
 {
-  T_CppObject *const pCppObject = static_cast<T_CppObject*>(src.operator->());
+  const auto pCppObject = static_cast<T_CppObject*>(src.operator->());
 
   if(pCppObject)
     pCppObject->reference();
@@ -368,7 +368,7 @@ template <class T_CppObject>
 inline
 RefPtr<T_CppObject> RefPtr<T_CppObject>::cast_const(const RefPtr<T_CastFrom>& src)
 {
-  T_CppObject *const pCppObject = const_cast<T_CppObject*>(src.operator->());
+  const auto pCppObject = const_cast<T_CppObject*>(src.operator->());
 
   if(pCppObject)
     pCppObject->reference();
@@ -470,12 +470,12 @@ public:
 
 int main(int argc, char* argv[])
 {
-  TestUtilities* util = TestUtilities::get_instance();
+  auto util = TestUtilities::get_instance();
 
   if (!util->check_command_args(argc, argv))
     return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;
 
-  Test* test = new Test;
+  auto test = new Test;
 
   test->action->emit_sig1(23);
   delete test;

@@ -73,7 +73,7 @@ struct A : public sigc::trackable
 
 int main(int argc, char* argv[])
 {
-  TestUtilities* util = TestUtilities::get_instance();
+  auto util = TestUtilities::get_instance();
 
   if (!util->check_command_args(argc, argv))
     return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;
@@ -108,14 +108,14 @@ int main(int argc, char* argv[])
   util->check_result(result_stream,
     "foo: 34, A::foo: 206, bar: 52, Mean accumulator: Plain Result (i=11): 97.333");
 
-  std::vector<int> res1 = sig_vec(1);
+  auto res1 = sig_vec(1);
   result_stream << "Vector accumulator: Result (i=1): ";
   for (std::vector<int>::iterator i = res1.begin(); i != res1.end(); ++i)
     result_stream << *i << " ";
   util->check_result(result_stream,
     "foo: 4, A::foo: 6, bar: 2, Vector accumulator: Result (i=1): 4 6 2 ");
 
-  std::vector<int> res3 = sig_vec(3);
+  auto res3 = sig_vec(3);
   result_stream << "Vector accumulator: Result (i=3): ";
   for (std::vector<int>::iterator i = res3.begin(); i != res3.end(); ++i)
     result_stream << *i << " ";

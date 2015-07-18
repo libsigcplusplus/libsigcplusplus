@@ -141,7 +141,7 @@ void foo_group4(bar_group4&)
 
 int main(int argc, char* argv[])
 {
-  TestUtilities* util = TestUtilities::get_instance();
+  auto util = TestUtilities::get_instance();
 
   if (!util->check_command_args(argc, argv))
     return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;
@@ -341,7 +341,7 @@ int main(int argc, char* argv[])
     book guest_book("charlie");
     //sl2 = sigc::group(&egon, sigc::ref(guest_book));
     // sl2 = std::bind(&egon, std::ref(guest_book)); // does not compile (gcc 4.6.3)
-    std::function<void()> fn2 = std::bind(&egon, std::ref(guest_book));
+    auto fn2 = std::bind(&egon, std::ref(guest_book));
     //sl2 = fn2; // no auto-disconnect
     sl2 = sigc::track_obj(fn2, guest_book);
     sl2();

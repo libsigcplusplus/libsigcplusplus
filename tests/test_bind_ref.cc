@@ -32,12 +32,12 @@ void handler(Param& param)
 
 int main(int argc, char* argv[])
 {
-  TestUtilities* util = TestUtilities::get_instance();
+  auto util = TestUtilities::get_instance();
 
   if (!util->check_command_args(argc, argv))
     return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;
 
-  sigc::slot<void, Param&> slot_full = sigc::ptr_fun(&handler);
+  auto slot_full = sigc::ptr_fun(&handler);
   sigc::slot<void> slot_bound;
 
   slot_bound();

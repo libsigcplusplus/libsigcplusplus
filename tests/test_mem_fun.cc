@@ -60,7 +60,7 @@ struct test
 
 int main(int argc, char* argv[])
 {
-  TestUtilities* util = TestUtilities::get_instance();
+  auto util = TestUtilities::get_instance();
 
   if (!util->check_command_args(argc, argv))
     return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;
@@ -82,7 +82,7 @@ int main(int argc, char* argv[])
     util->check_result(result_stream, "test::foo_const(int 2)");
   }
   { /* test const with const object */
-    const test t = test();
+    const auto t = test();
     sigc::mem_fun(&test::foo_const)(t, 3);
     util->check_result(result_stream, "test::foo_const(int 3)");
 
@@ -106,7 +106,7 @@ int main(int argc, char* argv[])
     util->check_result(result_stream, "test::foo_const_volatile(double 5)");
   }
   { /* test const volatile with const object */
-    const test t = test();
+    const auto t = test();
     sigc::mem_fun(&test::foo_const_volatile)(t, 6);  // on reference
     util->check_result(result_stream, "test::foo_const_volatile(double 6)");
 
