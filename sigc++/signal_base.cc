@@ -113,8 +113,8 @@ signal_impl::iterator_type signal_impl::erase(iterator_type i)
     
 signal_impl::iterator_type signal_impl::insert(signal_impl::iterator_type i, const slot_base& slot_)
 {
-  iterator_type temp = slots_.insert(i, slot_);
-  self_and_iter* si = new self_and_iter(this, temp);
+  auto temp = slots_.insert(i, slot_);
+  auto si = new self_and_iter(this, temp);
   temp->set_parent(si, &notify);
   return temp;
 }

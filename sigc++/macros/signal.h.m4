@@ -772,7 +772,7 @@ struct slot_list
 
   void pop_back()
     { 
-      iterator tmp_ = end();
+      auto tmp_ = end();
       erase(--tmp_);
     }
 
