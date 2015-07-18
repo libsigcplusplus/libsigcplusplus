@@ -157,7 +157,7 @@ public:
  * @ingroup sigcfunctors
  */
 template <class T_functor,
-          bool I_derives_functor_base = is_base_and_derived<functor_base,T_functor>::value,
+          bool I_derives_functor_base = std::is_base_of<functor_base,T_functor>::value,
           bool I_can_use_decltype = can_deduce_result_type_with_decltype<T_functor>::value>
 struct functor_trait
 {
