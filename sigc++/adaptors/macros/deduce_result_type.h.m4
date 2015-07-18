@@ -86,7 +86,7 @@ struct adaptor_base : public functor_base {};
  */
 template <class T_functor,
           LOOP(class T_arg%1=void, CALL_SIZE),
-          bool I_derives_adaptor_base = std::is_base_of<adaptor_base,T_functor>::value>
+          bool I_derives_adaptor_base=is_base_and_derived<adaptor_base,T_functor>::value>
 struct deduce_result_type
   { typedef typename functor_trait<T_functor>::result_type type; };
 
