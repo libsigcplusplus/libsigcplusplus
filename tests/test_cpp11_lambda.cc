@@ -148,7 +148,6 @@ int main(int argc, char* argv[])
 
 
   // test lambda operators
-  int a = 1;
   //std::cout << "(_1 + _2) (3,4):    " << (_1 + _2) (3,4)      << std::endl;
   result_stream << ([] (int a, int b) -> int { return a + b; }(3,4));
   util->check_result(result_stream, "7");
@@ -179,33 +178,34 @@ int main(int argc, char* argv[])
 
   //std::cout << "((++_1)*2)(a):      " << ((++_1)*2)(a);
   //std::cout << "; a: "                << a                    << std::endl;
-  result_stream << ([] (int x) -> int { return ++x * 2; }(a)) << " " << a;
+  int a_outer = 1;
+  result_stream << ([] (int x) -> int { return ++x * 2; }(a_outer)) << " " << a_outer;
   util->check_result(result_stream, "4 1");
 
   // gcc can't compile libsigc++ lambda expressions with sigc::ref() parameters.
   // See https://bugzilla.gnome.org/show_bug.cgi?id=669128
   //  std::cout << "((++_1)*2)(ref(a)): " << ((++_1)*2)(sigc::ref(a));
   //  std::cout << "; a: "                << a                    << std::endl;
-  result_stream << ([] (std::reference_wrapper<int> x) -> int { return ++x * 2; }(std::ref(a)));
-  result_stream << " " << a;
+  result_stream << ([] (std::reference_wrapper<int> x) -> int { return ++x * 2; }(std::ref(a_outer)));
+  result_stream << " " << a_outer;
   util->check_result(result_stream, "4 2");
-  result_stream << ([] (int& x) -> int { return ++x * 2; }(a));
-  result_stream << " " << a;
+  result_stream << ([] (int& x) -> int { return ++x * 2; }(a_outer));
+  result_stream << " " << a_outer;
   util->check_result(result_stream, "6 3");
 
   //std::cout << "((++(*_1))*2)(&a):  " << ((++(*_1))*2)(&a);
   //std::cout << "; a: "                << a                    << std::endl;
-  result_stream << ([] (int* x) -> int { return ++(*x) * 2; }(&a));
-  result_stream << " " << a;
+  result_stream << ([] (int* x) -> int { return ++(*x) * 2; }(&a_outer));
+  result_stream << " " << a_outer;
   util->check_result(result_stream, "8 4");
 
   //  std::cout << "((--(*(&_1)))*2)(ref(a)): " << ((--(*(&_1)))*2)(sigc::ref(a));
   //  std::cout << "; a: "                << a                    << std::endl;
-  result_stream << ([] (std::reference_wrapper<int> x) -> int { return --(*(&x)) * 2; }(std::ref(a)));
-  result_stream << " " << a;
+  result_stream << ([] (std::reference_wrapper<int> x) -> int { return --(*(&x)) * 2; }(std::ref(a_outer)));
+  result_stream << " " << a_outer;
   util->check_result(result_stream, "6 3");
-  result_stream << ([] (int& x) -> int { return --(*(&x)) * 2; }(a));
-  result_stream << " " << a;
+  result_stream << ([] (int& x) -> int { return --(*(&x)) * 2; }(a_outer));
+  result_stream << " " << a_outer;
   util->check_result(result_stream, "4 2");
 
   //std::cout << "(-_1)     (-5):     " << (-_1)     (-5)       << std::endl;
@@ -213,26 +213,26 @@ int main(int argc, char* argv[])
   util->check_result(result_stream, "5");
 
   //std::cout << "(var(&a)[0])():     " << (sigc::var(&a)[0])() << std::endl;
-  result_stream << ([&a]() -> int { return a; }());
+  result_stream << ([&a_outer]() -> int { return a_outer; }());
   util->check_result(result_stream, "2");
 
   //std::cout << "(_1[_2])    (&a,0): " << (_1[_2])    (&a,0)   << std::endl;
-  result_stream << ([] (int* x, int y) -> int { return x[y]; }(&a,0));
+  result_stream << ([] (int* x, int y) -> int { return x[y]; }(&a_outer,0));
   util->check_result(result_stream, "2");
 
   //std::cout << "(*_1=_2)    (&a,1): " << (*_1=_2)    (&a,1)   << std::endl;
-  result_stream << ([] (int* x, int y) -> int { *x = y; return *x; }(&a,1));
+  result_stream << ([] (int* x, int y) -> int { *x = y; return *x; }(&a_outer,1));
   util->check_result(result_stream, "1");
 
   // Comma operator, https://bugzilla.gnome.org/show_bug.cgi?id=342911
-  a = -1;
-  int b = -1;
-  int c = -1;
+  a_outer = -1;
+  int b_outer = -1;
+  int c_outer = -1;
   //std::cout << "(var(c) = (var(a) = _1, var(b) = _2))(2,3): "
   //          << (sigc::var(c) = (sigc::var(a) = _1, sigc::var(b) = _2))(2,3);
   //std::cout << "; a: " << a << "; b: " << b << "; c: " << c << std::endl;
-  result_stream << ([&a,&b,&c](int x, int y) -> int { return c = (a = x, b = y); }(2,3));
-  result_stream << " " << a << " " << b << " " << c;
+  result_stream << ([&a_outer,&b_outer,&c_outer](int x, int y) -> int { return c_outer = (a_outer = x, b_outer = y); }(2,3));
+  result_stream << " " << a_outer << " " << b_outer << " " << c_outer;
   util->check_result(result_stream, "3 2 3 3");
 
   // c++ restrictions:
