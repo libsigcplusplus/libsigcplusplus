@@ -157,7 +157,7 @@ void* signal_impl::notify(void* d)
 } /* namespace internal */
 
 signal_base::signal_base()
-: impl_(0)
+: impl_(nullptr)
 {}
 
 signal_base::signal_base(const signal_base& src)

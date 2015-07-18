@@ -63,15 +63,15 @@ void slot_rep::disconnect()
 {
   if (parent_)
   {
-    call_ = 0;          // Invalidate the slot.
+    call_ = nullptr;          // Invalidate the slot.
                         // _Must_ be done here because parent_ might defer the actual
                         // destruction of the slot_rep and try to invoke it before that point.
     void* data_ = parent_;
-    parent_ = 0;        // Just a precaution.
+    parent_ = nullptr;        // Just a precaution.
     (cleanup_)(data_);  // Notify the parent (might lead to destruction of this!).
   }
   else
-    call_ = 0;
+    call_ = nullptr;
 }
 
 //static
@@ -79,7 +79,7 @@ void* slot_rep::notify(void* data)
 {
   slot_rep* self_ = reinterpret_cast<slot_rep*>(data);
 
-  self_->call_ = 0; // Invalidate the slot.
+  self_->call_ = nullptr; // Invalidate the slot.
   
   // Make sure we are notified if disconnect() deletes self_, which is trackable.
   destroy_notify_struct notifier;
@@ -98,7 +98,7 @@ void* slot_rep::notify(void* data)
 } // namespace internal
   
 slot_base::slot_base()
-: rep_(0),
+: rep_(nullptr),
   blocked_(false)
 {}
 
@@ -108,7 +108,7 @@ slot_base::slot_base(rep_type* rep)
 {}
 
 slot_base::slot_base(const slot_base& src)
-: rep_(0),
+: rep_(nullptr),
   blocked_(src.blocked_)
 {
   if (src.rep_)
@@ -133,7 +133,7 @@ slot_base::~slot_base()
 
 slot_base::operator bool() const
 {
-  return rep_ != 0;
+  return rep_ != nullptr;
 }
 
 slot_base& slot_base::operator=(const slot_base& src)
@@ -158,7 +158,7 @@ slot_base& slot_base::operator=(const slot_base& src)
       {
         rep_->remove_destroy_notify_callback(&notifier);
         delete rep_; // Detach the stored functor from the other referred trackables and destroy it.
-        rep_ = 0;
+        rep_ = nullptr;
       }
     }
     return *this;
@@ -219,9 +219,9 @@ void slot_base::disconnect()
   if (rep_ && !rep_->call_)
     {
       delete rep_;        // This is not strictly necessary here. I'm convinced that it is
-      rep_ = 0;           // safe to wait for the destructor to delete the slot_rep. Martin.
+      rep_ = nullptr;           // safe to wait for the destructor to delete the slot_rep. Martin.
     }
-  return (rep_ == 0);
+  return (rep_ == nullptr);
 }*/
 
 } //namespace sigc

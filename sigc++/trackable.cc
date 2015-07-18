@@ -29,13 +29,13 @@ namespace sigc
 {
 
 trackable::trackable()
-: callback_list_(0)
+: callback_list_(nullptr)
 {}
 
 /* Don't copy the notification list.
    The objects watching src don't need to be notified when the new object dies. */
 trackable::trackable(const trackable& /*src*/)
-: callback_list_(0)
+: callback_list_(nullptr)
 {}
 
 trackable& trackable::operator=(const trackable& src)
@@ -66,7 +66,7 @@ void trackable::notify_callbacks()
   if (callback_list_)
     delete callback_list_; //This invokes all of the callbacks.
 
-  callback_list_ = 0;
+  callback_list_ = nullptr;
 }
 
 internal::trackable_callback_list* trackable::callback_list() const
@@ -114,13 +114,13 @@ void trackable_callback_list::clear()
 void trackable_callback_list::remove_callback(void* data)
 {
   for (callback_list::iterator i = callbacks_.begin(); i != callbacks_.end(); ++i)
-    if ((*i).data_ == data && (*i).func_ != 0)
+    if ((*i).data_ == data && (*i).func_ != nullptr)
     {
       //Don't remove a list element while the list is being cleared.
       //It could invalidate the iterator in ~trackable_callback_list() or clear().
       //But it may be necessary to invalidate the callback. See bug 589202.
       if (clearing_)
-        (*i).func_ = 0;
+        (*i).func_ = nullptr;
       else
         callbacks_.erase(i);
       return;

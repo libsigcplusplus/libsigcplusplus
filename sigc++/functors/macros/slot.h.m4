@@ -247,8 +247,8 @@ struct typed_slot_rep : public slot_rep
 
   inline ~typed_slot_rep()
     {
-      call_ = 0;
-      destroy_ = 0;
+      call_ = nullptr;
+      destroy_ = nullptr;
       sigc::visit_each_type<trackable*>(slot_do_unbind(this), functor_);
     }
 
@@ -258,8 +258,8 @@ struct typed_slot_rep : public slot_rep
   static void* destroy(void* data)
     {
       self* self_ = static_cast<self*>(reinterpret_cast<slot_rep*>(data));
-      self_->call_ = 0;
-      self_->destroy_ = 0;
+      self_->call_ = nullptr;
+      self_->destroy_ = nullptr;
       sigc::visit_each_type<trackable*>(slot_do_unbind(self_), self_->functor_);
       self_->functor_.~adaptor_type();
       /* don't call disconnect() here: destroy() is either called

@@ -81,7 +81,7 @@ struct SIGC_API slot_rep : public trackable
   void* parent_;
 
   inline slot_rep(hook call__, hook destroy__, hook dup__)
-    : call_(call__), destroy_(destroy__), dup_(dup__), cleanup_(0), parent_(0) {}
+    : call_(call__), destroy_(destroy__), dup_(dup__), cleanup_(nullptr), parent_(nullptr) {}
 
   inline ~slot_rep()
     { destroy(); }

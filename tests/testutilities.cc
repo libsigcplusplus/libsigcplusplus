@@ -21,7 +21,7 @@
 #include <iostream>
 #include <cstring>
 
-TestUtilities* TestUtilities::instance_ = 0;
+TestUtilities* TestUtilities::instance_ = nullptr;
 
 TestUtilities::TestUtilities()
 : verbose_(false), result_ok_(true), test_number_(0)
@@ -87,6 +87,6 @@ bool TestUtilities::get_result_and_delete_instance()
 {
   const bool result = instance_ ? instance_->result_ok_ : true;
   delete instance_;
-  instance_ = 0;
+  instance_ = nullptr;
   return result;
 }

@@ -38,7 +38,7 @@ public:
   typedef T_return result_type;
 
   /// Constructs an invalid functor.
-  [$2]mem_functor$1() : func_ptr_(0) {}
+  [$2]mem_functor$1() : func_ptr_(nullptr) {}
 
   /** Constructs a [$2]mem_functor$1 object that wraps the passed method.
    * @param _A_func Pointer to method will be invoked from operator()().

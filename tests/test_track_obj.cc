@@ -148,13 +148,13 @@ int main(int argc, char* argv[])
   util->check_result(result_stream, "zero, Book title: A Book");
 
   delete pbook4; // auto-disconnect *psl2
-  pbook4 = 0;
+  pbook4 = nullptr;
   result_stream << (*psl2)(0, "Book title: ");
   util->check_result(result_stream, "");
   delete psl2;
-  psl2 = 0;
+  psl2 = nullptr;
   delete pbar4;
-  pbar4 = 0;
+  pbar4 = nullptr;
 
 
 //C++11 lambda expressions:

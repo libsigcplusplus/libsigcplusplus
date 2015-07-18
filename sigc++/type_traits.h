@@ -121,7 +121,7 @@ private:
 
 public:
   static const bool value =
-    sizeof(internal_class::is_base_class_(reinterpret_cast<typename type_trait<T_derived>::pointer>(0))) ==
+    sizeof(internal_class::is_base_class_(reinterpret_cast<typename type_trait<T_derived>::pointer>(nullptr))) ==
     sizeof(char);
 
 #else //SIGC_SELF_REFERENCE_IN_MEMBER_INITIALIZATION
