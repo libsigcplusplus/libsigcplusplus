@@ -1,3 +1,16 @@
+2.5.1 (unstable):
+
+* Use (and require) C++11
+  (Kjell Ahlstedt) 
+* Using C++11 lambda functions to create sigc::slots:
+  Avoid the need for SIGC_FUNCTORS_DEDUCE_RESULT_TYPE_WITH_DECLTYPE.
+  (Kjell Ahlstedt)
+* Remove the already-deprecated sigc::lambda (and sigc::group) API.
+  This is an API change but should not be an ABI change, so it should
+  only affect you when rebuilding applications, if you use this API.
+  (Murray Cumming, Kjell Ahlstedt)
+
+
 2.4.1 (stable):
 
 * A slot's functor is destroyed when an empty slot is assigned to the slot.
