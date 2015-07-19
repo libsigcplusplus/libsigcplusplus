@@ -26,7 +26,8 @@ Contact information:
    Maillist: mailto: libsigc-list@gnome.org
    Homepage: http://libsigc.sourceforge.net
    Online reference documentation: https://developer.gnome.org/libsigc++/unstable/
-   Ftp: http://ftp.gnome.org/pub/GNOME/sources/libsigc++/
+   Download: http://ftp.gnome.org/pub/GNOME/sources/libsigc++/
+             https://download.gnome.org/sources/libsigc++/
    Git: https://git.gnome.org/browse/libsigc++2/
 
 
@@ -43,8 +44,6 @@ Overview of the distribution:
       sigc++/functors/macros/        .m4 files used to auto-generate source files
       sigc++/adaptors/               source for library (various adaptors)
       sigc++/adaptors/macros/        .m4 files used to auto-generate source files
-      sigc++/adaptors/lambda/        source for library (lambda library, deprecated)
-      sigc++/adaptors/lambda/macros/ .m4 files used to auto-generate source files
    
    build/                            auxiliary files for building
    
@@ -55,20 +54,8 @@ Overview of the distribution:
 
 Compatibility:
 
-   Compatible compilers must supports the following C++ techniques:
-   * Partial template (class) specialization.
-   * Explicit template (member) function instantiation.
-   * Treat void return as normal return.
+   Compatible compilers must support C++11, such as the decltype() specifier.
 
-   All releases are tested with the gcc compiler.
+   All releases are tested with the gcc (g++) compiler.
    Release 2.3.2 has been tested with gcc 4.8.2, clang 3.4 and MS Visual C++ 2010.
-   It should also compile with:
-   * gcc >= 3.2
-   * cygwin (gcc >= 3.2)
-   * mingw32
-   * Microsoft Visual Studio .Net 2003
-   * Sun Forte C++ compiler >= 5.5
-   * Compaq C++ compiler
-   * Intel compiler
-   Please report any troubles you encounter with these compilers!
-   You are also invited to try a compiler that is not listed above.
+   Release 2.5.1 has been tested with gcc 4.9.2 and clang 3.6.0.
