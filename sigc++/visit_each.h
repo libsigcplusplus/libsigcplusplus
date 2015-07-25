@@ -56,7 +56,7 @@ struct limit_derived_target
   template <class T_type>
   void operator()(const T_type& _A_type) const
   {
-    with_type<std::is_base_of<T_target, T_type>::value, T_type, T_self>::execute_(_A_type, *this);
+    with_type<std::is_base_of<T_target, T_type>::value || std::is_same<T_target, T_type>::value, T_type, T_self>::execute_(_A_type, *this);
   }
 
   limit_derived_target(const T_action& _A_action)
