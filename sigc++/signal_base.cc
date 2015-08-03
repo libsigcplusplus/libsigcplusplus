@@ -16,7 +16,7 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 #include <sigc++/signal_base.h>
-#include <memory> // std::auto_ptr
+#include <memory> // std::unique_ptr
 
 namespace sigc {
 namespace internal {
@@ -138,7 +138,7 @@ void signal_impl::sweep()
 //static
 void* signal_impl::notify(void* d)
 {
-  std::auto_ptr<self_and_iter> si(static_cast<self_and_iter*>(d));
+  std::unique_ptr<self_and_iter> si(static_cast<self_and_iter*>(d));
 
   if (si->self_->exec_count_ == 0)
   {
