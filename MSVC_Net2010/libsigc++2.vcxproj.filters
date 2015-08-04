@@ -18,9 +18,6 @@
     <ClCompile Include="..\sigc++\connection.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\sigc++\adaptors\lambda\lambda.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\sigc++\signal.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -42,9 +39,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\sigc++\adaptors\adaptors.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\sigc++\adaptors\lambda\base.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\sigc++\bind.h">
@@ -80,16 +74,10 @@
     <ClInclude Include="..\sigc++\functors\functors.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\sigc++\adaptors\lambda\group.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\sigc++\hide.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\sigc++\adaptors\hide.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\sigc++\adaptors\lambda\lambda.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\sigc++\functors\mem_fun.h">
@@ -102,9 +90,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\sigc++\object_slot.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\sigc++\adaptors\lambda\operator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\sigc++\functors\ptr_fun.h">
@@ -126,9 +111,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\sigc++\adaptors\retype_return.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\sigc++\adaptors\lambda\select.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\sigc++\sigc++.h">

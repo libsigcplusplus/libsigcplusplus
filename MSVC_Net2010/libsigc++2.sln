@@ -1,5 +1,5 @@
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual C++ Express 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_bind", "tests\test_bind\test_bind.vcxproj", "{7D0D2CF8-5B22-4F9E-BD38-63083A2CF662}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_bind_return", "tests\test_bind_return\test_bind_return.vcxproj", "{EBA06A10-13EA-46D1-8B7F-C3D5308A47F9}"
@@ -72,11 +72,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_cpp11_lambda", "tests\
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_custom", "tests\test_custom\test_custom.vcxproj", "{66096E31-B40C-4E2E-9C34-8D5ABC891C8F}"
-	ProjectSection(ProjectDependencies) = postProject
-		{83997EF6-02D6-4CDB-8B3C-DBCA3018CC72} = {83997EF6-02D6-4CDB-8B3C-DBCA3018CC72}
-	EndProjectSection
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_lambda", "tests\test_lambda\test_lambda.vcxproj", "{73000FE7-961D-4DE3-ABD6-83A8A851DDD5}"
 	ProjectSection(ProjectDependencies) = postProject
 		{83997EF6-02D6-4CDB-8B3C-DBCA3018CC72} = {83997EF6-02D6-4CDB-8B3C-DBCA3018CC72}
 	EndProjectSection
@@ -298,12 +293,6 @@ Global
 		{66096E31-B40C-4E2E-9C34-8D5ABC891C8F}.Release|Win32.ActiveCfg = Release|Win32
 		{66096E31-B40C-4E2E-9C34-8D5ABC891C8F}.Release|Win32.Build.0 = Release|Win32
 		{66096E31-B40C-4E2E-9C34-8D5ABC891C8F}.Release|x64.ActiveCfg = Release|Win32
-		{73000FE7-961D-4DE3-ABD6-83A8A851DDD5}.Debug|Win32.ActiveCfg = Debug|Win32
-		{73000FE7-961D-4DE3-ABD6-83A8A851DDD5}.Debug|Win32.Build.0 = Debug|Win32
-		{73000FE7-961D-4DE3-ABD6-83A8A851DDD5}.Debug|x64.ActiveCfg = Debug|Win32
-		{73000FE7-961D-4DE3-ABD6-83A8A851DDD5}.Release|Win32.ActiveCfg = Release|Win32
-		{73000FE7-961D-4DE3-ABD6-83A8A851DDD5}.Release|Win32.Build.0 = Release|Win32
-		{73000FE7-961D-4DE3-ABD6-83A8A851DDD5}.Release|x64.ActiveCfg = Release|Win32
 		{FA8883FC-2639-4811-B684-1182EB48BE18}.Debug|Win32.ActiveCfg = Debug|Win32
 		{FA8883FC-2639-4811-B684-1182EB48BE18}.Debug|Win32.Build.0 = Debug|Win32
 		{FA8883FC-2639-4811-B684-1182EB48BE18}.Debug|x64.ActiveCfg = Debug|Win32
