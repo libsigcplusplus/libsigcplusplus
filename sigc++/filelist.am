@@ -16,11 +16,11 @@
 ## along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 # Base (./)
-base_m4 = template.macros.m4 signal.h.m4 slot.h.m4 method_slot.h.m4 \
+base_m4 = template.macros.m4 signal.h.m4 slot.h.m4 \
 	  object_slot.h.m4 hide.h.m4 retype.h.m4 \
 	  limit_reference.h.m4
 base_built_cc =
-base_built_h = signal.h slot.h method_slot.h \
+base_built_h = signal.h slot.h \
 	       object_slot.h hide.h retype.h limit_reference.h
 
 # Functors (functors/)
