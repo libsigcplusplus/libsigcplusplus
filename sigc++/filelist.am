@@ -17,11 +17,11 @@
 
 # Base (./)
 base_m4 = template.macros.m4 signal.h.m4 slot.h.m4 \
-	  hide.h.m4 retype.h.m4 \
+	  hide.h.m4 \
 	  limit_reference.h.m4
 base_built_cc =
 base_built_h = signal.h slot.h \
-	       hide.h retype.h limit_reference.h
+	       hide.h limit_reference.h
 
 # Functors (functors/)
 functors_m4 = functor_trait.h.m4 slot.h.m4 ptr_fun.h.m4 mem_fun.h.m4
