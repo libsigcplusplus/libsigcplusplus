@@ -16,11 +16,9 @@
 ## along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 # Base (./)
-base_m4 = template.macros.m4 signal.h.m4 slot.h.m4 \
-	  limit_reference.h.m4
+base_m4 = template.macros.m4 signal.h.m4 limit_reference.h.m4
 base_built_cc =
-base_built_h = signal.h slot.h \
-	       limit_reference.h
+base_built_h = signal.h limit_reference.h
 
 # Functors (functors/)
 functors_m4 = functor_trait.h.m4 slot.h.m4 ptr_fun.h.m4 mem_fun.h.m4
@@ -56,6 +54,7 @@ sigc_public_h =				\
 	reference_wrapper.h		\
 	retype_return.h			\
 	signal_base.h			\
+	slot.h			\
 	trackable.h			\
 	type_traits.h			\
 	visit_each.h			\
