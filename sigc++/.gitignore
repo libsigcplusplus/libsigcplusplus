@@ -1,11 +1,5 @@
-/class_slot.h
-/hide.h
 /limit_reference.h
-/method_slot.h
-/object_slot.h
-/retype.h
 /signal.h
-/slot.h
 /adaptors/adaptor_trait.h
 /adaptors/bind.h
 /adaptors/bind_return.h
