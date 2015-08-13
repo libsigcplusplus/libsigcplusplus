@@ -134,7 +134,7 @@ struct adaptor_functor : public adaptor_base
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
   template <LOOP(class T_arg%1=void, CALL_SIZE)>
   struct deduce_result_type
-    { typedef typename sigc::deduce_result_type<LIST(T_functor, LOOP(T_arg%1,CALL_SIZE))>::type type; };
+    { typedef sigc::deduce_result_t<LIST(T_functor, LOOP(T_arg%1,CALL_SIZE))> type; };
 #endif
   typedef typename functor_trait<T_functor>::result_type result_type;
 
@@ -259,7 +259,7 @@ struct adaptor_trait<T_functor, false>
  * {
  *   template <class T_arg1=void, class T_arg2=void>
  *   struct deduce_result_type
- *   { typedef typename sigc::deduce_result_type<T_functor, T_arg1, T_arg2>::type type; };
+ *   { typedef sigc::deduce_result_t<T_functor, T_arg1, T_arg2> type; };
  *   typedef typename sigc::functor_trait<T_functor>::result_type result_type;
  *   //
  *   result_type

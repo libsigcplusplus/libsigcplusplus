@@ -92,6 +92,10 @@ struct deduce_result_type
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 FOR(0,CALL_SIZE,[[DEDUCE_RESULT_TYPE_ADAPTOR(%1,CALL_SIZE)]])dnl
+
+template<typename... T>
+using deduce_result_t = typename deduce_result_type<T...>::type;
+
 #endif // DOXYGEN_SHOULD_SKIP_THIS
 
 dnl #ifdef SIGC_CXX_TYPEOF

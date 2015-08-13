@@ -22,7 +22,7 @@ define([COMPOSE1_OPERATOR],[dnl
   template <LOOP(class T_arg%1, $1)>
   typename deduce_result_type<LOOP(T_arg%1, $1)>::type
   operator()(LOOP(T_arg%1 _A_a%1, $1))
-    { return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<typename sigc::deduce_result_type<LIST(T_getter, LOOP(T_arg%1,$1))>::type>
+    { return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<sigc::deduce_result_t<LIST(T_getter, LOOP(T_arg%1,$1))>>
         (get_(LOOP(_A_a%1, $1)));
     }
 
@@ -32,8 +32,8 @@ define([COMPOSE2_OPERATOR],[dnl
   template <LOOP(class T_arg%1, $1)>
   typename deduce_result_type<LOOP(T_arg%1, $1)>::type
   operator()(LOOP(T_arg%1 _A_a%1, $1))
-    { return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<typename sigc::deduce_result_type<LIST(T_getter1, LOOP(T_arg%1,$1))>::type,
-                                                         typename sigc::deduce_result_type<LIST(T_getter2, LOOP(T_arg%1,$1))>::type>
+    { return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<sigc::deduce_result_t<LIST(T_getter1, LOOP(T_arg%1,$1))>,
+                                                         sigc::deduce_result_t<LIST(T_getter2, LOOP(T_arg%1,$1))>>
         (get1_(LOOP(_A_a%1, $1)), get2_(LOOP(_A_a%1,$1)));
     }
 
@@ -90,7 +90,7 @@ struct compose1_functor : public adapts<T_setter>
   template <LOOP(class T_arg%1 = void, CALL_SIZE)>
   struct deduce_result_type
     { typedef typename adaptor_type::template deduce_result_type<
-        typename sigc::deduce_result_type<LIST(T_getter, LOOP(T_arg%1,CALL_SIZE))>::type
+        sigc::deduce_result_t<LIST(T_getter, LOOP(T_arg%1,CALL_SIZE))>
           >::type type; };
 #endif
   typedef typename adaptor_type::result_type  result_type;
@@ -138,8 +138,8 @@ struct compose2_functor : public adapts<T_setter>
   template <LOOP(class T_arg%1=void, CALL_SIZE)>
   struct deduce_result_type
     { typedef typename adaptor_type::template deduce_result_type<
-        typename sigc::deduce_result_type<LIST(T_getter1, LOOP(T_arg%1,CALL_SIZE))>::type,
-        typename sigc::deduce_result_type<LIST(T_getter2, LOOP(T_arg%1,CALL_SIZE))>::type
+        typename sigc::deduce_result_t<LIST(T_getter1, LOOP(T_arg%1,CALL_SIZE))>,
+        typename sigc::deduce_result_t<LIST(T_getter2, LOOP(T_arg%1,CALL_SIZE))>
           >::type result_type; };
 #endif
   typedef typename adaptor_type::result_type  result_type;
