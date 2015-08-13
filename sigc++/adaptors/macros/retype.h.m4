@@ -26,7 +26,7 @@ ifelse($1,0,[dnl
   template <LOOP(class T_arg%1, $1)>
   typename deduce_result_type<LOOP(T_arg%1,$1)>::type
   operator()(LOOP(T_arg%1 _A_a%1, $1))
-    { return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<LOOP(typename type_trait<T_type%1>::take, $1)>
+    { return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<LOOP(type_trait_take_t<T_type%1>, $1)>
         (LOOP([[static_cast<T_type%1>(_A_a%1)]], $1));
     }
 
@@ -34,7 +34,7 @@ ifelse($1,0,[dnl
   template <LOOP(class T_arg%1, $1)>
   typename deduce_result_type<LOOP(T_arg%1,$1)>::type
   sun_forte_workaround(LOOP(T_arg%1 _A_a%1, $1))
-    { return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<LOOP(typename type_trait<T_type%1>::take, $1)>
+    { return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<LOOP(type_trait_take_t<T_type%1>, $1)>
         (LOOP([[static_cast<T_type%1>(_A_a%1)]], $1));
     }
   #endif
@@ -151,7 +151,7 @@ FOR(0,CALL_SIZE,[[RETYPE_OPERATOR(%1)]])dnl
   /** Constructs a retype_functor object that performs C-style casts on the parameters passed on to the functor.
    * @param _A_functor Functor to invoke from operator()().
    */
-  explicit retype_functor(typename type_trait<T_functor>::take _A_functor)
+  explicit retype_functor(type_trait_take_t<T_functor> _A_functor)
     : adapts<T_functor>(_A_functor)
     {}
 };

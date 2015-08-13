@@ -39,8 +39,8 @@ divert(1)dnl
 divert(0)dnl
 ])
 
-define([_R_],[typename type_trait<$1>::take])
-define([_P_],[typename type_trait<$1>::pass])
+define([_R_],[type_trait_take_t<$1>])
+define([_P_],[type_trait_pass_t<$1>])
 
 define([__DEPRECATION_GUARD__],[SIGCXX_DISABLE_DEPRECATED])dnl
 dnl Start deprecation

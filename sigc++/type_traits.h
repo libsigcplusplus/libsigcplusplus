@@ -69,6 +69,12 @@ struct type_trait<void>
   typedef void* pointer;
 };
 
+template<typename T>
+using type_trait_pass_t = typename type_trait<T>::pass;
+
+template<typename T>
+using type_trait_take_t = typename type_trait<T>::take;
+
 } /* namespace sigc */
 
 #endif /* _SIGC_TYPE_TRAIT_H_ */

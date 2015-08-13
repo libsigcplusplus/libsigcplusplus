@@ -51,7 +51,7 @@ FOR(1, $1,[
    * @param _A_a%1 Argument to be passed on to the function.])
    * @return The return value of the function invocation.
    */
-  T_return operator()(LOOP(typename type_trait<T_arg%1>::take _A_a%1, $1)) const 
+  T_return operator()(LOOP(type_trait_take_t<T_arg%1> _A_a%1, $1)) const 
     { return func_ptr_(LOOP(_A_a%1, $1)); }
 };
 

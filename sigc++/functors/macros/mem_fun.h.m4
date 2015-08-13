@@ -51,7 +51,7 @@ FOR(1, $1,[
    * @param _A_a%1 Argument to be passed on to the method.])
    * @return The return value of the method invocation.
    */
-  T_return operator()(LIST($3 T_obj* _A_obj, LOOP(typename type_trait<T_arg%1>::take _A_a%1, $1))) const
+  T_return operator()(LIST($3 T_obj* _A_obj, LOOP(type_trait_take_t<T_arg%1> _A_a%1, $1))) const
     { return (_A_obj->*(this->func_ptr_))(LOOP(_A_a%1, $1)); }
 
   /** Execute the wrapped method operating on the passed instance.
@@ -60,7 +60,7 @@ FOR(1, $1,[
    * @param _A_a%1 Argument to be passed on to the method.])
    * @return The return value of the method invocation.
    */
-  T_return operator()(LIST($3 T_obj& _A_obj, LOOP(typename type_trait<T_arg%1>::take _A_a%1, $1))) const
+  T_return operator()(LIST($3 T_obj& _A_obj, LOOP(type_trait_take_t<T_arg%1> _A_a%1, $1))) const
     { return (_A_obj.*func_ptr_)(LOOP(_A_a%1, $1)); }
 
 protected:
@@ -112,7 +112,7 @@ FOR(1, $1,[
    * @param _A_a%1 Argument to be passed on to the method.])
    * @return The return value of the method invocation.
    */
-  T_return operator()(LOOP(typename type_trait<T_arg%1>::take _A_a%1, $1)) const
+  T_return operator()(LOOP(type_trait_take_t<T_arg%1> _A_a%1, $1)) const
     { return (obj_.invoke().*(this->func_ptr_))(LOOP(_A_a%1, $1)); }
 
 //protected:

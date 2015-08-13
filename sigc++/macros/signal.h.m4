@@ -41,7 +41,7 @@ ifelse($1,0,,[dnl
    * the values on to some slot.
    */
 ])dnl
-  signal_emit$1(LOOP(typename type_trait<T_arg%1>::take _A_a%1, $1)) ifelse($1,0,,[
+  signal_emit$1(LOOP(type_trait_take_t<T_arg%1> _A_a%1, $1)) ifelse($1,0,,[
     : LOOP(_A_a%1_(_A_a%1), $1)]) {}
 
 ifelse($1,0,[dnl
@@ -62,7 +62,7 @@ FOR(1, $1,[
    * @param _A_a%1 Argument to be passed on to the slots.])
    * @return The accumulated return values of the slot invocations as processed by the accumulator.
    */
-  static result_type emit(LIST(signal_impl* impl, LOOP(typename type_trait<T_arg%1>::take _A_a%1, $1)))
+  static result_type emit(LIST(signal_impl* impl, LOOP(type_trait_take_t<T_arg%1> _A_a%1, $1)))
     {
       T_accumulator accumulator;
 
@@ -84,7 +84,7 @@ FOR(1, $1,[
    * @param _A_a%1 Argument to be passed on to the slots.])
    * @return The accumulated return values of the slot invocations as processed by the accumulator.
    */
-  static result_type emit_reverse(LIST(signal_impl* impl, LOOP(typename type_trait<T_arg%1>::take _A_a%1, $1)))
+  static result_type emit_reverse(LIST(signal_impl* impl, LOOP(type_trait_take_t<T_arg%1> _A_a%1, $1)))
     {
       T_accumulator accumulator;
 
@@ -100,7 +100,7 @@ FOR(1, $1,[
     }
 dnl
   FOR(1, $1,[
-  typename type_trait<T_arg%1>::take _A_a%1_;])
+  type_trait_take_t<T_arg%1> _A_a%1_;])
 };
 
 /** Abstracts signal emission.
@@ -126,7 +126,7 @@ FOR(1, $1,[
    * @param _A_a%1 Argument to be passed on to the slots.])
    * @return The return value of the last slot invoked.
    */
-  static result_type emit(LIST(signal_impl* impl, LOOP(typename type_trait<T_arg%1>::take _A_a%1, $1)))
+  static result_type emit(LIST(signal_impl* impl, LOOP(type_trait_take_t<T_arg%1> _A_a%1, $1)))
     {
       if (!impl || impl->slots_.empty())
         return T_return();
@@ -167,7 +167,7 @@ FOR(1, $1,[
    * @param _A_a%1 Argument to be passed on to the slots.])
    * @return The return value of the last slot invoked.
    */
-  static result_type emit_reverse(LIST(signal_impl* impl, LOOP(typename type_trait<T_arg%1>::take _A_a%1, $1)))
+  static result_type emit_reverse(LIST(signal_impl* impl, LOOP(type_trait_take_t<T_arg%1> _A_a%1, $1)))
     {
       if (!impl || impl->slots_.empty())
         return T_return();
@@ -228,7 +228,7 @@ ifelse($1,0,,[
 FOR(1, $1,[
    * @param _A_a%1 Argument to be passed on to the slots.])
    */
-  static result_type emit(LIST(signal_impl* impl, LOOP(typename type_trait<T_arg%1>::take _A_a%1, $1)))
+  static result_type emit(LIST(signal_impl* impl, LOOP(type_trait_take_t<T_arg%1> _A_a%1, $1)))
     {
       if (!impl || impl->slots_.empty()) return;
       signal_exec exec(impl);
@@ -250,7 +250,7 @@ ifelse($1,0,,[
 FOR(1, $1,[
    * @param _A_a%1 Argument to be passed on to the slots.])
    */
-  static result_type emit_reverse(LIST(signal_impl* impl, LOOP(typename type_trait<T_arg%1>::take _A_a%1, $1)))
+  static result_type emit_reverse(LIST(signal_impl* impl, LOOP(type_trait_take_t<T_arg%1> _A_a%1, $1)))
     {
       if (!impl || impl->slots_.empty()) return;
       signal_exec exec(impl);
@@ -352,15 +352,15 @@ FOR(1, $1,[
    * @param _A_a%1 Argument to be passed on to the slots.])
    * @return The accumulated return values of the slot invocations.
    */
-  result_type emit(LOOP(typename type_trait<T_arg%1>::take _A_a%1, $1)) const
+  result_type emit(LOOP(type_trait_take_t<T_arg%1> _A_a%1, $1)) const
     { return emitter_type::emit(LIST(impl_, LOOP(_A_a%1, $1))); }
 
   /** Triggers the emission of the signal in reverse order (see emit()). */
-  result_type emit_reverse(LOOP(typename type_trait<T_arg%1>::take _A_a%1, $1)) const
+  result_type emit_reverse(LOOP(type_trait_take_t<T_arg%1> _A_a%1, $1)) const
     { return emitter_type::emit_reverse(LIST(impl_, LOOP(_A_a%1, $1))); }
 
   /** Triggers the emission of the signal (see emit()). */
-  result_type operator()(LOOP(typename type_trait<T_arg%1>::take _A_a%1, $1)) const
+  result_type operator()(LOOP(type_trait_take_t<T_arg%1> _A_a%1, $1)) const
     { return emit(LOOP(_A_a%1, $1)); }
 
   /** Creates a functor that calls emit() on this signal.
@@ -370,8 +370,8 @@ FOR(1, $1,[
    * yields the same result.
    * @return A functor that calls emit() on this signal.
    */
-  bound_const_mem_functor$1<LIST(result_type, signal$1, LOOP(typename type_trait<T_arg%1>::take, $1))> make_slot() const
-    { return bound_const_mem_functor$1<LIST(result_type, signal$1, LOOP(typename type_trait<T_arg%1>::take, $1))>(this, &signal$1::emit); }
+  bound_const_mem_functor$1<LIST(result_type, signal$1, LOOP(type_trait_take_t<T_arg%1>, $1))> make_slot() const
+    { return bound_const_mem_functor$1<LIST(result_type, signal$1, LOOP(type_trait_take_t<T_arg%1>, $1))>(this, &signal$1::emit); }
 
   /** Creates an STL-style interface for the signal's list of slots.
    * This interface supports iteration, insertion and removal of slots.
