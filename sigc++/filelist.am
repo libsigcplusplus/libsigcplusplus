@@ -50,7 +50,6 @@ sigc_public_h =				\
 	bind.h				\
 	bind_return.h			\
 	connection.h			\
-	object.h			\
 	reference_wrapper.h		\
 	retype_return.h			\
 	signal_base.h			\
