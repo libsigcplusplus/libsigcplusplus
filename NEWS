@@ -1,3 +1,34 @@
+2.5.2 (unstable):
+
+* Remove useless headers:
+    sigc++/class_slot.h
+    sigc++/hide.h
+    sigc++/method_slot.h
+    sigc++/object.h
+    sigc++/object_slot.h
+    sigc++/retype.h
+  Some of these still have equivalents in sigc++/adaptors/
+  (Kjell Ahlstedt, Murray Cumming) Bug #752560
+* C++11: Replace deprecated std::auto_ptr by std::unique_ptr.
+  (Kjell Ahlstedt)
+* C++11: Use std::is_base_of<> instead of our sigc::is_base_and_derived<>,
+  removing sigc::is_base_and_derived<>.
+  (Kjell Ahlstedt, Murray Cumming) Bug #752560
+* C++11: Use of range-based for loops.
+  (Murray Cumming)
+* C++11: Use of the auto keyword.
+  (Murray Cumming)
+* C++11: Use of nullptr instead of 0.
+  (Murray Cumming)
+* sigc++/slot.h: Use a regular .h file instead of generating it
+  from an .m4 file. Bug #752560
+  (Kjell Ahlstedt)
+* Visual Studio Builds: Move 2010 Projects to 2012 to support C++11.
+  (Chun-wei Fan)
+* Use -Wformat-security and -Wshadow with --enable-warnings=fatal.
+  (Murray Cumming)
+
+
 2.5.1 (unstable):
 
 * Use (and require) C++11
