@@ -17,28 +17,6 @@ dnl
 divert(-1)
 include(template.macros.m4)
 
-define([DEDUCE_RESULT_TYPE_ADAPTOR],[dnl
-/** Deduce the return type of a functor.
- * This is the template specialization of the sigc::deduce_result_type template
- * for $1 arguments.
- */
-template <LIST(class T_functor, LOOP(class T_arg%1, $1))>
-struct deduce_result_type<LIST(T_functor, LOOP(T_arg%1,$1), LOOP(void,eval($2-$1)), true)>
-  { typedef typename T_functor::template deduce_result_type<LOOP(T_arg%1,$1)>::type type; };
-
-])
-dnl 01.11.2003: Completely removed support for typeof() since it is non-standard!
-dnl define([DEDUCE_RESULT_TYPE_TYPEOF],[dnl
-dnl template <LIST(class T_functor, LOOP(class T_arg%1, $1))>
-dnl struct deduce_result_type<LIST(T_functor, LOOP(T_arg%1,$1), LOOP(void,eval($2-$1)), false)>
-dnl {
-dnl   typedef typeof(type_trait<T_functor>::instance().
-dnl                    T_functor::operator()(LOOP([
-dnl                       type_trait<T_arg%1>::instance()], $1))) type;
-dnl };
-dnl 
-dnl ])
-
 divert(0)dnl
 /*
 */
@@ -84,19 +62,19 @@ struct adaptor_base : public functor_base {};
  *
  * @ingroup adaptors
  */
-template <class T_functor,
-          LOOP(class T_arg%1=void, CALL_SIZE),
-          bool I_derives_adaptor_base = std::is_base_of<adaptor_base,T_functor>::value>
+template<class T_functor, class... T_args>
 struct deduce_result_type
-  { typedef typename functor_trait<T_functor>::result_type type; };
-
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-FOR(0,CALL_SIZE,[[DEDUCE_RESULT_TYPE_ADAPTOR(%1,CALL_SIZE)]])dnl
+{
+  using type =
+    typename std::conditional<
+      std::is_base_of<adaptor_base, T_functor>::value,
+      typename T_functor::template deduce_result_type<T_args...>::type,
+      typename functor_trait<T_functor>::result_type
+    >::type;
+};
 
 template<typename T_functor, typename... T_args>
 using deduce_result_t = typename deduce_result_type<T_functor, T_args...>::type;
-
-#endif // DOXYGEN_SHOULD_SKIP_THIS
 
 dnl #ifdef SIGC_CXX_TYPEOF
 dnl FOR(0,CALL_SIZE,[[DEDUCE_RESULT_TYPE_TYPEOF(%1,CALL_SIZE)]])
