@@ -18,20 +18,6 @@ divert(-1)
 
 include(template.macros.m4)
 
-define([PTR_FUN],[dnl
-/** Creates a functor of type sigc::pointer_functor which wraps an existing non-member function.
- * @param _A_func Pointer to function that should be wrapped.
- * @return Functor that executes @e _A_func on invokation.
- *
- * @ingroup ptr_fun
- */
-template <LIST(LOOP(class T_arg%1, $1), class T_return)>
-inline pointer_functor<LIST(T_return, LOOP(T_arg%1, $1))> 
-ptr_fun[]ifelse($2,, $1)(T_return (*_A_func)(LOOP(T_arg%1,$1)))
-{ return pointer_functor<LIST(T_return, LOOP(T_arg%1, $1))>(_A_func); }
-
-])
-
 divert(0)
 _FIREWALL([FUNCTORS_PTR_FUN])
 #include <sigc++/type_traits.h>
@@ -51,14 +37,12 @@ namespace sigc {
  * sigc::slot<void, int> sl = sigc::ptr_fun(&foo);
  * @endcode
  *
- * Use ptr_fun#() if there is an ambiguity as to the number of arguments.
- *
  * @par Example:
  * @code
  * void foo(int) {}  // choose this one
  * void foo(float) {}
  * void foo(int, int) {}
- * sigc::slot<void, long> sl = sigc::ptr_fun1<int>(&foo);
+ * sigc::slot<void, long> sl = sigc::ptr_fun<void, int>(&foo);
  * @endcode
  *
  * ptr_fun() can also be used to convert a pointer to a static member
@@ -111,10 +95,15 @@ public:
     { return func_ptr_(_A_a...); }
 };
 
-// numbered ptr_fun
-FOR(0,CALL_SIZE,[[PTR_FUN(%1)]])dnl
-
-// unnumbered ptr_fun
-FOR(0,CALL_SIZE,[[PTR_FUN(%1,1)]])dnl
+/** Creates a functor of type sigc::pointer_functor which wraps an existing non-member function.
+ * @param _A_func Pointer to function that should be wrapped.
+ * @return Functor that executes @e _A_func on invokation.
+ *
+ * @ingroup ptr_fun
+ */
+template <class T_return, class... T_args>
+inline pointer_functor<T_return, T_args...> 
+ptr_fun(T_return (*_A_func)(T_args...))
+{ return pointer_functor<T_return, T_args...>(_A_func); }
 
 } /* namespace sigc */

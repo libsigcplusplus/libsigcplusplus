@@ -61,9 +61,9 @@ int main(int argc, char* argv[])
   // connect some slots before emitting & test auto-disconnection
   {
     A a;
-    sig.connect(sigc::ptr_fun1(&foo));
+    sig.connect(sigc::ptr_fun(&foo));
     sig.connect(sigc::mem_fun1(&a, &A::foo));
-    sig.connect(sigc::ptr_fun1(&bar));
+    sig.connect(sigc::ptr_fun(&bar));
     sig(1);
     result_stream << sig.size();
     util->check_result(result_stream, "foo(int 1) A::foo(int 1) bar(float 1) 3");
@@ -84,7 +84,7 @@ int main(int argc, char* argv[])
   util->check_result(result_stream, "A::foo(string 'guest book') foo was here");
 
   // test make_slot()
-  sig.connect(sigc::ptr_fun1(&foo));
+  sig.connect(sigc::ptr_fun(&foo));
   sigc::signal<int,int> sig2;
   sig2.connect(sig.make_slot());
   sig2(3);

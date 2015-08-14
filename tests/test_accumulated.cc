@@ -88,13 +88,13 @@ int main(int argc, char* argv[])
   util->check_result(result_stream, "Vector result (empty slot list): empty");
 
   A a;
-  sig.connect(sigc::ptr_fun1(&foo));
+  sig.connect(sigc::ptr_fun(&foo));
   sig.connect(sigc::mem_fun1(&a, &A::foo));
-  sig.connect(sigc::ptr_fun1(&bar));
+  sig.connect(sigc::ptr_fun(&bar));
 
-  sig_vec.connect(sigc::ptr_fun1(&foo));
+  sig_vec.connect(sigc::ptr_fun(&foo));
   sig_vec.connect(sigc::mem_fun1(&a, &A::foo));
-  sig_vec.connect(sigc::ptr_fun1(&bar));
+  sig_vec.connect(sigc::ptr_fun(&bar));
 
   double dres = sig(1);
   result_stream << "Mean accumulator: Result (i=1): "

@@ -61,24 +61,24 @@ int main(int argc, char* argv[])
   if (!util->check_command_args(argc, argv))
     return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;
 
-  sigc::ptr_fun0(&foo)();
+  sigc::ptr_fun(&foo)();
   util->check_result(result_stream, "foo()");
 
-  sigc::ptr_fun1(&foo)(1);
+  sigc::ptr_fun(&foo)(1);
   util->check_result(result_stream, "foo(int 1)");
 
 #if ENABLE_TEST_OF_OVERLOADED_FUNCTIONS
-  sigc::ptr_fun1<char>(&bar)(2);
+  sigc::ptr_fun<void, char>(&bar)(2);
   util->check_result(result_stream, "bar(char 2)");
 
-  sigc::ptr_fun1<float>(&bar)(2.0f);
+  sigc::ptr_fun<void, float>(&bar)(2.0f);
   util->check_result(result_stream, "bar(float 2)");
 #else
-  sigc::ptr_fun1(&bar)(2.0f);
+  sigc::ptr_fun(&bar)(2.0f);
   util->check_result(result_stream, "bar(float 2)");
 #endif
 
-  sigc::ptr_fun2(&bar)(3, 5);
+  sigc::ptr_fun(&bar)(3, 5);
   util->check_result(result_stream, "bar(int 3, int 5)");
 
   sigc::ptr_fun(&test::foo)();

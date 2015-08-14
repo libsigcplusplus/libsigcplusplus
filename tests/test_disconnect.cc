@@ -90,8 +90,8 @@ int main(int argc, char* argv[])
   {
     A a;
     sig.connect(sigc::mem_fun1(&a, &A::foo));
-    confoo = sig.connect(sigc::ptr_fun1(&foo));
-    conbar = sig.connect(sigc::ptr_fun1(&bar));
+    confoo = sig.connect(sigc::ptr_fun(&foo));
+    conbar = sig.connect(sigc::ptr_fun(&bar));
     result_stream << "sig is connected to A::foo, foo, bar (size=" << sig.size() << "): ";
     sig(1);
     util->check_result(result_stream,
