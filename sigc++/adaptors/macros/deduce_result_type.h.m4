@@ -93,8 +93,8 @@ struct deduce_result_type
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 FOR(0,CALL_SIZE,[[DEDUCE_RESULT_TYPE_ADAPTOR(%1,CALL_SIZE)]])dnl
 
-template<typename... T>
-using deduce_result_t = typename deduce_result_type<T...>::type;
+template<typename T_functor, typename... T_args>
+using deduce_result_t = typename deduce_result_type<T_functor, T_args...>::type;
 
 #endif // DOXYGEN_SHOULD_SKIP_THIS
 
