@@ -58,17 +58,17 @@ int main(int argc, char* argv[])
   if (!util->check_command_args(argc, argv))
     return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;
 
-  bar(sigc::deduce_result_type<foo2, long>::type());
+  bar(sigc::deduce_result_t<foo2, long>());
   util->check_result(result_stream, "double");
 
-  bar(sigc::deduce_result_type<foo2, int, int>::type());
+  bar(sigc::deduce_result_t<foo2, int, int>());
   util->check_result(result_stream, "double");
 
-  bar(sigc::deduce_result_type<foo3, int, int>::type());
+  bar(sigc::deduce_result_t<foo3, int, int>());
   util->check_result(result_stream, "int");
 
 #ifdef FAIL
-  bar(sigc::deduce_result_type<foo2, int, int, int>::type());
+  bar(sigc::deduce_result_t<foo2, int, int, int>());
   util->check_result(result_stream, "double");
 #endif
 

@@ -90,7 +90,7 @@ struct MyAdaptor1 : public sigc::adapts<T_functor>
 {
   template <class T_arg1=void, class T_arg2=void>
   struct deduce_result_type
-  { typedef typename sigc::deduce_result_type<T_functor, T_arg1, T_arg2>::type type; };
+  { typedef sigc::deduce_result_t<T_functor, T_arg1, T_arg2> type; };
   typedef typename sigc::functor_trait<T_functor>::result_type result_type;
 
   result_type
