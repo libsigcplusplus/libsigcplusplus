@@ -131,6 +131,12 @@ struct exception_catch_functor<T_functor, T_catcher, void> : public adapts<T_fun
   typedef void result_type;
   typedef typename adapts<T_functor>::adaptor_type adaptor_type;
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+  template <LOOP(class T_arg%1=void, CALL_SIZE)>
+  struct deduce_result_type
+    { typedef typename adaptor_type::template deduce_result_type<LOOP(_P_(T_arg%1),CALL_SIZE)>::type type; };
+#endif
+
   void
   operator()();
 
