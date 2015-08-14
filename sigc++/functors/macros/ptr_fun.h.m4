@@ -18,56 +18,17 @@ divert(-1)
 
 include(template.macros.m4)
 
-define([POINTER_FUNCTOR],[dnl
-/** pointer_functor$1 wraps existing non-member functions with $1 argument(s).
- * Use the convenience function ptr_fun() to create an instance of pointer_functor$1.
- *
- * The following template arguments are used:dnl
-FOR(1,$1,[
- * - @e T_arg%1 Argument type used in the definition of operator()().])
- * - @e T_return The return type of operator()().
- *
- * @ingroup ptr_fun
- */
-template <LIST(LOOP(class T_arg%1, $1), class T_return)>
-class pointer_functor$1 : public functor_base
-{
-  typedef T_return (*function_type)(LOOP(T_arg%1, $1));
-protected: 
-  function_type func_ptr_;
-public:
-  typedef T_return result_type;
-
-  /// Constructs an invalid functor.
-  pointer_functor$1() {}
-
-  /** Constructs a pointer_functor$1 object that wraps an existing function.
-   * @param _A_func Pointer to function that will be invoked from operator()().
-   */
-  explicit pointer_functor$1(function_type _A_func): func_ptr_(_A_func) {}
-
-  /** Execute the wrapped function.dnl
-FOR(1, $1,[
-   * @param _A_a%1 Argument to be passed on to the function.])
-   * @return The return value of the function invocation.
-   */
-  T_return operator()(LOOP(type_trait_take_t<T_arg%1> _A_a%1, $1)) const 
-    { return func_ptr_(LOOP(_A_a%1, $1)); }
-};
-
-])
-
 define([PTR_FUN],[dnl
-/** Creates a functor of type sigc::pointer_functor$1 which wraps an existing non-member function.
+/** Creates a functor of type sigc::pointer_functor which wraps an existing non-member function.
  * @param _A_func Pointer to function that should be wrapped.
  * @return Functor that executes @e _A_func on invokation.
  *
  * @ingroup ptr_fun
  */
 template <LIST(LOOP(class T_arg%1, $1), class T_return)>
-inline pointer_functor$1<LIST(LOOP(T_arg%1, $1), T_return)> 
+inline pointer_functor<LIST(T_return, LOOP(T_arg%1, $1))> 
 ptr_fun[]ifelse($2,, $1)(T_return (*_A_func)(LOOP(T_arg%1,$1)))
-{ return pointer_functor$1<LIST(LOOP(T_arg%1, $1), T_return)>(_A_func); }
+{ return pointer_functor<LIST(T_return, LOOP(T_arg%1, $1))>(_A_func); }
 
 ])
 
@@ -115,7 +76,40 @@ namespace sigc {
  * @ingroup sigcfunctors
  */
 
-FOR(0,CALL_SIZE,[[POINTER_FUNCTOR(%1)]])dnl
+/** pointer_functor wraps existing non-member functions with, or without, arguments.
+ * Use the convenience function ptr_fun() to create an instance of pointer_functor.
+ *
+ * The following template arguments are used:
+ * - @e T_args... Argument types used in the definition of operator()().
+ * - @e T_return The return type of operator()().
+ *
+ * @ingroup ptr_fun
+ */
+template <class T_return, class... T_args>
+class pointer_functor : public functor_base
+{
+  using function_type = T_return (*)(T_args...);
+protected: 
+  function_type func_ptr_;
+public:
+  using result_type = T_return;
+
+  /// Constructs an invalid functor.
+  pointer_functor() {}
+
+  /** Constructs a pointer_functor2 object that wraps an existing function.
+   * @param _A_func Pointer to function that will be invoked from operator()().
+   */
+  explicit pointer_functor(function_type _A_func): func_ptr_(_A_func) {}
+
+  /** Execute the wrapped function.
+   * @param _A_a1 Argument to be passed on to the function.
+   * @param _A_a2 Argument to be passed on to the function.
+   * @return The return value of the function invocation.
+   */
+  T_return operator()(type_trait_take_t<T_args>... _A_a) const 
+    { return func_ptr_(_A_a...); }
+};
 
 // numbered ptr_fun
 FOR(0,CALL_SIZE,[[PTR_FUN(%1)]])dnl

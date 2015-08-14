@@ -51,9 +51,9 @@ define([RETYPE_POINTER_FUNCTOR],[dnl
  * @ingroup retype
  */
 template <LIST(LOOP(class T_arg%1, $1), class T_return)>
-inline retype_functor<LIST(pointer_functor$1<LIST(LOOP(T_arg%1, $1), T_return)>, LOOP(T_arg%1, $1)) >
-retype(const pointer_functor$1<LIST(LOOP(T_arg%1, $1), T_return)>& _A_functor)
-{ return retype_functor<LIST(pointer_functor$1<LIST(LOOP(T_arg%1, $1), T_return)>, LOOP(T_arg%1, $1)) >
+inline retype_functor<LIST(pointer_functor<LIST(T_return, LOOP(T_arg%1, $1))>, LOOP(T_arg%1, $1)) >
+retype(const pointer_functor<LIST(T_return, LOOP(T_arg%1, $1))>& _A_functor)
+{ return retype_functor<LIST(pointer_functor<LIST(T_return, LOOP(T_arg%1, $1))>, LOOP(T_arg%1, $1)) >
     (_A_functor); }
 
 ])

@@ -18,12 +18,11 @@ divert(-1)
 include(template.macros.m4)
 
 define([FUNCTOR_PTR_FUN],[dnl
-template <LIST(LOOP(class T_arg%1, $1), class T_return)> class pointer_functor$1;
 template <LIST(LOOP(class T_arg%1, $1), class T_return)>
 struct functor_trait<T_return (*)(LOOP(T_arg%1, $1)), false, false>
 {
   typedef T_return result_type;
-  typedef pointer_functor$1<LIST(LOOP(T_arg%1, $1), T_return)> functor_type;
+  typedef pointer_functor<LIST(T_return, LOOP(T_arg%1, $1))> functor_type;
 };
 
 ])
@@ -270,6 +269,10 @@ struct functor_trait<T_functor, false, true>   \
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 // detect the return type and the functor version of non-functor types.
+
+template <class T_return, class... T_args>
+class pointer_functor;
+
 FOR(0,CALL_SIZE,[[FUNCTOR_PTR_FUN(%1)]])
 FOR(0,CALL_SIZE,[[FUNCTOR_MEM_FUN(%1)]])
 #endif // DOXYGEN_SHOULD_SKIP_THIS
