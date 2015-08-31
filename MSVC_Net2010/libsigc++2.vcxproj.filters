@@ -15,144 +15,53 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\sigc++\connection.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\sigc++\signal.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\sigc++\signal_base.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\sigc++\functors\slot.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\sigc++\functors\slot_base.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\sigc++\trackable.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
+    <ClCompile Include="..\sigc++\connection.cc"><Filter>Source Files</Filter></ClCompile>
+    <ClCompile Include="..\sigc++\signal.cc"><Filter>Source Files</Filter></ClCompile>
+    <ClCompile Include="..\sigc++\signal_base.cc"><Filter>Source Files</Filter></ClCompile>
+    <ClCompile Include="..\sigc++\functors\slot.cc"><Filter>Source Files</Filter></ClCompile>
+    <ClCompile Include="..\sigc++\functors\slot_base.cc"><Filter>Source Files</Filter></ClCompile>
+    <ClCompile Include="..\sigc++\trackable.cc"><Filter>Source Files</Filter></ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\sigc++\adaptors\adaptor_trait.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\sigc++\adaptors\adaptors.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\sigc++\bind.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\sigc++\adaptors\bind.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\sigc++\adaptors\bind_return.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\sigc++\bind_return.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\sigc++\class_slot.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\sigc++\adaptors\compose.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\sigc++\connection.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\sigc++\adaptors\deduce_result_type.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\sigc++\adaptors\exception_catch.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\sigc++\functors\functor_trait.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\sigc++\functors\functors.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\sigc++\hide.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\sigc++\adaptors\hide.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\sigc++\functors\mem_fun.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\sigc++\method_slot.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\sigc++\object.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\sigc++\object_slot.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\sigc++\functors\ptr_fun.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\sigc++\reference_wrapper.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="resource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\sigc++\adaptors\retype.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\sigc++\retype.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\sigc++\retype_return.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\sigc++\adaptors\retype_return.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\sigc++\sigc++.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\sigc++\signal.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\sigc++\signal_base.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\sigc++\functors\slot.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\sigc++\slot.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\sigc++\functors\slot_base.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\sigc++\trackable.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\sigc++\type_traits.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\sigc++\visit_each.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\sigc++\limit_reference.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\sigc++\adaptors\bound_argument.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\sigc++\adaptors\track_obj.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
+    <ClInclude Include="..\sigc++\adaptors\adaptor_trait.h"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="..\sigc++\adaptors\adaptors.h"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="..\sigc++\bind.h"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="..\sigc++\adaptors\bind.h"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="..\sigc++\adaptors\bind_return.h"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="..\sigc++\bind_return.h"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="..\sigc++\class_slot.h"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="..\sigc++\adaptors\compose.h"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="..\sigc++\connection.h"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="..\sigc++\adaptors\deduce_result_type.h"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="..\sigc++\adaptors\exception_catch.h"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="..\sigc++\functors\functor_trait.h"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="..\sigc++\functors\functors.h"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="..\sigc++\hide.h"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="..\sigc++\adaptors\hide.h"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="..\sigc++\functors\mem_fun.h"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="..\sigc++\method_slot.h"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="..\sigc++\object.h"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="..\sigc++\object_slot.h"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="..\sigc++\functors\ptr_fun.h"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="..\sigc++\reference_wrapper.h"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="..\sigc++\adaptors\retype.h"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="..\sigc++\retype.h"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="..\sigc++\retype_return.h"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="..\sigc++\adaptors\retype_return.h"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="..\sigc++\sigc++.h"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="..\sigc++\signal.h"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="..\sigc++\signal_base.h"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="..\sigc++\functors\slot.h"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="..\sigc++\slot.h"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="..\sigc++\functors\slot_base.h"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="..\sigc++\trackable.h"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="..\sigc++\type_traits.h"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="..\sigc++\visit_each.h"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="..\sigc++\limit_reference.h"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="..\sigc++\adaptors\bound_argument.h"><Filter>Header Files</Filter></ClInclude>
+    <ClInclude Include="..\sigc++\adaptors\track_obj.h"><Filter>Header Files</Filter></ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="sigc.rc">
-      <Filter>Resource Files</Filter>
-    </ResourceCompile>
+    <ResourceCompile Include="sigc.rc"><Filter>Resource Files</Filter></ResourceCompile>
   </ItemGroup>
 </Project>
