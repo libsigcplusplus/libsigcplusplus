@@ -1,6 +1,6 @@
 ## This file is part of libsigc++.
 
-msvc_net2010_data =					\
+msvc_net2013_data =					\
 	libsigc++2.sln					\
 	libsigc++2.vcxproj				\
 	libsigc++2.vcxproj.filters			\
