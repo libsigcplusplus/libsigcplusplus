@@ -86,14 +86,28 @@ FOR(1, $1,[
     }
 
   slot$1(const slot$1& src)
-    : slot_base(src) {}
+    : slot_base(src)
+    {}
+
+  slot$1(slot$1&& src) noexcept
+    : slot_base(std::move(src))
+    {}
 
   /** Overrides this slot making a copy from another slot.
    * @param src The slot from which to make a copy.
    * @return @p this.
    */
   slot$1& operator=(const slot$1& src)
-    { slot_base::operator=(src); return *this; }
+    {
+      slot_base::operator=(src);
+      return *this;
+    }
+
+  slot$1& operator=(slot$1&& src) noexcept
+    {
+      slot_base::operator=(std::move(src));
+      return *this;
+    }
 };
 
 ])
