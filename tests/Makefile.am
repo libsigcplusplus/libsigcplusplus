@@ -45,6 +45,7 @@ check_PROGRAMS = \
   test_size \
   test_slot \
   test_slot_disconnect \
+  test_slot_move \
   test_trackable \
   test_trackable_move \
   test_track_obj \
@@ -79,6 +80,7 @@ test_signal_SOURCES          = test_signal.cc $(sigc_test_util)
 test_size_SOURCES            = test_size.cc $(sigc_test_util)
 test_slot_SOURCES            = test_slot.cc $(sigc_test_util)
 test_slot_disconnect_SOURCES = test_slot_disconnect.cc $(sigc_test_util)
+test_slot_move_SOURCES       = test_slot_move.cc $(sigc_test_util)
 test_trackable_SOURCES       = test_trackable.cc $(sigc_test_util)
 test_trackable_move_SOURCES  = test_trackable_move.cc $(sigc_test_util)
 test_track_obj_SOURCES       = test_track_obj.cc $(sigc_test_util)
