@@ -167,6 +167,13 @@ signal_base::signal_base(const signal_base& src)
   impl_->reference();
 }
 
+signal_base::signal_base(signal_base&& src)
+: trackable(std::move(src)),
+  impl_(std::move(src.impl_))
+{
+  src.impl_ = nullptr;
+}
+
 signal_base::~signal_base()
 {
   if (impl_)
@@ -223,7 +230,7 @@ signal_base::iterator_type signal_base::erase(iterator_type i)
   return impl()->erase(i);
 }
 
-signal_base& signal_base::operator = (const signal_base& src)
+signal_base& signal_base::operator=(const signal_base& src)
 {
   if (src.impl_ == impl_) return *this;
 
@@ -238,6 +245,16 @@ signal_base& signal_base::operator = (const signal_base& src)
   }
   impl_ = src.impl();
   impl_->reference();
+  return *this;
+}
+
+signal_base& signal_base::operator=(signal_base&& src)
+{
+  trackable::operator=(std::move(src));
+  impl_ = std::move(src.impl_);
+
+  src.impl_ = nullptr;
+
   return *this;
 }
 
