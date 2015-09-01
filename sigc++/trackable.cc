@@ -51,6 +51,16 @@ trackable& trackable::operator=(const trackable& src)
   return *this;
 }
 
+trackable& trackable::operator=(trackable&& src)
+{
+  if(this != &src)
+    notify_callbacks(); //Make sure that we have finished with existing stuff before replacing it.
+
+  callback_list_ = std::move(src.callback_list_);
+
+  return *this;
+}
+
 trackable::~trackable()
 {
   notify_callbacks();
