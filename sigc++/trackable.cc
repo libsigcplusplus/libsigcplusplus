@@ -58,6 +58,8 @@ trackable& trackable::operator=(trackable&& src)
 
   callback_list_ = std::move(src.callback_list_);
 
+  src.callback_list_ = nullptr;
+
   return *this;
 }
 
