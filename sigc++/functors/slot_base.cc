@@ -125,6 +125,15 @@ slot_base::slot_base(const slot_base& src)
   }
 }
 
+slot_base::slot_base(slot_base&& src) noexcept
+: rep_(std::move(src.rep_)),
+  blocked_(std::move(src.blocked_))
+{
+  //Wipe src:
+  src.rep_ = nullptr;
+  src.blocked_ = false;
+}
+
 slot_base::~slot_base()
 {
   if (rep_)
@@ -134,6 +143,29 @@ slot_base::~slot_base()
 slot_base::operator bool() const
 {
   return rep_ != nullptr;
+}
+
+void slot_base::delete_rep_with_check()
+{
+  if (!rep_)
+    return;
+
+  // Make sure we are notified if disconnect() deletes rep_, which is trackable.
+  // Compare slot_rep::notify().
+  destroy_notify_struct notifier;
+  rep_->add_destroy_notify_callback(&notifier, destroy_notify_struct::notify);
+  rep_->disconnect(); // Disconnect the slot (might lead to deletion of rep_!).
+
+  // If rep_ has been deleted, don't try to delete it again.
+  // If it has been deleted, this slot_base has probably also been deleted, so
+  // don't clear the rep_ pointer. It's the responsibility of the code that
+  // deletes rep_ to either clear the rep_ pointer or delete this slot_base.
+  if (!notifier.deleted_)
+  {
+    rep_->remove_destroy_notify_callback(&notifier);
+    delete rep_; // Detach the stored functor from the other referred trackables and destroy it.
+    rep_ = nullptr;
+  }
 }
 
 slot_base& slot_base::operator=(const slot_base& src)
@@ -146,25 +178,7 @@ slot_base& slot_base::operator=(const slot_base& src)
 
   if (src.empty())
   {
-    if (rep_)
-    {
-      // Make sure we are notified if disconnect() deletes rep_, which is trackable.
-      // Compare slot_rep::notify().
-      destroy_notify_struct notifier;
-      rep_->add_destroy_notify_callback(&notifier, destroy_notify_struct::notify);
-      rep_->disconnect(); // Disconnect the slot (might lead to deletion of rep_!).
-
-      // If rep_ has been deleted, don't try to delete it again.
-      // If it has been deleted, this slot_base has probably also been deleted, so
-      // don't clear the rep_ pointer. It's the responsibility of the code that
-      // deletes rep_ to either clear the rep_ pointer or delete this slot_base.
-      if (!notifier.deleted_)
-      {
-        rep_->remove_destroy_notify_callback(&notifier);
-        delete rep_; // Detach the stored functor from the other referred trackables and destroy it.
-        rep_ = nullptr;
-      }
-    }
+    delete_rep_with_check();
 
     return *this;
   }
@@ -179,6 +193,23 @@ slot_base& slot_base::operator=(const slot_base& src)
 
   rep_ = new_rep_;
   blocked_ = src.blocked_;
+
+  return *this;
+}
+
+slot_base& slot_base::operator=(slot_base&& src) noexcept
+{
+  if (src.rep_ == rep_)
+    return *this;
+ 
+  delete_rep_with_check();
+
+  rep_ = std::move(src.rep_);
+  blocked_ = std::move(src.blocked_);
+
+  //Wipe src:
+  src.rep_ = nullptr;
+  src.blocked_ = false;
 
   return *this;
 }

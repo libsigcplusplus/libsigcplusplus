@@ -250,6 +250,8 @@ public:
    */
   slot_base(const slot_base& src);
 
+  slot_base(slot_base&& src) noexcept;
+
   ~slot_base();
 
   /** Tests whether a slot is null, because the default constructor was used.
@@ -325,12 +327,17 @@ public:
    */
   slot_base& operator=(const slot_base& src);
 
+  slot_base& operator=(slot_base&& src) noexcept;
+
 public: // public to avoid template friend declarations
   /** Typed slot_rep object that contains a functor. */
   mutable rep_type *rep_;
 
   /** Indicates whether the slot is blocked. */
   bool blocked_;
+
+private:
+  void delete_rep_with_check();
 };
 
 } //namespace sigc
