@@ -18,27 +18,34 @@ class my_class: public sigc::trackable
 {
 public:
 
-  my_class(const myclass& src) = delete;
-  my_class& operator=(const myclass& src) = delete;
+  my_class()
+  : i(0)
+  {}
 
-  my_class(myclass&& src)
+  my_class(const my_class& src) = delete;
+  my_class& operator=(const my_class& src) = delete;
+
+  my_class(my_class&& src)
   : sigc::trackable(std::move(src)),
-    i(std::move(src.i);
+    i(std::move(src.i))
   {
+    src.i = 0;
   }
 
-  my_class& operator=(myclass&& src)
+  my_class& operator=(my_class&& src)
   {
     sigc::trackable::operator=(std::move(src));
     i = std::move(src.i);
+    src.i = 0;
+    return *this;
   }
-
-  int i;
 
   void foo()
   {
     result_stream << i;
   }
+
+  int i;
 };
 
 } // end anonymous namespace
@@ -57,10 +64,18 @@ int main(int argc, char* argv[])
     sl = sigc::mem_fun0(&t, &my_class::foo);
     sl();
     util->check_result(result_stream, "10");
-  }
 
-  sl();
-  util->check_result(result_stream, "");
+    //Create another trackable via a move:
+    my_class t2(std::move(t));
+    t2.i = 15;
+    result_stream.clear();
+
+    //TODO: Should this work without this line?
+    sl = sigc::mem_fun0(&t2, &my_class::foo);
+
+    sl();
+    util->check_result(result_stream, "15");
+  }
 
   return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;
 }
