@@ -138,7 +138,11 @@ slot_base::operator bool() const
 
 slot_base& slot_base::operator=(const slot_base& src)
 {
-  if (src.rep_ == rep_) return *this;
+  if (src.rep_ == rep_)
+  {
+    blocked_ = src.blocked_;
+    return *this;
+  }
 
   if (src.empty())
   {
@@ -161,6 +165,7 @@ slot_base& slot_base::operator=(const slot_base& src)
         rep_ = nullptr;
       }
     }
+
     return *this;
   }
 
@@ -173,6 +178,7 @@ slot_base& slot_base::operator=(const slot_base& src)
   }
 
   rep_ = new_rep_;
+  blocked_ = src.blocked_;
 
   return *this;
 }
