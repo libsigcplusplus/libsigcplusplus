@@ -41,6 +41,7 @@ trackable::trackable(const trackable& /*src*/)
 trackable::trackable(trackable&& src)
 : callback_list_(std::move(src.callback_list_))
 {
+  src.callback_list_ = nullptr;
 }
 
 trackable& trackable::operator=(const trackable& src)
