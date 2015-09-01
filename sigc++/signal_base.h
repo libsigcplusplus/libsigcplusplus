@@ -284,13 +284,13 @@ struct SIGC_API signal_base : public trackable
 
   signal_base(const signal_base& src);
 
-  signal_base(signal_base&& src);
+  signal_base(signal_base&& src) noexcept;
 
   ~signal_base();
 
   signal_base& operator=(const signal_base& src);
 
-  signal_base& operator=(signal_base&& src);
+  signal_base& operator=(signal_base&& src) noexcept;
 
   /** Returns whether the list of slots is empty.
    * @return @p true if the list of slots is empty.

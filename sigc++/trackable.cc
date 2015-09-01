@@ -38,7 +38,7 @@ trackable::trackable(const trackable& /*src*/)
 : callback_list_(nullptr)
 {}
 
-trackable::trackable(trackable&& src)
+trackable::trackable(trackable&& src) noexcept
 : callback_list_(std::move(src.callback_list_))
 {
   src.callback_list_ = nullptr;
@@ -52,7 +52,7 @@ trackable& trackable::operator=(const trackable& src)
   return *this;
 }
 
-trackable& trackable::operator=(trackable&& src)
+trackable& trackable::operator=(trackable&& src) noexcept
 {
   if(this != &src)
     notify_callbacks(); //Make sure that we have finished with existing stuff before replacing it.

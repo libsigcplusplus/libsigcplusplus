@@ -167,7 +167,7 @@ signal_base::signal_base(const signal_base& src)
   impl_->reference();
 }
 
-signal_base::signal_base(signal_base&& src)
+signal_base::signal_base(signal_base&& src) noexcept
 : trackable(std::move(src)),
   impl_(std::move(src.impl_))
 {
@@ -248,7 +248,7 @@ signal_base& signal_base::operator=(const signal_base& src)
   return *this;
 }
 
-signal_base& signal_base::operator=(signal_base&& src)
+signal_base& signal_base::operator=(signal_base&& src) noexcept
 {
   trackable::operator=(std::move(src));
   impl_ = std::move(src.impl_);
