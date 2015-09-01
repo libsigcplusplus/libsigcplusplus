@@ -38,6 +38,11 @@ trackable::trackable(const trackable& /*src*/)
 : callback_list_(nullptr)
 {}
 
+trackable::trackable(trackable&& src)
+: callback_list_(std::move(src.callback_list_))
+{
+}
+
 trackable& trackable::operator=(const trackable& src)
 {
   if(this != &src)
@@ -80,6 +85,25 @@ internal::trackable_callback_list* trackable::callback_list() const
       
 namespace internal
 {
+
+trackable_callback_list::trackable_callback_list(trackable_callback_list&& src) noexcept
+: callbacks_(std::move(src.callbacks_)),
+  clearing_(std::move(src.clearing_))
+{
+  src.callbacks_.clear();
+  src.clearing_ = false;
+}
+
+trackable_callback_list& trackable_callback_list::operator=(trackable_callback_list&& src) noexcept
+{
+  callbacks_ = std::move(src.callbacks_);
+  clearing_ = std::move(src.clearing_);
+
+  src.callbacks_.clear();
+  src.clearing_ = false;
+
+  return *this;
+}
 
 trackable_callback_list::~trackable_callback_list()
 {

@@ -68,9 +68,17 @@ struct SIGC_API trackable_callback_list
   trackable_callback_list()
     : clearing_(false) {}
 
+  trackable_callback_list(const trackable_callback_list& src) = delete;
+  trackable_callback_list& operator=(const trackable_callback_list& src) = delete;
+
+  trackable_callback_list(trackable_callback_list&& src) noexcept;
+
+  trackable_callback_list& operator=(trackable_callback_list&& src) noexcept;
+
   /** This invokes all of the callback functions.
    */
   ~trackable_callback_list();
+
 
 private:
   typedef std::list<trackable_callback> callback_list;
@@ -107,7 +115,11 @@ struct SIGC_API trackable
 
   trackable(const trackable& src);
 
+  trackable(trackable&& src);
+
   trackable& operator=(const trackable& src);
+
+  trackable& operator=(trackable&& src);
 
   ~trackable();
 
