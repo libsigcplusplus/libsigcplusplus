@@ -6,6 +6,11 @@ msvc_net2013_data =					\
 	libsigc++2.vcxproj.filters			\
 	sigc++config.h					\
 	sigc.rc						\
+	sigc-build-defines.props				\
+	sigc-debug-dll-build-defines.props		\
+	sigc-install.props				\
+	sigc-release-dll-build-defines.props		\
+	sigc-version-paths.props				\
 	test_accum_iter.vcxproj				\
 	test_accum_iter.vcxproj.filters			\
 	test_accumulated.vcxproj			\
