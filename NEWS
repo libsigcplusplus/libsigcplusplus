@@ -1,3 +1,18 @@
+2.5.4 (unstable):
+
+* slot_base::operator=(const &): Copy the blocked too,
+  so the destionation is blocked if the source is blocked,
+  regardless of whether the destionation was previously
+  blocked, because this seems to be what we should expect.
+  (Murray Cumming)
+* C++11: slot_base, slot*, signal_base, signal*, trackable:
+  Add move operations.
+  (Murray Cumming)
+* Update MSVC Projects, requiring at least MSVC++ .Net 2013
+  for C++11 support.
+  (Chun-wei Fan)
+
+
 2.5.3 (unstable):
 
 * Use C++11 "using" aliases to simplify code that uses type traits.
