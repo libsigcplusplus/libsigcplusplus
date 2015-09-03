@@ -22,9 +22,12 @@
 /test_retype
 /test_retype_return
 /test_signal
+/test_signal_move
 /test_size
 /test_slot
+/test_slot_move
 /test_slot_disconnect
 /test_trackable
+/test_trackable_move
 /test_track_obj
 /test_visit_each
