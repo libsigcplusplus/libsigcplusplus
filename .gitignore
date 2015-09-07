@@ -7,10 +7,8 @@ Makefile.in
 *.l[ao]
 *~
 /INSTALL
-/MSVC_Net200[58]/sigc.rc
-/MSVC_Net200[58]/sigc++config.h
-/MSVC_Net2010/sigc.rc
-/MSVC_Net2010/sigc++config.h
+/MSVC_Net201?/sigc.rc
+/MSVC_Net201?/sigc++config.h
 /aclocal.m4
 /autom4te.cache/
 /config.h
