@@ -30,9 +30,9 @@ the GNU Library General Public License, <a href="http://www.gnu.org/copyleft/lgp
  <li>Extensions do not require alteration of basic components</li>
  <li>User definable accumulators</li>
  <li>A variety of adaptors to change the callback signature:
- bind, hide, retype, compose and lambda call groups</li>
- <li>Various compilers and platforms are supported:
- gcc, cygwin, mingw32, MS .NET 2003, Sun Forte C++, Compaq C++, Intel C++, IBM AIX, Tru64, IRIX MipsPro.</li>
+ bind, hide, retype, compose</li>
+ <li>Most C++ compilers can be used. libsigc++ version 2.5.1 and later require
+ a compiler with C++11 support</li>
 </ul>
 </p>
 <p>
@@ -54,43 +54,34 @@ In particular the API improvements from libsigc++ 1.2 to 2.0 include:
   <li>More powerful adaptors: position of arguments to hide or bind can
   be chosen freely; up to 7 arguments can be bound at a time.</li>
   <li>Adds two useful adaptors: sigc::compose(), sigc::exception_catch().</li>
-  <li>Adds all-in-one operator sigc::group() with support for lambdas
-  featuring a complete set of lambda selectors and lambda operators.</li>
   <li>Performs only one indirect function call during slot invokation
   regardless of the number of adaptors used; the direct function
   calls involved are inline and can be optimized away by the compiler.</li>
   <li>Conforms to the STL naming scheme: only uses small letters.</li>
+  <li>libsigc++ 2.0 until 2.4.x supported a sigc::group() adaptor and
+  lambda functions. This support is discontinued in later releases, because
+  lambdas are supported by standard C++11.</li>
 </ul>
-
 </p>
-<p>
 
-The libsigc++-1.2 series still is an alternative because it has less
-prerequisites for the comiler.
-Andreas Rottmann released some code for CORBA support with libsigc++-1.2.
-Please send <a href="mailto:rottmann@users.sourceforge.net">him</a> an email
-if you think that this is interesting for you!
-<a href="http://www.8ung.at/rotty/corba-sigc/">CORBA for libsigc++.</a>  
+<p>
 Also good to check out are the <a href=
  "http://www.erikyyy.de/sigslot/">Erik Thiele</a> and <a href=
- "http://ucxx.sourceforge.net/">Andreas Rottmann</a> siztes which 
+ "http://ucxx.sourceforge.net/">Andreas Rottmann</a> sites which 
 include some interesting libsigc++ tools like cross-thread support.
-
 </p>
-<p>
 
+<p>
 <a name="devel"><h3>Developers</h3></a>
 The original library was composed by Tero Pulkkinen for the
 gtkmm system, a C++ wrapper for the Gtk+ widget set. The revised 
 library was written and mantained by Karl Nelson. Special thanks
 to Esa Pulkkinen for development tips.
 The 1.2 phase was maintained by Murray Cumming after Karl provided the initial 1.2 code.
-A long 1.9 phase lead to the major relase 2.0 which is currently being maintained
-by Martin Schulze and Murray Cumming.
-
+A long 1.9 phase led to the major release 2.0 which was previously maintained by Martin Schulze
+and is currently being maintained by Murray Cumming and Kjell Ahlstedt.
 </p>
-
 
 <!-- SSI fragments/footer.html_fragment begin -->
 <!--#include virtual="fragments/footer.html_fragment" -->
-<!-- SSI fragments/footer.html_fragment begin -->
+<!-- SSI fragments/footer.html_fragment end -->

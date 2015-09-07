@@ -7,15 +7,15 @@
 
 <a name="mail"><h3>Mailing List</h3></a>
 
-There is a mailing list,
-<a href="http://lists.gnome.org/mailman/listinfo/libsigc-list">libsigc-list@gnome.org</a> for Libsigc++, to serve as
-a design discussion area as well as a place to report bugs.  To subscribe, use the web
-<a href="http://lists.gnome.org/mailman/listinfo/libsigc-list">page</a>.
-Members can post directly, but all other traffic is moderated.
-There is an archive of recent messages, 
-<a href="http://lists.gnome.org/archives/libsigc-list/">
-here</a>. The archive of the old list is <a href="http://www.geocrawler.com/lists/3/SourceForge/3727/0/">here</a>.
 <p>
+There is a mailing list,
+<a href="http://mail.gnome.org/mailman/listinfo/libsigc-list">libsigc-list@gnome.org</a> for Libsigc++, to serve as
+a design discussion area as well as a place to report bugs.  To subscribe, use the web
+<a href="http://mail.gnome.org/mailman/listinfo/libsigc-list">page</a>.
+Members can post directly, but all other traffic is moderated.
+There is an archive of messages, 
+<a href="http://mail.gnome.org/archives/libsigc-list/">here</a>.
+</p>
 
 <a name="patches"><h3>Patches</h3></a>
 
@@ -23,16 +23,16 @@ here</a>. The archive of the old list is <a href="http://www.geocrawler.com/list
 Patches should be added to bugzilla bugs.</p>
 
 <p>
-Outstanding <a
-href="http://bugzilla.gnome.org/buglist.cgi?product=libsigc%2B%2B&bug_status=UNCONFIRMED&bug_status=NEW&bug_status=ASSIGNED&bug_status=REOPENED&email1=&emailtype1=substring&emailassigned_to1=1&email2=&emailtype2=substring&emailreporter2=1&changedin=&chfieldfrom=&chfieldto=Now&chfieldvalue=&short_desc=&short_desc_type=substring&long_desc=&long_desc_type=substring&bug_file_loc=&bug_file_loc_type=substring&status_whiteboard=&status_whiteboard_type=substring&keywords=&keywords_type=anywords&op_sys_details=&op_sys_details_type=substring&version_details=&version_details_type=substring&cmdtype=doit&namedcmd=gnome-libs+past+20+days&newqueryname=&order=Reuse+same+sort+as+last+time&form_name=query">libsigc++ bugs</a>
-(<a href="http://bugzilla.gnome.org/buglist.cgi?product=libsigc%2B%2B&bug_status=UNCONFIRMED&bug_status=NEW&bug_status=ASSIGNED&bug_status=REOPENED&email1=&emailtype1=substring&emailassigned_to1=1&email2=&emailtype2=substring&emailreporter2=1&changedin=&chfieldfrom=&chfieldto=Now&chfieldvalue=&short_desc=&short_desc_type=substring&long_desc=&long_desc_type=substring&bug_file_loc=&bug_file_loc_type=substring&status_whiteboard=&status_whiteboard_type=substring&keywords=PATCH&keywords_type=anywords&op_sys_details=&op_sys_details_type=substring&version_details=&version_details_type=substring&cmdtype=doit&namedcmd=gnome-libs+past+20+days&newqueryname=&order=Reuse+same+sort+as+last+time&form_name=query">patches</a>)<br/>
+Open <a href="http://bugzilla.gnome.org/buglist.cgi?product=libsigc%2B%2B&bug_status=UNCONFIRMED&bug_status=NEW&bug_status=ASSIGNED&bug_status=REOPENED&bug_status=NEEDINFO">libsigc++ bugs</a><br/>
 Submit a new libsigc++ bug <a href="http://bugzilla.gnome.org/enter_bug.cgi?product=libsigc%2B%2B">here</a>
 </p>
 
+<a name="git"><h3>Version Control</h3></a>
+
 <p>
-libsigc++ is in the <a href="http://git.gnome.org/browse/libsigc++2/">libsigc++2</a> module in gnome's git.
+libsigc++ is in the <a href="http://git.gnome.org/browse/libsigc++2/">libsigc++2</a> module in gnome's git repository.
 </p>
 
 <!-- SSI fragments/footer.html_fragment begin -->
 <!--#include virtual="fragments/footer.html_fragment" -->
-<!-- SSI fragments/footer.html_fragment begin -->
+<!-- SSI fragments/footer.html_fragment end -->

@@ -7,35 +7,24 @@
 <a name="sources"><h3>Source Packages</h3></a>
 
 <p>
-The source packages for libsigc++ are available on the <a href="http://ftp.gnome.org/pub/GNOME/sources/libsigc++/">GNOME ftp site</a>.
+The source packages for libsigc++ are available on the <a href="http://ftp.gnome.org/pub/GNOME/sources/libsigc++/">GNOME ftp site</a>
+and via the <a href="http://download.gnome.org/sources/libsigc++/">GNOME download site</a>.
 </p>
 
 <a name="binaries"><h3>Binary Packages</h3></a>
 
-<p>Whenever possible, you should use the official binary packages approved by the supplier of your operating system, such as your Linux distribution. For instance, Debian Linux and Fedora Linux have official libsigc++ packages.</p>
+<p>Whenever possible, you should use the official binary packages approved by the supplier of your operating system, such as your Linux distribution.
+For instance, Ubuntu Linux, Debian Linux and Fedora Linux have official libsigc++ packages.</p>
 
 <a name="require"><h3>Requirements</h3></a>
 
-<a href="http://www.freedesktop.org/software/pkgconfig">pkg-config</a> should be used to build software that depends on libsigc++.
+<a href="http://www.freedesktop.org/wiki/Software/pkg-config/">pkg-config</a> should be used to build software that depends on libsigc++.
 
 <p>
 libsigc++ is built and tested for a standards-compliant C++ compiler. Luckily, the recent versions of all major C++ compilers are now sufficiently standards-compliant.
+libsigc++ version 2.5.1 and later require a C++11-compliant compiler.
 </p>
-
-<p>
-libsigc++ is known to build and work with the following compilers:
-<ul>
-<li>g++ (>= 3.2, including Apple and Cygwin versions)</li>
-<li>Microsoft Visual C++ .NET 2003-2008<li>
-<li>Intel C++ compiler</li>
-<li>SUN Forte C++ CC<li>
-<li>IBM AIX xlC<li>
-<li>Tru64 C++</li>
-<li>IRIX MIPSpro<li>
-</ul>
-</p>
-
 
 <!-- SSI fragments/footer.html_fragment begin -->
 <!--#include virtual="fragments/footer.html_fragment" -->
-<!-- SSI fragments/footer.html_fragment begin -->
+<!-- SSI fragments/footer.html_fragment end -->
