@@ -49,7 +49,7 @@ Overview of the distribution:
    
    tests/                            programs testing and verifying proper behaviour
    
-   MSVC_Net2010/                     project files for building the library with MSVC++ 2010
+   MSVC_Net2013/                     project files for building the library with MSVC++ 2013
 
 
 Compatibility:
@@ -58,4 +58,4 @@ Compatibility:
 
    All releases are tested with the gcc (g++) compiler.
    Release 2.3.2 has been tested with gcc 4.8.2, clang 3.4 and MS Visual C++ 2010.
-   Release 2.5.1 has been tested with gcc 4.9.2 and clang 3.6.0.
+   Release 2.5.1 has been tested with gcc 4.9.2, clang 3.6.0 and MS Visual C++ 2013.
