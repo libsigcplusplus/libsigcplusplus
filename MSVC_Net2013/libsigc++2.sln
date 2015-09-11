@@ -1,5 +1,7 @@
 Microsoft Visual Studio Solution File, Format Version 13.00
 # Visual Studio 2013
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sigc", "libsigc++2.vcxproj", "{83997EF6-02D6-4CDB-8B3C-DBCA3018CC72}"
+EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_bind", "test_bind.vcxproj", "{7D0D2CF8-5B22-4F9E-BD38-63083A2CF662}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_bind_return", "test_bind_return.vcxproj", "{EBA06A10-13EA-46D1-8B7F-C3D5308A47F9}"
@@ -38,8 +40,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_accumulated", "test_ac
 	ProjectSection(ProjectDependencies) = postProject
 		{83997EF6-02D6-4CDB-8B3C-DBCA3018CC72} = {83997EF6-02D6-4CDB-8B3C-DBCA3018CC72}
 	EndProjectSection
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sigc", "libsigc++2.vcxproj", "{83997EF6-02D6-4CDB-8B3C-DBCA3018CC72}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_track_obj", "test_track_obj.vcxproj", "{4F5F838F-2DCD-4FB6-87B5-9BF87A8671BA}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -87,6 +87,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_slot_disconnect", "tes
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_visit_each", "test_visit_each.vcxproj", "{B775AB39-C59C-4DA0-875C-BCCCB87CD5B0}"
+	ProjectSection(ProjectDependencies) = postProject
+		{83997EF6-02D6-4CDB-8B3C-DBCA3018CC72} = {83997EF6-02D6-4CDB-8B3C-DBCA3018CC72}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sigc-install", "sigc-install.vcxproj", "{8DE7735B-B67F-4324-ABAB-55BF1D12A58A}"
 	ProjectSection(ProjectDependencies) = postProject
 		{83997EF6-02D6-4CDB-8B3C-DBCA3018CC72} = {83997EF6-02D6-4CDB-8B3C-DBCA3018CC72}
 	EndProjectSection
@@ -331,6 +336,14 @@ Global
 		{B775AB39-C59C-4DA0-875C-BCCCB87CD5B0}.Release|Win32.Build.0 = Release|Win32
 		{B775AB39-C59C-4DA0-875C-BCCCB87CD5B0}.Release|x64.ActiveCfg = Release|x64
 		{B775AB39-C59C-4DA0-875C-BCCCB87CD5B0}.Release|x64.Build.0 = Release|x64
+		{8DE7735B-B67F-4324-ABAB-55BF1D12A58A}.Debug|Win32.ActiveCfg = Debug|Win32
+		{8DE7735B-B67F-4324-ABAB-55BF1D12A58A}.Debug|Win32.Build.0 = Debug|Win32
+		{8DE7735B-B67F-4324-ABAB-55BF1D12A58A}.Debug|x64.ActiveCfg = Debug|x64
+		{8DE7735B-B67F-4324-ABAB-55BF1D12A58A}.Debug|x64.Build.0 = Debug|x64
+		{8DE7735B-B67F-4324-ABAB-55BF1D12A58A}.Release|Win32.ActiveCfg = Release|Win32
+		{8DE7735B-B67F-4324-ABAB-55BF1D12A58A}.Release|Win32.Build.0 = Release|Win32
+		{8DE7735B-B67F-4324-ABAB-55BF1D12A58A}.Release|x64.ActiveCfg = Release|x64
+		{8DE7735B-B67F-4324-ABAB-55BF1D12A58A}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

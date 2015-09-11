@@ -7,56 +7,56 @@
     <BinDir>$(SolutionDir)$(Configuration)\$(Platform)\bin</BinDir>
     <InstalledReleaseDlls>$(BinDir)\sigc$(ReleaseDllSuffix).dll</InstalledReleaseDlls>
     <InstalledDebugDlls>$(BinDir)\sigc$(DebugDllSuffix).dll</InstalledDebugDlls>
-    <GLibmmDoInstall>
+    <SigcDoInstall>
 mkdir $(CopyDir)
 
 mkdir $(CopyDir)\bin
-mkdir $(CopyDir)\lib\sigc-$(ApiMajorVersion).$(ApiMinorVersion)\include
-if "$(Configuration)" == "Release" copy $(BinDir)\sigc$(ReleaseDllSuffix).dll $(CopyDir)\bin
-if "$(Configuration)" == "Release" copy $(BinDir)\sigc$(ReleaseDllSuffix).pdb $(CopyDir)\bin
-if "$(Configuration)" == "Release" copy $(BinDir)\sigc$(ReleaseDllSuffix).lib $(CopyDir)\bin
-if "$(Configuration)" == "Debug" copy $(BinDir)\sigc$(ReleaseDllSuffix).dll $(CopyDir)\lib
-if "$(Configuration)" == "Debug" copy $(BinDir)\sigc$(ReleaseDllSuffix).pdb $(CopyDir)\lib
-if "$(Configuration)" == "Debug" copy $(BinDir)\sigc$(ReleaseDllSuffix).lib $(CopyDir)\lib
+if "$(Configuration)" == "Release" copy "$(BinDir)\sigc$(ReleaseDllSuffix).dll" "$(CopyDir)\bin"
+if "$(Configuration)" == "Release" copy "$(BinDir)\sigc$(ReleaseDllSuffix).pdb" "$(CopyDir)\bin"
+if "$(Configuration)" == "Debug" copy "$(BinDir)\sigc$(DebugDllSuffix).dll" "$(CopyDir)\bin"
+if "$(Configuration)" == "Debug" copy "$(BinDir)\sigc$(DebugDllSuffix).pdb" "$(CopyDir)\bin"
 
-mkdir "$(CopyDir)\include\sigc-$(ApiMajorVersion).$(ApiMinorVersion)\sigc++\adaptors"
-mkdir "$(CopyDir)\include\sigc-$(ApiMajorVersion).$(ApiMinorVersion)\sigc++\functors"
+mkdir $(CopyDir)\lib\sigc++-$(ApiMajorVersion).$(ApiMinorVersion)\include
+copy ".\sigc++config.h" "$(CopyDir)\lib\sigc++-$(ApiMajorVersion).$(ApiMinorVersion)\include"
+if "$(Configuration)" == "Release" copy "$(BinDir)\sigc$(ReleaseDllSuffix).lib" "$(CopyDir)\lib"
+if "$(Configuration)" == "Debug" copy "$(BinDir)\sigc$(DebugDllSuffix).lib" "$(CopyDir)\lib"
 
-copy "..\sigc++\sigc++.h" "$(CopyDir)\include\sigc-$(ApiMajorVersion).$(ApiMinorVersion)\sigc++\"
+mkdir "$(CopyDir)\include\sigc++-$(ApiMajorVersion).$(ApiMinorVersion)\sigc++\adaptors"
+mkdir "$(CopyDir)\include\sigc++-$(ApiMajorVersion).$(ApiMinorVersion)\sigc++\functors"
 
-copy "..\sigc++\bind.h" "$(CopyDir)\include\sigc-$(ApiMajorVersion).$(ApiMinorVersion)\sigc++\"
-copy "..\sigc++\bind_return.h" "$(CopyDir)\include\sigc-$(ApiMajorVersion).$(ApiMinorVersion)\sigc++\"
-copy "..\sigc++\connection.h" "$(CopyDir)\include\sigc-$(ApiMajorVersion).$(ApiMinorVersion)\sigc++\"
-copy "..\sigc++\limit_reference.h" "$(CopyDir)\include\sigc-$(ApiMajorVersion).$(ApiMinorVersion)\sigc++\"
-copy "..\sigc++\reference_wrapper.h" "$(CopyDir)\include\sigc-$(ApiMajorVersion).$(ApiMinorVersion)\sigc++\"
-copy "..\sigc++\retype_return.h" "$(CopyDir)\include\sigc-$(ApiMajorVersion).$(ApiMinorVersion)\sigc++\"
-copy "..\sigc++\signal.h" "$(CopyDir)\include\sigc-$(ApiMajorVersion).$(ApiMinorVersion)\sigc++\"
-copy "..\sigc++\signal_base.h" "$(CopyDir)\include\sigc-$(ApiMajorVersion).$(ApiMinorVersion)\sigc++\"
-copy "..\sigc++\slot.h" "$(CopyDir)\include\sigc-$(ApiMajorVersion).$(ApiMinorVersion)\sigc++\"
-copy "..\sigc++\trackable.h" "$(CopyDir)\include\sigc-$(ApiMajorVersion).$(ApiMinorVersion)\sigc++\"
-copy "..\sigc++\type_traits.h" "$(CopyDir)\include\sigc-$(ApiMajorVersion).$(ApiMinorVersion)\sigc++\"
-copy "..\sigc++\visit_each.h" "$(CopyDir)\include\sigc-$(ApiMajorVersion).$(ApiMinorVersion)\sigc++\"
-copy "..\sigc++\adaptors\adaptors.h" "$(CopyDir)\include\sigc-$(ApiMajorVersion).$(ApiMinorVersion)\sigc++\adaptors\"
-copy "..\sigc++\adaptors\adaptor_trait.h" "$(CopyDir)\include\sigc-$(ApiMajorVersion).$(ApiMinorVersion)\sigc++\adaptors\"
-copy "..\sigc++\adaptors\bind.h" "$(CopyDir)\include\sigc-$(ApiMajorVersion).$(ApiMinorVersion)\sigc++\adaptors\"
-copy "..\sigc++\adaptors\bind_return.h" "$(CopyDir)\include\sigc-$(ApiMajorVersion).$(ApiMinorVersion)\sigc++\adaptors\"
-copy "..\sigc++\adaptors\bound_argument.h" "$(CopyDir)\include\sigc-$(ApiMajorVersion).$(ApiMinorVersion)\sigc++\adaptors\"
-copy "..\sigc++\adaptors\compose.h" "$(CopyDir)\include\sigc-$(ApiMajorVersion).$(ApiMinorVersion)\sigc++\adaptors\"
-copy "..\sigc++\adaptors\deduce_result_type.h" "$(CopyDir)\include\sigc-$(ApiMajorVersion).$(ApiMinorVersion)\sigc++\adaptors\"
-copy "..\sigc++\adaptors\exception_catch.h" "$(CopyDir)\include\sigc-$(ApiMajorVersion).$(ApiMinorVersion)\sigc++\adaptors\"
-copy "..\sigc++\adaptors\hide.h" "$(CopyDir)\include\sigc-$(ApiMajorVersion).$(ApiMinorVersion)\sigc++\adaptors\"
-copy "..\sigc++\adaptors\retype.h" "$(CopyDir)\include\sigc-$(ApiMajorVersion).$(ApiMinorVersion)\sigc++\adaptors\"
-copy "..\sigc++\adaptors\retype_return.h" "$(CopyDir)\include\sigc-$(ApiMajorVersion).$(ApiMinorVersion)\sigc++\adaptors\"
-copy "..\sigc++\adaptors\track_obj.h" "$(CopyDir)\include\sigc-$(ApiMajorVersion).$(ApiMinorVersion)\sigc++\adaptors\"
-copy "..\sigc++\functors\functors.h" "$(CopyDir)\include\sigc-$(ApiMajorVersion).$(ApiMinorVersion)\sigc++\functors\"
-copy "..\sigc++\functors\functor_trait.h" "$(CopyDir)\include\sigc-$(ApiMajorVersion).$(ApiMinorVersion)\sigc++\functors\"
-copy "..\sigc++\functors\mem_fun.h" "$(CopyDir)\include\sigc-$(ApiMajorVersion).$(ApiMinorVersion)\sigc++\functors\"
-copy "..\sigc++\functors\ptr_fun.h" "$(CopyDir)\include\sigc-$(ApiMajorVersion).$(ApiMinorVersion)\sigc++\functors\"
-copy "..\sigc++\functors\slot.h" "$(CopyDir)\include\sigc-$(ApiMajorVersion).$(ApiMinorVersion)\sigc++\functors\"
-copy "..\sigc++\functors\slot_base.h" "$(CopyDir)\include\sigc-$(ApiMajorVersion).$(ApiMinorVersion)\sigc++\functors\"
+copy "..\sigc++\sigc++.h" "$(CopyDir)\include\sigc++-$(ApiMajorVersion).$(ApiMinorVersion)\sigc++\"
 
-copy ".\sigc++config.h" $(CopyDir)\lib\sigc-$(ApiMajorVersion).$(ApiMinorVersion)\include
-</GLibmmDoInstall>
+copy "..\sigc++\bind.h" "$(CopyDir)\include\sigc++-$(ApiMajorVersion).$(ApiMinorVersion)\sigc++\"
+copy "..\sigc++\bind_return.h" "$(CopyDir)\include\sigc++-$(ApiMajorVersion).$(ApiMinorVersion)\sigc++\"
+copy "..\sigc++\connection.h" "$(CopyDir)\include\sigc++-$(ApiMajorVersion).$(ApiMinorVersion)\sigc++\"
+copy "..\sigc++\limit_reference.h" "$(CopyDir)\include\sigc++-$(ApiMajorVersion).$(ApiMinorVersion)\sigc++\"
+copy "..\sigc++\reference_wrapper.h" "$(CopyDir)\include\sigc++-$(ApiMajorVersion).$(ApiMinorVersion)\sigc++\"
+copy "..\sigc++\retype_return.h" "$(CopyDir)\include\sigc++-$(ApiMajorVersion).$(ApiMinorVersion)\sigc++\"
+copy "..\sigc++\signal.h" "$(CopyDir)\include\sigc++-$(ApiMajorVersion).$(ApiMinorVersion)\sigc++\"
+copy "..\sigc++\signal_base.h" "$(CopyDir)\include\sigc++-$(ApiMajorVersion).$(ApiMinorVersion)\sigc++\"
+copy "..\sigc++\slot.h" "$(CopyDir)\include\sigc++-$(ApiMajorVersion).$(ApiMinorVersion)\sigc++\"
+copy "..\sigc++\trackable.h" "$(CopyDir)\include\sigc++-$(ApiMajorVersion).$(ApiMinorVersion)\sigc++\"
+copy "..\sigc++\type_traits.h" "$(CopyDir)\include\sigc++-$(ApiMajorVersion).$(ApiMinorVersion)\sigc++\"
+copy "..\sigc++\visit_each.h" "$(CopyDir)\include\sigc++-$(ApiMajorVersion).$(ApiMinorVersion)\sigc++\"
+copy "..\sigc++\adaptors\adaptors.h" "$(CopyDir)\include\sigc++-$(ApiMajorVersion).$(ApiMinorVersion)\sigc++\adaptors\"
+copy "..\sigc++\adaptors\adaptor_trait.h" "$(CopyDir)\include\sigc++-$(ApiMajorVersion).$(ApiMinorVersion)\sigc++\adaptors\"
+copy "..\sigc++\adaptors\bind.h" "$(CopyDir)\include\sigc++-$(ApiMajorVersion).$(ApiMinorVersion)\sigc++\adaptors\"
+copy "..\sigc++\adaptors\bind_return.h" "$(CopyDir)\include\sigc++-$(ApiMajorVersion).$(ApiMinorVersion)\sigc++\adaptors\"
+copy "..\sigc++\adaptors\bound_argument.h" "$(CopyDir)\include\sigc++-$(ApiMajorVersion).$(ApiMinorVersion)\sigc++\adaptors\"
+copy "..\sigc++\adaptors\compose.h" "$(CopyDir)\include\sigc++-$(ApiMajorVersion).$(ApiMinorVersion)\sigc++\adaptors\"
+copy "..\sigc++\adaptors\deduce_result_type.h" "$(CopyDir)\include\sigc++-$(ApiMajorVersion).$(ApiMinorVersion)\sigc++\adaptors\"
+copy "..\sigc++\adaptors\exception_catch.h" "$(CopyDir)\include\sigc++-$(ApiMajorVersion).$(ApiMinorVersion)\sigc++\adaptors\"
+copy "..\sigc++\adaptors\hide.h" "$(CopyDir)\include\sigc++-$(ApiMajorVersion).$(ApiMinorVersion)\sigc++\adaptors\"
+copy "..\sigc++\adaptors\retype.h" "$(CopyDir)\include\sigc++-$(ApiMajorVersion).$(ApiMinorVersion)\sigc++\adaptors\"
+copy "..\sigc++\adaptors\retype_return.h" "$(CopyDir)\include\sigc++-$(ApiMajorVersion).$(ApiMinorVersion)\sigc++\adaptors\"
+copy "..\sigc++\adaptors\track_obj.h" "$(CopyDir)\include\sigc++-$(ApiMajorVersion).$(ApiMinorVersion)\sigc++\adaptors\"
+copy "..\sigc++\functors\functors.h" "$(CopyDir)\include\sigc++-$(ApiMajorVersion).$(ApiMinorVersion)\sigc++\functors\"
+copy "..\sigc++\functors\functor_trait.h" "$(CopyDir)\include\sigc++-$(ApiMajorVersion).$(ApiMinorVersion)\sigc++\functors\"
+copy "..\sigc++\functors\mem_fun.h" "$(CopyDir)\include\sigc++-$(ApiMajorVersion).$(ApiMinorVersion)\sigc++\functors\"
+copy "..\sigc++\functors\ptr_fun.h" "$(CopyDir)\include\sigc++-$(ApiMajorVersion).$(ApiMinorVersion)\sigc++\functors\"
+copy "..\sigc++\functors\slot.h" "$(CopyDir)\include\sigc++-$(ApiMajorVersion).$(ApiMinorVersion)\sigc++\functors\"
+copy "..\sigc++\functors\slot_base.h" "$(CopyDir)\include\sigc++-$(ApiMajorVersion).$(ApiMinorVersion)\sigc++\functors\"
+</SigcDoInstall>
   </PropertyGroup>
   <PropertyGroup>
     <_PropertySheetDisplayName>sigcinstallprops</_PropertySheetDisplayName>
@@ -71,8 +71,8 @@ copy ".\sigc++config.h" $(CopyDir)\lib\sigc-$(ApiMajorVersion).$(ApiMinorVersion
     <BuildMacro Include="InstalledDebugDlls">
       <Value>$(InstalledDebugDlls)</Value>
     </BuildMacro>
-    <BuildMacro Include="GLibmmDoInstall">
-      <Value>$(GLibmmDoInstall)</Value>
+    <BuildMacro Include="SigcDoInstall">
+      <Value>$(SigcDoInstall)</Value>
     </BuildMacro>
   </ItemGroup>
 </Project>

@@ -11,6 +11,7 @@ msvc_net2013_data =					\
 	sigc-install.props				\
 	sigc-release-dll-build-defines.props		\
 	sigc-version-paths.props				\
+	sigc-install.vcxproj				\
 	test_accum_iter.vcxproj				\
 	test_accum_iter.vcxproj.filters			\
 	test_accumulated.vcxproj			\
