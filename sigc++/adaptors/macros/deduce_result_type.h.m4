@@ -65,13 +65,20 @@ struct adaptor_base : public functor_base {};
 template<class T_functor, class... T_args>
 struct deduce_result_type
 {
-  template<class U, typename=typename std::is_same<typename std::is_base_of<adaptor_base, T_functor>::type, std::true_type>::type>
-  static typename U::template deduce_result_type<T_args...> test (int);
+  //The compiler will choose this method overload if T_functor derives from adaptor_base,
+  //and if it has its own deduce_result_type member (which has its own ::type member).
+  template<class U_functor, typename = typename std::is_base_of<adaptor_base, T_functor>::type>
+  static
+  typename U_functor::template deduce_result_type<T_args...>::type
+  test();
 
-  template<class U>
-  static typename functor_trait<T_functor>::result_type test (...);
+  //Otherwise, the compiler will choose this fallback method.
+  template<class U_functor>
+  static
+  typename functor_trait<T_functor>::result_type
+  test();
 
-  using type = decltype (test<T_functor> (0));
+  using type = decltype (test<T_functor> ());
 };
 
 template<typename T_functor, typename... T_args>
