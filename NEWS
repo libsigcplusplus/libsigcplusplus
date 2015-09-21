@@ -1,3 +1,13 @@
+2.6.0 (stable):
+
+* C++11: deduce_result_type: Simplify with C++11 variadic template.
+  (Murray Cumming, Marcin Kolny) Bug #753612
+* Fix the build with MSVC.
+  (Chun-wei Fan) Bug #754082
+* Update the website.
+  (Kjell Ahlstedt)
+
+
 2.5.4 (unstable):
 
 * slot_base::operator=(const &): Copy the blocked too,
