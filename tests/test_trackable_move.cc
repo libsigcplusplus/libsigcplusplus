@@ -70,7 +70,6 @@ int main(int argc, char* argv[])
     t2.i = 15;
     result_stream.clear();
 
-    //TODO: Should this work without this line?
     sl = sigc::mem_fun0(&t2, &my_class::foo);
 
     sl();

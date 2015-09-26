@@ -1,4 +1,3 @@
-// -*- c++ -*-
 /*
  * Copyright 2002, The libsigc++ Development Team
  *
@@ -38,10 +37,13 @@ trackable::trackable(const trackable& /*src*/)
 : callback_list_(nullptr)
 {}
 
+// Don't copy the notification list.
+// The objects watching src don't need to be notified when the new object dies.
+// They need to be notified now, because src probably becomes useless.
 trackable::trackable(trackable&& src) noexcept
-: callback_list_(std::move(src.callback_list_))
+: callback_list_(nullptr)
 {
-  src.callback_list_ = nullptr;
+  src.notify_callbacks();
 }
 
 trackable& trackable::operator=(const trackable& src)
@@ -55,12 +57,10 @@ trackable& trackable::operator=(const trackable& src)
 trackable& trackable::operator=(trackable&& src) noexcept
 {
   if(this != &src)
+  {
     notify_callbacks(); //Make sure that we have finished with existing stuff before replacing it.
-
-  callback_list_ = std::move(src.callback_list_);
-
-  src.callback_list_ = nullptr;
-
+    src.notify_callbacks(); // src probably becomes useless.
+  }
   return *this;
 }
 
@@ -98,25 +98,6 @@ internal::trackable_callback_list* trackable::callback_list() const
       
 namespace internal
 {
-
-trackable_callback_list::trackable_callback_list(trackable_callback_list&& src) noexcept
-: callbacks_(std::move(src.callbacks_)),
-  clearing_(std::move(src.clearing_))
-{
-  src.callbacks_.clear();
-  src.clearing_ = false;
-}
-
-trackable_callback_list& trackable_callback_list::operator=(trackable_callback_list&& src) noexcept
-{
-  callbacks_ = std::move(src.callbacks_);
-  clearing_ = std::move(src.clearing_);
-
-  src.callbacks_.clear();
-  src.clearing_ = false;
-
-  return *this;
-}
 
 trackable_callback_list::~trackable_callback_list()
 {

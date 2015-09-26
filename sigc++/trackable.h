@@ -70,15 +70,12 @@ struct SIGC_API trackable_callback_list
 
   trackable_callback_list(const trackable_callback_list& src) = delete;
   trackable_callback_list& operator=(const trackable_callback_list& src) = delete;
-
-  trackable_callback_list(trackable_callback_list&& src) noexcept;
-
-  trackable_callback_list& operator=(trackable_callback_list&& src) noexcept;
+  trackable_callback_list(trackable_callback_list&& src) = delete;
+  trackable_callback_list& operator=(trackable_callback_list&& src) = delete;
 
   /** This invokes all of the callback functions.
    */
   ~trackable_callback_list();
-
 
 private:
   typedef std::list<trackable_callback> callback_list;
@@ -127,7 +124,6 @@ struct SIGC_API trackable
                                    who insist on using "trackable*" as
                                    pointer type for their own derived objects */
 
-  
   typedef internal::func_destroy_notify func_destroy_notify;
   
   /** Add a callback that is executed (notified) when the trackable object is detroyed.
