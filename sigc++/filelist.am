@@ -34,17 +34,24 @@ adaptors_built_h = deduce_result_type.h adaptor_trait.h bind.h bind_return.h \
                    retype_return.h hide.h retype.h compose.h exception_catch.h \
                    track_obj.h
 
+# Lambda (adaptors/lambda)
+lambda_m4 = base.h.m4 select.h.m4 lambda.cc.m4
+lambda_built_cc = lambda.cc
+lambda_built_h = base.h select.h
 
 # Combine all the above parts with right directories prefixed
 sigc_m4 = $(base_m4:%=macros/%) \
 	  $(functors_m4:%=functors/macros/%) \
-          $(adaptors_m4:%=adaptors/macros/%)
+          $(adaptors_m4:%=adaptors/macros/%) \
+          $(lambda_m4:%=adaptors/lambda/macros/%)
 sigc_built_cc = $(base_built_cc) \
 	  $(functors_built_cc:%=functors/%) \
-          $(adaptors_built_cc:%=adaptors/%)
+          $(adaptors_built_cc:%=adaptors/%) \
+          $(lambda_built_cc:%=adaptors/lambda/%)
 sigc_built_h = $(base_built_h) \
 	  $(functors_built_h:%=functors/%) \
-          $(adaptors_built_h:%=adaptors/%)
+          $(adaptors_built_h:%=adaptors/%) \
+          $(lambda_built_h:%=adaptors/lambda/%)
 
 sigc_public_h =				\
 	bind.h				\

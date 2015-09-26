@@ -20,7 +20,7 @@ AUTOMAKE_OPTIONS = subdir-objects
 include $(srcdir)/filelist.am
 
 # Subdirectories needed also in the build dir
-build_subdirs = functors
+build_subdirs = functors adaptors/lambda
 
 dist_noinst_DATA = $(sigc_m4)
 
@@ -35,7 +35,8 @@ libsigc_@SIGCXX_API_VERSION@_la_SOURCES =	\
 	trackable.cc				\
 	connection.cc				\
 	functors/slot.cc			\
-	functors/slot_base.cc
+	functors/slot_base.cc			\
+	adaptors/lambda/lambda.cc
 
 EXTRA_libsigc_@SIGCXX_API_VERSION@_la_SOURCES = $(sigc_built_cc)
 
@@ -59,6 +60,15 @@ signal.cc:			\
 	functors/slot.h		\
 	functors/slot_base.h	\
 	functors/mem_fun.h	\
+	functors/functor_trait.h
+
+adaptors/lambda/lambda.cc:		\
+	adaptors/lambda/select.h	\
+	adaptors/lambda/base.h		\
+	adaptors/adaptor_trait.h	\
+	adaptors/deduce_result_type.h	\
+	functors/ptr_fun.h		\
+	functors/mem_fun.h		\
 	functors/functor_trait.h
 
 functors/slot.cc:		\
