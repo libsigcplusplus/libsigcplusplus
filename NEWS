@@ -1,3 +1,11 @@
+2.6.1 (stable):
+
+* Add back deprecated adaptors/lambda API to avoid an unintented ABI break.
+  (Kjell Ahlstedt) Bug #755550 (Michael Biebl)
+* sigc::trackable: Move operations: Don't move the callback list
+  (Kjell Ahlstedt) Bug #755393 (Tom Schoonjans)
+
+
 2.6.0 (stable):
 
 * C++11: deduce_result_type: Simplify with C++11 variadic template.
