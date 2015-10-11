@@ -55,23 +55,22 @@ void slot_rep::operator delete(void* p)
 }
 #endif
 
-//TODO: When we can break API: Is it necessary to invalidate the slot here?
-// If the parent misbehaves, when the slot is not invalidated, isn't that
-// a problem that should be fixed in the parent?
-// See discussion in https://bugzilla.gnome.org/show_bug.cgi?id=738602
 void slot_rep::disconnect()
 {
+  // Invalidate the slot.
+  // _Must_ be done here because parent_ might defer the actual
+  // destruction of the slot_rep and try to invoke it before that point.
+  // Must be done also for a slot without a parent, according to
+  // https://bugzilla.gnome.org/show_bug.cgi?id=311057
+  // See also https://bugzilla.gnome.org/show_bug.cgi?id=738602
+  call_ = nullptr;
+
   if (parent_)
   {
-    call_ = nullptr;          // Invalidate the slot.
-                        // _Must_ be done here because parent_ might defer the actual
-                        // destruction of the slot_rep and try to invoke it before that point.
     auto data_ = parent_;
-    parent_ = nullptr;        // Just a precaution.
+    parent_ = nullptr;  // Just a precaution.
     (cleanup_)(data_);  // Notify the parent (might lead to destruction of this!).
   }
-  else
-    call_ = nullptr;
 }
 
 //static

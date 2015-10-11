@@ -1,4 +1,3 @@
-// -*- c++ -*-
 /* Copyright 2005, The libsigc++ Development Team
  *  Assigned to public domain.  Use as you wish without restriction.
  */
@@ -44,6 +43,10 @@ int main(int argc, char* argv[])
   theSlot = sigc::ptr_fun(&Bar);
   theSlot();
   util->check_result(result_stream, "Bar");
+
+  theSlot = sigc::slot<void>(); // Assign an empty slot.
+  theSlot();
+  util->check_result(result_stream, "");
 
   return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;
 }
