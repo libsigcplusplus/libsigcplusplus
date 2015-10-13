@@ -31,7 +31,7 @@ struct destroy_notify_struct
   {
     auto self_ = reinterpret_cast<destroy_notify_struct*>(data);
     self_->deleted_ = true;
-    return 0;
+    return nullptr;
   }
 
   bool deleted_;
@@ -91,7 +91,7 @@ void* slot_rep::notify(void* data)
     self_->destroy(); // Detach the stored functor from the other referred trackables and destroy it.
                       // destroy() might lead to deletion of self_. Bug #564005.
   }
-  return 0;
+  return nullptr;
 }
 
 } // namespace internal

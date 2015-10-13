@@ -34,7 +34,7 @@ struct self_and_iter
 };
 
 signal_impl::signal_impl()
-: ref_count_(0), exec_count_(0), deferred_(0)
+: ref_count_(0), exec_count_(0), deferred_(false)
 {}
 
 // only MSVC needs this to guarantee that all new/delete are executed from the DLL module
@@ -150,7 +150,7 @@ void* signal_impl::notify(void* d)
   }
   else                           // This is occuring during signal emission or slot erasure.
     si->self_->deferred_ = true; // => sweep() will be called from ~signal_exec() after signal emission.
-  return 0;                      // This is safer because we don't have to care about our
+  return nullptr;                // This is safer because we don't have to care about our
                                  // iterators in emit(), clear(), and erase().
 }
 

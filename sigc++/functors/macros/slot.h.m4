@@ -252,7 +252,7 @@ struct typed_slot_rep : public slot_rep
    * @param functor The functor contained by the new slot_rep object.
    */
   inline typed_slot_rep(const T_functor& functor)
-    : slot_rep(0, &destroy, &dup), functor_(functor)
+    : slot_rep(nullptr, &destroy, &dup), functor_(functor)
     { sigc::visit_each_type<trackable*>(slot_do_bind(this), functor_); }
 
   inline typed_slot_rep(const typed_slot_rep& cl)
@@ -280,7 +280,7 @@ struct typed_slot_rep : public slot_rep
        * a) from the parent itself (in which case disconnect() leads to a segfault) or
        * b) from a parentless slot (in which case disconnect() does nothing)
        */
-      return 0;
+      return nullptr;
     }
 
   /** Makes a deep copy of the slot_rep object.

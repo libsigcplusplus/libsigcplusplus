@@ -1,4 +1,3 @@
-// -*- c++ -*-
 /*
  * Copyright 2002, The libsigc++ Development Team
  *
@@ -105,7 +104,7 @@ void* connection::notify(void* data)
 {
   auto self = reinterpret_cast<connection*>(data);
   self->slot_ = nullptr;
-  return 0;
+  return nullptr;
 }
 
 } /* namespace sigc */

@@ -704,10 +704,8 @@ struct slot_list
   #endif /* SIGC_HAVE_SUN_REVERSE_ITERATOR */
 
 
-
-
   slot_list()
-    : list_(0) {}
+    : list_(nullptr) {}
 
   explicit slot_list(internal::signal_impl* __list)
     : list_(__list) {}
@@ -808,7 +806,7 @@ struct slot_iterator_buf
   typedef signal_impl::const_iterator_type iterator_type;
 
   slot_iterator_buf()
-    : c_(0), invoked_(false) {}
+    : c_(nullptr), invoked_(false) {}
 
   slot_iterator_buf(const iterator_type& i, const emitter_type* c)
     : i_(i), c_(c), invoked_(false) {}
@@ -885,7 +883,7 @@ struct slot_iterator_buf<T_emitter, void>
   typedef signal_impl::const_iterator_type iterator_type;
 
   slot_iterator_buf()
-    : c_(0), invoked_(false) {}
+    : c_(nullptr), invoked_(false) {}
 
   slot_iterator_buf(const iterator_type& i, const emitter_type* c)
     : i_(i), c_(c), invoked_(false) {}
@@ -962,7 +960,7 @@ struct slot_reverse_iterator_buf
   typedef signal_impl::const_iterator_type iterator_type;
 
   slot_reverse_iterator_buf()
-    : c_(0), invoked_(false) {}
+    : c_(nullptr), invoked_(false) {}
 
   slot_reverse_iterator_buf(const iterator_type& i, const emitter_type* c)
     : i_(i), c_(c), invoked_(false) {}
@@ -1041,7 +1039,7 @@ struct slot_reverse_iterator_buf<T_emitter, void>
   typedef signal_impl::const_iterator_type iterator_type;
 
   slot_reverse_iterator_buf()
-    : c_(0), invoked_(false) {}
+    : c_(nullptr), invoked_(false) {}
 
   slot_reverse_iterator_buf(const iterator_type& i, const emitter_type* c)
     : i_(i), c_(c), invoked_(false) {}
