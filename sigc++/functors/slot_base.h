@@ -250,6 +250,10 @@ public:
    */
   slot_base(const slot_base& src);
 
+  /** Constructs a slot, moving an existing one.
+   * If @p src is connected to a parent (e.g. a signal), it is copied, not moved.
+   * @param src The existing slot to move or copy.
+   */
   slot_base(slot_base&& src) noexcept;
 
   ~slot_base();
@@ -321,12 +325,17 @@ public:
 //The Tru64 and Solaris Forte 5.5 compilers needs this operator=() to be public. I'm not sure why, or why it needs to be protected usually. murrayc.
 //See bug #168265. 
 //protected:
-  /** Overrides this slot making a copy from another slot.
+  /** Overrides this slot, making a copy from another slot.
    * @param src The slot from which to make a copy.
    * @return @p this.
    */
   slot_base& operator=(const slot_base& src);
 
+  /** Overrides this slot, making a move from another slot.
+   * If @p src is connected to a parent (e.g. a signal), it is copied, not moved.
+   * @param src The slot from which to move or copy.
+   * @return @p this.
+   */
   slot_base& operator=(slot_base&& src) noexcept;
 
 public: // public to avoid template friend declarations

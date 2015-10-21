@@ -250,9 +250,20 @@ signal_base& signal_base::operator=(const signal_base& src)
 
 signal_base& signal_base::operator=(signal_base&& src) noexcept
 {
-  trackable::operator=(std::move(src));
-  impl_ = std::move(src.impl_);
+  if (src.impl_ == impl_) return *this;
 
+  if (impl_)
+  {
+    // Disconnect all slots before impl_ is deleted.
+    // TODO: Move the signal_impl::clear() call to ~signal_impl() when ABI can be broken.
+    if (impl_->ref_count_ == 1)
+      impl_->clear();
+
+    impl_->unreference();
+  }
+
+  src.notify_callbacks();
+  impl_ = src.impl_;
   src.impl_ = nullptr;
 
   return *this;

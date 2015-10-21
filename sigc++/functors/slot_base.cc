@@ -125,12 +125,35 @@ slot_base::slot_base(const slot_base& src)
 }
 
 slot_base::slot_base(slot_base&& src) noexcept
-: rep_(std::move(src.rep_)),
-  blocked_(std::move(src.blocked_))
+: rep_(nullptr),
+  blocked_(src.blocked_)
 {
-  //Wipe src:
-  src.rep_ = nullptr;
-  src.blocked_ = false;
+  if (src.rep_)
+  {
+    if (src.rep_->parent_)
+    {
+      // src is connected to a parent, e.g. a sigc::signal.
+      // Copy, don't move! See https://bugzilla.gnome.org/show_bug.cgi?id=756484
+
+      //Check call_ so we can ignore invalidated slots.
+      //Otherwise, destroyed bound reference parameters (whose destruction
+      //caused the slot's invalidation) may be used during dup().
+      if (src.rep_->call_)
+        rep_ = src.rep_->dup();
+      else
+        blocked_ = false; //Return the default invalid slot.
+    }
+    else
+    {
+      // src is not connected. Really move src.rep_.
+      src.rep_->notify_callbacks();
+      rep_ = src.rep_;
+
+      //Wipe src:
+      src.rep_ = nullptr;
+      src.blocked_ = false;
+    }
+  }
 }
 
 slot_base::~slot_base()
@@ -199,17 +222,42 @@ slot_base& slot_base::operator=(const slot_base& src)
 slot_base& slot_base::operator=(slot_base&& src) noexcept
 {
   if (src.rep_ == rep_)
+  {
+    blocked_ = src.blocked_;
     return *this;
- 
-  delete_rep_with_check();
+  }
 
-  rep_ = std::move(src.rep_);
-  blocked_ = std::move(src.blocked_);
+  if (src.empty())
+  {
+    delete_rep_with_check();
+    return *this;
+  }
 
-  //Wipe src:
-  src.rep_ = nullptr;
-  src.blocked_ = false;
+  blocked_ = src.blocked_;
+  internal::slot_rep* new_rep_ = nullptr;
+  if (src.rep_->parent_)
+  {
+    // src is connected to a parent, e.g. a sigc::signal.
+    // Copy, don't move! See https://bugzilla.gnome.org/show_bug.cgi?id=756484
+    new_rep_ = src.rep_->dup();
+  }
+  else
+  {
+    // src is not connected. Really move src.rep_.
+    src.rep_->notify_callbacks();
+    new_rep_ = src.rep_;
 
+    //Wipe src:
+    src.rep_ = nullptr;
+    src.blocked_ = false;
+  }
+
+  if (rep_) // Silently exchange the slot_rep.
+  {
+    new_rep_->set_parent(rep_->parent_, rep_->cleanup_);
+    delete rep_; // Calls destroy(), but does not call disconnect().
+  }
+  rep_ = new_rep_;
   return *this;
 }
 

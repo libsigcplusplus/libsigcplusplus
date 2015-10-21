@@ -85,29 +85,41 @@ FOR(1, $1,[
       slot_base::rep_->call_ = internal::slot_call$1<LIST(T_functor, T_return, LOOP(T_arg%1, $1))>::address();
     }
 
+  /** Constructs a slot, copying an existing one.
+   * @param src The existing slot to copy.
+   */
   slot$1(const slot$1& src)
     : slot_base(src)
     {}
 
+  /** Constructs a slot, moving an existing one.
+   * If @p src is connected to a parent (e.g. a signal), it is copied, not moved.
+   * @param src The existing slot to move or copy.
+   */
   slot$1(slot$1&& src) noexcept
     : slot_base(std::move(src))
     {}
 
-  /** Overrides this slot making a copy from another slot.
+  /** Overrides this slot, making a copy from another slot.
    * @param src The slot from which to make a copy.
    * @return @p this.
    */
   slot$1& operator=(const slot$1& src)
-    {
-      slot_base::operator=(src);
-      return *this;
-    }
+  {
+    slot_base::operator=(src);
+    return *this;
+  }
 
+  /** Overrides this slot, making a move from another slot.
+   * If @p src is connected to a parent (e.g. a signal), it is copied, not moved.
+   * @param src The slot from which to move or copy.
+   * @return @p this.
+   */
   slot$1& operator=(slot$1&& src) noexcept
-    {
-      slot_base::operator=(std::move(src));
-      return *this;
-    }
+  {
+    slot_base::operator=(std::move(src));
+    return *this;
+  }
 };
 
 ])
@@ -169,6 +181,11 @@ public:
   slot(const T_functor& _A_func)
     : parent_type(_A_func) {}
 
+  // Without reinterpret_cast (or static_cast) parent_type(const T_functor& _A_func)
+  // is called instead of the copy constructor.
+  /** Constructs a slot, copying an existing one.
+   * @param src The existing slot to copy.
+   */
   slot(const slot& src)
     : parent_type(reinterpret_cast<const parent_type&>(src)) {}
 };
