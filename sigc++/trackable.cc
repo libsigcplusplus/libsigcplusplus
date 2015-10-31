@@ -37,9 +37,12 @@ trackable::trackable(const trackable& /*src*/)
 : callback_list_(nullptr)
 {}
 
-// Don't copy the notification list.
+// Don't move the notification list.
 // The objects watching src don't need to be notified when the new object dies.
 // They need to be notified now, because src probably becomes useless.
+//
+// If trackable's move constructor is modified, check if Glib::Object's
+// move constructor should be modified similarly.
 trackable::trackable(trackable&& src) noexcept
 : callback_list_(nullptr)
 {
