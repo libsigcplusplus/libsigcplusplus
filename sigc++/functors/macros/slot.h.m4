@@ -276,6 +276,11 @@ struct typed_slot_rep : public slot_rep
     : slot_rep(cl.call_, &destroy, &dup), functor_(cl.functor_)
     { sigc::visit_each_type<trackable*>(slot_do_bind(this), functor_); }
 
+  typed_slot_rep& operator=(const typed_slot_rep& src) = delete;
+
+  typed_slot_rep(typed_slot_rep&& src) = delete;
+  typed_slot_rep& operator=(typed_slot_rep&& src) = delete;
+
   inline ~typed_slot_rep()
     {
       call_ = nullptr;
