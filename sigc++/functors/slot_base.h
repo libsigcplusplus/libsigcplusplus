@@ -35,8 +35,9 @@ typedef void* (*hook)(void*);
  * between a slot and the functor that the slot should
  * execute in operator(). This link is needed because in
  * libsigc++2 the slot doesn't necessarily have exactly the
- * same function signature as the functor thus allowing for
+ * same function signature as the functor, thus allowing for
  * implicit conversions.
+ *
  * The base class slot_rep serves the purpose to
  * - form a common pointer type (slot_rep*),
  * - offer the possibility to create duplicates (dup()),
@@ -47,6 +48,7 @@ typedef void* (*hook)(void*);
  *      (set_parent()) that is executed from notify(),
  *   -# a generic function pointer, call_, that is simply
  *      set to zero in notify() to invalidate the slot.
+ *
  * slot_rep inherits trackable so that connection objects can
  * refer to the slot and are notified when the slot is destroyed.
  */
