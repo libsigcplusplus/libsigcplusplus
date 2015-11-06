@@ -54,6 +54,12 @@ typedef void* (*hook)(void*);
  */
 struct SIGC_API slot_rep : public trackable
 {
+  slot_rep(const slot_rep& src) = delete;
+  slot_rep& operator=(const slot_rep& src) = delete;
+
+  slot_rep(slot_rep&& src) = delete;
+  slot_rep& operator=(slot_rep&& src) = delete;
+
   /* NB: Instead of slot_rep we could inherit slot_base from trackable.
    * However, a simple benchmark seems to indicate that this slows
    * down dereferencing of slot list iterators. Martin. */
