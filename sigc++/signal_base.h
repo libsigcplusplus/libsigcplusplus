@@ -51,6 +51,12 @@ struct SIGC_API signal_impl
 
   signal_impl();
 
+  signal_impl(const signal_impl& src) = delete;
+  signal_impl& operator=(const signal_impl& src) = delete;
+
+  signal_impl(signal_impl&& src) = delete;
+  signal_impl& operator=(signal_impl&& src) = delete;
+
   // only MSVC needs this to guarantee that all new/delete are executed from the DLL module
 #ifdef SIGC_NEW_DELETE_IN_LIBRARY_ONLY
   void* operator new(size_t size_);
