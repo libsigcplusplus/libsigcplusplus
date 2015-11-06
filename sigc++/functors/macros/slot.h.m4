@@ -39,11 +39,6 @@ FOR(1,$1,[
  *
  * @ingroup slot
  */
-/* TODO: Where put the following bit of information? I can't make any
- *       sense of the "because", by the way!
- *
- * Because slot is opaque, visit_each() will not visit its internal members.
- */
 template <LIST(class T_return, LOOP(class T_arg%1, $1))>
 class slot$1
   : public slot_base
@@ -122,9 +117,48 @@ FOR(1, $1,[
   }
 };
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+//template specialization of visitor<>::do_visit_each<>(action, functor):
+/** Performs a functor on each of the targets of a functor.
+ * The function overloads for sigc::slot$1 are similar to the function
+ * overloads for sigc::slot. See the description of those overloads.
+ *
+ * @ingroup slot
+ */
+template <LIST(typename T_return, LOOP(typename T_arg%1, $1))>
+struct visitor<slot$1<LIST(T_return, LOOP(T_arg%1, $1))>>
+{
+  static void do_visit_each(const internal::limit_derived_target<trackable*, internal::slot_do_bind>& _A_action,
+                            const slot$1<LIST(T_return, LOOP(T_arg%1, $1))>& _A_target)
+  {
+    if (_A_target.rep_ && _A_target.rep_->parent_ == nullptr)
+    _A_target.rep_->set_parent(_A_action.action_.rep_, &internal::slot_rep::notify);
+  }
+
+  static void do_visit_each(const internal::limit_derived_target<trackable*, internal::slot_do_unbind>& _A_action,
+                            const slot$1<LIST(T_return, LOOP(T_arg%1, $1))>& _A_target)
+  {
+    if (_A_target.rep_ && _A_target.rep_->parent_ == _A_action.action_.rep_)
+      _A_target.rep_->set_parent(nullptr, nullptr);
+  }
+
+  template <typename T_action>
+  static void do_visit_each(const T_action& _A_action,
+                            const slot$1<LIST(T_return, LOOP(T_arg%1, $1))>& _A_target)
+  {
+    _A_action(_A_target);
+  }
+};
+#endif // DOXYGEN_SHOULD_SKIP_THIS
+
 ])
 define([SLOT],[dnl
 ifelse($1, $2,[dnl
+// Because slot is opaque, visit_each() will not visit its internal members.
+// Those members are not reachable by visit_each() after the slot has been
+// constructed. But when a slot contains another slot, the outer slot will become
+// the parent of the inner slot, with similar results. See the description of
+// slot's specialization of the visitor struct.
 /** Convenience wrapper for the numbered sigc::slot# templates.
  * Slots convert arbitrary functors to unified types which are opaque.
  * sigc::slot itself is a functor or to be more precise a closure. It contains
@@ -190,6 +224,56 @@ public:
     : parent_type(reinterpret_cast<const parent_type&>(src)) {}
 };
 
+ifelse($1, $2,[dnl
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+//template specialization of visitor<>::do_visit_each<>(action, functor):
+/** Performs a functor on each of the targets of a functor.
+ *
+ * There are three function overloads for sigc::slot.
+ *
+ * The first two overloads are very specialized. They handle the (probably unusual)
+ * case when the functor, stored in a slot, contains a slot. They are invoked from
+ * the constructor, destructor or destroy() method of typed_slot_rep.
+ * The first overload, called from the constructor of the outer slot, sets
+ * the outer slot as the parent of the inner slot. The second overload, called from
+ * the destructor or destroy() of the outer slot, unsets the parent of the inner slot.
+ * When an object referenced from the inner slot is deleted, the inner slot calls
+ * its slot_rep::disconnect(), which calls the outer slot's slot_rep::notify().
+ * The outer slot is informed just as if one of its directly referenced objects
+ * had been deleted. Result: The outer slot is disconnected from its parent,
+ * if any (for instance a sigc::signal).
+ * See https://bugzilla.gnome.org/show_bug.cgi?id=755003
+ *
+ * The third overload is identical to do_visit_each() in visitor's primary template.
+ *
+ * @ingroup slot
+ */
+template <LIST(typename T_return, LOOP(typename T_arg%1, $1))>
+struct visitor<slot<LIST(T_return, LOOP(T_arg%1, $1))>>
+{
+  static void do_visit_each(const internal::limit_derived_target<trackable*, internal::slot_do_bind>& _A_action,
+                            const slot<LIST(T_return, LOOP(T_arg%1, $1))>& _A_target)
+  {
+    if (_A_target.rep_ && _A_target.rep_->parent_ == nullptr)
+      _A_target.rep_->set_parent(_A_action.action_.rep_, &internal::slot_rep::notify);
+  }
+
+  static void do_visit_each(const internal::limit_derived_target<trackable*, internal::slot_do_unbind>& _A_action,
+                            const slot<LIST(T_return, LOOP(T_arg%1, $1))>& _A_target)
+  {
+    if (_A_target.rep_ && _A_target.rep_->parent_ == _A_action.action_.rep_)
+      _A_target.rep_->set_parent(nullptr, nullptr);
+  }
+
+  template <typename T_action>
+  static void do_visit_each(const T_action& _A_action,
+                            const slot<LIST(T_return, LOOP(T_arg%1, $1))>& _A_target)
+  {
+    _A_action(_A_target);
+  }
+};
+#endif // DOXYGEN_SHOULD_SKIP_THIS
+])
 ])
 define([SLOT_CALL],[dnl
 /** Abstracts functor execution.

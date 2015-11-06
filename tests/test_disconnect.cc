@@ -1,4 +1,3 @@
-// -*- c++ -*-
 /* Copyright 2002, The libsigc++ Development Team
  *  Assigned to public domain.  Use as you wish without restriction.
  */
@@ -7,6 +6,7 @@
 #include <sigc++/trackable.h>
 #include <sigc++/signal.h>
 #include <sigc++/connection.h>
+#include <sigc++/adaptors/compose.h>
 #include <sigc++/functors/ptr_fun.h>
 #include <sigc++/functors/mem_fun.h>
 #include <sstream>
@@ -58,7 +58,7 @@ struct B : public sigc::trackable
 
   void destroy()   // Calling destroy() during signal emission seems weird!
   {                // However, if this works, anything will work!
-    delete this;
+    delete this;   // valgrind reports a small memory leak, that's all.
   }
 
   void boom()
@@ -126,6 +126,41 @@ int main(int argc, char* argv[])
   util->check_result(result_stream, "sig is empty (size=0): ");
 
   cona.disconnect();    // already disconnected -> legal with connection objects, however, nothing happens ...
+
+  {
+    A a2;
+    sig.connect(sigc::compose(sigc::mem_fun(&a2, &A::foo), &foo));
+    result_stream << "sig is connected to compose(A::foo, foo) (size=" << sig.size() << "): ";
+    sig(7);
+    util->check_result(result_stream, "sig is connected to compose(A::foo, foo) (size=1): foo(7) A::foo(1) ");
+  }
+  result_stream << "sig is empty (size=" << sig.size() << "): ";
+  sig(8);
+  util->check_result(result_stream, "sig is empty (size=0): ");
+
+  { // A slot# within a slot
+    A a2;
+    sigc::slot1<int, int> setter = sigc::mem_fun(&a2, &A::foo);
+    sig.connect(sigc::compose(setter, &foo));
+    result_stream << "sig is connected to compose(slot1(A::foo), foo) (size=" << sig.size() << "): ";
+    sig(9);
+    util->check_result(result_stream, "sig is connected to compose(slot1(A::foo), foo) (size=1): foo(9) A::foo(1) ");
+  }
+  result_stream << "sig is empty (size=" << sig.size() << "): ";
+  sig(10);
+  util->check_result(result_stream, "sig is empty (size=0): ");
+
+  { // A slot within a slot
+    A a2;
+    sigc::slot<int, int> setter = sigc::mem_fun(&a2, &A::foo);
+    sig.connect(sigc::compose(setter, &foo));
+    result_stream << "sig is connected to compose(slot(A::foo), foo) (size=" << sig.size() << "): ";
+    sig(11);
+    util->check_result(result_stream, "sig is connected to compose(slot(A::foo), foo) (size=1): foo(11) A::foo(1) ");
+  }
+  result_stream << "sig is empty (size=" << sig.size() << "): ";
+  sig(12);
+  util->check_result(result_stream, "sig is empty (size=0): ");
 
   result_stream << "deleting a signal during emission... ";
   auto b = new B;
