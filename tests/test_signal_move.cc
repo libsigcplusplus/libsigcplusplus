@@ -37,14 +37,14 @@ int main(int argc, char* argv[])
 
   //Test the move constructor:
   sigc::signal<int, int> sig2(std::move(sig));
-  //sig(-2); Add when more move constructors have been added
+  sig(-2);
   sig2(2);
   util->check_result(result_stream, "foo(int 2)");
 
   //Test the move assignment operator:
   sigc::signal<int, int> sig3;
   sig3 = std::move(sig2);
-  //sig2(-3); Add when more move assignment operators have been added
+  sig2(-3);
   sig3(3);
   util->check_result(result_stream, "foo(int 3)");
 

@@ -215,13 +215,43 @@ public:
   slot(const T_functor& _A_func)
     : parent_type(_A_func) {}
 
-  // Without reinterpret_cast (or static_cast) parent_type(const T_functor& _A_func)
+  // Without static_cast parent_type(const T_functor& _A_func)
   // is called instead of the copy constructor.
   /** Constructs a slot, copying an existing one.
    * @param src The existing slot to copy.
    */
   slot(const slot& src)
-    : parent_type(reinterpret_cast<const parent_type&>(src)) {}
+    : parent_type(static_cast<const parent_type&>(src)) {}
+
+  // Without static_cast parent_type(const T_functor& _A_func)
+  // is called instead of the move constructor.
+  /** Constructs a slot, moving an existing one.
+   * If @p src is connected to a parent (e.g. a signal), it is copied, not moved.
+   * @param src The existing slot to move or copy.
+   */
+  slot(slot&& src)
+    : parent_type(std::move(static_cast<parent_type&>(src))) {}
+
+  /** Overrides this slot, making a copy from another slot.
+   * @param src The slot from which to make a copy.
+   * @return @p this.
+   */
+  slot& operator=(const slot& src)
+  {
+    parent_type::operator=(src);
+    return *this;
+  }
+
+  /** Overrides this slot, making a move from another slot.
+   * If @p src is connected to a parent (e.g. a signal), it is copied, not moved.
+   * @param src The slot from which to move or copy.
+   * @return @p this.
+   */
+  slot& operator=(slot&& src)
+  {
+    parent_type::operator=(std::move(src));
+    return *this;
+  }
 };
 
 ifelse($1, $2,[dnl

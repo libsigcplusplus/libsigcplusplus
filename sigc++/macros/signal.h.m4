@@ -391,6 +391,21 @@ FOR(1, $1,[
 
   signal$1(const signal$1& src)
     : signal_base(src) {}
+
+  signal$1(signal$1&& src)
+    : signal_base(std::move(src)) {}
+
+  signal$1& operator=(const signal$1& src)
+  {
+    signal_base::operator=(src);
+    return *this;
+  }
+
+  signal$1& operator=(signal$1&& src)
+  {
+    signal_base::operator=(std::move(src));
+    return *this;
+  }
 };
 
 ])
@@ -512,8 +527,24 @@ ifelse($1, $2,[dnl
   };
 
   signal() {}
+
   signal(const signal& src)
     : signal$1<LIST(T_return, LOOP(T_arg%1, $1),nil)>(src) {}
+
+  signal(signal&& src)
+    : signal$1<LIST(T_return, LOOP(T_arg%1, $1),nil)>(std::move(src)) {}
+
+  signal& operator=(const signal& src)
+  {
+    signal$1<LIST(T_return, LOOP(T_arg%1, $1),nil)>::operator=(src);
+    return *this;
+  }
+
+  signal& operator=(signal&& src)
+  {
+    signal$1<LIST(T_return, LOOP(T_arg%1, $1),nil)>::operator=(std::move(src));
+    return *this;
+  }
 };
 
 ])
