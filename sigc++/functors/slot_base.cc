@@ -124,7 +124,7 @@ slot_base::slot_base(const slot_base& src)
   }
 }
 
-slot_base::slot_base(slot_base&& src) noexcept
+slot_base::slot_base(slot_base&& src)
 : rep_(nullptr),
   blocked_(src.blocked_)
 {
@@ -219,7 +219,7 @@ slot_base& slot_base::operator=(const slot_base& src)
   return *this;
 }
 
-slot_base& slot_base::operator=(slot_base&& src) noexcept
+slot_base& slot_base::operator=(slot_base&& src)
 {
   if (src.rep_ == rep_)
   {

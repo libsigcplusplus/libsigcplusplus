@@ -108,15 +108,20 @@ private:
  */
 struct SIGC_API trackable
 {
+  // Concerning noexcept specifications:
+  // libsigc++ does not have complete control of what happens when notify_callbacks()
+  // is called. It may throw an exception. A method that calls notify_callbacks()
+  // shall not be declared noexcept.
+
   trackable();
 
   trackable(const trackable& src);
 
-  trackable(trackable&& src) noexcept;
+  trackable(trackable&& src);
 
   trackable& operator=(const trackable& src);
 
-  trackable& operator=(trackable&& src) noexcept;
+  trackable& operator=(trackable&& src);
 
   ~trackable();
 

@@ -244,6 +244,10 @@ class SIGC_API slot_base : public functor_base
 {
   typedef internal::slot_rep rep_type;
 
+  // Move operations are not declared noexcept because
+  // 1. they may copy instead of move
+  // 2. when they don't copy, they call src.rep_->notify_callbacks(), which
+  //    may throw an exception.
 public:
   /// Constructs an empty slot.
   slot_base();
@@ -262,7 +266,7 @@ public:
    * If @p src is connected to a parent (e.g. a signal), it is copied, not moved.
    * @param src The existing slot to move or copy.
    */
-  slot_base(slot_base&& src) noexcept;
+  slot_base(slot_base&& src);
 
   ~slot_base();
 
@@ -344,7 +348,7 @@ public:
    * @param src The slot from which to move or copy.
    * @return @p this.
    */
-  slot_base& operator=(slot_base&& src) noexcept;
+  slot_base& operator=(slot_base&& src);
 
 public: // public to avoid template friend declarations
   /** Typed slot_rep object that contains a functor. */

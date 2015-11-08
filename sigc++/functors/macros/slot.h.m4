@@ -91,7 +91,7 @@ FOR(1, $1,[
    * If @p src is connected to a parent (e.g. a signal), it is copied, not moved.
    * @param src The existing slot to move or copy.
    */
-  slot$1(slot$1&& src) noexcept
+  slot$1(slot$1&& src)
     : slot_base(std::move(src))
     {}
 
@@ -110,7 +110,7 @@ FOR(1, $1,[
    * @param src The slot from which to move or copy.
    * @return @p this.
    */
-  slot$1& operator=(slot$1&& src) noexcept
+  slot$1& operator=(slot$1&& src)
   {
     slot_base::operator=(std::move(src));
     return *this;
