@@ -88,7 +88,7 @@ struct SIGC_API slot_rep : public trackable
   /** Parent object whose callback cleanup_ is executed on notification. */
   void* parent_;
 
-  inline slot_rep(hook call__, hook destroy__, hook dup__)
+  inline slot_rep(hook call__, hook destroy__, hook dup__) noexcept
     : call_(call__), destroy_(destroy__), dup_(dup__), cleanup_(nullptr), parent_(nullptr) {}
 
   inline ~slot_rep()
@@ -116,7 +116,7 @@ struct SIGC_API slot_rep : public trackable
    * @param parent The new parent.
    * @param cleanup The callback to execute from notify().
    */
-  inline void set_parent(void* parent, hook cleanup)
+  inline void set_parent(void* parent, hook cleanup) noexcept
     {
       parent_ = parent;
       cleanup_ = cleanup;
@@ -147,7 +147,7 @@ struct SIGC_API slot_do_bind
   /** Construct a slot_do_bind functor.
    * @param rep The slot_rep object trackables should notify on destruction.
    */
-  inline slot_do_bind(slot_rep* rep) : rep_(rep) {}
+  inline slot_do_bind(slot_rep* rep) noexcept : rep_(rep) {}
 
   /** Adds a dependency to @p t.
    * @param t The trackable object to add a callback to.
@@ -165,7 +165,7 @@ struct SIGC_API slot_do_unbind
   /** Construct a slot_do_unbind functor.
    * @param rep The slot_rep object trackables don't need to notify on destruction any more.
    */
-  inline slot_do_unbind(slot_rep* rep) : rep_(rep) {}
+  inline slot_do_unbind(slot_rep* rep) noexcept : rep_(rep) {}
 
   /** Removes a dependency from @p t.
    * @param t The trackable object to remove the callback from.
@@ -250,12 +250,12 @@ class SIGC_API slot_base : public functor_base
   //    may throw an exception.
 public:
   /// Constructs an empty slot.
-  slot_base();
+  slot_base() noexcept;
 
   /** Constructs a slot from an existing slot_rep object.
    * @param rep The slot_rep object this slot should contain.
    */
-  explicit slot_base(rep_type* rep);
+  explicit slot_base(rep_type* rep) noexcept;
 
   /** Constructs a slot, copying an existing one.
    * @param src The existing slot to copy.
@@ -277,7 +277,7 @@ public:
    *  do_something()
    * @endcode
    */
-  operator bool() const;
+  operator bool() const noexcept;
 
   /** Sets the parent of this slot.
    * This function is used by signals to register a notification callback.
@@ -286,7 +286,7 @@ public:
    * @param parent The new parent.
    * @param cleanup The notification callback.
    */
-  void set_parent(void* parent, void* (*cleanup)(void*)) const;
+  void set_parent(void* parent, void* (*cleanup)(void*)) const noexcept;
 
   typedef trackable::func_destroy_notify func_destroy_notify;
   /** Add a callback that is executed (notified) when the slot is detroyed.
@@ -305,13 +305,13 @@ public:
   /** Returns whether the slot is invalid.
    * @return @p true if the slot is invalid (empty).
    */
-  inline bool empty() const
+  inline bool empty() const noexcept
     { return (!rep_ || !rep_->call_); }
 
   /** Returns whether the slot is blocked.
    * @return @p true if the slot is blocked.
    */
-  inline bool blocked() const
+  inline bool blocked() const noexcept
     { return blocked_; }
     
   /** Sets the blocking state.
@@ -322,12 +322,12 @@ public:
    * @param should_block Indicates whether the blocking state should be set or unset.
    * @return @p true if the slot was in blocking state before.
    */
-  bool block(bool should_block = true);
+  bool block(bool should_block = true) noexcept;
 
   /** Unsets the blocking state.
    * @return @p true if the slot was in blocking state before.
    */
-  bool unblock();
+  bool unblock() noexcept;
 
   /** Disconnects the slot.
    * Invalidates the slot and notifies the parent.

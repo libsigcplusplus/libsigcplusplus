@@ -64,11 +64,11 @@ struct SIGC_API signal_impl
 #endif
 
   /// Increments the reference counter.
-  inline void reference()
+  inline void reference() noexcept
     { ++ref_count_; }
 
   /// Increments the reference and execution counter.
-  inline void reference_exec()
+  inline void reference_exec() noexcept
     { ++ref_count_; ++exec_count_; }
 
   /** Decrements the reference counter.
@@ -90,7 +90,7 @@ struct SIGC_API signal_impl
   /** Returns whether the list of slots is empty.
    * @return @p true if the list of slots is empty.
    */
-  inline bool empty() const
+  inline bool empty() const noexcept
     { return slots_.empty(); }
 
   /// Empties the list of slots.
@@ -99,14 +99,14 @@ struct SIGC_API signal_impl
   /** Returns the number of slots in the list.
    * @return The number of slots in the list.
    */
-  size_type size() const;
+  size_type size() const noexcept;
 
   /** Returns whether all slots in the list are blocked.
    * @return @p true if all slots are blocked or the list is empty.
    *
    * @newin{2,4}
    */
-  bool blocked() const;
+  bool blocked() const noexcept;
 
   /** Sets the blocking state of all slots in the list.
    * If @e should_block is @p true then the blocking state is set.
@@ -118,7 +118,7 @@ struct SIGC_API signal_impl
    *
    * @newin{2,4}
    */
-  void block(bool should_block = true);
+  void block(bool should_block = true) noexcept;
 
   /** Adds a slot at the bottom of the list of slots.
    * @param slot_ The slot to add to the list of slots.
@@ -178,7 +178,7 @@ struct SIGC_API signal_exec
   /** Increments the reference and execution counter of the parent sigc::signal_impl object.
    * @param sig The parent sigc::signal_impl object.
    */
-  inline signal_exec(const signal_impl* sig)
+  inline signal_exec(const signal_impl* sig) noexcept
     : sig_(const_cast<signal_impl*>(sig) )
     { sig_->reference_exec(); }
 
@@ -286,9 +286,9 @@ struct SIGC_API signal_base : public trackable
 {
   typedef std::size_t size_type;
 
-  signal_base();
+  signal_base() noexcept;
 
-  signal_base(const signal_base& src);
+  signal_base(const signal_base& src) noexcept;
 
   signal_base(signal_base&& src);
 
@@ -301,7 +301,7 @@ struct SIGC_API signal_base : public trackable
   /** Returns whether the list of slots is empty.
    * @return @p true if the list of slots is empty.
    */
-  inline bool empty() const
+  inline bool empty() const noexcept
     { return (!impl_ || impl_->empty()); }
 
   /// Empties the list of slots.
@@ -310,14 +310,14 @@ struct SIGC_API signal_base : public trackable
   /** Returns the number of slots in the list.
    * @return The number of slots in the list.
    */
-  size_type size() const;
+  size_type size() const noexcept;
 
   /** Returns whether all slots in the list are blocked.
    * @return @p true if all slots are blocked or the list is empty.
    *
    * @newin{2,4}
    */
-  bool blocked() const;
+  bool blocked() const noexcept;
 
   /** Sets the blocking state of all slots in the list.
    * If @e should_block is @p true then the blocking state is set.
@@ -330,13 +330,13 @@ struct SIGC_API signal_base : public trackable
    *
    * @newin{2,4}
    */
-  void block(bool should_block = true);
+  void block(bool should_block = true) noexcept;
 
   /** Unsets the blocking state of all slots in the list.
    *
    * @newin{2,4}
    */
-  void unblock();
+  void unblock() noexcept;
 
 protected:
   typedef internal::signal_impl::iterator_type iterator_type;

@@ -40,7 +40,7 @@ namespace sigc {
 struct SIGC_API connection
 {
   /** Constructs an empty connection object. */
-  connection();
+  connection() noexcept;
 
   /** Constructs a connection object copying an existing one.
    * @param c The connection object to make a copy from.
@@ -77,37 +77,38 @@ struct SIGC_API connection
   /** Returns whether the connection is still active.
    * @return @p false if the connection is still active.
    */
-  bool empty() const;
+  bool empty() const noexcept;
 
   /** Returns whether the connection is still active.
    * @return @p true if the connection is still active.
    */
-  bool connected() const;
+  bool connected() const noexcept;
 
   /** Returns whether the connection is blocked.
    * @return @p true if the connection is blocked.
    */
-  bool blocked() const;
+  bool blocked() const noexcept;
 
   /** Sets or unsets the blocking state of this connection.
    * See slot_base::block() for details.
    * @param should_block Indicates whether the blocking state should be set or unset.
    * @return @p true if the connection has been in blocking state before.
    */
-  bool block(bool should_block = true);
+  bool block(bool should_block = true) noexcept;
 
   /** Unsets the blocking state of this connection.
    * @return @p true if the connection has been in blocking state before.
    */
-  bool unblock();
+  bool unblock() noexcept;
 
   /// Disconnects the referred slot.
   void disconnect();
 
+  //TODO: When we can break API and ABI, make operator bool() explicit and const
   /** Returns whether the connection is still active.
    * @return @p true if the connection is still active.
    */
-  operator bool();
+  operator bool() noexcept;
 
   /** Callback that is executed when the referred slot is destroyed.
    * @param data The connection object notified (@p this).

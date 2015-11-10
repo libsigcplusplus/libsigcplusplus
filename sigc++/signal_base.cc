@@ -67,12 +67,12 @@ void signal_impl::clear()
   slots_.clear();
 }
 
-signal_impl::size_type signal_impl::size() const
+signal_impl::size_type signal_impl::size() const noexcept
 {
   return slots_.size();
 }
 
-bool signal_impl::blocked() const
+bool signal_impl::blocked() const noexcept
 {
   for (const auto& slot : const_cast<const std::list<slot_base>&>(slots_))
   {
@@ -82,7 +82,7 @@ bool signal_impl::blocked() const
   return true;
 }
 
-void signal_impl::block(bool should_block)
+void signal_impl::block(bool should_block) noexcept
 {
   for (auto& slot : slots_)
   {
@@ -156,11 +156,11 @@ void* signal_impl::notify(void* d)
 
 } /* namespace internal */
 
-signal_base::signal_base()
+signal_base::signal_base() noexcept
 : impl_(nullptr)
 {}
 
-signal_base::signal_base(const signal_base& src)
+signal_base::signal_base(const signal_base& src) noexcept
 : trackable(),
   impl_(src.impl())
 {
@@ -193,23 +193,23 @@ void signal_base::clear()
     impl_->clear();
 }
 
-signal_base::size_type signal_base::size() const
+signal_base::size_type signal_base::size() const noexcept
 {
   return (impl_ ? impl_->size() : 0);
 }
 
-bool signal_base::blocked() const
+bool signal_base::blocked() const noexcept
 {
   return (impl_ ? impl_->blocked() : true);
 }
 
-void signal_base::block(bool should_block)
+void signal_base::block(bool should_block) noexcept
 {
   if (impl_)
     impl_->block(should_block);
 }
 
-void signal_base::unblock()
+void signal_base::unblock() noexcept
 {
   if (impl_)
     impl_->block(false);

@@ -27,13 +27,13 @@ using namespace std;
 namespace sigc
 {
 
-trackable::trackable()
+trackable::trackable() noexcept
 : callback_list_(nullptr)
 {}
 
 /* Don't copy the notification list.
    The objects watching src don't need to be notified when the new object dies. */
-trackable::trackable(const trackable& /*src*/)
+trackable::trackable(const trackable& /*src*/) noexcept
 : callback_list_(nullptr)
 {}
 

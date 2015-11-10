@@ -25,9 +25,9 @@ namespace
 // notified, if the slot_rep is deleted when they call disconnect().
 struct destroy_notify_struct
 {
-  destroy_notify_struct() : deleted_(false) { }
+  destroy_notify_struct() noexcept : deleted_(false) { }
 
-  static void* notify(void* data)
+  static void* notify(void* data) noexcept
   {
     auto self_ = reinterpret_cast<destroy_notify_struct*>(data);
     self_->deleted_ = true;
@@ -96,12 +96,12 @@ void* slot_rep::notify(void* data)
 
 } // namespace internal
   
-slot_base::slot_base()
+slot_base::slot_base() noexcept
 : rep_(nullptr),
   blocked_(false)
 {}
 
-slot_base::slot_base(rep_type* rep)
+slot_base::slot_base(rep_type* rep) noexcept
 : rep_(rep),
   blocked_(false)
 {}
@@ -162,7 +162,7 @@ slot_base::~slot_base()
     delete rep_;
 }
 
-slot_base::operator bool() const
+slot_base::operator bool() const noexcept
 {
   return rep_ != nullptr;
 }
@@ -261,7 +261,7 @@ slot_base& slot_base::operator=(slot_base&& src)
   return *this;
 }
 
-void slot_base::set_parent(void* parent, void* (*cleanup)(void*)) const
+void slot_base::set_parent(void* parent, void* (*cleanup)(void*)) const noexcept
 {
   if (rep_)
     rep_->set_parent(parent, cleanup);
@@ -279,14 +279,14 @@ void slot_base::remove_destroy_notify_callback(void* data) const
     rep_->remove_destroy_notify_callback(data);
 }
 
-bool slot_base::block(bool should_block)
+bool slot_base::block(bool should_block) noexcept
 {
   bool old = blocked_;
   blocked_ = should_block;
   return old;
 }
 
-bool slot_base::unblock()
+bool slot_base::unblock() noexcept
 {
   return block(false);
 }

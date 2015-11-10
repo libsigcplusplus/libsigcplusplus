@@ -22,7 +22,7 @@ using namespace std;
 
 namespace sigc {
 
-connection::connection()
+connection::connection() noexcept
 : slot_(nullptr)
 {}
 
@@ -53,27 +53,27 @@ connection::~connection()
     slot_->remove_destroy_notify_callback(this);
 }
 
-bool connection::empty() const
+bool connection::empty() const noexcept
 {
   return (!slot_ || slot_->empty());
 }
 
-bool connection::connected() const
+bool connection::connected() const noexcept
 {
   return !empty();
 }
 
-bool connection::blocked() const
+bool connection::blocked() const noexcept
 {
   return (slot_ ? slot_->blocked() : false);
 }
 
-bool connection::block(bool should_block)
+bool connection::block(bool should_block) noexcept
 {
   return (slot_ ? slot_->block(should_block) : false);
 }
 
-bool connection::unblock()
+bool connection::unblock() noexcept
 {
   return (slot_ ? slot_->unblock() : false);
 }
@@ -84,7 +84,7 @@ void connection::disconnect()
     slot_->disconnect(); // This notifies slot_'s parent.
 } 
 
-connection::operator bool()
+connection::operator bool() noexcept
 {
   return !empty();
 }
