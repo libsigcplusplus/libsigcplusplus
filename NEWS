@@ -1,3 +1,23 @@
+2.6.2 (stable):
+
+* slot: Handle auto-disconnection when a slot contains a slot
+  (Kjell Ahlstedt) Bug #755003 (Ryan Beasley)
+* slot and signal: Correct move constructors and move assignments.
+  (Kjell Ahlstedt) Bug #756484.
+* trackable, slot_base, signal_base, connection: Add some noexcept specs
+  (Kjell Ahlstedt) Bug #756484.
+* trackable, slot, signal: Remove noexcept from move operations.
+  (Kjell Ahlstedt) Bug #756484.
+* slot and signal: Add missing move constructors and move assignments
+  (Kjell Ahlstedt) Bug #756484.
+* signal_impl: =delete copy and move operations.
+  (Murray Cumming, Kjell Ahlstedt) Bug #756484
+* typed_slot_rep: =delete unimplemented copy and move operations.
+  (Murray Cumming, Kjell Ahlstedt) Bug #756484
+* slot_rep: =delete copy and move operations.
+ (Murray Cumming, Kjell Ahlstedt) Bug #756484
+
+
 2.6.1 (stable):
 
 * Add back deprecated adaptors/lambda API to avoid an unintented ABI break.
