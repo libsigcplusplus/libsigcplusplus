@@ -126,12 +126,29 @@ struct SIGC_API signal_impl
    */
   iterator_type connect(const slot_base& slot_);
 
+  /** Adds a slot at the bottom of the list of slots.
+   * @param slot_ The slot to add to the list of slots.
+   * @return An iterator pointing to the new slot in the list.
+   *
+   * @newin{2,8}
+   */
+  iterator_type connect(slot_base&& slot_);
+
   /** Adds a slot at the given position into the list of slots.
    * @param i An iterator indicating the position where @p slot_ should be inserted.
    * @param slot_ The slot to add to the list of slots.
    * @return An iterator pointing to the new slot in the list.
    */
   iterator_type insert(iterator_type i, const slot_base& slot_);
+
+  /** Adds a slot at the given position into the list of slots.
+   * @param i An iterator indicating the position where @p slot_ should be inserted.
+   * @param slot_ The slot to add to the list of slots.
+   * @return An iterator pointing to the new slot in the list.
+   *
+   * @newin{2,8}
+   */
+  iterator_type insert(iterator_type i, slot_base&& slot_);
 
   /** Removes the slot at the given position from the list of slots.
    * @param i An iterator pointing to the slot to be removed.
@@ -349,6 +366,16 @@ protected:
    */
   iterator_type connect(const slot_base& slot_);
 
+  /** Adds a slot at the end of the list of slots.
+   * With connect(), slots can also be added during signal emission.
+   * In this case, they won't be executed until the next emission occurs.
+   * @param slot_ The slot to add to the list of slots.
+   * @return An iterator pointing to the new slot in the list.
+   *
+   * @newin{2,8}
+   */
+  iterator_type connect(slot_base&& slot_);
+
   /** Adds a slot at the given position into the list of slots.
    * Note that this function does not work during signal emission!
    * @param i An iterator indicating the position where @e slot_ should be inserted.
@@ -356,6 +383,16 @@ protected:
    * @return An iterator pointing to the new slot in the list.
    */
   iterator_type insert(iterator_type i, const slot_base& slot_);
+
+  /** Adds a slot at the given position into the list of slots.
+   * Note that this function does not work during signal emission!
+   * @param i An iterator indicating the position where @e slot_ should be inserted.
+   * @param slot_ The slot to add to the list of slots.
+   * @return An iterator pointing to the new slot in the list.
+   *
+   * @newin{2,8}
+   */
+  iterator_type insert(iterator_type i, slot_base&& slot_);
 
   /** Removes the slot at the given position from the list of slots.
    * Note that this function does not work during signal emission!

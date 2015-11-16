@@ -341,6 +341,14 @@ public:
   iterator connect(const slot_type& slot_)
     { return iterator(signal_base::connect(static_cast<const slot_base&>(slot_))); }
 
+  /** Add a slot to the list of slots.
+   * @see connect(const slot_type& slot_).
+   *
+   * @newin{2,8}
+   */
+  iterator connect(slot_type&& slot_)
+    { return iterator(signal_base::connect(std::move(static_cast<slot_base&>(slot_)))); }
+
   /** Triggers the emission of the signal.
    * During signal emission all slots that have been connected
    * to the signal are invoked unless they are manually set into
@@ -780,11 +788,20 @@ struct slot_list
   iterator insert(iterator i, const slot_type& slot_)
     { return iterator(list_->insert(i.i_, static_cast<const slot_base&>(slot_))); }
 
+  iterator insert(iterator i, slot_type&& slot_)
+    { return iterator(list_->insert(i.i_, std::move(static_cast<slot_base&>(slot_)))); }
+
   void push_front(const slot_type& c)
     { insert(begin(), c); }
 
+  void push_front(slot_type&& c)
+    { insert(begin(), std::move(c)); }
+
   void push_back(const slot_type& c)
     { insert(end(), c); }
+
+  void push_back(slot_type&& c)
+    { insert(end(), std::move(c)); }
 
   iterator erase(iterator i)
     { return iterator(list_->erase(i.i_)); }

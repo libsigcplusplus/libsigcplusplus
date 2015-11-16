@@ -95,6 +95,11 @@ signal_impl::iterator_type signal_impl::connect(const slot_base& slot_)
   return insert(slots_.end(), slot_);
 }
 
+signal_impl::iterator_type signal_impl::connect(slot_base&& slot_)
+{
+  return insert(slots_.end(), std::move(slot_));
+}
+
 signal_impl::iterator_type signal_impl::erase(iterator_type i)
 {
   // Don't let signal_impl::notify() erase the slot. It would be more
@@ -114,6 +119,14 @@ signal_impl::iterator_type signal_impl::erase(iterator_type i)
 signal_impl::iterator_type signal_impl::insert(signal_impl::iterator_type i, const slot_base& slot_)
 {
   auto temp = slots_.insert(i, slot_);
+  auto si = new self_and_iter(this, temp);
+  temp->set_parent(si, &notify);
+  return temp;
+}
+
+signal_impl::iterator_type signal_impl::insert(signal_impl::iterator_type i, slot_base&& slot_)
+{
+  auto temp = slots_.insert(i, std::move(slot_));
   auto si = new self_and_iter(this, temp);
   temp->set_parent(si, &notify);
   return temp;
@@ -220,9 +233,19 @@ signal_base::iterator_type signal_base::connect(const slot_base& slot_)
   return impl()->connect(slot_);
 }
 
+signal_base::iterator_type signal_base::connect(slot_base&& slot_)
+{
+  return impl()->connect(std::move(slot_));
+}
+
 signal_base::iterator_type signal_base::insert(iterator_type i, const slot_base& slot_)
 {
   return impl()->insert(i, slot_);
+}
+
+signal_base::iterator_type signal_base::insert(iterator_type i, slot_base&& slot_)
+{
+  return impl()->insert(i, std::move(slot_));
 }
 
 signal_base::iterator_type signal_base::erase(iterator_type i)
