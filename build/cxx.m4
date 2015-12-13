@@ -111,7 +111,7 @@ AC_COMPILE_IFELSE([AC_LANG_PROGRAM(
 [
   sigcm_cxx_self_reference_in_member_initialization=yes
   AC_DEFINE([SIGC_SELF_REFERENCE_IN_MEMBER_INITIALIZATION],[1],
-            [does c++ compiler allows usage of member function in initialization of static member field.])
+            [does the C++ compiler allow usage of member function in initialization of static member field.])
 ],[
   sigcm_cxx_self_reference_in_member_initialization=no
 ])
