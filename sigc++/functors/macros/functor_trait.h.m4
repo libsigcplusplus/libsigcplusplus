@@ -113,7 +113,7 @@ struct nil {};
  */
 struct functor_base {};
 
-/** Helper macro, to determine if decltype() can deduce the result type of a functor.
+/** Helper class, to determine if decltype() can deduce the result type of a functor.
  *
  * @ingroup sigcfunctors
  */
@@ -129,17 +129,17 @@ private:
     int memory4;
   };
 
-  static biggerthanint check(...);
+  static biggerthanint checksize(...);
 
-  // If decltype(&X_functor::operator()) can't be evaluated, this check() overload
+  // If decltype(&X_functor::operator()) can't be evaluated, this checksize() overload
   // is ignored because of the SFINAE rule (Substitution Failure Is Not An Error).
   template <typename X_functor>
-  static int check(X_functor* obj, decltype(&X_functor::operator()) p = nullptr);
+  static int checksize(X_functor* obj, decltype(&X_functor::operator()) p = nullptr);
 
 public:
   static const bool value
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-    = sizeof(check(static_cast<T_functor*>(nullptr))) == sizeof(int)
+    = sizeof(checksize(static_cast<T_functor*>(nullptr))) == sizeof(int)
 #endif
     ;
 };
