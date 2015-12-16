@@ -568,6 +568,13 @@ divert(0)
 #include <sigc++/functors/slot.h>
 #include <sigc++/functors/mem_fun.h>
 
+//TODO: See comment in functor_trait.h.
+#if defined(nil) && defined(SIGC_PRAGMA_PUSH_POP_MACRO)
+  #define SIGC_NIL_HAS_BEEN_PUSHED 1
+  #pragma push_macro("nil")
+  #undef nil
+#endif
+
 //SIGC_TYPEDEF_REDEFINE_ALLOWED:
 // TODO: This should have its own test, but I can not create one that gives the error instead of just a warning. murrayc.
 // I have just used this because there is a correlation between these two problems.
@@ -1154,5 +1161,10 @@ SIGNAL(CALL_SIZE,CALL_SIZE)
 FOR(0,eval(CALL_SIZE-1),[[SIGNAL(%1)]])
 
 } /* namespace sigc */
+
+#ifdef SIGC_NIL_HAS_BEEN_PUSHED
+  #undef SIGC_NIL_HAS_BEEN_PUSHED
+  #pragma pop_macro("nil")
+#endif
 
 #endif /* _SIGC_SIGNAL_H_ */

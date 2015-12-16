@@ -81,6 +81,13 @@ _FIREWALL([ADAPTORS_RETYPE])
 #include <sigc++/functors/mem_fun.h>
 #include <sigc++/functors/slot.h>
 
+//TODO: See comment in functor_trait.h.
+#if defined(nil) && defined(SIGC_PRAGMA_PUSH_POP_MACRO)
+  #define SIGC_NIL_HAS_BEEN_PUSHED 1
+  #pragma push_macro("nil")
+  #undef nil
+#endif
+
 namespace sigc {
 
 /** @defgroup retype retype(), retype_return()
@@ -208,3 +215,8 @@ FOR(0,CALL_SIZE,[[RETYPE_MEM_FUNCTOR(%1,[bound_volatile_])]])dnl
 FOR(0,CALL_SIZE,[[RETYPE_MEM_FUNCTOR(%1,[bound_const_volatile_])]])dnl
 
 } /* namespace sigc */
+
+#ifdef SIGC_NIL_HAS_BEEN_PUSHED
+  #undef SIGC_NIL_HAS_BEEN_PUSHED
+  #pragma pop_macro("nil")
+#endif

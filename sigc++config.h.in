@@ -47,6 +47,7 @@
 # define SIGC_MSVC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD 1
 # define SIGC_NEW_DELETE_IN_LIBRARY_ONLY 1 /* To keep ABI compatibility */
 # define SIGC_HAVE_NAMESPACE_STD 1
+# define SIGC_PRAGMA_PUSH_POP_MACRO 1
 
 #if (_MSC_VER < 1900) && !defined (noexcept)
 #define _ALLOW_KEYWORD_MACROS 1
@@ -72,6 +73,9 @@
 /* does the C++ compiler allow usage of member function in initialization of
    static member field. */
 # undef SIGC_SELF_REFERENCE_IN_MEMBER_INITIALIZATION
+
+/* does the C++ preprocessor support pragma push_macro() and pop_macro(). */
+# undef SIGC_PRAGMA_PUSH_POP_MACRO
 
 #endif /* !SIGC_MSC */
 

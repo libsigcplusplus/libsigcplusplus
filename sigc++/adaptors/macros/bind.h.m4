@@ -235,6 +235,13 @@ _FIREWALL([ADAPTORS_BIND])
 #include <sigc++/adaptors/adaptor_trait.h>
 #include <sigc++/adaptors/bound_argument.h>
 
+//TODO: See comment in functor_trait.h.
+#if defined(nil) && defined(SIGC_PRAGMA_PUSH_POP_MACRO)
+  #define SIGC_NIL_HAS_BEEN_PUSHED 1
+  #pragma push_macro("nil")
+  #undef nil
+#endif
+
 namespace sigc {
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -403,3 +410,8 @@ bind(const T_functor& _A_func, T_bound1 _A_b1)
 FOR(1,CALL_SIZE,[[BIND_COUNT(%1)]])dnl
 
 } /* namespace sigc */
+
+#ifdef SIGC_NIL_HAS_BEEN_PUSHED
+  #undef SIGC_NIL_HAS_BEEN_PUSHED
+  #pragma pop_macro("nil")
+#endif
