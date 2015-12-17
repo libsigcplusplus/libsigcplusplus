@@ -18,7 +18,6 @@
  */
 
 #include <sigc++/connection.h>
-using namespace std;
 
 namespace sigc {
 

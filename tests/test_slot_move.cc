@@ -11,7 +11,6 @@
 //The Tru64 compiler seems to need this to avoid an unresolved symbol
 //See bug #161503
 #include <new>
-SIGC_USING_STD(new)
 
 namespace
 {
