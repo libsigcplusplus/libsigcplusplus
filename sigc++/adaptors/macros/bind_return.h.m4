@@ -18,27 +18,6 @@ divert(-1)
 
 include(template.macros.m4)
 
-define([BIND_RETURN_OPERATOR],[dnl
-  /** Invokes the wrapped functor passing on the arguments.dnl
-FOR(1, $1,[
-   * @param _A_a%1 Argument to be passed on to the functor.])
-   * @return The fixed return value.
-   */
-  template <LOOP(class T_arg%1, $1)>
-  inline typename unwrap_reference<T_return>::type operator()(LOOP(T_arg%1 _A_a%1, $1))
-    { this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<LOOP(_P_(T_arg%1), $1)>
-        (LOOP(_A_a%1, $1)); return ret_value_.invoke();
-    }
-
-  #ifndef SIGC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD
-  template <LOOP(class T_arg%1, $1)>
-  inline typename unwrap_reference<T_return>::type sun_forte_workaround(LOOP(T_arg%1 _A_a%1, $1))
-    { this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<LOOP(_P_(T_arg%1), $1)>
-        (LOOP(_A_a%1, $1)); return ret_value_.invoke();
-    }
-  #endif
-
-])
 
 divert(0)dnl
 _FIREWALL([ADAPTORS_BIND_RETURN])
@@ -60,7 +39,7 @@ template <class T_return, class T_functor>
 struct bind_return_functor : public adapts<T_functor>
 {
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-  template <LOOP(class T_arg%1=void, CALL_SIZE)>
+  template <class... T_arg>
   struct deduce_result_type
     { typedef typename unwrap_reference<T_return>::type type; };
 #endif
@@ -71,7 +50,25 @@ struct bind_return_functor : public adapts<T_functor>
    */
   typename unwrap_reference<T_return>::type operator()();
 
-FOR(1,CALL_SIZE,[[BIND_RETURN_OPERATOR(%1)]])dnl
+
+  /** Invokes the wrapped functor passing on the arguments.
+   * @param _A_a... Arguments to be passed on to the functor.
+   * @return The fixed return value.
+   */
+  template <class... T_arg>
+  inline typename unwrap_reference<T_return>::type operator()(T_arg... _A_a)
+    { this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<type_trait_pass_t<T_arg>...>
+        (_A_a...); return ret_value_.invoke();
+    }
+
+  #ifndef SIGC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD
+  template <class... T_arg>
+  inline typename unwrap_reference<T_return>::type sun_forte_workaround(T_arg... _A_a)
+    { this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<type_trait_pass_t<T_arg>...>
+        (_A_a...); return ret_value_.invoke();
+    }
+  #endif
+
 
   /** Constructs a bind_return_functor object that fixes the return value to @p _A_ret_value.
    * @param _A_functor Functor to invoke from operator()().
