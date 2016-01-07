@@ -41,22 +41,8 @@ ifelse($1,0,[dnl
 
 ])dnl
 ])
-define([RETYPE_POINTER_FUNCTOR],[dnl
-/** Creates an adaptor of type sigc::retype_functor which performs C-style casts on the parameters passed on to the functor.
- * This function template specialization works on sigc::pointer_functor.
- *
- * @param _A_functor Functor that should be wrapped.
- * @return Adaptor that executes @e _A_functor performing C-style casts on the paramters passed on.
- *
- * @ingroup retype
- */
-template <LIST(LOOP(class T_arg%1, $1), class T_return)>
-inline retype_functor<LIST(pointer_functor<LIST(T_return, LOOP(T_arg%1, $1))>, LOOP(T_arg%1, $1)) >
-retype(const pointer_functor<LIST(T_return, LOOP(T_arg%1, $1))>& _A_functor)
-{ return retype_functor<LIST(pointer_functor<LIST(T_return, LOOP(T_arg%1, $1))>, LOOP(T_arg%1, $1)) >
-    (_A_functor); }
 
-])
+
 define([RETYPE_MEM_FUNCTOR],[dnl
 /** Creates an adaptor of type sigc::retype_functor which performs C-style casts on the parameters passed on to the functor.
  * This function template specialization works on sigc::$2[]mem_functor.
@@ -203,7 +189,20 @@ retype(const slot<LIST(T_return, LOOP(T_arg%1, CALL_SIZE))>& _A_functor)
     (_A_functor); }
 
 
-FOR(0,CALL_SIZE,[[RETYPE_POINTER_FUNCTOR(%1)]])dnl
+/** Creates an adaptor of type sigc::retype_functor which performs C-style casts on the parameters passed on to the functor.
+ * This function template specialization works on sigc::pointer_functor.
+ *
+ * @param _A_functor Functor that should be wrapped.
+ * @return Adaptor that executes @e _A_functor performing C-style casts on the paramters passed on.
+ *
+ * @ingroup retype
+ */
+template <class T_return, class... T_arg>
+inline retype_functor<pointer_functor<T_return, T_arg...>, T_arg... >
+retype(const pointer_functor<T_return, T_arg...>& _A_functor)
+{ return retype_functor<pointer_functor<T_return, T_arg...>, T_arg... >
+    (_A_functor); }
+
 
 FOR(0,CALL_SIZE,[[RETYPE_MEM_FUNCTOR(%1,[])]])dnl
 FOR(0,CALL_SIZE,[[RETYPE_MEM_FUNCTOR(%1,[const_])]])dnl
