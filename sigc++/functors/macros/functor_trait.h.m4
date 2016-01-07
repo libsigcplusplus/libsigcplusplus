@@ -17,33 +17,6 @@ dnl
 divert(-1)
 include(template.macros.m4)
 
-define([FUNCTOR_PTR_FUN],[dnl
-template <LIST(LOOP(class T_arg%1, $1), class T_return)>
-struct functor_trait<T_return (*)(LOOP(T_arg%1, $1)), false, false>
-{
-  typedef T_return result_type;
-  typedef pointer_functor<LIST(T_return, LOOP(T_arg%1, $1))> functor_type;
-};
-
-])
-define([FUNCTOR_MEM_FUN],[dnl
-template <LIST(class T_return, class T_obj, class... T_arg)> class mem_functor;
-template <LIST(class T_return, class T_obj, class... T_arg)> class const_mem_functor;
-template <LIST(LOOP(class T_arg%1, $1), class T_return, class T_obj)>
-struct functor_trait<T_return (T_obj::*)(LOOP(T_arg%1, $1)), false, false>
-{
-  typedef T_return result_type;
-  typedef mem_functor<LIST(T_return, T_obj, LOOP(T_arg%1, $1))> functor_type;
-};
-template <LIST(LOOP(class T_arg%1, $1), class T_return, class T_obj)>
-struct functor_trait<T_return (T_obj::*)(LOOP(T_arg%1, $1)) const, false, false>
-{
-  typedef T_return result_type;
-  typedef const_mem_functor<LIST(T_return, T_obj, LOOP(T_arg%1, $1))> functor_type;
-};
-
-])
-
 divert(0)dnl
 _FIREWALL([FUNCTORS_FUNCTOR_TRAIT])
 #include <sigc++/type_traits.h>
@@ -273,8 +246,36 @@ struct functor_trait<T_functor, false, true>   \
 template <class T_return, class... T_args>
 class pointer_functor;
 
-FOR(0,CALL_SIZE,[[FUNCTOR_PTR_FUN(%1)]])
-FOR(0,CALL_SIZE,[[FUNCTOR_MEM_FUN(%1)]])
+
+//functor ptr fun:
+
+template <class T_return, class... T_arg>
+struct functor_trait<T_return (*)(T_arg...), false, false>
+{
+  typedef T_return result_type;
+  typedef pointer_functor<T_return, T_arg...> functor_type;
+};
+
+
+//functor mem fun:
+
+template <class T_return, class T_obj, class... T_arg> class mem_functor;
+template <class T_return, class T_obj, class... T_arg> class const_mem_functor;
+
+template <class T_return, class T_obj, class... T_arg>
+struct functor_trait<T_return (T_obj::*)(T_arg...), false, false>
+{
+  typedef T_return result_type;
+  typedef mem_functor<T_return, T_obj, T_arg...> functor_type;
+};
+
+template <class T_return, class T_obj, class... T_arg>
+struct functor_trait<T_return (T_obj::*)(T_arg...) const, false, false>
+{
+  typedef T_return result_type;
+  typedef const_mem_functor<T_return, T_obj, T_arg...> functor_type;
+};
+
 #endif // DOXYGEN_SHOULD_SKIP_THIS
 
 } /* namespace sigc */
