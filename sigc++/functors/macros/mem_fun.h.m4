@@ -29,7 +29,7 @@ define([MEMBER_FUNCTOR],[dnl
  *
  * @ingroup mem_fun
  */
-template <LIST(class T_return, class T_obj, class... T_arg)>
+template <class T_return, class T_obj, class... T_arg>
 class [$1]mem_functor : public functor_base
 {
 public:
@@ -49,7 +49,7 @@ public:
    * @param _A_a... Argument to be passed on to the method.
    * @return The return value of the method invocation.
    */
-  T_return operator()(LIST($2 T_obj* _A_obj, type_trait_take_t<T_arg>... _A_a)) const
+  T_return operator()($2 T_obj* _A_obj, type_trait_take_t<T_arg>... _A_a) const
     { return (_A_obj->*(this->func_ptr_))(_A_a...); }
 
   /** Execute the wrapped method operating on the passed instance.
@@ -57,7 +57,7 @@ public:
    * @param _A_a... Argument to be passed on to the method.
    * @return The return value of the method invocation.
    */
-  T_return operator()(LIST($2 T_obj& _A_obj, type_trait_take_t<T_arg>... _A_a)) const
+  T_return operator()($2 T_obj& _A_obj, type_trait_take_t<T_arg>... _A_a) const
     { return (_A_obj.*func_ptr_)(_A_a...); }
 
 protected:
@@ -77,11 +77,11 @@ define([BOUND_MEMBER_FUNCTOR],[dnl
  *
  * @ingroup mem_fun
  */
-template <LIST(class T_return, class T_obj, class... T_arg)>
+template <class T_return, class T_obj, class... T_arg>
 class bound_[$1]mem_functor
-  : public [$1]mem_functor<LIST(T_return, T_obj, T_arg...)>
+  : public [$1]mem_functor<T_return, T_obj, T_arg...>
 {
-  typedef [$1]mem_functor<LIST(T_return, T_obj, T_arg...)> base_type_;
+  typedef [$1]mem_functor<T_return, T_obj, T_arg...> base_type_;
 public:
   typedef typename base_type_::function_type function_type;
 
@@ -124,12 +124,12 @@ public:
  *
  * @ingroup mem_fun
  */
-template <LIST(class T_return, class T_obj, class... T_arg)>
-struct visitor<bound_[$1]mem_functor<LIST(T_return, T_obj, T_arg...)> >
+template <class T_return, class T_obj, class... T_arg>
+struct visitor<bound_[$1]mem_functor<T_return, T_obj, T_arg...> >
 {
   template <class T_action>
   static void do_visit_each(const T_action& _A_action,
-                            const bound_[$1]mem_functor<LIST(T_return, T_obj, T_arg...)>& _A_target)
+                            const bound_[$1]mem_functor<T_return, T_obj, T_arg...>& _A_target)
   {
     sigc::visit_each(_A_action, _A_target.obj_);
   }
@@ -144,10 +144,10 @@ define([MEM_FUN],[dnl
  *
  * @ingroup mem_fun
  */
-template <LIST(class T_return, class T_obj, class... T_arg)>
-inline [$1]mem_functor<LIST(T_return, T_obj, T_arg...)>
+template <class T_return, class T_obj, class... T_arg>
+inline [$1]mem_functor<T_return, T_obj, T_arg...>
 mem_fun(T_return (T_obj::*_A_func)(T_arg...) $3)
-{ return [$1]mem_functor<LIST(T_return, T_obj, T_arg...)>(_A_func); }
+{ return [$1]mem_functor<T_return, T_obj, T_arg...>(_A_func); }
 
 ])
 define([BOUND_MEM_FUN],[dnl
@@ -158,10 +158,10 @@ define([BOUND_MEM_FUN],[dnl
  *
  * @ingroup mem_fun
  */
-template <LIST(class T_return, class T_obj, class T_obj2, class... T_arg)>
-inline bound_[$1]mem_functor<LIST(T_return, T_obj, T_arg...)>
+template <class T_return, class T_obj, class T_obj2, class... T_arg>
+inline bound_[$1]mem_functor<T_return, T_obj, T_arg...>
 mem_fun(/*$2*/ T_obj* _A_obj, T_return (T_obj2::*_A_func)(T_arg...) $3)
-{ return bound_[$1]mem_functor<LIST(T_return, T_obj, T_arg...)>(_A_obj, _A_func); }
+{ return bound_[$1]mem_functor<T_return, T_obj, T_arg...>(_A_obj, _A_func); }
 
 /** Creates a functor of type sigc::bound_[$1]mem_functor which encapsulates a method and an object instance.
  * @param _A_obj Reference to object instance the functor should operate on.
@@ -170,10 +170,10 @@ mem_fun(/*$2*/ T_obj* _A_obj, T_return (T_obj2::*_A_func)(T_arg...) $3)
  *
  * @ingroup mem_fun
  */
-template <LIST(class T_return, class T_obj, class T_obj2, class... T_arg)>
-inline bound_[$1]mem_functor<LIST(T_return, T_obj, T_arg...)>
+template <class T_return, class T_obj, class T_obj2, class... T_arg>
+inline bound_[$1]mem_functor<T_return, T_obj, T_arg...>
 mem_fun(/*$2*/ T_obj& _A_obj, T_return (T_obj2::*_A_func)(T_arg...) $3)
-{ return bound_[$1]mem_functor<LIST(T_return, T_obj, T_arg...)>(_A_obj, _A_func); }
+{ return bound_[$1]mem_functor<T_return, T_obj, T_arg...>(_A_obj, _A_func); }
 
 ])
 
