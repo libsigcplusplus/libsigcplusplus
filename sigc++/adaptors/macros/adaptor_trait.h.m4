@@ -41,34 +41,6 @@ dnl via the callof<> template - a tricky way to detect the return
 dnl type of a functor when the argument types are known. Martin.
 
 ])
-define([ADAPTOR_DO],[dnl
-ifelse($1,0,[dnl
-dnl  typename internal::callof_safe0<T_functor>::result_type // doesn't compile if T_functor has an overloaded operator()!
-dnl  typename functor_trait<T_functor>::result_type
-dnl  operator()() const
-dnl    { return functor_(); }
-],[dnl
-  /** Invokes the wrapped functor passing on the arguments.dnl
-FOR(1, $1,[
-   * @param _A_arg%1 Argument to be passed on to the functor.])
-   * @return The return value of the functor invocation.
-   */
-  template <LOOP([class T_arg%1], $1)>
-  typename deduce_result_type<LOOP(T_arg%1, $1)>::type
-  operator()(LOOP(T_arg%1 _A_arg%1, $1)) const
-    { return functor_(LOOP(_A_arg%1, $1)); }
-
-  #ifndef SIGC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD
-  template <LOOP([class T_arg%1], $1)>
-  typename deduce_result_type<LOOP(T_arg%1, $1)>::type
-  sun_forte_workaround(LOOP(T_arg%1 _A_arg%1, $1)) const
-    { //Just calling operator() tries to copy the argument:
-      return functor_(LOOP(_A_arg%1, $1));
-    }
-  #endif
-
-])dnl
-])
 
 divert(0)dnl
 _FIREWALL([ADAPTORS_ADAPTOR_TRAIT])
@@ -149,7 +121,26 @@ struct adaptor_functor : public adaptor_base
     { return operator(); }
   #endif
 
-FOR(0,CALL_SIZE,[[ADAPTOR_DO(%1)]])dnl
+
+  /** Invokes the wrapped functor passing on the arguments.
+   * @param _A_arg... Arguments to be passed on to the functor.
+   * @return The return value of the functor invocation.
+   */
+  template <class... T_arg>
+  typename deduce_result_type<T_arg...>::type
+  operator()(T_arg... _A_arg) const
+    { return functor_(_A_arg...); }
+
+  #ifndef SIGC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD
+  template <class... T_arg>
+  typename deduce_result_type<T_arg...>::type
+  sun_forte_workaround(T_arg... _A_arg) const
+    { //Just calling operator() tries to copy the argument:
+      return functor_(_A_arg...);
+    }
+  #endif
+
+
   /// Constructs an invalid functor.
   adaptor_functor()
     {}
