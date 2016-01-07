@@ -1,6 +1,5 @@
 /limit_reference.h
 /signal.h
-/adaptors/adaptor_trait.h
 /adaptors/bind.h
 /adaptors/bind_return.h
 /adaptors/compose.h

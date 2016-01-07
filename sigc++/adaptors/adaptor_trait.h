@@ -1,49 +1,7 @@
-dnl Copyright 2002, The libsigc++ Development Team
-dnl
-dnl This library is free software; you can redistribute it and/or
-dnl modify it under the terms of the GNU Lesser General Public
-dnl License as published by the Free Software Foundation; either
-dnl version 2.1 of the License, or (at your option) any later version.
-dnl
-dnl This library is distributed in the hope that it will be useful,
-dnl but WITHOUT ANY WARRANTY; without even the implied warranty of
-dnl MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
-dnl Lesser General Public License for more details.
-dnl
-dnl You should have received a copy of the GNU Lesser General Public
-dnl License along with this library; if not, write to the Free Software
-dnl Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
-dnl
-divert(-1)
-include(template.macros.m4)
-
-dnl
-dnl The idea here is simple.  To prevent the need to
-dnl specializing every adaptor for every type of functor
-dnl and worse non-functors like function pointers, we
-dnl will make an adaptor trait which can take ordinary
-dnl functors and make them adaptor functors for which
-dnl we will of course be able to avoid excess copies.
-dnl (in theory)
-dnl
-dnl this all depends on partial specialization to allow
-dnl us to do
-dnl   functor_.template operator() <types> (args);
-dnl
-
-dnl I don't understand much of the above. However, I can
-dnl see that adaptors are implemented like they are because
-dnl there is no way to extract the return type and the argument
-dnl types from a functor type. Therefore, operator() is templated.
-dnl It's instatiated in slot_call#<>::operator() where the
-dnl argument types are known. The return type is finally determined
-dnl via the callof<> template - a tricky way to detect the return
-dnl type of a functor when the argument types are known. Martin.
-
-])
-
-divert(0)dnl
-_FIREWALL([ADAPTORS_ADAPTOR_TRAIT])
+// -*- c++ -*-
+/* Do not edit! -- generated file */
+#ifndef _SIGC_ADAPTORS_ADAPTOR_TRAIT_H_
+#define _SIGC_ADAPTORS_ADAPTOR_TRAIT_H_
 #include <sigc++config.h> //To get SIGC_TEMPLATE_KEYWORD_OPERATOR_OVERLOAD
 #include <sigc++/visit_each.h>
 #include <sigc++/functors/functor_trait.h>
@@ -51,6 +9,30 @@ _FIREWALL([ADAPTORS_ADAPTOR_TRAIT])
 #include <sigc++/functors/mem_fun.h>
 #include <sigc++/adaptors/deduce_result_type.h>
 
+/*
+ * The idea here is simple.  To prevent the need to
+ * specializing every adaptor for every type of functor
+ * and worse non-functors like function pointers, we
+ * will make an adaptor trait which can take ordinary
+ * functors and make them adaptor functors for which
+ * we will of course be able to avoid excess copies.
+ * (in theory)
+ *
+ * this all depends on partial specialization to allow
+ * us to do
+ *   functor_.template operator() <types> (args);
+ *
+ *
+ * I don't understand much of the above. However, I can
+ * see that adaptors are implemented like they are because
+ * there is no way to extract the return type and the argument
+ * types from a functor type. Therefore, operator() is templated.
+ * It's instatiated in slot_call#<>::operator() where the
+ * argument types are known. The return type is finally determined
+ * via the callof<> template - a tricky way to detect the return
+ * type of a functor when the argument types are known. Martin.
+ */
+ 
 namespace sigc {
 
 // Call either operator()<>() or sun_forte_workaround<>(),
@@ -315,3 +297,4 @@ struct adapts : public adaptor_base
 };
 
 } /* namespace sigc */
+#endif /* _SIGC_ADAPTORS_ADAPTOR_TRAIT_H_ */
