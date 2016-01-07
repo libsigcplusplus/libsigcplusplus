@@ -1,25 +1,5 @@
-dnl Copyright 2002, The libsigc++ Development Team
-dnl
-dnl This library is free software; you can redistribute it and/or
-dnl modify it under the terms of the GNU Lesser General Public
-dnl License as published by the Free Software Foundation; either
-dnl version 2.1 of the License, or (at your option) any later version.
-dnl
-dnl This library is distributed in the hope that it will be useful,
-dnl but WITHOUT ANY WARRANTY; without even the implied warranty of
-dnl MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
-dnl Lesser General Public License for more details.
-dnl
-dnl You should have received a copy of the GNU Lesser General Public
-dnl License along with this library; if not, write to the Free Software
-dnl Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
-dnl
-divert(-1)
-
-include(template.macros.m4)
-
-divert(0)dnl
-_FIREWALL([ADAPTORS_RETYPE_RETURN])
+#ifndef _SIGC_ADAPTORS_RETYPE_RETURN_H_
+#define _SIGC_ADAPTORS_RETYPE_RETURN_H_
 #include <sigc++/adaptors/adaptor_trait.h>
 
 namespace sigc {
@@ -66,7 +46,7 @@ struct retype_return_functor : public adapts<T_functor>
   /** Constructs a retype_return_functor object that perform a C-style cast on the return value of the passed functor.
    * @param _A_functor Functor to invoke from operator()().
    */
-  explicit retype_return_functor(_R_(T_functor) _A_functor)
+  explicit retype_return_functor(type_trait_take_t<T_functor> _A_functor)
     : adapts<T_functor>(_A_functor)
     {}
 };
@@ -113,7 +93,7 @@ struct retype_return_functor<void, T_functor> : public adapts<T_functor>
 
 
   retype_return_functor() {}
-  retype_return_functor(_R_(T_functor) _A_functor)
+  retype_return_functor(type_trait_take_t<T_functor> _A_functor)
     : adapts<T_functor>(_A_functor)
     {}
 };
@@ -168,3 +148,4 @@ hide_return(const T_functor& _A_functor)
   { return retype_return_functor<void, T_functor>(_A_functor); }
 
 } /* namespace sigc */
+#endif /* _SIGC_ADAPTORS_RETYPE_RETURN_H_ */
