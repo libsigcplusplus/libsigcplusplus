@@ -18,39 +18,6 @@ divert(-1)
 
 include(template.macros.m4)
 
-define([RETYPE_RETURN_OPERATOR],[dnl
-  template <LOOP(class T_arg%1, $1)>
-  inline T_return operator()(LOOP(T_arg%1 _A_a%1, $1))
-    { return T_return(this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<LOOP(_P_(T_arg%1), $1)>
-        (LOOP(_A_a%1, $1)));
-    }
-
-  #ifndef SIGC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD
-  template <LOOP(class T_arg%1, $1)>
-  inline T_return sun_forte_workaround(LOOP(T_arg%1 _A_a%1, $1))
-    { return T_return(this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<LOOP(_P_(T_arg%1), $1)>
-        (LOOP(_A_a%1, $1)));
-    }
-  #endif
-
-])
-define([RETYPE_RETURN_VOID_OPERATOR],[dnl
-  template <LOOP(class T_arg%1, $1)>
-  inline void operator()(LOOP(T_arg%1 _A_a%1, $1))
-    { this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<LOOP(_P_(T_arg%1), $1)>
-        (LOOP(_A_a%1, $1));
-    }
-
-  #ifndef SIGC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD
-  template <LOOP(class T_arg%1, $1)>
-  inline void sun_forte_workaround(LOOP(T_arg%1 _A_a%1, $1))
-    { this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<LOOP(_P_(T_arg%1), $1)>
-        (LOOP(_A_a%1, $1));
-    }
-  #endif
-
-])
-
 divert(0)dnl
 _FIREWALL([ADAPTORS_RETYPE_RETURN])
 #include <sigc++/adaptors/adaptor_trait.h>
@@ -70,7 +37,7 @@ template <class T_return, class T_functor>
 struct retype_return_functor : public adapts<T_functor>
 {
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-  template <LOOP(class T_arg%1=void, CALL_SIZE)>
+  template <class... T_arg>
   struct deduce_result_type
     { typedef T_return type; };
 #endif
@@ -78,7 +45,22 @@ struct retype_return_functor : public adapts<T_functor>
 
   T_return operator()();
 
-FOR(1,CALL_SIZE,[[RETYPE_RETURN_OPERATOR(%1)]])dnl
+
+  template <class... T_arg>
+  inline T_return operator()(T_arg... _A_a)
+    { return T_return(this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<T_arg...>
+        (_A_a...));
+    }
+
+  #ifndef SIGC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD
+  template <class... T_arg>
+  inline T_return sun_forte_workaround(T_arg... _A_a)
+    { return T_return(this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<T_arg...>
+        (_A_a...));
+    }
+  #endif
+
+
   retype_return_functor() {}
 
   /** Constructs a retype_return_functor object that perform a C-style cast on the return value of the passed functor.
@@ -106,7 +88,7 @@ template <class T_functor>
 struct retype_return_functor<void, T_functor> : public adapts<T_functor>
 {
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-  template <LOOP(class T_arg%1=void, CALL_SIZE)>
+  template <class... T_arg>
   struct deduce_result_type
     { typedef void type; };
 #endif
@@ -114,7 +96,22 @@ struct retype_return_functor<void, T_functor> : public adapts<T_functor>
 
   void operator()();
 
-FOR(1,CALL_SIZE,[[RETYPE_RETURN_VOID_OPERATOR(%1)]])dnl
+
+  template <class... T_arg>
+  inline void operator()(T_arg... _A_a)
+    { this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<T_arg...>
+        (_A_a...);
+    }
+
+  #ifndef SIGC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD
+  template <class... T_arg>
+  inline void sun_forte_workaround(T_arg... _A_a)
+    { this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<T_arg...>
+        (_A_a...);
+    }
+  #endif
+
+
   retype_return_functor() {}
   retype_return_functor(_R_(T_functor) _A_functor)
     : adapts<T_functor>(_A_functor)
