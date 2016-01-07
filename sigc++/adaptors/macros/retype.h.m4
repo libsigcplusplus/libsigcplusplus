@@ -182,10 +182,10 @@ struct visitor<retype_functor<LIST(T_functor, LOOP(T_type%1, CALL_SIZE))> >
  *
  * @ingroup retype
  */
-template <LIST(class T_return, LOOP(class T_arg%1, CALL_SIZE))>
-inline retype_functor<LIST(slot<LIST(T_return, LOOP(T_arg%1, CALL_SIZE))>, LOOP(T_arg%1, CALL_SIZE)) >
-retype(const slot<LIST(T_return, LOOP(T_arg%1, CALL_SIZE))>& _A_functor)
-{ return retype_functor<LIST(slot<LIST(T_return, LOOP(T_arg%1, CALL_SIZE))>, LOOP(T_arg%1, CALL_SIZE)) >
+template <LIST(class T_return, class... T_arg)>
+inline retype_functor<slot<T_return, T_arg...>, T_arg...>
+retype(const slot<T_return, T_arg...>& _A_functor)
+{ return retype_functor<slot<T_return, T_arg...>, T_arg...>
     (_A_functor); }
 
 
