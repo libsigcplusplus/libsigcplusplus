@@ -135,7 +135,7 @@ struct retype_functor
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
   template <LOOP(class T_arg%1=void, CALL_SIZE)>
   struct deduce_result_type
-    { typedef typename adaptor_type::template deduce_result_type<LOOP(_P_(T_arg%1),CALL_SIZE)>::type type; };
+    { typedef typename adaptor_type::template deduce_result_type<LOOP(type_trait_pass_t<T_arg%1>,CALL_SIZE)>::type type; };
 #endif
   typedef typename adapts<T_functor>::result_type result_type;
 

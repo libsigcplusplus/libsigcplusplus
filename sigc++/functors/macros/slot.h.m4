@@ -45,7 +45,7 @@ class slot$1
 {
 public:
   typedef T_return result_type;
-FOR(1, $1,[  typedef _R_(T_arg%1) arg%1_type_;
+FOR(1, $1,[  typedef type_trait_take_t<T_arg%1> arg%1_type_;
 ])
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -327,14 +327,14 @@ FOR(1, $1,[
    * @param _A_a%1 Argument to be passed on to the functor.])
    * @return The return values of the functor invocation.
    */
-  static T_return call_it(LIST(slot_rep* rep, LOOP(_R_(T_arg%1) a_%1, $1)))
+  static T_return call_it(LIST(slot_rep* rep, LOOP(type_trait_take_t<T_arg%1> a_%1, $1)))
     {
       typedef typed_slot_rep<T_functor> typed_slot;
       typed_slot *typed_rep = static_cast<typed_slot*>(rep);dnl
 ifelse($1,0,[
       return (typed_rep->functor_)();
 ],[
-      return (typed_rep->functor_).SIGC_WORKAROUND_OPERATOR_PARENTHESES<LOOP([_R_(T_arg%1)],$1)>
+      return (typed_rep->functor_).SIGC_WORKAROUND_OPERATOR_PARENTHESES<LOOP([type_trait_take_t<T_arg%1>],$1)>
                (LOOP(a_%1, $1));
 ])dnl
     }

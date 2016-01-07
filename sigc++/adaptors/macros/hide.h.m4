@@ -27,9 +27,9 @@ ifelse(eval($1 < 2),1,[#ifndef DOXYGEN_SHOULD_SKIP_THIS
   template <LOOP(class T_arg%1=void, CALL_SIZE)>
   struct deduce_result_type
 ifelse($1,0,[dnl
-    { typedef typename adaptor_type::template deduce_result_type<LOOP(_P_(T_arg%1),eval($2-1))>::type type; };
+    { typedef typename adaptor_type::template deduce_result_type<LOOP(type_trait_pass_t<T_arg%1>, eval($2-1))>::type type; };
 ],[dnl
-    { typedef typename adaptor_type::template deduce_result_type<LIST(LOOP(_P_(T_arg%1),eval($1-1)), FOR(eval($1+1),$2,[_P_(T_arg%1),]))>::type type; };
+    { typedef typename adaptor_type::template deduce_result_type<LIST(LOOP(type_trait_pass_t<T_arg%1>, eval($1-1)), FOR(eval($1+1),$2,[type_trait_pass_t<T_arg%1>,]))>::type type; };
 ])dnl
 ifelse(eval($1 < 2),1,[#endif // DOXYGEN_SHOULD_SKIP_THIS
 ],)dnl
@@ -63,14 +63,14 @@ FOR(1, eval($2-1),[
   template <LOOP([class T_arg%1], $2)>
   typename deduce_result_type<LOOP(T_arg%1, $2)>::type
   operator()(LOOP(T_arg%1 _A_a%1, eval($2-1)), T_arg$2)
-    { return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<LIST(FOR(1,eval($2-1),[_P_(T_arg%1),]))>
+    { return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<LIST(FOR(1,eval($2-1),[type_trait_pass_t<T_arg%1>,]))>
         (LIST(FOR(1,eval($2-1),[_A_a%1,]))); }
 
   #ifndef SIGC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD
   template <LOOP([class T_arg%1], $2)>
   typename deduce_result_type<LOOP(T_arg%1, $2)>::type
   sun_forte_workaround(LOOP(T_arg%1 _A_a%1, eval($2-1)), T_arg$2)
-    { return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<LIST(FOR(1,eval($2-1),[_P_(T_arg%1),]))>
+    { return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<LIST(FOR(1,eval($2-1),[type_trait_pass_t<T_arg%1>,]))>
         (LIST(FOR(1,eval($2-1),[_A_a%1,]))); }
   #endif
 
@@ -86,14 +86,14 @@ FOR(eval($1+1), $2,[
   template <LOOP([class T_arg%1], $2)>
   typename deduce_result_type<LOOP(T_arg%1, $2)>::type
   operator()(LIST(FOR(1,eval($1-1),[T_arg%1 _A_a%1,]),T_arg$1,FOR(eval($1+1),$2,[T_arg%1 _A_a%1,])))
-    { return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<LIST(FOR(1,eval($1-1),[_P_(T_arg%1),]),FOR(eval($1+1), $2,[_P_(T_arg%1),]))>
+    { return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<LIST(FOR(1,eval($1-1),[type_trait_pass_t<T_arg%1>,]),FOR(eval($1+1), $2,[type_trait_pass_t<T_arg%1>,]))>
         (LIST(FOR(1,eval($1-1),[_A_a%1,]),FOR(eval($1+1),$2,[_A_a%1,]))); }
 
   #ifndef SIGC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD
   template <LOOP([class T_arg%1], $2)>
   typename deduce_result_type<LOOP(T_arg%1, $2)>::type
   sun_forte_workaround(LIST(FOR(1,eval($1-1),[T_arg%1 _A_a%1,]),T_arg$1,FOR(eval($1+1),$2,[T_arg%1 _A_a%1,])))
-    { return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<LIST(FOR(1,eval($1-1),[_P_(T_arg%1),]),FOR(eval($1+1), $2,[_P_(T_arg%1),]))>
+    { return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<LIST(FOR(1,eval($1-1),[type_trait_pass_t<T_arg%1>,]),FOR(eval($1+1), $2,[type_trait_pass_t<T_arg%1>,]))>
         (LIST(FOR(1,eval($1-1),[_A_a%1,]),FOR(eval($1+1),$2,[_A_a%1,]))); }
   #endif
 
