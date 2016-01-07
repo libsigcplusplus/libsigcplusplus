@@ -13,6 +13,5 @@
 /adaptors/lambda/base.h
 /adaptors/lambda/lambda.cc
 /adaptors/lambda/select.h
-/functors/functor_trait.h
 /functors/mem_fun.h
 /functors/slot.h
