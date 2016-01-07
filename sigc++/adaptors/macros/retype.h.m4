@@ -67,9 +67,9 @@ define([RETYPE_MEM_FUNCTOR],[dnl
  * @ingroup retype
  */
 template <LIST(class T_return, class T_obj, LOOP(class T_arg%1, $1))>
-inline retype_functor<LIST($2[]mem_functor$1<LIST(T_return, T_obj, LOOP(T_arg%1, $1))>, LOOP(T_arg%1, $1)) >
-retype(const $2[]mem_functor$1<LIST(T_return, T_obj, LOOP(T_arg%1, $1))>& _A_functor)
-{ return retype_functor<LIST($2[]mem_functor$1<LIST(T_return, T_obj, LOOP(T_arg%1, $1))>, LOOP(T_arg%1, $1)) >
+inline retype_functor<LIST($2[]mem_functor<LIST(T_return, T_obj, LOOP(T_arg%1, $1))>, LOOP(T_arg%1, $1)) >
+retype(const $2[]mem_functor<LIST(T_return, T_obj, LOOP(T_arg%1, $1))>& _A_functor)
+{ return retype_functor<LIST($2[]mem_functor<LIST(T_return, T_obj, LOOP(T_arg%1, $1))>, LOOP(T_arg%1, $1)) >
     (_A_functor); }
 
 ])

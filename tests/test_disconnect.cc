@@ -89,7 +89,7 @@ int main(int argc, char* argv[])
 
   {
     A a;
-    sig.connect(sigc::mem_fun1(&a, &A::foo));
+    sig.connect(sigc::mem_fun(&a, &A::foo));
     confoo = sig.connect(sigc::ptr_fun(&foo));
     conbar = sig.connect(sigc::ptr_fun(&bar));
     result_stream << "sig is connected to A::foo, foo, bar (size=" << sig.size() << "): ";
@@ -103,7 +103,7 @@ int main(int argc, char* argv[])
   util->check_result(result_stream, "sig is connected to foo, bar (size=2): foo(2) bar(2) ");
 
   A a;                  // iterators stay valid after further connections.
-  cona = sig.slots().insert(conbar, sigc::mem_fun1(&a, &A::foo));
+  cona = sig.slots().insert(conbar, sigc::mem_fun(&a, &A::foo));
   result_stream << "sig is connected to foo, A::foo, bar (size=" << sig.size() << "): ";
   sig(3);
   util->check_result(result_stream,

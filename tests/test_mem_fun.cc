@@ -116,16 +116,16 @@ int main(int argc, char* argv[])
 #if ENABLE_TEST_OF_OVERLOADED_FUNCTIONS
   { /* test overloaded */
     test t;
-    sigc::mem_fun1<char>(&test::foo_overloaded)(&t, 7);
+    sigc::mem_fun<char>(&test::foo_overloaded)(&t, 7);
     util->check_result(result_stream, "test::foo_overloaded(char 7)");
 
-    sigc::mem_fun1<short>(&test::foo_overloaded)(&t, 7);
+    sigc::mem_fun<short>(&test::foo_overloaded)(&t, 7);
     util->check_result(result_stream, "test::foo_overloaded(short 7)");
 
-    //sigc::mem_fun1(&test::foo_overloaded)(&t, 7);
+    //sigc::mem_fun(&test::foo_overloaded)(&t, 7);
     //util->check_result(result_stream, "test::foo_overloaded(short 7)");
 
-    sigc::mem_fun2(&test::foo_overloaded)(&t, 7, 8);
+    sigc::mem_fun(&test::foo_overloaded)(&t, 7, 8);
     util->check_result(result_stream, "test::foo_overloaded(int 7, int 8)");
   }
 #endif
@@ -150,10 +150,10 @@ int main(int argc, char* argv[])
     util->check_result(result_stream, "test::foo_volatile(float 9)");
 
 #if ENABLE_TEST_OF_OVERLOADED_FUNCTIONS
-    sigc::mem_fun2(t, &test::foo_overloaded)(9, 10);
+    sigc::mem_fun(t, &test::foo_overloaded)(9, 10);
     util->check_result(result_stream, "test::foo_overloaded(int 9, int 10)");
 
-    sigc::mem_fun2(&t, &test::foo_overloaded)(9, 10);
+    sigc::mem_fun(&t, &test::foo_overloaded)(9, 10);
     util->check_result(result_stream, "test::foo_overloaded(int 9, int 10)");
 #endif
   }

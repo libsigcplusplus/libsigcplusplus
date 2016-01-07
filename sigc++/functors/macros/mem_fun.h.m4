@@ -19,49 +19,46 @@ divert(-1)
 include(template.macros.m4)
 
 define([MEMBER_FUNCTOR],[dnl
-/** [$2]mem_functor$1 wraps $4 methods with $1 argument(s).
- * Use the convenience function mem_fun() to create an instance of [$2]mem_functor$1.
+/** [$1]mem_functor wraps $3 methods with argument(s).
+ * Use the convenience function mem_fun() to create an instance of [$1]mem_functor.
  *
  * The following template arguments are used:dnl
-FOR(1,$1,[
- * - @e T_arg%1 Argument type used in the definition of operator()().])
+ * - @e T_arg... Argument types used in the definition of operator()().
  * - @e T_return The return type of operator()().
  * - @e T_obj The object type.
  *
  * @ingroup mem_fun
  */
-template <LIST(class T_return, class T_obj, LOOP(class T_arg%1, $1))>
-class [$2]mem_functor$1 : public functor_base
+template <LIST(class T_return, class T_obj, class... T_arg)>
+class [$1]mem_functor : public functor_base
 {
 public:
-  typedef T_return (T_obj::*function_type)(LOOP(T_arg%1, $1)) $4;
+  typedef T_return (T_obj::*function_type)(T_arg...) $3;
   typedef T_return result_type;
 
   /// Constructs an invalid functor.
-  [$2]mem_functor$1() : func_ptr_(nullptr) {}
+  [$1]mem_functor() : func_ptr_(nullptr) {}
 
-  /** Constructs a [$2]mem_functor$1 object that wraps the passed method.
+  /** Constructs a [$1]mem_functor object that wraps the passed method.
    * @param _A_func Pointer to method will be invoked from operator()().
    */
-  explicit [$2]mem_functor$1(function_type _A_func) : func_ptr_(_A_func) {}
+  explicit [$1]mem_functor(function_type _A_func) : func_ptr_(_A_func) {}
 
   /** Execute the wrapped method operating on the passed instance.
    * @param _A_obj Pointer to instance the method should operate on.dnl
-FOR(1, $1,[
-   * @param _A_a%1 Argument to be passed on to the method.])
+   * @param _A_a... Argument to be passed on to the method.
    * @return The return value of the method invocation.
    */
-  T_return operator()(LIST($3 T_obj* _A_obj, LOOP(type_trait_take_t<T_arg%1> _A_a%1, $1))) const
-    { return (_A_obj->*(this->func_ptr_))(LOOP(_A_a%1, $1)); }
+  T_return operator()(LIST($2 T_obj* _A_obj, type_trait_take_t<T_arg>... _A_a)) const
+    { return (_A_obj->*(this->func_ptr_))(_A_a...); }
 
   /** Execute the wrapped method operating on the passed instance.
    * @param _A_obj Reference to instance the method should operate on.dnl
-FOR(1, $1,[
-   * @param _A_a%1 Argument to be passed on to the method.])
+   * @param _A_a... Argument to be passed on to the method.
    * @return The return value of the method invocation.
    */
-  T_return operator()(LIST($3 T_obj& _A_obj, LOOP(type_trait_take_t<T_arg%1> _A_a%1, $1))) const
-    { return (_A_obj.*func_ptr_)(LOOP(_A_a%1, $1)); }
+  T_return operator()(LIST($2 T_obj& _A_obj, type_trait_take_t<T_arg>... _A_a)) const
+    { return (_A_obj.*func_ptr_)(_A_a...); }
 
 protected:
   function_type func_ptr_;
@@ -70,71 +67,69 @@ protected:
 ])
 define([BOUND_MEMBER_FUNCTOR],[dnl
 
-/** bound_[$2]mem_functor$1 encapsulates a $4 method with $1 arguments and an object instance.
- * Use the convenience function mem_fun() to create an instance of bound_[$2]mem_functor$1.
+/** bound_[$1]mem_functor encapsulates a $3 method with arguments and an object instance.
+ * Use the convenience function mem_fun() to create an instance of bound_[$1]mem_functor.
  *
  * The following template arguments are used:dnl
-FOR(1,$1,[
- * - @e T_arg%1 Argument type used in the definition of operator()().])
+ * - @e T_arg... Argument type used in the definition of operator()().
  * - @e T_return The return type of operator()().
  * - @e T_obj The object type.
  *
  * @ingroup mem_fun
  */
-template <LIST(class T_return, class T_obj, LOOP(class T_arg%1, $1))>
-class bound_[$2]mem_functor$1
-  : public [$2]mem_functor$1<LIST(T_return, T_obj, LOOP(T_arg%1, $1))>
+template <LIST(class T_return, class T_obj, class... T_arg)>
+class bound_[$1]mem_functor
+  : public [$1]mem_functor<LIST(T_return, T_obj, T_arg...)>
 {
-  typedef [$2]mem_functor$1<LIST(T_return, T_obj, LOOP(T_arg%1, $1))> base_type_;
+  typedef [$1]mem_functor<LIST(T_return, T_obj, T_arg...)> base_type_;
 public:
   typedef typename base_type_::function_type function_type;
 
-  /** Constructs a bound_[$2]mem_functor$1 object that wraps the passed method.
+  /** Constructs a bound_[$1]mem_functor object that wraps the passed method.
    * @param _A_obj Pointer to instance the method will operate on.
    * @param _A_func Pointer to method will be invoked from operator()().
    */
-  bound_[$2]mem_functor$1($3 T_obj* _A_obj, function_type _A_func)
+  bound_[$1]mem_functor($2 T_obj* _A_obj, function_type _A_func)
     : base_type_(_A_func),
       obj_(*_A_obj)
     {}
 
-  /** Constructs a bound_[$2]mem_functor$1 object that wraps the passed method.
+  /** Constructs a bound_[$1]mem_functor object that wraps the passed method.
    * @param _A_obj Reference to instance the method will operate on.
    * @param _A_func Pointer to method will be invoked from operator()().
    */
-  bound_[$2]mem_functor$1($3 T_obj& _A_obj, function_type _A_func)
+  bound_[$1]mem_functor($2 T_obj& _A_obj, function_type _A_func)
     : base_type_(_A_func),
       obj_(_A_obj)
     {}
 
   /** Execute the wrapped method operating on the stored instance.dnl
-FOR(1, $1,[
-   * @param _A_a%1 Argument to be passed on to the method.])
+   * @param _A_a... Argument to be passed on to the method.
    * @return The return value of the method invocation.
    */
-  T_return operator()(LOOP(type_trait_take_t<T_arg%1> _A_a%1, $1)) const
-    { return (obj_.invoke().*(this->func_ptr_))(LOOP(_A_a%1, $1)); }
+  T_return operator()(type_trait_take_t<T_arg>... _A_a) const
+    { return (obj_.invoke().*(this->func_ptr_))(_A_a...); }
 
 //protected:
   // Reference to stored object instance.
   // This is the handler object, such as TheObject in void TheObject::signal_handler().
-  [$2]limit_reference<T_obj> obj_;
+  [$1]limit_reference<T_obj> obj_;
 };
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 //template specialization of visitor<>::do_visit_each<>(action, functor):
 /** Performs a functor on each of the targets of a functor.
- * The function overload for sigc::bound_[$2]mem_functor performs a functor
- * on the object instance stored in the sigc::bound_[$2]mem_functor object.
+ * The function overload for sigc::bound_[$1]mem_functor performs a functor
+ * on the object instance stored in the sigc::bound_[$1]mem_functor object.
  *
  * @ingroup mem_fun
  */
-template <LIST(class T_return, class T_obj, LOOP(class T_arg%1, $1))>
-struct visitor<bound_[$2]mem_functor$1<LIST(T_return, T_obj, LOOP(T_arg%1, $1))> >
+template <LIST(class T_return, class T_obj, class... T_arg)>
+struct visitor<bound_[$1]mem_functor<LIST(T_return, T_obj, T_arg...)> >
 {
   template <class T_action>
   static void do_visit_each(const T_action& _A_action,
-                            const bound_[$2]mem_functor$1<LIST(T_return, T_obj, LOOP(T_arg%1, $1))>& _A_target)
+                            const bound_[$1]mem_functor<LIST(T_return, T_obj, T_arg...)>& _A_target)
   {
     sigc::visit_each(_A_action, _A_target.obj_);
   }
@@ -143,42 +138,42 @@ struct visitor<bound_[$2]mem_functor$1<LIST(T_return, T_obj, LOOP(T_arg%1, $1))>
 ])
 
 define([MEM_FUN],[dnl
-/** Creates a functor of type sigc::[$3]mem_functor$1 which wraps a $5 method.
+/** Creates a functor of type sigc::[$1]mem_functor which wraps a $3 method.
  * @param _A_func Pointer to method that should be wrapped.
  * @return Functor that executes _A_func on invokation.
  *
  * @ingroup mem_fun
  */
-template <LIST(LOOP(class T_arg%1, $1), class T_return, class T_obj)>
-inline [$3]mem_functor$1<LIST(T_return, T_obj, LOOP(T_arg%1, $1))>
-mem_fun[]ifelse($2,, $1)(T_return (T_obj::*_A_func)(LOOP(T_arg%1,$1)) $5)
-{ return [$3]mem_functor$1<LIST(T_return, T_obj, LOOP(T_arg%1, $1))>(_A_func); }
+template <LIST(class T_return, class T_obj, class... T_arg)>
+inline [$1]mem_functor<LIST(T_return, T_obj, T_arg...)>
+mem_fun(T_return (T_obj::*_A_func)(T_arg...) $3)
+{ return [$1]mem_functor<LIST(T_return, T_obj, T_arg...)>(_A_func); }
 
 ])
 define([BOUND_MEM_FUN],[dnl
-/** Creates a functor of type sigc::bound_[$3]mem_functor$1 which encapsulates a method and an object instance.
+/** Creates a functor of type sigc::bound_[$1]mem_functor which encapsulates a method and an object instance.
  * @param _A_obj Pointer to object instance the functor should operate on.
  * @param _A_func Pointer to method that should be wrapped.
  * @return Functor that executes @e _A_func on invokation.
  *
  * @ingroup mem_fun
  */
-template <LIST(LOOP(class T_arg%1, $1), class T_return, class T_obj, class T_obj2)>
-inline bound_[$3]mem_functor$1<LIST(T_return, T_obj, LOOP(T_arg%1, $1))>
-mem_fun[]ifelse($2,, $1)(/*$4*/ T_obj* _A_obj, T_return (T_obj2::*_A_func)(LOOP(T_arg%1,$1)) $5)
-{ return bound_[$3]mem_functor$1<LIST(T_return, T_obj, LOOP(T_arg%1, $1))>(_A_obj, _A_func); }
+template <LIST(class T_return, class T_obj, class T_obj2, class... T_arg)>
+inline bound_[$1]mem_functor<LIST(T_return, T_obj, T_arg...)>
+mem_fun(/*$2*/ T_obj* _A_obj, T_return (T_obj2::*_A_func)(T_arg...) $3)
+{ return bound_[$1]mem_functor<LIST(T_return, T_obj, T_arg...)>(_A_obj, _A_func); }
 
-/** Creates a functor of type sigc::bound_[$3]mem_functor$1 which encapsulates a method and an object instance.
+/** Creates a functor of type sigc::bound_[$1]mem_functor which encapsulates a method and an object instance.
  * @param _A_obj Reference to object instance the functor should operate on.
  * @param _A_func Pointer to method that should be wrapped.
  * @return Functor that executes @e _A_func on invokation.
  *
  * @ingroup mem_fun
  */
-template <LIST(LOOP(class T_arg%1, $1), class T_return, class T_obj, class T_obj2)>
-inline bound_[$3]mem_functor$1<LIST(T_return, T_obj, LOOP(T_arg%1, $1))>
-mem_fun[]ifelse($2,, $1)(/*$4*/ T_obj& _A_obj, T_return (T_obj2::*_A_func)(LOOP(T_arg%1,$1)) $5)
-{ return bound_[$3]mem_functor$1<LIST(T_return, T_obj, LOOP(T_arg%1, $1))>(_A_obj, _A_func); }
+template <LIST(class T_return, class T_obj, class T_obj2, class... T_arg)>
+inline bound_[$1]mem_functor<LIST(T_return, T_obj, T_arg...)>
+mem_fun(/*$2*/ T_obj& _A_obj, T_return (T_obj2::*_A_func)(T_arg...) $3)
+{ return bound_[$1]mem_functor<LIST(T_return, T_obj, T_arg...)>(_A_obj, _A_func); }
 
 ])
 
@@ -249,33 +244,22 @@ namespace sigc {
  * @ingroup sigcfunctors
  */
 
-FOR(0,CALL_SIZE,[[MEMBER_FUNCTOR(%1,[],[],[])]])dnl
-FOR(0,CALL_SIZE,[[MEMBER_FUNCTOR(%1,[const_],[const],[const])]])dnl
-FOR(0,CALL_SIZE,[[MEMBER_FUNCTOR(%1,[volatile_],[],[volatile])]])dnl
-FOR(0,CALL_SIZE,[[MEMBER_FUNCTOR(%1,[const_volatile_],[const],[const volatile])]])dnl
-FOR(0,CALL_SIZE,[[BOUND_MEMBER_FUNCTOR(%1,[],[],[])]])dnl
-FOR(0,CALL_SIZE,[[BOUND_MEMBER_FUNCTOR(%1,[const_],[const],[const])]])dnl
-FOR(0,CALL_SIZE,[[BOUND_MEMBER_FUNCTOR(%1,[volatile_],[],[volatile])]])dnl
-FOR(0,CALL_SIZE,[[BOUND_MEMBER_FUNCTOR(%1,[const_volatile_],[const],[const volatile])]])dnl
+MEMBER_FUNCTOR([],[],[])
+MEMBER_FUNCTOR([const_],[const],[const])
+MEMBER_FUNCTOR([volatile_],[],[volatile])
+MEMBER_FUNCTOR([const_volatile_],[const],[const volatile])
+BOUND_MEMBER_FUNCTOR([],[],[])
+BOUND_MEMBER_FUNCTOR([const_],[const],[const])
+BOUND_MEMBER_FUNCTOR([volatile_],[],[volatile])
+BOUND_MEMBER_FUNCTOR([const_volatile_],[const],[const volatile])
 
-// numbered
-FOR(0,CALL_SIZE,[[MEM_FUN(%1,,[],[],[])]])dnl
-FOR(0,CALL_SIZE,[[MEM_FUN(%1,,[const_],[const],[const])]])dnl
-FOR(0,CALL_SIZE,[[MEM_FUN(%1,,[volatile_],[],[volatile])]])dnl
-FOR(0,CALL_SIZE,[[MEM_FUN(%1,,[const_volatile_],[const],[const volatile])]])dnl
-FOR(0,CALL_SIZE,[[BOUND_MEM_FUN(%1,,[],[],[])]])dnl
-FOR(0,CALL_SIZE,[[BOUND_MEM_FUN(%1,,[const_],[const],[const])]])dnl
-FOR(0,CALL_SIZE,[[BOUND_MEM_FUN(%1,,[volatile_],[],[volatile])]])dnl
-FOR(0,CALL_SIZE,[[BOUND_MEM_FUN(%1,,[const_volatile_],[const],[const volatile])]])dnl
-
-// unnumbered
-FOR(0,CALL_SIZE,[[MEM_FUN(%1,1,[],[],[])]])dnl
-FOR(0,CALL_SIZE,[[MEM_FUN(%1,1,[const_],[const],[const])]])dnl
-FOR(0,CALL_SIZE,[[MEM_FUN(%1,1,[volatile_],[],[volatile])]])dnl
-FOR(0,CALL_SIZE,[[MEM_FUN(%1,1,[const_volatile_],[const],[const volatile])]])dnl
-FOR(0,CALL_SIZE,[[BOUND_MEM_FUN(%1,1,[],[],[])]])dnl
-FOR(0,CALL_SIZE,[[BOUND_MEM_FUN(%1,1,[const_],[const],[const])]])dnl
-FOR(0,CALL_SIZE,[[BOUND_MEM_FUN(%1,1,[volatile_],[],[volatile])]])dnl
-FOR(0,CALL_SIZE,[[BOUND_MEM_FUN(%1,1,[const_volatile_],[const],[const volatile])]])dnl
+MEM_FUN([],[],[])
+MEM_FUN([const_],[const],[const])
+MEM_FUN([volatile_],[],[volatile])
+MEM_FUN([const_volatile_],[const],[const volatile])
+BOUND_MEM_FUN([],[],[])
+BOUND_MEM_FUN([const_],[const],[const])
+BOUND_MEM_FUN([volatile_],[],[volatile])
+BOUND_MEM_FUN([const_volatile_],[const],[const volatile])
 
 } /* namespace sigc */

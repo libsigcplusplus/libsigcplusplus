@@ -27,19 +27,19 @@ struct functor_trait<T_return (*)(LOOP(T_arg%1, $1)), false, false>
 
 ])
 define([FUNCTOR_MEM_FUN],[dnl
-template <LIST(class T_return, class T_obj, LOOP(class T_arg%1, $1))> class mem_functor$1;
-template <LIST(class T_return, class T_obj, LOOP(class T_arg%1, $1))> class const_mem_functor$1;
+template <LIST(class T_return, class T_obj, class... T_arg)> class mem_functor;
+template <LIST(class T_return, class T_obj, class... T_arg)> class const_mem_functor;
 template <LIST(LOOP(class T_arg%1, $1), class T_return, class T_obj)>
 struct functor_trait<T_return (T_obj::*)(LOOP(T_arg%1, $1)), false, false>
 {
   typedef T_return result_type;
-  typedef mem_functor$1<LIST(T_return, T_obj, LOOP(T_arg%1, $1))> functor_type;
+  typedef mem_functor<LIST(T_return, T_obj, LOOP(T_arg%1, $1))> functor_type;
 };
 template <LIST(LOOP(class T_arg%1, $1), class T_return, class T_obj)>
 struct functor_trait<T_return (T_obj::*)(LOOP(T_arg%1, $1)) const, false, false>
 {
   typedef T_return result_type;
-  typedef const_mem_functor$1<LIST(T_return, T_obj, LOOP(T_arg%1, $1))> functor_type;
+  typedef const_mem_functor<LIST(T_return, T_obj, LOOP(T_arg%1, $1))> functor_type;
 };
 
 ])

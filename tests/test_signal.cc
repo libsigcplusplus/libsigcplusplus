@@ -62,7 +62,7 @@ int main(int argc, char* argv[])
   {
     A a;
     sig.connect(sigc::ptr_fun(&foo));
-    sig.connect(sigc::mem_fun1(&a, &A::foo));
+    sig.connect(sigc::mem_fun(&a, &A::foo));
     sig.connect(sigc::ptr_fun(&bar));
     sig(1);
     result_stream << sig.size();
