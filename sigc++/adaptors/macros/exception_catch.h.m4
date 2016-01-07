@@ -18,22 +18,6 @@ divert(-1)
 
 include(template.macros.m4)
 
-define([EXCEPTION_CATCH_OPERATOR],[dnl
-  template <LOOP(class T_arg%1, $1)>
-  typename deduce_result_type<LOOP(T_arg%1,$1)>::type
-  operator()(LOOP(T_arg%1 _A_a%1, $1))
-    {
-      try
-        {
-          return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<LOOP(_P_(T_arg%1), $1)>
-            (LOOP(_A_a%1, $1));
-        }
-      catch (...)
-        { return catcher_(); }
-    }
-
-])
-
 divert(0)dnl
 _FIREWALL([ADAPTORS_EXCEPTION_CATCH])
 #include <sigc++/adaptors/adaptor_trait.h>
@@ -96,16 +80,30 @@ struct exception_catch_functor : public adapts<T_functor>
   typedef typename adapts<T_functor>::adaptor_type adaptor_type;
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-  template <LOOP(class T_arg%1=void, CALL_SIZE)>
+  template <class... T_arg>
   struct deduce_result_type
-    { typedef typename adaptor_type::template deduce_result_type<LOOP(_P_(T_arg%1),CALL_SIZE)>::type type; };
+    { typedef typename adaptor_type::template deduce_result_type<type_trait_pass_t<T_arg>...>::type type; };
 #endif
   typedef T_return result_type;
 
   result_type
   operator()();
 
-FOR(1,CALL_SIZE,[[EXCEPTION_CATCH_OPERATOR(%1)]])dnl
+
+  template <class... T_arg>
+  typename deduce_result_type<T_arg...>::type
+  operator()(T_arg... _A_a)
+    {
+      try
+        {
+          return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<type_trait_pass_t<T_arg>...>
+            (_A_a...);
+        }
+      catch (...)
+        { return catcher_(); }
+    }
+
+
   exception_catch_functor(const T_functor& _A_func,
                           const T_catcher& _A_catcher)
     : adapts<T_functor>(_A_func), catcher_(_A_catcher)
@@ -132,15 +130,29 @@ struct exception_catch_functor<T_functor, T_catcher, void> : public adapts<T_fun
   typedef typename adapts<T_functor>::adaptor_type adaptor_type;
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-  template <LOOP(class T_arg%1=void, CALL_SIZE)>
+  template <class... T_arg>
   struct deduce_result_type
-    { typedef typename adaptor_type::template deduce_result_type<LOOP(_P_(T_arg%1),CALL_SIZE)>::type type; };
+    { typedef typename adaptor_type::template deduce_result_type<type_trait_pass_t<T_arg>...>::type type; };
 #endif
 
   void
   operator()();
 
-FOR(1,CALL_SIZE,[[EXCEPTION_CATCH_OPERATOR(%1)]])dnl
+
+  template <class... T_arg>
+  typename deduce_result_type<T_arg...>::type
+  operator()(T_arg... _A_a)
+    {
+      try
+        {
+          return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<type_trait_pass_t<T_arg>...>
+            (_A_a...);
+        }
+      catch (...)
+        { return catcher_(); }
+    }
+
+
   exception_catch_functor() {}
   exception_catch_functor(const T_functor& _A_func,
                           const T_catcher& _A_catcher)
