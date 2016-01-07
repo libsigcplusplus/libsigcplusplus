@@ -18,26 +18,6 @@ divert(-1)
 
 include(template.macros.m4)
 
-define([COMPOSE1_OPERATOR],[dnl
-  template <LOOP(class T_arg%1, $1)>
-  typename deduce_result_type<LOOP(T_arg%1, $1)>::type
-  operator()(LOOP(T_arg%1 _A_a%1, $1))
-    { return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<sigc::deduce_result_t<LIST(T_getter, LOOP(T_arg%1,$1))>>
-        (get_(LOOP(_A_a%1, $1)));
-    }
-
-])
-
-define([COMPOSE2_OPERATOR],[dnl
-  template <LOOP(class T_arg%1, $1)>
-  typename deduce_result_type<LOOP(T_arg%1, $1)>::type
-  operator()(LOOP(T_arg%1 _A_a%1, $1))
-    { return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<sigc::deduce_result_t<LIST(T_getter1, LOOP(T_arg%1,$1))>,
-                                                         sigc::deduce_result_t<LIST(T_getter2, LOOP(T_arg%1,$1))>>
-        (get1_(LOOP(_A_a%1, $1)), get2_(LOOP(_A_a%1,$1)));
-    }
-
-])
 
 divert(0)
 _FIREWALL([ADAPTORS_COMPOSE])
@@ -87,10 +67,10 @@ struct compose1_functor : public adapts<T_setter>
   typedef T_getter getter_type;
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-  template <LOOP(class T_arg%1 = void, CALL_SIZE)>
+  template <class... T_arg>
   struct deduce_result_type
     { typedef typename adaptor_type::template deduce_result_type<
-        sigc::deduce_result_t<LIST(T_getter, LOOP(T_arg%1,CALL_SIZE))>
+        sigc::deduce_result_t<T_getter, T_arg...>
           >::type type; };
 #endif
   typedef typename adaptor_type::result_type  result_type;
@@ -98,7 +78,12 @@ struct compose1_functor : public adapts<T_setter>
   result_type
   operator()();
 
-FOR(1,CALL_SIZE, [[COMPOSE1_OPERATOR(%1)]])dnl
+  template <class... T_arg>
+  typename deduce_result_type<T_arg...>::type
+  operator()(T_arg... _A_a)
+    { return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<sigc::deduce_result_t<T_getter, T_arg...>>
+        (get_(_A_a...));
+    }
 
   /** Constructs a compose1_functor object that combines the passed functors.
    * @param _A_setter Functor that receives the return values of the invokation of @e _A_getter1 and @e _A_getter2.
@@ -135,11 +120,11 @@ struct compose2_functor : public adapts<T_setter>
   typedef T_getter2 getter2_type;
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-  template <LOOP(class T_arg%1=void, CALL_SIZE)>
+  template <class... T_arg>
   struct deduce_result_type
     { typedef typename adaptor_type::template deduce_result_type<
-        typename sigc::deduce_result_t<LIST(T_getter1, LOOP(T_arg%1,CALL_SIZE))>,
-        typename sigc::deduce_result_t<LIST(T_getter2, LOOP(T_arg%1,CALL_SIZE))>
+        typename sigc::deduce_result_t<T_getter1, T_arg...>,
+        typename sigc::deduce_result_t<T_getter2, T_arg...>
           >::type result_type; };
 #endif
   typedef typename adaptor_type::result_type  result_type;
@@ -147,7 +132,13 @@ struct compose2_functor : public adapts<T_setter>
   result_type
   operator()();
 
-FOR(1,CALL_SIZE,[[COMPOSE2_OPERATOR(%1)]])dnl
+  template <class... T_arg>
+  typename deduce_result_type<T_arg...>::type
+  operator()(T_arg... _A_a)
+    { return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<sigc::deduce_result_t<T_getter1, T_arg...>,
+                                                         sigc::deduce_result_t<T_getter2, T_arg...>>
+        (get1_(_A_a...), get2_(_A_a...));
+    }
 
   /** Constructs a compose2_functor object that combines the passed functors.
    * @param _A_setter Functor that receives the return values of the invokation of @e _A_getter1 and @e _A_getter2.
