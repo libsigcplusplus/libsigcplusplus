@@ -19,34 +19,6 @@ divert(-1)
 
 include(template.macros.m4)
 
-define([TRACK_OBJECT_OPERATOR],[dnl
-  /** Invokes the wrapped functor passing on the arguments.dnl
-FOR(1, $1,[
-   * @param _A_arg%1 Argument to be passed on to the functor.])
-   * @return The return value of the functor invocation.
-   */
-  template <LOOP([typename T_arg%1], $1)>
-  typename deduce_result_type<LOOP(T_arg%1, $1)>::type
-  operator()(LOOP(T_arg%1 _A_arg%1, $1))
-  {
-    return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<LOOP([
-      _P_(T_arg%1)], $1)>
-      (LOOP(_A_arg%1, $1));
-  }
-
-  #ifndef SIGC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD
-  template <LOOP([typename T_arg%1], $1)>
-  typename deduce_result_type<LOOP(T_arg%1, $1)>::type
-  sun_forte_workaround(LOOP(T_arg%1 _A_arg%1, $1))
-  {
-    return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<LOOP([
-      _P_(T_arg%1)], $1)>
-      (LOOP(_A_arg%1, $1));
-  }
-  #endif
-
-])dnl end TRACK_OBJECT_OPERATOR
-
 dnl track_obj_functor[2..CALL_SIZE]. $1 is assumed to be >= 2.
 define([TRACK_OBJECT_FUNCTOR],[dnl
 /** track_obj_functor$1 wraps a functor and stores $1 references to trackable objects.
@@ -184,9 +156,9 @@ public:
   typedef typename adapts<T_functor>::adaptor_type adaptor_type;
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-  template <LOOP(typename T_arg%1=void, CALL_SIZE)>
+  template <typename... T_arg>
   struct deduce_result_type
-    { typedef typename adaptor_type::template deduce_result_type<LOOP(_P_(T_arg%1), CALL_SIZE)>::type type; };
+    { typedef typename adaptor_type::template deduce_result_type<type_trait_pass_t<T_arg>...>::type type; };
 #endif
   typedef typename adaptor_type::result_type result_type;
 
@@ -204,7 +176,29 @@ public:
   result_type operator()()
   { return this->functor_(); }
 
-FOR(1,CALL_SIZE,[[TRACK_OBJECT_OPERATOR(%1)]])dnl
+
+  /** Invokes the wrapped functor passing on the arguments.
+   * @param _A_arg... Arguments to be passed on to the functor.
+   * @return The return value of the functor invocation.
+   */
+  template <typename... T_arg>
+  typename deduce_result_type<T_arg...>::type
+  operator()(T_arg... _A_arg)
+  {
+    return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<type_trait_pass_t<T_arg>...>
+      (_A_arg...);
+  }
+
+  #ifndef SIGC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD
+  template <typename... T_arg>
+  typename deduce_result_type<T_arg...>::type
+  sun_forte_workaround(T_arg... _A_arg)
+  {
+    return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<type_trait_pass_t<T_arg>...>
+      (_A_arg...);
+  }
+  #endif
+
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 //protected:
