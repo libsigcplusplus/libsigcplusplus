@@ -1,26 +1,9 @@
-dnl Copyright 2002, The libsigc++ Development Team 
-dnl 
-dnl This library is free software; you can redistribute it and/or 
-dnl modify it under the terms of the GNU Lesser General Public 
-dnl License as published by the Free Software Foundation; either 
-dnl version 2.1 of the License, or (at your option) any later version. 
-dnl 
-dnl This library is distributed in the hope that it will be useful, 
-dnl but WITHOUT ANY WARRANTY; without even the implied warranty of 
-dnl MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU 
-dnl Lesser General Public License for more details. 
-dnl 
-dnl You should have received a copy of the GNU Lesser General Public 
-dnl License along with this library; if not, write to the Free Software 
-dnl Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA 
-dnl
-divert(-1)
-include(template.macros.m4)
-
-divert(0)dnl
+// -*- c++ -*-
+/* Do not edit! -- generated file */
 /*
 */
-_FIREWALL([ADAPTORS_DEDUCE_RESULT_TYPE])
+#ifndef _SIGC_ADAPTORS_DEDUCE_RESULT_TYPE_H_
+#define _SIGC_ADAPTORS_DEDUCE_RESULT_TYPE_H_
 #include <sigc++/functors/functor_trait.h>
 
 namespace sigc {
@@ -45,14 +28,14 @@ struct adaptor_base : public functor_base {};
 
 
 /** Deduce the return type of a functor.
- * <tt>typename deduce_result_type<functor_type, [list of arg_types]>::type</tt>
+ * <tt>typename deduce_result_type<functor_type, list of arg_types>::type</tt>
  * deduces a functor's result type if @p functor_type inherits from
  * sigc::functor_base and defines @p result_type or if @p functor_type
  * is actually a (member) function type. Multi-type functors are not
  * supported.
  *
  * sigc++ adaptors use
- * <tt>typename deduce_result_type<functor_type, [list of arg_types]>::type</tt>
+ * <tt>typename deduce_result_type<functor_type, list of arg_types>::type</tt>
  * to determine the return type of their <tt>templated operator()</tt> overloads.
  *
  * Adaptors in turn define a nested template class @p deduce_result_type
@@ -84,8 +67,5 @@ struct deduce_result_type
 template<typename T_functor, typename... T_args>
 using deduce_result_t = typename deduce_result_type<T_functor, T_args...>::type;
 
-dnl #ifdef SIGC_CXX_TYPEOF
-dnl FOR(0,CALL_SIZE,[[DEDUCE_RESULT_TYPE_TYPEOF(%1,CALL_SIZE)]])
-dnl #endif
-dnl
 } /* namespace sigc */
+#endif /* _SIGC_ADAPTORS_DEDUCE_RESULT_TYPE_H_ */

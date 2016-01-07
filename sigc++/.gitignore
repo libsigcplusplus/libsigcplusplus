@@ -2,7 +2,6 @@
 /signal.h
 /adaptors/bind.h
 /adaptors/compose.h
-/adaptors/deduce_result_type.h
 /adaptors/exception_catch.h
 /adaptors/hide.h
 /adaptors/retype.h

@@ -26,11 +26,11 @@ functors_built_cc =
 functors_built_h = slot.h mem_fun.h
 
 # Adaptors (adaptors/)
-adaptors_m4 = deduce_result_type.h.m4 bind.h.m4 \
+adaptors_m4 = bind.h.m4 \
 	      retype_return.h.m4 hide.h.m4 retype.h.m4 compose.h.m4 exception_catch.h.m4 \
 	      track_obj.h.m4
 adaptors_built_cc =
-adaptors_built_h = deduce_result_type.h bind.h \
+adaptors_built_h = bind.h \
                    retype_return.h hide.h retype.h compose.h exception_catch.h \
                    track_obj.h
 
@@ -68,6 +68,7 @@ sigc_public_h =				\
 	adaptors/adaptor_trait.h		\
 	adaptors/bind_return.h \
 	adaptors/bound_argument.h	\
+	adaptors/deduce_result_type.h \
 	functors/functor_trait.h		\
 	functors/functors.h		\
 	functors/ptr_fun.h		\
