@@ -1,7 +1,6 @@
 /limit_reference.h
 /signal.h
 /adaptors/bind.h
-/adaptors/exception_catch.h
 /adaptors/hide.h
 /adaptors/retype.h
 /adaptors/track_obj.h
