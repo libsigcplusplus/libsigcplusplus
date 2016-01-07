@@ -68,4 +68,5 @@ sigc_public_h =				\
 	adaptors/bound_argument.h	\
 	functors/functor_trait.h		\
 	functors/functors.h		\
+	functors/ptr_fun.h		\
 	functors/slot_base.h
