@@ -15,5 +15,4 @@
 /adaptors/lambda/select.h
 /functors/functor_trait.h
 /functors/mem_fun.h
-/functors/ptr_fun.h
 /functors/slot.h
