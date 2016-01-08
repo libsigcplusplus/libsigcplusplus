@@ -35,7 +35,7 @@ FOR(1, eval($2-1),[
    * @return The return value of the functor invocation.
    */
   template <LOOP([class T_arg%1], eval($2-1))>
-  typename deduce_result_type<LOOP(T_arg%1,eval($2-1))>::type
+  decltype(auto)
   operator()(LOOP(T_arg%1 _A_arg%1,eval($2-1)))
     { return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<LIST(LOOP([type_trait_pass_t<T_arg%1>], eval($1-1)), type_trait_pass_t<typename unwrap_reference<T_bound>::type>, FOR($1,eval($2-1),[type_trait_pass_t<T_arg%1>,]))>
         (LIST(LOOP(_A_arg%1,eval($1-1)), bound_.invoke(), FOR($1,eval($2-1),[_A_arg%1,])));
@@ -43,7 +43,7 @@ FOR(1, eval($2-1),[
 
   #ifndef SIGC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD
   template <LOOP([class T_arg%1], eval($2-1))>
-  typename deduce_result_type<LOOP(T_arg%1,eval($2-1))>::type
+  decltype(auto)
   sun_forte_workaround(LOOP(T_arg%1 _A_arg%1,eval($2-1)))
     { return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<LIST(LOOP([type_trait_pass_t<T_arg%1>], eval($1-1)), type_trait_pass_t<typename unwrap_reference<T_bound>::type>, FOR($1,eval($2-1),[type_trait_pass_t<T_arg%1>,]))>
         (LIST(LOOP(_A_arg%1,eval($1-1)), bound_.invoke(), FOR($1,eval($2-1),[_A_arg%1,])));
@@ -60,7 +60,7 @@ FOR(1, eval($2-1),[
    * @return The return value of the functor invocation.
    */
   template <LOOP([class T_arg%1], eval($2-1))>
-  typename deduce_result_type<LOOP(T_arg%1,eval($2-1))>::type
+  decltype(auto)
   operator()(LOOP(T_arg%1 _A_arg%1, eval($2-1)))
     { return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<LIST(LOOP([type_trait_pass_t<T_arg%1>], eval($2-1)), LOOP(type_trait_pass_t<typename unwrap_reference<T_type%1>::type>, $1))>
         (LIST(LOOP(_A_arg%1,eval($2-1)), LOOP(bound%1_.invoke(), $1)));
@@ -68,7 +68,7 @@ FOR(1, eval($2-1),[
 
   #ifndef SIGC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD
   template <LOOP([class T_arg%1], eval($2-1))>
-  typename deduce_result_type<LOOP(T_arg%1,eval($2-1))>::type
+  decltype(auto)
   sun_forte_workaround(LOOP(T_arg%1 _A_arg%1, eval($2-1)))
     { return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<LIST(LOOP([type_trait_pass_t<T_arg%1>], eval($2-1)), LOOP(type_trait_pass_t<typename unwrap_reference<T_type%1>::type>, $1))>
         (LIST(LOOP(_A_arg%1,eval($2-1)), LOOP(bound%1_.invoke(), $1)));

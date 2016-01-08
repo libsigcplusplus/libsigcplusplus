@@ -182,7 +182,7 @@ public:
    * @return The return value of the functor invocation.
    */
   template <typename... T_arg>
-  typename deduce_result_type<T_arg...>::type
+  decltype(auto)
   operator()(T_arg... _A_arg)
   {
     return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<type_trait_pass_t<T_arg>...>
@@ -191,7 +191,7 @@ public:
 
   #ifndef SIGC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD
   template <typename... T_arg>
-  typename deduce_result_type<T_arg...>::type
+  decltype(auto)
   sun_forte_workaround(T_arg... _A_arg)
   {
     return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<type_trait_pass_t<T_arg>...>

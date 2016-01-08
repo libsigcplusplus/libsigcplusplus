@@ -71,7 +71,7 @@ struct exception_catch_functor : public adapts<T_functor>
 
 
   template <class... T_arg>
-  typename deduce_result_type<T_arg...>::type
+  decltype(auto)
   operator()(T_arg... _A_a)
     {
       try
@@ -120,7 +120,7 @@ struct exception_catch_functor<T_functor, T_catcher, void> : public adapts<T_fun
 
 
   template <class... T_arg>
-  typename deduce_result_type<T_arg...>::type
+  decltype(auto)
   operator()(T_arg... _A_a)
     {
       try

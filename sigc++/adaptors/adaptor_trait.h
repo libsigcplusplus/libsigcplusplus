@@ -107,13 +107,13 @@ struct adaptor_functor : public adaptor_base
    * @return The return value of the functor invocation.
    */
   template <class... T_arg>
-  typename deduce_result_type<T_arg...>::type
+  decltype(auto)
   operator()(T_arg... _A_arg) const
     { return functor_(_A_arg...); }
 
   #ifndef SIGC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD
   template <class... T_arg>
-  typename deduce_result_type<T_arg...>::type
+  decltype(auto)
   sun_forte_workaround(T_arg... _A_arg) const
     { //Just calling operator() tries to copy the argument:
       return functor_(_A_arg...);
@@ -237,11 +237,11 @@ struct adaptor_trait<T_functor, false>
  *   operator()() const;
  *   //
  *   template <class T_arg1>
- *   typename deduce_result_type<T_arg1>::type
+ *   decltype(auto)
  *   operator()(T_arg1 _A_arg1) const;
  *   //
  *   template <class T_arg1, class T_arg2>
- *   typename deduce_result_type<T_arg1, T_arg2>::type
+ *   decltype(auto)
  *   operator()(T_arg1 _A_arg1, T_arg2 _A_arg2) const;
  *   //
  *   // Constructs a my_adaptor object that wraps the passed functor.

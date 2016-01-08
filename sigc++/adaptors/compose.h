@@ -58,7 +58,7 @@ struct compose1_functor : public adapts<T_setter>
   operator()();
 
   template <class... T_arg>
-  typename deduce_result_type<T_arg...>::type
+  decltype(auto)
   operator()(T_arg... _A_a)
     { return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<sigc::deduce_result_t<T_getter, T_arg...>>
         (get_(_A_a...));
@@ -112,7 +112,7 @@ struct compose2_functor : public adapts<T_setter>
   operator()();
 
   template <class... T_arg>
-  typename deduce_result_type<T_arg...>::type
+  decltype(auto)
   operator()(T_arg... _A_a)
     { return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<sigc::deduce_result_t<T_getter1, T_arg...>,
                                                          sigc::deduce_result_t<T_getter2, T_arg...>>
