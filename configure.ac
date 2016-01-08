@@ -35,7 +35,7 @@ MM_INIT_MODULE([sigc++-2.0])
 MM_CONFIG_DOCTOOL_DIR([docs])
 
 AC_PROG_CXX
-MM_AX_CXX_COMPILE_STDCXX_11([noext],[mandatory])
+MM_AX_CXX_COMPILE_STDCXX([14],[noext],[mandatory])
 
 AC_DISABLE_STATIC
 LT_INIT([win32-dll])
