@@ -188,7 +188,7 @@ FOR(1,$1,[
  *
  * @ingroup bind
  */
-template <LIST(LOOP(class T_type%1, $1), class T_functor)>
+template <LIST(class T_functor, LOOP(class T_type%1, $1))>
 inline decltype(auto)
 bind(const T_functor& _A_func, LOOP(T_type%1 _A_b%1, $1))
 { return bind_functor<-1, T_functor,dnl
