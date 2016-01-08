@@ -1,5 +1,3 @@
-// -*- c++ -*-
-/* Do not edit! -- generated file */
 #ifndef _SIGC_ADAPTORS_ADAPTOR_TRAIT_H_
 #define _SIGC_ADAPTORS_ADAPTOR_TRAIT_H_
 #include <sigc++config.h> //To get SIGC_TEMPLATE_KEYWORD_OPERATOR_OVERLOAD
