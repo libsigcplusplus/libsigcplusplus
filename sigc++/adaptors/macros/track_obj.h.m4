@@ -154,12 +154,6 @@ class track_obj_functor1 : public adapts<T_functor>
 {
 public:
   typedef typename adapts<T_functor>::adaptor_type adaptor_type;
-
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-  template <typename... T_arg>
-  struct deduce_result_type
-    { typedef typename adaptor_type::template deduce_result_type<type_trait_pass_t<T_arg>...>::type type; };
-#endif
   typedef typename adaptor_type::result_type result_type;
 
   /** Constructs a track_obj_functor1 object that wraps the passed functor and

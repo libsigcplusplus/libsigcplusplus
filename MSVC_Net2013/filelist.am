@@ -32,8 +32,6 @@ msvc_net2013_data =					\
 	test_cpp11_lambda.vcxproj.filters		\
 	test_custom.vcxproj				\
 	test_custom.vcxproj.filters			\
-	test_deduce_result_type.vcxproj			\
-	test_deduce_result_type.vcxproj.filters		\
 	test_disconnect.vcxproj				\
 	test_disconnect.vcxproj.filters			\
 	test_disconnect_during_emit.vcxproj		\

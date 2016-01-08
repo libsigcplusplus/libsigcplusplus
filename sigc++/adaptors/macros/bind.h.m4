@@ -21,11 +21,7 @@ include(template.macros.m4)
 define([ORDINAL],[dnl
 $1[]ifelse($1,1,[st],$1,2,[nd],$1,3,[rd],[th])[]dnl
 ])
-define([DEDUCE_RESULT_TYPE_COUNT],[dnl
-  template <LOOP(class T_arg%1, eval(CALL_SIZE))>
-  struct deduce_result_type_internal<LIST($2, LOOP(T_arg%1,eval(CALL_SIZE)))>
-    { typedef typename adaptor_type::template deduce_result_type<LIST(LOOP(type_trait_pass_t<T_arg%1>, eval(CALL_SIZE-$2)), LOOP(type_trait_take_t<typename unwrap_reference<T_type%1>::type>, $1))>::type type; };
-])
+
 define([BIND_OPERATOR_LOCATION],[dnl
 ifelse($2,1,,[dnl
   /** Invokes the wrapped functor passing on the arguments.
@@ -88,14 +84,6 @@ template <class T_functor, class T_bound>
 struct bind_functor<$1, T_functor, T_bound, LIST(LOOP(nil, CALL_SIZE - 1))> : public adapts<T_functor>
 {
   typedef typename adapts<T_functor>::adaptor_type adaptor_type;
-
-ifelse($1,0,[#ifndef DOXYGEN_SHOULD_SKIP_THIS
-],)dnl
-  template <LOOP(class T_arg%1=void, eval(CALL_SIZE))>
-  struct deduce_result_type
-    { typedef typename adaptor_type::template deduce_result_type<LIST(LOOP(type_trait_pass_t<T_arg%1>, eval($1)), type_trait_pass_t<typename unwrap_reference<T_bound>::type>, FOR(eval($1+1),eval(CALL_SIZE-1),[type_trait_pass_t<T_arg%1>,]))>::type type; };
-ifelse($1,0,[#endif
-],)dnl
   typedef typename adaptor_type::result_type  result_type;
 
   /** Invokes the wrapped functor passing on the bound argument only.
@@ -135,21 +123,6 @@ template <LIST(class T_functor, LOOP(class T_type%1, $1))>
 struct bind_functor<LIST(-1, T_functor, LIST(LOOP(T_type%1, $1), LOOP(nil, CALL_SIZE - $1)))> : public adapts<T_functor>
 {
   typedef typename adapts<T_functor>::adaptor_type adaptor_type;
-
-ifelse($1,1,[#ifndef DOXYGEN_SHOULD_SKIP_THIS
-],)dnl
-  template <LIST(int count, LOOP(class T_arg%1, eval(CALL_SIZE)))>
-  struct deduce_result_type_internal
-    { typedef typename adaptor_type::template deduce_result_type<LIST(LOOP(type_trait_pass_t<T_arg%1>, eval(CALL_SIZE-$1)), LOOP(type_trait_pass_t<typename unwrap_reference<T_type%1>::type>, $1))>::type type; };
-FOR(eval($1+1),eval(CALL_SIZE-1),[[DEDUCE_RESULT_TYPE_COUNT($1,%1)]])dnl
-
-  template <LOOP(class T_arg%1=void, eval(CALL_SIZE))>
-  struct deduce_result_type {
-    typedef typename deduce_result_type_internal<internal::count_void<LOOP(T_arg%1, eval(CALL_SIZE))>::value,
-                                                 LOOP(T_arg%1, eval(CALL_SIZE))>::type type;
-  };
-ifelse($1,1,[#endif // DOXYGEN_SHOULD_SKIP_THIS
-],)dnl
   typedef typename adaptor_type::result_type  result_type;
 
   /** Invokes the wrapped functor passing on the bound argument only.

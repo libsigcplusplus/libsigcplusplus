@@ -31,7 +31,6 @@ check_PROGRAMS = \
   test_copy_invalid_slot \
   test_cpp11_lambda \
   test_custom \
-  test_deduce_result_type \
   test_disconnect \
   test_disconnect_during_emit \
   test_exception_catch \
@@ -68,7 +67,6 @@ test_compose_SOURCES         = test_compose.cc $(sigc_test_util)
 test_copy_invalid_slot_SOURCES = test_copy_invalid_slot.cc $(sigc_test_util)
 test_cpp11_lambda_SOURCES    = test_cpp11_lambda.cc $(sigc_test_util)
 test_custom_SOURCES          = test_custom.cc $(sigc_test_util)
-test_deduce_result_type_SOURCES = test_deduce_result_type.cc $(sigc_test_util)
 test_disconnect_SOURCES      = test_disconnect.cc $(sigc_test_util)
 test_disconnect_during_emit_SOURCES = test_disconnect_during_emit.cc $(sigc_test_util)
 test_exception_catch_SOURCES = test_exception_catch.cc $(sigc_test_util)

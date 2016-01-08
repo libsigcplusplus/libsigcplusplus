@@ -16,11 +16,6 @@ namespace sigc {
 template <class T_return, class T_functor>
 struct retype_return_functor : public adapts<T_functor>
 {
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-  template <class... T_arg>
-  struct deduce_result_type
-    { typedef T_return type; };
-#endif
   typedef T_return result_type;
 
   T_return operator()();
@@ -67,11 +62,6 @@ T_return retype_return_functor<T_return, T_functor>::operator()()
 template <class T_functor>
 struct retype_return_functor<void, T_functor> : public adapts<T_functor>
 {
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-  template <class... T_arg>
-  struct deduce_result_type
-    { typedef void type; };
-#endif
   typedef void result_type;
 
   void operator()();

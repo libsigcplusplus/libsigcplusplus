@@ -83,11 +83,6 @@ template <class T_functor> struct adapts;
 template <class T_functor>
 struct adaptor_functor : public adaptor_base
 {
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-  template <class... T_arg>
-  struct deduce_result_type
-    { typedef sigc::deduce_result_t<T_functor, T_arg...> type; };
-#endif
   typedef typename functor_trait<T_functor>::result_type result_type;
 
   /** Invokes the wrapped functor passing on the arguments.
@@ -228,9 +223,6 @@ struct adaptor_trait<T_functor, false>
  * template <class T_functor>
  * struct my_adaptor : public sigc::adapts<T_functor>
  * {
- *   template <class T_arg1=void, class T_arg2=void>
- *   struct deduce_result_type
- *   { typedef sigc::deduce_result_t<T_functor, T_arg1, T_arg2> type; };
  *   typedef typename sigc::functor_trait<T_functor>::result_type result_type;
  *   //
  *   result_type

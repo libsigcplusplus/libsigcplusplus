@@ -21,19 +21,7 @@ include(template.macros.m4)
 define([ORDINAL],[dnl
 ifelse($1,0,,$1)ifelse($1,0,[last],$1,1,[st],$1,2,[nd],$1,3,[rd],[th])[]dnl
 ])
-define([DEDUCE_RESULT_TYPE],[dnl
-ifelse(eval($1 < 2),1,[#ifndef DOXYGEN_SHOULD_SKIP_THIS
-],)dnl Only for the first two template specializations. ($1 = 0..CALL_SIZE)
-  template <LOOP(class T_arg%1=void, CALL_SIZE)>
-  struct deduce_result_type
-ifelse($1,0,[dnl
-    { typedef typename adaptor_type::template deduce_result_type<LOOP(type_trait_pass_t<T_arg%1>, eval($2-1))>::type type; };
-],[dnl
-    { typedef typename adaptor_type::template deduce_result_type<LIST(LOOP(type_trait_pass_t<T_arg%1>, eval($1-1)), FOR(eval($1+1),$2,[type_trait_pass_t<T_arg%1>,]))>::type type; };
-])dnl
-ifelse(eval($1 < 2),1,[#endif // DOXYGEN_SHOULD_SKIP_THIS
-],)dnl
-])
+
 define([HIDE_OPERATOR],[dnl
 ifelse($2,0,,[dnl
 ifelse($2,1,[dnl
@@ -112,8 +100,6 @@ template <class T_functor>
 struct hide_functor <$1, T_functor> : public adapts<T_functor>
 {
   typedef typename adapts<T_functor>::adaptor_type adaptor_type;
-
-DEDUCE_RESULT_TYPE(eval($1+1),CALL_SIZE)dnl
   typedef typename adaptor_type::result_type  result_type;
 
 FOR(eval($1+1),CALL_SIZE,[[HIDE_OPERATOR(eval($1+1),%1)]])dnl

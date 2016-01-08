@@ -88,9 +88,6 @@ namespace ns1
 template <class T_functor>
 struct MyAdaptor1 : public sigc::adapts<T_functor>
 {
-  template <class T_arg1=void, class T_arg2=void>
-  struct deduce_result_type
-  { typedef sigc::deduce_result_t<T_functor, T_arg1, T_arg2> type; };
   typedef typename sigc::functor_trait<T_functor>::result_type result_type;
 
   result_type
@@ -101,7 +98,7 @@ struct MyAdaptor1 : public sigc::adapts<T_functor>
   }
 
   template <class T_arg1>
-  typename deduce_result_type<T_arg1>::type
+  decltype(auto)
   operator()(T_arg1 _A_arg1) const
   {
     result_stream << "MyAdaptor1()(_A_arg1) ";
@@ -109,7 +106,7 @@ struct MyAdaptor1 : public sigc::adapts<T_functor>
   }
 
   template <class T_arg1, class T_arg2>
-  typename deduce_result_type<T_arg1, T_arg2>::type
+  decltype(auto)
   operator()(T_arg1 _A_arg1, T_arg2 _A_arg2) const
   {
     result_stream << "MyAdaptor1()(_A_arg1, _A_arg2) ";
