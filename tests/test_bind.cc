@@ -8,6 +8,7 @@
 #include <sigc++/functors/slot.h>
 #include <sstream>
 #include <string>
+#include <functional> //For std::ref().
 #include <cstdlib>
 
 namespace
@@ -130,7 +131,7 @@ int main(int argc, char* argv[])
 
   // method pointer instead of functor
   book test_book("otto");
-  result_stream << sigc::bind<0>(&book::get_name, sigc::ref(test_book))();
+  result_stream << sigc::bind<0>(&book::get_name, std::ref(test_book))();
   util->check_result(result_stream, "otto");
 
   // test return type of bind_functor::operator() overload with no arguments
@@ -142,14 +143,14 @@ int main(int argc, char* argv[])
 
   // test references
   std::string str("guest book");
-  sigc::bind(&egon, sigc::ref(str))(); // Tell bind that it shall store a reference.
+  sigc::bind(&egon, std::ref(str))(); // Tell bind that it shall store a reference.
   result_stream << " " << str; // (This cannot be the default behaviour: just think about what happens if str dies!)
   util->check_result(result_stream, "egon(string 'guest book') egon was here");
 
   sigc::slot<void> sl;
   {
     book guest_book("karl");
-    sl = sigc::bind(&egon, sigc::ref(guest_book));
+    sl = sigc::bind(&egon, std::ref(guest_book));
     sl();
     result_stream << " " << static_cast<std::string&>(guest_book);
     util->check_result(result_stream, "egon(string 'karl') egon was here");

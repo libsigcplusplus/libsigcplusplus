@@ -23,18 +23,17 @@
 #include <sigc++/limit_reference.h>
 #include <sigc++/reference_wrapper.h>
 
-
 namespace sigc {
 
 /** A bound_argument<Foo> object stores a bound (for instance, with sigc::bind(), or sigc::bind_return()) argument.
  *
- * If Foo is a wrapped reference to a class Bar (reference_wrapper<Bar>) then this
+ * If Foo is a wrapped reference to a class Bar (std::reference_wrapper<Bar>) then this
  * object is implemented on top of a limit_reference. When the slot is
  * invoked, the limit_reference::invoke() method provides the argument (a Bar&).
  * When the slot is visited (e.g. visit_each<>()), we simply visit the limit_reference,
  * which will visit the derived type, or a sigc::trackable base if necessary.
  *
- * Likewise, If Foo is a wrapped const reference to a class Bar (const_reference_wrapper<Bar>)
+ * Likewise, If Foo is a wrapped const reference to a class Bar (std::reference_wrapper<const Bar>)
  * then this object is implemented on top of a const_limit_reference.
  *
  * If Foo is something else (such as an argument that is bound by value) bound_argument just
@@ -77,17 +76,17 @@ private:
 
 //Template specialization:
 /** bound_argument object for a bound argument that is passed by bind() or
- * returned by bind_return() by reference, specialized for reference_wrapper<> types.
+ * returned by bind_return() by reference, specialized for std::reference_wrapper<> types.
  * @e T_wrapped The type of the bound argument.
  */
 template <class T_wrapped>
-class bound_argument< reference_wrapper<T_wrapped> >
+class bound_argument< std::reference_wrapper<T_wrapped> >
 {
 public:
   /** Constructor.
    * @param _A_argument The argument to bind.
    */
-  bound_argument(const reference_wrapper<T_wrapped>& _A_argument)
+  bound_argument(const std::reference_wrapper<T_wrapped>& _A_argument)
     : visited_(unwrap(_A_argument))
     {}
 
@@ -114,13 +113,13 @@ private:
  * - @e T_wrapped The type of the bound argument.
  */
 template <class T_wrapped>
-class bound_argument< const_reference_wrapper<T_wrapped> >
+class bound_argument< std::reference_wrapper<const T_wrapped> >
 {
 public:
   /** Constructor.
    * @param _A_argument The argument to bind.
    */
-  bound_argument(const const_reference_wrapper<T_wrapped>& _A_argument)
+  bound_argument(const std::reference_wrapper<const T_wrapped>& _A_argument)
     : visited_(unwrap(_A_argument))
     {}
 

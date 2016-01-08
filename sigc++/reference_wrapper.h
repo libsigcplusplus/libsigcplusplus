@@ -21,64 +21,6 @@
 
 namespace sigc {
 
-/** Reference wrapper.
- * Use sigc::ref() to create a reference wrapper.
- */
-template <class T_type>
-struct reference_wrapper
-{
-  explicit reference_wrapper(T_type& v)
-    : value_(v)  {}
-
-  operator T_type& () const
-    { return value_; }
-
-  T_type& value_;
-};
-
-/** Const reference wrapper.
- * Use sigc::ref() to create a const reference wrapper.
- */
-template <class T_type>
-struct const_reference_wrapper
-{
-  explicit const_reference_wrapper(const T_type& v)
-    : value_(v)  {}
-
-  operator const T_type& () const
-    { return value_; }
-
-  const T_type& value_;
-};
-
-/** Creates a reference wrapper.
- * Passing an object throught sigc::ref() makes libsigc++ adaptors
- * like, e.g., sigc::bind store references to the object instead of copies.
- * If the object type inherits from sigc::trackable this will ensure
- * automatic invalidation of the adaptors when the object is deleted
- * or overwritten.
- *
- * @param v Reference to store.
- * @return A reference wrapper.
- */
-template <class T_type>
-reference_wrapper<T_type> ref(T_type& v)
-{ return reference_wrapper<T_type>(v); }
-
-/** Creates a const reference wrapper.
- * Passing an object throught sigc::ref() makes libsigc++ adaptors
- * like, e.g., sigc::bind store references to the object instead of copies.
- * If the object type inherits from sigc::trackable this will ensure
- * automatic invalidation of the adaptors when the object is deleted
- * or overwritten.
- *
- * @param v Reference to store.
- * @return A reference wrapper.
- */
-template <class T_type>
-const_reference_wrapper<T_type> ref(const T_type& v)
-{ return const_reference_wrapper<T_type>(v); }
-
 template <class T_type>
 struct unwrap_reference
 {
@@ -86,23 +28,23 @@ struct unwrap_reference
 };
 
 template <class T_type>
-struct unwrap_reference<reference_wrapper<T_type> >
+struct unwrap_reference<std::reference_wrapper<T_type> >
 {
   typedef T_type& type;
 };
 
 template <class T_type>
-struct unwrap_reference<const_reference_wrapper<T_type> >
+struct unwrap_reference<std::reference_wrapper<const T_type> >
 {
   typedef const T_type& type;
 };
 
 template <class T_type>
-T_type& unwrap(const reference_wrapper<T_type>& v)
+T_type& unwrap(const std::reference_wrapper<T_type>& v)
 { return v; }
 
 template <class T_type>
-const T_type& unwrap(const const_reference_wrapper<T_type>& v)
+const T_type& unwrap(const std::reference_wrapper<const T_type>& v)
 { return v; }
 
 } /* namespace sigc */

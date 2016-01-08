@@ -8,6 +8,7 @@
 #include <sigc++/functors/slot.h>
 #include <sstream>
 #include <string>
+#include <functional> //For std::ref().
 #include <cstdlib>
 
 namespace
@@ -52,8 +53,8 @@ int main(int argc, char* argv[])
   // references.
   std::string str("guest book");
   // A convoluted way to do
-  // sigc::bind_return(foo(), sigc::ref(str))(6) = "main";
-  sigc::bind_return<sigc::reference_wrapper<std::string> >(foo(), sigc::ref(str))(6) = "main";
+  // sigc::bind_return(foo(), std::ref(str))(6) = "main";
+  sigc::bind_return<std::reference_wrapper<std::string> >(foo(), std::ref(str))(6) = "main";
   result_stream << str;
   util->check_result(result_stream, "foo(int 6) main");
 
@@ -67,7 +68,7 @@ int main(int argc, char* argv[])
   sigc::slot<bar, int> sl;
   {
     bar choco(-1);
-    sl = sigc::bind_return(foo(),sigc::ref(choco));
+    sl = sigc::bind_return(foo(), std::ref(choco));
     result_stream << sl(7);
     util->check_result(result_stream, "foo(int 7) -1");
   } // auto-disconnect

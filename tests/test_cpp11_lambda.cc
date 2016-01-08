@@ -51,7 +51,6 @@
 #include <cstdlib>
 #include <sigc++/functors/functors.h>
 #include <sigc++/bind.h>
-#include <sigc++/reference_wrapper.h>
 #include <sigc++/adaptors/track_obj.h>
 #include <sigc++/signal.h>
 
@@ -182,9 +181,9 @@ int main(int argc, char* argv[])
   result_stream << ([] (int x) -> int { return ++x * 2; }(a_outer)) << " " << a_outer;
   util->check_result(result_stream, "4 1");
 
-  // gcc can't compile libsigc++ lambda expressions with sigc::ref() parameters.
+  // gcc can't compile libsigc++ lambda expressions with std::ref() parameters.
   // See https://bugzilla.gnome.org/show_bug.cgi?id=669128
-  //  std::cout << "((++_1)*2)(ref(a)): " << ((++_1)*2)(sigc::ref(a));
+  //  std::cout << "((++_1)*2)(ref(a)): " << ((++_1)*2)(std::ref(a));
   //  std::cout << "; a: "                << a                    << std::endl;
   result_stream << ([] (std::reference_wrapper<int> x) -> int { return ++x * 2; }(std::ref(a_outer)));
   result_stream << " " << a_outer;
@@ -199,7 +198,7 @@ int main(int argc, char* argv[])
   result_stream << " " << a_outer;
   util->check_result(result_stream, "8 4");
 
-  //  std::cout << "((--(*(&_1)))*2)(ref(a)): " << ((--(*(&_1)))*2)(sigc::ref(a));
+  //  std::cout << "((--(*(&_1)))*2)(ref(a)): " << ((--(*(&_1)))*2)(std::ref(a));
   //  std::cout << "; a: "                << a                    << std::endl;
   result_stream << ([] (std::reference_wrapper<int> x) -> int { return --(*(&x)) * 2; }(std::ref(a_outer)));
   result_stream << " " << a_outer;
@@ -241,15 +240,15 @@ int main(int argc, char* argv[])
   // - var() is used to create a lambda that holds a reference and is interchangable with ref() in lambda operator expressions
   // - cannot use std::endl without much hackery because it is defined as a template function
   // - cannot use "\n" without var() because arrays cannot be copied
-  //  (sigc::ref(std::cout) << sigc::constant(1) << sigc::var("\n"))();
+  //  (std::ref(std::cout) << sigc::constant(1) << sigc::var("\n"))();
   [](){ result_stream << 1 << "\n"; }();
   util->check_result(result_stream, "1\n");
 
-  //(sigc::ref(std::cout) << _1 << std::string("\n"))("hello world");
+  //(std::ref(std::cout) << _1 << std::string("\n"))("hello world");
   [](const char* a){ result_stream << a << std::string("\n"); }("hello world");
   util->check_result(result_stream, "hello world\n");
 
-  //(sigc::ref(std::cout) << sigc::static_cast_<int>(_1) << std::string("\n"))(1.234);
+  //(std::ref(std::cout) << sigc::static_cast_<int>(_1) << std::string("\n"))(1.234);
   [](double a){ result_stream << static_cast<int>(a) << std::string("\n"); }(1.234);
   util->check_result(result_stream, "1\n");
 
@@ -269,7 +268,7 @@ int main(int argc, char* argv[])
   sigc::slot<void, std::ostringstream&> sl1;
   {
     book guest_book("karl");
-    //sl1 = (sigc::var(std::cout) << sigc::ref(guest_book) << sigc::var("\n"));
+    //sl1 = (sigc::var(std::cout) << std::ref(guest_book) << sigc::var("\n"));
     // sl1 = [&guest_book](std::ostringstream& stream){ stream << guest_book << "\n"; }; // no auto-disconnect
     sl1 = sigc::track_obj([&guest_book](std::ostringstream& stream){ stream << guest_book << "\n"; }, guest_book);
     sl1(result_stream);
@@ -290,7 +289,7 @@ int main(int argc, char* argv[])
   result_stream << std::bind(&foo, std::placeholders::_2, std::placeholders::_1)(1, 2);
   util->check_result(result_stream, "foo(int 2, int 1) 9");
 
-  //std::cout << (sigc::group(sigc::mem_fun(&bar::test), _1, _2, _3)) (sigc::ref(the_bar), 1, 2) << std::endl;
+  //std::cout << (sigc::group(sigc::mem_fun(&bar::test), _1, _2, _3)) (std::ref(the_bar), 1, 2) << std::endl;
   // std::ref(the_bar) is not necessary. It can make the call ambiguous.
   // Even without std::ref() the_bar is not copied.
   result_stream << std::bind(std::mem_fn(&bar::test), std::placeholders::_1,
@@ -320,7 +319,7 @@ int main(int argc, char* argv[])
   sigc::slot<void> sl2;
   {
     book guest_book("karl");
-    //sl2 = sigc::group(&egon, sigc::ref(guest_book));
+    //sl2 = sigc::group(&egon, std::ref(guest_book));
     // sl2 = [&guest_book] () { egon(guest_book); }; // no auto-disconnect
     // sl2 = std::bind(&egon, std::ref(guest_book)); // does not compile (gcc 4.6.3)
     sl2 = sigc::track_obj([&guest_book] () { egon(guest_book); }, guest_book);
@@ -339,7 +338,7 @@ int main(int argc, char* argv[])
   // More auto-disconnect
   {
     book guest_book("charlie");
-    //sl2 = sigc::group(&egon, sigc::ref(guest_book));
+    //sl2 = sigc::group(&egon, std::ref(guest_book));
     // sl2 = std::bind(&egon, std::ref(guest_book)); // does not compile (gcc 4.6.3)
     auto fn2 = std::bind(&egon, std::ref(guest_book));
     //sl2 = fn2; // no auto-disconnect
@@ -469,9 +468,9 @@ int main(int argc, char* argv[])
   {
     int some_int = 0;
     sigc::signal<void> some_signal;
-    //some_signal.connect(sigc::group(&foo,sigc::ref(some_int)));
+    //some_signal.connect(sigc::group(&foo,std::ref(some_int)));
     //some_signal.connect(std::bind(&foo_group3, std::ref(some_int))); // does not compile (gcc 4.6.3)
-    //some_signal.connect(sigc::bind(&foo_group3, sigc::ref(some_int))); // compiles, but we prefer std::bind() or C++11 lambda
+    //some_signal.connect(sigc::bind(&foo_group3, std::ref(some_int))); // compiles, but we prefer std::bind() or C++11 lambda
     some_signal.connect([&some_int](){ foo_group3(some_int); });
     some_signal.emit();
     result_stream << " " << some_int;
@@ -483,10 +482,10 @@ int main(int argc, char* argv[])
     sigc::signal<void> some_signal;
     {
       bar_group4 some_bar;
-      //some_signal.connect(sigc::group(&foo,sigc::ref(some_bar)));
+      //some_signal.connect(sigc::group(&foo, std::ref(some_bar)));
       // disconnected automatically if some_bar goes out of scope
       //some_signal.connect([&some_bar](){ foo_group4(some_bar); }); // no auto-disconnect
-      //some_signal.connect(sigc::bind(&foo_group4, sigc::ref(some_bar))); // auto-disconnects, but we prefer C++11 lambda
+      //some_signal.connect(sigc::bind(&foo_group4, std::ref(some_bar))); // auto-disconnects, but we prefer C++11 lambda
       some_signal.connect(sigc::track_obj([&some_bar](){ foo_group4(some_bar); }, some_bar));
       some_signal.emit();
       util->check_result(result_stream, "foo_group4(bar_group4&)");

@@ -4,6 +4,7 @@
 
 #include "testutilities.h"
 #include <sstream>
+#include <functional> //For std::ref().
 #include <cstdlib>
 #include <sigc++/adaptors/bind.h>
 #include <sigc++/adaptors/compose.h>
@@ -83,15 +84,15 @@ int main(int argc, char* argv[])
   int k = 3;
   A a;
   result_stream << "hit all targets: ";
-  sigc::visit_each(print(), sigc::compose(sigc::bind(sigc::ptr_fun(&foo), sigc::ref(a), i), sigc::ptr_fun(&bar)));
+  sigc::visit_each(print(), sigc::compose(sigc::bind(sigc::ptr_fun(&foo), std::ref(a), i), sigc::ptr_fun(&bar)));
   util->check_result(result_stream, "hit all targets: other trackable int: 1 other ");
 
   result_stream << "hit all ints: ";
-  sigc::visit_each_type<int>(print(), sigc::compose(sigc::bind(sigc::ptr_fun(&foo), sigc::ref(a), j),sigc::ptr_fun(&bar)));
+  sigc::visit_each_type<int>(print(), sigc::compose(sigc::bind(sigc::ptr_fun(&foo), std::ref(a), j),sigc::ptr_fun(&bar)));
   util->check_result(result_stream, "hit all ints: int: 2 ");
 
   result_stream << "hit all trackable: ";
-  sigc::visit_each_type<trackable>(print(), sigc::compose(sigc::bind(sigc::ptr_fun(&foo), sigc::ref(a), k),sigc::ptr_fun(&bar)));
+  sigc::visit_each_type<trackable>(print(), sigc::compose(sigc::bind(sigc::ptr_fun(&foo), std::ref(a), k),sigc::ptr_fun(&bar)));
   util->check_result(result_stream, "hit all trackable: trackable ");
 
   return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;

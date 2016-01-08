@@ -4,6 +4,7 @@
 #include <sigc++/sigc++.h>
 #include <stdlib.h>
 #include <string.h>
+#include <functional> //For std::ref().
 
 namespace
 {
@@ -30,7 +31,7 @@ int main(int argc, char* argv[])
   util->check_result(result_stream, "sigc::trackable instance at " + pointer_stream.str());
   pointer_stream.str("");
 
-  sigc::slot<void> foo = sigc::bind(sigc::ptr_fun(Foo), sigc::ref(*t));
+  sigc::slot<void> foo = sigc::bind(sigc::ptr_fun(Foo), std::ref(*t));
   foo();
   util->check_result(result_stream, "Foo(x)");
 
