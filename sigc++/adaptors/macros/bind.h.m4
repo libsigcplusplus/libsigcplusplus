@@ -189,10 +189,7 @@ FOR(1,$1,[
  * @ingroup bind
  */
 template <LIST(LOOP(class T_type%1, $1), class T_functor)>
-inline bind_functor<-1, T_functor,dnl
-FOR(1,eval($1-1),[
-                    T_type%1,])
-                    T_type$1>
+inline decltype(auto)
 bind(const T_functor& _A_func, LOOP(T_type%1 _A_b%1, $1))
 { return bind_functor<-1, T_functor,dnl
 FOR(1,eval($1-1),[
@@ -373,7 +370,7 @@ FOR(1,CALL_SIZE,[[BIND_FUNCTOR_COUNT(%1)]])dnl
  * @ingroup bind
  */
 template <int I_location, class T_bound1, class T_functor>
-inline bind_functor<I_location, T_functor, T_bound1>
+inline decltype(auto)
 bind(const T_functor& _A_func, T_bound1 _A_b1)
 {
   return bind_functor<I_location, T_functor, T_bound1>
