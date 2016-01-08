@@ -177,28 +177,6 @@ ifelse($1,CALL_SIZE,[#endif // DOXYGEN_SHOULD_SKIP_THIS
 
 ])dnl end BIND_FUNCTOR_COUNT
 
-define([BIND_COUNT],[dnl
-/** Creates an adaptor of type sigc::bind_functor which fixes the last $1 argument(s) of the passed functor.
- * This function overload fixes the last $1 argument(s) of @e _A_func.
- *
- * @param _A_func Functor that should be wrapped.dnl
-FOR(1,$1,[
- * @param _A_b%1 Argument to bind to @e _A_func.])
- * @return Adaptor that executes _A_func with the bound argument on invokation.
- *
- * @ingroup bind
- */
-template <LIST(class T_functor, LOOP(class T_type%1, $1))>
-inline decltype(auto)
-bind(const T_functor& _A_func, LOOP(T_type%1 _A_b%1, $1))
-{ return bind_functor<-1, T_functor,dnl
-FOR(1,eval($1-1),[
-                    T_type%1,])
-                    T_type$1>
-                    (_A_func, LOOP(_A_b%1, $1));
-}
-
-])
 
 divert(0)dnl
 _FIREWALL([ADAPTORS_BIND])
@@ -377,7 +355,23 @@ bind(const T_functor& _A_func, T_bound1 _A_b1)
            (_A_func, _A_b1);
 }
 
-FOR(1,CALL_SIZE,[[BIND_COUNT(%1)]])dnl
+
+
+/** Creates an adaptor of type sigc::bind_functor which fixes the last arguments of the passed functor.
+ * This function overload fixes the last arguments of @e _A_func.
+ *
+ * @param _A_func Functor that should be wrapped.
+ * @param _A_b Arguments to bind to @e _A_func.
+ * @return Adaptor that executes _A_func with the bound argument on invokation.
+ *
+ * @ingroup bind
+ */
+template <class T_functor, class... T_type>
+inline decltype(auto)
+bind(const T_functor& _A_func, T_type... _A_b)
+{ return bind_functor<-1, T_functor, T_type...>(_A_func, _A_b...);
+}
+
 
 } /* namespace sigc */
 
