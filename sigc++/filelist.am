@@ -56,12 +56,12 @@ sigc_public_h =				\
 	trackable.h			\
 	type_traits.h			\
 	visit_each.h			\
+	adaptors/adaptor_base.h \
 	adaptors/adaptors.h		\
 	adaptors/adaptor_trait.h		\
 	adaptors/bind_return.h \
 	adaptors/bound_argument.h	\
 	adaptors/compose.h \
-	adaptors/deduce_result_type.h \
 	adaptors/exception_catch.h \
 	adaptors/retype_return.h \
 	functors/functor_trait.h		\

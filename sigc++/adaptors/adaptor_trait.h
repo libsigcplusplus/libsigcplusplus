@@ -5,7 +5,7 @@
 #include <sigc++/functors/functor_trait.h>
 #include <sigc++/functors/ptr_fun.h>
 #include <sigc++/functors/mem_fun.h>
-#include <sigc++/adaptors/deduce_result_type.h>
+#include <sigc++/adaptors/adaptor_base.h>
 
 /*
  * The idea here is simple.  To prevent the need to
