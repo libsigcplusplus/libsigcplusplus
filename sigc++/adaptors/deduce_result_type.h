@@ -1,7 +1,3 @@
-// -*- c++ -*-
-/* Do not edit! -- generated file */
-/*
-*/
 #ifndef _SIGC_ADAPTORS_DEDUCE_RESULT_TYPE_H_
 #define _SIGC_ADAPTORS_DEDUCE_RESULT_TYPE_H_
 #include <sigc++/functors/functor_trait.h>
