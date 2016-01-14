@@ -34,13 +34,6 @@ ifelse($2,1,[dnl
   operator()(T_arg1)
     { return this->functor_(); }
 
-  #ifndef SIGC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD
-  template <class T_arg1>
-  decltype(auto)
-  sun_forte_workaround(T_arg1 _A_a1)
-    { return this->functor_(); }
-  #endif
-
 ],$1,0,[dnl
   /** Invokes the wrapped functor, ignoring the last argument.dnl
 FOR(1, eval($2-1),[
@@ -53,14 +46,6 @@ FOR(1, eval($2-1),[
   operator()(LOOP(T_arg%1 _A_a%1, eval($2-1)), T_arg$2)
     { return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<LIST(FOR(1,eval($2-1),[type_trait_pass_t<T_arg%1>,]))>
         (LIST(FOR(1,eval($2-1),[_A_a%1,]))); }
-
-  #ifndef SIGC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD
-  template <LOOP([class T_arg%1], $2)>
-  decltype(auto)
-  sun_forte_workaround(LOOP(T_arg%1 _A_a%1, eval($2-1)), T_arg$2)
-    { return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<LIST(FOR(1,eval($2-1),[type_trait_pass_t<T_arg%1>,]))>
-        (LIST(FOR(1,eval($2-1),[_A_a%1,]))); }
-  #endif
 
 ],[dnl
   /** Invokes the wrapped functor, ignoring the ORDINAL($1) argument.dnl
@@ -76,14 +61,6 @@ FOR(eval($1+1), $2,[
   operator()(LIST(FOR(1,eval($1-1),[T_arg%1 _A_a%1,]),T_arg$1,FOR(eval($1+1),$2,[T_arg%1 _A_a%1,])))
     { return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<LIST(FOR(1,eval($1-1),[type_trait_pass_t<T_arg%1>,]),FOR(eval($1+1), $2,[type_trait_pass_t<T_arg%1>,]))>
         (LIST(FOR(1,eval($1-1),[_A_a%1,]),FOR(eval($1+1),$2,[_A_a%1,]))); }
-
-  #ifndef SIGC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD
-  template <LOOP([class T_arg%1], $2)>
-  decltype(auto)
-  sun_forte_workaround(LIST(FOR(1,eval($1-1),[T_arg%1 _A_a%1,]),T_arg$1,FOR(eval($1+1),$2,[T_arg%1 _A_a%1,])))
-    { return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<LIST(FOR(1,eval($1-1),[type_trait_pass_t<T_arg%1>,]),FOR(eval($1+1), $2,[type_trait_pass_t<T_arg%1>,]))>
-        (LIST(FOR(1,eval($1-1),[_A_a%1,]),FOR(eval($1+1),$2,[_A_a%1,]))); }
-  #endif
 
 ])])dnl
 ])dnl end HIDE_OPERATOR

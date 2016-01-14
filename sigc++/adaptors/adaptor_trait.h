@@ -37,11 +37,9 @@ namespace sigc {
 // depending on the compiler:
 #ifdef SIGC_GCC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD
   #define SIGC_WORKAROUND_OPERATOR_PARENTHESES template operator()
-  #define SIGC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD
 #else
   #ifdef SIGC_MSVC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD
     #define SIGC_WORKAROUND_OPERATOR_PARENTHESES operator()
-    #define SIGC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD
   #else
     #define SIGC_WORKAROUND_OPERATOR_PARENTHESES sun_forte_workaround
   #endif
@@ -91,11 +89,6 @@ struct adaptor_functor : public adaptor_base
   result_type
   operator()() const;
 
-  #ifndef SIGC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD
-  result_type sun_forte_workaround() const
-    { return operator(); }
-  #endif
-
 
   /** Invokes the wrapped functor passing on the arguments.
    * @param _A_arg... Arguments to be passed on to the functor.
@@ -105,16 +98,6 @@ struct adaptor_functor : public adaptor_base
   decltype(auto)
   operator()(T_arg... _A_arg) const
     { return functor_(_A_arg...); }
-
-  #ifndef SIGC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD
-  template <class... T_arg>
-  decltype(auto)
-  sun_forte_workaround(T_arg... _A_arg) const
-    { //Just calling operator() tries to copy the argument:
-      return functor_(_A_arg...);
-    }
-  #endif
-
 
   /// Constructs an invalid functor.
   adaptor_functor()

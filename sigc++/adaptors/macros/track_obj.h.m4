@@ -183,17 +183,6 @@ public:
       (_A_arg...);
   }
 
-  #ifndef SIGC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD
-  template <typename... T_arg>
-  decltype(auto)
-  sun_forte_workaround(T_arg... _A_arg)
-  {
-    return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<type_trait_pass_t<T_arg>...>
-      (_A_arg...);
-  }
-  #endif
-
-
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 //protected:
   // public, so that visit_each() can access it.

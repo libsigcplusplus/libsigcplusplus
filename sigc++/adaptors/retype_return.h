@@ -27,15 +27,6 @@ struct retype_return_functor : public adapts<T_functor>
         (_A_a...));
     }
 
-  #ifndef SIGC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD
-  template <class... T_arg>
-  inline T_return sun_forte_workaround(T_arg... _A_a)
-    { return T_return(this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<T_arg...>
-        (_A_a...));
-    }
-  #endif
-
-
   retype_return_functor() {}
 
   /** Constructs a retype_return_functor object that perform a C-style cast on the return value of the passed functor.
@@ -72,15 +63,6 @@ struct retype_return_functor<void, T_functor> : public adapts<T_functor>
     { this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<T_arg...>
         (_A_a...);
     }
-
-  #ifndef SIGC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD
-  template <class... T_arg>
-  inline void sun_forte_workaround(T_arg... _A_a)
-    { this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<T_arg...>
-        (_A_a...);
-    }
-  #endif
-
 
   retype_return_functor() {}
   retype_return_functor(type_trait_take_t<T_functor> _A_functor)

@@ -35,15 +35,6 @@ struct bind_return_functor : public adapts<T_functor>
         (_A_a...); return ret_value_.invoke();
     }
 
-  #ifndef SIGC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD
-  template <class... T_arg>
-  inline typename unwrap_reference<T_return>::type sun_forte_workaround(T_arg... _A_a)
-    { this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<type_trait_pass_t<T_arg>...>
-        (_A_a...); return ret_value_.invoke();
-    }
-  #endif
-
-
   /** Constructs a bind_return_functor object that fixes the return value to @p _A_ret_value.
    * @param _A_functor Functor to invoke from operator()().
    * @param _A_ret_value Value to return from operator()().

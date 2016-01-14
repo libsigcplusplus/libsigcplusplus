@@ -30,15 +30,6 @@ ifelse($1,0,[dnl
         (LOOP([[static_cast<T_type%1>(_A_a%1)]], $1));
     }
 
-  #ifndef SIGC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD
-  template <LOOP(class T_arg%1, $1)>
-  decltype(auto)
-  sun_forte_workaround(LOOP(T_arg%1 _A_a%1, $1))
-    { return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<LOOP(type_trait_take_t<T_type%1>, $1)>
-        (LOOP([[static_cast<T_type%1>(_A_a%1)]], $1));
-    }
-  #endif
-
 ])dnl
 ])
 
