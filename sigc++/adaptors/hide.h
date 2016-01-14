@@ -1,32 +1,6 @@
-dnl Copyright 2002, The libsigc++ Development Team
-dnl
-dnl This library is free software; you can redistribute it and/or
-dnl modify it under the terms of the GNU Lesser General Public
-dnl License as published by the Free Software Foundation; either
-dnl version 2.1 of the License, or (at your option) any later version.
-dnl
-dnl This library is distributed in the hope that it will be useful,
-dnl but WITHOUT ANY WARRANTY; without even the implied warranty of
-dnl MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
-dnl Lesser General Public License for more details.
-dnl
-dnl You should have received a copy of the GNU Lesser General Public
-dnl License along with this library; if not, write to the Free Software
-dnl Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
-dnl
-divert(-1)
+#ifndef _SIGC_ADAPTORS_HIDE_H_
+#define _SIGC_ADAPTORS_HIDE_H_
 
-include(template.macros.m4)
-
-define([ORDINAL],[dnl
-ifelse($1,0,,$1)ifelse($1,0,[last],$1,1,[st],$1,2,[nd],$1,3,[rd],[th])[]dnl
-])
-
-])])dnl
-])dnl end HIDE_OPERATOR
-
-divert(0)dnl
-_FIREWALL([ADAPTORS_HIDE])
 #include <sigc++/adaptors/adaptor_trait.h>
 #include <sigc++/tuple_cat.h>
 #include <sigc++/tuple_end.h>
@@ -181,7 +155,7 @@ struct visitor<hide_functor<I_location, T_functor> >
  * @ingroup hide
  */
 template <int I_location, class T_functor>
-inline hide_functor<I_location, T_functor>
+inline decltype(auto)
 hide(const T_functor& _A_func)
   { return hide_functor<I_location, T_functor>(_A_func); }
 
@@ -194,8 +168,10 @@ hide(const T_functor& _A_func)
  * @ingroup hide
  */
 template <class T_functor>
-inline hide_functor<-1, T_functor>
+inline decltype(auto)
 hide(const T_functor& _A_func)
   { return hide_functor<-1, T_functor> (_A_func); }
 
 } /* namespace sigc */
+
+#endif /* _SIGC_ADAPTORS_HIDE_H_ */

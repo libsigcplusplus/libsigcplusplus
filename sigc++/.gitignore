@@ -1,6 +1,5 @@
 /limit_reference.h
 /adaptors/bind.h
-/adaptors/hide.h
 /adaptors/retype.h
 /adaptors/track_obj.h
 /functors/mem_fun.h
