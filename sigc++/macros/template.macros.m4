@@ -54,8 +54,6 @@ dnl
 dnl General macros
 dnl
 
-define([UPPER],[translit([$*],[abcdefghijklmnopqrstuvwxyz],[ABCDEFGHIJKLMNOPQRSTUVWXYZ])])
-define([LOWER],[translit([$*],[ABCDEFGHIJKLMNOPQRSTUVWXYZ],[abcdefghijklmnopqrstuvwxyz])])
 define([PROT],[[$*]])
 
 define([_LOOP],
