@@ -49,14 +49,14 @@ FOR(1,$1,[
  *
  * @ingroup signal
  */
-template <LIST(class T_return, class T_accumulator, LOOP(class T_arg%1, $1))>
+template <class T_return, class T_accumulator, class... T_arg>
 class signal$1
   : public signal_base
 {
 public:
-  typedef internal::signal_emit<LIST(T_return, T_accumulator, LOOP(T_arg%1, $1))> emitter_type;
+  typedef internal::signal_emit<LIST(T_return, T_accumulator, T_arg...)> emitter_type;
   typedef typename emitter_type::result_type         result_type;
-  typedef slot<LIST(T_return, LOOP(T_arg%1, $1))>    slot_type;
+  typedef slot<T_return, T_arg...>    slot_type;
   typedef slot_list<slot_type>                       slot_list_type;
   typedef typename slot_list_type::iterator               iterator;
   typedef typename slot_list_type::const_iterator         const_iterator;
@@ -101,21 +101,20 @@ public:
    * a blocking state. The parameters are passed on to the slots.
    * If @e T_accumulated is not @p nil, an accumulator of this type
    * is used to process the return values of the slot invocations.
-   * Otherwise, the return value of the last slot invoked is returned.dnl
-FOR(1, $1,[
-   * @param _A_a%1 Argument to be passed on to the slots.])
+   * Otherwise, the return value of the last slot invoked is returned.
+   * @param _A_a Arguments to be passed on to the slots.
    * @return The accumulated return values of the slot invocations.
    */
-  result_type emit(LOOP(type_trait_take_t<T_arg%1> _A_a%1, $1)) const
-    { return emitter_type::emit(LIST(impl_, LOOP(_A_a%1, $1))); }
+  result_type emit(type_trait_take_t<T_arg>... _A_a) const
+    { return emitter_type::emit(impl_, _A_a...); }
 
   /** Triggers the emission of the signal in reverse order (see emit()). */
-  result_type emit_reverse(LOOP(type_trait_take_t<T_arg%1> _A_a%1, $1)) const
-    { return emitter_type::emit_reverse(LIST(impl_, LOOP(_A_a%1, $1))); }
+  result_type emit_reverse(type_trait_take_t<T_arg>... _A_a) const
+    { return emitter_type::emit_reverse(impl_, _A_a...); }
 
   /** Triggers the emission of the signal (see emit()). */
-  result_type operator()(LOOP(type_trait_take_t<T_arg%1> _A_a%1, $1)) const
-    { return emit(LOOP(_A_a%1, $1)); }
+  result_type operator()(type_trait_take_t<T_arg>... _A_a) const
+    { return emit(_A_a...); }
 
   /** Creates a functor that calls emit() on this signal.
    * @code
@@ -124,8 +123,8 @@ FOR(1, $1,[
    * yields the same result.
    * @return A functor that calls emit() on this signal.
    */
-  bound_const_mem_functor<LIST(result_type, signal$1, LOOP(type_trait_take_t<T_arg%1>, $1))> make_slot() const
-    { return bound_const_mem_functor<LIST(result_type, signal$1, LOOP(type_trait_take_t<T_arg%1>, $1))>(this, &signal$1::emit); }
+  bound_const_mem_functor<result_type, signal$1, type_trait_take_t<T_arg>...> make_slot() const
+    { return bound_const_mem_functor<result_type, signal$1, type_trait_take_t<T_arg>...>(this, &signal$1::emit); }
 
   /** Creates an STL-style interface for the signal's list of slots.
    * This interface supports iteration, insertion and removal of slots.
