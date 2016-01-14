@@ -25,10 +25,10 @@ define([SIGNAL_EMIT_N],[dnl
  * emission when no accumulator is used, for example when the template
  * argument @e T_accumulator is @p nil.
  */
-template <LIST(class T_return, LOOP(class T_arg%1, $1), class T_accumulator)>
+template <LIST(class T_return, class T_accumulator, LOOP(class T_arg%1, $1))>
 struct signal_emit$1
 {
-  typedef signal_emit$1<LIST(T_return, LOOP(T_arg%1, $1), T_accumulator)> self_type;
+  typedef signal_emit$1<LIST(T_return, T_accumulator, LOOP(T_arg%1, $1))> self_type;
   typedef typename T_accumulator::result_type result_type;
   typedef slot<LIST(T_return, LOOP(T_arg%1, $1))> slot_type;
   typedef internal::slot_iterator_buf<self_type, T_return> slot_iterator_buf_type;
@@ -108,9 +108,9 @@ dnl
  * function for the case that no accumulator is used.
  */
 template <LIST(class T_return, LOOP(class T_arg%1, $1))>
-struct signal_emit$1<LIST(T_return, LOOP(T_arg%1, $1), nil)>
+struct signal_emit$1<LIST(T_return, nil, LOOP(T_arg%1, $1))>
 {
-  typedef signal_emit$1<LIST(T_return, LOOP(T_arg%1, $1), nil) > self_type;
+  typedef signal_emit$1<LIST(T_return, nil, LOOP(T_arg%1, $1)) > self_type;
   typedef T_return result_type;
   typedef slot<LIST(T_return, LOOP(T_arg%1, $1))> slot_type;
   typedef signal_impl::const_iterator_type iterator_type;
@@ -212,9 +212,9 @@ FOR(1, $1,[
  * return type is @p void.
  */
 template <LOOP(class T_arg%1, $1)>
-struct signal_emit$1<LIST(void, LOOP(T_arg%1, $1), nil)>
+struct signal_emit$1<LIST(void, nil, LOOP(T_arg%1, $1))>
 {
-  typedef signal_emit$1<LIST(void, LOOP(T_arg%1, $1), nil)> self_type;
+  typedef signal_emit$1<LIST(void, nil, LOOP(T_arg%1, $1))> self_type;
   typedef void result_type;
   typedef slot<LIST(void, LOOP(T_arg%1, $1))> slot_type;
   typedef signal_impl::const_iterator_type iterator_type;
@@ -308,7 +308,7 @@ class signal$1
   : public signal_base
 {
 public:
-  typedef internal::signal_emit$1<LIST(T_return, LOOP(T_arg%1, $1), T_accumulator)> emitter_type;
+  typedef internal::signal_emit$1<LIST(T_return, T_accumulator, LOOP(T_arg%1, $1))> emitter_type;
   typedef typename emitter_type::result_type         result_type;
   typedef slot<LIST(T_return, LOOP(T_arg%1, $1))>    slot_type;
   typedef slot_list<slot_type>                       slot_list_type;
