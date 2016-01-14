@@ -69,7 +69,7 @@ struct bind_functor<$1, T_functor, T_bound, LIST(LOOP(nil, CALL_SIZE - 1))> : pu
   /** Invokes the wrapped functor passing on the bound argument only.
    * @return The return value of the functor invocation.
    */
-  result_type
+  decltype(auto)
   operator()()
   {
     //Note: The AIX compiler sometimes gives linker errors if we do not define this in the class.
@@ -108,7 +108,7 @@ struct bind_functor<LIST(-1, T_functor, LIST(LOOP(T_type%1, $1), LOOP(nil, CALL_
   /** Invokes the wrapped functor passing on the bound argument only.
    * @return The return value of the functor invocation.
    */
-  result_type
+  decltype(auto)
   operator()()
   {
     //Note: The AIX compiler sometimes gives linker errors if we do not define this in the class.

@@ -167,7 +167,7 @@ public:
   /** Invokes the wrapped functor.
    * @return The return value of the functor invocation.
    */
-  result_type operator()()
+  decltype(auto) operator()()
   { return this->functor_(); }
 
 

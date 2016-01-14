@@ -60,8 +60,14 @@ struct exception_catch_functor : public adapts<T_functor>
   typedef typename adapts<T_functor>::adaptor_type adaptor_type;
   typedef T_return result_type;
 
-  result_type
-  operator()();
+  decltype(auto)
+  operator()()
+    {
+      try
+        { return this->functor_(); }
+      catch (...)
+        { return catcher_(); }
+    }
 
 
   template <class... T_arg>
@@ -85,16 +91,6 @@ struct exception_catch_functor : public adapts<T_functor>
 
   T_catcher catcher_;
 };
-
-template <class T_functor, class T_catcher, class T_return>
-typename exception_catch_functor<T_functor, T_catcher, T_return>::result_type
-exception_catch_functor<T_functor, T_catcher, T_return>::operator()()
-  {
-    try
-      { return this->functor_(); }
-    catch (...)
-      { return catcher_(); }
-  }
 
 // void specialization
 template <class T_functor, class T_catcher>

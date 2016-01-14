@@ -46,8 +46,10 @@ struct compose1_functor : public adapts<T_setter>
   typedef T_getter getter_type;
   typedef typename adaptor_type::result_type  result_type;
 
-  result_type
-  operator()();
+  decltype(auto)
+  operator()()
+    { return this->functor_(get_()); }
+
 
   template <class... T_arg>
   decltype(auto)
@@ -65,11 +67,6 @@ struct compose1_functor : public adapts<T_setter>
 
   getter_type get_; // public, so that visit_each() can access it
 };
-
-template <class T_setter, class T_getter>
-typename compose1_functor<T_setter, T_getter>::result_type
-compose1_functor<T_setter, T_getter>::operator()()
-  { return this->functor_(get_()); }
 
 /** Adaptor that combines three functors.
  * Use the convenience function sigc::compose() to create an instance of sigc::compose2_functor.
@@ -90,8 +87,10 @@ struct compose2_functor : public adapts<T_setter>
   typedef T_getter2 getter2_type;
   typedef typename adaptor_type::result_type  result_type;
 
-  result_type
-  operator()();
+  decltype(auto)
+  operator()()
+    { return this->functor_(get1_(), get2_()); }
+
 
   template <class... T_arg>
   decltype(auto)
@@ -113,11 +112,6 @@ struct compose2_functor : public adapts<T_setter>
   getter1_type get1_; // public, so that visit_each() can access it
   getter2_type get2_; // public, so that visit_each() can access it
 };
-
-template <class T_setter, class T_getter1, class T_getter2>
-typename compose2_functor<T_setter, T_getter1, T_getter2>::result_type
-compose2_functor<T_setter, T_getter1, T_getter2>::operator()()
-  { return this->functor_(get1_(), get2_()); }
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 //template specialization of visitor<>::do_visit_each<>(action, functor):

@@ -20,7 +20,8 @@ include(template.macros.m4)
 
 define([RETYPE_OPERATOR],[dnl
 ifelse($1,0,[dnl
-  result_type operator()();
+  decltype(auto) operator()()
+    { return this->functor_(); }
 
 ],[dnl
   template <LOOP(class T_arg%1, $1)>
@@ -133,11 +134,6 @@ FOR(0,CALL_SIZE,[[RETYPE_OPERATOR(%1)]])dnl
     : adapts<T_functor>(_A_functor)
     {}
 };
-
-template <LIST(class T_functor, LOOP(class T_type%1, CALL_SIZE))>
-typename retype_functor<LIST(T_functor, LOOP(T_type%1, CALL_SIZE))>::result_type
-retype_functor<LIST(T_functor, LOOP(T_type%1, CALL_SIZE))>::operator()()
-  { return this->functor_(); }
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 //template specialization of visitor<>::do_visit_each<>(action, functor):

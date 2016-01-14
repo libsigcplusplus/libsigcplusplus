@@ -82,9 +82,9 @@ struct adaptor_functor : public adaptor_base
   /** Invokes the wrapped functor passing on the arguments.
    * @return The return value of the functor invocation.
    */
-  result_type
-  operator()() const;
-
+  decltype(auto)
+  operator()() const
+  { return functor_(); }
 
   /** Invokes the wrapped functor passing on the arguments.
    * @param _A_arg... Arguments to be passed on to the functor.
@@ -118,11 +118,6 @@ struct adaptor_functor : public adaptor_base
   /// Functor that is invoked from operator()().
   mutable T_functor functor_;
 };
-
-template <class T_functor>
-typename adaptor_functor<T_functor>::result_type
-adaptor_functor<T_functor>::operator()() const
-  { return functor_(); }
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 //template specialization of visitor<>::do_visit_each<>(action, functor):
