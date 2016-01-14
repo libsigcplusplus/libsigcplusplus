@@ -1,24 +1,22 @@
-dnl Copyright 2002, The libsigc++ Development Team 
-dnl 
-dnl This library is free software; you can redistribute it and/or 
-dnl modify it under the terms of the GNU Lesser General Public 
-dnl License as published by the Free Software Foundation; either 
-dnl version 2.1 of the License, or (at your option) any later version. 
-dnl 
-dnl This library is distributed in the hope that it will be useful, 
-dnl but WITHOUT ANY WARRANTY; without even the implied warranty of 
-dnl MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU 
-dnl Lesser General Public License for more details. 
-dnl 
-dnl You should have received a copy of the GNU Lesser General Public 
-dnl License along with this library; if not, write to the Free Software 
-dnl Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA 
-dnl
-divert(-1)
+/*
+ * Copyright 2002-2016, The libsigc++ Development Team
+ *
+ *  This library is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU Lesser General Public
+ *  License as published by the Free Software Foundation; either
+ *  version 2.1 of the License, or (at your option) any later version.
+ *
+ *  This library is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ *  Lesser General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Lesser General Public
+ *  License along with this library; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+ *
+ */
 
-include(template.macros.m4)
-
-divert(0)
 #ifndef _SIGC_SIGNAL_H_
 #define _SIGC_SIGNAL_H_
 
@@ -659,8 +657,7 @@ struct signal_emit
                          slot_iterator_buf_type(slots.end(), &self));
     }
 
-  /** Executes a list of slots using an accumulator of type @e T_accumulator in reverse order.dnl
-   * The arguments are buffered in a temporary instance of signal_emit.
+  /** Executes a list of slots using an accumulator of type @e T_accumulator in reverse order.   * The arguments are buffered in a temporary instance of signal_emit.
    * @param _A_a Arguments to be passed on to the slots.
    * @return The accumulated return values of the slot invocations as processed by the accumulator.
    */
@@ -710,8 +707,7 @@ struct signal_emit<T_return, nil, T_arg...>
    * The arguments are passed directly on to the slots.
    * The return value of the last slot invoked is returned.
    * @param first An iterator pointing to the first slot in the list.
-   * @param last An iterator pointing to the last slot in the list.dnl
-   * @param _A_a Arguments to be passed on to the slots.
+   * @param last An iterator pointing to the last slot in the list.   * @param _A_a Arguments to be passed on to the slots.
    * @return The return value of the last slot invoked.
    */
   static result_type emit(signal_impl* impl, type_trait_take_t<T_arg>... _A_a)
@@ -803,8 +799,7 @@ struct signal_emit<void, nil, T_arg...>
   typedef signal_impl::const_iterator_type iterator_type;
   typedef typename slot_type::call_type call_type;
 
-  /** Executes a list of slots using an accumulator of type @e T_accumulator.dnl
-   * The arguments are passed directly on to the slots.
+  /** Executes a list of slots using an accumulator of type @e T_accumulator.   * The arguments are passed directly on to the slots.
    * @param _A_a Arguments to be passed on to the slots.
    */
   static result_type emit(signal_impl* impl, type_trait_take_t<T_arg>... _A_a)
@@ -821,11 +816,9 @@ struct signal_emit<void, nil, T_arg...>
         }
     }
 
-  /** Executes a list of slots using an accumulator of type @e T_accumulator in reverse order.dnl
-   * The arguments are passed directly on to the slots.
+  /** Executes a list of slots using an accumulator of type @e T_accumulator in reverse order.   * The arguments are passed directly on to the slots.
    * @param first An iterator pointing to the first slot in the list.
-   * @param last An iterator pointing to the last slot in the list.dnl
-   * @param _A_a Arguments to be passed on to the slots.
+   * @param last An iterator pointing to the last slot in the list.   * @param _A_a Arguments to be passed on to the slots.
    */
   static result_type emit_reverse(signal_impl* impl, type_trait_take_t<T_arg>... _A_a)
     {
@@ -872,8 +865,7 @@ struct signal_emit<void, nil, T_arg...>
  * iteration, insertion and removal of slots.
  *
  * The following template arguments are used:
- * - @e T_return The desired return type for the emit() function (may be overridden by the accumulator).dnl
- * - @e T_arg Argument types used in the definition of emit().
+ * - @e T_return The desired return type for the emit() function (may be overridden by the accumulator). * - @e T_arg Argument types used in the definition of emit().
  * - @e T_accumulator The accumulator type used for emission. The default
  * @p nil means that no accumulator should be used, for example if signal
  * emission returns the return value of the last slot invoked.
@@ -887,7 +879,7 @@ class signal_with_accumulator
   : public signal_base
 {
 public:
-  typedef internal::signal_emit<LIST(T_return, T_accumulator, T_arg...)> emitter_type;
+  typedef internal::signal_emit<T_return, T_accumulator, T_arg...> emitter_type;
   typedef typename emitter_type::result_type         result_type;
   typedef slot<T_return, T_arg...>    slot_type;
   typedef slot_list<slot_type>                       slot_list_type;
@@ -1015,8 +1007,7 @@ public:
  *
  * The template arguments determine the function signature of
  * the emit() function:
- * - @e T_return The desired return type of the emit() function.dnl
- * - @e T_arg Argument types used in the definition of emit().
+ * - @e T_return The desired return type of the emit() function. * - @e T_arg Argument types used in the definition of emit().
  *
  * To specify an accumulator type the nested class signal::accumulated can be used.
  *
