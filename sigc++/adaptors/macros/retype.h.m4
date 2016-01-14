@@ -18,22 +18,6 @@ divert(-1)
 
 include(template.macros.m4)
 
-define([RETYPE_OPERATOR],[dnl
-ifelse($1,0,[dnl
-  decltype(auto) operator()()
-    { return this->functor_(); }
-
-],[dnl
-  template <LOOP(class T_arg%1, $1)>
-  decltype(auto)
-  operator()(LOOP(T_arg%1 _A_a%1, $1))
-    { return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<LOOP(type_trait_take_t<T_type%1>, $1)>
-        (LOOP([[static_cast<T_type%1>(_A_a%1)]], $1));
-    }
-
-])dnl
-])
-
 
 define([RETYPE_MEM_FUNCTOR],[dnl
 /** Creates an adaptor of type sigc::retype_functor which performs C-style casts on the parameters passed on to the functor.
@@ -44,10 +28,10 @@ define([RETYPE_MEM_FUNCTOR],[dnl
  *
  * @ingroup retype
  */
-template <LIST(class T_return, class T_obj, LOOP(class T_arg%1, $1))>
-inline retype_functor<LIST($2[]mem_functor<LIST(T_return, T_obj, LOOP(T_arg%1, $1))>, LOOP(T_arg%1, $1)) >
-retype(const $2[]mem_functor<LIST(T_return, T_obj, LOOP(T_arg%1, $1))>& _A_functor)
-{ return retype_functor<LIST($2[]mem_functor<LIST(T_return, T_obj, LOOP(T_arg%1, $1))>, LOOP(T_arg%1, $1)) >
+template <class T_return, class T_obj, class... T_arg>
+inline decltype(auto)
+retype(const $1[]mem_functor<T_return, T_obj, T_arg...>& _A_functor)
+{ return retype_functor<LIST($1[]mem_functor<T_return, T_obj, T_arg...>, T_arg...) >
     (_A_functor); }
 
 ])
@@ -112,20 +96,24 @@ namespace sigc {
  * Use the convenience function sigc::retype() to create an instance of retype_functor.
  *
  * The following template arguments are used:
- * - @e T_functor Type of the functor to wrap.dnl
-FOR(1, CALL_SIZE,[
- * - @e T_type%1 Type of @e T_functor's %1th argument.])
+ * - @e T_functor Type of the functor to wrap.
+ * - @e T_type Types of @e T_functor's arguments.
  *
  * @ingroup retype
  */
-template <LIST(class T_functor, LOOP(class T_type%1=nil, CALL_SIZE))>
+template <class T_functor, class... T_type>
 struct retype_functor
   : public adapts<T_functor>
 {
   typedef typename adapts<T_functor>::adaptor_type adaptor_type;
   typedef typename adapts<T_functor>::result_type result_type;
 
-FOR(0,CALL_SIZE,[[RETYPE_OPERATOR(%1)]])dnl
+ template <class... T_arg>
+  decltype(auto)
+  operator()(T_arg... _A_a)
+    { return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<type_trait_take_t<T_type>...>
+        (static_cast<T_type>(_A_a)...);
+    }
 
   /** Constructs a retype_functor object that performs C-style casts on the parameters passed on to the functor.
    * @param _A_functor Functor to invoke from operator()().
@@ -143,12 +131,12 @@ FOR(0,CALL_SIZE,[[RETYPE_OPERATOR(%1)]])dnl
  *
  * @ingroup retype
  */
-template <LIST(class T_functor, LOOP(class T_type%1, CALL_SIZE))>
-struct visitor<retype_functor<LIST(T_functor, LOOP(T_type%1, CALL_SIZE))> >
+template <class T_functor, class... T_type>
+struct visitor<retype_functor<T_functor, T_type...> >
 {
   template <typename T_action>
   static void do_visit_each(const T_action& _A_action,
-                            const retype_functor<LIST(T_functor, LOOP(T_type%1, CALL_SIZE))>& _A_target)
+                            const retype_functor<T_functor, T_type...>& _A_target)
   {
     sigc::visit_each(_A_action, _A_target.functor_);
   }
@@ -184,15 +172,14 @@ retype(const pointer_functor<T_return, T_arg...>& _A_functor)
 { return retype_functor<pointer_functor<T_return, T_arg...>, T_arg... >
     (_A_functor); }
 
-
-FOR(0,CALL_SIZE,[[RETYPE_MEM_FUNCTOR(%1,[])]])dnl
-FOR(0,CALL_SIZE,[[RETYPE_MEM_FUNCTOR(%1,[const_])]])dnl
-FOR(0,CALL_SIZE,[[RETYPE_MEM_FUNCTOR(%1,[volatile_])]])dnl
-FOR(0,CALL_SIZE,[[RETYPE_MEM_FUNCTOR(%1,[const_volatile_])]])dnl
-FOR(0,CALL_SIZE,[[RETYPE_MEM_FUNCTOR(%1,[bound_])]])dnl
-FOR(0,CALL_SIZE,[[RETYPE_MEM_FUNCTOR(%1,[bound_const_])]])dnl
-FOR(0,CALL_SIZE,[[RETYPE_MEM_FUNCTOR(%1,[bound_volatile_])]])dnl
-FOR(0,CALL_SIZE,[[RETYPE_MEM_FUNCTOR(%1,[bound_const_volatile_])]])dnl
+RETYPE_MEM_FUNCTOR([])
+RETYPE_MEM_FUNCTOR([const_])
+RETYPE_MEM_FUNCTOR([volatile_])
+RETYPE_MEM_FUNCTOR([const_volatile_])
+RETYPE_MEM_FUNCTOR([bound_])
+RETYPE_MEM_FUNCTOR([bound_const_])
+RETYPE_MEM_FUNCTOR([bound_volatile_])
+RETYPE_MEM_FUNCTOR([bound_const_volatile_])
 
 } /* namespace sigc */
 
