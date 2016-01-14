@@ -39,31 +39,29 @@ FOR(1,$1,[
  *
  * @ingroup slot
  */
-template <LIST(class T_return, LOOP(class T_arg%1, $1))>
+template <class T_return, class... T_arg>
 class slot$1
   : public slot_base
 {
 public:
   typedef T_return result_type;
-FOR(1, $1,[  typedef type_trait_take_t<T_arg%1> arg%1_type_;
-])
+  //TODO: using arg_type_ = type_trait_take_t<T_arg>;
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 private:
   typedef internal::slot_rep rep_type;
 public:
-  typedef T_return (*call_type)(LIST(rep_type*, LOOP(arg%1_type_, $1)));
+  typedef T_return (*call_type)(rep_type*, type_trait_take_t<T_arg>...);
 #endif
 
-  /** Invoke the contained functor unless slot is in blocking state.dnl
-FOR(1, $1,[
-   * @param _A_a%1 Argument to be passed on to the functor.])
+  /** Invoke the contained functor unless slot is in blocking state.
+   * @param _A_a Arguments to be passed on to the functor.
    * @return The return value of the functor invocation.
    */
-  inline T_return operator()(LOOP(arg%1_type_ _A_a%1, $1)) const
+  inline T_return operator()(type_trait_take_t<T_arg>... _A_a) const
     {
       if (!empty() && !blocked())
-        return (reinterpret_cast<call_type>(slot_base::rep_->call_))(LIST(slot_base::rep_, LOOP(_A_a%1, $1)));
+        return (reinterpret_cast<call_type>(slot_base::rep_->call_))(slot_base::rep_, _A_a...);
       return T_return();
     }
 
@@ -77,7 +75,7 @@ FOR(1, $1,[
     : slot_base(new internal::typed_slot_rep<T_functor>(_A_func))
     {
       //The slot_base:: is necessary to stop the HP-UX aCC compiler from being confused. murrayc.
-      slot_base::rep_->call_ = internal::slot_call$1<LIST(T_functor, T_return, LOOP(T_arg%1, $1))>::address();
+      slot_base::rep_->call_ = internal::slot_call$1<T_functor, T_return, T_arg...>::address();
     }
 
   /** Constructs a slot, copying an existing one.
@@ -318,7 +316,7 @@ FOR(1,$1,[
  * - @e T_arg%1 Argument type used in the definition of call_it().])
  *
  */
-template<LIST(class T_functor, class T_return, LOOP(class T_arg%1, $1))>
+template<class T_functor, class T_return, class... T_arg>
 struct slot_call$1
 {
   /** Invokes a functor of type @p T_functor.
@@ -327,15 +325,18 @@ FOR(1, $1,[
    * @param _A_a%1 Argument to be passed on to the functor.])
    * @return The return values of the functor invocation.
    */
-  static T_return call_it(LIST(slot_rep* rep, LOOP(type_trait_take_t<T_arg%1> a_%1, $1)))
+  static T_return call_it(LIST(slot_rep* rep, type_trait_take_t<T_arg>... a_))
     {
       typedef typed_slot_rep<T_functor> typed_slot;
       typed_slot *typed_rep = static_cast<typed_slot*>(rep);dnl
+      //TODO_variadic: Avoid the specific call to the () overload when
+      //bind_functor::operator() is variadic. Then we can make this whole class
+      //variadic, and others that use it.
 ifelse($1,0,[
       return (typed_rep->functor_)();
 ],[
-      return (typed_rep->functor_).SIGC_WORKAROUND_OPERATOR_PARENTHESES<LOOP([type_trait_take_t<T_arg%1>],$1)>
-               (LOOP(a_%1, $1));
+      return (typed_rep->functor_).SIGC_WORKAROUND_OPERATOR_PARENTHESES<type_trait_take_t<T_arg>...>
+               (a_...);
 ])dnl
     }
 
