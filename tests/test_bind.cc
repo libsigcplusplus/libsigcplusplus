@@ -70,15 +70,20 @@ void egon(std::string& str)
 struct book : public sigc::trackable
 {
   book(const std::string& name) : name_(name) {}
+
+  //non-copyable:
+  book(const book&) = delete;
+  book& operator=(const book&) = delete;
+  
+  //non movable:
+  book(book&&) = delete;
+  book& operator=(book&&) = delete;
+
   std::string& get_name()  { return name_; }
   operator std::string& () { return get_name(); }
 
 private:
   std::string name_;
-
-  //non-copyable:
-  book(const book&);
-  book& operator=(const book&);
 };
 
 } // end anonymous namespace

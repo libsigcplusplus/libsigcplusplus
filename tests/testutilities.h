@@ -24,6 +24,15 @@
 class TestUtilities
 {
 public:
+
+  // Non-copyable:
+  TestUtilities(const TestUtilities&) = delete;
+  TestUtilities& operator=(const TestUtilities&) = delete;
+
+  // Non-movable:
+  TestUtilities(TestUtilities&&) = delete;
+  TestUtilities& operator=(TestUtilities&&) = delete;
+
   static TestUtilities* get_instance();
   bool check_command_args(int argc, char* argv[]);
   void check_result(std::ostringstream& result_stream, const std::string& expected_result);
@@ -35,9 +44,7 @@ public:
   static bool get_result_and_delete_instance();
 
 private:
-  // Not copyable. These are not implemented.
-  TestUtilities(const TestUtilities&);
-  TestUtilities& operator=(const TestUtilities&);
+
 
   TestUtilities();
 

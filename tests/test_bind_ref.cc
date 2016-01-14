@@ -15,12 +15,16 @@ public:
   : name_(name)
   {}
 
-  std::string name_;
+  //non-copyable,
+  //so it can only be used with sigc::bind() via sigc::ref()
+  Param(const Param&) = delete;
+  Param& operator=(const Param&) = delete;
 
-private:
-  //non-copyable, so it can only be used with sigc::bind() via sigc::ref()
-  Param(const Param&);
-  Param& operator=(const Param&);
+  //non movable:
+  Param(Param&&) = delete;
+  Param& operator=(Param&&) = delete;
+
+  std::string name_;
 };
 
 void handler(Param& param)
