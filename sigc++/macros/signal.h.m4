@@ -214,7 +214,7 @@ struct signal_emit$1<void, nil, T_arg...>
   typedef void result_type;
   typedef slot<void, T_arg...> slot_type;
   typedef signal_impl::const_iterator_type iterator_type;
-  typedef ifelse($1,0,void (*call_type)(slot_rep*),typename slot_type::call_type call_type);
+  typedef typename slot_type::call_type call_type;
 
   /** Executes a list of slots using an accumulator of type @e T_accumulator.dnl
    * The arguments are passed directly on to the slots.
