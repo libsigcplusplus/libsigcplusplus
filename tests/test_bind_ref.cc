@@ -54,7 +54,7 @@ int main(int argc, char* argv[])
     Param param("murrayc");
     // A convoluted way to do
     // slot_bound = sigc::bind(slot_full, std::ref(param));
-    slot_bound = sigc::bind< -1, std::reference_wrapper<Param> >(slot_full, std::ref(param));
+    slot_bound = sigc::bind< -1, decltype(slot_full), std::reference_wrapper<Param> >(slot_full, std::ref(param));
 
     result_stream << "Calling slot when param exists:";
     slot_bound();

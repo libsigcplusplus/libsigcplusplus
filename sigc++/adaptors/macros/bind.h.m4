@@ -329,15 +329,13 @@ FOR(1,CALL_SIZE,[[BIND_FUNCTOR_COUNT(%1)]])dnl
  *
  * @ingroup bind
  */
-template <int I_location, class T_bound1, class T_functor>
+template <int I_location, class T_functor, class... T_bound>
 inline decltype(auto)
-bind(const T_functor& _A_func, T_bound1 _A_b1)
+bind(const T_functor& _A_func, T_bound... _A_b)
 {
-  return bind_functor<I_location, T_functor, T_bound1>
-           (_A_func, _A_b1);
+  return bind_functor<I_location, T_functor, T_bound...>
+           (_A_func, _A_b...);
 }
-
-
 
 /** Creates an adaptor of type sigc::bind_functor which fixes the last arguments of the passed functor.
  * This function overload fixes the last arguments of @e _A_func.

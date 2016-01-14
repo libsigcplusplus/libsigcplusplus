@@ -1,27 +1,6 @@
-dnl Copyright 2013, The libsigc++ Development Team
-dnl
-dnl This file is part of libsigc++.
-dnl
-dnl This library is free software; you can redistribute it and/or
-dnl modify it under the terms of the GNU Lesser General Public
-dnl License as published by the Free Software Foundation; either
-dnl version 2.1 of the License, or (at your option) any later version.
-dnl
-dnl This library is distributed in the hope that it will be useful,
-dnl but WITHOUT ANY WARRANTY; without even the implied warranty of
-dnl MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
-dnl Lesser General Public License for more details.
-dnl
-dnl You should have received a copy of the GNU Lesser General Public
-dnl License along with this library. If not, see <http://www.gnu.org/licenses/>.
-dnl
-divert(-1)
+#ifndef _SIGC_ADAPTORS_TRACK_OBJ_H_
+#define _SIGC_ADAPTORS_TRACK_OBJ_H_
 
-include(template.macros.m4)
-
-
-divert(0)dnl
-_FIREWALL([ADAPTORS_TRACK_OBJ])
 #include <sigc++/adaptors/adaptor_trait.h>
 #include <sigc++/limit_reference.h>
 #include <sigc++/tuple_for_each.h>
@@ -36,7 +15,7 @@ namespace sigc {
  *
  * The functor returned by sigc::track_obj() is formally an adaptor, but it does
  * not alter the signature, return type or behaviour of the supplied functor.
- * Up to CALL_SIZE objects can be tracked. operator()() can have up to CALL_SIZE arguments.
+ * Up to 7 objects can be tracked. operator()() can have up to 7 arguments.
  *
  * @par Example:
  * @code
@@ -45,9 +24,9 @@ namespace sigc {
  * void foo(bar&);
  * {
  *   bar some_bar;
- *   some_signal.connect([[&some_bar]](){ foo(some_bar); });
+ *   some_signal.connect([&some_bar](){ foo(some_bar); });
  *     // NOT disconnected automatically when some_bar goes out of scope
- *   some_signal.connect(sigc::track_obj([[&some_bar]](){ foo(some_bar); }, some_bar);
+ *   some_signal.connect(sigc::track_obj([&some_bar](){ foo(some_bar); }, some_bar);
  *     // disconnected automatically when some_bar goes out of scope
  * }
  * @endcode
@@ -136,9 +115,10 @@ struct visitor<track_obj_functor<T_functor, T_obj...>>
   }
 
 private:
-  template<typename T_element, typename T_action>
+  template<typename T_element>
   struct TrackObjVisitForEach
   {
+    template<typename T_action>
     static
     void
     visit(const T_element& element, const T_action& action)
@@ -169,3 +149,5 @@ track_obj(const T_functor& _A_func, const T_obj&... _A_obj)
 
 
 } /* namespace sigc */
+
+#endif /* _SIGC_ADAPTORS_TRACK_OBJ_H_ */
