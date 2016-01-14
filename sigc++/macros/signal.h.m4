@@ -18,146 +18,6 @@ divert(-1)
 
 include(template.macros.m4)
 
-define([SIGNAL],[dnl
-ifelse($1, $2,[dnl
-/** Convenience wrapper for the numbered sigc::signal# templates.
- * signal can be used to connect() slots that are invoked
- * during subsequent calls to emit(). Any functor or slot
- * can be passed into connect(). It is converted into a slot
- * implicitly.
- *
- * If you want to connect one signal to another, use make_slot()
- * to retrieve a functor that emits the signal when invoked.
- *
- * Be careful if you directly pass one signal into the connect()
- * method of another: a shallow copy of the signal is made and
- * the signal's slots are not disconnected until both the signal
- * and its clone are destroyed, which is probably not what you want!
- *
- * An STL-style list interface for the signal's list of slots
- * can be retrieved with slots(). This interface supports
- * iteration, insertion and removal of slots.
- *
- * The template arguments determine the function signature of
- * the emit() function:
- * - @e T_return The desired return type of the emit() function.dnl
-FOR(1,$1,[
- * - @e T_arg%1 Argument type used in the definition of emit(). The default @p nil means no argument.])
- *
- * To specify an accumulator type the nested class signal::accumulated can be used.
- *
- * @par Example:
- * @code
- * void foo(int) {}
- * sigc::signal<void, long> sig;
- * sig.connect(sigc::ptr_fun(&foo));
- * sig.emit(19);
- * @endcode
- *
- * @ingroup signal
- */
-template <LIST(class T_return, LOOP(class T_arg%1 = nil, $1))>],[dnl
-
-/** Convenience wrapper for the numbered sigc::signal_with_accumulator template.
- * See the base class for useful methods.
- * This is the template specialization of the unnumbered sigc::signal
- * template for $1 argument(s).
-ifelse($1, $2,[dnl
- *
- * @ingroup signal
-])dnl
- */
-template <LIST(class T_return, LOOP(class T_arg%1, $1))>])
-class signal ifelse($1, $2,,[<LIST(T_return, LOOP(T_arg%1,$1), LOOP(nil, CALL_SIZE - $1))>])
-  : public signal_with_accumulator<LIST(T_return, nil, LOOP(T_arg%1, $1))>
-{
-public:
-ifelse($1, $2,[dnl
-  /** Convenience wrapper for the numbered sigc::signal# templates.
-   * Like sigc::signal but the additional template parameter @e T_accumulator
-   * defines the accumulator type that should be used.
-   *
-   * An accumulator is a functor that uses a pair of special iterators
-   * to step through a list of slots and calculate a return value
-   * from the results of the slot invokations. The iterators' operator*()
-   * executes the slot. The return value is buffered, so that in an expression
-   * like @code a = (*i) * (*i); @endcode the slot is executed only once.
-   * The accumulator must define its return value as @p result_type.
-   * 
-   * @par Example 1:
-   * This accumulator calculates the arithmetic mean value:
-   * @code
-   * struct arithmetic_mean_accumulator
-   * {
-   *   typedef double result_type;
-   *   template<typename T_iterator>
-   *   result_type operator()(T_iterator first, T_iterator last) const
-   *   {
-   *     result_type value_ = 0;
-   *     int n_ = 0;
-   *     for (; first != last; ++first, ++n_)
-   *       value_ += *first;
-   *     return value_ / n_;
-   *   }
-   * };
-   * @endcode
-   *
-   * @par Example 2:
-   * This accumulator stops signal emission when a slot returns zero:
-   * @code
-   * struct interruptable_accumulator
-   * {
-   *   typedef bool result_type;
-   *   template<typename T_iterator>
-   *   result_type operator()(T_iterator first, T_iterator last) const
-   *   {
-   *     for (; first != last; ++first, ++n_)
-   *       if (!*first) return false;
-   *     return true;
-   *   }
-   * };
-   * @endcode
-   *
-   * @ingroup signal
-],[
-  /** Convenience wrapper for the numbered sigc::signal_with_accumulator template.
-   * Like sigc::signal but the additional template parameter @e T_accumulator
-   * defines the accumulator type that should be used.
-])dnl
-   */
-  template <class T_accumulator>
-  class accumulated
-    : public signal_with_accumulator<LIST(T_return, T_accumulator, LOOP(T_arg%1, $1))>
-  {
-  public:
-    accumulated() {}
-    accumulated(const accumulated& src)
-      : signal_with_accumulator<LIST(T_return, T_accumulator, LOOP(T_arg%1, $1))>(src) {}
-  };
-
-  signal() {}
-
-  signal(const signal& src)
-    : signal_with_accumulator<LIST(T_return, nil, LOOP(T_arg%1, $1))>(src) {}
-
-  signal(signal&& src)
-    : signal_with_accumulator<LIST(T_return, nil, LOOP(T_arg%1, $1))>(std::move(src)) {}
-
-  signal& operator=(const signal& src)
-  {
-    signal_with_accumulator<LIST(T_return, nil, LOOP(T_arg%1, $1))>::operator=(src);
-    return *this;
-  }
-
-  signal& operator=(signal&& src)
-  {
-    signal_with_accumulator<LIST(T_return, nil, LOOP(T_arg%1, $1))>::operator=(std::move(src));
-    return *this;
-  }
-};
-
-])
-
 divert(0)
 #ifndef _SIGC_SIGNAL_H_
 #define _SIGC_SIGNAL_H_
@@ -1135,8 +995,125 @@ public:
 };
 
 
-SIGNAL(CALL_SIZE,CALL_SIZE)
-FOR(0,eval(CALL_SIZE-1),[[SIGNAL(%1)]])
+/** Convenience wrapper for the numbered sigc::signal# templates.
+ * signal can be used to connect() slots that are invoked
+ * during subsequent calls to emit(). Any functor or slot
+ * can be passed into connect(). It is converted into a slot
+ * implicitly.
+ *
+ * If you want to connect one signal to another, use make_slot()
+ * to retrieve a functor that emits the signal when invoked.
+ *
+ * Be careful if you directly pass one signal into the connect()
+ * method of another: a shallow copy of the signal is made and
+ * the signal's slots are not disconnected until both the signal
+ * and its clone are destroyed, which is probably not what you want!
+ *
+ * An STL-style list interface for the signal's list of slots
+ * can be retrieved with slots(). This interface supports
+ * iteration, insertion and removal of slots.
+ *
+ * The template arguments determine the function signature of
+ * the emit() function:
+ * - @e T_return The desired return type of the emit() function.dnl
+ * - @e T_arg Argument types used in the definition of emit().
+ *
+ * To specify an accumulator type the nested class signal::accumulated can be used.
+ *
+ * @par Example:
+ * @code
+ * void foo(int) {}
+ * sigc::signal<void, long> sig;
+ * sig.connect(sigc::ptr_fun(&foo));
+ * sig.emit(19);
+ * @endcode
+ *
+ * @ingroup signal
+ */
+template <class T_return, class... T_arg>
+class signal
+  : public signal_with_accumulator<T_return, nil, T_arg...>
+{
+public:
+  /** Convenience wrapper for the numbered sigc::signal# templates.
+   * Like sigc::signal but the additional template parameter @e T_accumulator
+   * defines the accumulator type that should be used.
+   *
+   * An accumulator is a functor that uses a pair of special iterators
+   * to step through a list of slots and calculate a return value
+   * from the results of the slot invokations. The iterators' operator*()
+   * executes the slot. The return value is buffered, so that in an expression
+   * like @code a = (*i) * (*i); @endcode the slot is executed only once.
+   * The accumulator must define its return value as @p result_type.
+   * 
+   * @par Example 1:
+   * This accumulator calculates the arithmetic mean value:
+   * @code
+   * struct arithmetic_mean_accumulator
+   * {
+   *   typedef double result_type;
+   *   template<typename T_iterator>
+   *   result_type operator()(T_iterator first, T_iterator last) const
+   *   {
+   *     result_type value_ = 0;
+   *     int n_ = 0;
+   *     for (; first != last; ++first, ++n_)
+   *       value_ += *first;
+   *     return value_ / n_;
+   *   }
+   * };
+   * @endcode
+   *
+   * @par Example 2:
+   * This accumulator stops signal emission when a slot returns zero:
+   * @code
+   * struct interruptable_accumulator
+   * {
+   *   typedef bool result_type;
+   *   template<typename T_iterator>
+   *   result_type operator()(T_iterator first, T_iterator last) const
+   *   {
+   *     for (; first != last; ++first, ++n_)
+   *       if (!*first) return false;
+   *     return true;
+   *   }
+   * };
+   * @endcode
+   *
+   * @ingroup signal
+   */
+  template <class T_accumulator>
+  class accumulated
+    : public signal_with_accumulator<T_return, T_accumulator, T_arg...>
+  {
+  public:
+    accumulated() {}
+    accumulated(const accumulated& src)
+      : signal_with_accumulator<T_return, T_accumulator, T_arg...>(src) {}
+  };
+
+  signal() {}
+
+  signal(const signal& src)
+    : signal_with_accumulator<T_return, nil, T_arg...>(src) {}
+
+  signal(signal&& src)
+    : signal_with_accumulator<T_return, nil, T_arg...>(std::move(src)) {}
+
+  signal& operator=(const signal& src)
+  {
+    signal_with_accumulator<T_return, nil, T_arg...>::operator=(src);
+    return *this;
+  }
+
+  signal& operator=(signal&& src)
+  {
+    signal_with_accumulator<T_return, nil, T_arg...>::operator=(std::move(src));
+    return *this;
+  }
+};
+
+
 
 } /* namespace sigc */
 
