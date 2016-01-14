@@ -25,44 +25,39 @@ define([SIGNAL_EMIT_N],[dnl
  * emission when no accumulator is used, for example when the template
  * argument @e T_accumulator is @p nil.
  */
-template <LIST(class T_return, class T_accumulator, LOOP(class T_arg%1, $1))>
+template <class T_return, class T_accumulator, class... T_arg>
 struct signal_emit$1
 {
-  typedef signal_emit$1<LIST(T_return, T_accumulator, LOOP(T_arg%1, $1))> self_type;
+  typedef signal_emit$1<T_return, T_accumulator, T_arg...> self_type;
   typedef typename T_accumulator::result_type result_type;
-  typedef slot<LIST(T_return, LOOP(T_arg%1, $1))> slot_type;
+  typedef slot<T_return, T_arg...> slot_type;
   typedef internal::slot_iterator_buf<self_type, T_return> slot_iterator_buf_type;
   typedef internal::slot_reverse_iterator_buf<self_type, T_return> slot_reverse_iterator_buf_type;
   typedef signal_impl::const_iterator_type iterator_type;
 
-ifelse($1,0,,[dnl
   /** Instantiates the class.
    * The parameters are stored in member variables. operator()() passes
    * the values on to some slot.
    */
-])dnl
-  signal_emit$1(LOOP(type_trait_take_t<T_arg%1> _A_a%1, $1)) ifelse($1,0,,[
-    : LOOP(_A_a%1_(_A_a%1), $1)]) {}
+  signal_emit$1(type_trait_take_t<T_arg>... _A_a)
+    : _A_a_(_A_a...) {}
 
-ifelse($1,0,[dnl
-  /** Invokes a slot.],[
-  /** Invokes a slot using the buffered parameter values.])
+  /** Invokes a slot using the buffered parameter values.
    * @param _A_slot Some slot to invoke.
    * @return The slot's return value.
    */
   T_return operator()(const slot_type& _A_slot) const
-    { return (reinterpret_cast<typename slot_type::call_type>(_A_slot.rep_->call_))(LIST(_A_slot.rep_, LOOP(_A_a%1_, $1))); }
-dnl  T_return operator()(const slot_type& _A_slot) const
-dnl    { return _A_slot(LOOP(_A_a%1_, $1)); }
+    {
+      const auto seq = std::make_index_sequence<std::tuple_size<decltype(_A_a_)>::value>();
+      return call_call_type_operator_parentheses_with_tuple(_A_slot, _A_a_, seq);
+    }
 
-  /** Executes a list of slots using an accumulator of type @e T_accumulator.dnl
-ifelse($1,0,,[
-   * The arguments are buffered in a temporary instance of signal_emit$1.])
-FOR(1, $1,[
-   * @param _A_a%1 Argument to be passed on to the slots.])
+  /** Executes a list of slots using an accumulator of type @e T_accumulator.
+   * The arguments are buffered in a temporary instance of signal_emit$1.
+   * @param _A_a Arguments to be passed on to the slots.
    * @return The accumulated return values of the slot invocations as processed by the accumulator.
    */
-  static result_type emit(LIST(signal_impl* impl, LOOP(type_trait_take_t<T_arg%1> _A_a%1, $1)))
+  static result_type emit(signal_impl* impl, type_trait_take_t<T_arg>... _A_a)
     {
       T_accumulator accumulator;
 
@@ -72,19 +67,17 @@ FOR(1, $1,[
       signal_exec exec(impl);
       temp_slot_list slots(impl->slots_);
 
-      self_type self ifelse($1,0,,[(LOOP(_A_a%1, $1))]);
+      self_type self(_A_a...);
       return accumulator(slot_iterator_buf_type(slots.begin(), &self),
                          slot_iterator_buf_type(slots.end(), &self));
     }
 
   /** Executes a list of slots using an accumulator of type @e T_accumulator in reverse order.dnl
-ifelse($1,0,,[
-   * The arguments are buffered in a temporary instance of signal_emit$1.])
-FOR(1, $1,[
-   * @param _A_a%1 Argument to be passed on to the slots.])
+   * The arguments are buffered in a temporary instance of signal_emit$1.
+   * @param _A_a Arguments to be passed on to the slots.
    * @return The accumulated return values of the slot invocations as processed by the accumulator.
    */
-  static result_type emit_reverse(LIST(signal_impl* impl, LOOP(type_trait_take_t<T_arg%1> _A_a%1, $1)))
+  static result_type emit_reverse(signal_impl* impl, type_trait_take_t<T_arg>... _A_a)
     {
       T_accumulator accumulator;
 
@@ -94,39 +87,47 @@ FOR(1, $1,[
       signal_exec exec(impl);
       temp_slot_list slots(impl->slots_);
 
-      self_type self ifelse($1,0,,[(LOOP(_A_a%1, $1))]);
+      self_type self(_A_a...);
       return accumulator(slot_reverse_iterator_buf_type(slots.end(), &self),
                          slot_reverse_iterator_buf_type(slots.begin(), &self));
     }
-dnl
-  FOR(1, $1,[
-  type_trait_take_t<T_arg%1> _A_a%1_;])
+
+  std::tuple<type_trait_take_t<T_arg>...> _A_a_;
+
+private:
+  //TODO: Replace this with std::experimental::apply() if that becomes standard
+  //C++, or add our own implementation, to avoid code duplication.
+  template<std::size_t... Is>
+  decltype(auto)
+  call_call_type_operator_parentheses_with_tuple(const slot_type& _A_slot, const std::tuple<T_arg...>& tuple,
+    std::index_sequence<Is...>) const
+  {
+    return (_A_slot)(std::get<Is>(tuple)...);
+  }
 };
 
 /** Abstracts signal emission.
  * This template specialization implements an optimized emit()
  * function for the case that no accumulator is used.
  */
-template <LIST(class T_return, LOOP(class T_arg%1, $1))>
-struct signal_emit$1<LIST(T_return, nil, LOOP(T_arg%1, $1))>
+template <class T_return, class... T_arg>
+struct signal_emit$1<T_return, nil, T_arg...>
 {
-  typedef signal_emit$1<LIST(T_return, nil, LOOP(T_arg%1, $1)) > self_type;
+  typedef signal_emit$1<T_return, nil, T_arg...> self_type;
   typedef T_return result_type;
-  typedef slot<LIST(T_return, LOOP(T_arg%1, $1))> slot_type;
+  typedef slot<T_return, T_arg...> slot_type;
   typedef signal_impl::const_iterator_type iterator_type;
   typedef typename slot_type::call_type call_type;
 
-  /** Executes a list of slots using an accumulator of type @e T_accumulator.dnl
-ifelse($1,0,,[
-   * The arguments are passed directly on to the slots.])
+  /** Executes a list of slots.
+   * The arguments are passed directly on to the slots.
    * The return value of the last slot invoked is returned.
    * @param first An iterator pointing to the first slot in the list.
    * @param last An iterator pointing to the last slot in the list.dnl
-FOR(1, $1,[
-   * @param _A_a%1 Argument to be passed on to the slots.])
+   * @param _A_a Arguments to be passed on to the slots.
    * @return The return value of the last slot invoked.
    */
-  static result_type emit(LIST(signal_impl* impl, LOOP(type_trait_take_t<T_arg%1> _A_a%1, $1)))
+  static result_type emit(signal_impl* impl, type_trait_take_t<T_arg>... _A_a)
     {
       if (!impl || impl->slots_.empty())
         return T_return();
@@ -145,29 +146,24 @@ FOR(1, $1,[
         if (it == slots.end())
           return T_return(); // note that 'T_return r_();' doesn't work => define 'r_' after this line and initialize as follows:
   
-        r_ = (reinterpret_cast<call_type>(it->rep_->call_))(LIST(it->rep_, LOOP(_A_a%1, $1)));
+        r_ = (reinterpret_cast<call_type>(it->rep_->call_))(it->rep_, _A_a...);
         for (++it; it != slots.end(); ++it)
           {
             if (it->empty() || it->blocked())
               continue;
-            r_ = (reinterpret_cast<call_type>(it->rep_->call_))(LIST(it->rep_, LOOP(_A_a%1, $1)));
+            r_ = (reinterpret_cast<call_type>(it->rep_->call_))(it->rep_, _A_a...);
           }
       }
       
       return r_;
     }
 
-  /** Executes a list of slots using an accumulator of type @e T_accumulator in reverse order.dnl
-ifelse($1,0,,[
-   * The arguments are passed directly on to the slots.])
-   * The return value of the last slot invoked is returned.
-   * @param first An iterator pointing to the first slot in the list.
-   * @param last An iterator pointing to the last slot in the list.dnl
-FOR(1, $1,[
-   * @param _A_a%1 Argument to be passed on to the slots.])
+  /** Executes a list of slots using an accumulator of type @e T_accumulator in reverse order.
+   * The arguments are passed directly on to the slots.
+   * @param _A_a%1 Argument to be passed on to the slots.
    * @return The return value of the last slot invoked.
    */
-  static result_type emit_reverse(LIST(signal_impl* impl, LOOP(type_trait_take_t<T_arg%1> _A_a%1, $1)))
+  static result_type emit_reverse(signal_impl* impl, type_trait_take_t<T_arg>... _A_a)
     {
       if (!impl || impl->slots_.empty())
         return T_return();
@@ -193,12 +189,12 @@ FOR(1, $1,[
         if (it == reverse_iterator_type(slots.begin()))
           return T_return(); // note that 'T_return r_();' doesn't work => define 'r_' after this line and initialize as follows:
   
-        r_ = (reinterpret_cast<call_type>(it->rep_->call_))(LIST(it->rep_, LOOP(_A_a%1, $1)));
+        r_ = (reinterpret_cast<call_type>(it->rep_->call_))(it->rep_, _A_a...);
         for (++it; it != reverse_iterator_type(slots.begin()); ++it)
           {
             if (it->empty() || it->blocked())
               continue;
-            r_ = (reinterpret_cast<call_type>(it->rep_->call_))(LIST(it->rep_, LOOP(_A_a%1, $1)));
+            r_ = (reinterpret_cast<call_type>(it->rep_->call_))(it->rep_, _A_a...);
           }
       }
       
@@ -211,24 +207,20 @@ FOR(1, $1,[
  * function for the case that no accumulator is used and the
  * return type is @p void.
  */
-template <LOOP(class T_arg%1, $1)>
-struct signal_emit$1<LIST(void, nil, LOOP(T_arg%1, $1))>
+template <class... T_arg>
+struct signal_emit$1<void, nil, T_arg...>
 {
-  typedef signal_emit$1<LIST(void, nil, LOOP(T_arg%1, $1))> self_type;
+  typedef signal_emit$1<void, nil, T_arg...> self_type;
   typedef void result_type;
-  typedef slot<LIST(void, LOOP(T_arg%1, $1))> slot_type;
+  typedef slot<void, T_arg...> slot_type;
   typedef signal_impl::const_iterator_type iterator_type;
   typedef ifelse($1,0,void (*call_type)(slot_rep*),typename slot_type::call_type call_type);
 
   /** Executes a list of slots using an accumulator of type @e T_accumulator.dnl
-ifelse($1,0,,[
-   * The arguments are passed directly on to the slots.])
-   * @param first An iterator pointing to the first slot in the list.
-   * @param last An iterator pointing to the last slot in the list.dnl
-FOR(1, $1,[
-   * @param _A_a%1 Argument to be passed on to the slots.])
+   * The arguments are passed directly on to the slots.
+   * @param _A_a Arguments to be passed on to the slots.
    */
-  static result_type emit(LIST(signal_impl* impl, LOOP(type_trait_take_t<T_arg%1> _A_a%1, $1)))
+  static result_type emit(signal_impl* impl, type_trait_take_t<T_arg>... _A_a)
     {
       if (!impl || impl->slots_.empty()) return;
       signal_exec exec(impl);
@@ -238,19 +230,17 @@ FOR(1, $1,[
         {
           if (it->empty() || it->blocked())
             continue;
-          (reinterpret_cast<call_type>(it->rep_->call_))(LIST(it->rep_, LOOP(_A_a%1, $1)));
+          (reinterpret_cast<call_type>(it->rep_->call_))(it->rep_, _A_a...);
         }
     }
 
   /** Executes a list of slots using an accumulator of type @e T_accumulator in reverse order.dnl
-ifelse($1,0,,[
-   * The arguments are passed directly on to the slots.])
+   * The arguments are passed directly on to the slots.
    * @param first An iterator pointing to the first slot in the list.
    * @param last An iterator pointing to the last slot in the list.dnl
-FOR(1, $1,[
-   * @param _A_a%1 Argument to be passed on to the slots.])
+   * @param _A_a Arguments to be passed on to the slots.
    */
-  static result_type emit_reverse(LIST(signal_impl* impl, LOOP(type_trait_take_t<T_arg%1> _A_a%1, $1)))
+  static result_type emit_reverse(signal_impl* impl, type_trait_take_t<T_arg>... _A_a)
     {
       if (!impl || impl->slots_.empty()) return;
       signal_exec exec(impl);
@@ -266,7 +256,7 @@ FOR(1, $1,[
         {
           if (it->empty() || it->blocked())
             continue;
-          (reinterpret_cast<call_type>(it->rep_->call_))(LIST(it->rep_, LOOP(_A_a%1, $1)));
+          (reinterpret_cast<call_type>(it->rep_->call_))(it->rep_, _A_a...);
         }
     }
 };
@@ -567,6 +557,8 @@ divert(0)
 #include <sigc++/trackable.h>
 #include <sigc++/functors/slot.h>
 #include <sigc++/functors/mem_fun.h>
+#include <tuple>
+#include <utility>
 
 //TODO: See comment in functor_trait.h.
 #if defined(nil) && defined(SIGC_PRAGMA_PUSH_POP_MACRO)
