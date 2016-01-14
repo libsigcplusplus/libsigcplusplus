@@ -38,11 +38,7 @@ namespace sigc {
 #ifdef SIGC_GCC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD
   #define SIGC_WORKAROUND_OPERATOR_PARENTHESES template operator()
 #else
-  #ifdef SIGC_MSVC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD
     #define SIGC_WORKAROUND_OPERATOR_PARENTHESES operator()
-  #else
-    #define SIGC_WORKAROUND_OPERATOR_PARENTHESES sun_forte_workaround
-  #endif
 #endif
 
 
