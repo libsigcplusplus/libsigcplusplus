@@ -49,7 +49,7 @@ FOR(1,$1,[
  *
  * @ingroup signal
  */
-template <LIST(class T_return, LOOP(class T_arg%1, $1), class T_accumulator=nil)>
+template <LIST(class T_return, class T_accumulator, LOOP(class T_arg%1, $1))>
 class signal$1
   : public signal_base
 {
@@ -214,7 +214,7 @@ ifelse($1, $2,[dnl
  */
 template <LIST(class T_return, LOOP(class T_arg%1, $1))>])
 class signal ifelse($1, $2,,[<LIST(T_return, LOOP(T_arg%1,$1), LOOP(nil, CALL_SIZE - $1))>])
-  : public signal$1<LIST(T_return, LOOP(T_arg%1, $1),nil)>
+  : public signal$1<LIST(T_return, nil, LOOP(T_arg%1, $1))>
 {
 public:
 ifelse($1, $2,[dnl
@@ -272,31 +272,31 @@ ifelse($1, $2,[dnl
    */
   template <class T_accumulator>
   class accumulated
-    : public signal$1<LIST(T_return, LOOP(T_arg%1, $1), T_accumulator)>
+    : public signal$1<LIST(T_return, T_accumulator, LOOP(T_arg%1, $1))>
   {
   public:
     accumulated() {}
     accumulated(const accumulated& src)
-      : signal$1<LIST(T_return, LOOP(T_arg%1, $1), T_accumulator)>(src) {}
+      : signal$1<LIST(T_return, T_accumulator, LOOP(T_arg%1, $1))>(src) {}
   };
 
   signal() {}
 
   signal(const signal& src)
-    : signal$1<LIST(T_return, LOOP(T_arg%1, $1),nil)>(src) {}
+    : signal$1<LIST(T_return, nil, LOOP(T_arg%1, $1))>(src) {}
 
   signal(signal&& src)
-    : signal$1<LIST(T_return, LOOP(T_arg%1, $1),nil)>(std::move(src)) {}
+    : signal$1<LIST(T_return, nil, LOOP(T_arg%1, $1))>(std::move(src)) {}
 
   signal& operator=(const signal& src)
   {
-    signal$1<LIST(T_return, LOOP(T_arg%1, $1),nil)>::operator=(src);
+    signal$1<LIST(T_return, nil, LOOP(T_arg%1, $1))>::operator=(src);
     return *this;
   }
 
   signal& operator=(signal&& src)
   {
-    signal$1<LIST(T_return, LOOP(T_arg%1, $1),nil)>::operator=(std::move(src));
+    signal$1<LIST(T_return, nil, LOOP(T_arg%1, $1))>::operator=(std::move(src));
     return *this;
   }
 };
