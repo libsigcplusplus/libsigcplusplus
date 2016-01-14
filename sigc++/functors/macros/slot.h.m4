@@ -123,18 +123,18 @@ public:
  *
  * @ingroup slot
  */
-template <LIST(typename T_return, LOOP(typename T_arg%1, $1))>
-struct visitor<slot$1<LIST(T_return, LOOP(T_arg%1, $1))>>
+template <typename T_return, typename... T_arg>
+struct visitor<slot$1<T_return, T_arg...>>
 {
   static void do_visit_each(const internal::limit_derived_target<trackable*, internal::slot_do_bind>& _A_action,
-                            const slot$1<LIST(T_return, LOOP(T_arg%1, $1))>& _A_target)
+                            const slot$1<T_return, T_arg...>& _A_target)
   {
     if (_A_target.rep_ && _A_target.rep_->parent_ == nullptr)
     _A_target.rep_->set_parent(_A_action.action_.rep_, &internal::slot_rep::notify);
   }
 
   static void do_visit_each(const internal::limit_derived_target<trackable*, internal::slot_do_unbind>& _A_action,
-                            const slot$1<LIST(T_return, LOOP(T_arg%1, $1))>& _A_target)
+                            const slot$1<T_return, T_arg...>& _A_target)
   {
     if (_A_target.rep_ && _A_target.rep_->parent_ == _A_action.action_.rep_)
       _A_target.rep_->set_parent(nullptr, nullptr);
@@ -142,7 +142,7 @@ struct visitor<slot$1<LIST(T_return, LOOP(T_arg%1, $1))>>
 
   template <typename T_action>
   static void do_visit_each(const T_action& _A_action,
-                            const slot$1<LIST(T_return, LOOP(T_arg%1, $1))>& _A_target)
+                            const slot$1<T_return, T_arg...>& _A_target)
   {
     _A_action(_A_target);
   }
