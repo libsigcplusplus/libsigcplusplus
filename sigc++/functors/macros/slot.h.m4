@@ -75,7 +75,7 @@ public:
     : slot_base(new internal::typed_slot_rep<T_functor>(_A_func))
     {
       //The slot_base:: is necessary to stop the HP-UX aCC compiler from being confused. murrayc.
-      slot_base::rep_->call_ = internal::slot_call$1<T_functor, T_return, T_arg...>::address();
+      slot_base::rep_->call_ = internal::slot_call<T_functor, T_return, T_arg...>::address();
     }
 
   /** Constructs a slot, copying an existing one.
@@ -303,47 +303,7 @@ struct visitor<slot<LIST(T_return, LOOP(T_arg%1, $1))>>
 #endif // DOXYGEN_SHOULD_SKIP_THIS
 ])
 ])
-define([SLOT_CALL],[dnl
-/** Abstracts functor execution.
- * call_it() invokes a functor of type @e T_functor with a list of
- * parameters whose types are given by the template arguments.
- * address() forms a function pointer from call_it().
- *
- * The following template arguments are used:
- * - @e T_functor The functor type.
- * - @e T_return The return type of call_it().dnl
-FOR(1,$1,[
- * - @e T_arg%1 Argument type used in the definition of call_it().])
- *
- */
-template<class T_functor, class T_return, class... T_arg>
-struct slot_call$1
-{
-  /** Invokes a functor of type @p T_functor.
-   * @param rep slot_rep object that holds a functor of type @p T_functor.dnl
-FOR(1, $1,[
-   * @param _A_a%1 Argument to be passed on to the functor.])
-   * @return The return values of the functor invocation.
-   */
-  static T_return call_it(LIST(slot_rep* rep, type_trait_take_t<T_arg>... a_))
-    {
-      typedef typed_slot_rep<T_functor> typed_slot;
-      typed_slot *typed_rep = static_cast<typed_slot*>(rep);dnl
-      //TODO_variadic: Avoid the specific call to the () overload when
-      //bind_functor::operator() is variadic. Then we can make this whole class
-      //variadic, and others that use it.
-      return (typed_rep->functor_).SIGC_WORKAROUND_OPERATOR_PARENTHESES<type_trait_take_t<T_arg>...>
-               (a_...);
-    }
 
-  /** Forms a function pointer from call_it().
-   * @return A function pointer formed from call_it().
-   */
-  static hook address()
-    { return reinterpret_cast<hook>(&call_it); }
-};
-
-])
 
 divert(0)dnl
 _FIREWALL([FUNCTORS_SLOT])
@@ -436,7 +396,41 @@ struct typed_slot_rep : public slot_rep
 };
 
 
-FOR(0,CALL_SIZE,[[SLOT_CALL(%1)]])dnl
+/** Abstracts functor execution.
+ * call_it() invokes a functor of type @e T_functor with a list of
+ * parameters whose types are given by the template arguments.
+ * address() forms a function pointer from call_it().
+ *
+ * The following template arguments are used:
+ * - @e T_functor The functor type.
+ * - @e T_return The return type of call_it().
+ * - @e T_arg Argument types used in the definition of call_it().
+ *
+ */
+template<class T_functor, class T_return, class... T_arg>
+struct slot_call
+{
+  /** Invokes a functor of type @p T_functor.
+   * @param rep slot_rep object that holds a functor of type @p T_functor.
+   * @param _A_a Arguments to be passed on to the functor.
+   * @return The return values of the functor invocation.
+   */
+  static T_return call_it(LIST(slot_rep* rep, type_trait_take_t<T_arg>... a_))
+    {
+      typedef typed_slot_rep<T_functor> typed_slot;
+      typed_slot *typed_rep = static_cast<typed_slot*>(rep);
+      return (typed_rep->functor_).SIGC_WORKAROUND_OPERATOR_PARENTHESES<type_trait_take_t<T_arg>...>
+               (a_...);
+    }
+
+  /** Forms a function pointer from call_it().
+   * @return A function pointer formed from call_it().
+   */
+  static hook address()
+    { return reinterpret_cast<hook>(&call_it); }
+};
+
+
 } /* namespace internal */
 
 
