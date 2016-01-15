@@ -49,7 +49,8 @@ public:
    * @param _A_a... Argument to be passed on to the method.
    * @return The return value of the method invocation.
    */
-  T_return operator()($2 T_obj* _A_obj, type_trait_take_t<T_arg>... _A_a) const
+  decltype(auto)
+  operator()($2 T_obj* _A_obj, type_trait_take_t<T_arg>... _A_a) const
     { return (_A_obj->*(this->func_ptr_))(_A_a...); }
 
   /** Execute the wrapped method operating on the passed instance.
@@ -57,7 +58,8 @@ public:
    * @param _A_a... Argument to be passed on to the method.
    * @return The return value of the method invocation.
    */
-  T_return operator()($2 T_obj& _A_obj, type_trait_take_t<T_arg>... _A_a) const
+  decltype(auto)
+  operator()($2 T_obj& _A_obj, type_trait_take_t<T_arg>... _A_a) const
     { return (_A_obj.*func_ptr_)(_A_a...); }
 
 protected:
@@ -107,7 +109,8 @@ public:
    * @param _A_a... Argument to be passed on to the method.
    * @return The return value of the method invocation.
    */
-  T_return operator()(type_trait_take_t<T_arg>... _A_a) const
+  decltype(auto)
+  operator()(type_trait_take_t<T_arg>... _A_a) const
     { return (obj_.invoke().*(this->func_ptr_))(_A_a...); }
 
 //protected:
@@ -145,7 +148,7 @@ define([MEM_FUN],[dnl
  * @ingroup mem_fun
  */
 template <class T_return, class T_obj, class... T_arg>
-inline [$1]mem_functor<T_return, T_obj, T_arg...>
+inline decltype(auto)
 mem_fun(T_return (T_obj::*_A_func)(T_arg...) $3)
 { return [$1]mem_functor<T_return, T_obj, T_arg...>(_A_func); }
 
@@ -159,7 +162,7 @@ define([BOUND_MEM_FUN],[dnl
  * @ingroup mem_fun
  */
 template <class T_return, class T_obj, class T_obj2, class... T_arg>
-inline bound_[$1]mem_functor<T_return, T_obj, T_arg...>
+inline decltype(auto)
 mem_fun(/*$2*/ T_obj* _A_obj, T_return (T_obj2::*_A_func)(T_arg...) $3)
 { return bound_[$1]mem_functor<T_return, T_obj, T_arg...>(_A_obj, _A_func); }
 
@@ -171,7 +174,7 @@ mem_fun(/*$2*/ T_obj* _A_obj, T_return (T_obj2::*_A_func)(T_arg...) $3)
  * @ingroup mem_fun
  */
 template <class T_return, class T_obj, class T_obj2, class... T_arg>
-inline bound_[$1]mem_functor<T_return, T_obj, T_arg...>
+inline decltype(auto)
 mem_fun(/*$2*/ T_obj& _A_obj, T_return (T_obj2::*_A_func)(T_arg...) $3)
 { return bound_[$1]mem_functor<T_return, T_obj, T_arg...>(_A_obj, _A_func); }
 

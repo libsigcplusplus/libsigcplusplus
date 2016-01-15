@@ -152,7 +152,7 @@ struct visitor<retype_functor<T_functor, T_type...> >
  * @ingroup retype
  */
 template <LIST(class T_return, class... T_arg)>
-inline retype_functor<slot<T_return, T_arg...>, T_arg...>
+inline decltype(auto)
 retype(const slot<T_return, T_arg...>& _A_functor)
 { return retype_functor<slot<T_return, T_arg...>, T_arg...>
     (_A_functor); }
@@ -167,7 +167,7 @@ retype(const slot<T_return, T_arg...>& _A_functor)
  * @ingroup retype
  */
 template <class T_return, class... T_arg>
-inline retype_functor<pointer_functor<T_return, T_arg...>, T_arg... >
+inline decltype(auto)
 retype(const pointer_functor<T_return, T_arg...>& _A_functor)
 { return retype_functor<pointer_functor<T_return, T_arg...>, T_arg... >
     (_A_functor); }
