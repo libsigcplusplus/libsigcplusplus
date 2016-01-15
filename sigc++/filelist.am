@@ -21,9 +21,9 @@ base_built_cc =
 base_built_h = limit_reference.h
 
 # Functors (functors/)
-functors_m4 = slot.h.m4 mem_fun.h.m4
+functors_m4 = mem_fun.h.m4
 functors_built_cc = 
-functors_built_h = slot.h mem_fun.h
+functors_built_h = mem_fun.h
 
 # Adaptors (adaptors/)
 adaptors_m4 = bind.h.m4 \
@@ -68,4 +68,5 @@ sigc_public_h =				\
 	functors/functor_trait.h		\
 	functors/functors.h		\
 	functors/ptr_fun.h		\
+	functors/slot.h \
 	functors/slot_base.h

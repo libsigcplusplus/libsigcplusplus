@@ -1,25 +1,7 @@
-dnl Copyright 2002, The libsigc++ Development Team
-dnl
-dnl This library is free software; you can redistribute it and/or
-dnl modify it under the terms of the GNU Lesser General Public
-dnl License as published by the Free Software Foundation; either
-dnl version 2.1 of the License, or (at your option) any later version.
-dnl
-dnl This library is distributed in the hope that it will be useful,
-dnl but WITHOUT ANY WARRANTY; without even the implied warranty of
-dnl MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
-dnl Lesser General Public License for more details.
-dnl
-dnl You should have received a copy of the GNU Lesser General Public
-dnl License along with this library; if not, write to the Free Software
-dnl Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
-dnl
-divert(-1)
-
-include(template.macros.m4)
-
-divert(0)dnl
-_FIREWALL([FUNCTORS_SLOT])
+// -*- c++ -*-
+/* Do not edit! -- generated file */
+#ifndef _SIGC_FUNCTORS_SLOT_H_
+#define _SIGC_FUNCTORS_SLOT_H_
 #include <sigc++/trackable.h>
 #include <sigc++/visit_each.h>
 #include <sigc++/adaptors/adaptor_trait.h>
@@ -128,7 +110,7 @@ struct slot_call
    * @param _A_a Arguments to be passed on to the functor.
    * @return The return values of the functor invocation.
    */
-  static T_return call_it(LIST(slot_rep* rep, type_trait_take_t<T_arg>... a_))
+  static T_return call_it(slot_rep* rep, type_trait_take_t<T_arg>... a_)
     {
       typedef typed_slot_rep<T_functor> typed_slot;
       typed_slot *typed_rep = static_cast<typed_slot*>(rep);
@@ -158,8 +140,7 @@ struct slot_call
  * a single, arbitrary functor (or closure) that is executed in operator()().
  *
  * The template arguments determine the function signature of operator()():
- * - @e T_return The return type of operator()().dnl
- * - @e T_arg Argument types used in the definition of operator()().
+ * - @e T_return The return type of operator()(). * - @e T_arg Argument types used in the definition of operator()().
  *
  * To use simply assign the desired functor to the slot. If the functor
  * is not compatible with the parameter list defined with the template
@@ -289,3 +270,4 @@ struct visitor<slot<T_return, T_arg...>>
   #undef SIGC_NIL_HAS_BEEN_PUSHED
   #pragma pop_macro("nil")
 #endif
+#endif /* _SIGC_FUNCTORS_SLOT_H_ */
