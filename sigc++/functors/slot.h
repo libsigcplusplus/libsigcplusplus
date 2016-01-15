@@ -1,7 +1,6 @@
-// -*- c++ -*-
-/* Do not edit! -- generated file */
 #ifndef _SIGC_FUNCTORS_SLOT_H_
 #define _SIGC_FUNCTORS_SLOT_H_
+
 #include <sigc++/trackable.h>
 #include <sigc++/visit_each.h>
 #include <sigc++/adaptors/adaptor_trait.h>
@@ -270,4 +269,5 @@ struct visitor<slot<T_return, T_arg...>>
   #undef SIGC_NIL_HAS_BEEN_PUSHED
   #pragma pop_macro("nil")
 #endif
+
 #endif /* _SIGC_FUNCTORS_SLOT_H_ */
