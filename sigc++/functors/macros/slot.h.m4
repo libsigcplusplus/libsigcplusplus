@@ -332,12 +332,8 @@ FOR(1, $1,[
       //TODO_variadic: Avoid the specific call to the () overload when
       //bind_functor::operator() is variadic. Then we can make this whole class
       //variadic, and others that use it.
-ifelse($1,0,[
-      return (typed_rep->functor_)();
-],[
       return (typed_rep->functor_).SIGC_WORKAROUND_OPERATOR_PARENTHESES<type_trait_take_t<T_arg>...>
                (a_...);
-])dnl
     }
 
   /** Forms a function pointer from call_it().

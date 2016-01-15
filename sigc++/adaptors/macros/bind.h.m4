@@ -69,6 +69,7 @@ struct bind_functor<$1, T_functor, T_bound, LIST(LOOP(nil, CALL_SIZE - 1))> : pu
   /** Invokes the wrapped functor passing on the bound argument only.
    * @return The return value of the functor invocation.
    */
+  template <class T_DummyArg = void> //TODO: Remove this workaround when operator() is variadic. See https://bugzilla.gnome.org/show_bug.cgi?id=753612#c25
   decltype(auto)
   operator()()
   {
@@ -108,6 +109,7 @@ struct bind_functor<LIST(-1, T_functor, LIST(LOOP(T_type%1, $1), LOOP(nil, CALL_
   /** Invokes the wrapped functor passing on the bound argument only.
    * @return The return value of the functor invocation.
    */
+  template <class T_DummyArg = void> //TODO: Remove this workaround when operator() is variadic. See https://bugzilla.gnome.org/show_bug.cgi?id=753612#c25
   decltype(auto)
   operator()()
   {
