@@ -870,8 +870,6 @@ struct signal_emit<void, nil, T_arg...>
  * @p nil means that no accumulator should be used, for example if signal
  * emission returns the return value of the last slot invoked.
  *
- * You should use the more convenient unnumbered sigc::signal template.
- *
  * @ingroup signal
  */
 template <class T_return, class T_accumulator, class... T_arg>
