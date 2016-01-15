@@ -152,7 +152,7 @@ struct visitor<exception_catch_functor<T_functor, T_catcher, T_return> >
 #endif // DOXYGEN_SHOULD_SKIP_THIS
 
 template <class T_functor, class T_catcher>
-inline exception_catch_functor<T_functor, T_catcher>
+inline decltype(auto)
 exception_catch(const T_functor& _A_func, const T_catcher& _A_catcher)
   { return exception_catch_functor<T_functor, T_catcher>(_A_func, _A_catcher); }
 
