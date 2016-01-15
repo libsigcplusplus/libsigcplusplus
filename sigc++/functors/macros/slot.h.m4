@@ -18,293 +18,6 @@ divert(-1)
 
 include(template.macros.m4)
 
-define([SLOT_N],[dnl
-/** Converts an arbitrary functor to a unified type which is opaque.
- * sigc::slot itself is a functor or to be more precise a closure. It contains
- * a single, arbitrary functor (or closure) that is executed in operator()().
- *
- * The template arguments determine the function signature of operator()():
- * - @e T_return The return type of operator()().dnl
-FOR(1,$1,[
- * - @e T_arg%1 Argument type used in the definition of operator()(). The default @p nil means no argument.])
- *
- * To use simply assign the desired functor to the slot. If the functor
- * is not compatible with the parameter list defined with the template
- * arguments compiler errors are triggered. When called the slot
- * will invoke the functor with minimal copies.
- * block() and unblock() can be used to block the functor's invocation
- * from operator()() temporarily.
- *
- * You should use the more convenient unnumbered sigc::slot template.
- *
- * @ingroup slot
- */
-template <class T_return, class... T_arg>
-class slot$1
-  : public slot_base
-{
-public:
-  typedef T_return result_type;
-  //TODO: using arg_type_ = type_trait_take_t<T_arg>;
-
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-private:
-  typedef internal::slot_rep rep_type;
-public:
-  typedef T_return (*call_type)(rep_type*, type_trait_take_t<T_arg>...);
-#endif
-
-  /** Invoke the contained functor unless slot is in blocking state.
-   * @param _A_a Arguments to be passed on to the functor.
-   * @return The return value of the functor invocation.
-   */
-  inline T_return operator()(type_trait_take_t<T_arg>... _A_a) const
-    {
-      if (!empty() && !blocked())
-        return (reinterpret_cast<call_type>(slot_base::rep_->call_))(slot_base::rep_, _A_a...);
-      return T_return();
-    }
-
-  inline slot$1() {}
-
-  /** Constructs a slot from an arbitrary functor.
-   * @param _A_func The desired functor the new slot should be assigned to.
-   */
-  template <class T_functor>
-  slot$1(const T_functor& _A_func)
-    : slot_base(new internal::typed_slot_rep<T_functor>(_A_func))
-    {
-      //The slot_base:: is necessary to stop the HP-UX aCC compiler from being confused. murrayc.
-      slot_base::rep_->call_ = internal::slot_call<T_functor, T_return, T_arg...>::address();
-    }
-
-  /** Constructs a slot, copying an existing one.
-   * @param src The existing slot to copy.
-   */
-  slot$1(const slot$1& src)
-    : slot_base(src)
-    {}
-
-  /** Constructs a slot, moving an existing one.
-   * If @p src is connected to a parent (e.g. a signal), it is copied, not moved.
-   * @param src The existing slot to move or copy.
-   */
-  slot$1(slot$1&& src)
-    : slot_base(std::move(src))
-    {}
-
-  /** Overrides this slot, making a copy from another slot.
-   * @param src The slot from which to make a copy.
-   * @return @p this.
-   */
-  slot$1& operator=(const slot$1& src)
-  {
-    slot_base::operator=(src);
-    return *this;
-  }
-
-  /** Overrides this slot, making a move from another slot.
-   * If @p src is connected to a parent (e.g. a signal), it is copied, not moved.
-   * @param src The slot from which to move or copy.
-   * @return @p this.
-   */
-  slot$1& operator=(slot$1&& src)
-  {
-    slot_base::operator=(std::move(src));
-    return *this;
-  }
-};
-
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-//template specialization of visitor<>::do_visit_each<>(action, functor):
-/** Performs a functor on each of the targets of a functor.
- * The function overloads for sigc::slot$1 are similar to the function
- * overloads for sigc::slot. See the description of those overloads.
- *
- * @ingroup slot
- */
-template <typename T_return, typename... T_arg>
-struct visitor<slot$1<T_return, T_arg...>>
-{
-  static void do_visit_each(const internal::limit_derived_target<trackable*, internal::slot_do_bind>& _A_action,
-                            const slot$1<T_return, T_arg...>& _A_target)
-  {
-    if (_A_target.rep_ && _A_target.rep_->parent_ == nullptr)
-    _A_target.rep_->set_parent(_A_action.action_.rep_, &internal::slot_rep::notify);
-  }
-
-  static void do_visit_each(const internal::limit_derived_target<trackable*, internal::slot_do_unbind>& _A_action,
-                            const slot$1<T_return, T_arg...>& _A_target)
-  {
-    if (_A_target.rep_ && _A_target.rep_->parent_ == _A_action.action_.rep_)
-      _A_target.rep_->set_parent(nullptr, nullptr);
-  }
-
-  template <typename T_action>
-  static void do_visit_each(const T_action& _A_action,
-                            const slot$1<T_return, T_arg...>& _A_target)
-  {
-    _A_action(_A_target);
-  }
-};
-#endif // DOXYGEN_SHOULD_SKIP_THIS
-
-])
-define([SLOT],[dnl
-ifelse($1, $2,[dnl
-// Because slot is opaque, visit_each() will not visit its internal members.
-// Those members are not reachable by visit_each() after the slot has been
-// constructed. But when a slot contains another slot, the outer slot will become
-// the parent of the inner slot, with similar results. See the description of
-// slot's specialization of the visitor struct.
-/** Convenience wrapper for the numbered sigc::slot# templates.
- * Slots convert arbitrary functors to unified types which are opaque.
- * sigc::slot itself is a functor or to be more precise a closure. It contains
- * a single, arbitrary functor (or closure) that is executed in operator()().
- *
- * The template arguments determine the function signature of operator()():
- * - @e T_return The return type of operator()().dnl
-FOR(1,$1,[
- * - @e T_arg%1 Argument type used in the definition of operator()(). The default @p nil means no argument.])
- *
- * To use, simply assign the desired functor to the slot. If the functor
- * is not compatible with the parameter list defined with the template
- * arguments, compiler errors are triggered. When called, the slot
- * will invoke the functor with minimal copies.
- * block() and unblock() can be used to temporarily block the functor's
- * invocation from operator()().
- *
- * @par Example:
- * @code
- * void foo(int) {}
- * sigc::slot<void, int> s = sigc::ptr_fun(&foo);
- * s(19);
- * @endcode
- *
- * sigc::slot<> is similar to std::function<>. If you're going to assign the
- * resulting functor to a sigc::slot or connect it to a sigc::signal, it's better
- * not to use std::function. It would become un unnecessary extra wrapper.
- *
- * @ingroup slot
- */
-template <LIST(class T_return, LOOP(class T_arg%1 = nil, $1))>],[dnl
-
-/** Convenience wrapper for the numbered sigc::slot$1 template.
- * See the base class for useful methods.
- * This is the template specialization of the unnumbered sigc::slot
- * template for $1 argument(s), specialized for different numbers of arguments
- * This is possible because the template has default (nil) template types.
-dnl *
-dnl * @ingroup slot
- */
-template <LIST(class T_return, LOOP(class T_arg%1, $1))>])
-class slot ifelse($1, $2,,[<LIST(T_return, LIST(LOOP(T_arg%1, $1), LOOP(nil, CALL_SIZE - $1)))>])
-  : public slot$1<LIST(T_return, LOOP(T_arg%1, $1))>
-{
-public:
-  typedef slot$1<LIST(T_return, LOOP(T_arg%1, $1))> parent_type;
-
-  inline slot() {}
-
-  /** Constructs a slot from an arbitrary functor.
-   * @param _A_func The desired functor the new slot should be assigned to.
-   */
-  template <class T_functor>
-  slot(const T_functor& _A_func)
-    : parent_type(_A_func) {}
-
-  // Without static_cast parent_type(const T_functor& _A_func)
-  // is called instead of the copy constructor.
-  /** Constructs a slot, copying an existing one.
-   * @param src The existing slot to copy.
-   */
-  slot(const slot& src)
-    : parent_type(static_cast<const parent_type&>(src)) {}
-
-  // Without static_cast parent_type(const T_functor& _A_func)
-  // is called instead of the move constructor.
-  /** Constructs a slot, moving an existing one.
-   * If @p src is connected to a parent (e.g. a signal), it is copied, not moved.
-   * @param src The existing slot to move or copy.
-   */
-  slot(slot&& src)
-    : parent_type(std::move(static_cast<parent_type&>(src))) {}
-
-  /** Overrides this slot, making a copy from another slot.
-   * @param src The slot from which to make a copy.
-   * @return @p this.
-   */
-  slot& operator=(const slot& src)
-  {
-    parent_type::operator=(src);
-    return *this;
-  }
-
-  /** Overrides this slot, making a move from another slot.
-   * If @p src is connected to a parent (e.g. a signal), it is copied, not moved.
-   * @param src The slot from which to move or copy.
-   * @return @p this.
-   */
-  slot& operator=(slot&& src)
-  {
-    parent_type::operator=(std::move(src));
-    return *this;
-  }
-};
-
-ifelse($1, $2,[dnl
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-//template specialization of visitor<>::do_visit_each<>(action, functor):
-/** Performs a functor on each of the targets of a functor.
- *
- * There are three function overloads for sigc::slot.
- *
- * The first two overloads are very specialized. They handle the (probably unusual)
- * case when the functor, stored in a slot, contains a slot. They are invoked from
- * the constructor, destructor or destroy() method of typed_slot_rep.
- * The first overload, called from the constructor of the outer slot, sets
- * the outer slot as the parent of the inner slot. The second overload, called from
- * the destructor or destroy() of the outer slot, unsets the parent of the inner slot.
- * When an object referenced from the inner slot is deleted, the inner slot calls
- * its slot_rep::disconnect(), which calls the outer slot's slot_rep::notify().
- * The outer slot is informed just as if one of its directly referenced objects
- * had been deleted. Result: The outer slot is disconnected from its parent,
- * if any (for instance a sigc::signal).
- * See https://bugzilla.gnome.org/show_bug.cgi?id=755003
- *
- * The third overload is identical to do_visit_each() in visitor's primary template.
- *
- * @ingroup slot
- */
-template <LIST(typename T_return, LOOP(typename T_arg%1, $1))>
-struct visitor<slot<LIST(T_return, LOOP(T_arg%1, $1))>>
-{
-  static void do_visit_each(const internal::limit_derived_target<trackable*, internal::slot_do_bind>& _A_action,
-                            const slot<LIST(T_return, LOOP(T_arg%1, $1))>& _A_target)
-  {
-    if (_A_target.rep_ && _A_target.rep_->parent_ == nullptr)
-      _A_target.rep_->set_parent(_A_action.action_.rep_, &internal::slot_rep::notify);
-  }
-
-  static void do_visit_each(const internal::limit_derived_target<trackable*, internal::slot_do_unbind>& _A_action,
-                            const slot<LIST(T_return, LOOP(T_arg%1, $1))>& _A_target)
-  {
-    if (_A_target.rep_ && _A_target.rep_->parent_ == _A_action.action_.rep_)
-      _A_target.rep_->set_parent(nullptr, nullptr);
-  }
-
-  template <typename T_action>
-  static void do_visit_each(const T_action& _A_action,
-                            const slot<LIST(T_return, LOOP(T_arg%1, $1))>& _A_target)
-  {
-    _A_action(_A_target);
-  }
-};
-#endif // DOXYGEN_SHOULD_SKIP_THIS
-])
-])
-
-
 divert(0)dnl
 _FIREWALL([FUNCTORS_SLOT])
 #include <sigc++/trackable.h>
@@ -434,9 +147,141 @@ struct slot_call
 } /* namespace internal */
 
 
-FOR(0,CALL_SIZE,[[SLOT_N(%1,CALL_SIZE)]])
-SLOT(CALL_SIZE,CALL_SIZE)
-FOR(0,eval(CALL_SIZE-1),[[SLOT(%1,CALL_SIZE)]])
+// Because slot is opaque, visit_each() will not visit its internal members.
+// Those members are not reachable by visit_each() after the slot has been
+// constructed. But when a slot contains another slot, the outer slot will become
+// the parent of the inner slot, with similar results. See the description of
+// slot's specialization of the visitor struct.
+
+/** Converts an arbitrary functor to a unified type which is opaque.
+ * sigc::slot itself is a functor or to be more precise a closure. It contains
+ * a single, arbitrary functor (or closure) that is executed in operator()().
+ *
+ * The template arguments determine the function signature of operator()():
+ * - @e T_return The return type of operator()().dnl
+ * - @e T_arg Argument types used in the definition of operator()().
+ *
+ * To use simply assign the desired functor to the slot. If the functor
+ * is not compatible with the parameter list defined with the template
+ * arguments compiler errors are triggered. When called the slot
+ * will invoke the functor with minimal copies.
+ * block() and unblock() can be used to block the functor's invocation
+ * from operator()() temporarily.
+ *
+ * You should use the more convenient unnumbered sigc::slot template.
+ *
+ * @ingroup slot
+ */
+template <class T_return, class... T_arg>
+class slot
+  : public slot_base
+{
+public:
+  typedef T_return result_type;
+  //TODO: using arg_type_ = type_trait_take_t<T_arg>;
+
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+private:
+  typedef internal::slot_rep rep_type;
+public:
+  typedef T_return (*call_type)(rep_type*, type_trait_take_t<T_arg>...);
+#endif
+
+  /** Invoke the contained functor unless slot is in blocking state.
+   * @param _A_a Arguments to be passed on to the functor.
+   * @return The return value of the functor invocation.
+   */
+  inline T_return operator()(type_trait_take_t<T_arg>... _A_a) const
+    {
+      if (!empty() && !blocked())
+        return (reinterpret_cast<call_type>(slot_base::rep_->call_))(slot_base::rep_, _A_a...);
+      return T_return();
+    }
+
+  inline slot() {}
+
+  /** Constructs a slot from an arbitrary functor.
+   * @param _A_func The desired functor the new slot should be assigned to.
+   */
+  template <class T_functor>
+  slot(const T_functor& _A_func)
+    : slot_base(new internal::typed_slot_rep<T_functor>(_A_func))
+    {
+      //The slot_base:: is necessary to stop the HP-UX aCC compiler from being confused. murrayc.
+      slot_base::rep_->call_ = internal::slot_call<T_functor, T_return, T_arg...>::address();
+    }
+
+  /** Constructs a slot, copying an existing one.
+   * @param src The existing slot to copy.
+   */
+  slot(const slot& src)
+    : slot_base(src)
+    {}
+
+  /** Constructs a slot, moving an existing one.
+   * If @p src is connected to a parent (e.g. a signal), it is copied, not moved.
+   * @param src The existing slot to move or copy.
+   */
+  slot(slot&& src)
+    : slot_base(std::move(src))
+    {}
+
+  /** Overrides this slot, making a copy from another slot.
+   * @param src The slot from which to make a copy.
+   * @return @p this.
+   */
+  slot& operator=(const slot& src)
+  {
+    slot_base::operator=(src);
+    return *this;
+  }
+
+  /** Overrides this slot, making a move from another slot.
+   * If @p src is connected to a parent (e.g. a signal), it is copied, not moved.
+   * @param src The slot from which to move or copy.
+   * @return @p this.
+   */
+  slot& operator=(slot&& src)
+  {
+    slot_base::operator=(std::move(src));
+    return *this;
+  }
+};
+
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+//template specialization of visitor<>::do_visit_each<>(action, functor):
+/** Performs a functor on each of the targets of a functor.
+ * The function overloads for sigc::slot are similar to the function
+ * overloads for sigc::slot. See the description of those overloads.
+ *
+ * @ingroup slot
+ */
+template <typename T_return, typename... T_arg>
+struct visitor<slot<T_return, T_arg...>>
+{
+  static void do_visit_each(const internal::limit_derived_target<trackable*, internal::slot_do_bind>& _A_action,
+                            const slot<T_return, T_arg...>& _A_target)
+  {
+    if (_A_target.rep_ && _A_target.rep_->parent_ == nullptr)
+    _A_target.rep_->set_parent(_A_action.action_.rep_, &internal::slot_rep::notify);
+  }
+
+  static void do_visit_each(const internal::limit_derived_target<trackable*, internal::slot_do_unbind>& _A_action,
+                            const slot<T_return, T_arg...>& _A_target)
+  {
+    if (_A_target.rep_ && _A_target.rep_->parent_ == _A_action.action_.rep_)
+      _A_target.rep_->set_parent(nullptr, nullptr);
+  }
+
+  template <typename T_action>
+  static void do_visit_each(const T_action& _A_action,
+                            const slot<T_return, T_arg...>& _A_target)
+  {
+    _A_action(_A_target);
+  }
+};
+#endif // DOXYGEN_SHOULD_SKIP_THIS
+
 
 } /* namespace sigc */
 
