@@ -169,10 +169,10 @@ struct bind_functor : public adapts<T_functor>
 private:
   template<class T_specific, class T, std::size_t... Is>
   decltype(auto)
-  call_functor_operator_parentheses(T& tuple,
+  call_functor_operator_parentheses(T&& tuple,
     std::index_sequence<Is...>)
   {
-    return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<typename std::tuple_element<Is, T_specific>::type...>(std::get<Is>(tuple)...);
+    return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<typename std::tuple_element<Is, T_specific>::type...>(std::get<Is>(std::forward<T>(tuple))...);
   }
 };
 
@@ -195,12 +195,12 @@ struct bind_functor<-1, T_functor, T_type...> : public adapts<T_functor>
    */
   template <class... T_arg>
   decltype(auto)
-  operator()(T_arg... _A_arg)
+  operator()(T_arg&&... _A_arg)
     {
       //For instance, if _A_arg has 4 arguments,
       //we would want to call operator() with (_A_arg0, _A_arg1, _A_arg2, bound).
       
-      auto t_args = std::tuple<T_arg...>(_A_arg...);
+      auto t_args = std::tuple<T_arg...>(std::forward<T_arg>(_A_arg)...);
       auto t_bound = tuple_transform_each<internal::TransformEachInvoker>(bound_);
       auto t_with_bound = std::tuple_cat(t_args, t_bound);
 
@@ -227,10 +227,10 @@ struct bind_functor<-1, T_functor, T_type...> : public adapts<T_functor>
 private:
   template<class T_specific, class T, std::size_t... Is>
   decltype(auto)
-  call_functor_operator_parentheses(T& tuple,
+  call_functor_operator_parentheses(T&& tuple,
     std::index_sequence<Is...>)
   {
-    return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<typename std::tuple_element<Is, T_specific>::type...>(std::get<Is>(tuple)...);
+    return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<typename std::tuple_element<Is, T_specific>::type...>(std::get<Is>(std::forward<T>(tuple))...);
   }
 };
 
