@@ -94,6 +94,7 @@ template <class T_element>
 struct TransformEachInvoker
 {
   //We take T_element as non-const because invoke() is not const.
+  //TODO: Take element as T_element&& ?
   static
   decltype(auto)
   transform(T_element& element) {
