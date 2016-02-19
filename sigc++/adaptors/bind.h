@@ -132,7 +132,7 @@ struct bind_functor : public adapts<T_functor>
       //we would want to call operator() with (_A_arg0, bound, _A_arg1, _A_arg2).
       
       using tuple_type_args = std::tuple<type_trait_pass_t<T_arg>...>;
-      auto t_args = std::make_tuple(_A_arg...);
+      auto t_args = std::tuple<T_arg...>(_A_arg...);
       constexpr auto t_args_size = std::tuple_size<tuple_type_args>::value;
       
       auto t_start = tuple_start<I_location>(t_args);
@@ -200,7 +200,7 @@ struct bind_functor<-1, T_functor, T_type...> : public adapts<T_functor>
       //For instance, if _A_arg has 4 arguments,
       //we would want to call operator() with (_A_arg0, _A_arg1, _A_arg2, bound).
       
-      auto t_args = std::make_tuple(_A_arg...);
+      auto t_args = std::tuple<T_arg...>(_A_arg...);
       auto t_bound = tuple_transform_each<internal::TransformEachInvoker>(bound_);
       auto t_with_bound = std::tuple_cat(t_args, t_bound);
 
