@@ -1,3 +1,17 @@
+2.7.1 (unstable):
+
+* signal: Add a moving connect() method, taking an rvalue reference
+  to a slot.
+  (Kjell Ahlstedt) Bug #756484
+* can_deduce_result_type_with_decltype: Rename the check() methods to
+  checksize(). check() is a preprocessor macro in Mac OS X.
+  (Kjell Ahlstedt) Bug #759315 (David Otto)
+* Temporarily undefine the nil macro, if it's defined.
+  nil is a preprocessor macro in Objective-C++ and Mac OS X.
+  (Kjell Ahlstedt) Bug #695235
+* Correct the mem_functor<> declarations.
+  Murray Cumming
+
 2.6.2 (stable):
 
 * slot: Handle auto-disconnection when a slot contains a slot
