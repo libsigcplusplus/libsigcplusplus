@@ -23,6 +23,7 @@ check_PROGRAMS = \
   test_accum_iter \
   test_accumulated \
   test_bind \
+  test_bind_as_slot \
   test_bind_ref \
   test_bind_refptr \
   test_bind_return \
@@ -59,6 +60,7 @@ sigc_test_util = testutilities.h testutilities.cc
 test_accum_iter_SOURCES      = test_accum_iter.cc $(sigc_test_util)
 test_accumulated_SOURCES     = test_accumulated.cc $(sigc_test_util)
 test_bind_SOURCES            = test_bind.cc $(sigc_test_util)
+test_bind_as_slot_SOURCES    = test_bind_as_slot.cc $(sigc_test_util)
 test_bind_ref_SOURCES        = test_bind_ref.cc $(sigc_test_util)
 test_bind_refptr_SOURCES     = test_bind_refptr.cc $(sigc_test_util)
 test_bind_return_SOURCES     = test_bind_return.cc $(sigc_test_util)
