@@ -9,7 +9,7 @@
           <surname>Pereira</surname>
         </author>
 
-	<pubdate>September 2002. Updated January 2004 by Murray Cumming</pubdate>
+	<pubdate>September 2002. Updated January 2004 and March 2016 by Murray Cumming</pubdate>
 
         <abstract>
           <para>libsigc++ is a C++ template library implementing typesafe callbacks. This is an intro to libsigc++.</para>
@@ -127,7 +127,7 @@ int main()
 	<literal remap="tt">warn_people()</literal> function to a slot using the <literal remap="tt">slot()</literal> function.</para>
 
 	<para>To compile this example, use:</para>
-	<programlisting>g++ example1.cc -o example1 `pkg-config --cflags --libs sigc++-2.0`</programlisting>
+	<programlisting>g++ example1.cc -o example1 `pkg-config --cflags --libs sigc++-3.0`</programlisting>
 	<para>Note that those `` characters are backticks, not single quotes. Run it with</para>
 	<programlisting>./example1</programlisting>
 	<para>(Try not to panic when the aliens land!)</para>

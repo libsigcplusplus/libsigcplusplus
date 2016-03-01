@@ -62,12 +62,12 @@
  *
  * If your source file is @c program.cc, you can compile it with:
  * @code
- * g++ program.cc -o program `pkg-config --cflags --libs sigc++-2.0`
+ * g++ program.cc -o program `pkg-config --cflags --libs sigc++-3.0`
  * @endcode
  *
  * Alternatively, if using autoconf, use the following in @c configure.ac:
  * @code
- * PKG_CHECK_MODULES([LIBSIGC], [sigc++-2.0])
+ * PKG_CHECK_MODULES([LIBSIGC], [sigc++-3.0])
  * @endcode
  * Then use the generated @c LIBSIGC_CFLAGS and @c LIBSIGC_LIBS variables
  * in the project @c Makefile.am files. For example:

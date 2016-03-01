@@ -15,7 +15,7 @@
 ## You should have received a copy of the GNU Lesser General Public License
 ## along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
-AC_INIT([libsigc++], [2.7.1],
+AC_INIT([libsigc++], [2.9.1],
         [http://bugzilla.gnome.org/enter_bug.cgi?product=libsigc%2B%2B],
         [libsigc++], [http://libsigc.sourceforge.net/])
 AC_PREREQ([2.59])
@@ -31,7 +31,7 @@ AM_MAINTAINER_MODE
 AC_ARG_VAR([ACLOCAL_FLAGS], [aclocal flags, e.g. -I <macro dir>])
 
 MM_PREREQ([0.9.8])
-MM_INIT_MODULE([sigc++-2.0])
+MM_INIT_MODULE([sigc++-3.0])
 MM_CONFIG_DOCTOOL_DIR([docs])
 
 AC_PROG_CXX
