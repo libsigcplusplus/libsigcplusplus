@@ -136,6 +136,10 @@ struct bind_functor : public adapts<T_functor>
       auto t_args = std::tuple<T_arg...>(std::forward<T_arg>(_A_arg)...);
       constexpr auto t_args_size = std::tuple_size<tuple_type_args>::value;
       
+      //Prevent calling tuple_start<> with values that will cause a compilation error.
+      static_assert(I_location < t_args_size,
+        "I_location must be less than the number of arguments.");
+
       auto t_start = internal::tuple_start<I_location>(t_args);
       auto t_bound = internal::tuple_transform_each<internal::TransformEachInvoker>(bound_);
       auto t_end = internal::tuple_end<t_args_size - I_location>(t_args);
