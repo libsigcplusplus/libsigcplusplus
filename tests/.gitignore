@@ -30,4 +30,8 @@
 /test_trackable
 /test_trackable_move
 /test_track_obj
+/test_tuple_cat
+/test_tuple_cdr
+/test_tuple_end
+/test_tuple_start
 /test_visit_each
