@@ -63,6 +63,23 @@ struct my_catch
   }
 };
 
+struct my_catch_void
+{
+  void operator()()
+  {
+    try
+    {
+      throw;
+    }
+    catch (std::range_error e) // catch what types we know
+    {
+      result_stream << "caught " << e.what();
+    }
+
+    // all else continues out.
+  }
+};
+
 } // end anonymous namespace
 
 int main(int argc, char* argv[])
@@ -78,7 +95,7 @@ int main(int argc, char* argv[])
   result_stream << sigc::exception_catch(g(), my_catch())();
   util->check_result(result_stream, "g() caught out of range 1");
 
-  sigc::exception_catch(g_void(), my_catch())(); // void test
+  sigc::exception_catch(g_void(), my_catch_void())(); // void test
   util->check_result(result_stream, "g_void() caught out of range ");
 
   return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;

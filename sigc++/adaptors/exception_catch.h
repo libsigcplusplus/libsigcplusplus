@@ -99,10 +99,6 @@ struct exception_catch_functor<T_functor, T_catcher, void> : public adapts<T_fun
   typedef void result_type;
   typedef typename adapts<T_functor>::adaptor_type adaptor_type;
 
-  void
-  operator()();
-
-
   template <class... T_arg>
   decltype(auto)
   operator()(T_arg... _A_a)
@@ -126,15 +122,6 @@ struct exception_catch_functor<T_functor, T_catcher, void> : public adapts<T_fun
 
     T_catcher catcher_;
 };
-
-template <class T_functor, class T_catcher>
-void exception_catch_functor<T_functor, T_catcher, void>::operator()()
-  {
-    try
-      { this->functor_(); } // I don't understand why void return doesn't work here (Martin)
-    catch (...)
-      { this->catcher_(); }
-  }
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 //template specialization of visitor<>::do_visit_each<>(action, functor):
