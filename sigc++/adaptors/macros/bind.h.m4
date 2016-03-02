@@ -132,31 +132,6 @@ FOR(1,$1,[
   std::tuple< LOOP(bound_argument<T_type%1>, $1)> bound_;
 };
 
-ifelse($1,1,[#ifndef DOXYGEN_SHOULD_SKIP_THIS
-],)dnl Include only the first template specialization of bind_functor and no
-dnl template specialization of visitor in the documentation. ($1 = 1..CALL_SIZE)
-//template specialization of visitor<>::do_visit_each<>(action, functor):
-/** Performs a functor on each of the targets of a functor.
- * The function overload for sigc::bind_functor performs a functor on the
- * functor and on the object instances stored in the sigc::bind_functor object.
- *
- * @ingroup bind
- */
-template <class T_functor, LOOP(class T_type%1, $1)>
-struct visitor<bind_functor<-1, T_functor, LOOP(T_type%1, $1)> >
-{
-  template <typename T_action>
-  static void do_visit_each(const T_action& _A_action,
-                            const bind_functor<-1, T_functor,  LOOP(T_type%1, $1)>& _A_target)
-  {
-    sigc::visit_each(_A_action, _A_target.functor_);
-
-    sigc::tuple_for_each<TupleVisitorVisitEach>(_A_target.bound_, _A_action);
-  }
-};
-ifelse($1,CALL_SIZE,[#endif // DOXYGEN_SHOULD_SKIP_THIS
-],)dnl
-
 ])dnl end BIND_FUNCTOR_COUNT
 
 
@@ -335,6 +310,27 @@ struct visitor<bind_functor<T_loc, T_functor, T_bound> >
     sigc::visit_each(_A_action, std::get<0>(_A_target.bound_));
   }
 };
+
+//template specialization of visitor<>::do_visit_each<>(action, functor):
+/** Performs a functor on each of the targets of a functor.
+ * The function overload for sigc::bind_functor performs a functor on the
+ * functor and on the object instances stored in the sigc::bind_functor object.
+ *
+ * @ingroup bind
+ */
+template <class T_functor, class... T_type>
+struct visitor<bind_functor<-1, T_functor, T_type...> >
+{
+  template <typename T_action>
+  static void do_visit_each(const T_action& _A_action,
+                            const bind_functor<-1, T_functor, T_type...>& _A_target)
+  {
+    sigc::visit_each(_A_action, _A_target.functor_);
+
+    sigc::tuple_for_each<TupleVisitorVisitEach>(_A_target.bound_, _A_action);
+  }
+};
+
 #endif // DOXYGEN_SHOULD_SKIP_THIS
 
 FOR(1,CALL_SIZE,[[BIND_FUNCTOR_COUNT(%1)]])dnl
