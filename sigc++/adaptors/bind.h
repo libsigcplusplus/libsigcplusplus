@@ -127,13 +127,13 @@ struct bind_functor : public adapts<T_functor>
    */
   template <class... T_arg>
   decltype(auto)
-  operator()(T_arg... _A_arg)
+  operator()(T_arg&&... _A_arg)
     {
       //For instance, if I_location is 1, and _A_arg has 4 arguments,
       //we would want to call operator() with (_A_arg0, bound, _A_arg1, _A_arg2).
       
       using tuple_type_args = std::tuple<type_trait_pass_t<T_arg>...>;
-      auto t_args = std::tuple<T_arg...>(_A_arg...);
+      auto t_args = std::tuple<T_arg...>(std::forward<T_arg>(_A_arg)...);
       constexpr auto t_args_size = std::tuple_size<tuple_type_args>::value;
       
       auto t_start = tuple_start<I_location>(t_args);
