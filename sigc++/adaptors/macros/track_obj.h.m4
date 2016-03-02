@@ -19,94 +19,12 @@ divert(-1)
 
 include(template.macros.m4)
 
-dnl track_obj_functor[2..CALL_SIZE]. $1 is assumed to be >= 2.
-define([TRACK_OBJECT_FUNCTOR],[dnl
-/** track_obj_functor$1 wraps a functor and stores $1 references to trackable objects.
- * Use the convenience function track_obj() to create an instance of track_obj_functor$1.
- *
- * @tparam T_functor The type of functor to wrap.dnl
-FOR(1,$1,[
- * @tparam T_obj%1 The type of a trackable object.])
- *
- * @newin{2,4}
- *
- * @ingroup track_obj
- */
-template <typename T_functor, LOOP(typename T_obj%1, $1)>
-class track_obj_functor$1 : public track_obj_functor1<T_functor, T_obj1>
-{
-public:
-  /** Constructs a track_obj_functor$1 object that wraps the passed functor and
-   * stores references to the passed trackable objects.
-   * @param _A_func Functor.dnl
-FOR(1,$1,[
-   * @param _A_obj%1 Trackable object.])
-   */
-  track_obj_functor$1(const T_functor& _A_func, LOOP(const T_obj%1& _A_obj%1, $1))
-  : track_obj_functor1<T_functor, T_obj1>(_A_func, _A_obj1)FOR(2,$1,[[, ]obj%1_(_A_obj%1)]) {}
-
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-//protected:
-  // public, so that visit_each() can access it.dnl
-FOR(2,$1,[
-  const_limit_reference<T_obj%1> obj%1_;])
-#endif /* DOXYGEN_SHOULD_SKIP_THIS */
-
-}; // end class track_obj_functor$1
-
-])dnl end TRACK_OBJECT_FUNCTOR
-
-define([TRACK_OBJECT_VISIT_EACH],[dnl
-//template specialization of visitor<>::do_visit_each<>(action, functor):
-/** Performs a functor on each of the targets of a functor.
- * The function overload for sigc::track_obj_functor$1 performs a functor
- * on the functor and on the trackable object instances stored in the
- * sigc::track_obj_functor$1 object.
- *
- * @newin{2,4}
- *
- * @ingroup track_obj
- */
-template <typename T_functor, LOOP(typename T_obj%1, $1)>
-struct visitor<track_obj_functor$1<T_functor, LOOP(T_obj%1, $1)> >
-{
-  template <typename T_action>
-  static void do_visit_each(const T_action& _A_action,
-                            const track_obj_functor$1<T_functor, LOOP(T_obj%1, $1)>& _A_target)
-  {
-    sigc::visit_each(_A_action, _A_target.functor_);dnl
-FOR(1,$1,[
-    sigc::visit_each(_A_action, _A_target.obj%1_);])
-  }
-};
-
-])dnl end TRACK_OBJECT_VISIT_EACH
-
-define([TRACK_OBJECT],[dnl
-/** Creates an adaptor of type sigc::track_obj_functor$1 which wraps a functor.
- * @param _A_func Functor that shall be wrapped.dnl
-FOR(1,$1,[
- * @param _A_obj%1 Trackable object.])
- * @return Adaptor that executes _A_func() on invocation.
- *
- * @newin{2,4}
- *
- * @ingroup track_obj
- */
-template <typename T_functor, LOOP(typename T_obj%1, $1)>
-inline track_obj_functor$1<T_functor, LOOP(T_obj%1, $1)>
-track_obj(const T_functor& _A_func, LOOP(const T_obj%1& _A_obj%1, $1))
-{
-  return track_obj_functor$1<T_functor, LOOP(T_obj%1, $1)>
-    (_A_func, LOOP(_A_obj%1, $1));
-}
-
-])dnl end TRACK_OBJECT
 
 divert(0)dnl
 _FIREWALL([ADAPTORS_TRACK_OBJ])
 #include <sigc++/adaptors/adaptor_trait.h>
 #include <sigc++/limit_reference.h>
+#include <sigc++/tuple_for_each.h>
 
 namespace sigc {
 
@@ -139,30 +57,30 @@ namespace sigc {
  * @ingroup adaptors
  */
 
-/** track_obj_functor1 wraps a functor and stores a reference to a trackable object.
- * Use the convenience function track_obj() to create an instance of track_obj_functor1.
+/** track_obj_functor wraps a functor and stores a reference to a trackable object.
+ * Use the convenience function track_obj() to create an instance of track_obj_functor.
  *
  * @tparam T_functor The type of functor to wrap.
- * @tparam T_obj1 The type of a trackable object.
+ * @tparam T_obj The types of the trackable objects.
  *
  * @newin{2,4}
  *
  * @ingroup track_obj
  */
-template <typename T_functor, typename T_obj1>
-class track_obj_functor1 : public adapts<T_functor>
+template <typename T_functor, typename... T_obj>
+class track_obj_functor : public adapts<T_functor>
 {
 public:
   typedef typename adapts<T_functor>::adaptor_type adaptor_type;
   typedef typename adaptor_type::result_type result_type;
 
-  /** Constructs a track_obj_functor1 object that wraps the passed functor and
-   * stores a reference to the passed trackable object.
+  /** Constructs a track_obj_functor object that wraps the passed functor and
+   * stores a reference to the passed trackable objects.
    * @param _A_func Functor.
-   * @param _A_obj1 Trackable object.
+   * @param _A_obj Trackable objects.
    */
-  track_obj_functor1(const T_functor& _A_func, const T_obj1& _A_obj1)
-  : adapts<T_functor>(_A_func), obj1_(_A_obj1) {}
+  track_obj_functor(const T_functor& _A_func, const T_obj&... _A_obj)
+  : adapts<T_functor>(_A_func), obj_(_A_obj...) {}
 
   /** Invokes the wrapped functor.
    * @return The return value of the functor invocation.
@@ -186,17 +104,68 @@ public:
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 //protected:
   // public, so that visit_each() can access it.
-  const_limit_reference<T_obj1> obj1_;
+  std::tuple<const_limit_reference<T_obj>...> obj_;
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
-}; // end class track_obj_functor1
+}; // end class track_obj_functor
 
-FOR(2,CALL_SIZE,[[TRACK_OBJECT_FUNCTOR(%1)]])dnl
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-FOR(1,CALL_SIZE,[[TRACK_OBJECT_VISIT_EACH(%1)]])dnl
+//template specialization of visitor<>::do_visit_each<>(action, functor):
+/** Performs a functor on each of the targets of a functor.
+ * The function overload for sigc::track_obj_functor performs a functor
+ * on the functor and on the trackable object instances stored in the
+ * sigc::track_obj_functor object.
+ *
+ * @newin{2,4}
+ *
+ * @ingroup track_obj
+ */
+template <typename T_functor, typename... T_obj>
+struct visitor<track_obj_functor<T_functor, T_obj...>>
+{
+  template <typename T_action>
+  static void do_visit_each(const T_action& _A_action,
+                            const track_obj_functor<T_functor, T_obj...>& _A_target)
+  {
+    sigc::visit_each(_A_action, _A_target.functor_);
+
+    //Call sigc::visit_each(_A_action, element) on each element in the 
+    //_A_target.obj_ tuple:
+    sigc::tuple_for_each<TrackObjVisitForEach>(_A_target.obj_, _A_action);
+  }
+
+private:
+  template<typename T_element, typename T_action>
+  struct TrackObjVisitForEach
+  {
+    static
+    void
+    visit(const T_element& element, const T_action& action)
+    {
+       sigc::visit_each(action, element);
+    }
+  };
+};
 #endif // DOXYGEN_SHOULD_SKIP_THIS
 
-FOR(1,CALL_SIZE,[[TRACK_OBJECT(%1)]])dnl
+
+/** Creates an adaptor of type sigc::track_obj_functor which wraps a functor.
+ * @param _A_func Functor that shall be wrapped.
+ * @param _A_obj Trackable objects.
+ * @return Adaptor that executes _A_func() on invocation.
+ *
+ * @newin{2,4}
+ *
+ * @ingroup track_obj
+ */
+template <typename T_functor, typename... T_obj>
+inline decltype(auto)
+track_obj(const T_functor& _A_func, const T_obj&... _A_obj)
+{
+  return track_obj_functor<T_functor, T_obj...>
+    (_A_func, _A_obj...);
+}
+
 
 } /* namespace sigc */
