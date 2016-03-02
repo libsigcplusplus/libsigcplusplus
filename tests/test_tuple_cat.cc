@@ -16,7 +16,7 @@
 
 #include <cassert>
 #include <cstdlib>
-#include <sigc++/tuple_cat.h>
+#include <sigc++/tuple-utils/tuple_cat.h>
 #include <utility>
 //#include <functional>
 

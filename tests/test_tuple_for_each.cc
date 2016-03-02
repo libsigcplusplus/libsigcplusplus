@@ -16,7 +16,7 @@
 
 #include <cassert>
 #include <cstdlib>
-#include <sigc++/tuple_for_each.h>
+#include <sigc++/tuple-utils/tuple_for_each.h>
 #include <utility>
 //#include <typeinfo>
 #include <iostream>

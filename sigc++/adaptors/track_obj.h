@@ -3,7 +3,7 @@
 
 #include <sigc++/adaptors/adaptor_trait.h>
 #include <sigc++/limit_reference.h>
-#include <sigc++/tuple_for_each.h>
+#include <sigc++/tuple-utils/tuple_for_each.h>
 
 namespace sigc {
 

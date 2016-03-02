@@ -3,10 +3,10 @@
 #include <sigc++/adaptors/adaptor_trait.h>
 #include <sigc++/adaptors/bound_argument.h>
 #include <tuple>
-#include <sigc++/tuple_for_each.h>
-#include <sigc++/tuple_start.h>
-#include <sigc++/tuple_end.h>
-#include <sigc++/tuple_transform_each.h>
+#include <sigc++/tuple-utils/tuple_for_each.h>
+#include <sigc++/tuple-utils/tuple_start.h>
+#include <sigc++/tuple-utils/tuple_end.h>
+#include <sigc++/tuple-utils/tuple_transform_each.h>
 
 
 //TODO: See comment in functor_trait.h.

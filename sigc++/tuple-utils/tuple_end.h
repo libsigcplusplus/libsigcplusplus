@@ -17,7 +17,7 @@
 #ifndef SIGC_TUPLE_UTILS_TUPLE_END_H
 #define SIGC_TUPLE_UTILS_TUPLE_END_H
 
-#include <sigc++/tuple_cdr.h>
+#include <sigc++/tuple-utils/tuple_cdr.h>
 
 namespace sigc {
 

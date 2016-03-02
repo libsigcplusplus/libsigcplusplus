@@ -17,10 +17,10 @@
 #ifndef SIGC_TUPLE_UTILS_TUPLE_TRANSFORM_EACH_H
 #define SIGC_TUPLE_UTILS_TUPLE_TRANSFORM_EACH_H
 
-#include <sigc++/tuple_cat.h>
-#include <sigc++/tuple_cdr.h>
-#include <sigc++/tuple_end.h>
-#include <sigc++/tuple_start.h>
+#include <sigc++/tuple-utils/tuple_cat.h>
+#include <sigc++/tuple-utils/tuple_cdr.h>
+#include <sigc++/tuple-utils/tuple_end.h>
+#include <sigc++/tuple-utils/tuple_start.h>
 #include <type_traits>
 
 namespace sigc {
