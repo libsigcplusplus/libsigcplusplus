@@ -18,129 +18,16 @@ divert(-1)
 
 include(template.macros.m4)
 
-define([ORDINAL],[dnl
-$1[]ifelse($1,1,[st],$1,2,[nd],$1,3,[rd],[th])[]dnl
-])
-
-define([BIND_OPERATOR_LOCATION],[dnl
-ifelse($2,1,,[dnl
-  /** Invokes the wrapped functor passing on the arguments.
-   * bound_ is passed as the ORDINAL($1) argument.dnl
-FOR(1, eval($2-1),[
-   * @param _A_arg%1 Argument to be passed on to the functor.])
-   * @return The return value of the functor invocation.
-   */
-  template <LOOP([class T_arg%1], eval($2-1))>
-  decltype(auto)
-  operator()(LOOP(T_arg%1 _A_arg%1,eval($2-1)))
-    { return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<LIST(LOOP([type_trait_pass_t<T_arg%1>], eval($1-1)), type_trait_pass_t<typename unwrap_reference<T_bound>::type>, FOR($1,eval($2-1),[type_trait_pass_t<T_arg%1>,]))>
-        (LIST(LOOP(_A_arg%1,eval($1-1)), std::get<0>(bound_).invoke(), FOR($1,eval($2-1),[_A_arg%1,])));
-    }
-])dnl
-])
-define([BIND_OPERATOR_COUNT],[dnl
-  /** Invokes the wrapped functor passing on the arguments.
-   * The last $1 argument(s) are fixed.dnl
-FOR(1, eval($2-1),[
-   * @param _A_arg%1 Argument to be passed on to the functor.])
-   * @return The return value of the functor invocation.
-   */
-  template <LOOP([class T_arg%1], eval($2-1))>
-  decltype(auto)
-  operator()(LOOP(T_arg%1 _A_arg%1, eval($2-1)))
-    {
-      return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<LIST(LOOP([type_trait_pass_t<T_arg%1>], eval($2-1)), LOOP(type_trait_pass_t<typename unwrap_reference<T_type%1>::type>, $1))>
-        (LIST(LOOP(_A_arg%1,eval($2-1)), LOOP(std::get<%1 - 1>(bound_).invoke(), $1)));
-    }
-])
-define([BIND_FUNCTOR_LOCATION],[dnl
-ifelse($1,1,[#ifndef DOXYGEN_SHOULD_SKIP_THIS
-],)dnl Include only the first template specialization in the documentation. ($1 = 0..CALL_SIZE-1)
-/** Adaptor that binds an argument to the wrapped functor.
- * This template specialization fixes the ORDINAL(eval($1+1)) argument of the wrapped functor.
- *
- * @ingroup bind
- */
-template <class T_functor, class T_bound>
-struct bind_functor<$1, T_functor, T_bound, LIST(LOOP(nil, CALL_SIZE - 1))> : public adapts<T_functor>
-{
-  typedef typename adapts<T_functor>::adaptor_type adaptor_type;
-  typedef typename adaptor_type::result_type  result_type;
-
-  /** Invokes the wrapped functor passing on the bound argument only.
-   * @return The return value of the functor invocation.
-   */
-  template <class T_DummyArg = void> //TODO: Remove this workaround when operator() is variadic. See https://bugzilla.gnome.org/show_bug.cgi?id=753612#c25
-  decltype(auto)
-  operator()()
-  {
-    //Note: The AIX compiler sometimes gives linker errors if we do not define this in the class.
-    return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<type_trait_pass_t<typename unwrap_reference<T_bound>::type>> (std::get<0>(bound_).invoke());
-  }
-
-FOR(eval($1+1),CALL_SIZE,[[BIND_OPERATOR_LOCATION(eval($1+1),%1)]])dnl
-  /** Constructs a bind_functor object that binds an argument to the passed functor.
-   * @param _A_func Functor to invoke from operator()().
-   * @param _A_bound Argument to bind to the functor.
-   */
-  bind_functor(type_trait_take_t<T_functor> _A_func, type_trait_take_t<T_bound> _A_bound)
-    : adapts<T_functor>(_A_func), bound_(_A_bound)
-    {}
-
-  /// The argument bound to the functor.
-  std::tuple<bound_argument<T_bound>> bound_;
-};
-ifelse($1,eval(CALL_SIZE-1),[#endif // DOXYGEN_SHOULD_SKIP_THIS
-],)dnl Include only the first template specialization in the documentation. ($1 = 0..CALL_SIZE-1)
-
-])dnl end BIND_FUNCTOR_LOCATION
-
-define([BIND_FUNCTOR_COUNT],[dnl
-/** Adaptor that binds $1 argument(s) to the wrapped functor.
- * This template specialization fixes the last $1 argument(s) of the wrapped functor.
- *
- * @ingroup bind
- */
-template <LIST(class T_functor, LOOP(class T_type%1, $1))>
-struct bind_functor<LIST(-1, T_functor, LIST(LOOP(T_type%1, $1), LOOP(nil, CALL_SIZE - $1)))> : public adapts<T_functor>
-{
-  typedef typename adapts<T_functor>::adaptor_type adaptor_type;
-  typedef typename adaptor_type::result_type  result_type;
-
-  /** Invokes the wrapped functor passing on the bound argument only.
-   * @return The return value of the functor invocation.
-   */
-  template <class T_DummyArg = void> //TODO: Remove this workaround when operator() is variadic. See https://bugzilla.gnome.org/show_bug.cgi?id=753612#c25
-  decltype(auto)
-  operator()()
-  {
-    //Note: The AIX compiler sometimes gives linker errors if we do not define this in the class.
-    return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<LOOP(type_trait_pass_t<typename unwrap_reference<T_type%1>::type>, $1)> (LOOP(std::get<%1 - 1>(bound_).invoke(), $1));
-  }
-
-FOR(2,eval(CALL_SIZE-$1+1),[[BIND_OPERATOR_COUNT($1,%1)]])dnl
-  /** Constructs a bind_functor object that binds an argument to the passed functor.
-   * @param _A_func Functor to invoke from operator()().dnl
-FOR(1,$1,[
-   * @param _A_bound%1 Argument to bind to the functor.])
-   */
-  bind_functor(type_trait_take_t<T_functor> _A_func, LOOP(type_trait_take_t<T_type%1> _A_bound%1, $1))
-    : adapts<T_functor>(_A_func), bound_(LOOP(_A_bound%1, $1))
-    {}
-
-  /// The argument bound to the functor.
-  std::tuple< LOOP(bound_argument<T_type%1>, $1)> bound_;
-};
-
-])dnl end BIND_FUNCTOR_COUNT
-
-
 divert(0)dnl
 _FIREWALL([ADAPTORS_BIND])
 #include <sigc++/adaptors/adaptor_trait.h>
 #include <sigc++/adaptors/bound_argument.h>
 #include <tuple>
 #include <sigc++/tuple_for_each.h>
+#include <sigc++/tuple_start.h>
+#include <sigc++/tuple_end.h>
+#include <sigc++/tuple_transform_each.h>
+
 
 //TODO: See comment in functor_trait.h.
 #if defined(nil) && defined(SIGC_PRAGMA_PUSH_POP_MACRO)
@@ -150,40 +37,6 @@ _FIREWALL([ADAPTORS_BIND])
 #endif
 
 namespace sigc {
-
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-
-namespace internal {
-
-template <class T_arg1,class T_arg2,class T_arg3,class T_arg4,class T_arg5,class T_arg6,class T_arg7>
-struct count_void
-  { static const int value=0; };
-template <class T_arg1,class T_arg2,class T_arg3,class T_arg4,class T_arg5,class T_arg6>
-struct count_void<T_arg1,T_arg2,T_arg3,T_arg4,T_arg5,T_arg6,void>
-  { static const int value=1; };
-template <class T_arg1,class T_arg2,class T_arg3,class T_arg4,class T_arg5>
-struct count_void<T_arg1,T_arg2,T_arg3,T_arg4,T_arg5,void,void>
-  { static const int value=2; };
-template <class T_arg1,class T_arg2,class T_arg3,class T_arg4>
-struct count_void<T_arg1,T_arg2,T_arg3,T_arg4,void,void,void>
-  { static const int value=3; };
-template <class T_arg1,class T_arg2,class T_arg3>
-struct count_void<T_arg1,T_arg2,T_arg3,void,void,void,void>
-  { static const int value=4; };
-template <class T_arg1,class T_arg2>
-struct count_void<T_arg1,T_arg2,void,void,void,void,void>
-  { static const int value=5; };
-template <class T_arg1>
-struct count_void<T_arg1,void,void,void,void,void,void>
-  { static const int value=6; };
-template <>
-struct count_void<void,void,void,void,void,void,void>
-  { static const int value=7; };
-
-} /* namespace internal */
-
-#endif /*DOXYGEN_SHOULD_SKIP_THIS*/
-
 
 /** @defgroup bind bind(), bind_return()
  * sigc::bind() alters an arbitrary functor by fixing arguments to certain values.
@@ -253,25 +106,152 @@ struct count_void<void,void,void,void,void,void,void>
  * @ingroup adaptors
  */
 
-/** Adaptor that binds an argument to the wrapped functor.
+namespace internal
+{
+
+template <class T_element>
+struct TransformEachInvoker
+{
+  //We take T_element as non-const because invoke() is not const.
+  static
+  decltype(auto)
+  transform(T_element& element) {
+    return element.invoke();
+  }
+};
+
+} //namespace internal
+
+/** Adaptor that binds arguments to the wrapped functor.
  * Use the convenience function sigc::bind() to create an instance of sigc::bind_functor.
  *
  * The following template arguments are used:
- * - @e I_location Zero-based position of the argument to fix (@p -1 for the last argument).dnl
-FOR(1, CALL_SIZE,[
- * - @e T_type%1 Type of the [ORDINAL(%1)] bound argument.])
+ * - @e I_location Zero-based position of the argument to fix (@p -1 for the last argument).
+ * - @e T_bound Types of the bound argument.
  * - @e T_functor Type of the functor to wrap.
  *
  * @ingroup bind
  */
-template <LIST(int I_location, class T_functor, LOOP(class T_type%1=nil, CALL_SIZE))>
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-struct bind_functor;
-#else
-struct bind_functor {};
-#endif
+template <int I_location, class T_functor, class... T_bound>
+struct bind_functor : public adapts<T_functor>
+{
+  typedef typename adapts<T_functor>::adaptor_type adaptor_type;
+  typedef typename adaptor_type::result_type  result_type;
 
-FOR(0,eval(CALL_SIZE-1),[[BIND_FUNCTOR_LOCATION(%1)]])dnl
+  /** Invokes the wrapped functor passing on the arguments.
+   * bound_ is passed as the next argument.
+   * @param _A_arg Arguments to be passed on to the functor.
+   * @return The return value of the functor invocation.
+   */
+  template <class... T_arg>
+  decltype(auto)
+  operator()(T_arg... _A_arg)
+    {
+      //For instance, if I_location is 1, and _A_arg has 4 arguments,
+      //we would want to call operator() with (_A_arg0, bound, _A_arg1, _A_arg2).
+      
+      using tuple_type_args = std::tuple<type_trait_pass_t<T_arg>...>;
+      auto t_args = std::make_tuple(_A_arg...);
+      constexpr auto t_args_size = std::tuple_size<tuple_type_args>::value;
+      
+      auto t_start = tuple_start<I_location>(t_args);
+      auto t_bound = tuple_transform_each<internal::TransformEachInvoker>(bound_);
+      auto t_end = tuple_end<t_args_size - I_location>(t_args);
+      auto t_with_bound = std::tuple_cat(t_start, t_bound, t_end);
+
+      //TODO: Avoid needing to specify the type when calling operator()?
+      using t_type_start = typename tuple_type_start<tuple_type_args, I_location>::type;
+      using t_type_bound = std::tuple<type_trait_pass_t<typename unwrap_reference<T_bound>::type>...>;
+
+      //using tuple_type_args_pass = std::tuple<type_trait_pass_t<T_arg>...>;
+      //using t_type_end = typename tuple_type_end<tuple_type_args_pass  t_args_size - I_location>::type;
+      using t_type_end = typename tuple_type_end<tuple_type_args, t_args_size - I_location>::type;
+      using t_type_with_bound = typename tuple_type_cat<typename tuple_type_cat<t_type_start, t_type_bound>::type, t_type_end>::type;
+
+      const auto seq = std::make_index_sequence<std::tuple_size<decltype(t_with_bound)>::value>();
+      return call_functor_operator_parentheses<t_type_with_bound>(
+        t_with_bound, seq);
+    }
+
+  /** Constructs a bind_functor object that binds an argument to the passed functor.
+   * @param _A_func Functor to invoke from operator()().
+   * @param _A_bound Argument to bind to the functor.
+   */
+  bind_functor(type_trait_take_t<T_functor> _A_func, type_trait_take_t<T_bound>... _A_bound)
+    : adapts<T_functor>(_A_func), bound_(_A_bound...)
+    {}
+
+  //TODO: Should this be private?
+  /// The arguments bound to the functor.
+  std::tuple<bound_argument<T_bound>...> bound_;
+
+private:
+  template<class T_specific, class T, std::size_t... Is>
+  decltype(auto)
+  call_functor_operator_parentheses(T& tuple,
+    std::index_sequence<Is...>)
+  {
+    return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<typename std::tuple_element<Is, T_specific>::type...>(std::get<Is>(tuple)...);
+  }
+};
+
+
+/** Adaptor that binds argument(s) to the wrapped functor.
+ * This template specialization fixes the last argument(s) of the wrapped functor.
+ *
+ * @ingroup bind
+ */
+template <class T_functor, class... T_type>
+struct bind_functor<-1, T_functor, T_type...> : public adapts<T_functor>
+{
+  typedef typename adapts<T_functor>::adaptor_type adaptor_type;
+  typedef typename adaptor_type::result_type  result_type;
+
+  /** Invokes the wrapped functor passing on the arguments.
+   * bound_ is passed as the next argument.
+   * @param _A_arg Arguments to be passed on to the functor.
+   * @return The return value of the functor invocation.
+   */
+  template <class... T_arg>
+  decltype(auto)
+  operator()(T_arg... _A_arg)
+    {
+      //For instance, if _A_arg has 4 arguments,
+      //we would want to call operator() with (_A_arg0, _A_arg1, _A_arg2, bound).
+      
+      auto t_args = std::make_tuple(_A_arg...);
+      auto t_bound = tuple_transform_each<internal::TransformEachInvoker>(bound_);
+      auto t_with_bound = std::tuple_cat(t_args, t_bound);
+
+      //TODO: Avoid needing to specify the type when calling operator()?
+      using t_type_args = std::tuple<type_trait_pass_t<T_arg>...>;
+      using t_type_bound = std::tuple<type_trait_pass_t<typename unwrap_reference<T_type>::type>...>;
+      using t_type_with_bound = typename tuple_type_cat<t_type_args, t_type_bound>::type;
+
+      const auto seq = std::make_index_sequence<std::tuple_size<decltype(t_with_bound)>::value>();
+      return call_functor_operator_parentheses<t_type_with_bound>(t_with_bound, seq);
+    }
+
+  /** Constructs a bind_functor object that binds an argument to the passed functor.
+   * @param _A_func Functor to invoke from operator()().
+   * @param _A_bound Arguments to bind to the functor.
+   */
+  bind_functor(type_trait_take_t<T_functor> _A_func, type_trait_take_t<T_type>... _A_bound)
+    : adapts<T_functor>(_A_func), bound_(_A_bound...)
+    {}
+
+  /// The argument bound to the functor.
+  std::tuple<bound_argument<T_type>...> bound_;
+
+private:
+  template<class T_specific, class T, std::size_t... Is>
+  decltype(auto)
+  call_functor_operator_parentheses(T& tuple,
+    std::index_sequence<Is...>)
+  {
+    return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<typename std::tuple_element<Is, T_specific>::type...>(std::get<Is>(tuple)...);
+  }
+};
 
 
 namespace {
@@ -299,12 +279,12 @@ struct TupleVisitorVisitEach
  *
  * @ingroup bind
  */
-template <int T_loc, class T_functor, class T_bound>
-struct visitor<bind_functor<T_loc, T_functor, T_bound> >
+template <int T_loc, class T_functor, class... T_bound>
+struct visitor<bind_functor<T_loc, T_functor, T_bound...> >
 {
   template <class T_action>
   static void do_visit_each(const T_action& _A_action,
-                            const bind_functor<T_loc, T_functor, T_bound>& _A_target)
+                            const bind_functor<T_loc, T_functor, T_bound...>& _A_target)
   {
     sigc::visit_each(_A_action, _A_target.functor_);
     sigc::visit_each(_A_action, std::get<0>(_A_target.bound_));
@@ -332,8 +312,6 @@ struct visitor<bind_functor<-1, T_functor, T_type...> >
 };
 
 #endif // DOXYGEN_SHOULD_SKIP_THIS
-
-FOR(1,CALL_SIZE,[[BIND_FUNCTOR_COUNT(%1)]])dnl
 
 /** Creates an adaptor of type sigc::bind_functor which binds the passed argument to the passed functor.
  * The optional template argument @e I_location specifies the zero-based
@@ -367,7 +345,6 @@ inline decltype(auto)
 bind(const T_functor& _A_func, T_type... _A_b)
 { return bind_functor<-1, T_functor, T_type...>(_A_func, _A_b...);
 }
-
 
 } /* namespace sigc */
 
