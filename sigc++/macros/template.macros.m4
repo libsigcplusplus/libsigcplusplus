@@ -39,45 +39,11 @@ divert(1)dnl
 divert(0)dnl
 ])
 
-define([__DEPRECATION_GUARD__],[SIGCXX_DISABLE_DEPRECATED])dnl
-dnl Start deprecation
-define([_DEPRECATE_IFDEF_START],[dnl
-#ifndef __DEPRECATION_GUARD__])dnl
-dnl End deprecation
-define([_DEPRECATE_IFDEF_END],[dnl
-#endif // __DEPRECATION_GUARD__])dnl
-
 dnl
 dnl General macros
 dnl
 
-define([PROT],[[$*]])
-
-define([_LOOP],
-[ifelse(eval($1<$2),0,
-[indir([_LOOP_FORMAT], $1)],
-[indir([_LOOP_FORMAT], $1)[]_LOOP_SEP[]_LOOP(eval($1+1), $2)])])
-
-define([LOOP],
-[pushdef([_LOOP_FORMAT], translit([$1],%, $))dnl
-pushdef([_LOOP_SEP],ifelse([$3],[],[[[, ]]],[$3]))dnl
-ifelse(eval($2>0),1,[PROT(_LOOP(1, $2))],[PROT()])dnl
-popdef([_LOOP_SEP])dnl
-popdef([_LOOP_FORMAT])dnl
-])
-
-define([NUM],[eval(ifelse([$1],,0,1)ifelse($#,0,0, $#,1,,[+NUM(shift($@))]))])
 define([LIST],[ifelse($#,0,, $#,1,[$1],[$1],,[LIST(shift($@))],[__LIST($@)])])
 define([__LIST],[ifelse($#,0,, $#,1,[$1],[$1[]ifelse([$2],,,[[, ]])__LIST(shift($@))])])
-dnl
-define([_NL_],[
-])
-
-define([FOR],
-[pushdef([_FOR_FUNC],PROT(translit([$3],%, $)))dnl
-_FOR($1, $2)[]dnl
-popdef([_FOR_FUNC])dnl
-])
-define([_FOR],[ifelse(eval($1>$2),1,[],[_FOR_FUNC($1)[]_FOR(eval($1+1), $2)])])
 
 divert(__t_div__)dnl
