@@ -22,46 +22,6 @@ define([ORDINAL],[dnl
 ifelse($1,0,,$1)ifelse($1,0,[last],$1,1,[st],$1,2,[nd],$1,3,[rd],[th])[]dnl
 ])
 
-define([HIDE_OPERATOR],[dnl
-ifelse($2,0,,[dnl
-ifelse($2,1,[dnl
-  /** Invokes the wrapped functor ignoring the only argument.
-   * @param _A_a1 Argument to be ignored.
-   * @return The return value of the functor invocation.
-   */
-  template <class T_arg1>
-  decltype(auto)
-  operator()(T_arg1)
-    { return this->functor_(); }
-
-],$1,0,[dnl
-  /** Invokes the wrapped functor, ignoring the last argument.dnl
-FOR(1, eval($2-1),[
-   * @param _A_a%1 Argument to be passed on to the functor.])
-   * @param _A_a$2 Argument to be ignored.
-   * @return The return value of the functor invocation.
-   */
-  template <LOOP([class T_arg%1], $2)>
-  decltype(auto)
-  operator()(LOOP(T_arg%1 _A_a%1, eval($2-1)), T_arg$2)
-    { return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<LIST(FOR(1,eval($2-1),[type_trait_pass_t<T_arg%1>,]))>
-        (LIST(FOR(1,eval($2-1),[_A_a%1,]))); }
-
-],[dnl
-  /** Invokes the wrapped functor, ignoring the ORDINAL($1) argument.dnl
-FOR(1, eval($1-1),[
-   * @param _A_a%1 Argument to be passed on to the functor.])
-   * @param _A_a$1 Argument to be ignored.dnl
-FOR(eval($1+1), $2,[
-   * @param _A_a%1 Argument to be passed on to the functor.])
-   * @return The return value of the functor invocation.
-   */
-  template <LOOP([class T_arg%1], $2)>
-  decltype(auto)
-  operator()(LIST(FOR(1,eval($1-1),[T_arg%1 _A_a%1,]),T_arg$1,FOR(eval($1+1),$2,[T_arg%1 _A_a%1,])))
-    { return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<LIST(FOR(1,eval($1-1),[type_trait_pass_t<T_arg%1>,]),FOR(eval($1+1), $2,[type_trait_pass_t<T_arg%1>,]))>
-        (LIST(FOR(1,eval($1-1),[_A_a%1,]),FOR(eval($1+1),$2,[_A_a%1,]))); }
-
 ])])dnl
 ])dnl end HIDE_OPERATOR
 
@@ -79,7 +39,39 @@ struct hide_functor <$1, T_functor> : public adapts<T_functor>
   typedef typename adapts<T_functor>::adaptor_type adaptor_type;
   typedef typename adaptor_type::result_type  result_type;
 
-FOR(eval($1+1),CALL_SIZE,[[HIDE_OPERATOR(eval($1+1),%1)]])dnl
+  /** Invokes the wrapped functor, ignoring the ORDINAL($1) argument.dnl
+   * @param _A_a Arguments to be passed on to the functor, apart from the ORDINAL($1) argument.
+   * @return The return value of the functor invocation.
+   */
+  template <class... T_arg>
+  decltype(auto)
+  operator()(T_arg... _A_a)
+    {
+       constexpr auto size = sizeof...(T_arg);
+       constexpr auto index_ignore = ($1 == -1 ? size - 1 : $1);
+       const auto t = std::make_tuple(_A_a...);
+
+       const auto t_start = tuple_start<index_ignore>(t);
+       const auto t_end = tuple_end<size - index_ignore - 1>(t);
+       auto t_used = std::tuple_cat(t_start, t_end); //TODO: Let this be const?
+
+       //This is so we can specify a particular instantiation of the functor's
+       //operator().
+       //TODO: Avoid this if it no longer necessary.
+       using t_type = std::tuple<type_trait_pass_t<T_arg>...>;
+       using t_type_start = typename tuple_type_start<t_type, index_ignore>::type;
+       using t_type_end = typename tuple_type_end<t_type, size - index_ignore - 1>::type;
+       using t_type_used = typename tuple_type_cat<t_type_start, t_type_end>::type;
+
+       constexpr auto size_used = size - 1;
+
+       //TODO: Remove these? They are just here as a sanity check.
+       static_assert(std::tuple_size<t_type_used>::value == size_used, "Unexpected t_type_used size.");
+       static_assert(std::tuple_size<decltype(t_used)>::value == size_used, "Unexpected t_used size.");
+
+       const auto seq = std::make_index_sequence<size_used>();
+       return call_functor_operator_parentheses<t_type_used>(t_used, seq);
+    }
 
   /** Constructs a hide_functor object that adds a dummy parameter to the passed functor.
    * @param _A_func Functor to invoke from operator()().
@@ -87,6 +79,17 @@ FOR(eval($1+1),CALL_SIZE,[[HIDE_OPERATOR(eval($1+1),%1)]])dnl
   explicit hide_functor(const T_functor& _A_func)
     : adapts<T_functor>(_A_func)
     {}
+
+private:
+  //TODO_variadic: Replace this with std::experimental::apply() if that becomes standard
+  //C++, or add our own implementation, to avoid code duplication.
+  template<class T_tuple_specific, class T_tuple, std::size_t... Is>
+  decltype(auto)
+  call_functor_operator_parentheses(T_tuple& tuple,
+    std::index_sequence<Is...>)
+  {
+    return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<typename std::tuple_element<Is, T_tuple_specific>::type...>(std::get<Is>(tuple)...);
+  }
 };
 ifelse($1,eval(CALL_SIZE-1),[#endif // DOXYGEN_SHOULD_SKIP_THIS
 ],)dnl Include only the first two template specializations in the documentation. ($1 = -1..CALL_SIZE-1)
@@ -96,6 +99,9 @@ ifelse($1,eval(CALL_SIZE-1),[#endif // DOXYGEN_SHOULD_SKIP_THIS
 divert(0)dnl
 _FIREWALL([ADAPTORS_HIDE])
 #include <sigc++/adaptors/adaptor_trait.h>
+#include <sigc++/tuple_cat.h>
+#include <sigc++/tuple_end.h>
+#include <sigc++/tuple_start.h>
 
 namespace sigc {
 
