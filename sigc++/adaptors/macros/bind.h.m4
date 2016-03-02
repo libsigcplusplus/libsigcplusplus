@@ -34,7 +34,7 @@ FOR(1, eval($2-1),[
   decltype(auto)
   operator()(LOOP(T_arg%1 _A_arg%1,eval($2-1)))
     { return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<LIST(LOOP([type_trait_pass_t<T_arg%1>], eval($1-1)), type_trait_pass_t<typename unwrap_reference<T_bound>::type>, FOR($1,eval($2-1),[type_trait_pass_t<T_arg%1>,]))>
-        (LIST(LOOP(_A_arg%1,eval($1-1)), bound_.invoke(), FOR($1,eval($2-1),[_A_arg%1,])));
+        (LIST(LOOP(_A_arg%1,eval($1-1)), std::get<0>(bound_).invoke(), FOR($1,eval($2-1),[_A_arg%1,])));
     }
 ])dnl
 ])
@@ -74,7 +74,7 @@ struct bind_functor<$1, T_functor, T_bound, LIST(LOOP(nil, CALL_SIZE - 1))> : pu
   operator()()
   {
     //Note: The AIX compiler sometimes gives linker errors if we do not define this in the class.
-    return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<type_trait_pass_t<typename unwrap_reference<T_bound>::type>> (bound_.invoke());
+    return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<type_trait_pass_t<typename unwrap_reference<T_bound>::type>> (std::get<0>(bound_).invoke());
   }
 
 FOR(eval($1+1),CALL_SIZE,[[BIND_OPERATOR_LOCATION(eval($1+1),%1)]])dnl
@@ -87,7 +87,7 @@ FOR(eval($1+1),CALL_SIZE,[[BIND_OPERATOR_LOCATION(eval($1+1),%1)]])dnl
     {}
 
   /// The argument bound to the functor.
-  bound_argument<T_bound> bound_;
+  std::tuple<bound_argument<T_bound>> bound_;
 };
 ifelse($1,eval(CALL_SIZE-1),[#endif // DOXYGEN_SHOULD_SKIP_THIS
 ],)dnl Include only the first template specialization in the documentation. ($1 = 0..CALL_SIZE-1)
@@ -164,6 +164,7 @@ divert(0)dnl
 _FIREWALL([ADAPTORS_BIND])
 #include <sigc++/adaptors/adaptor_trait.h>
 #include <sigc++/adaptors/bound_argument.h>
+#include <tuple>
 
 //TODO: See comment in functor_trait.h.
 #if defined(nil) && defined(SIGC_PRAGMA_PUSH_POP_MACRO)
@@ -312,7 +313,7 @@ struct visitor<bind_functor<T_loc, T_functor, T_bound> >
                             const bind_functor<T_loc, T_functor, T_bound>& _A_target)
   {
     sigc::visit_each(_A_action, _A_target.functor_);
-    sigc::visit_each(_A_action, _A_target.bound_);
+    sigc::visit_each(_A_action, std::get<0>(_A_target.bound_));
   }
 };
 #endif // DOXYGEN_SHOULD_SKIP_THIS
