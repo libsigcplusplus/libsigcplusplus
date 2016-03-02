@@ -23,7 +23,7 @@ void
 test_tuple_type_start() {
   {
     using type_tuple = std::tuple<int, short, double>;
-    using type_tuple_start = sigc::tuple_type_start<type_tuple, 1>::type;
+    using type_tuple_start = sigc::internal::tuple_type_start<type_tuple, 1>::type;
     using type_tuple_expected = std::tuple<int>;
 
     static_assert(std::is_same<type_tuple_start, type_tuple_expected>::value,
@@ -32,7 +32,7 @@ test_tuple_type_start() {
 
   {
     using type_tuple = std::tuple<int, short, double>;
-    using type_tuple_start = sigc::tuple_type_start<type_tuple, 2>::type;
+    using type_tuple_start = sigc::internal::tuple_type_start<type_tuple, 2>::type;
     using type_tuple_expected = std::tuple<int, short>;
 
     static_assert(std::is_same<type_tuple_start, type_tuple_expected>::value,
@@ -41,7 +41,7 @@ test_tuple_type_start() {
 
   {
     using type_tuple = std::tuple<int, short, double>;
-    using type_tuple_start = sigc::tuple_type_start<type_tuple, 3>::type;
+    using type_tuple_start = sigc::internal::tuple_type_start<type_tuple, 3>::type;
     using type_tuple_expected = std::tuple<int, short, double>;
 
     static_assert(std::is_same<type_tuple_start, type_tuple_expected>::value,
@@ -54,7 +54,7 @@ test_tuple_start() {
   {
     auto t_original =
       std::make_tuple(nullptr, std::string("hello"), std::string("world"));
-    auto t_prefix = sigc::tuple_start<3>(t_original);
+    auto t_prefix = sigc::internal::tuple_start<3>(t_original);
 
     static_assert(std::tuple_size<decltype(t_prefix)>::value == 3,
       "unexpected tuple_start()ed tuple size.");
@@ -70,7 +70,7 @@ test_tuple_start() {
   {
     auto t_original =
       std::make_tuple(nullptr, std::string("hello"), std::string("world"));
-    auto t_prefix = sigc::tuple_start<2>(t_original);
+    auto t_prefix = sigc::internal::tuple_start<2>(t_original);
 
     static_assert(std::tuple_size<decltype(t_prefix)>::value == 2,
       "unexpected tuple_start()ed tuple size.");
@@ -86,7 +86,7 @@ test_tuple_start() {
   {
     auto t_original =
       std::make_tuple(nullptr, std::string("hello"), std::string("world"));
-    auto t_prefix = sigc::tuple_start<1>(t_original);
+    auto t_prefix = sigc::internal::tuple_start<1>(t_original);
 
     static_assert(std::tuple_size<decltype(t_prefix)>::value == 1,
       "unexpected tuple_start()ed tuple size.");
@@ -105,7 +105,7 @@ test_tuple_start_stdref() {
   std::string b = "yaddayadda";
   auto t_larger = std::make_tuple(std::ref(a), std::ref(b), 1);
 
-  auto t_prefix = sigc::tuple_start<2>(t_larger);
+  auto t_prefix = sigc::internal::tuple_start<2>(t_larger);
   a = "hello";
   b = "world";
   //This works, but it's not what we are testing here:

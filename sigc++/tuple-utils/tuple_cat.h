@@ -23,6 +23,8 @@
 
 namespace sigc {
 
+namespace internal {
+
 namespace detail {
 
 template <typename T1, typename T2, typename Seq1, typename Seq2>
@@ -48,6 +50,8 @@ struct tuple_type_cat
 
 // There is no tuple_cat() here because std::tuple_cat() exists already in
 // the C++ standard library.
+
+} // namespace internal
 
 } // namespace sigc
 

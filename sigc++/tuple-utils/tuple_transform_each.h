@@ -25,6 +25,8 @@
 
 namespace sigc {
 
+namespace internal {
+
 namespace detail {
 
 template <typename T, template <typename> class T_transformer,
@@ -151,6 +153,8 @@ tuple_transform_each(T&& t) {
   return detail::tuple_transform_each_impl<T_transformer,
     size - 1>::tuple_transform_each(std::forward<T>(t), t);
 }
+
+} // namespace internal
 
 } // namespace sigc
 

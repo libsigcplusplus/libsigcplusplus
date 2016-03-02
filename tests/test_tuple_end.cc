@@ -23,7 +23,7 @@ void
 test_tuple_type_end() {
   {
     using type_tuple = std::tuple<int, short, double>;
-    using type_tuple_end = sigc::tuple_type_end<type_tuple, 1>::type;
+    using type_tuple_end = sigc::internal::tuple_type_end<type_tuple, 1>::type;
     using type_tuple_expected = std::tuple<double>;
 
     static_assert(std::tuple_size<type_tuple_end>::value == 1,
@@ -34,7 +34,7 @@ test_tuple_type_end() {
 
   {
     using type_tuple = std::tuple<int, short, double>;
-    using type_tuple_end = sigc::tuple_type_end<type_tuple, 2>::type;
+    using type_tuple_end = sigc::internal::tuple_type_end<type_tuple, 2>::type;
     using type_tuple_expected = std::tuple<short, double>;
 
     static_assert(std::tuple_size<type_tuple_end>::value == 2,
@@ -45,7 +45,7 @@ test_tuple_type_end() {
 
   {
     using type_tuple = std::tuple<int, short, double>;
-    using type_tuple_end = sigc::tuple_type_end<type_tuple, 3>::type;
+    using type_tuple_end = sigc::internal::tuple_type_end<type_tuple, 3>::type;
     using type_tuple_expected = std::tuple<int, short, double>;
 
     static_assert(std::tuple_size<type_tuple_end>::value == 3,
@@ -60,7 +60,7 @@ test_tuple_end() {
   {
     auto t_original =
       std::make_tuple(nullptr, std::string("hello"), std::string("world"));
-    auto t_suffix = sigc::tuple_end<3>(t_original);
+    auto t_suffix = sigc::internal::tuple_end<3>(t_original);
 
     static_assert(std::tuple_size<decltype(t_suffix)>::value == 3,
       "unexpected tuple_end()ed tuple size.");
@@ -76,7 +76,7 @@ test_tuple_end() {
   {
     auto t_original =
       std::make_tuple(nullptr, std::string("hello"), std::string("world"));
-    auto t_suffix = sigc::tuple_end<2>(t_original);
+    auto t_suffix = sigc::internal::tuple_end<2>(t_original);
 
     static_assert(std::tuple_size<decltype(t_suffix)>::value == 2,
       "unexpected tuple_end()ed tuple size.");
@@ -92,7 +92,7 @@ test_tuple_end() {
   {
     auto t_original =
       std::make_tuple(nullptr, std::string("hello"), std::string("world"));
-    auto t_suffix = sigc::tuple_end<1>(t_original);
+    auto t_suffix = sigc::internal::tuple_end<1>(t_original);
 
     static_assert(std::tuple_size<decltype(t_suffix)>::value == 1,
       "unexpected tuple_end()ed tuple size.");
@@ -111,7 +111,7 @@ test_tuple_end_stdref() {
   std::string d = "yaddayadda";
   auto t_larger = std::make_tuple(1, 2, std::ref(c), std::ref(d));
 
-  auto t_suffix = sigc::tuple_end<2>(t_larger);
+  auto t_suffix = sigc::internal::tuple_end<2>(t_larger);
   c = "hello";
   d = "world";
   //This works, but it's not what we are testing here:

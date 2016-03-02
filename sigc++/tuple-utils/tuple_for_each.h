@@ -21,6 +21,8 @@
 
 namespace sigc {
 
+namespace internal {
+
 namespace detail {
 
 template <template <typename> class T_visitor, std::size_t size_from_index,
@@ -97,6 +99,8 @@ tuple_for_each(T&& t, T_extras&&... extras) {
   detail::tuple_for_each_impl<T_visitor, size, T_extras...>::tuple_for_each(
     std::forward<T>(t), std::forward<T_extras>(extras)...);
 }
+
+} // namespace internal
 
 } // namespace sigc
 

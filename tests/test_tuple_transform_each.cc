@@ -33,7 +33,7 @@ void
 test_tuple_type_transform_each_same_types() {
   using type_tuple_original = std::tuple<int, int>;
   using type_tuple_transformed =
-    sigc::tuple_type_transform_each<type_tuple_original,
+    sigc::internal::tuple_type_transform_each<type_tuple_original,
       transform_to_string>::type;
   using type_tuple_expected = std::tuple<std::string, std::string>;
 
@@ -48,7 +48,7 @@ test_tuple_transform_each_same_types() {
   {
     auto t_original = std::make_tuple(1, 2, 3);
     auto t_transformed =
-      sigc::tuple_transform_each<transform_to_string>(t_original);
+      sigc::internal::tuple_transform_each<transform_to_string>(t_original);
     auto t_expected =
       std::make_tuple(std::string("1"), std::string("2"), std::string("3"));
 
@@ -67,7 +67,7 @@ test_tuple_transform_each_same_types() {
   {
     auto t_original = std::make_tuple(1, (double)2.1f, 3);
     auto t_transformed =
-      sigc::tuple_transform_each<transform_to_string>(t_original);
+      sigc::internal::tuple_transform_each<transform_to_string>(t_original);
     auto t_expected =
       std::make_tuple(std::string("1"), std::string("2"), std::string("3"));
 
@@ -124,7 +124,7 @@ void
 test_tuple_type_transform_each_multiple_types() {
   using type_tuple_original = std::tuple<int, double, std::string>;
   using type_tuple_transformed =
-    sigc::tuple_type_transform_each<type_tuple_original,
+    sigc::internal::tuple_type_transform_each<type_tuple_original,
       transform_to_something>::type;
   using type_tuple_expected = std::tuple<std::string, char, int>;
 
@@ -138,7 +138,7 @@ void
 test_tuple_transform_each_multiple_types() {
   auto t_original = std::make_tuple(1, (double)2.1f, std::string("3"));
   auto t_transformed =
-    sigc::tuple_transform_each<transform_to_something>(t_original);
+    sigc::internal::tuple_transform_each<transform_to_something>(t_original);
   auto t_expected = std::make_tuple(std::string("1"), '2', 3);
 
   static_assert(std::tuple_size<decltype(t_transformed)>::value == 3,
@@ -169,7 +169,7 @@ void
 test_tuple_transform_each_nonconst() {
   auto t = std::make_tuple(1, 2, 3);
   auto t_transformed =
-    sigc::tuple_transform_each<transform_each_nonconst>(t);
+    sigc::internal::tuple_transform_each<transform_each_nonconst>(t);
 
   // Check that t was changed (from * 2):
   assert(std::get<0>(t) == 2);
@@ -189,7 +189,7 @@ test_tuple_transform_each_stdref() {
   int c = 3;
   auto t_original = std::make_tuple(std::ref(a), std::ref(b), std::ref(c));
   auto t_transformed =
-    sigc::tuple_transform_each<transform_to_string>(t_original);
+    sigc::internal::tuple_transform_each<transform_to_string>(t_original);
   auto t_expected =
     std::make_tuple(std::string("1"), std::string("2"), std::string("3"));
 
@@ -245,7 +245,7 @@ test_tuple_transform_each_stdref_non_copyable() {
   NonCopyable c(3);
   auto t_original = std::make_tuple(std::ref(a), std::ref(b), std::ref(c));
   auto t_transformed =
-    sigc::tuple_transform_each<transform_noncopyable_to_string>(t_original);
+    sigc::internal::tuple_transform_each<transform_noncopyable_to_string>(t_original);
   auto t_expected =
     std::make_tuple(std::string("1"), std::string("2"), std::string("3"));
 

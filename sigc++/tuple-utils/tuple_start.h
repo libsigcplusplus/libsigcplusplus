@@ -22,6 +22,8 @@
 
 namespace sigc {
 
+namespace internal {
+
 namespace detail {
 
 template <typename T, typename Seq>
@@ -75,6 +77,8 @@ decltype(auto) // typename tuple_type_end<T, len>::type
     std::forward<T>(t));
 }
 
-} // namespace sigc;
+} // namespace internal
+
+} // namespace sigc
 
 #endif //SIGC_TUPLE_UTILS_TUPLE_START_H

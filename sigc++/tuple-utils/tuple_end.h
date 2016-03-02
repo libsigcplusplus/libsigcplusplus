@@ -21,6 +21,8 @@
 
 namespace sigc {
 
+namespace internal {
+
 namespace detail {
 
 template <typename T, std::size_t remove_from_start>
@@ -88,6 +90,8 @@ decltype(auto) // typename tuple_type_end<T, len>::type
   return detail::tuple_end_impl<T, size_start>::tuple_end(std::forward<T>(t));
 }
 
-} // namespace sigc;
+} // namespace internal
+
+} // namespace sigc
 
 #endif //SIGC_TUPLE_UTILS_TUPLE_END_H

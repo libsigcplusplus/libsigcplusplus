@@ -24,7 +24,7 @@ void
 test_tuple_type_cdr() {
   using type_tuple_isd = std::tuple<int, short, double>;
   using type_tuple_sd = std::tuple<short, double>;
-  using type_tuple_suffix = sigc::tuple_type_cdr<type_tuple_isd>::type;
+  using type_tuple_suffix = sigc::internal::tuple_type_cdr<type_tuple_isd>::type;
 
   static_assert(std::tuple_size<type_tuple_suffix>::value == 2,
     "unexpected tuple_cdr()ed tuple size.");
@@ -36,7 +36,7 @@ void
 test_tuple_cdr() {
   auto t_larger =
     std::make_tuple(nullptr, std::string("hello"), std::string("world"));
-  auto t_suffix = sigc::tuple_cdr(t_larger);
+  auto t_suffix = sigc::internal::tuple_cdr(t_larger);
   assert(std::get<0>(t_suffix) == "hello");
   assert(std::get<1>(t_suffix) == "world");
 
@@ -56,7 +56,7 @@ test_tuple_cdr_stdref() {
 
   //std::cout << "debug: " << type(std::get<1>(t_larger)) << std::endl;
 
-  auto t_suffix = sigc::tuple_cdr(t_larger);
+  auto t_suffix = sigc::internal::tuple_cdr(t_larger);
   b = "hello";
   c = "world";
   //This works, but it's not what we are testing here:

@@ -136,19 +136,19 @@ struct bind_functor : public adapts<T_functor>
       auto t_args = std::tuple<T_arg...>(std::forward<T_arg>(_A_arg)...);
       constexpr auto t_args_size = std::tuple_size<tuple_type_args>::value;
       
-      auto t_start = tuple_start<I_location>(t_args);
-      auto t_bound = tuple_transform_each<internal::TransformEachInvoker>(bound_);
-      auto t_end = tuple_end<t_args_size - I_location>(t_args);
+      auto t_start = internal::tuple_start<I_location>(t_args);
+      auto t_bound = internal::tuple_transform_each<internal::TransformEachInvoker>(bound_);
+      auto t_end = internal::tuple_end<t_args_size - I_location>(t_args);
       auto t_with_bound = std::tuple_cat(t_start, t_bound, t_end);
 
       //TODO: Avoid needing to specify the type when calling operator()?
-      using t_type_start = typename tuple_type_start<tuple_type_args, I_location>::type;
+      using t_type_start = typename internal::tuple_type_start<tuple_type_args, I_location>::type;
       using t_type_bound = std::tuple<type_trait_pass_t<typename unwrap_reference<T_bound>::type>...>;
 
       //using tuple_type_args_pass = std::tuple<type_trait_pass_t<T_arg>...>;
       //using t_type_end = typename tuple_type_end<tuple_type_args_pass  t_args_size - I_location>::type;
-      using t_type_end = typename tuple_type_end<tuple_type_args, t_args_size - I_location>::type;
-      using t_type_with_bound = typename tuple_type_cat<typename tuple_type_cat<t_type_start, t_type_bound>::type, t_type_end>::type;
+      using t_type_end = typename internal::tuple_type_end<tuple_type_args, t_args_size - I_location>::type;
+      using t_type_with_bound = typename internal::tuple_type_cat<typename internal::tuple_type_cat<t_type_start, t_type_bound>::type, t_type_end>::type;
 
       const auto seq = std::make_index_sequence<std::tuple_size<decltype(t_with_bound)>::value>();
       return call_functor_operator_parentheses<t_type_with_bound>(
@@ -202,13 +202,13 @@ struct bind_functor<-1, T_functor, T_type...> : public adapts<T_functor>
       //we would want to call operator() with (_A_arg0, _A_arg1, _A_arg2, bound).
       
       auto t_args = std::tuple<T_arg...>(std::forward<T_arg>(_A_arg)...);
-      auto t_bound = tuple_transform_each<internal::TransformEachInvoker>(bound_);
+      auto t_bound = internal::tuple_transform_each<internal::TransformEachInvoker>(bound_);
       auto t_with_bound = std::tuple_cat(t_args, t_bound);
 
       //TODO: Avoid needing to specify the type when calling operator()?
       using t_type_args = std::tuple<type_trait_pass_t<T_arg>...>;
       using t_type_bound = std::tuple<type_trait_pass_t<typename unwrap_reference<T_type>::type>...>;
-      using t_type_with_bound = typename tuple_type_cat<t_type_args, t_type_bound>::type;
+      using t_type_with_bound = typename internal::tuple_type_cat<t_type_args, t_type_bound>::type;
 
       const auto seq = std::make_index_sequence<std::tuple_size<decltype(t_with_bound)>::value>();
       return call_functor_operator_parentheses<t_type_with_bound>(t_with_bound, seq);
@@ -289,7 +289,7 @@ struct visitor<bind_functor<-1, T_functor, T_type...> >
   {
     sigc::visit_each(_A_action, _A_target.functor_);
 
-    sigc::tuple_for_each<TupleVisitorVisitEach>(_A_target.bound_, _A_action);
+    sigc::internal::tuple_for_each<TupleVisitorVisitEach>(_A_target.bound_, _A_action);
   }
 };
 

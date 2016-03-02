@@ -111,7 +111,7 @@ struct visitor<track_obj_functor<T_functor, T_obj...>>
 
     //Call sigc::visit_each(_A_action, element) on each element in the 
     //_A_target.obj_ tuple:
-    sigc::tuple_for_each<TrackObjVisitForEach>(_A_target.obj_, _A_action);
+    sigc::internal::tuple_for_each<TrackObjVisitForEach>(_A_target.obj_, _A_action);
   }
 
 private:

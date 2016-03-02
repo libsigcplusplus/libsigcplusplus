@@ -23,6 +23,8 @@
 
 namespace sigc {
 
+namespace internal {
+
 /**
  * Get the type of a tuple without the first item.
  */
@@ -62,6 +64,8 @@ tuple_cdr(T&& t) {
   using seq = std::make_index_sequence<size>;
   return detail::tuple_cdr_impl(std::forward<T>(t), seq{});
 }
+
+} // namespace internal
 
 } // namespace sigc
 
