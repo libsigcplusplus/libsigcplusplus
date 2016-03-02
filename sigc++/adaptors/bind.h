@@ -1,25 +1,5 @@
-dnl Copyright 2002, The libsigc++ Development Team
-dnl
-dnl This library is free software; you can redistribute it and/or
-dnl modify it under the terms of the GNU Lesser General Public
-dnl License as published by the Free Software Foundation; either
-dnl version 2.1 of the License, or (at your option) any later version.
-dnl
-dnl This library is distributed in the hope that it will be useful,
-dnl but WITHOUT ANY WARRANTY; without even the implied warranty of
-dnl MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
-dnl Lesser General Public License for more details.
-dnl
-dnl You should have received a copy of the GNU Lesser General Public
-dnl License along with this library; if not, write to the Free Software
-dnl Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
-dnl
-divert(-1)
-
-include(template.macros.m4)
-
-divert(0)dnl
-_FIREWALL([ADAPTORS_BIND])
+#ifndef _SIGC_ADAPTORS_BIND_H_
+#define _SIGC_ADAPTORS_BIND_H_
 #include <sigc++/adaptors/adaptor_trait.h>
 #include <sigc++/adaptors/bound_argument.h>
 #include <tuple>
@@ -38,9 +18,10 @@ _FIREWALL([ADAPTORS_BIND])
 
 namespace sigc {
 
+
 /** @defgroup bind bind(), bind_return()
  * sigc::bind() alters an arbitrary functor by fixing arguments to certain values.
- * Up to CALL_SIZE arguments can be bound at a time.
+ * Up to 7 arguments can be bound at a time.
  * For single argument binding, overloads of sigc::bind() are provided that let you
  * specify the zero-based position of the argument to fix with the first template parameter.
  * (A value of @p -1 fixes the last argument so sigc::bind<-1>() gives the same result as sigc::bind().)
@@ -346,9 +327,11 @@ bind(const T_functor& _A_func, T_type... _A_b)
 { return bind_functor<-1, T_functor, T_type...>(_A_func, _A_b...);
 }
 
+
 } /* namespace sigc */
 
 #ifdef SIGC_NIL_HAS_BEEN_PUSHED
   #undef SIGC_NIL_HAS_BEEN_PUSHED
   #pragma pop_macro("nil")
 #endif
+#endif /* _SIGC_ADAPTORS_BIND_H_ */
