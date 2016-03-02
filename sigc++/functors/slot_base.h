@@ -179,23 +179,18 @@ struct SIGC_API slot_do_unbind
 
 /** @defgroup slot Slots
  * Slots are type-safe representations of callback methods and functions.
- * A Slot can be constructed from any function object or function, regardless of
+ * A slot can be constructed from any function object or function, regardless of
  * whether it is a global function, a member method, static, or virtual.
  *
  * Use the sigc::mem_fun() and sigc::ptr_fun() template functions to get a sigc::slot, like so:
- *
  * @code
  * sigc::slot<void, int> sl = sigc::mem_fun(someobj, &SomeClass::somemethod);
  * @endcode
- *
  * or
- *
  * @code
  * sigc::slot<void, int> sl = sigc::ptr_fun(&somefunction);
  * @endcode
- *
- * or
- *
+ * or, in gtkmm,
  * @code
  * m_Button.signal_clicked().connect( sigc::mem_fun(*this, &MyWindow::on_button_clicked) );
  * @endcode
@@ -203,6 +198,16 @@ struct SIGC_API slot_do_unbind
  * The compiler will complain if SomeClass::somemethod, etc. have the wrong signature.
  *
  * You can also pass slots as method parameters where you might normally pass a function pointer.
+ *
+ * sigc::mem_fun() and sigc::ptr_fun() return functors, but those functors are
+ * not slots.
+ * @code
+ * sigc::slot<void, int> sl = sigc::mem_fun(someobj, &SomeClass::somemethod);
+ * @endcode
+ * is not equivalent to
+ * @code
+ * auto sl = sigc::mem_fun(someobj, &SomeClass::somemethod); // Not a slot!
+ * @endcode
  *
  * A C++11 lambda expression is a functor (function object). It is automatically
  * wrapped in a slot, if it is connected to a signal.

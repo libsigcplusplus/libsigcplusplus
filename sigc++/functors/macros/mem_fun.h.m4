@@ -199,8 +199,10 @@ namespace sigc {
  * mem_fun() is used to convert a pointer to a method to a functor.
  *
  * Optionally, a reference or pointer to an object can be bound to the functor.
- * Note that only if the object type inherits from sigc::trackable is
- * the slot automatically cleared when the object goes out of scope!
+ *
+ * @note Only if the object type inherits from sigc::trackable, and the
+ * functor returned from mem_fun() is assigned to a sigc::slot, is the functor
+ * automatically cleared when the object goes out of scope!
  *
  * If the member function pointer is to an overloaded type, you must specify
  * the types using template arguments starting with the first argument.
@@ -214,6 +216,8 @@ namespace sigc {
  * };
  * foo my_foo;
  * sigc::slot<void, int> sl = sigc::mem_fun(my_foo, &foo::bar);
+ * // Note: f is not a slot. It will not be invalidated when my_foo is deleted.
+ * auto f = sigc::mem_fun(my_foo, &foo::bar); // Usually not what you want.
  * @endcode
  *
  * For const methods mem_fun() takes a const reference or pointer to an object.
