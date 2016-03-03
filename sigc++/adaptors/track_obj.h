@@ -74,10 +74,10 @@ public:
    */
   template <typename... T_arg>
   decltype(auto)
-  operator()(T_arg... _A_arg)
+  operator()(T_arg&&... _A_arg)
   {
     return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<type_trait_pass_t<T_arg>...>
-      (_A_arg...);
+      (std::forward<T_arg>(_A_arg)...);
   }
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
