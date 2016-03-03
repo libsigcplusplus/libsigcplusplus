@@ -5,34 +5,6 @@
 
 namespace sigc {
 
-//TODO: When we can break ABI, replace nil by something else, such as sigc_nil.
-// nil is a keyword in Objective C++. When gcc is used for compiling Objective C++
-// programs, nil is defined as a preprocessor macro.
-// https://bugzilla.gnome.org/show_bug.cgi?id=695235
-#if defined(nil) && defined(SIGC_PRAGMA_PUSH_POP_MACRO)
-  #define SIGC_NIL_HAS_BEEN_PUSHED 1
-  #pragma push_macro("nil")
-  #undef nil
-#endif
-
-/** nil struct type.
- * The nil struct type is used as default template argument in the
- * unnumbered sigc::signal and sigc::slot templates.
- *
- * @ingroup signal
- * @ingroup slot
- */
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-struct nil;
-#else
-struct nil {};
-#endif
-
-#ifdef SIGC_NIL_HAS_BEEN_PUSHED
-  #undef SIGC_NIL_HAS_BEEN_PUSHED
-  #pragma pop_macro("nil")
-#endif
-
 /** @defgroup sigcfunctors Functors
  * Functors are copyable types that define operator()().
  *

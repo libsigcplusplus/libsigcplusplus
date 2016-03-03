@@ -6,13 +6,6 @@
 #include <sigc++/adaptors/adaptor_trait.h>
 #include <sigc++/functors/slot_base.h>
 
-//TODO: See comment in functor_trait.h.
-#if defined(nil) && defined(SIGC_PRAGMA_PUSH_POP_MACRO)
-  #define SIGC_NIL_HAS_BEEN_PUSHED 1
-  #pragma push_macro("nil")
-  #undef nil
-#endif
-
 namespace sigc {
 
 namespace internal {
@@ -265,9 +258,5 @@ struct visitor<slot<T_return, T_arg...>>
 
 } /* namespace sigc */
 
-#ifdef SIGC_NIL_HAS_BEEN_PUSHED
-  #undef SIGC_NIL_HAS_BEEN_PUSHED
-  #pragma pop_macro("nil")
-#endif
 
 #endif /* _SIGC_FUNCTORS_SLOT_H_ */

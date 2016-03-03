@@ -8,14 +8,6 @@
 #include <sigc++/tuple-utils/tuple_end.h>
 #include <sigc++/tuple-utils/tuple_transform_each.h>
 
-
-//TODO: See comment in functor_trait.h.
-#if defined(nil) && defined(SIGC_PRAGMA_PUSH_POP_MACRO)
-  #define SIGC_NIL_HAS_BEEN_PUSHED 1
-  #pragma push_macro("nil")
-  #undef nil
-#endif
-
 namespace sigc {
 
 
@@ -335,8 +327,4 @@ bind(const T_functor& _A_func, T_type... _A_b)
 
 } /* namespace sigc */
 
-#ifdef SIGC_NIL_HAS_BEEN_PUSHED
-  #undef SIGC_NIL_HAS_BEEN_PUSHED
-  #pragma pop_macro("nil")
-#endif
 #endif /* _SIGC_ADAPTORS_BIND_H_ */
