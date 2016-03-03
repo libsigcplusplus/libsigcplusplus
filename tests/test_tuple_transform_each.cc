@@ -261,6 +261,33 @@ test_tuple_transform_each_stdref_non_copyable() {
     "unexpected transform_each()ed tuple type");
 }
 
+static std::string correct_sequence_output;
+
+template <class T_element_from>
+class transform_each_correct_sequence {
+public:
+  static decltype(auto)
+  transform(int from) {
+    correct_sequence_output += std::to_string(from);
+    return std::to_string(from);
+  }
+};
+
+void
+test_tuple_transform_each_correct_sequence() {
+  correct_sequence_output.clear();
+  auto t = std::make_tuple(1, 2, 3);
+  sigc::internal::tuple_transform_each<transform_each_correct_sequence>(t);
+  //std::cout << "correct_sequence_output: " << correct_sequence_output << std::endl;
+  assert(correct_sequence_output == "123");
+}
+
+void
+test_tuple_transform_each_empty_tuple() {
+  auto t = std::tuple<>();
+  sigc::internal::tuple_transform_each<transform_to_string>(t);
+}
+
 int
 main() {
   test_tuple_type_transform_each_same_types();
@@ -273,6 +300,10 @@ main() {
 
   test_tuple_transform_each_stdref();
   test_tuple_transform_each_stdref_non_copyable();
+
+  test_tuple_transform_each_correct_sequence();
+
+  test_tuple_transform_each_empty_tuple();
 
   return EXIT_SUCCESS;
 }
