@@ -50,8 +50,6 @@ MM_ARG_ENABLE_DOCUMENTATION
 MM_ARG_WITH_TAGFILE_DOC([libstdc++.tag], [mm-common-libstdc++])
 
 AC_LANG([C++])
-SIGC_CXX_HAS_NAMESPACE_STD
-SIGC_CXX_HAS_SUN_REVERSE_ITERATOR
 
 AS_IF([test "x$config_error" = xyes],
       [AC_MSG_FAILURE([[One or more of the required C++ compiler features is missing.]])])
