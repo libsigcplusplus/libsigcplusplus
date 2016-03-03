@@ -130,7 +130,7 @@ struct bind_functor : public adapts<T_functor>
       
       //Prevent calling tuple_start<> with values that will cause a compilation error.
       static_assert(I_location <= t_args_size,
-        "I_location must be less or equal to the number of arguments.");
+        "I_location must be less than or equal to the number of arguments.");
 
       auto t_start = internal::tuple_start<I_location>(t_args);
       auto t_bound = internal::tuple_transform_each<internal::TransformEachInvoker>(bound_);
