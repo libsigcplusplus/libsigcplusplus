@@ -137,18 +137,8 @@ struct bind_functor : public adapts<T_functor>
       auto t_end = internal::tuple_end<t_args_size - I_location>(t_args);
       auto t_with_bound = std::tuple_cat(t_start, t_bound, t_end);
 
-      //TODO: Avoid needing to specify the type when calling operator()?
-      using t_type_start = typename internal::tuple_type_start<tuple_type_args, I_location>::type;
-      using t_type_bound = std::tuple<type_trait_pass_t<typename unwrap_reference<T_bound>::type>...>;
-
-      //using tuple_type_args_pass = std::tuple<type_trait_pass_t<T_arg>...>;
-      //using t_type_end = typename tuple_type_end<tuple_type_args_pass  t_args_size - I_location>::type;
-      using t_type_end = typename internal::tuple_type_end<tuple_type_args, t_args_size - I_location>::type;
-      using t_type_with_bound = typename internal::tuple_type_cat<typename internal::tuple_type_cat<t_type_start, t_type_bound>::type, t_type_end>::type;
-
       const auto seq = std::make_index_sequence<std::tuple_size<decltype(t_with_bound)>::value>();
-      return call_functor_operator_parentheses<t_type_with_bound>(
-        t_with_bound, seq);
+      return call_functor_operator_parentheses(t_with_bound, seq);
     }
 
   /** Constructs a bind_functor object that binds an argument to the passed functor.
@@ -163,12 +153,12 @@ private:
   /// The arguments bound to the functor.
   std::tuple<bound_argument<T_bound>...> bound_;
 
-  template<class T_specific, class T, std::size_t... Is>
+  template<class T, std::size_t... Is>
   decltype(auto)
   call_functor_operator_parentheses(T&& tuple,
     std::index_sequence<Is...>)
   {
-    return this->functor_.template operator()<typename std::tuple_element<Is, T_specific>::type...>(std::get<Is>(std::forward<T>(tuple))...);
+    return (this->functor_)(std::get<Is>(std::forward<T>(tuple))...);
   }
 };
 
@@ -200,13 +190,8 @@ struct bind_functor<-1, T_functor, T_type...> : public adapts<T_functor>
       auto t_bound = internal::tuple_transform_each<internal::TransformEachInvoker>(bound_);
       auto t_with_bound = std::tuple_cat(t_args, t_bound);
 
-      //TODO: Avoid needing to specify the type when calling operator()?
-      using t_type_args = std::tuple<type_trait_pass_t<T_arg>...>;
-      using t_type_bound = std::tuple<type_trait_pass_t<typename unwrap_reference<T_type>::type>...>;
-      using t_type_with_bound = typename internal::tuple_type_cat<t_type_args, t_type_bound>::type;
-
       const auto seq = std::make_index_sequence<std::tuple_size<decltype(t_with_bound)>::value>();
-      return call_functor_operator_parentheses<t_type_with_bound>(t_with_bound, seq);
+      return call_functor_operator_parentheses(t_with_bound, seq);
     }
 
   /** Constructs a bind_functor object that binds an argument to the passed functor.
@@ -221,12 +206,12 @@ struct bind_functor<-1, T_functor, T_type...> : public adapts<T_functor>
   std::tuple<bound_argument<T_type>...> bound_;
 
 private:
-  template<class T_specific, class T, std::size_t... Is>
+  template<class T, std::size_t... Is>
   decltype(auto)
   call_functor_operator_parentheses(T&& tuple,
     std::index_sequence<Is...>)
   {
-    return this->functor_.template operator()<typename std::tuple_element<Is, T_specific>::type...>(std::get<Is>(std::forward<T>(tuple))...);
+    return (this->functor_)(std::get<Is>(std::forward<T>(tuple))...);
   }
 };
 
