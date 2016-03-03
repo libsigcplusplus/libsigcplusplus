@@ -280,10 +280,8 @@ PREDEFINED             = __cplusplus \
                          "SIGC_API=" \
                          SIGC_CONFIGURE \
                          SIGC_GCC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD \
-                         SIGC_HAVE_NAMESPACE_STD \
                          SIGC_MSVC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD \
-                         SIGC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD \
-                         "SIGC_USING_STD(Symbol)="
+                         SIGC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD"
 EXPAND_AS_DEFINED      = SIGC_WORKAROUND_OPERATOR_PARENTHESES \
                          SIGCXX_MAJOR_VERSION \
                          SIGCXX_MINOR_VERSION \
