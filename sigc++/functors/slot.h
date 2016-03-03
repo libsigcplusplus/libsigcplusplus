@@ -74,10 +74,9 @@ struct typed_slot_rep : public slot_rep
    * slot_rep object is registered in the referred trackables.
    * @return A deep copy of the slot_rep object.
    */
-  static void* dup(void* data)
+  static slot_rep* dup(slot_rep* a_rep)
     {
-      slot_rep* a_rep = reinterpret_cast<slot_rep*>(data);
-      return static_cast<slot_rep*>(new self(*static_cast<self*>(a_rep)));
+      return new self(*static_cast<self*>(a_rep));
     }
 };
 

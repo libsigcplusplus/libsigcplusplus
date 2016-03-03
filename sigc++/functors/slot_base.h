@@ -63,6 +63,7 @@ struct SIGC_API slot_rep : public trackable
   /* NB: Instead of slot_rep we could inherit slot_base from trackable.
    * However, a simple benchmark seems to indicate that this slows
    * down dereferencing of slot list iterators. Martin. */
+  //TODO: Try this now? murrayc.
 
   /// Callback that invokes the contained functor.
   /* This can't be a virtual function since number of arguments
@@ -77,10 +78,12 @@ struct SIGC_API slot_rep : public trackable
    */
   func_destroy_notify destroy_;
 
+  typedef slot_rep* (*hook_dup)(slot_rep*);
+
   /** Callback that makes a deep copy of the slot_rep object.
    * @return A deep copy of the slot_rep object.
    */
-  hook dup_;
+  hook_dup dup_;
 
   /** Callback of parent_. */
   func_destroy_notify cleanup_;
@@ -88,7 +91,7 @@ struct SIGC_API slot_rep : public trackable
   /** Parent object whose callback cleanup_ is executed on notification. */
   notifiable* parent_;
 
-  inline slot_rep(hook call__, notifiable::func_destroy_notify destroy__, hook dup__) noexcept
+  inline slot_rep(hook call__, notifiable::func_destroy_notify destroy__, hook_dup dup__) noexcept
     : call_(call__), destroy_(destroy__), dup_(dup__), cleanup_(nullptr), parent_(nullptr) {}
 
   inline ~slot_rep()
