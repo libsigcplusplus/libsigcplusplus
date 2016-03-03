@@ -77,11 +77,11 @@ struct hide_functor : public adapts<T_functor>
    */
   template <class... T_arg>
   decltype(auto)
-  operator()(T_arg... _A_a)
+  operator()(T_arg&&... _A_a)
     {
        constexpr auto size = sizeof...(T_arg);
        constexpr auto index_ignore = (I_location == -1 ? size - 1 : I_location);
-       const auto t = std::tuple<T_arg...>(_A_a...);
+       const auto t = std::tuple<T_arg...>(std::forward<T_arg>(_A_a)...);
 
        const auto t_start = internal::tuple_start<index_ignore>(t);
        const auto t_end = internal::tuple_end<size - index_ignore - 1>(t);
