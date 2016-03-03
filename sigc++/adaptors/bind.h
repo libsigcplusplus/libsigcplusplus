@@ -177,7 +177,7 @@ private:
   call_functor_operator_parentheses(T&& tuple,
     std::index_sequence<Is...>)
   {
-    return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<typename std::tuple_element<Is, T_specific>::type...>(std::get<Is>(std::forward<T>(tuple))...);
+    return this->functor_.template operator()<typename std::tuple_element<Is, T_specific>::type...>(std::get<Is>(std::forward<T>(tuple))...);
   }
 };
 
@@ -235,7 +235,7 @@ private:
   call_functor_operator_parentheses(T&& tuple,
     std::index_sequence<Is...>)
   {
-    return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<typename std::tuple_element<Is, T_specific>::type...>(std::get<Is>(std::forward<T>(tuple))...);
+    return this->functor_.template operator()<typename std::tuple_element<Is, T_specific>::type...>(std::get<Is>(std::forward<T>(tuple))...);
   }
 };
 

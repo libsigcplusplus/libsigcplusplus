@@ -31,7 +31,7 @@ struct bind_return_functor : public adapts<T_functor>
    */
   template <class... T_arg>
   inline typename unwrap_reference<T_return>::type operator()(T_arg... _A_a)
-    { this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<type_trait_pass_t<T_arg>...>
+    { this->functor_.template operator()<type_trait_pass_t<T_arg>...>
         (_A_a...); return ret_value_.invoke();
     }
 

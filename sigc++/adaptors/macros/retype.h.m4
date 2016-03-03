@@ -111,7 +111,7 @@ struct retype_functor
  template <class... T_arg>
   decltype(auto)
   operator()(T_arg... _A_a)
-    { return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<type_trait_take_t<T_type>...>
+    { return this->functor_.template operator()<type_trait_take_t<T_type>...>
         (static_cast<T_type>(_A_a)...);
     }
 

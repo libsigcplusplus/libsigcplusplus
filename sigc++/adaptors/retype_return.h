@@ -23,7 +23,7 @@ struct retype_return_functor : public adapts<T_functor>
 
   template <class... T_arg>
   inline T_return operator()(T_arg&&... _A_a)
-    { return T_return(this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<T_arg...>
+    { return T_return(this->functor_.template operator()<T_arg...>
         (std::forward<T_arg>(_A_a)...));
     }
 
@@ -60,7 +60,7 @@ struct retype_return_functor<void, T_functor> : public adapts<T_functor>
 
   template <class... T_arg>
   inline void operator()(T_arg... _A_a)
-    { this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<T_arg...>
+    { this->functor_.template operator()<T_arg...>
         (_A_a...);
     }
 

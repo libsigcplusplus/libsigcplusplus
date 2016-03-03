@@ -120,7 +120,7 @@ private:
   call_functor_operator_parentheses(T_tuple& tuple,
     std::index_sequence<Is...>)
   {
-    return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<typename std::tuple_element<Is, T_tuple_specific>::type...>(std::get<Is>(tuple)...);
+    return this->functor_.template operator()<typename std::tuple_element<Is, T_tuple_specific>::type...>(std::get<Is>(tuple)...);
   }
 };
 

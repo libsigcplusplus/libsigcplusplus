@@ -76,7 +76,7 @@ public:
   decltype(auto)
   operator()(T_arg&&... _A_arg)
   {
-    return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<type_trait_pass_t<T_arg>...>
+    return this->functor_.template operator()<type_trait_pass_t<T_arg>...>
       (std::forward<T_arg>(_A_arg)...);
   }
 

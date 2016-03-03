@@ -33,15 +33,6 @@
  
 namespace sigc {
 
-// Call either operator()<>() or sun_forte_workaround<>(),
-// depending on the compiler:
-#ifdef SIGC_GCC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD
-  #define SIGC_WORKAROUND_OPERATOR_PARENTHESES template operator()
-#else
-    #define SIGC_WORKAROUND_OPERATOR_PARENTHESES operator()
-#endif
-
-
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 template <class T_functor> struct adapts;
 #endif

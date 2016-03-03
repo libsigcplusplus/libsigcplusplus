@@ -76,7 +76,7 @@ struct exception_catch_functor : public adapts<T_functor>
     {
       try
         {
-          return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<type_trait_pass_t<T_arg>...>
+          return this->functor_.template operator()<type_trait_pass_t<T_arg>...>
             (_A_a...);
         }
       catch (...)
@@ -105,7 +105,7 @@ struct exception_catch_functor<T_functor, T_catcher, void> : public adapts<T_fun
     {
       try
         {
-          return this->functor_.SIGC_WORKAROUND_OPERATOR_PARENTHESES<type_trait_pass_t<T_arg>...>
+          return this->functor_.template operator()<type_trait_pass_t<T_arg>...>
             (_A_a...);
         }
       catch (...)
