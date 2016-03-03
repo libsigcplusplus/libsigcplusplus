@@ -83,7 +83,7 @@ void connection::disconnect()
     slot_->disconnect(); // This notifies slot_'s parent.
 } 
 
-connection::operator bool() noexcept
+connection::operator bool() const noexcept
 {
   return !empty();
 }

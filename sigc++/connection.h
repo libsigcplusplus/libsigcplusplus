@@ -104,11 +104,10 @@ struct SIGC_API connection : public notifiable
   /// Disconnects the referred slot.
   void disconnect();
 
-  //TODO: When we can break API and ABI, make operator bool() const
   /** Returns whether the connection is still active.
    * @return @p true if the connection is still active.
    */
-  explicit operator bool() noexcept;
+  explicit operator bool() const noexcept;
 
   /** Callback that is executed when the referred slot is destroyed.
    * @param data The connection object notified (@p this).
