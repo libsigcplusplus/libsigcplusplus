@@ -13,7 +13,7 @@ AC_DEFUN([SIGC_CXX_HAS_SUN_REVERSE_ITERATOR],
     [[
       #include <iterator>
     ]],[[
-      typedef reverse_iterator<char*,random_access_iterator_tag,char,char&,char*,int> ReverseIter;
+      typedef std::reverse_iterator<char*, std::random_access_iterator_tag, char, char&, char*, int> ReverseIter;
     ]])],
       [sigc_cv_cxx_has_sun_reverse_iterator='yes'],
       [sigc_cv_cxx_has_sun_reverse_iterator='no']
