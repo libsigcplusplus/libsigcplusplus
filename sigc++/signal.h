@@ -608,7 +608,7 @@ private:
  * This template implements the emit() function of signal_with_accumulator.
  * Template specializations are available to optimize signal
  * emission when no accumulator is used, for example when the template
- * argument @e T_accumulator is @p nil.
+ * argument @e T_accumulator is @p void.
  */
 template <class T_return, class T_accumulator, class... T_arg>
 struct signal_emit
@@ -695,9 +695,9 @@ private:
  * function for the case that no accumulator is used.
  */
 template <class T_return, class... T_arg>
-struct signal_emit<T_return, nil, T_arg...>
+struct signal_emit<T_return, void, T_arg...>
 {
-  typedef signal_emit<T_return, nil, T_arg...> self_type;
+  typedef signal_emit<T_return, void, T_arg...> self_type;
   typedef T_return result_type;
   typedef slot<T_return, T_arg...> slot_type;
   typedef signal_impl::const_iterator_type iterator_type;
@@ -791,9 +791,9 @@ struct signal_emit<T_return, nil, T_arg...>
  * return type is @p void.
  */
 template <class... T_arg>
-struct signal_emit<void, nil, T_arg...>
+struct signal_emit<void, void, T_arg...>
 {
-  typedef signal_emit<void, nil, T_arg...> self_type;
+  typedef signal_emit<void, void, T_arg...> self_type;
   typedef void result_type;
   typedef slot<void, T_arg...> slot_type;
   typedef signal_impl::const_iterator_type iterator_type;
@@ -867,7 +867,7 @@ struct signal_emit<void, nil, T_arg...>
  * The following template arguments are used:
  * - @e T_return The desired return type for the emit() function (may be overridden by the accumulator). * - @e T_arg Argument types used in the definition of emit().
  * - @e T_accumulator The accumulator type used for emission. The default
- * @p nil means that no accumulator should be used, for example if signal
+ * @p void means that no accumulator should be used, for example if signal
  * emission returns the return value of the last slot invoked.
  *
  * @ingroup signal
@@ -922,7 +922,7 @@ public:
    * During signal emission all slots that have been connected
    * to the signal are invoked unless they are manually set into
    * a blocking state. The parameters are passed on to the slots.
-   * If @e T_accumulated is not @p nil, an accumulator of this type
+   * If @e T_accumulated is not @p void, an accumulator of this type
    * is used to process the return values of the slot invocations.
    * Otherwise, the return value of the last slot invoked is returned.
    * @param _A_a Arguments to be passed on to the slots.
@@ -1021,9 +1021,11 @@ public:
  */
 template <class T_return, class... T_arg>
 class signal
-  : public signal_with_accumulator<T_return, nil, T_arg...>
+  : public signal_with_accumulator<T_return, void, T_arg...>
 {
 public:
+  using accumulator_type = void;
+
   /** Convenience wrapper for the numbered sigc::signal# templates.
    * Like sigc::signal but the additional template parameter @e T_accumulator
    * defines the accumulator type that should be used.
@@ -1084,20 +1086,20 @@ public:
   signal() {}
 
   signal(const signal& src)
-    : signal_with_accumulator<T_return, nil, T_arg...>(src) {}
+    : signal_with_accumulator<T_return, accumulator_type, T_arg...>(src) {}
 
   signal(signal&& src)
-    : signal_with_accumulator<T_return, nil, T_arg...>(std::move(src)) {}
+    : signal_with_accumulator<T_return, accumulator_type, T_arg...>(std::move(src)) {}
 
   signal& operator=(const signal& src)
   {
-    signal_with_accumulator<T_return, nil, T_arg...>::operator=(src);
+    signal_with_accumulator<T_return, accumulator_type, T_arg...>::operator=(src);
     return *this;
   }
 
   signal& operator=(signal&& src)
   {
-    signal_with_accumulator<T_return, nil, T_arg...>::operator=(std::move(src));
+    signal_with_accumulator<T_return, accumulator_type, T_arg...>::operator=(std::move(src));
     return *this;
   }
 };
