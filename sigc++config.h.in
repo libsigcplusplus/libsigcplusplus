@@ -70,10 +70,6 @@
    calling operator() template methods omitting the template keyword. */
 # undef SIGC_MSVC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD
 
-/* does the C++ compiler allow usage of member function in initialization of
-   static member field. */
-# undef SIGC_SELF_REFERENCE_IN_MEMBER_INITIALIZATION
-
 /* does the C++ preprocessor support pragma push_macro() and pop_macro(). */
 # undef SIGC_PRAGMA_PUSH_POP_MACRO
 

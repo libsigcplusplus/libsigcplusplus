@@ -19,7 +19,7 @@
 #ifndef _SIGC_TYPE_TRAIT_H_
 #define _SIGC_TYPE_TRAIT_H_
 
-#include <sigc++config.h> //To get SIGC_SELF_REFERENCE_IN_MEMBER_INITIALIZATION
+#include <sigc++config.h>
 
 
 namespace sigc {
