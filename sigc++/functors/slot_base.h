@@ -80,11 +80,13 @@ struct SIGC_API slot_rep : public trackable
 
   typedef slot_rep* (*hook_dup)(slot_rep*);
 
+private:
   /** Callback that makes a deep copy of the slot_rep object.
    * @return A deep copy of the slot_rep object.
    */
   hook_dup dup_;
 
+public:
   /** Callback of parent_. */
   func_destroy_notify cleanup_;
 

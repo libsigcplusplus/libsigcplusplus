@@ -20,8 +20,10 @@ namespace internal {
 template <class T_functor>
 struct typed_slot_rep : public slot_rep
 {
+private:
   typedef typed_slot_rep<T_functor> self;
 
+public:
   /* Use an adaptor type so that arguments can be passed as const references
    * through explicit template instantiation from slot_call#::call_it() */
   typedef typename adaptor_trait<T_functor>::adaptor_type adaptor_type;
@@ -53,6 +55,7 @@ struct typed_slot_rep : public slot_rep
       sigc::visit_each_type<trackable*>(slot_do_unbind(this), functor_);
     }
 
+private:
   /** Detaches the stored functor from the other referred trackables and destroys it.
    * This does not destroy the base slot_rep object.
    */
