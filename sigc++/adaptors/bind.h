@@ -159,11 +159,10 @@ struct bind_functor : public adapts<T_functor>
     : adapts<T_functor>(_A_func), bound_(_A_bound...)
     {}
 
-  //TODO: Should this be private?
+private:
   /// The arguments bound to the functor.
   std::tuple<bound_argument<T_bound>...> bound_;
 
-private:
   template<class T_specific, class T, std::size_t... Is>
   decltype(auto)
   call_functor_operator_parentheses(T&& tuple,
