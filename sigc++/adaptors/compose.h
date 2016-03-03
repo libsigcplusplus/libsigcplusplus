@@ -53,8 +53,8 @@ struct compose1_functor : public adapts<T_setter>
 
   template <class... T_arg>
   decltype(auto)
-  operator()(T_arg... _A_a)
-    { return this->functor_(get_(_A_a...));
+  operator()(T_arg&&... _A_a)
+    { return this->functor_(get_(std::forward<T_arg>(_A_a)...));
     }
 
   /** Constructs a compose1_functor object that combines the passed functors.
