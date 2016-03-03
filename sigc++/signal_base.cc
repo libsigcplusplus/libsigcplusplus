@@ -37,6 +37,19 @@ signal_impl::signal_impl()
 : ref_count_(0), exec_count_(0), deferred_(false)
 {}
 
+signal_impl::~signal_impl()
+{
+  // unreference() must not call ~signal_impl() while clear() is executing.
+  ++ref_count_;
+
+  // Disconnect all slots before *this is deleted.
+  clear();
+
+  // Now ref_count_ can be cleared again (not really necessary), but don't do it
+  // with a call to unreference(). That would invoke ~signal_impl() recursively.
+  --ref_count_;
+}
+
 // only MSVC needs this to guarantee that all new/delete are executed from the DLL module
 #ifdef SIGC_NEW_DELETE_IN_LIBRARY_ONLY
 void* signal_impl::operator new(size_t size_)
@@ -191,11 +204,6 @@ signal_base::~signal_base()
 {
   if (impl_)
   {
-    // Disconnect all slots before impl_ is deleted.
-    // TODO: Move the signal_impl::clear() call to ~signal_impl() when ABI can be broken.
-    if (impl_->ref_count_ == 1)
-      impl_->clear();
-
     impl_->unreference();
   }
 }
@@ -259,13 +267,9 @@ signal_base& signal_base::operator=(const signal_base& src)
 
   if (impl_)
   {
-    // Disconnect all slots before impl_ is deleted.
-    // TODO: Move the signal_impl::clear() call to ~signal_impl() when ABI can be broken.
-    if (impl_->ref_count_ == 1)
-      impl_->clear();
-
     impl_->unreference();
   }
+
   impl_ = src.impl();
   impl_->reference();
   return *this;
@@ -277,11 +281,6 @@ signal_base& signal_base::operator=(signal_base&& src)
 
   if (impl_)
   {
-    // Disconnect all slots before impl_ is deleted.
-    // TODO: Move the signal_impl::clear() call to ~signal_impl() when ABI can be broken.
-    if (impl_->ref_count_ == 1)
-      impl_->clear();
-
     impl_->unreference();
   }
 

@@ -50,6 +50,7 @@ struct SIGC_API signal_impl : public notifiable
   typedef slot_list::const_iterator const_iterator_type;
 
   signal_impl();
+  ~signal_impl();
 
   signal_impl(const signal_impl& src) = delete;
   signal_impl& operator=(const signal_impl& src) = delete;
