@@ -67,12 +67,12 @@ trackable::~trackable()
   notify_callbacks();
 }
 
-void trackable::add_destroy_notify_callback(void* data, func_destroy_notify func) const
+void trackable::add_destroy_notify_callback(notifiable* data, func_destroy_notify func) const
 {
   callback_list()->add_callback(data, func);
 }
 
-void trackable::remove_destroy_notify_callback(void* data) const
+void trackable::remove_destroy_notify_callback(notifiable* data) const
 {
   callback_list()->remove_callback(data);
 }
@@ -106,7 +106,7 @@ trackable_callback_list::~trackable_callback_list()
       callback.func_(callback.data_);
 }
 
-void trackable_callback_list::add_callback(void* data, func_destroy_notify func)
+void trackable_callback_list::add_callback(notifiable* data, func_destroy_notify func)
 {
   if (!clearing_)  // TODO: Is it okay to silently ignore attempts to add dependencies when the list is being cleared?
                    //       I'd consider this a serious application bug, since the app is likely to segfault.
@@ -127,7 +127,7 @@ void trackable_callback_list::clear()
   clearing_ = false;
 }
 
-void trackable_callback_list::remove_callback(void* data)
+void trackable_callback_list::remove_callback(notifiable* data)
 {
   for (callback_list::iterator i = callbacks_.begin(); i != callbacks_.end(); ++i)
   {

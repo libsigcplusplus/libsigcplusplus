@@ -99,11 +99,10 @@ void connection::set_slot(slot_base* sl)
     slot_->add_destroy_notify_callback(this, &notify);
 }
 
-void* connection::notify(void* data)
+void connection::notify(notifiable* data)
 {
   auto self = reinterpret_cast<connection*>(data);
   self->slot_ = nullptr;
-  return nullptr;
 }
 
 } /* namespace sigc */

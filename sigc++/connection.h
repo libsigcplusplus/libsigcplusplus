@@ -37,7 +37,7 @@ namespace sigc {
  *
  * @ingroup signal
  */
-struct SIGC_API connection
+struct SIGC_API connection : public notifiable
 {
   /** Constructs an empty connection object. */
   connection() noexcept;
@@ -113,7 +113,7 @@ struct SIGC_API connection
   /** Callback that is executed when the referred slot is destroyed.
    * @param data The connection object notified (@p this).
    */
-  static void* notify(void* data);
+  static void notify(notifiable* data);
 
 private:
   void set_slot(slot_base* sl);

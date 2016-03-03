@@ -24,7 +24,7 @@ namespace internal {
 // Data sent from signal_impl::insert() to slot_rep::set_parent() when a slot is
 // connected, and then sent from slot_rep::disconnect() to signal_impl::notify()
 // when the slot is disconnected. Bug 167714.
-struct self_and_iter
+struct self_and_iter : public notifiable
 {
   signal_impl* self_;
   signal_impl::iterator_type iter_;
@@ -149,7 +149,7 @@ void signal_impl::sweep()
 }
 
 //static
-void* signal_impl::notify(void* d)
+void signal_impl::notify(notifiable* d)
 {
   std::unique_ptr<self_and_iter> si(static_cast<self_and_iter*>(d));
 
@@ -163,7 +163,7 @@ void* signal_impl::notify(void* d)
   }
   else                           // This is occuring during signal emission or slot erasure.
     si->self_->deferred_ = true; // => sweep() will be called from ~signal_exec() after signal emission.
-  return nullptr;                // This is safer because we don't have to care about our
+                                 // This is safer because we don't have to care about our
                                  // iterators in emit(), clear(), and erase().
 }
 

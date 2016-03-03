@@ -56,7 +56,7 @@ struct typed_slot_rep : public slot_rep
   /** Detaches the stored functor from the other referred trackables and destroys it.
    * This does not destroy the base slot_rep object.
    */
-  static void* destroy(void* data)
+  static void destroy(notifiable* data)
     {
       self* self_ = static_cast<self*>(reinterpret_cast<slot_rep*>(data));
       self_->call_ = nullptr;
@@ -67,7 +67,6 @@ struct typed_slot_rep : public slot_rep
        * a) from the parent itself (in which case disconnect() leads to a segfault) or
        * b) from a parentless slot (in which case disconnect() does nothing)
        */
-      return nullptr;
     }
 
   /** Makes a deep copy of the slot_rep object.

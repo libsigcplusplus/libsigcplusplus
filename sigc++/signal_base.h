@@ -42,7 +42,7 @@ namespace internal
  * erase() to sweep() when the signal is being emitted. sweep() removes all
  * invalid slots from the list.
  */
-struct SIGC_API signal_impl
+struct SIGC_API signal_impl : public notifiable
 {
   typedef std::size_t size_type;
   typedef std::list<slot_base> slot_list;
@@ -167,7 +167,7 @@ struct SIGC_API signal_impl
    * erase() to sweep() when the signal is being emitted.
    * @param d A local structure, created in insert().
    */
-  static void* notify(void* d);
+  static void notify(notifiable* d);
 
   /** Reference counter.
    * The object is destroyed when @em ref_count_ reaches zero.

@@ -23,15 +23,14 @@ namespace
 {
 // Used by slot_rep::notify() and slot_base::operator=(). They must be
 // notified, if the slot_rep is deleted when they call disconnect().
-struct destroy_notify_struct
+struct destroy_notify_struct : public sigc::notifiable
 {
   destroy_notify_struct() noexcept : deleted_(false) { }
 
-  static void* notify(void* data) noexcept
+  static void notify(notifiable* data) noexcept
   {
     auto self_ = reinterpret_cast<destroy_notify_struct*>(data);
     self_->deleted_ = true;
-    return nullptr;
   }
 
   bool deleted_;
@@ -74,7 +73,7 @@ void slot_rep::disconnect()
 }
 
 //static
-void* slot_rep::notify(void* data)
+void slot_rep::notify(notifiable* data)
 {
   auto self_ = reinterpret_cast<slot_rep*>(data);
 
@@ -91,7 +90,6 @@ void* slot_rep::notify(void* data)
     self_->destroy(); // Detach the stored functor from the other referred trackables and destroy it.
                       // destroy() might lead to deletion of self_. Bug #564005.
   }
-  return nullptr;
 }
 
 } // namespace internal
@@ -261,19 +259,19 @@ slot_base& slot_base::operator=(slot_base&& src)
   return *this;
 }
 
-void slot_base::set_parent(void* parent, void* (*cleanup)(void*)) const noexcept
+void slot_base::set_parent(notifiable* parent, notifiable::func_destroy_notify cleanup) const noexcept
 {
   if (rep_)
     rep_->set_parent(parent, cleanup);
 }
 
-void slot_base::add_destroy_notify_callback(void* data, func_destroy_notify func) const
+void slot_base::add_destroy_notify_callback(notifiable* data, func_destroy_notify func) const
 {
   if (rep_)
     rep_->add_destroy_notify_callback(data, func);
 }
 
-void slot_base::remove_destroy_notify_callback(void* data) const
+void slot_base::remove_destroy_notify_callback(notifiable* data) const
 {
   if (rep_)
     rep_->remove_destroy_notify_callback(data);

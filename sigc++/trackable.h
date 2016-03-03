@@ -23,9 +23,12 @@
 
 namespace sigc {
 
+struct notifiable;
+
 namespace internal {
 
-typedef void* (*func_destroy_notify) (void* data);
+typedef void (*func_destroy_notify) (notifiable* data);
+
 
 /** Destroy notification callback.
  * A destroy notification callback consists of a data pointer and a
@@ -35,9 +38,9 @@ typedef void* (*func_destroy_notify) (void* data);
  */
 struct SIGC_API trackable_callback
 {
-  void* data_;
+  notifiable* data_;
   func_destroy_notify func_;
-  trackable_callback(void* data, func_destroy_notify func) noexcept
+  trackable_callback(notifiable* data, func_destroy_notify func) noexcept
     : data_(data), func_(func) {}
 };
 
@@ -54,12 +57,12 @@ struct SIGC_API trackable_callback_list
    * @param func The callback function.
    * 
    */
-  void add_callback(void* data, func_destroy_notify func);
+  void add_callback(notifiable* data, func_destroy_notify func);
 
   /** Remove the callback which has this data associated with it.
    * @param data The data that was given as a parameter to add_callback().
    */
-  void remove_callback(void* data);
+  void remove_callback(notifiable* data);
 
   /** This invokes all of the callback functions.
    */
@@ -86,6 +89,12 @@ private:
 } /* namespace internal */
 
 
+struct SIGC_API notifiable
+{
+  typedef internal::func_destroy_notify func_destroy_notify;
+};
+
+
 /** Base class for objects with auto-disconnection.
  * trackable must be inherited when objects shall automatically
  * invalidate slots referring to them on destruction.
@@ -106,7 +115,7 @@ private:
  *
  * @ingroup signal
  */
-struct SIGC_API trackable
+struct SIGC_API trackable : public notifiable
 {
   // Concerning noexcept specifications:
   // libsigc++ does not have complete control of what happens when notify_callbacks()
@@ -135,13 +144,13 @@ struct SIGC_API trackable
    * @param data Passed into func upon notification.
    * @param func Callback executed upon destruction of the object.
    */
-  void add_destroy_notify_callback(void* data, func_destroy_notify func) const;
+  void add_destroy_notify_callback(notifiable* data, func_destroy_notify func) const;
 
   /** Remove a callback previously installed with add_destroy_notify_callback().
    * The callback is not executed.
    * @param data Parameter passed into previous call to add_destroy_notify_callback().
    */
-  void remove_destroy_notify_callback(void* data) const;
+  void remove_destroy_notify_callback(notifiable* data) const;
 
   /// Execute and remove all previously installed callbacks.
   void notify_callbacks();

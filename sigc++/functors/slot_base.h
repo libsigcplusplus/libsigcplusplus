@@ -75,7 +75,7 @@ struct SIGC_API slot_rep : public trackable
   /* This could be a replaced by a virtual dtor. However since this struct is
    * crucual for the efficiency of the whole library we want to avoid this.
    */
-  hook destroy_;
+  func_destroy_notify destroy_;
 
   /** Callback that makes a deep copy of the slot_rep object.
    * @return A deep copy of the slot_rep object.
@@ -83,12 +83,12 @@ struct SIGC_API slot_rep : public trackable
   hook dup_;
 
   /** Callback of parent_. */
-  hook cleanup_;
+  func_destroy_notify cleanup_;
 
   /** Parent object whose callback cleanup_ is executed on notification. */
-  void* parent_;
+  notifiable* parent_;
 
-  inline slot_rep(hook call__, hook destroy__, hook dup__) noexcept
+  inline slot_rep(hook call__, notifiable::func_destroy_notify destroy__, hook dup__) noexcept
     : call_(call__), destroy_(destroy__), dup_(dup__), cleanup_(nullptr), parent_(nullptr) {}
 
   inline ~slot_rep()
@@ -116,7 +116,7 @@ struct SIGC_API slot_rep : public trackable
    * @param parent The new parent.
    * @param cleanup The callback to execute from notify().
    */
-  inline void set_parent(void* parent, hook cleanup) noexcept
+  inline void set_parent(notifiable* parent, notifiable::func_destroy_notify cleanup) noexcept
     {
       parent_ = parent;
       cleanup_ = cleanup;
@@ -132,7 +132,7 @@ struct SIGC_API slot_rep : public trackable
    * referred object dying.
    * @param data The slot_rep object that is becoming invalid (@p this).
    */
-  static void* notify(void* data);
+  static void notify(notifiable* data);
 };
 
 /** Functor used to add a dependency to a trackable.
@@ -284,6 +284,8 @@ public:
    */
   explicit operator bool() const noexcept;
 
+  typedef notifiable::func_destroy_notify func_destroy_notify;
+
   /** Sets the parent of this slot.
    * This function is used by signals to register a notification callback.
    * This notification callback is executed when the slot becomes invalid
@@ -291,21 +293,22 @@ public:
    * @param parent The new parent.
    * @param cleanup The notification callback.
    */
-  void set_parent(void* parent, void* (*cleanup)(void*)) const noexcept;
+  void set_parent(notifiable* parent, notifiable::func_destroy_notify cleanup) const noexcept;
 
-  typedef trackable::func_destroy_notify func_destroy_notify;
+
+
   /** Add a callback that is executed (notified) when the slot is detroyed.
    * This function is used internally by connection objects.
    * @param data Passed into func upon notification.
    * @param func Callback executed upon destruction of the object.
    */
-  void add_destroy_notify_callback(void* data, func_destroy_notify func) const;
+  void add_destroy_notify_callback(notifiable* data, notifiable::func_destroy_notify func) const;
 
   /** Remove a callback previously installed with add_destroy_notify_callback().
    * The callback is not executed.
    * @param data Parameter passed into previous call to add_destroy_notify_callback().
    */
-  void remove_destroy_notify_callback(void* data) const;
+  void remove_destroy_notify_callback(notifiable* data) const;
 
   /** Returns whether the slot is invalid.
    * @return @p true if the slot is invalid (empty).
