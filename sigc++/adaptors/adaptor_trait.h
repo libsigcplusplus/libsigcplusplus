@@ -92,8 +92,8 @@ struct adaptor_functor : public adaptor_base
    */
   template <class... T_arg>
   decltype(auto)
-  operator()(T_arg... _A_arg) const
-    { return functor_(_A_arg...); }
+  operator()(T_arg&&... _A_arg) const
+    { return functor_(std::forward<T_arg>(_A_arg)...); }
 
   /// Constructs an invalid functor.
   adaptor_functor()
