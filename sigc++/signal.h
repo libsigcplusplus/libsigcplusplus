@@ -182,17 +182,8 @@ struct slot_list
   typedef slot_iterator<slot_type>              iterator;
   typedef slot_const_iterator<slot_type>        const_iterator;
   
-  #ifndef SIGC_HAVE_SUN_REVERSE_ITERATOR
   typedef std::reverse_iterator<iterator>       reverse_iterator;
   typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
-  #else
-  typedef std::reverse_iterator<iterator, std::random_access_iterator_tag,
-                                int, int&, int*, std::ptrdiff_t> reverse_iterator;
-
-  typedef std::reverse_iterator<const_iterator, std::random_access_iterator_tag,
-                                int, const int&, const int*, std::ptrdiff_t> const_reverse_iterator;
-  #endif /* SIGC_HAVE_SUN_REVERSE_ITERATOR */
-
 
   slot_list()
     : list_(nullptr) {}
@@ -750,12 +741,7 @@ struct signal_emit<T_return, void, T_arg...>
       //Use this scope to make sure that "slots" is destroyed before "exec" is destroyed.
       //This avoids a leak on MSVC++ - see http://bugzilla.gnome.org/show_bug.cgi?id=306249
       { 
-#ifndef SIGC_HAVE_SUN_REVERSE_ITERATOR
         typedef std::reverse_iterator<signal_impl::iterator_type> reverse_iterator_type;
-#else
-        typedef std::reverse_iterator<signal_impl::iterator_type, std::random_access_iterator_tag,
-                                       slot_base, slot_base&, slot_base*, std::ptrdiff_t> reverse_iterator_type;
-#endif
 
         temp_slot_list slots(impl->slots_);
         reverse_iterator_type it(slots.end());
@@ -819,12 +805,8 @@ struct signal_emit<void, void, T_arg...>
       signal_exec exec(impl);
       temp_slot_list slots(impl->slots_);
 
-#ifndef SIGC_HAVE_SUN_REVERSE_ITERATOR
       typedef std::reverse_iterator<signal_impl::iterator_type> reverse_iterator_type;
-#else
-      typedef std::reverse_iterator<signal_impl::iterator_type, std::random_access_iterator_tag,
-                                     slot_base, slot_base&, slot_base*, std::ptrdiff_t> reverse_iterator_type;
-#endif
+
       for (reverse_iterator_type it = reverse_iterator_type(slots.end()); it != reverse_iterator_type(slots.begin()); ++it)
         {
           if (it->empty() || it->blocked())

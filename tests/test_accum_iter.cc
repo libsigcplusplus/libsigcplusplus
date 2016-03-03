@@ -20,11 +20,7 @@ struct min_accum
   typedef T result_type;
 
   template<class I>
-#ifndef SIGC_HAVE_SUN_REVERSE_ITERATOR
   typename std::iterator_traits<I>::value_type operator()(I i1, I i2)
-#else
-  typename I::value_type operator()(I i1, I i2)
-#endif
   {
     return *std::min_element(i1, i2);
   }
