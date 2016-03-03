@@ -282,7 +282,7 @@ public:
    *  do_something()
    * @endcode
    */
-  operator bool() const noexcept;
+  explicit operator bool() const noexcept;
 
   /** Sets the parent of this slot.
    * This function is used by signals to register a notification callback.
