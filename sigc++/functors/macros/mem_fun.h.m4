@@ -85,7 +85,13 @@ define([BOUND_MEM_FUN],[dnl
 template <class T_return, class T_obj, class T_obj2, class... T_arg>
 inline decltype(auto)
 mem_fun(/*$2*/ T_obj* _A_obj, T_return (T_obj2::*_A_func)(T_arg...) $3)
-{ return bound_[$1]mem_functor<T_return, T_obj, T_arg...>(_A_obj, _A_func); }
+{
+  return bound_mem_functor_base<
+    [$1]limit_reference<T_obj>,
+    T_return (T_obj::*)(T_arg...) $3,
+    $2 T_obj,
+    T_return, T_obj, T_arg...>(_A_obj, _A_func);
+}
 
 /** Creates a functor of type sigc::bound_[$1]mem_functor which encapsulates a method and an object instance.
  * @param _A_obj Reference to object instance the functor should operate on.
@@ -97,7 +103,13 @@ mem_fun(/*$2*/ T_obj* _A_obj, T_return (T_obj2::*_A_func)(T_arg...) $3)
 template <class T_return, class T_obj, class T_obj2, class... T_arg>
 inline decltype(auto)
 mem_fun(/*$2*/ T_obj& _A_obj, T_return (T_obj2::*_A_func)(T_arg...) $3)
-{ return bound_[$1]mem_functor<T_return, T_obj, T_arg...>(_A_obj, _A_func); }
+{
+  return bound_mem_functor_base<
+    [$1]limit_reference<T_obj>,
+    T_return (T_obj::*)(T_arg...) $3,
+    $2 T_obj,
+    T_return, T_obj, T_arg...>(_A_obj, _A_func);
+}
 
 ])
 
@@ -278,10 +290,12 @@ struct visitor<bound_mem_functor_base<T_func, T_obj_with_modifier, T_return, T_o
 };
 #endif // DOXYGEN_SHOULD_SKIP_THIS
 
-BOUND_MEMBER_FUNCTOR([],[],[])
+
+//bound_const_mem_functor is just a convenience aliases used in the
+//definition of make_slot(). TODO: Remove it?
+
 BOUND_MEMBER_FUNCTOR([const_],[const],[const])
-BOUND_MEMBER_FUNCTOR([volatile_],[],[volatile])
-BOUND_MEMBER_FUNCTOR([const_volatile_],[const],[const volatile])
+
 
 MEM_FUN([],[],[])
 MEM_FUN([const_],[const],[const])
