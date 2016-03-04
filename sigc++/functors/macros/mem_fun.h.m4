@@ -56,26 +56,6 @@ using bound_[$1]mem_functor =
     T_return (T_obj::*)(T_arg...) $3,
     $2 T_obj,
     T_return, T_obj, T_arg...>;
-
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-//template specialization of visitor<>::do_visit_each<>(action, functor):
-/** Performs a functor on each of the targets of a functor.
- * The function overload for sigc::bound_[$1]mem_functor performs a functor
- * on the object instance stored in the sigc::bound_[$1]mem_functor object.
- *
- * @ingroup mem_fun
- */
-template <class T_return, class T_obj, class... T_arg>
-struct visitor<bound_[$1]mem_functor<T_return, T_obj, T_arg...> >
-{
-  template <class T_action>
-  static void do_visit_each(const T_action& _A_action,
-                            const bound_[$1]mem_functor<T_return, T_obj, T_arg...>& _A_target)
-  {
-    sigc::visit_each(_A_action, _A_target.obj_);
-  }
-};
-#endif // DOXYGEN_SHOULD_SKIP_THIS
 ])
 
 define([MEM_FUN],[dnl
@@ -272,6 +252,27 @@ public:
   //TODO? T_limit_reference<T_obj> obj_;
   T_limit_reference obj_;
 };
+
+
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+//template specialization of visitor<>::do_visit_each<>(action, functor):
+/** Performs a functor on each of the targets of a functor.
+ * The function overload for sigc::bound_[$1]mem_functor performs a functor
+ * on the object instance stored in the sigc::bound_[$1]mem_functor object.
+ *
+ * @ingroup mem_fun
+ */
+template <class T_func, class T_obj_with_modifier, class T_return, class T_obj, class... T_arg>
+struct visitor<bound_mem_functor_base<T_func, T_obj_with_modifier, T_return, T_obj, T_arg...> >
+{
+  template <class T_action>
+  static void do_visit_each(const T_action& _A_action,
+                            const bound_mem_functor_base<T_func, T_obj_with_modifier, T_return, T_obj, T_arg...>& _A_target)
+  {
+    sigc::visit_each(_A_action, _A_target.obj_);
+  }
+};
+#endif // DOXYGEN_SHOULD_SKIP_THIS
 
 BOUND_MEMBER_FUNCTOR([],[],[])
 BOUND_MEMBER_FUNCTOR([const_],[const],[const])
