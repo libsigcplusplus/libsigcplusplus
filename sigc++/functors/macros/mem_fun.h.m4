@@ -188,7 +188,6 @@ divert(0)
 //    to have automatic conversion for member pointers.
 _FIREWALL([FUNCTORS_MEM_FUN])
 #include <sigc++/type_traits.h>
-#include <sigc++/functors/functor_trait.h>
 #include <sigc++/limit_reference.h>
 
 namespace sigc {

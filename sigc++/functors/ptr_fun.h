@@ -1,7 +1,6 @@
 #ifndef _SIGC_FUNCTORS_PTR_FUN_H_
 #define _SIGC_FUNCTORS_PTR_FUN_H_
 #include <sigc++/type_traits.h>
-#include <sigc++/functors/functor_trait.h>
 
 namespace sigc {
 
