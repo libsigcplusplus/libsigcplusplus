@@ -49,45 +49,13 @@ define([BOUND_MEMBER_FUNCTOR],[dnl
  *
  * @ingroup mem_fun
  */
-template <class T_return, class T_obj, class... T_arg>
-class bound_[$1]mem_functor
-  : public [$1]mem_functor<T_return, T_obj, T_arg...>
-{
-  using base_type_ = [$1]mem_functor<T_return, T_obj, T_arg...>;
-public:
-  using function_type = typename base_type_::function_type;
-
-  /** Constructs a bound_[$1]mem_functor object that wraps the passed method.
-   * @param _A_obj Pointer to instance the method will operate on.
-   * @param _A_func Pointer to method will be invoked from operator()().
-   */
-  bound_[$1]mem_functor($2 T_obj* _A_obj, function_type _A_func)
-    : base_type_(_A_func),
-      obj_(*_A_obj)
-    {}
-
-  /** Constructs a bound_[$1]mem_functor object that wraps the passed method.
-   * @param _A_obj Reference to instance the method will operate on.
-   * @param _A_func Pointer to method will be invoked from operator()().
-   */
-  bound_[$1]mem_functor($2 T_obj& _A_obj, function_type _A_func)
-    : base_type_(_A_func),
-      obj_(_A_obj)
-    {}
-
-  /** Execute the wrapped method operating on the stored instance.
-   * @param _A_a... Argument to be passed on to the method.
-   * @return The return value of the method invocation.
-   */
-  decltype(auto)
-  operator()(type_trait_take_t<T_arg>... _A_a) const
-    { return (obj_.invoke().*(this->func_ptr_))(_A_a...); }
-
-//protected:
-  // Reference to stored object instance.
-  // This is the handler object, such as TheObject in void TheObject::signal_handler().
-  [$1]limit_reference<T_obj> obj_;
-};
+template<class T_return, class T_obj, class... T_arg>
+using bound_[$1]mem_functor =
+  bound_mem_functor_base<
+    [$1]limit_reference<T_obj>,
+    T_return (T_obj::*)(T_arg...) $3,
+    $2 T_obj,
+    T_return, T_obj, T_arg...>;
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 //template specialization of visitor<>::do_visit_each<>(action, functor):
@@ -257,6 +225,54 @@ MEMBER_FUNCTOR([],[],[])
 MEMBER_FUNCTOR([const_],[const],[const])
 MEMBER_FUNCTOR([volatile_],[],[volatile])
 MEMBER_FUNCTOR([const_volatile_],[const],[const volatile])
+
+//TODO: Change T_limit_reference to a template template parameter,
+//but without having to specify both of the limit_reference<typename, typename>
+//typenames?
+template <class T_limit_reference,
+  class T_func, class T_obj_with_modifier,
+  class T_return, class T_obj, class... T_arg>
+class bound_mem_functor_base
+: mem_functor_base<T_func, T_obj_with_modifier, T_return, T_obj, T_arg...>
+{
+  using base_type = mem_functor_base<T_func, T_obj_with_modifier, T_return, T_obj, T_arg...>;
+public:
+  using function_type = typename base_type::function_type;
+  using result_type = typename base_type::result_type;
+
+  /** Constructs a bound_mem_functor_base object that wraps the passed method.
+   * @param _A_obj Pointer to instance the method will operate on.
+   * @param _A_func Pointer to method will be invoked from operator()().
+   */
+  bound_mem_functor_base(T_obj_with_modifier* _A_obj, function_type _A_func)
+    : base_type(_A_func),
+      obj_(*_A_obj)
+    {}
+
+  /** Constructs a bound_mem_functor_base object that wraps the passed method.
+   * @param _A_obj Reference to instance the method will operate on.
+   * @param _A_func Pointer to method will be invoked from operator()().
+   */
+  bound_mem_functor_base(T_obj_with_modifier& _A_obj, function_type _A_func)
+    : base_type(_A_func),
+      obj_(_A_obj)
+    {}
+
+  /** Execute the wrapped method operating on the stored instance.
+   * @param _A_a... Argument to be passed on to the method.
+   * @return The return value of the method invocation.
+   */
+  decltype(auto)
+  operator()(type_trait_take_t<T_arg>... _A_a) const
+    { return (obj_.invoke().*(this->func_ptr_))(_A_a...); }
+
+//protected: TODO?
+  // Reference to stored object instance.
+  // This is the handler object, such as TheObject in void TheObject::signal_handler().
+  //TODO? T_limit_reference<T_obj> obj_;
+  T_limit_reference obj_;
+};
+
 BOUND_MEMBER_FUNCTOR([],[],[])
 BOUND_MEMBER_FUNCTOR([const_],[const],[const])
 BOUND_MEMBER_FUNCTOR([volatile_],[],[volatile])
