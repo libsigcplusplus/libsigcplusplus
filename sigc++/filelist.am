@@ -25,21 +25,13 @@ functors_m4 = mem_fun.h.m4
 functors_built_cc = 
 functors_built_h = mem_fun.h
 
-# Adaptors (adaptors/)
-adaptors_m4 = retype.h.m4
-adaptors_built_cc =
-adaptors_built_h = retype.h
-
 # Combine all the above parts with right directories prefixed
 sigc_m4 = $(base_m4:%=macros/%) \
-	  $(functors_m4:%=functors/macros/%) \
-          $(adaptors_m4:%=adaptors/macros/%)
+	  $(functors_m4:%=functors/macros/%)
 sigc_built_cc = $(base_built_cc) \
-	  $(functors_built_cc:%=functors/%) \
-          $(adaptors_built_cc:%=adaptors/%)
+	  $(functors_built_cc:%=functors/%)
 sigc_built_h = $(base_built_h) \
-	  $(functors_built_h:%=functors/%) \
-          $(adaptors_built_h:%=adaptors/%)
+	  $(functors_built_h:%=functors/%)
 
 sigc_public_h =				\
 	bind.h				\
@@ -68,6 +60,7 @@ sigc_public_h =				\
 	adaptors/compose.h \
 	adaptors/exception_catch.h \
 	adaptors/hide.h \
+	adaptors/retype.h \
 	adaptors/track_obj.h \
 	adaptors/retype_return.h \
 	functors/functor_base.h \

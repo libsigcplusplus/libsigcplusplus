@@ -1,25 +1,6 @@
-dnl Copyright 2003, The libsigc++ Development Team
-dnl
-dnl This library is free software; you can redistribute it and/or
-dnl modify it under the terms of the GNU Lesser General Public
-dnl License as published by the Free Software Foundation; either
-dnl version 2.1 of the License, or (at your option) any later version.
-dnl
-dnl This library is distributed in the hope that it will be useful,
-dnl but WITHOUT ANY WARRANTY; without even the implied warranty of
-dnl MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
-dnl Lesser General Public License for more details.
-dnl
-dnl You should have received a copy of the GNU Lesser General Public
-dnl License along with this library; if not, write to the Free Software
-dnl Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
-dnl
-divert(-1)
+#ifndef _SIGC_ADAPTORS_RETYPE_H_
+#define _SIGC_ADAPTORS_RETYPE_H_
 
-include(template.macros.m4)
-
-divert(0)dnl
-_FIREWALL([ADAPTORS_RETYPE])
 #include <sigc++/adaptors/adaptor_trait.h>
 #include <sigc++/functors/ptr_fun.h>
 #include <sigc++/functors/mem_fun.h>
@@ -83,7 +64,7 @@ struct retype_functor
   using adaptor_type = typename adapts<T_functor>::adaptor_type;
   using result_type = typename adapts<T_functor>::result_type;
 
- template <class... T_arg>
+  template <class... T_arg>
   decltype(auto)
   operator()(T_arg... _A_a)
     { return this->functor_.template operator()<type_trait_take_t<T_type>...>
@@ -126,7 +107,7 @@ struct visitor<retype_functor<T_functor, T_type...> >
  *
  * @ingroup retype
  */
-template <LIST(class T_return, class... T_arg)>
+template <class T_return, class... T_arg>
 inline decltype(auto)
 retype(const slot<T_return, T_arg...>& _A_functor)
 { return retype_functor<slot<T_return, T_arg...>, T_arg...>
@@ -182,3 +163,4 @@ retype(const bound_mem_functor_base<T_limit_reference, T_func, T_obj_with_modifi
 
 } /* namespace sigc */
 
+#endif /* _SIGC_ADAPTORS_RETYPE_H_ */
