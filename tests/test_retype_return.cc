@@ -15,7 +15,7 @@ std::ostringstream result_stream;
 
 struct foo : public sigc::functor_base
 {
-  typedef float result_type;
+  using result_type = float;
 
   float operator()(int i)
   {
@@ -32,7 +32,7 @@ struct foo : public sigc::functor_base
 
 struct bar : public sigc::trackable, public sigc::functor_base
 {
-  typedef int result_type;
+  using result_type = int;
 
   int operator()(int i)
   {

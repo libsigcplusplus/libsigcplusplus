@@ -62,7 +62,7 @@ struct bar_group4 : public sigc::trackable
 class Functor1 : public sigc::functor_base
 {
 public:
-  typedef std::string result_type;
+  using result_type = std::string;
 
   Functor1(const bar_group4& bar)
   : bar_(bar) {}
@@ -79,7 +79,7 @@ private:
 class Functor2 : public sigc::functor_base
 {
 public:
-  typedef std::string result_type;
+  using result_type = std::string;
 
   Functor2(const bar_group4& bar, const book& aBook)
   : bar_(bar), aBook_(aBook) {}

@@ -38,17 +38,17 @@ namespace sigc {
 template <typename T_slot>
 struct slot_iterator
 {
-  typedef std::size_t                     size_type;
-  typedef std::ptrdiff_t                  difference_type;
-  typedef std::bidirectional_iterator_tag iterator_category;
+  using size_type = std::size_t;
+  using difference_type = std::ptrdiff_t;
+  using iterator_category = std::bidirectional_iterator_tag;
 
-  typedef T_slot  slot_type;
+  using slot_type = T_slot;
 
-  typedef T_slot  value_type;
-  typedef T_slot* pointer;
-  typedef T_slot& reference;
+  using value_type = T_slot;
+  using pointer = T_slot*;
+  using reference = T_slot&;
 
-  typedef typename internal::signal_impl::iterator_type iterator_type;
+  using iterator_type = typename internal::signal_impl::iterator_type;
 
   slot_iterator()
     {}
@@ -104,17 +104,17 @@ struct slot_iterator
 template <typename T_slot>
 struct slot_const_iterator
 {
-  typedef std::size_t                     size_type;
-  typedef std::ptrdiff_t                  difference_type;
-  typedef std::bidirectional_iterator_tag iterator_category;
+  using size_type = std::size_t;
+  using difference_type = std::ptrdiff_t;
+  using iterator_category = std::bidirectional_iterator_tag;
 
-  typedef T_slot        slot_type;
+  using slot_type = T_slot;
 
-  typedef T_slot        value_type;
-  typedef const T_slot* pointer;
-  typedef const T_slot& reference;
+  using value_type = T_slot;
+  using pointer = const T_slot*;
+  using reference = const T_slot&;
 
-  typedef typename internal::signal_impl::const_iterator_type iterator_type;
+  using iterator_type = typename internal::signal_impl::const_iterator_type;
 
   slot_const_iterator()
     {}
@@ -174,16 +174,16 @@ struct slot_const_iterator
 template <class T_slot>
 struct slot_list
 {
-  typedef T_slot slot_type;
+  using slot_type = T_slot;
 
-  typedef slot_type&       reference;
-  typedef const slot_type& const_reference;
+  using reference = slot_type&;
+  using const_reference = const slot_type&;
 
-  typedef slot_iterator<slot_type>              iterator;
-  typedef slot_const_iterator<slot_type>        const_iterator;
+  using iterator = slot_iterator<slot_type>;
+  using const_iterator = slot_const_iterator<slot_type>;
   
-  typedef std::reverse_iterator<iterator>       reverse_iterator;
-  typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
+  using reverse_iterator = std::reverse_iterator<iterator>;
+  using const_reverse_iterator = std::reverse_iterator<const_iterator>;
 
   slot_list()
     : list_(nullptr) {}
@@ -279,21 +279,21 @@ namespace internal {
 template <class T_emitter, class T_result = typename T_emitter::result_type>
 struct slot_iterator_buf
 {
-  typedef std::size_t                      size_type;
-  typedef std::ptrdiff_t                   difference_type;
-  typedef std::bidirectional_iterator_tag  iterator_category;
+  using size_type = std::size_t;
+  using difference_type = std::ptrdiff_t;
+  using iterator_category = std::bidirectional_iterator_tag;
 
   //These are needed just to make this a proper C++ iterator, 
   //that can be used with standard C++ algorithms.
-  typedef T_result                         value_type;
-  typedef T_result&                        reference;
-  typedef T_result*                        pointer;
+  using value_type = T_result;
+  using reference = T_result&;
+  using pointer = T_result*;
 
-  typedef T_emitter                        emitter_type;
-  typedef T_result                         result_type;
-  typedef typename T_emitter::slot_type    slot_type;
+  using emitter_type = T_emitter;
+  using result_type = T_result;
+  using slot_type = typename T_emitter::slot_type;
 
-  typedef signal_impl::const_iterator_type iterator_type;
+  using iterator_type = signal_impl::const_iterator_type;
 
   slot_iterator_buf()
     : c_(nullptr), invoked_(false) {}
@@ -362,15 +362,15 @@ private:
 template <class T_emitter>
 struct slot_iterator_buf<T_emitter, void>
 {
-  typedef std::size_t                      size_type;
-  typedef std::ptrdiff_t                   difference_type;
-  typedef std::bidirectional_iterator_tag  iterator_category;
+  using size_type = std::size_t;
+  using difference_type = std::ptrdiff_t;
+  using iterator_category = std::bidirectional_iterator_tag;
 
-  typedef T_emitter                        emitter_type;
-  typedef void                             result_type;
-  typedef typename T_emitter::slot_type    slot_type;
+  using emitter_type = T_emitter;
+  using result_type = void;
+  using slot_type = typename T_emitter::slot_type;
 
-  typedef signal_impl::const_iterator_type iterator_type;
+  using iterator_type = signal_impl::const_iterator_type;
 
   slot_iterator_buf()
     : c_(nullptr), invoked_(false) {}
@@ -433,21 +433,21 @@ private:
 template <class T_emitter, class T_result = typename T_emitter::result_type>
 struct slot_reverse_iterator_buf
 {
-  typedef std::size_t                      size_type;
-  typedef std::ptrdiff_t                   difference_type;
-  typedef std::bidirectional_iterator_tag  iterator_category;
+  using size_type = std::size_t;
+  using difference_type = std::ptrdiff_t;
+  using iterator_category = std::bidirectional_iterator_tag;
 
   //These are needed just to make this a proper C++ iterator, 
   //that can be used with standard C++ algorithms.
-  typedef T_result                         value_type;
-  typedef T_result&                        reference;
-  typedef T_result*                        pointer;
+  using value_type = T_result;
+  using reference = T_result&;
+  using pointer = T_result*;
 
-  typedef T_emitter                        emitter_type;
-  typedef T_result                         result_type;
-  typedef typename T_emitter::slot_type    slot_type;
+  using emitter_type = T_emitter;
+  using result_type = T_result;
+  using slot_type = typename T_emitter::slot_type;
 
-  typedef signal_impl::const_iterator_type iterator_type;
+  using iterator_type = signal_impl::const_iterator_type;
 
   slot_reverse_iterator_buf()
     : c_(nullptr), invoked_(false) {}
@@ -518,15 +518,15 @@ private:
 template <class T_emitter>
 struct slot_reverse_iterator_buf<T_emitter, void>
 {
-  typedef std::size_t                      size_type;
-  typedef std::ptrdiff_t                   difference_type;
-  typedef std::bidirectional_iterator_tag  iterator_category;
+  using size_type = std::size_t;
+  using difference_type = std::ptrdiff_t;
+  using iterator_category = std::bidirectional_iterator_tag;
 
-  typedef T_emitter                        emitter_type;
-  typedef void                             result_type;
-  typedef typename T_emitter::slot_type    slot_type;
+  using emitter_type = T_emitter;
+  using result_type = void;
+  using slot_type = typename T_emitter::slot_type;
 
-  typedef signal_impl::const_iterator_type iterator_type;
+  using iterator_type = signal_impl::const_iterator_type;
 
   slot_reverse_iterator_buf()
     : c_(nullptr), invoked_(false) {}
@@ -597,12 +597,12 @@ private:
 template <class T_return, class T_accumulator, class... T_arg>
 struct signal_emit
 {
-  typedef signal_emit<T_return, T_accumulator, T_arg...> self_type;
-  typedef typename T_accumulator::result_type result_type;
-  typedef slot<T_return, T_arg...> slot_type;
-  typedef internal::slot_iterator_buf<self_type, T_return> slot_iterator_buf_type;
-  typedef internal::slot_reverse_iterator_buf<self_type, T_return> slot_reverse_iterator_buf_type;
-  typedef signal_impl::const_iterator_type iterator_type;
+  using self_type = signal_emit<T_return, T_accumulator, T_arg...>;
+  using result_type = typename T_accumulator::result_type;
+  using slot_type = slot<T_return, T_arg...>;
+  using slot_iterator_buf_type = internal::slot_iterator_buf<self_type, T_return>;
+  using slot_reverse_iterator_buf_type = internal::slot_reverse_iterator_buf<self_type, T_return>;
+  using iterator_type = signal_impl::const_iterator_type;
 
   /** Instantiates the class.
    * The parameters are stored in member variables. operator()() passes
@@ -681,11 +681,11 @@ private:
 template <class T_return, class... T_arg>
 struct signal_emit<T_return, void, T_arg...>
 {
-  typedef signal_emit<T_return, void, T_arg...> self_type;
-  typedef T_return result_type;
-  typedef slot<T_return, T_arg...> slot_type;
-  typedef signal_impl::const_iterator_type iterator_type;
-  typedef typename slot_type::call_type call_type;
+  using self_type = signal_emit<T_return, void, T_arg...>;
+  using result_type = T_return;
+  using slot_type = slot<T_return, T_arg...>;
+  using iterator_type = signal_impl::const_iterator_type;
+  using call_type = typename slot_type::call_type;
 
   /** Executes a list of slots.
    * The arguments are passed directly on to the slots.
@@ -741,7 +741,7 @@ struct signal_emit<T_return, void, T_arg...>
       //Use this scope to make sure that "slots" is destroyed before "exec" is destroyed.
       //This avoids a leak on MSVC++ - see http://bugzilla.gnome.org/show_bug.cgi?id=306249
       { 
-        typedef std::reverse_iterator<signal_impl::iterator_type> reverse_iterator_type;
+        using reverse_iterator_type = std::reverse_iterator<signal_impl::iterator_type>;
 
         temp_slot_list slots(impl->slots_);
         reverse_iterator_type it(slots.end());
@@ -772,11 +772,11 @@ struct signal_emit<T_return, void, T_arg...>
 template <class... T_arg>
 struct signal_emit<void, void, T_arg...>
 {
-  typedef signal_emit<void, void, T_arg...> self_type;
-  typedef void result_type;
-  typedef slot<void, T_arg...> slot_type;
-  typedef signal_impl::const_iterator_type iterator_type;
-  typedef typename slot_type::call_type call_type;
+  using self_type = signal_emit<void, void, T_arg...>;
+  using result_type = void;
+  using slot_type = slot<void, T_arg...>;
+  using iterator_type = signal_impl::const_iterator_type;
+  using call_type = typename slot_type::call_type;
 
   /** Executes a list of slots using an accumulator of type @e T_accumulator.   * The arguments are passed directly on to the slots.
    * @param _A_a Arguments to be passed on to the slots.
@@ -805,7 +805,7 @@ struct signal_emit<void, void, T_arg...>
       signal_exec exec(impl);
       temp_slot_list slots(impl->slots_);
 
-      typedef std::reverse_iterator<signal_impl::iterator_type> reverse_iterator_type;
+      using reverse_iterator_type = std::reverse_iterator<signal_impl::iterator_type>;
 
       for (reverse_iterator_type it = reverse_iterator_type(slots.end()); it != reverse_iterator_type(slots.begin()); ++it)
         {
@@ -852,14 +852,14 @@ class signal_with_accumulator
   : public signal_base
 {
 public:
-  typedef internal::signal_emit<T_return, T_accumulator, T_arg...> emitter_type;
-  typedef typename emitter_type::result_type         result_type;
-  typedef slot<T_return, T_arg...>    slot_type;
-  typedef slot_list<slot_type>                       slot_list_type;
-  typedef typename slot_list_type::iterator               iterator;
-  typedef typename slot_list_type::const_iterator         const_iterator;
-  typedef typename slot_list_type::reverse_iterator       reverse_iterator;
-  typedef typename slot_list_type::const_reverse_iterator const_reverse_iterator;
+  using emitter_type = internal::signal_emit<T_return, T_accumulator, T_arg...>;
+  using result_type = typename emitter_type::result_type;
+  using slot_type = slot<T_return, T_arg...>;
+  using slot_list_type = slot_list<slot_type>;
+  using iterator = typename slot_list_type::iterator;
+  using const_iterator = typename slot_list_type::const_iterator;
+  using reverse_iterator = typename slot_list_type::reverse_iterator;
+  using const_reverse_iterator = typename slot_list_type::const_reverse_iterator;
 
   /** Add a slot to the list of slots.
    * Any functor or slot may be passed into connect().
@@ -1017,7 +1017,7 @@ public:
    * @code
    * struct arithmetic_mean_accumulator
    * {
-   *   typedef double result_type;
+   *   using result_type = double;
    *   template<typename T_iterator>
    *   result_type operator()(T_iterator first, T_iterator last) const
    *   {
@@ -1035,7 +1035,7 @@ public:
    * @code
    * struct interruptable_accumulator
    * {
-   *   typedef bool result_type;
+   *   using result_type = bool;
    *   template<typename T_iterator>
    *   result_type operator()(T_iterator first, T_iterator last) const
    *   {

@@ -21,12 +21,12 @@ template <class T_functor>
 struct typed_slot_rep : public slot_rep
 {
 private:
-  typedef typed_slot_rep<T_functor> self;
+  using self = typed_slot_rep<T_functor>;
 
 public:
   /* Use an adaptor type so that arguments can be passed as const references
    * through explicit template instantiation from slot_call#::call_it() */
-  typedef typename adaptor_trait<T_functor>::adaptor_type adaptor_type;
+  using adaptor_type = typename adaptor_trait<T_functor>::adaptor_type;
 
   /** The functor contained by this slot_rep object. */
   adaptor_type functor_;
@@ -105,7 +105,7 @@ struct slot_call
    */
   static T_return call_it(slot_rep* rep, type_trait_take_t<T_arg>... a_)
     {
-      typedef typed_slot_rep<T_functor> typed_slot;
+      using typed_slot = typed_slot_rep<T_functor>;
       typed_slot *typed_rep = static_cast<typed_slot*>(rep);
       return (typed_rep->functor_).template operator()<type_trait_take_t<T_arg>...>
                (a_...);
@@ -151,14 +151,14 @@ class slot
   : public slot_base
 {
 public:
-  typedef T_return result_type;
+  using result_type = T_return;
   //TODO: using arg_type_ = type_trait_take_t<T_arg>;
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 private:
-  typedef internal::slot_rep rep_type;
+  using rep_type = internal::slot_rep;
 public:
-  typedef T_return (*call_type)(rep_type*, type_trait_take_t<T_arg>...);
+  using call_type = T_return (*)(rep_type*, type_trait_take_t<T_arg>...);
 #endif
 
   /** Invoke the contained functor unless slot is in blocking state.

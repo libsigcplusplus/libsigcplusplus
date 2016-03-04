@@ -15,7 +15,7 @@ std::ostringstream result_stream;
 
 struct f : public sigc::functor_base
 {
-  typedef int result_type;
+  using result_type = int;
 
   int operator()(int i)
   {
@@ -26,7 +26,7 @@ struct f : public sigc::functor_base
 
 struct g : public sigc::functor_base
 {
-  typedef int result_type;
+  using result_type = int;
 
   int operator()()
   {
@@ -37,7 +37,7 @@ struct g : public sigc::functor_base
 
 struct g_void : public sigc::functor_base
 {
-  typedef void result_type;
+  using result_type = void;
 
   void operator()()
   {

@@ -44,10 +44,10 @@ namespace internal
  */
 struct SIGC_API signal_impl : public notifiable
 {
-  typedef std::size_t size_type;
-  typedef std::list<slot_base> slot_list;
-  typedef slot_list::iterator       iterator_type;
-  typedef slot_list::const_iterator const_iterator_type;
+  using size_type = std::size_t;
+  using slot_list = std::list<slot_base>;
+  using iterator_type = slot_list::iterator;
+  using const_iterator_type = slot_list::const_iterator;
 
   signal_impl();
   ~signal_impl();
@@ -215,9 +215,9 @@ struct SIGC_API signal_exec
  */
 struct temp_slot_list
 {
-  typedef signal_impl::slot_list slot_list;
-  typedef signal_impl::iterator_type iterator;
-  typedef signal_impl::const_iterator_type const_iterator;
+  using slot_list = signal_impl::slot_list;
+  using iterator = signal_impl::iterator_type;
+  using const_iterator = signal_impl::const_iterator_type;
 
   temp_slot_list(slot_list &slots) : slots_(slots)
   {
@@ -265,7 +265,7 @@ private:
  * class MyClass
  * {
  * public:
- *   typedef sigc::signal<void> MySignalType;
+ *   using MySignalType = sigc::signal<void>;
  *   MySignalType get_my_signal() { return m_my_signal; }
  * private:
  *   MySignalType m_my_signal;
@@ -302,7 +302,7 @@ private:
  */
 struct SIGC_API signal_base : public trackable
 {
-  typedef std::size_t size_type;
+  using size_type = std::size_t;
 
   signal_base() noexcept;
 
@@ -357,7 +357,7 @@ struct SIGC_API signal_base : public trackable
   void unblock() noexcept;
 
 protected:
-  typedef internal::signal_impl::iterator_type iterator_type;
+  using iterator_type = internal::signal_impl::iterator_type;
 
   /** Adds a slot at the end of the list of slots.
    * With connect(), slots can also be added during signal emission.

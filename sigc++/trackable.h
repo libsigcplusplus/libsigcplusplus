@@ -27,7 +27,7 @@ struct notifiable;
 
 namespace internal {
 
-typedef void (*func_destroy_notify) (notifiable* data);
+using func_destroy_notify = void (*) (notifiable* data);
 
 
 /** Destroy notification callback.
@@ -81,7 +81,7 @@ struct SIGC_API trackable_callback_list
   ~trackable_callback_list();
 
 private:
-  typedef std::list<trackable_callback> callback_list;
+  using callback_list = std::list<trackable_callback>;
   callback_list callbacks_;
   bool          clearing_;
 };
@@ -91,7 +91,7 @@ private:
 
 struct SIGC_API notifiable
 {
-  typedef internal::func_destroy_notify func_destroy_notify;
+  using func_destroy_notify = internal::func_destroy_notify;
 };
 
 
@@ -138,7 +138,7 @@ struct SIGC_API trackable : public notifiable
                                    who insist on using "trackable*" as
                                    pointer type for their own derived objects */
 
-  typedef internal::func_destroy_notify func_destroy_notify;
+  using func_destroy_notify = internal::func_destroy_notify;
   
   /** Add a callback that is executed (notified) when the trackable object is detroyed.
    * @param data Passed into func upon notification.

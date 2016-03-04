@@ -17,7 +17,7 @@ int ident(int i)
 template<typename T>
 struct min_accum
 {
-  typedef T result_type;
+  using result_type = T;
 
   template<class I>
   typename std::iterator_traits<I>::value_type operator()(I i1, I i2)

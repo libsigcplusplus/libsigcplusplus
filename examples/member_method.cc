@@ -18,7 +18,7 @@ protected:
 
   virtual void on_print(int a);
   
-  typedef sigc::signal<void, int> type_signal_print;
+  using type_signal_print = sigc::signal<void, int>;
   type_signal_print signal_print;
     
 };

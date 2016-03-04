@@ -52,7 +52,7 @@ struct with_type<true, T_type, T_limit>
 template <class T_target, class T_action>
 struct limit_derived_target
 {
-  typedef limit_derived_target<T_target, T_action> T_self;
+  using T_self = limit_derived_target<T_target, T_action>;
 
   template <class T_type>
   void operator()(const T_type& _A_type) const
@@ -90,7 +90,7 @@ struct with_type_pointer<true, T_type, T_limit>
 template <class T_target, class T_action>
 struct limit_derived_target<T_target*, T_action>
 {
-  typedef limit_derived_target<T_target*, T_action> T_self;
+  using T_self = limit_derived_target<T_target*, T_action>;
 
   template <class T_type>
   void operator()(const T_type& _A_type) const
@@ -177,7 +177,7 @@ void visit_each(const T_action& _A_action, const T_functor& _A_functor)
 template <class T_type, class T_action, class T_functor>
 void visit_each_type(const T_action& _A_action, const T_functor& _A_functor)
 {
-  typedef internal::limit_derived_target<T_type, T_action> type_limited_action;
+  using type_limited_action = internal::limit_derived_target<T_type, T_action>;
 
   type_limited_action limited_action(_A_action);
 

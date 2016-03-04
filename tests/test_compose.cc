@@ -18,7 +18,7 @@ std::ostringstream result_stream;
 struct set
 {
   // choose a type that can hold all return values
-  typedef double result_type;
+  using result_type = double;
 
   double operator()(int i)
   {
@@ -35,7 +35,7 @@ struct set
 
 struct set_void
 {
-  typedef void result_type;
+  using result_type = void;
 
   void operator()(double i)
   {
@@ -65,7 +65,7 @@ struct get
   }
 #else
   // choose a type that can hold all return values
-  typedef double result_type;
+  using result_type = double;
 
   double operator()()
   {

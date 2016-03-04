@@ -27,36 +27,36 @@ namespace sigc {
 template <class T_type>
 struct type_trait
 {
-  typedef T_type& pass;
-  typedef const T_type& take;
+  using pass = T_type&;
+  using take = const T_type&;
 };
 
 template <class T_type, int N>
 struct type_trait<T_type[N]>
 {
-  typedef T_type*& pass;
-  typedef const T_type*& take;
+  using pass = T_type*&;
+  using take = const T_type*&;
 };
 
 template <class T_type>
 struct type_trait<T_type&>
 {
-  typedef T_type& pass;
-  typedef T_type& take;
+  using pass = T_type&;
+  using take = T_type&;
 };
 
 template <class T_type>
 struct type_trait<const T_type&>
 {
-  typedef const T_type& pass;
-  typedef const T_type& take;
+  using pass = const T_type&;
+  using take = const T_type&;
 };
 
 template<>
 struct type_trait<void>
 {
-  typedef void  pass;
-  typedef void  take;
+  using pass = void;
+  using take = void;
 };
 
 template<typename T>

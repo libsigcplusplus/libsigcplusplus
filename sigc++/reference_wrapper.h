@@ -24,19 +24,19 @@ namespace sigc {
 template <class T_type>
 struct unwrap_reference
 {
-  typedef T_type type;
+  using type = T_type;
 };
 
 template <class T_type>
 struct unwrap_reference<std::reference_wrapper<T_type> >
 {
-  typedef T_type& type;
+  using type = T_type&;
 };
 
 template <class T_type>
 struct unwrap_reference<std::reference_wrapper<const T_type> >
 {
-  typedef const T_type& type;
+  using type = const T_type&;
 };
 
 template <class T_type>

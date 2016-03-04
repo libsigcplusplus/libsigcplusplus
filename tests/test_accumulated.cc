@@ -19,7 +19,7 @@ std::ostringstream result_stream;
 
 struct arithmetic_mean_accumulator
 {
-  typedef double result_type;
+  using result_type = double;
   template<typename T_iterator>
   double operator()(T_iterator first, T_iterator last) const
   {
@@ -34,7 +34,7 @@ struct arithmetic_mean_accumulator
 template<class Ret>
 struct vector_accumulator
 {
-  typedef std::vector<Ret> result_type;
+  using result_type = std::vector<Ret>;
   template<typename T_iterator>
   result_type operator()(T_iterator first, T_iterator last) const
   {

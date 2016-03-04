@@ -28,7 +28,7 @@ namespace sigc {
  * the result type of your functors. There are different ways to achieve that.
  *
  * - Derive your functors from sigc::functor_base and place
- *   <tt>typedef T_return result_type;</tt> in the class definition.
+ *   <tt>using result_type = T_return;</tt> in the class definition.
  * - Use the macro SIGC_FUNCTOR_TRAIT(T_functor,T_return) in namespace sigc.
  *   Multi-type functors are only partly supported.
  * - For functors not derived from sigc::functor_base, and not specified with
@@ -102,23 +102,23 @@ template <class T_functor,
           bool I_can_use_decltype = can_deduce_result_type_with_decltype<T_functor>::value>
 struct functor_trait
 {
-  typedef void result_type;
-  typedef T_functor functor_type;
+  using result_type = void;
+  using functor_type = T_functor;
 };
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 template <class T_functor, bool I_can_use_decltype>
 struct functor_trait<T_functor, true, I_can_use_decltype>
 {
-  typedef typename T_functor::result_type result_type;
-  typedef T_functor functor_type;
+  using result_type = typename T_functor::result_type;
+  using functor_type = T_functor;
 };
 
 template <typename T_functor>
 struct functor_trait<T_functor, false, true>
 {
-  typedef typename functor_trait<decltype(&T_functor::operator()), false, false>::result_type result_type;
-  typedef T_functor functor_type;
+  using result_type = typename functor_trait<decltype(&T_functor::operator()), false, false>::result_type;
+  using functor_type = T_functor;
 };
 #endif // DOXYGEN_SHOULD_SKIP_THIS
 
@@ -136,8 +136,8 @@ struct functor_trait<T_functor, false, true>
 template <class T_functor>                             \
 struct functor_trait<T_functor, false, false>          \
 {                                                      \
-  typedef typename T_functor::result_type result_type; \
-  typedef T_functor functor_type;                      \
+  using result_type = typename T_functor::result_type; \
+  using functor_type = T_functor;                      \
 };
 
 /** Helper macro, if you want to mix user-defined and third party functors with libsigc++.
@@ -159,14 +159,14 @@ struct functor_trait<T_functor, false, false>          \
 template <>                                    \
 struct functor_trait<T_functor, false, false>  \
 {                                              \
-  typedef T_return result_type;                \
-  typedef T_functor functor_type;              \
+  using result_type = T_return;                \
+  using functor_type = T_functor;              \
 };                                             \
 template <>                                    \
 struct functor_trait<T_functor, false, true>   \
 {                                              \
-  typedef T_return result_type;                \
-  typedef T_functor functor_type;              \
+  using result_type = T_return;                \
+  using functor_type = T_functor;              \
 };
 
 #ifndef SIGCXX_DISABLE_DEPRECATED
@@ -205,8 +205,8 @@ class pointer_functor;
 template <class T_return, class... T_arg>
 struct functor_trait<T_return (*)(T_arg...), false, false>
 {
-  typedef T_return result_type;
-  typedef pointer_functor<T_return, T_arg...> functor_type;
+  using result_type = T_return;
+  using functor_type = pointer_functor<T_return, T_arg...>;
 };
 
 
@@ -218,15 +218,15 @@ template <class T_return, class T_obj, class... T_arg> class const_mem_functor;
 template <class T_return, class T_obj, class... T_arg>
 struct functor_trait<T_return (T_obj::*)(T_arg...), false, false>
 {
-  typedef T_return result_type;
-  typedef mem_functor<T_return, T_obj, T_arg...> functor_type;
+  using result_type = T_return;
+  using functor_type = mem_functor<T_return, T_obj, T_arg...>;
 };
 
 template <class T_return, class T_obj, class... T_arg>
 struct functor_trait<T_return (T_obj::*)(T_arg...) const, false, false>
 {
-  typedef T_return result_type;
-  typedef const_mem_functor<T_return, T_obj, T_arg...> functor_type;
+  using result_type = T_return;
+  using functor_type = const_mem_functor<T_return, T_obj, T_arg...>;
 };
 
 #endif // DOXYGEN_SHOULD_SKIP_THIS

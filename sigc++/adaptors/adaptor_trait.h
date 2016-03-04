@@ -68,7 +68,7 @@ template <class T_functor> struct adapts;
 template <class T_functor>
 struct adaptor_functor : public adaptor_base
 {
-  typedef typename functor_trait<T_functor>::result_type result_type;
+  using result_type = typename functor_trait<T_functor>::result_type;
 
   /** Invokes the wrapped functor passing on the arguments.
    * @return The return value of the functor invocation.
@@ -152,9 +152,9 @@ template <class T_functor, bool I_isadaptor = std::is_base_of<adaptor_base, T_fu
 template <class T_functor>
 struct adaptor_trait<T_functor, true>
 {
-  typedef typename T_functor::result_type result_type;
-  typedef T_functor functor_type;
-  typedef T_functor adaptor_type;
+  using result_type = typename T_functor::result_type;
+  using functor_type = T_functor;
+  using adaptor_type = T_functor;
 };
 
 /** Trait that specifies what is the adaptor version of a functor type.
@@ -166,9 +166,9 @@ struct adaptor_trait<T_functor, true>
 template <class T_functor>
 struct adaptor_trait<T_functor, false>
 {
-  typedef typename functor_trait<T_functor>::result_type result_type;
-  typedef typename functor_trait<T_functor>::functor_type functor_type;
-  typedef adaptor_functor<functor_type> adaptor_type;
+  using result_type = typename functor_trait<T_functor>::result_type;
+  using functor_type = typename functor_trait<T_functor>::functor_type;
+  using adaptor_type = adaptor_functor<functor_type>;
 };
 
 // Doxygen (at least version 1.8.4) removes blank lines in a code block.
@@ -176,7 +176,7 @@ struct adaptor_trait<T_functor, false>
 /** Base type for adaptors.
  * sigc::adapts wraps adaptors, functors, function pointers and class methods.
  * It contains a single member functor which is always a sigc::adaptor_base.
- * The typedef adaptor_type defines the exact type that is used
+ * The adaptor_type alias defines the exact type that is used
  * to store the adaptor, functor, function pointer or class method passed
  * into the constructor. It differs from @a T_functor unless @a T_functor
  * inherits from sigc::adaptor_base.
@@ -188,7 +188,7 @@ struct adaptor_trait<T_functor, false>
  * template <class T_functor>
  * struct my_adaptor : public sigc::adapts<T_functor>
  * {
- *   typedef typename sigc::functor_trait<T_functor>::result_type result_type;
+ *   using result_type = typename sigc::functor_trait<T_functor>::result_type;
  *   //
  *   result_type
  *   operator()() const;
@@ -237,8 +237,8 @@ struct adaptor_trait<T_functor, false>
 template <class T_functor>
 struct adapts : public adaptor_base
 {
-  typedef typename adaptor_trait<T_functor>::result_type  result_type;
-  typedef typename adaptor_trait<T_functor>::adaptor_type adaptor_type;
+  using result_type = typename adaptor_trait<T_functor>::result_type;
+  using adaptor_type = typename adaptor_trait<T_functor>::adaptor_type;
 
   /** Constructs an adaptor that wraps the passed functor.
    * @param _A_functor Functor to invoke from operator()().

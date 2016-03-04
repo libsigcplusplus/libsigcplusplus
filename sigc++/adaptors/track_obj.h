@@ -50,8 +50,8 @@ template <typename T_functor, typename... T_obj>
 class track_obj_functor : public adapts<T_functor>
 {
 public:
-  typedef typename adapts<T_functor>::adaptor_type adaptor_type;
-  typedef typename adaptor_type::result_type result_type;
+  using adaptor_type = typename adapts<T_functor>::adaptor_type;
+  using result_type = typename adaptor_type::result_type;
 
   /** Constructs a track_obj_functor object that wraps the passed functor and
    * stores a reference to the passed trackable objects.

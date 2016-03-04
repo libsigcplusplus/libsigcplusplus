@@ -33,8 +33,8 @@ template <class T_return, class T_obj, class... T_arg>
 class [$1]mem_functor : public functor_base
 {
 public:
-  typedef T_return (T_obj::*function_type)(T_arg...) $3;
-  typedef T_return result_type;
+  using function_type = T_return (T_obj::*)(T_arg...) $3;
+  using result_type = T_return;
 
   /// Constructs an invalid functor.
   [$1]mem_functor() : func_ptr_(nullptr) {}
@@ -83,9 +83,9 @@ template <class T_return, class T_obj, class... T_arg>
 class bound_[$1]mem_functor
   : public [$1]mem_functor<T_return, T_obj, T_arg...>
 {
-  typedef [$1]mem_functor<T_return, T_obj, T_arg...> base_type_;
+  using base_type_ = [$1]mem_functor<T_return, T_obj, T_arg...>;
 public:
-  typedef typename base_type_::function_type function_type;
+  using function_type = typename base_type_::function_type;
 
   /** Constructs a bound_[$1]mem_functor object that wraps the passed method.
    * @param _A_obj Pointer to instance the method will operate on.

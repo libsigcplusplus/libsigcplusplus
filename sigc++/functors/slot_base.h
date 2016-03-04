@@ -28,7 +28,7 @@ namespace sigc
 
 namespace internal {
 
-typedef void* (*hook)(void*);
+using hook = void* (*)(void*);
 
 /** Internal representation of a slot.
  * Derivations of this class can be considered as a link
@@ -78,7 +78,7 @@ struct SIGC_API slot_rep : public trackable
    */
   func_destroy_notify destroy_;
 
-  typedef slot_rep* (*hook_dup)(slot_rep*);
+  using hook_dup = slot_rep* (*)(slot_rep*);
 
 private:
   /** Callback that makes a deep copy of the slot_rep object.
@@ -252,7 +252,7 @@ struct SIGC_API slot_do_unbind
  */
 class SIGC_API slot_base : public functor_base
 {
-  typedef internal::slot_rep rep_type;
+  using rep_type = internal::slot_rep;
 
   // Move operations are not declared noexcept because
   // 1. they may copy instead of move
@@ -289,7 +289,7 @@ public:
    */
   explicit operator bool() const noexcept;
 
-  typedef notifiable::func_destroy_notify func_destroy_notify;
+  using func_destroy_notify = notifiable::func_destroy_notify;
 
   /** Sets the parent of this slot.
    * This function is used by signals to register a notification callback.

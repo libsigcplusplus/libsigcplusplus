@@ -18,7 +18,7 @@ std::ostringstream result_stream;
 struct foo : public sigc::functor_base
 {
   // choose a type that can hold all return values
-  typedef int result_type;
+  using result_type = int;
 
   int operator()(int i)
   {
@@ -41,7 +41,7 @@ struct foo : public sigc::functor_base
 
 struct foo_void : public sigc::functor_base
 {
-  typedef void result_type;
+  using result_type = void;
 
   void operator()(int i)
   {

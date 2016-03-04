@@ -68,8 +68,8 @@ namespace sigc {
 template <int I_location, class T_functor>
 struct hide_functor : public adapts<T_functor>
 {
-  typedef typename adapts<T_functor>::adaptor_type adaptor_type;
-  typedef typename adaptor_type::result_type  result_type;
+  using adaptor_type = typename adapts<T_functor>::adaptor_type;
+  using result_type = typename adaptor_type::result_type;
 
   /** Invokes the wrapped functor, ignoring the argument at index @e I_location (0-indexed).
    * @param _A_a Arguments to be passed on to the functor, apart from the ignored argument.

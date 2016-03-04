@@ -98,8 +98,8 @@ template <class T_functor, class... T_type>
 struct retype_functor
   : public adapts<T_functor>
 {
-  typedef typename adapts<T_functor>::adaptor_type adaptor_type;
-  typedef typename adapts<T_functor>::result_type result_type;
+  using adaptor_type = typename adapts<T_functor>::adaptor_type;
+  using result_type = typename adapts<T_functor>::result_type;
 
  template <class... T_arg>
   decltype(auto)
