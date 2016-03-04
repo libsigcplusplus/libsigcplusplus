@@ -22,7 +22,7 @@ define([MEMBER_FUNCTOR],[dnl
 /** [$1]mem_functor wraps $3 methods with argument(s).
  * Use the convenience function mem_fun() to create an instance of [$1]mem_functor.
  *
- * The following template arguments are used:dnl
+ * The following template arguments are used:
  * - @e T_arg... Argument types used in the definition of operator()().
  * - @e T_return The return type of operator()().
  * - @e T_obj The object type.
@@ -45,7 +45,7 @@ public:
   explicit [$1]mem_functor(function_type _A_func) : func_ptr_(_A_func) {}
 
   /** Execute the wrapped method operating on the passed instance.
-   * @param _A_obj Pointer to instance the method should operate on.dnl
+   * @param _A_obj Pointer to instance the method should operate on.
    * @param _A_a... Argument to be passed on to the method.
    * @return The return value of the method invocation.
    */
@@ -54,7 +54,7 @@ public:
     { return (_A_obj->*(this->func_ptr_))(_A_a...); }
 
   /** Execute the wrapped method operating on the passed instance.
-   * @param _A_obj Reference to instance the method should operate on.dnl
+   * @param _A_obj Reference to instance the method should operate on.
    * @param _A_a... Argument to be passed on to the method.
    * @return The return value of the method invocation.
    */
@@ -72,7 +72,7 @@ define([BOUND_MEMBER_FUNCTOR],[dnl
 /** bound_[$1]mem_functor encapsulates a $3 method with arguments and an object instance.
  * Use the convenience function mem_fun() to create an instance of bound_[$1]mem_functor.
  *
- * The following template arguments are used:dnl
+ * The following template arguments are used:
  * - @e T_arg... Argument type used in the definition of operator()().
  * - @e T_return The return type of operator()().
  * - @e T_obj The object type.
@@ -105,7 +105,7 @@ public:
       obj_(_A_obj)
     {}
 
-  /** Execute the wrapped method operating on the stored instance.dnl
+  /** Execute the wrapped method operating on the stored instance.
    * @param _A_a... Argument to be passed on to the method.
    * @return The return value of the method invocation.
    */
