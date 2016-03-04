@@ -29,44 +29,14 @@ define([MEMBER_FUNCTOR],[dnl
  *
  * @ingroup mem_fun
  */
-template <class T_return, class T_obj, class... T_arg>
-class [$1]mem_functor : public functor_base
-{
-public:
-  using function_type = T_return (T_obj::*)(T_arg...) $3;
-  using result_type = T_return;
-
-  /// Constructs an invalid functor.
-  [$1]mem_functor() : func_ptr_(nullptr) {}
-
-  /** Constructs a [$1]mem_functor object that wraps the passed method.
-   * @param _A_func Pointer to method will be invoked from operator()().
-   */
-  explicit [$1]mem_functor(function_type _A_func) : func_ptr_(_A_func) {}
-
-  /** Execute the wrapped method operating on the passed instance.
-   * @param _A_obj Pointer to instance the method should operate on.
-   * @param _A_a... Argument to be passed on to the method.
-   * @return The return value of the method invocation.
-   */
-  decltype(auto)
-  operator()($2 T_obj* _A_obj, type_trait_take_t<T_arg>... _A_a) const
-    { return (_A_obj->*(this->func_ptr_))(_A_a...); }
-
-  /** Execute the wrapped method operating on the passed instance.
-   * @param _A_obj Reference to instance the method should operate on.
-   * @param _A_a... Argument to be passed on to the method.
-   * @return The return value of the method invocation.
-   */
-  decltype(auto)
-  operator()($2 T_obj& _A_obj, type_trait_take_t<T_arg>... _A_a) const
-    { return (_A_obj.*func_ptr_)(_A_a...); }
-
-protected:
-  function_type func_ptr_;
-};
-
+template<class T_return, class T_obj, class... T_arg>
+using [$1]mem_functor =
+  mem_functor_base<
+    T_return (T_obj::*)(T_arg...) $3,
+    $2 T_obj,
+    T_return, T_obj, T_arg...>;
 ])
+
 define([BOUND_MEMBER_FUNCTOR],[dnl
 
 /** bound_[$1]mem_functor encapsulates a $3 method with arguments and an object instance.
@@ -245,6 +215,43 @@ namespace sigc {
  *
  * @ingroup sigcfunctors
  */
+
+template <class T_func, class T_obj_with_modifier, class T_return, class T_obj, class... T_arg>
+class mem_functor_base : public functor_base
+{
+public:
+  using function_type = T_func;
+  using result_type = T_return;
+
+  /// Constructs an invalid functor.
+  mem_functor_base() : func_ptr_(nullptr) {}
+
+  /** Constructs a mem_functor object that wraps the passed method.
+   * @param _A_func Pointer to method will be invoked from operator()().
+   */
+  explicit mem_functor_base(function_type _A_func) : func_ptr_(_A_func) {}
+
+  /** Execute the wrapped method operating on the passed instance.
+   * @param _A_obj Pointer to instance the method should operate on.
+   * @param _A_a... Argument to be passed on to the method.
+   * @return The return value of the method invocation.
+   */
+  decltype(auto)
+  operator()(T_obj_with_modifier* _A_obj, type_trait_take_t<T_arg>... _A_a) const
+    { return (_A_obj->*(this->func_ptr_))(_A_a...); }
+
+  /** Execute the wrapped method operating on the passed instance.
+   * @param _A_obj Reference to instance the method should operate on.
+   * @param _A_a... Argument to be passed on to the method.
+   * @return The return value of the method invocation.
+   */
+  decltype(auto)
+  operator()(T_obj_with_modifier& _A_obj, type_trait_take_t<T_arg>... _A_a) const
+    { return (_A_obj.*func_ptr_)(_A_a...); }
+
+protected:
+  function_type func_ptr_;
+};
 
 MEMBER_FUNCTOR([],[],[])
 MEMBER_FUNCTOR([const_],[const],[const])
