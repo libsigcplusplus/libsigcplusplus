@@ -19,7 +19,7 @@ divert(-1)
 include(template.macros.m4)
 
 define([MEMBER_FUNCTOR],[dnl
-/** [$1]mem_functor wraps $3 methods with argument(s).
+/** [$1]mem_functor wraps $2 methods with argument(s).
  * Use the convenience function mem_fun() to create an instance of [$1]mem_functor.
  *
  * The following template arguments are used:
@@ -32,14 +32,13 @@ define([MEMBER_FUNCTOR],[dnl
 template<class T_return, class T_obj, class... T_arg>
 using [$1]mem_functor =
   mem_functor_base<
-    T_return (T_obj::*)(T_arg...) $3,
-    $2 T_obj,
+    T_return (T_obj::*)(T_arg...) $2,
     T_return, T_obj, T_arg...>;
 ])
 
 define([BOUND_MEMBER_FUNCTOR],[dnl
 
-/** bound_[$1]mem_functor encapsulates a $3 method with arguments and an object instance.
+/** bound_[$1]mem_functor encapsulates a $2 method with arguments and an object instance.
  * Use the convenience function mem_fun() to create an instance of bound_[$1]mem_functor.
  *
  * The following template arguments are used:
@@ -53,8 +52,7 @@ template<class T_return, class T_obj, class... T_arg>
 using bound_[$1]mem_functor =
   bound_mem_functor_base<
     [$1]limit_reference<T_obj>,
-    T_return (T_obj::*)(T_arg...) $3,
-    $2 T_obj,
+    T_return (T_obj::*)(T_arg...) $2,
     T_return, T_obj, T_arg...>;
 ])
 
@@ -70,7 +68,6 @@ inline decltype(auto)
 mem_fun(T_return (T_obj::*_A_func)(T_arg...) $3)
 { return mem_functor_base<
     T_return (T_obj::*)(T_arg...) $3,
-    [$2] T_obj,
     T_return, T_obj, T_arg...>(_A_func); }
 
 ])
@@ -89,7 +86,6 @@ mem_fun(/*$2*/ T_obj* _A_obj, T_return (T_obj2::*_A_func)(T_arg...) $3)
   return bound_mem_functor_base<
     [$1]limit_reference<T_obj>,
     T_return (T_obj::*)(T_arg...) $3,
-    $2 T_obj,
     T_return, T_obj, T_arg...>(_A_obj, _A_func);
 }
 
@@ -107,7 +103,6 @@ mem_fun(/*$2*/ T_obj& _A_obj, T_return (T_obj2::*_A_func)(T_arg...) $3)
   return bound_mem_functor_base<
     [$1]limit_reference<T_obj>,
     T_return (T_obj::*)(T_arg...) $3,
-    $2 T_obj,
     T_return, T_obj, T_arg...>(_A_obj, _A_func);
 }
 
@@ -122,6 +117,7 @@ divert(0)
 _FIREWALL([FUNCTORS_MEM_FUN])
 #include <sigc++/type_traits.h>
 #include <sigc++/limit_reference.h>
+#include <sigc++/member_method_trait.h>
 
 namespace sigc {
 
@@ -179,12 +175,15 @@ namespace sigc {
  * @ingroup sigcfunctors
  */
 
-template <class T_func, class T_obj_with_modifier, class T_return, class T_obj, class... T_arg>
+template <class T_func, class T_return, class T_obj, class... T_arg>
 class mem_functor_base : public functor_base
 {
 public:
   using function_type = T_func;
   using result_type = T_return;
+
+  using obj_type_with_modifier = typename std::conditional_t<
+    member_method_is_const<T_func>::value, const T_obj, T_obj>;
 
   /// Constructs an invalid functor.
   mem_functor_base() : func_ptr_(nullptr) {}
@@ -200,7 +199,7 @@ public:
    * @return The return value of the method invocation.
    */
   decltype(auto)
-  operator()(T_obj_with_modifier* _A_obj, type_trait_take_t<T_arg>... _A_a) const
+  operator()(obj_type_with_modifier* _A_obj, type_trait_take_t<T_arg>... _A_a) const
     { return (_A_obj->*(this->func_ptr_))(_A_a...); }
 
   /** Execute the wrapped method operating on the passed instance.
@@ -209,7 +208,7 @@ public:
    * @return The return value of the method invocation.
    */
   decltype(auto)
-  operator()(T_obj_with_modifier& _A_obj, type_trait_take_t<T_arg>... _A_a) const
+  operator()(obj_type_with_modifier& _A_obj, type_trait_take_t<T_arg>... _A_a) const
     { return (_A_obj.*func_ptr_)(_A_a...); }
 
 protected:
@@ -219,28 +218,31 @@ protected:
 //mem_functor and const_mem_functor are just convenience aliases used in the
 //definition of functor_trait<> specializations. TODO: Remove them?
 
-MEMBER_FUNCTOR([],[],[])
-MEMBER_FUNCTOR([const_],[const],[const])
+MEMBER_FUNCTOR([],[])
+MEMBER_FUNCTOR([const_],[const])
 
 //TODO: Change T_limit_reference to a template template parameter,
 //but without having to specify both of the limit_reference<typename, typename>
 //typenames?
 template <class T_limit_reference,
-  class T_func, class T_obj_with_modifier,
+  class T_func,
   class T_return, class T_obj, class... T_arg>
 class bound_mem_functor_base
-: mem_functor_base<T_func, T_obj_with_modifier, T_return, T_obj, T_arg...>
+: mem_functor_base<T_func, T_return, T_obj, T_arg...>
 {
-  using base_type = mem_functor_base<T_func, T_obj_with_modifier, T_return, T_obj, T_arg...>;
+  using base_type = mem_functor_base<T_func, T_return, T_obj, T_arg...>;
 public:
   using function_type = typename base_type::function_type;
   using result_type = typename base_type::result_type;
+
+  using obj_type_with_modifier = typename std::conditional_t<
+    member_method_is_const<T_func>::value, const T_obj, T_obj>;
 
   /** Constructs a bound_mem_functor_base object that wraps the passed method.
    * @param _A_obj Pointer to instance the method will operate on.
    * @param _A_func Pointer to method will be invoked from operator()().
    */
-  bound_mem_functor_base(T_obj_with_modifier* _A_obj, function_type _A_func)
+  bound_mem_functor_base(obj_type_with_modifier* _A_obj, function_type _A_func)
     : base_type(_A_func),
       obj_(*_A_obj)
     {}
@@ -249,7 +251,7 @@ public:
    * @param _A_obj Reference to instance the method will operate on.
    * @param _A_func Pointer to method will be invoked from operator()().
    */
-  bound_mem_functor_base(T_obj_with_modifier& _A_obj, function_type _A_func)
+  bound_mem_functor_base(obj_type_with_modifier& _A_obj, function_type _A_func)
     : base_type(_A_func),
       obj_(_A_obj)
     {}
@@ -278,12 +280,12 @@ public:
  *
  * @ingroup mem_fun
  */
-template <class T_func, class T_obj_with_modifier, class T_return, class T_obj, class... T_arg>
-struct visitor<bound_mem_functor_base<T_func, T_obj_with_modifier, T_return, T_obj, T_arg...> >
+template <class T_func, class T_return, class T_obj, class... T_arg>
+struct visitor<bound_mem_functor_base<T_func, T_return, T_obj, T_arg...> >
 {
   template <class T_action>
   static void do_visit_each(const T_action& _A_action,
-                            const bound_mem_functor_base<T_func, T_obj_with_modifier, T_return, T_obj, T_arg...>& _A_target)
+                            const bound_mem_functor_base<T_func, T_return, T_obj, T_arg...>& _A_target)
   {
     sigc::visit_each(_A_action, _A_target.obj_);
   }
@@ -294,7 +296,7 @@ struct visitor<bound_mem_functor_base<T_func, T_obj_with_modifier, T_return, T_o
 //bound_const_mem_functor is just a convenience aliases used in the
 //definition of make_slot(). TODO: Remove it?
 
-BOUND_MEMBER_FUNCTOR([const_],[const],[const])
+BOUND_MEMBER_FUNCTOR([const_],[const])
 
 
 MEM_FUN([],[],[])
