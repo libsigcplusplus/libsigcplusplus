@@ -70,6 +70,7 @@ sigc_public_h =				\
 	adaptors/hide.h \
 	adaptors/track_obj.h \
 	adaptors/retype_return.h \
+	functors/functor_base.h \
 	functors/functor_trait.h		\
 	functors/functors.h		\
 	functors/ptr_fun.h		\

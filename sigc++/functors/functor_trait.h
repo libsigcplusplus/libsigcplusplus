@@ -1,5 +1,6 @@
 #ifndef _SIGC_FUNCTORS_FUNCTOR_TRAIT_H_
 #define _SIGC_FUNCTORS_FUNCTOR_TRAIT_H_
+#include <sigc++/functors/functor_base.h>
 #include <sigc++/type_traits.h>
 #include <type_traits>
 
@@ -45,13 +46,6 @@ namespace sigc {
  * #SIGC_FUNCTORS_DEDUCE_RESULT_TYPE_WITH_DECLTYPE activated the test with
  * decltype(). That macro is now unneccesary and deprecated.
  */
-
-/** A hint to the compiler.
- * All functors which define @p result_type should publically inherit from this hint.
- *
- * @ingroup sigcfunctors
- */
-struct functor_base {};
 
 /** Helper class, to determine if decltype() can deduce the result type of a functor.
  *

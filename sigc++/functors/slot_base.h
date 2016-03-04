@@ -21,7 +21,7 @@
 
 #include <sigc++config.h>
 #include <sigc++/trackable.h>
-#include <sigc++/functors/functor_trait.h>
+#include <sigc++/functors/functor_base.h>
 
 namespace sigc
 {
