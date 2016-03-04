@@ -37,6 +37,7 @@ check_PROGRAMS = \
   test_functor_trait \
   test_hide \
   test_limit_reference \
+  test_member_method_trait \
   test_mem_fun \
   test_ptr_fun \
   test_retype \
@@ -79,6 +80,7 @@ test_exception_catch_SOURCES = test_exception_catch.cc $(sigc_test_util)
 test_functor_trait_SOURCES   = test_functor_trait.cc $(sigc_test_util)
 test_hide_SOURCES            = test_hide.cc $(sigc_test_util)
 test_limit_reference_SOURCES = test_limit_reference.cc $(sigc_test_util)
+test_member_method_trait_SOURCES = test_member_method_trait.cc $(sigc_test_util)
 test_mem_fun_SOURCES         = test_mem_fun.cc $(sigc_test_util)
 test_ptr_fun_SOURCES         = test_ptr_fun.cc $(sigc_test_util)
 test_retype_SOURCES          = test_retype.cc $(sigc_test_util)

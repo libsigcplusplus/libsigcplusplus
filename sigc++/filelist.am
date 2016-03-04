@@ -37,6 +37,7 @@ sigc_public_h =				\
 	bind.h				\
 	bind_return.h			\
 	connection.h			\
+	member_method_trait.h \
 	reference_wrapper.h		\
 	retype_return.h			\
 	signal.h \
