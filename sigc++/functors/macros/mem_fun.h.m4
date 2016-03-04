@@ -68,7 +68,10 @@ define([MEM_FUN],[dnl
 template <class T_return, class T_obj, class... T_arg>
 inline decltype(auto)
 mem_fun(T_return (T_obj::*_A_func)(T_arg...) $3)
-{ return [$1]mem_functor<T_return, T_obj, T_arg...>(_A_func); }
+{ return mem_functor_base<
+    T_return (T_obj::*)(T_arg...) $3,
+    [$2] T_obj,
+    T_return, T_obj, T_arg...>(_A_func); }
 
 ])
 define([BOUND_MEM_FUN],[dnl
@@ -201,10 +204,11 @@ protected:
   function_type func_ptr_;
 };
 
+//mem_functor and const_mem_functor are just convenience aliases used in the
+//definition of functor_trait<> specializations. TODO: Remove them?
+
 MEMBER_FUNCTOR([],[],[])
 MEMBER_FUNCTOR([const_],[const],[const])
-MEMBER_FUNCTOR([volatile_],[],[volatile])
-MEMBER_FUNCTOR([const_volatile_],[const],[const volatile])
 
 //TODO: Change T_limit_reference to a template template parameter,
 //but without having to specify both of the limit_reference<typename, typename>
@@ -283,6 +287,7 @@ MEM_FUN([],[],[])
 MEM_FUN([const_],[const],[const])
 MEM_FUN([volatile_],[],[volatile])
 MEM_FUN([const_volatile_],[const],[const volatile])
+
 BOUND_MEM_FUN([],[],[])
 BOUND_MEM_FUN([const_],[const],[const])
 BOUND_MEM_FUN([volatile_],[],[volatile])
