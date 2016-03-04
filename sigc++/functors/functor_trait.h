@@ -1,6 +1,8 @@
 #ifndef _SIGC_FUNCTORS_FUNCTOR_TRAIT_H_
 #define _SIGC_FUNCTORS_FUNCTOR_TRAIT_H_
 #include <sigc++/functors/functor_base.h>
+#include <sigc++/functors/mem_fun.h>
+#include <sigc++/functors/ptr_fun.h>
 #include <sigc++/type_traits.h>
 #include <type_traits>
 
@@ -190,10 +192,6 @@ struct functor_trait<T_functor, false, true>   \
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 // detect the return type and the functor version of non-functor types.
 
-template <class T_return, class... T_args>
-class pointer_functor;
-
-
 //functor ptr fun:
 
 template <class T_return, class... T_arg>
@@ -205,9 +203,6 @@ struct functor_trait<T_return (*)(T_arg...), false, false>
 
 
 //functor mem fun:
-
-template <class T_return, class T_obj, class... T_arg> class mem_functor;
-template <class T_return, class T_obj, class... T_arg> class const_mem_functor;
 
 template <class T_return, class T_obj, class... T_arg>
 struct functor_trait<T_return (T_obj::*)(T_arg...), false, false>
