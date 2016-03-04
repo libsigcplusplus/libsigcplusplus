@@ -18,24 +18,6 @@ divert(-1)
 
 include(template.macros.m4)
 
-
-define([RETYPE_MEM_FUNCTOR],[dnl
-/** Creates an adaptor of type sigc::retype_functor which performs C-style casts on the parameters passed on to the functor.
- * This function template specialization works on sigc::$2[]mem_functor.
- *
- * @param _A_functor Functor that should be wrapped.
- * @return Adaptor that executes @e _A_functor performing C-style casts on the paramters passed on.
- *
- * @ingroup retype
- */
-template <class T_return, class T_obj, class... T_arg>
-inline decltype(auto)
-retype(const $1[]mem_functor<T_return, T_obj, T_arg...>& _A_functor)
-{ return retype_functor<LIST($1[]mem_functor<T_return, T_obj, T_arg...>, T_arg...) >
-    (_A_functor); }
-
-])
-
 divert(0)dnl
 _FIREWALL([ADAPTORS_RETYPE])
 #include <sigc++/adaptors/adaptor_trait.h>
@@ -165,14 +147,38 @@ retype(const pointer_functor<T_return, T_arg...>& _A_functor)
 { return retype_functor<pointer_functor<T_return, T_arg...>, T_arg... >
     (_A_functor); }
 
-RETYPE_MEM_FUNCTOR([])
-RETYPE_MEM_FUNCTOR([const_])
-RETYPE_MEM_FUNCTOR([volatile_])
-RETYPE_MEM_FUNCTOR([const_volatile_])
-RETYPE_MEM_FUNCTOR([bound_])
-RETYPE_MEM_FUNCTOR([bound_const_])
-RETYPE_MEM_FUNCTOR([bound_volatile_])
-RETYPE_MEM_FUNCTOR([bound_const_volatile_])
+
+/** Creates an adaptor of type sigc::retype_functor which performs C-style casts on the parameters passed on to the functor.
+ * This function template specialization works on sigc::mem_functor_base.
+ *
+ * @param _A_functor Functor that should be wrapped.
+ * @return Adaptor that executes @e _A_functor performing C-style casts on the paramters passed on.
+ *
+ * @ingroup retype
+ */
+template <class T_func, class T_obj_with_modifier, class T_return, class T_obj, class... T_arg>
+inline decltype(auto)
+retype(const mem_functor_base<T_func, T_obj_with_modifier, T_return, T_obj, T_arg...>& _A_functor)
+{ return retype_functor<mem_functor_base<T_func, T_obj_with_modifier, T_return, T_obj, T_arg...>, T_arg...>
+    (_A_functor);
+}
+
+/** Creates an adaptor of type sigc::retype_functor which performs C-style casts on the parameters passed on to the functor.
+ * This function template specialization works on sigc::bound_mem_functor_base.
+ *
+ * @param _A_functor Functor that should be wrapped.
+ * @return Adaptor that executes @e _A_functor performing C-style casts on the paramters passed on.
+ *
+ * @ingroup retype
+ */
+template <class T_limit_reference,
+  class T_func, class T_obj_with_modifier,
+  class T_return, class T_obj, class... T_arg>
+inline decltype(auto)
+retype(const bound_mem_functor_base<T_limit_reference, T_func, T_obj_with_modifier, T_return, T_obj, T_arg...>& _A_functor)
+{ return retype_functor<bound_mem_functor_base<T_limit_reference, T_func, T_obj_with_modifier, T_return, T_obj, T_arg...>, T_arg...>
+    (_A_functor);
+}
 
 } /* namespace sigc */
 
