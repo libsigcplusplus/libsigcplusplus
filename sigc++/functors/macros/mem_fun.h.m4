@@ -260,7 +260,7 @@ public:
   operator()(type_trait_take_t<T_arg>... _A_a) const
     { return (obj_.invoke().*(this->func_ptr_))(_A_a...); }
 
-//protected: TODO?
+//protected:
   // Reference to stored object instance.
   // This is the handler object, such as TheObject in void TheObject::signal_handler().
   T_limit_reference obj_;
