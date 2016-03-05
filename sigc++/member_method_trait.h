@@ -111,6 +111,38 @@ struct member_method_class<T_result(T_obj::*)(T_arg...) const volatile>
   using type = T_obj;
 };
 
+
+//member method result:
+
+template <class T_result, class... T_arg>
+struct member_method_result
+{
+};
+
+template <class T_obj, class T_result, class... T_arg>
+struct member_method_result<T_result(T_obj::*)(T_arg...)>
+{
+  using type = T_result;
+};
+
+template <class T_obj, class T_result, class... T_arg>
+struct member_method_result<T_result(T_obj::*)(T_arg...) volatile>
+{
+  using type = T_result;
+};
+
+template <class T_obj, class T_result, class... T_arg>
+struct member_method_result<T_result(T_obj::*)(T_arg...) const>
+{
+  using type = T_result;
+};
+
+template <class T_obj, class T_result, class... T_arg>
+struct member_method_result<T_result(T_obj::*)(T_arg...) const volatile>
+{
+  using type = T_result;
+};
+
 } /* namespace sigc */
 
 #endif /* _SIGC_MEMBER_METHOD_TRAITS_H_ */

@@ -16,6 +16,9 @@ public:
   void some_const_func(int a) const;
   void some_volatile_func(int a) volatile;
   void some_const_volatile_func(int a) const volatile;
+
+  int some_int_func();
+  bool some_bool_func();
 };
 
 } // end anonymous namespace
@@ -58,6 +61,18 @@ void test_member_method_class_type()
     "member_method_class_type failed to identify the class type.");
 }
 
+void test_member_method_result_type()
+{
+  static_assert(std::is_same<
+    sigc::member_method_result<decltype(&Something::some_int_func)>::type,
+    int>::value,
+    "member_method_result_type failed to identify the result type.");
+
+  static_assert(std::is_same<
+    sigc::member_method_result<decltype(&Something::some_bool_func)>::type,
+    bool>::value,
+    "member_method_result_type failed to identify the result type.");
+}
 
 int main()
 {
@@ -65,6 +80,7 @@ int main()
   test_member_method_is_volatile();
 
   test_member_method_class_type();
+  test_member_method_result_type();
 
   return EXIT_SUCCESS;
 }
