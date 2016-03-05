@@ -40,7 +40,7 @@ define([LIMIT_REFERENCE],[dnl
  * - @e T_type The type of the reference.
  */
 template <class T_type>
-using [$1]limit_reference = limit_reference_base<[$2]T_type, [$3]T_type, [$2]trackable>;
+using [$1]limit_reference = limit_reference_base<[$2]T_type, [$3]T_type>;
 ])
 
 divert(0)
@@ -73,7 +73,7 @@ namespace sigc {
  *
  * - @e T_type The type of the reference.
  */
-template <class T_type, class T_type_invoke_result, class T_trackable,
+template <class T_type, class T_type_invoke_result,
           bool I_derives_trackable =
             std::is_base_of<trackable, std::decay_t<T_type>>::value>
 class limit_reference_base
@@ -109,8 +109,8 @@ private:
 /** limit_reference_base object for a class that derives from trackable.
  * - @e T_type The type of the reference.
  */
-template <class T_type, class T_type_invoke_result, class T_trackable>
-class limit_reference_base<T_type, T_type_invoke_result, T_trackable, true>
+template <class T_type, class T_type_invoke_result>
+class limit_reference_base<T_type, T_type_invoke_result, true>
 {
 public:
   /** Constructor.
@@ -136,9 +136,12 @@ public:
     { return invoked; }
 
 private:
+  using trackable_type = typename std::conditional_t<
+    std::is_const<T_type>::value, const trackable, trackable>;
+
   /** The trackable reference.
    */
-  T_trackable& visited;
+  trackable_type& visited;
 
   /** The reference.
    */
@@ -154,12 +157,12 @@ private:
  * @param _A_action The functor to invoke.
  * @param _A_target The visited instance.
  */
-template <class T_type, class T_type_invoke_result, class T_trackable>
-struct visitor<limit_reference_base<T_type, T_type_invoke_result, T_trackable> >
+template <class T_type, class T_type_invoke_result>
+struct visitor<limit_reference_base<T_type, T_type_invoke_result> >
 {
   template <class T_action>
   static void do_visit_each(const T_action& _A_action,
-                            const limit_reference_base<T_type, T_type_invoke_result, T_trackable>& _A_target)
+                            const limit_reference_base<T_type, T_type_invoke_result>& _A_target)
   {
     sigc::visit_each(_A_action, _A_target.visit());
   }
