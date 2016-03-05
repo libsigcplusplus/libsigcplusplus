@@ -80,7 +80,36 @@ struct member_method_is_volatile<T_result (T_obj::*)(T_arg...) const volatile>
 };
 
 
+//member method class:
 
+template <class T_result, class... T_arg>
+struct member_method_class
+{
+};
+
+template <class T_obj, class T_result, class... T_arg>
+struct member_method_class<T_result(T_obj::*)(T_arg...)>
+{
+  using type = T_obj;
+};
+
+template <class T_obj, class T_result, class... T_arg>
+struct member_method_class<T_result(T_obj::*)(T_arg...) volatile>
+{
+  using type = T_obj;
+};
+
+template <class T_obj, class T_result, class... T_arg>
+struct member_method_class<T_result(T_obj::*)(T_arg...) const>
+{
+  using type = T_obj;
+};
+
+template <class T_obj, class T_result, class... T_arg>
+struct member_method_class<T_result(T_obj::*)(T_arg...) const volatile>
+{
+  using type = T_obj;
+};
 
 } /* namespace sigc */
 
