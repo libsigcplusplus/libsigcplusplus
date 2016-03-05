@@ -93,7 +93,7 @@ public:
   /** Retrieve the entity to visit in visit_each().
    * @return The limited_reference to the bound argument.
    */
-  inline const limit_reference_base<T_wrapped>& visit() const
+  inline const limit_reference<T_wrapped>& visit() const
     { return visited_; }
 
   /** Retrieve the entity to pass to the bound functor or return.
@@ -105,7 +105,7 @@ public:
 private:
   /** The limited_reference to the bound argument.
    */
-  limit_reference_base<T_wrapped> visited_;
+  limit_reference<T_wrapped> visited_;
 };
 
 /** bound_argument object for a bound argument that is passed by bind() or
@@ -126,7 +126,7 @@ public:
   /** Retrieve the entity to visit in visit_each().
    * @return The const_limited_reference to the bound argument.
    */
-  inline const limit_reference_base<const T_wrapped>& visit() const
+  inline const limit_reference<const T_wrapped>& visit() const
     { return visited_; }
 
   /** Retrieve the entity to pass to the bound functor or return.
@@ -138,7 +138,7 @@ public:
 private:
   /** The const_limited_reference to the bound argument.
    */
-  limit_reference_base<const T_wrapped> visited_;
+  limit_reference<const T_wrapped> visited_;
 };
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS

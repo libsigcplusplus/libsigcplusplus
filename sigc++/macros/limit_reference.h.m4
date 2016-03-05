@@ -28,7 +28,7 @@ _FIREWALL([LIMIT_REFERENCE])
 
 namespace sigc {
 
-/** A limit_reference_base<Foo> object stores a reference (Foo&), but makes sure that,
+/** A limit_reference<Foo> object stores a reference (Foo&), but makes sure that,
  * if Foo inherits from sigc::trackable, then visit_each<>() will "limit" itself to the
  * sigc::trackable reference instead of the derived reference. This avoids use of
  * a reference to the derived type when the derived destructor has run. That can be
@@ -51,7 +51,7 @@ namespace sigc {
 template <class T_type,
           bool I_derives_trackable =
             std::is_base_of<trackable, std::decay_t<T_type>>::value>
-class limit_reference_base
+class limit_reference
 {
 public:
   using reference_type = typename std::remove_volatile_t<T_type>;
@@ -59,7 +59,7 @@ public:
   /** Constructor.
    * @param _A_target The reference to limit.
    */
-  limit_reference_base(reference_type& _A_target)
+  limit_reference(reference_type& _A_target)
     : visited(_A_target)
     {}
 
@@ -83,11 +83,11 @@ private:
   reference_type& visited;
 };
 
-/** limit_reference_base object for a class that derives from trackable.
+/** limit_reference object for a class that derives from trackable.
  * - @e T_type The type of the reference.
  */
 template <class T_type>
-class limit_reference_base<T_type, true>
+class limit_reference<T_type, true>
 {
 public:
   using reference_type = typename std::remove_volatile_t<T_type>;
@@ -95,7 +95,7 @@ public:
   /** Constructor.
    * @param _A_target The reference to limit.
    */
-  limit_reference_base(reference_type& _A_target)
+  limit_reference(reference_type& _A_target)
     : visited(_A_target),
       invoked(_A_target)
     {}
@@ -137,11 +137,11 @@ private:
  * @param _A_target The visited instance.
  */
 template <class T_type>
-struct visitor<limit_reference_base<T_type> >
+struct visitor<limit_reference<T_type> >
 {
   template <class T_action>
   static void do_visit_each(const T_action& _A_action,
-                            const limit_reference_base<T_type>& _A_target)
+                            const limit_reference<T_type>& _A_target)
   {
     sigc::visit_each(_A_action, _A_target.visit());
   }
