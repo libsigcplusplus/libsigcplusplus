@@ -179,7 +179,7 @@ public:
   using object_type = typename member_method_class<T_func>::type;
 
   using function_type = T_func;
-  using result_type = std::result_of_t<T_func(object_type*, T_arg...)>;
+  using result_type = typename member_method_result<T_func>::type;
 
   using obj_type_with_modifier = typename std::conditional_t<
     member_method_is_const<T_func>::value, const object_type, object_type>;
