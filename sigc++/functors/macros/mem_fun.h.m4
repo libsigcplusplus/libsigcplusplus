@@ -33,7 +33,7 @@ template<class T_return, class T_obj, class... T_arg>
 using [$1]mem_functor =
   mem_functor_base<
     T_return (T_obj::*)(T_arg...) $2,
-    T_obj, T_arg...>;
+    T_arg...>;
 ])
 
 define([BOUND_MEMBER_FUNCTOR],[dnl
@@ -67,7 +67,7 @@ inline decltype(auto)
 mem_fun(T_return (T_obj::*_A_func)(T_arg...) $3)
 { return mem_functor_base<
     T_return (T_obj::*)(T_arg...) $3,
-    T_obj, T_arg...>(_A_func); }
+    T_arg...>(_A_func); }
 
 ])
 define([BOUND_MEM_FUN],[dnl
@@ -172,15 +172,17 @@ namespace sigc {
  * @ingroup sigcfunctors
  */
 
-template <class T_func, class T_obj, class... T_arg>
+template <class T_func, class... T_arg>
 class mem_functor_base : public functor_base
 {
 public:
+  using object_type = typename member_method_class<T_func>::type;
+
   using function_type = T_func;
-  using result_type = std::result_of_t<T_func(T_obj*, T_arg...)>;
+  using result_type = std::result_of_t<T_func(object_type*, T_arg...)>;
 
   using obj_type_with_modifier = typename std::conditional_t<
-    member_method_is_const<T_func>::value, const T_obj, T_obj>;
+    member_method_is_const<T_func>::value, const object_type, object_type>;
 
   /// Constructs an invalid functor.
   mem_functor_base() : func_ptr_(nullptr) {}
@@ -221,9 +223,9 @@ MEMBER_FUNCTOR([const_],[const])
 template <class T_func,
   class T_obj, class... T_arg>
 class bound_mem_functor_base
-: mem_functor_base<T_func, T_obj, T_arg...>
+: mem_functor_base<T_func, T_arg...>
 {
-  using base_type = mem_functor_base<T_func, T_obj, T_arg...>;
+  using base_type = mem_functor_base<T_func, T_arg...>;
 public:
   using function_type = typename base_type::function_type;
   using result_type = typename base_type::result_type;
