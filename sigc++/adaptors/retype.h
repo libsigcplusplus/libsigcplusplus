@@ -154,10 +154,10 @@ retype(const mem_functor_base<T_func, T_arg...>& _A_functor)
  */
 template <
   class T_func,
-  class T_obj, class... T_arg>
+  class... T_arg>
 inline decltype(auto)
-retype(const bound_mem_functor_base<T_func, T_obj, T_arg...>& _A_functor)
-{ return retype_functor<bound_mem_functor_base<T_func, T_obj, T_arg...>, T_arg...>
+retype(const bound_mem_functor_base<T_func, T_arg...>& _A_functor)
+{ return retype_functor<bound_mem_functor_base<T_func, T_arg...>, T_arg...>
     (_A_functor);
 }
 
