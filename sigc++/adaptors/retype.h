@@ -152,12 +152,12 @@ retype(const mem_functor_base<T_func, T_return, T_obj, T_arg...>& _A_functor)
  *
  * @ingroup retype
  */
-template <class T_limit_reference,
+template <
   class T_func,
   class T_return, class T_obj, class... T_arg>
 inline decltype(auto)
-retype(const bound_mem_functor_base<T_limit_reference, T_func, T_return, T_obj, T_arg...>& _A_functor)
-{ return retype_functor<bound_mem_functor_base<T_limit_reference, T_func, T_return, T_obj, T_arg...>, T_arg...>
+retype(const bound_mem_functor_base<T_func, T_return, T_obj, T_arg...>& _A_functor)
+{ return retype_functor<bound_mem_functor_base<T_func, T_return, T_obj, T_arg...>, T_arg...>
     (_A_functor);
 }
 

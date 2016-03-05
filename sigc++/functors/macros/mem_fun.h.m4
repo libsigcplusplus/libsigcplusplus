@@ -51,7 +51,6 @@ define([BOUND_MEMBER_FUNCTOR],[dnl
 template<class T_return, class T_obj, class... T_arg>
 using bound_[$1]mem_functor =
   bound_mem_functor_base<
-    limit_reference<$2 T_obj>,
     T_return (T_obj::*)(T_arg...) $2,
     T_return, T_obj, T_arg...>;
 ])
@@ -84,7 +83,6 @@ inline decltype(auto)
 mem_fun(/*$2*/ T_obj* _A_obj, T_return (T_obj2::*_A_func)(T_arg...) $3)
 {
   return bound_mem_functor_base<
-    limit_reference<$3 T_obj>,
     T_return (T_obj::*)(T_arg...) $3,
     T_return, T_obj, T_arg...>(_A_obj, _A_func);
 }
@@ -101,7 +99,6 @@ inline decltype(auto)
 mem_fun(/*$2*/ T_obj& _A_obj, T_return (T_obj2::*_A_func)(T_arg...) $3)
 {
   return bound_mem_functor_base<
-    limit_reference<$3 T_obj>,
     T_return (T_obj::*)(T_arg...) $3,
     T_return, T_obj, T_arg...>(_A_obj, _A_func);
 }
@@ -221,11 +218,7 @@ protected:
 MEMBER_FUNCTOR([],[])
 MEMBER_FUNCTOR([const_],[const])
 
-//TODO: Change T_limit_reference to a template template parameter,
-//but without having to specify both of the limit_reference<typename, typename>
-//typenames?
-template <class T_limit_reference,
-  class T_func,
+template <class T_func,
   class T_return, class T_obj, class... T_arg>
 class bound_mem_functor_base
 : mem_functor_base<T_func, T_return, T_obj, T_arg...>
@@ -237,6 +230,9 @@ public:
 
   using obj_type_with_modifier = typename std::conditional_t<
     member_method_is_const<T_func>::value, const T_obj, T_obj>;
+  using T_limit_reference = typename std::conditional_t<
+    member_method_is_const<T_func>::value,
+      limit_reference<const T_obj>, limit_reference<T_obj>>;
 
   /** Constructs a bound_mem_functor_base object that wraps the passed method.
    * @param _A_obj Pointer to instance the method will operate on.
@@ -267,7 +263,6 @@ public:
 //protected: TODO?
   // Reference to stored object instance.
   // This is the handler object, such as TheObject in void TheObject::signal_handler().
-  //TODO? T_limit_reference<T_obj> obj_;
   T_limit_reference obj_;
 };
 
