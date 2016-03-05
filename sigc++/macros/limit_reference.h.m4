@@ -71,15 +71,15 @@ namespace sigc {
  * This is used for bound (sigc::bind) slot parameters (via bound_argument), bound return values,
  * and, with mem_fun(), the reference to the handling object.
  *
- * - @e T_type_invoke_result The type of the reference.
+ * - @e T_type The type of the reference.
  */
-template <class T_type_invoke_result,
+template <class T_type,
           bool I_derives_trackable =
-            std::is_base_of<trackable, std::decay_t<T_type_invoke_result>>::value>
+            std::is_base_of<trackable, std::decay_t<T_type>>::value>
 class limit_reference_base
 {
 public:
-  using reference_type = typename std::remove_volatile_t<T_type_invoke_result>;
+  using reference_type = typename std::remove_volatile_t<T_type>;
 
   /** Constructor.
    * @param _A_target The reference to limit.
@@ -89,7 +89,7 @@ public:
     {}
 
   /** Retrieve the entity to visit for visit_each().
-   * Depending on the template specialization, this is either a derived reference, or sigc::trackable& if T_type_invoke_result derives from sigc::trackable.
+   * Depending on the template specialization, this is either a derived reference, or sigc::trackable& if T_type derives from sigc::trackable.
    * @return The reference.
    */
   inline const reference_type& visit() const
@@ -99,7 +99,7 @@ public:
    * This is always a reference to the derived instance.
    * @return The reference.
    */
-  inline T_type_invoke_result& invoke() const
+  inline T_type& invoke() const
     { return visited; }
 
 private:
@@ -111,11 +111,11 @@ private:
 /** limit_reference_base object for a class that derives from trackable.
  * - @e T_type The type of the reference.
  */
-template <class T_type_invoke_result>
-class limit_reference_base<T_type_invoke_result, true>
+template <class T_type>
+class limit_reference_base<T_type, true>
 {
 public:
-  using reference_type = typename std::remove_volatile_t<T_type_invoke_result>;
+  using reference_type = typename std::remove_volatile_t<T_type>;
 
   /** Constructor.
    * @param _A_target The reference to limit.
@@ -136,7 +136,7 @@ public:
    * This is always a reference to the derived instance.
    * @return The reference.
    */
-  inline T_type_invoke_result& invoke() const
+  inline T_type& invoke() const
     { return invoked; }
 
 private:
@@ -156,17 +156,17 @@ private:
 /** Implementation of visitor specialized for the [$1]limit_reference
  * class, to call visit_each() on the entity returned by the [$1]limit_reference's
  * visit() method.
- * @tparam T_type_invoke_result The type of the reference
+ * @tparam T_type The type of the reference
  * @tparam T_action The type of functor to invoke.
  * @param _A_action The functor to invoke.
  * @param _A_target The visited instance.
  */
-template <class T_type_invoke_result>
-struct visitor<limit_reference_base<T_type_invoke_result> >
+template <class T_type>
+struct visitor<limit_reference_base<T_type> >
 {
   template <class T_action>
   static void do_visit_each(const T_action& _A_action,
-                            const limit_reference_base<T_type_invoke_result>& _A_target)
+                            const limit_reference_base<T_type>& _A_target)
   {
     sigc::visit_each(_A_action, _A_target.visit());
   }
