@@ -19,7 +19,7 @@ divert(-1)
 include(template.macros.m4)
 
 define([LIMIT_REFERENCE],[dnl
-/** A [$1]limit_reference<Foo> object stores a reference (Foo&), but make sure that,
+/** A [$1]limit_reference<Foo> object stores a reference (Foo&), but makes sure that,
  * if Foo inherits from sigc::trackable, then visit_each<>() will "limit" itself to the
  * sigc::trackable reference instead of the derived reference. This avoids use of
  * a reference to the derived type when the derived destructor has run. That can be
@@ -40,7 +40,7 @@ define([LIMIT_REFERENCE],[dnl
  * - @e T_type The type of the reference.
  */
 template <class T_type>
-using [$1]limit_reference = limit_reference_base<[$2]T_type, [$3]T_type>;
+using [$1]limit_reference = limit_reference_base<[$3]T_type>;
 ])
 
 divert(0)
@@ -53,7 +53,7 @@ _FIREWALL([LIMIT_REFERENCE])
 
 namespace sigc {
 
-/** A limit_reference_base<Foo> object stores a reference (Foo&), but make sure that,
+/** A limit_reference_base<Foo> object stores a reference (Foo&), but makes sure that,
  * if Foo inherits from sigc::trackable, then visit_each<>() will "limit" itself to the
  * sigc::trackable reference instead of the derived reference. This avoids use of
  * a reference to the derived type when the derived destructor has run. That can be
@@ -71,26 +71,28 @@ namespace sigc {
  * This is used for bound (sigc::bind) slot parameters (via bound_argument), bound return values,
  * and, with mem_fun(), the reference to the handling object.
  *
- * - @e T_type The type of the reference.
+ * - @e T_type_invoke_result The type of the reference.
  */
-template <class T_type, class T_type_invoke_result,
+template <class T_type_invoke_result,
           bool I_derives_trackable =
-            std::is_base_of<trackable, std::decay_t<T_type>>::value>
+            std::is_base_of<trackable, std::decay_t<T_type_invoke_result>>::value>
 class limit_reference_base
 {
 public:
+  using reference_type = typename std::remove_volatile_t<T_type_invoke_result>;
+
   /** Constructor.
    * @param _A_target The reference to limit.
    */
-  limit_reference_base(T_type& _A_target)
+  limit_reference_base(reference_type& _A_target)
     : visited(_A_target)
     {}
 
   /** Retrieve the entity to visit for visit_each().
-   * Depending on the template specialization, this is either a derived reference, or sigc::trackable& if T_type derives from sigc::trackable.
+   * Depending on the template specialization, this is either a derived reference, or sigc::trackable& if T_type_invoke_result derives from sigc::trackable.
    * @return The reference.
    */
-  inline const T_type& visit() const
+  inline const reference_type& visit() const
     { return visited; }
 
   /** Retrieve the reference.
@@ -103,20 +105,22 @@ public:
 private:
   /** The reference.
    */
-  T_type& visited;
+  reference_type& visited;
 };
 
 /** limit_reference_base object for a class that derives from trackable.
  * - @e T_type The type of the reference.
  */
-template <class T_type, class T_type_invoke_result>
-class limit_reference_base<T_type, T_type_invoke_result, true>
+template <class T_type_invoke_result>
+class limit_reference_base<T_type_invoke_result, true>
 {
 public:
+  using reference_type = typename std::remove_volatile_t<T_type_invoke_result>;
+
   /** Constructor.
    * @param _A_target The reference to limit.
    */
-  limit_reference_base(T_type& _A_target)
+  limit_reference_base(reference_type& _A_target)
     : visited(_A_target),
       invoked(_A_target)
     {}
@@ -137,7 +141,7 @@ public:
 
 private:
   using trackable_type = typename std::conditional_t<
-    std::is_const<T_type>::value, const trackable, trackable>;
+    std::is_const<reference_type>::value, const trackable, trackable>;
 
   /** The trackable reference.
    */
@@ -145,24 +149,24 @@ private:
 
   /** The reference.
    */
-  T_type& invoked;
+  reference_type& invoked;
 };
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 /** Implementation of visitor specialized for the [$1]limit_reference
  * class, to call visit_each() on the entity returned by the [$1]limit_reference's
  * visit() method.
- * @tparam T_type The type of the reference.
+ * @tparam T_type_invoke_result The type of the reference
  * @tparam T_action The type of functor to invoke.
  * @param _A_action The functor to invoke.
  * @param _A_target The visited instance.
  */
-template <class T_type, class T_type_invoke_result>
-struct visitor<limit_reference_base<T_type, T_type_invoke_result> >
+template <class T_type_invoke_result>
+struct visitor<limit_reference_base<T_type_invoke_result> >
 {
   template <class T_action>
   static void do_visit_each(const T_action& _A_action,
-                            const limit_reference_base<T_type, T_type_invoke_result>& _A_target)
+                            const limit_reference_base<T_type_invoke_result>& _A_target)
   {
     sigc::visit_each(_A_action, _A_target.visit());
   }

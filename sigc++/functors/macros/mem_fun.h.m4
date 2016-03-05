@@ -51,7 +51,7 @@ define([BOUND_MEMBER_FUNCTOR],[dnl
 template<class T_return, class T_obj, class... T_arg>
 using bound_[$1]mem_functor =
   bound_mem_functor_base<
-    limit_reference_base<$2 T_obj, $2 T_obj>,
+    limit_reference_base<$2 T_obj>,
     T_return (T_obj::*)(T_arg...) $2,
     T_return, T_obj, T_arg...>;
 ])
@@ -84,7 +84,7 @@ inline decltype(auto)
 mem_fun(/*$2*/ T_obj* _A_obj, T_return (T_obj2::*_A_func)(T_arg...) $3)
 {
   return bound_mem_functor_base<
-    limit_reference_base<$2 T_obj, $3 T_obj>,
+    limit_reference_base<$3 T_obj>,
     T_return (T_obj::*)(T_arg...) $3,
     T_return, T_obj, T_arg...>(_A_obj, _A_func);
 }
@@ -101,7 +101,7 @@ inline decltype(auto)
 mem_fun(/*$2*/ T_obj& _A_obj, T_return (T_obj2::*_A_func)(T_arg...) $3)
 {
   return bound_mem_functor_base<
-    limit_reference_base<$2 T_obj, $3 T_obj>,
+    limit_reference_base<$3 T_obj>,
     T_return (T_obj::*)(T_arg...) $3,
     T_return, T_obj, T_arg...>(_A_obj, _A_func);
 }
