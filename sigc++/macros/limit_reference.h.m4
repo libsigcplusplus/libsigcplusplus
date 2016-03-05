@@ -40,7 +40,7 @@ define([LIMIT_REFERENCE],[dnl
  * - @e T_type The type of the reference.
  */
 template <class T_type>
-using [$1]limit_reference = limit_reference_base<[$3]T_type>;
+using [$1]limit_reference = limit_reference_base<[$2]T_type>;
 ])
 
 divert(0)
@@ -176,16 +176,13 @@ struct visitor<limit_reference_base<T_type> >
 
 
 
-LIMIT_REFERENCE([],[],[])dnl
+LIMIT_REFERENCE([],[])dnl
 
+LIMIT_REFERENCE([const_],[const ])dnl
 
-LIMIT_REFERENCE([const_],[const ],[const ])dnl
+LIMIT_REFERENCE([volatile_],[volatile ])dnl
 
-
-LIMIT_REFERENCE([volatile_],[],[volatile ])dnl
-
-
-LIMIT_REFERENCE([const_volatile_],[const ],[const volatile ])dnl
+LIMIT_REFERENCE([const_volatile_],[const volatile ])dnl
 
 } /* namespace sigc */
 
