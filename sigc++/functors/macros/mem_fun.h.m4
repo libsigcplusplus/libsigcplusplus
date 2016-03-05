@@ -51,7 +51,7 @@ define([BOUND_MEMBER_FUNCTOR],[dnl
 template<class T_return, class T_obj, class... T_arg>
 using bound_[$1]mem_functor =
   bound_mem_functor_base<
-    [$1]limit_reference<T_obj>,
+    limit_reference_base<$2 T_obj, $2 T_obj>,
     T_return (T_obj::*)(T_arg...) $2,
     T_return, T_obj, T_arg...>;
 ])
