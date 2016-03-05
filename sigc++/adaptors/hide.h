@@ -85,7 +85,7 @@ struct hide_functor : public adapts<T_functor>
 
        const auto t_start = internal::tuple_start<index_ignore>(t);
        const auto t_end = internal::tuple_end<size - index_ignore - 1>(t);
-       auto t_used = std::tuple_cat(t_start, t_end); //TODO: Let this be const?
+       const auto t_used = std::tuple_cat(t_start, t_end);
 
        //This is so we can specify a particular instantiation of the functor's
        //operator().
