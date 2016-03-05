@@ -2,7 +2,6 @@
 #define _SIGC_ADAPTORS_HIDE_H_
 
 #include <sigc++/adaptors/adaptor_trait.h>
-#include <sigc++/tuple-utils/tuple_cat.h>
 #include <sigc++/tuple-utils/tuple_end.h>
 #include <sigc++/tuple-utils/tuple_start.h>
 
@@ -87,22 +86,13 @@ struct hide_functor : public adapts<T_functor>
        const auto t_end = internal::tuple_end<size - index_ignore - 1>(t);
        const auto t_used = std::tuple_cat(t_start, t_end);
 
-       //This is so we can specify a particular instantiation of the functor's
-       //operator().
-       //TODO: Avoid this if it no longer necessary.
-       using t_type = std::tuple<type_trait_pass_t<T_arg>...>;
-       using t_type_start = typename internal::tuple_type_start<t_type, index_ignore>::type;
-       using t_type_end = typename internal::tuple_type_end<t_type, size - index_ignore - 1>::type;
-       using t_type_used = typename internal::tuple_type_cat<t_type_start, t_type_end>::type;
-
        constexpr auto size_used = size - 1;
 
        //TODO: Remove these? They are just here as a sanity check.
-       static_assert(std::tuple_size<t_type_used>::value == size_used, "Unexpected t_type_used size.");
        static_assert(std::tuple_size<decltype(t_used)>::value == size_used, "Unexpected t_used size.");
 
        const auto seq = std::make_index_sequence<size_used>();
-       return call_functor_operator_parentheses<t_type_used>(t_used, seq);
+       return call_functor_operator_parentheses(t_used, seq);
     }
 
   /** Constructs a hide_functor object that adds a dummy parameter to the passed functor.
@@ -115,12 +105,12 @@ struct hide_functor : public adapts<T_functor>
 private:
   //TODO_variadic: Replace this with std::experimental::apply() if that becomes standard
   //C++, or add our own implementation, to avoid code duplication.
-  template<class T_tuple_specific, class T_tuple, std::size_t... Is>
+  template<class T_tuple, std::size_t... Is>
   decltype(auto)
   call_functor_operator_parentheses(T_tuple& tuple,
     std::index_sequence<Is...>)
   {
-    return this->functor_.template operator()<typename std::tuple_element<Is, T_tuple_specific>::type...>(std::get<Is>(tuple)...);
+    return this->functor_.template operator()(std::get<Is>(tuple)...);
   }
 };
 
