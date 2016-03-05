@@ -16,9 +16,7 @@
 ## along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 # Base (./)
-base_m4 = template.macros.m4 limit_reference.h.m4
-base_built_cc =
-base_built_h = limit_reference.h
+base_m4 = template.macros.m4
 
 # Functors (functors/)
 functors_m4 = mem_fun.h.m4
@@ -28,15 +26,14 @@ functors_built_h = mem_fun.h
 # Combine all the above parts with right directories prefixed
 sigc_m4 = $(base_m4:%=macros/%) \
 	  $(functors_m4:%=functors/macros/%)
-sigc_built_cc = $(base_built_cc) \
-	  $(functors_built_cc:%=functors/%)
-sigc_built_h = $(base_built_h) \
-	  $(functors_built_h:%=functors/%)
+sigc_built_cc = $(functors_built_cc:%=functors/%)
+sigc_built_h = $(functors_built_h:%=functors/%)
 
 sigc_public_h =				\
 	bind.h				\
 	bind_return.h			\
 	connection.h			\
+	limit_reference.h \
 	member_method_trait.h \
 	reference_wrapper.h		\
 	retype_return.h			\
