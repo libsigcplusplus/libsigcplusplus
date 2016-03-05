@@ -83,7 +83,7 @@ public:
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 //protected:
   // public, so that visit_each() can access it.
-  std::tuple<const_limit_reference<T_obj>...> obj_;
+  std::tuple<limit_reference_base<const T_obj>...> obj_;
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
 }; // end class track_obj_functor

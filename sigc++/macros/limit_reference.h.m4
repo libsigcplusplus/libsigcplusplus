@@ -18,31 +18,6 @@ divert(-1)
 
 include(template.macros.m4)
 
-define([LIMIT_REFERENCE],[dnl
-/** A [$1]limit_reference<Foo> object stores a reference (Foo&), but makes sure that,
- * if Foo inherits from sigc::trackable, then visit_each<>() will "limit" itself to the
- * sigc::trackable reference instead of the derived reference. This avoids use of
- * a reference to the derived type when the derived destructor has run. That can be
- * a problem when using virtual inheritance.
- *
- * If Foo inherits from trackable then both the derived reference and the
- * sigc::trackable reference are stored, so we can later retrieve the sigc::trackable
- * reference without doing an implicit conversion. To retrieve the derived reference
- * (so that you invoke methods or members of it), use invoke(). To retrieve the trackable
- * reference (so that you can call visit_each() on it), you use visit().
- *
- * If Foo does not inherit from sigc::trackable then invoke() and visit() just return the
- * derived reference.
- *
- * This is used for bound (sigc::bind) slot parameters (via bound_argument), bound return values,
- * and, with mem_fun(), the reference to the handling object.
- *
- * - @e T_type The type of the reference.
- */
-template <class T_type>
-using [$1]limit_reference = limit_reference_base<[$2]T_type>;
-])
-
 divert(0)
 
 _FIREWALL([LIMIT_REFERENCE])
@@ -172,17 +147,6 @@ struct visitor<limit_reference_base<T_type> >
   }
 };
 #endif // DOXYGEN_SHOULD_SKIP_THIS
-
-
-
-
-LIMIT_REFERENCE([],[])dnl
-
-LIMIT_REFERENCE([const_],[const ])dnl
-
-LIMIT_REFERENCE([volatile_],[volatile ])dnl
-
-LIMIT_REFERENCE([const_volatile_],[const volatile ])dnl
 
 } /* namespace sigc */
 
