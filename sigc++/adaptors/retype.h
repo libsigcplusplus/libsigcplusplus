@@ -137,10 +137,10 @@ retype(const pointer_functor<T_return, T_arg...>& _A_functor)
  *
  * @ingroup retype
  */
-template <class T_func, class T_return, class T_obj, class... T_arg>
+template <class T_func, class T_obj, class... T_arg>
 inline decltype(auto)
-retype(const mem_functor_base<T_func, T_return, T_obj, T_arg...>& _A_functor)
-{ return retype_functor<mem_functor_base<T_func, T_return, T_obj, T_arg...>, T_arg...>
+retype(const mem_functor_base<T_func, T_obj, T_arg...>& _A_functor)
+{ return retype_functor<mem_functor_base<T_func, T_obj, T_arg...>, T_arg...>
     (_A_functor);
 }
 
