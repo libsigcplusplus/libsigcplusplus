@@ -84,7 +84,7 @@ mem_fun(/*$2*/ T_obj* _A_obj, T_return (T_obj2::*_A_func)(T_arg...) $3)
 {
   return bound_mem_functor_base<
     T_return (T_obj::*)(T_arg...) $3,
-    T_arg...>(_A_obj, _A_func);
+    T_arg...>(*_A_obj, _A_func);
 }
 
 /** Creates a functor of type sigc::bound_[$1]mem_functor which encapsulates a method and an object instance.
@@ -237,15 +237,6 @@ public:
   using T_limit_reference = typename std::conditional_t<
     member_method_is_const<T_func>::value,
       limit_reference<const object_type>, limit_reference<object_type>>;
-
-  /** Constructs a bound_mem_functor_base object that wraps the passed method.
-   * @param _A_obj Pointer to instance the method will operate on.
-   * @param _A_func Pointer to method will be invoked from operator()().
-   */
-  bound_mem_functor_base(obj_type_with_modifier* _A_obj, function_type _A_func)
-    : base_type(_A_func),
-      obj_(*_A_obj)
-    {}
 
   /** Constructs a bound_mem_functor_base object that wraps the passed method.
    * @param _A_obj Reference to instance the method will operate on.
