@@ -18,24 +18,6 @@ divert(-1)
 
 include(template.macros.m4)
 
-define([MEMBER_FUNCTOR],[dnl
-/** [$1]mem_functor wraps $2 methods with argument(s).
- * Use the convenience function mem_fun() to create an instance of [$1]mem_functor.
- *
- * The following template arguments are used:
- * - @e T_arg... Argument types used in the definition of operator()().
- * - @e T_return The return type of operator()().
- * - @e T_obj The object type.
- *
- * @ingroup mem_fun
- */
-template<class T_return, class T_obj, class... T_arg>
-using [$1]mem_functor =
-  mem_functor_base<
-    T_return (T_obj::*)(T_arg...) $2,
-    T_arg...>;
-])
-
 define([MEM_FUN],[dnl
 /** Creates a functor of type sigc::[$1]mem_functor which wraps a $3 method.
  * @param _A_func Pointer to method that should be wrapped.
@@ -195,11 +177,6 @@ protected:
   function_type func_ptr_;
 };
 
-//mem_functor and const_mem_functor are just convenience aliases used in the
-//definition of functor_trait<> specializations. TODO: Remove them?
-
-MEMBER_FUNCTOR([],[])
-MEMBER_FUNCTOR([const_],[const])
 
 template <class T_func,
   class... T_arg>

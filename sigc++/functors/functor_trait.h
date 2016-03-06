@@ -208,14 +208,18 @@ template <class T_return, class T_obj, class... T_arg>
 struct functor_trait<T_return (T_obj::*)(T_arg...), false, false>
 {
   using result_type = T_return;
-  using functor_type = mem_functor<T_return, T_obj, T_arg...>;
+  using functor_type = mem_functor_base<
+    T_return (T_obj::*)(T_arg...),
+    T_arg...>;
 };
 
 template <class T_return, class T_obj, class... T_arg>
 struct functor_trait<T_return (T_obj::*)(T_arg...) const, false, false>
 {
   using result_type = T_return;
-  using functor_type = const_mem_functor<T_return, T_obj, T_arg...>;
+  using functor_type = mem_functor_base<
+    T_return (T_obj::*)(T_arg...) const,
+    T_arg...>;
 };
 
 #endif // DOXYGEN_SHOULD_SKIP_THIS
