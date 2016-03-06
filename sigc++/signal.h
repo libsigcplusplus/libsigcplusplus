@@ -923,7 +923,7 @@ public:
    */
   decltype(auto) make_slot() const
     {
-      return bound_mem_functor_base<
+      return bound_mem_functor<
         result_type (signal_with_accumulator::*)(type_trait_take_t<T_arg>...) const,
         type_trait_take_t<T_arg>...>(*this, &signal_with_accumulator::emit);
     }

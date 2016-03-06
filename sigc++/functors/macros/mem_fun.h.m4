@@ -28,7 +28,7 @@ define([MEM_FUN],[dnl
 template <class T_return, class T_obj, class... T_arg>
 inline decltype(auto)
 mem_fun(T_return (T_obj::*_A_func)(T_arg...) $3)
-{ return mem_functor_base<
+{ return mem_functor<
     T_return (T_obj::*)(T_arg...) $3,
     T_arg...>(_A_func); }
 
@@ -45,7 +45,7 @@ template <class T_return, class T_obj, class T_obj2, class... T_arg>
 inline decltype(auto)
 mem_fun(/*$2*/ T_obj* _A_obj, T_return (T_obj2::*_A_func)(T_arg...) $3)
 {
-  return bound_mem_functor_base<
+  return bound_mem_functor<
     T_return (T_obj::*)(T_arg...) $3,
     T_arg...>(*_A_obj, _A_func);
 }
@@ -61,7 +61,7 @@ template <class T_return, class T_obj, class T_obj2, class... T_arg>
 inline decltype(auto)
 mem_fun(/*$2*/ T_obj& _A_obj, T_return (T_obj2::*_A_func)(T_arg...) $3)
 {
-  return bound_mem_functor_base<
+  return bound_mem_functor<
     T_return (T_obj::*)(T_arg...) $3,
     T_arg...>(_A_obj, _A_func);
 }
@@ -136,7 +136,7 @@ namespace sigc {
  */
 
 template <class T_func, class... T_arg>
-class mem_functor_base : public functor_base
+class mem_functor : public functor_base
 {
 public:
   using object_type = typename member_method_class<T_func>::type;
@@ -148,12 +148,12 @@ public:
     member_method_is_const<T_func>::value, const object_type, object_type>;
 
   /// Constructs an invalid functor.
-  mem_functor_base() : func_ptr_(nullptr) {}
+  mem_functor() : func_ptr_(nullptr) {}
 
   /** Constructs a mem_functor object that wraps the passed method.
    * @param _A_func Pointer to method will be invoked from operator()().
    */
-  explicit mem_functor_base(function_type _A_func) : func_ptr_(_A_func) {}
+  explicit mem_functor(function_type _A_func) : func_ptr_(_A_func) {}
 
   /** Execute the wrapped method operating on the passed instance.
    * @param _A_obj Pointer to instance the method should operate on.
@@ -180,10 +180,10 @@ protected:
 
 template <class T_func,
   class... T_arg>
-class bound_mem_functor_base
-: mem_functor_base<T_func, T_arg...>
+class bound_mem_functor
+: mem_functor<T_func, T_arg...>
 {
-  using base_type = mem_functor_base<T_func, T_arg...>;
+  using base_type = mem_functor<T_func, T_arg...>;
 public:
   using function_type = typename base_type::function_type;
   using result_type = typename base_type::result_type;
@@ -196,11 +196,11 @@ public:
     member_method_is_const<T_func>::value,
       limit_reference<const object_type>, limit_reference<object_type>>;
 
-  /** Constructs a bound_mem_functor_base object that wraps the passed method.
+  /** Constructs a bound_mem_functor object that wraps the passed method.
    * @param _A_obj Reference to instance the method will operate on.
    * @param _A_func Pointer to method will be invoked from operator()().
    */
-  bound_mem_functor_base(obj_type_with_modifier& _A_obj, function_type _A_func)
+  bound_mem_functor(obj_type_with_modifier& _A_obj, function_type _A_func)
     : base_type(_A_func),
       obj_(_A_obj)
     {}
@@ -229,11 +229,11 @@ public:
  * @ingroup mem_fun
  */
 template <class T_func, class... T_arg>
-struct visitor<bound_mem_functor_base<T_func, T_arg...> >
+struct visitor<bound_mem_functor<T_func, T_arg...> >
 {
   template <class T_action>
   static void do_visit_each(const T_action& _A_action,
-                            const bound_mem_functor_base<T_func, T_arg...>& _A_target)
+                            const bound_mem_functor<T_func, T_arg...>& _A_target)
   {
     sigc::visit_each(_A_action, _A_target.obj_);
   }
