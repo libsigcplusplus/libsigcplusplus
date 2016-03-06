@@ -34,7 +34,7 @@ typedef void* (*hook)(void*);
  * Derivations of this class can be considered as a link
  * between a slot and the functor that the slot should
  * execute in operator(). This link is needed because in
- * libsigc++2 the slot doesn't necessarily have exactly the
+ * libsigc++ the slot doesn't necessarily have exactly the
  * same function signature as the functor, thus allowing for
  * implicit conversions.
  *
