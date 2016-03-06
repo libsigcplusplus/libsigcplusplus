@@ -922,7 +922,11 @@ public:
    * @return A functor that calls emit() on this signal.
    */
   decltype(auto) make_slot() const
-    { return bound_const_mem_functor<result_type, signal_with_accumulator, type_trait_take_t<T_arg>...>(*this, &signal_with_accumulator::emit); }
+    {
+      return bound_mem_functor_base<
+        result_type (signal_with_accumulator::*)(type_trait_take_t<T_arg>...) const,
+        type_trait_take_t<T_arg>...>(*this, &signal_with_accumulator::emit);
+    }
 
   /** Creates an STL-style interface for the signal's list of slots.
    * This interface supports iteration, insertion and removal of slots.

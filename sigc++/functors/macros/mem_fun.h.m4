@@ -36,25 +36,6 @@ using [$1]mem_functor =
     T_arg...>;
 ])
 
-define([BOUND_MEMBER_FUNCTOR],[dnl
-
-/** bound_[$1]mem_functor encapsulates a $2 method with arguments and an object instance.
- * Use the convenience function mem_fun() to create an instance of bound_[$1]mem_functor.
- *
- * The following template arguments are used:
- * - @e T_arg... Argument type used in the definition of operator()().
- * - @e T_return The return type of operator()().
- * - @e T_obj The object type.
- *
- * @ingroup mem_fun
- */
-template<class T_return, class T_obj, class... T_arg>
-using bound_[$1]mem_functor =
-  bound_mem_functor_base<
-    T_return (T_obj::*)(T_arg...) $2,
-    T_arg...>;
-])
-
 define([MEM_FUN],[dnl
 /** Creates a functor of type sigc::[$1]mem_functor which wraps a $3 method.
  * @param _A_func Pointer to method that should be wrapped.
@@ -281,12 +262,6 @@ struct visitor<bound_mem_functor_base<T_func, T_arg...> >
   }
 };
 #endif // DOXYGEN_SHOULD_SKIP_THIS
-
-
-//bound_const_mem_functor is just a convenience aliases used in the
-//definition of make_slot(). TODO: Remove it?
-
-BOUND_MEMBER_FUNCTOR([const_],[const])
 
 
 MEM_FUN([],[],[])
