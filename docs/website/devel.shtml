@@ -30,7 +30,7 @@ Submit a new libsigc++ bug <a href="http://bugzilla.gnome.org/enter_bug.cgi?prod
 <a name="git"><h3>Version Control</h3></a>
 
 <p>
-libsigc++ is in the <a href="http://git.gnome.org/browse/libsigc++2/">libsigc++2</a> module in gnome's git repository.
+libsigc++ is in the <a href="http://git.gnome.org/browse/libsigcplusplus/">libsigcplusplus</a> module in GNOME's git repository.
 </p>
 
 <!-- SSI fragments/footer.html_fragment begin -->
