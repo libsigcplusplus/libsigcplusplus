@@ -31,7 +31,7 @@ int main(int argc, char* argv[])
   if (!util->check_command_args(argc, argv))
     return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;
 
-  //Note that sigc::ptr_fun() creates a sig::pointer_functor0.
+  //Note that sigc::ptr_fun() creates a sigc::pointer_functor0.
   sigc::slot<void> theSlot(sigc::ptr_fun(&Foo));
   theSlot();
   util->check_result(result_stream, "Foo");
