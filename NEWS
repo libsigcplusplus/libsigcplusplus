@@ -5,6 +5,8 @@ with libsigc++-2.0. The API is not significantly different, but the
 implementation is far simpler, using variadic templates instead of generating
 C++ code from .m4 files.
 
+libsigc++-3.0 requires a compiler with C++14 support.
+
 
 2.7.1 (unstable):
 
