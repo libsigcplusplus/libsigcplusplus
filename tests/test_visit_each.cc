@@ -164,7 +164,7 @@ int main(int argc, char* argv[])
 
   {
     MyClass1 my_class1("x=");
-    sl1 = sigc::mem_fun(&my_class1, &MyClass1::execute);
+    sl1 = sigc::mem_fun(my_class1, &MyClass1::execute);
     sl1(-2);
     util->check_result(result_stream, "x=-2");
 
@@ -176,7 +176,7 @@ int main(int argc, char* argv[])
 #if SIGCTEST_CASE >= 2
   {
     MyClass2 my_class2("y=");
-    sl1 = sigc::mem_fun(&my_class2, &MyClass2::execute);
+    sl1 = sigc::mem_fun(my_class2, &MyClass2::execute);
     sl1(2);
     util->check_result(result_stream, "y=2");
 
@@ -188,7 +188,7 @@ int main(int argc, char* argv[])
 
   {
     MyClass1 my_class3("a=");
-    sl1 = ns1::my_adaptor1(sigc::mem_fun(&my_class3, &MyClass1::execute));
+    sl1 = ns1::my_adaptor1(sigc::mem_fun(my_class3, &MyClass1::execute));
     sl1(42);
     util->check_result(result_stream, "MyAdaptor1()(_A_arg1) a=42");
 

@@ -441,10 +441,10 @@ public:
   {
     result_stream << "new Test; ";
 #ifdef ACTIVATE_BUG //See https://bugzilla.gnome.org/show_bug.cgi?id=564005#c14
-    action->signal_sig1().connect(sigc::bind(sigc::mem_fun(this, &Test::on_sig1), action));
+    action->signal_sig1().connect(sigc::bind(sigc::mem_fun(*this, &Test::on_sig1), action));
 #else
     Glib::RefPtr<Action> action2(new Action);
-    action->signal_sig1().connect(sigc::bind(sigc::mem_fun(this, &Test::on_sig1), action2));
+    action->signal_sig1().connect(sigc::bind(sigc::mem_fun(*this, &Test::on_sig1), action2));
 #endif
   }
 

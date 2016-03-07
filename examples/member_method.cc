@@ -25,7 +25,7 @@ protected:
 
 Something::Something()
 {
-  auto iter = signal_print.connect( sigc::mem_fun(this, &Something::on_print) );
+  auto iter = signal_print.connect( sigc::mem_fun(*this, &Something::on_print) );
 
   signal_print.emit(2);
 
