@@ -11,8 +11,8 @@ It allows you to define signals and to connect those signals to any
 callback function, either global or a member function, regardless of
 whether it is static or virtual.
 
-libsigc++ is used by glibmm and gtkmm to wrap Glib and GTK+ signals.</description>
-  <homepage rdf:resource="http://www.gtkmm.org/" />
+libsigc++ is also used by glibmm and gtkmm to wrap Glib and GTK+ signals.</description>
+  <homepage rdf:resource="http://libsigc.sourceforge.net/" />
   <bug-database rdf:resource="http://bugzilla.gnome.org/browse.cgi?product=libsigc%2B%2B" />
   <mailing-list rdf:resource="mailto:libsigc-list@gnome.org" />
   <category rdf:resource="http://api.gnome.org/doap-extensions#core" />
