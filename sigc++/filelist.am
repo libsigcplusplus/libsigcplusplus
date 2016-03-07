@@ -41,7 +41,6 @@ sigc_public_h =				\
 	signal_base.h			\
 	slot.h			\
 	trackable.h			\
-	tuple-utils/tuple_cat.h \
 	tuple-utils/tuple_cdr.h \
 	tuple-utils/tuple_end.h \
 	tuple-utils/tuple_for_each.h \

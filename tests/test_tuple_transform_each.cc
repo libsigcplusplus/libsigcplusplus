@@ -29,19 +29,6 @@ public:
   }
 };
 
-void
-test_tuple_type_transform_each_same_types() {
-  using type_tuple_original = std::tuple<int, int>;
-  using type_tuple_transformed =
-    sigc::internal::tuple_type_transform_each<type_tuple_original,
-      transform_to_string>::type;
-  using type_tuple_expected = std::tuple<std::string, std::string>;
-
-  static_assert(
-    std::is_same<type_tuple_transformed, type_tuple_expected>::value,
-    "unexpected tuple_transform_each()ed tuple type");
-}
-
 // In these tests, t_expected has elements all of the same type.
 void
 test_tuple_transform_each_same_types() {
@@ -119,19 +106,6 @@ public:
     return std::stoi(from);
   }
 };
-
-void
-test_tuple_type_transform_each_multiple_types() {
-  using type_tuple_original = std::tuple<int, double, std::string>;
-  using type_tuple_transformed =
-    sigc::internal::tuple_type_transform_each<type_tuple_original,
-      transform_to_something>::type;
-  using type_tuple_expected = std::tuple<std::string, char, int>;
-
-  static_assert(
-    std::is_same<type_tuple_transformed, type_tuple_expected>::value,
-    "unexpected tuple_transform_each()ed tuple type");
-}
 
 // In these tests, t_expected has elements of different types.
 void
@@ -290,9 +264,6 @@ test_tuple_transform_each_empty_tuple() {
 
 int
 main() {
-  test_tuple_type_transform_each_same_types();
-  test_tuple_type_transform_each_multiple_types();
-
   test_tuple_transform_each_same_types();
   test_tuple_transform_each_multiple_types();
 

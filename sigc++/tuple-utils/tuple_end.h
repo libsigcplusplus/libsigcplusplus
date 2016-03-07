@@ -26,28 +26,6 @@ namespace internal {
 namespace detail {
 
 template <typename T, std::size_t remove_from_start>
-struct tuple_type_end_impl {
-  using type = typename tuple_type_end_impl<typename tuple_type_cdr<std::decay_t<T>>::type,
-    remove_from_start - 1>::type;
-};
-
-template <typename T>
-struct tuple_type_end_impl<T, 0> {
-  using type = T;
-};
-
-} // detail namespace
-
-/**
- * Get the type of a tuple with the last @a len types of the original.
- */
-template <typename T, std::size_t len>
-struct tuple_type_end
-  : detail::tuple_type_end_impl<T, std::tuple_size<T>::value - len> {};
-
-namespace detail {
-
-template <typename T, std::size_t remove_from_start>
 struct tuple_end_impl {
   static decltype(auto) // typename tuple_type_end<T, size - remove_from_start>::type
   tuple_end(T&& t) {

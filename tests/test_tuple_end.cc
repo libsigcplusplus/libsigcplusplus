@@ -20,42 +20,6 @@
 #include <functional>
 
 void
-test_tuple_type_end() {
-  {
-    using type_tuple = std::tuple<int, short, double>;
-    using type_tuple_end = sigc::internal::tuple_type_end<type_tuple, 1>::type;
-    using type_tuple_expected = std::tuple<double>;
-
-    static_assert(std::tuple_size<type_tuple_end>::value == 1,
-      "unexpected tuple_end()ed tuple size.");
-    static_assert(std::is_same<type_tuple_end, type_tuple_expected>::value,
-      "unexpected type_tuple_end type");
-  }
-
-  {
-    using type_tuple = std::tuple<int, short, double>;
-    using type_tuple_end = sigc::internal::tuple_type_end<type_tuple, 2>::type;
-    using type_tuple_expected = std::tuple<short, double>;
-
-    static_assert(std::tuple_size<type_tuple_end>::value == 2,
-      "unexpected tuple_end()ed tuple size.");
-    static_assert(std::is_same<type_tuple_end, type_tuple_expected>::value,
-      "unexpected type_tuple_end type");
-  }
-
-  {
-    using type_tuple = std::tuple<int, short, double>;
-    using type_tuple_end = sigc::internal::tuple_type_end<type_tuple, 3>::type;
-    using type_tuple_expected = std::tuple<int, short, double>;
-
-    static_assert(std::tuple_size<type_tuple_end>::value == 3,
-      "unexpected tuple_end()ed tuple size.");
-    static_assert(std::is_same<type_tuple_end, type_tuple_expected>::value,
-      "unexpected type_tuple_end type");
-  }
-}
-
-void
 test_tuple_end() {
   {
     auto t_original =
@@ -124,7 +88,6 @@ test_tuple_end_stdref() {
 
 int
 main() {
-  test_tuple_type_end();
   test_tuple_end();
   test_tuple_end_stdref();
 

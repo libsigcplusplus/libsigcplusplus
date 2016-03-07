@@ -17,7 +17,6 @@
 #ifndef SIGC_TUPLE_UTILS_TUPLE_TRANSFORM_EACH_H
 #define SIGC_TUPLE_UTILS_TUPLE_TRANSFORM_EACH_H
 
-#include <sigc++/tuple-utils/tuple_cat.h>
 #include <sigc++/tuple-utils/tuple_cdr.h>
 #include <sigc++/tuple-utils/tuple_end.h>
 #include <sigc++/tuple-utils/tuple_start.h>
@@ -26,66 +25,6 @@
 namespace sigc {
 
 namespace internal {
-
-namespace detail {
-
-template <typename T, template <typename> class T_transformer,
-  std::size_t index>
-struct tuple_type_transform_each_impl {
-private:
-  using from_element_type = typename std::tuple_element<index, T>::type;
-
-  using to_element_type = typename std::result_of<decltype (
-    &T_transformer<from_element_type>::transform)(from_element_type&)>::type;
-
-  using t_element_type = std::tuple<to_element_type>;
-
-  using t_type_start = typename tuple_type_start<T, index>::type;
-
-  using t_type_end =
-    typename tuple_type_end<T, std::tuple_size<T>::value - index - 1>::type;
-
-  using t_type_with_transformed_element = typename tuple_type_cat<
-    typename tuple_type_cat<t_type_start, t_element_type>::type,
-    t_type_end>::type;
-
-public:
-  using type =
-    typename tuple_type_transform_each_impl<t_type_with_transformed_element,
-      T_transformer, index - 1>::type;
-};
-
-template <typename T, template <typename> class T_transformer>
-struct tuple_type_transform_each_impl<T, T_transformer, 0> {
-private:
-  static constexpr std::size_t index = 0;
-  using from_element_type = typename std::tuple_element<index, T>::type;
-  using to_element_type = typename std::result_of<decltype (
-    &T_transformer<from_element_type>::transform)(from_element_type&)>::type;
-  using t_element_type = std::tuple<to_element_type>;
-
-  using t_type_end =
-    typename tuple_type_end<T, std::tuple_size<std::decay_t<T>>::value - index - 1>::type;
-
-  using t_type_with_transformed_element =
-    typename tuple_type_cat<t_element_type, t_type_end>::type;
-
-public:
-  using type = t_type_with_transformed_element;
-};
-
-} // detail namespace
-
-/**
- * Get a tuple with each element having the transformed value of the element
- * in the original tuple.
- */
-
-template <typename T, template <typename> class T_transformer>
-struct tuple_type_transform_each {
-  using type = typename detail::tuple_type_transform_each_impl<T, T_transformer,
-    std::tuple_size<T>::value - 1>::type;
-};
 
 namespace detail {
 

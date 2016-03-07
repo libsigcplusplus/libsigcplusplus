@@ -51,7 +51,6 @@ check_PROGRAMS = \
   test_trackable \
   test_trackable_move \
   test_track_obj \
-  test_tuple_cat \
   test_tuple_cdr \
   test_tuple_end \
   test_tuple_for_each \
@@ -94,7 +93,6 @@ test_slot_move_SOURCES       = test_slot_move.cc $(sigc_test_util)
 test_trackable_SOURCES       = test_trackable.cc $(sigc_test_util)
 test_trackable_move_SOURCES  = test_trackable_move.cc $(sigc_test_util)
 test_track_obj_SOURCES       = test_track_obj.cc $(sigc_test_util)
-test_tuple_cat_SOURCES       = test_tuple_cat.cc $(sigc_test_util)
 test_tuple_cdr_SOURCES       = test_tuple_cdr.cc $(sigc_test_util)
 test_tuple_end_SOURCES       = test_tuple_end.cc $(sigc_test_util)
 test_tuple_for_each_SOURCES  = test_tuple_for_each.cc $(sigc_test_util)
