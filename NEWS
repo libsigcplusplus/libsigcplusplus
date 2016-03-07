@@ -1,3 +1,11 @@
+2.99.1 (unstable):
+
+This is the first release of the libsigc++-3.0 API, which installs in parallel
+with libsigc++-2.0. The API is not significantly different, but the
+implementation is far simpler, using variadic templates instead of generating
+C++ code from .m4 files.
+
+
 2.7.1 (unstable):
 
 * signal: Add a moving connect() method, taking an rvalue reference
