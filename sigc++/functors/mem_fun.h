@@ -69,13 +69,13 @@ template <class T_func, class... T_arg>
 class mem_functor : public functor_base
 {
 public:
-  using object_type = typename member_method_class<T_func>::type;
+  using object_type = typename internal::member_method_class<T_func>::type;
 
   using function_type = T_func;
-  using result_type = typename member_method_result<T_func>::type;
+  using result_type = typename internal::member_method_result<T_func>::type;
 
   using obj_type_with_modifier = typename std::conditional_t<
-    member_method_is_const<T_func>::value, const object_type, object_type>;
+    internal::member_method_is_const<T_func>::value, const object_type, object_type>;
 
   /// Constructs an invalid functor.
   mem_functor() : func_ptr_(nullptr) {}
@@ -121,9 +121,9 @@ public:
   using object_type = typename base_type::object_type;
 
   using obj_type_with_modifier = typename std::conditional_t<
-    member_method_is_const<T_func>::value, const object_type, object_type>;
+    internal::member_method_is_const<T_func>::value, const object_type, object_type>;
   using T_limit_reference = typename std::conditional_t<
-    member_method_is_const<T_func>::value,
+    internal::member_method_is_const<T_func>::value,
       limit_reference<const object_type>, limit_reference<object_type>>;
 
   /** Constructs a bound_mem_functor object that wraps the passed method.

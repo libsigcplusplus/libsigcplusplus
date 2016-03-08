@@ -24,6 +24,8 @@
 
 namespace sigc {
 
+namespace internal {
+
 template <class>
 struct member_method_is_const;
 
@@ -143,6 +145,8 @@ struct member_method_result<T_result(T_obj::*)(T_arg...) const volatile>
   using type = T_result;
 };
 
-} /* namespace sigc */
+} // namespace internal
+
+} // namespace sigc
 
 #endif /* _SIGC_MEMBER_METHOD_TRAITS_H_ */
