@@ -125,17 +125,17 @@ struct bind_functor : public adapts<T_functor>
       //we would want to call operator() with (_A_arg0, bound, _A_arg1, _A_arg2).
       
       using tuple_type_args = std::tuple<type_trait_pass_t<T_arg>...>;
-      auto t_args = std::tuple<T_arg...>(std::forward<T_arg>(_A_arg)...);
+      const auto t_args = std::tuple<T_arg...>(std::forward<T_arg>(_A_arg)...);
       constexpr auto t_args_size = std::tuple_size<tuple_type_args>::value;
       
       //Prevent calling tuple_start<> with values that will cause a compilation error.
       static_assert(I_location <= t_args_size,
         "I_location must be less than or equal to the number of arguments.");
 
-      auto t_start = internal::tuple_start<I_location>(t_args);
-      auto t_bound = internal::tuple_transform_each<internal::TransformEachInvoker>(bound_);
-      auto t_end = internal::tuple_end<t_args_size - I_location>(t_args);
-      auto t_with_bound = std::tuple_cat(t_start, t_bound, t_end);
+      const auto t_start = internal::tuple_start<I_location>(t_args);
+      const auto t_bound = internal::tuple_transform_each<internal::TransformEachInvoker>(bound_);
+      const auto t_end = internal::tuple_end<t_args_size - I_location>(t_args);
+      const auto t_with_bound = std::tuple_cat(t_start, t_bound, t_end);
 
       const auto seq = std::make_index_sequence<std::tuple_size<decltype(t_with_bound)>::value>();
       return call_functor_operator_parentheses(t_with_bound, seq);
@@ -186,9 +186,9 @@ struct bind_functor<-1, T_functor, T_type...> : public adapts<T_functor>
       //For instance, if _A_arg has 4 arguments,
       //we would want to call operator() with (_A_arg0, _A_arg1, _A_arg2, bound).
       
-      auto t_args = std::tuple<T_arg...>(std::forward<T_arg>(_A_arg)...);
-      auto t_bound = internal::tuple_transform_each<internal::TransformEachInvoker>(bound_);
-      auto t_with_bound = std::tuple_cat(t_args, t_bound);
+      const auto t_args = std::tuple<T_arg...>(std::forward<T_arg>(_A_arg)...);
+      const auto t_bound = internal::tuple_transform_each<internal::TransformEachInvoker>(bound_);
+      const auto t_with_bound = std::tuple_cat(t_args, t_bound);
 
       const auto seq = std::make_index_sequence<std::tuple_size<decltype(t_with_bound)>::value>();
       return call_functor_operator_parentheses(t_with_bound, seq);
