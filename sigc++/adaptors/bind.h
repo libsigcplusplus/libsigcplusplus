@@ -87,6 +87,7 @@ struct TransformEachInvoker
 {
   //We take T_element as non-const because invoke() is not const.
   //TODO: Take element as T_element&& ?
+  constexpr
   static
   decltype(auto)
   transform(T_element& element) {
@@ -223,6 +224,7 @@ template<typename T_element>
 struct TupleVisitorVisitEach
 {
   template<typename T_action>
+  constexpr
   static
   void
   visit(const T_element& element, const T_action& action)
