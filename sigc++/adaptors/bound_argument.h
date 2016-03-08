@@ -75,6 +75,8 @@ private:
   T_type visited_;
 };
 
+#ifndef SIGCXX_DISABLE_DEPRECATED
+
 //Template specialization:
 /** bound_argument object for a bound argument that is passed by bind() or
  * returned by bind_return() by reference, specialized for reference_wrapper<> types.
@@ -141,6 +143,44 @@ private:
    */
   const_limit_reference<T_wrapped> visited_;
 };
+
+#endif // SIGCXX_DISABLE_DEPRECATED
+
+//Template specialization:
+/** bound_argument object for a bound argument that is passed by bind() or
+ * returned by bind_return() by reference, specialized for std::reference_wrapper<> types.
+ * @e T_wrapped The type of the bound argument.
+ */
+template <class T_wrapped>
+class bound_argument< std::reference_wrapper<T_wrapped> >
+{
+public:
+  /** Constructor.
+   * @param _A_argument The argument to bind.
+   */
+  bound_argument(const std::reference_wrapper<T_wrapped>& _A_argument)
+    : visited_(unwrap(_A_argument))
+    {}
+
+  /** Retrieve the entity to visit in visit_each().
+   * @return The limited_reference to the bound argument.
+   */
+  inline const limit_reference<T_wrapped>& visit() const
+    { return visited_; }
+
+  /** Retrieve the entity to pass to the bound functor or return.
+   * @return The bound argument.
+   */
+  inline T_wrapped& invoke()
+    { return visited_.invoke(); }
+
+private:
+  /** The limited_reference to the bound argument.
+   */
+  limit_reference<T_wrapped> visited_;
+};
+
+
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 /** Implementation of visitor<>::do_visit_each<>() specialized for the bound_argument class.
