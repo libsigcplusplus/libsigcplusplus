@@ -32,6 +32,7 @@ template <template <typename> class T_transformer, std::size_t size_from_index>
 struct tuple_transform_each_impl {
   // TODO: Avoid the need to pass t_original all the way into the recursion?
   template <typename T_current, typename T_original>
+  constexpr
   static decltype(auto)
   tuple_transform_each(T_current&& t, T_original& t_original) {
     //We use std::decay_t<> because tuple_size is not defined for references.
@@ -66,7 +67,9 @@ struct tuple_transform_each_impl {
 template <template <typename> class T_transformer>
 struct tuple_transform_each_impl<T_transformer, 1> {
   template <typename T_current, typename T_original>
-  static decltype(auto)
+  constexpr
+  static
+  decltype(auto)
   tuple_transform_each(T_current&& t, T_original& t_original) {
     //We use std::decay_t<> because tuple_size is not defined for references.
     constexpr auto size = std::tuple_size<std::decay_t<T_current>>::value;
@@ -89,7 +92,9 @@ struct tuple_transform_each_impl<T_transformer, 1> {
 template <template <typename> class T_transformer>
 struct tuple_transform_each_impl<T_transformer, 0> {
   template <typename T_current, typename T_original>
-  static decltype(auto)
+  constexpr
+  static
+  decltype(auto)
   tuple_transform_each(T_current&& t, T_original& /* t_original */) {
       //Do nothing because the tuple has no elements.
       return std::forward<T_current>(t);
@@ -103,6 +108,7 @@ struct tuple_transform_each_impl<T_transformer, 0> {
  * in the original tuple.
  */
 template <template <typename> class T_transformer, typename T>
+constexpr
 decltype(auto)
 tuple_transform_each(T&& t) {
   //We use std::decay_t<> because tuple_size is not defined for references.

@@ -262,6 +262,55 @@ test_tuple_transform_each_empty_tuple() {
   sigc::internal::tuple_transform_each<transform_to_string>(t);
 }
 
+// The general template declaration.
+// We then provide specializations for each type,
+// so we can test having a different return value for each T_element_from type.
+template <class T_element_from>
+class transform_as_constexpr_to_something;
+
+// An int will be converted to a char:
+template <>
+class transform_as_constexpr_to_something<int> {
+public:
+  constexpr
+  static
+  char
+  transform(int from) {
+    return 'a' + from;
+  }
+};
+
+// A double will be converted to an int:
+template <>
+class transform_as_constexpr_to_something<const double> {
+public:
+  constexpr
+  static
+  int
+  transform(double from) {
+    return (int)from;
+  }
+};
+
+constexpr
+void
+test_tuple_transform_each_constexpr() {
+  constexpr auto t_original = std::make_tuple(1, (double)2.1f);
+  constexpr auto t_transformed =
+    sigc::internal::tuple_transform_each<transform_as_constexpr_to_something>(t_original);
+  constexpr auto t_expected = std::make_tuple('b', 2);
+
+  static_assert(std::tuple_size<decltype(t_transformed)>::value == 2,
+    "unexpected tuple_transform_each()ed tuple size.");
+
+  assert(std::get<0>(t_transformed) == 'b');
+  assert(std::get<1>(t_transformed) == 2);
+
+  static_assert(
+    std::is_same<decltype(t_transformed), decltype(t_expected)>::value,
+    "unexpected transform_each()ed tuple type");
+}
+
 int
 main() {
   test_tuple_transform_each_same_types();
@@ -275,6 +324,8 @@ main() {
   test_tuple_transform_each_correct_sequence();
 
   test_tuple_transform_each_empty_tuple();
+
+  test_tuple_transform_each_constexpr();
 
   return EXIT_SUCCESS;
 }
