@@ -50,7 +50,9 @@ struct tuple_start_impl;
 
 template <typename T, std::size_t... I>
 struct tuple_start_impl<T, std::index_sequence<I...>> {
-  static decltype(auto)
+  static
+  constexpr
+  decltype(auto)
   tuple_start(T&& t) {
     constexpr auto size = std::tuple_size<std::decay_t<T>>::value;
     constexpr auto len = sizeof...(I);
@@ -67,8 +69,9 @@ struct tuple_start_impl<T, std::index_sequence<I...>> {
  * Get the tuple with the last @a len items of the original.
  */
 template <std::size_t len, typename T>
+constexpr
 decltype(auto) // typename tuple_type_end<T, len>::type
-  tuple_start(T&& t) {
+tuple_start(T&& t) {
   //We use std::decay_t<> because tuple_size is not defined for references.
   constexpr auto size = std::tuple_size<std::decay_t<T>>::value;
   static_assert(len <= size, "The tuple size must be less than or equal to the length.");

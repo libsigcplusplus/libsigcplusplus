@@ -27,7 +27,9 @@ namespace detail {
 
 template <typename T, std::size_t remove_from_start>
 struct tuple_end_impl {
-  static decltype(auto) // typename tuple_type_end<T, size - remove_from_start>::type
+  constexpr
+  static
+  decltype(auto) // typename tuple_type_end<T, size - remove_from_start>::type
   tuple_end(T&& t) {
     static_assert(remove_from_start > 0, "remove_from_start must be more than zero.");
 
@@ -39,7 +41,9 @@ struct tuple_end_impl {
 
 template <typename T>
 struct tuple_end_impl<T, 1> {
-  static decltype(auto)
+  constexpr
+  static
+  decltype(auto)
   tuple_end(T&& t) {
     return tuple_cdr(std::forward<T>(t));
   }
@@ -47,7 +51,9 @@ struct tuple_end_impl<T, 1> {
 
 template <typename T>
 struct tuple_end_impl<T, 0> {
-  static decltype(auto)
+  constexpr
+  static
+  decltype(auto)
   tuple_end(T&& t) {
     return std::forward<T>(t);
   }
@@ -59,6 +65,7 @@ struct tuple_end_impl<T, 0> {
  * Get the tuple with the last @a len items of the original.
  */
 template <std::size_t len, typename T>
+constexpr
 decltype(auto) // typename tuple_type_end<T, len>::type
   tuple_end(T&& t) {
   //We use std::decay_t<> because tuple_size is not defined for references.

@@ -115,9 +115,28 @@ test_tuple_start_stdref() {
   assert(std::get<1>(t_prefix) == "world");
 }
 
+constexpr
+void
+test_tuple_start_constexpr() {
+  constexpr auto str_hello = "hello";
+  constexpr auto str_world = "hello";
+
+  constexpr auto t_original =
+    std::make_tuple(nullptr, str_hello, str_world);
+  constexpr auto t_prefix = sigc::internal::tuple_start<2>(t_original);
+
+  static_assert(std::tuple_size<decltype(t_prefix)>::value == 2,
+    "unexpected tuple_start()ed tuple size.");
+
+  assert(std::get<0>(t_prefix) == nullptr);
+  assert(std::get<1>(t_prefix) == str_hello);
+}
+
 int
 main() {
   test_tuple_type_start();
   test_tuple_start();
   test_tuple_start_stdref();
+
+  test_tuple_start_constexpr();
 }
