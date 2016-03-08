@@ -123,6 +123,17 @@ public:
   }
 };
 
+// A const char* will be converted to an int:
+template <>
+class visitor_with_specializations<const char*> {
+public:
+  static void
+  visit(const char* from) {
+    std::cout << "visitor_with_specializations::visit(): " << std::stoi(from)
+              << std::endl;
+  }
+};
+
 void
 test_tuple_for_each_multiple_types() {
   auto t_original = std::make_tuple(1, (double)2.1f, std::string("3"));
@@ -198,6 +209,12 @@ test_tuple_for_each_empty_tuple() {
   sigc::internal::tuple_for_each<for_each_simple>(t);
 }
 
+constexpr
+void
+test_tuple_for_each_constexpr() {
+  constexpr auto t_original = std::make_tuple(1, (double)2.1f, "3");
+  sigc::internal::tuple_for_each<visitor_with_specializations>(t_original);
+}
 
 int
 main() {
@@ -214,6 +231,8 @@ main() {
   test_tuple_for_each_correct_sequence();
 
   test_tuple_for_each_empty_tuple();
+
+  test_tuple_for_each_constexpr();
 
   return EXIT_SUCCESS;
 }
