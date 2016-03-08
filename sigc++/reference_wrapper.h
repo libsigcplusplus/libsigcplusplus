@@ -19,6 +19,8 @@
 #ifndef _SIGC_REFERENCE_WRAPPER_H_
 #define _SIGC_REFERENCE_WRAPPER_H_
 
+#include <functional> // For std::reference_wrapper.
+
 namespace sigc {
 
 #ifndef SIGCXX_DISABLE_DEPRECATED
