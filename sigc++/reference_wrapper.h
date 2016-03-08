@@ -21,8 +21,12 @@
 
 namespace sigc {
 
+#ifndef SIGCXX_DISABLE_DEPRECATED
+
 /** Reference wrapper.
  * Use sigc::ref() to create a reference wrapper.
+ *
+ * @deprecated Use std::ref() or std::cref() instead to create a std::reference_wrapper().
  */
 template <class T_type>
 struct reference_wrapper
@@ -38,6 +42,8 @@ struct reference_wrapper
 
 /** Const reference wrapper.
  * Use sigc::ref() to create a const reference wrapper.
+ *
+ * @deprecated Use std::ref() or std::cref() instead to create a std::reference_wrapper().
  */
 template <class T_type>
 struct const_reference_wrapper
@@ -60,6 +66,8 @@ struct const_reference_wrapper
  *
  * @param v Reference to store.
  * @return A reference wrapper.
+ *
+ * @deprecated Use std::ref() or std::cref() instead.
  */
 template <class T_type>
 reference_wrapper<T_type> ref(T_type& v)
@@ -74,16 +82,26 @@ reference_wrapper<T_type> ref(T_type& v)
  *
  * @param v Reference to store.
  * @return A reference wrapper.
+ *
+ * @deprecated Use std::ref() or std::cref() instead.
  */
 template <class T_type>
 const_reference_wrapper<T_type> ref(const T_type& v)
 { return const_reference_wrapper<T_type>(v); }
+
+#endif // SIGCXX_DISABLE_DEPRECATED
+
 
 template <class T_type>
 struct unwrap_reference
 {
   typedef T_type type;
 };
+
+
+#ifndef SIGCXX_DISABLE_DEPRECATED
+
+// Specializations for std::reference_wrapper and std::const_reference_wrapper:
 
 template <class T_type>
 struct unwrap_reference<reference_wrapper<T_type> >
@@ -103,6 +121,20 @@ T_type& unwrap(const reference_wrapper<T_type>& v)
 
 template <class T_type>
 const T_type& unwrap(const const_reference_wrapper<T_type>& v)
+{ return v; }
+
+#endif // SIGCXX_DISABLE_DEPRECATED
+
+//Specializations for std::reference_wrapper:
+
+template <class T_type>
+struct unwrap_reference<std::reference_wrapper<T_type> >
+{
+  typedef T_type& type;
+};
+
+template <class T_type>
+T_type& unwrap(const std::reference_wrapper<T_type>& v)
 { return v; }
 
 } /* namespace sigc */

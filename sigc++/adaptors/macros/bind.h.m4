@@ -320,14 +320,14 @@ struct count_void<void,void,void,void,void,void,void>
  * @endcode
  *
  * You can bind references to functors by passing the objects through
- * the sigc::ref() helper function.
+ * the std::ref() or std::cref() functions.
  *
  * @par Example:
  * @code
  * int some_int;
  * sigc::signal<void> some_signal;
  * void foo(int&);
- * some_signal.connect(sigc::bind(&foo,sigc::ref(some_int)));
+ * some_signal.connect(sigc::bind(&foo, std::ref(some_int)));
  * @endcode
  *
  * If you bind an object of a sigc::trackable derived type to a functor
@@ -339,7 +339,7 @@ struct count_void<void,void,void,void,void,void,void>
  * struct bar : public sigc::trackable {} some_bar;
  * sigc::signal<void> some_signal;
  * void foo(bar&);
- * some_signal.connect(sigc::bind(&foo,sigc::ref(some_bar)));
+ * some_signal.connect(sigc::bind(&foo, std::ref(some_bar)));
  *   // disconnected automatically if some_bar goes out of scope
  * @endcode
  *
