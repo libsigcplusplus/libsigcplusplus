@@ -138,7 +138,7 @@ struct bind_functor : public adapts<T_functor>
       const auto t_end = internal::tuple_end<t_args_size - I_location>(t_args);
       const auto t_with_bound = std::tuple_cat(t_start, t_bound, t_end);
 
-      const auto seq = std::make_index_sequence<std::tuple_size<decltype(t_with_bound)>::value>();
+      constexpr const auto seq = std::make_index_sequence<std::tuple_size<decltype(t_with_bound)>::value>();
       return call_functor_operator_parentheses(t_with_bound, seq);
     }
 
@@ -191,7 +191,7 @@ struct bind_functor<-1, T_functor, T_type...> : public adapts<T_functor>
       const auto t_bound = internal::tuple_transform_each<internal::TransformEachInvoker>(bound_);
       const auto t_with_bound = std::tuple_cat(t_args, t_bound);
 
-      const auto seq = std::make_index_sequence<std::tuple_size<decltype(t_with_bound)>::value>();
+      constexpr auto seq = std::make_index_sequence<std::tuple_size<decltype(t_with_bound)>::value>();
       return call_functor_operator_parentheses(t_with_bound, seq);
     }
 
