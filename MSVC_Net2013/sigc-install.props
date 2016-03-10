@@ -21,7 +21,7 @@ copy ".\sigc++config.h" "$(CopyDir)\lib\sigc++-$(ApiMajorVersion).$(ApiMinorVers
 if "$(Configuration)" == "Release" copy "$(BinDir)\sigc$(ReleaseDllSuffix).lib" "$(CopyDir)\lib"
 if "$(Configuration)" == "Debug" copy "$(BinDir)\sigc$(DebugDllSuffix).lib" "$(CopyDir)\lib"
 
-mkdir "$(CopyDir)\include\sigc++-$(ApiMajorVersion).$(ApiMinorVersion)\sigc++\adaptors"
+mkdir "$(CopyDir)\include\sigc++-$(ApiMajorVersion).$(ApiMinorVersion)\sigc++\adaptors\lambda"
 mkdir "$(CopyDir)\include\sigc++-$(ApiMajorVersion).$(ApiMinorVersion)\sigc++\functors"
 
 copy "..\sigc++\sigc++.h" "$(CopyDir)\include\sigc++-$(ApiMajorVersion).$(ApiMinorVersion)\sigc++\"
@@ -50,6 +50,8 @@ copy "..\sigc++\adaptors\hide.h" "$(CopyDir)\include\sigc++-$(ApiMajorVersion).$
 copy "..\sigc++\adaptors\retype.h" "$(CopyDir)\include\sigc++-$(ApiMajorVersion).$(ApiMinorVersion)\sigc++\adaptors\"
 copy "..\sigc++\adaptors\retype_return.h" "$(CopyDir)\include\sigc++-$(ApiMajorVersion).$(ApiMinorVersion)\sigc++\adaptors\"
 copy "..\sigc++\adaptors\track_obj.h" "$(CopyDir)\include\sigc++-$(ApiMajorVersion).$(ApiMinorVersion)\sigc++\adaptors\"
+copy "..\sigc++\adaptors\lambda\base.h" "$(CopyDir)\include\sigc++-$(ApiMajorVersion).$(ApiMinorVersion)\sigc++\adaptors\lambda"
+copy "..\sigc++\adaptors\lambda\select.h" "$(CopyDir)\include\sigc++-$(ApiMajorVersion).$(ApiMinorVersion)\sigc++\adaptors\lambda"
 copy "..\sigc++\functors\functors.h" "$(CopyDir)\include\sigc++-$(ApiMajorVersion).$(ApiMinorVersion)\sigc++\functors\"
 copy "..\sigc++\functors\functor_trait.h" "$(CopyDir)\include\sigc++-$(ApiMajorVersion).$(ApiMinorVersion)\sigc++\functors\"
 copy "..\sigc++\functors\mem_fun.h" "$(CopyDir)\include\sigc++-$(ApiMajorVersion).$(ApiMinorVersion)\sigc++\functors\"
