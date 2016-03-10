@@ -86,15 +86,6 @@ public:
   explicit mem_functor(function_type _A_func) : func_ptr_(_A_func) {}
 
   /** Execute the wrapped method operating on the passed instance.
-   * @param _A_obj Pointer to instance the method should operate on.
-   * @param _A_a... Argument to be passed on to the method.
-   * @return The return value of the method invocation.
-   */
-  decltype(auto)
-  operator()(obj_type_with_modifier* _A_obj, type_trait_take_t<T_arg>... _A_a) const
-    { return (_A_obj->*(this->func_ptr_))(_A_a...); }
-
-  /** Execute the wrapped method operating on the passed instance.
    * @param _A_obj Reference to instance the method should operate on.
    * @param _A_a... Argument to be passed on to the method.
    * @return The return value of the method invocation.

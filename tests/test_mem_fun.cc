@@ -67,65 +67,47 @@ int main(int argc, char* argv[])
 
   { /* test non-const */
     test t;
-    sigc::mem_fun(&test::foo)(t, 1);  // on reference
-    util->check_result(result_stream, "test::foo(short 1)");
-
-    sigc::mem_fun(&test::foo)(&t, 1); // on pointer
+    sigc::mem_fun(&test::foo)(t, 1);
     util->check_result(result_stream, "test::foo(short 1)");
   }
   { /* test const */
     test t;
     sigc::mem_fun(&test::foo_const)(t, 2);
     util->check_result(result_stream, "test::foo_const(int 2)");
-
-    sigc::mem_fun(&test::foo_const)(&t, 2);
-    util->check_result(result_stream, "test::foo_const(int 2)");
   }
   { /* test const with const object */
     const auto t = test();
     sigc::mem_fun(&test::foo_const)(t, 3);
     util->check_result(result_stream, "test::foo_const(int 3)");
-
-    sigc::mem_fun(&test::foo_const)(&t, 3);
-    util->check_result(result_stream, "test::foo_const(int 3)");
   }
   { /* test non-const volatile */
     test t;
-    sigc::mem_fun(&test::foo_volatile)(t, 4);  // on reference
-    util->check_result(result_stream, "test::foo_volatile(float 4)");
-
-    sigc::mem_fun(&test::foo_volatile)(&t, 4); // on pointer
+    sigc::mem_fun(&test::foo_volatile)(t, 4);
     util->check_result(result_stream, "test::foo_volatile(float 4)");
   }
   { /* test const volatile */
     test t;
-    sigc::mem_fun(&test::foo_const_volatile)(t, 5);  // on reference
-    util->check_result(result_stream, "test::foo_const_volatile(double 5)");
-
-    sigc::mem_fun(&test::foo_const_volatile)(&t, 5); // on pointer
+    sigc::mem_fun(&test::foo_const_volatile)(t, 5);
     util->check_result(result_stream, "test::foo_const_volatile(double 5)");
   }
   { /* test const volatile with const object */
     const auto t = test();
-    sigc::mem_fun(&test::foo_const_volatile)(t, 6);  // on reference
-    util->check_result(result_stream, "test::foo_const_volatile(double 6)");
-
-    sigc::mem_fun(&test::foo_const_volatile)(&t, 6); // on pointer
+    sigc::mem_fun(&test::foo_const_volatile)(t, 6);
     util->check_result(result_stream, "test::foo_const_volatile(double 6)");
   }
 #if ENABLE_TEST_OF_OVERLOADED_FUNCTIONS
   { /* test overloaded */
     test t;
-    sigc::mem_fun<char>(&test::foo_overloaded)(&t, 7);
+    sigc::mem_fun<char>(&test::foo_overloaded)(t, 7);
     util->check_result(result_stream, "test::foo_overloaded(char 7)");
 
-    sigc::mem_fun<short>(&test::foo_overloaded)(&t, 7);
+    sigc::mem_fun<short>(&test::foo_overloaded)(t, 7);
     util->check_result(result_stream, "test::foo_overloaded(short 7)");
 
-    //sigc::mem_fun(&test::foo_overloaded)(&t, 7);
+    //sigc::mem_fun(&test::foo_overloaded)(t, 7);
     //util->check_result(result_stream, "test::foo_overloaded(short 7)");
 
-    sigc::mem_fun(&test::foo_overloaded)(&t, 7, 8);
+    sigc::mem_fun(&test::foo_overloaded)(t, 7, 8);
     util->check_result(result_stream, "test::foo_overloaded(int 7, int 8)");
   }
 #endif
