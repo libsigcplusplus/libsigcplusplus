@@ -50,8 +50,8 @@ struct B : public sigc::trackable
 {
   B()
   {
-    sig.connect(sigc::mem_fun(this, &B::destroy));
-    sig.connect(sigc::mem_fun(this, &B::boom));
+    sig.connect(sigc::mem_fun(*this, &B::destroy));
+    sig.connect(sigc::mem_fun(*this, &B::boom));
     sig.connect(sigc::ptr_fun(&good_bye_world));
   }
 
@@ -89,7 +89,7 @@ int main(int argc, char* argv[])
 
   {
     A a;
-    sig.connect(sigc::mem_fun1(&a, &A::foo));
+    sig.connect(sigc::mem_fun1(a, &A::foo));
     confoo = sig.connect(sigc::ptr_fun1(&foo));
     conbar = sig.connect(sigc::ptr_fun1(&bar));
     result_stream << "sig is connected to A::foo, foo, bar (size=" << sig.size() << "): ";
@@ -103,7 +103,7 @@ int main(int argc, char* argv[])
   util->check_result(result_stream, "sig is connected to foo, bar (size=2): foo(2) bar(2) ");
 
   A a;                  // iterators stay valid after further connections.
-  cona = sig.slots().insert(conbar, sigc::mem_fun1(&a, &A::foo));
+  cona = sig.slots().insert(conbar, sigc::mem_fun1(a, &A::foo));
   result_stream << "sig is connected to foo, A::foo, bar (size=" << sig.size() << "): ";
   sig(3);
   util->check_result(result_stream,
@@ -128,7 +128,7 @@ int main(int argc, char* argv[])
 
   {
     A a2;
-    sig.connect(sigc::compose(sigc::mem_fun(&a2, &A::foo), &foo));
+    sig.connect(sigc::compose(sigc::mem_fun(a2, &A::foo), &foo));
     result_stream << "sig is connected to compose(A::foo, foo) (size=" << sig.size() << "): ";
     sig(7);
     util->check_result(result_stream, "sig is connected to compose(A::foo, foo) (size=1): foo(7) A::foo(1) ");
@@ -139,7 +139,7 @@ int main(int argc, char* argv[])
 
   { // A slot# within a slot
     A a2;
-    sigc::slot1<int, int> setter = sigc::mem_fun(&a2, &A::foo);
+    sigc::slot1<int, int> setter = sigc::mem_fun(a2, &A::foo);
     sig.connect(sigc::compose(setter, &foo));
     result_stream << "sig is connected to compose(slot1(A::foo), foo) (size=" << sig.size() << "): ";
     sig(9);
@@ -151,7 +151,7 @@ int main(int argc, char* argv[])
 
   { // A slot within a slot
     A a2;
-    sigc::slot<int, int> setter = sigc::mem_fun(&a2, &A::foo);
+    sigc::slot<int, int> setter = sigc::mem_fun(a2, &A::foo);
     sig.connect(sigc::compose(setter, &foo));
     result_stream << "sig is connected to compose(slot(A::foo), foo) (size=" << sig.size() << "): ";
     sig(11);

@@ -61,7 +61,7 @@ int main(int argc, char* argv[])
   {
     my_class t;
     t.i = 10;
-    sl = sigc::mem_fun0(&t, &my_class::foo);
+    sl = sigc::mem_fun0(t, &my_class::foo);
     sl();
     util->check_result(result_stream, "10");
 
@@ -70,7 +70,7 @@ int main(int argc, char* argv[])
     t2.i = 15;
     result_stream.clear();
 
-    sl = sigc::mem_fun0(&t2, &my_class::foo);
+    sl = sigc::mem_fun0(t2, &my_class::foo);
 
     sl();
     util->check_result(result_stream, "15");

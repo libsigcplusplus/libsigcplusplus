@@ -89,11 +89,11 @@ int main(int argc, char* argv[])
 
   A a;
   sig.connect(sigc::ptr_fun1(&foo));
-  sig.connect(sigc::mem_fun1(&a, &A::foo));
+  sig.connect(sigc::mem_fun1(a, &A::foo));
   sig.connect(sigc::ptr_fun1(&bar));
 
   sig_vec.connect(sigc::ptr_fun1(&foo));
-  sig_vec.connect(sigc::mem_fun1(&a, &A::foo));
+  sig_vec.connect(sigc::mem_fun1(a, &A::foo));
   sig_vec.connect(sigc::ptr_fun1(&bar));
 
   double dres = sig(1);
