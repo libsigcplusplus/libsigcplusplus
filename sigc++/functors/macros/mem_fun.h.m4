@@ -45,7 +45,12 @@ public:
    */
   explicit [$2]mem_functor$1(function_type _A_func) : func_ptr_(_A_func) {}
 
+#ifndef SIGCXX_DISABLE_DEPRECATED
   /** Execute the wrapped method operating on the passed instance.
+   *
+   * @deprecated Please use the constructor that takes the object by reference
+   * instead.
+   *
    * @param _A_obj Pointer to instance the method should operate on.dnl
 FOR(1, $1,[
    * @param _A_a%1 Argument to be passed on to the method.])
@@ -53,6 +58,7 @@ FOR(1, $1,[
    */
   T_return operator()(LIST($3 T_obj* _A_obj, LOOP(type_trait_take_t<T_arg%1> _A_a%1, $1))) const
     { return (_A_obj->*(this->func_ptr_))(LOOP(_A_a%1, $1)); }
+#endif //SIGCXX_DISABLE_DEPRECATED
 
   /** Execute the wrapped method operating on the passed instance.
    * @param _A_obj Reference to instance the method should operate on.dnl
@@ -89,7 +95,12 @@ class bound_[$2]mem_functor$1
 public:
   typedef typename base_type_::function_type function_type;
 
+#ifndef SIGCXX_DISABLE_DEPRECATED
   /** Constructs a bound_[$2]mem_functor$1 object that wraps the passed method.
+   *
+   * @deprecated Please use the constructor that takes the object by reference
+   * instead.
+   *
    * @param _A_obj Pointer to instance the method will operate on.
    * @param _A_func Pointer to method will be invoked from operator()().
    */
@@ -97,6 +108,7 @@ public:
     : base_type_(_A_func),
       obj_(*_A_obj)
     {}
+#endif // SIGCXX_DISABLE_DEPRECATED
 
   /** Constructs a bound_[$2]mem_functor$1 object that wraps the passed method.
    * @param _A_obj Reference to instance the method will operate on.
@@ -156,7 +168,11 @@ mem_fun[]ifelse($2,, $1)(T_return (T_obj::*_A_func)(LOOP(T_arg%1,$1)) $5)
 
 ])
 define([BOUND_MEM_FUN],[dnl
+#ifndef SIGCXX_DISABLE_DEPRECATED
 /** Creates a functor of type sigc::bound_[$3]mem_functor$1 which encapsulates a method and an object instance.
+ *
+ * @deprecated Please use the version that takes the object by reference instead.
+ *
  * @param _A_obj Pointer to object instance the functor should operate on.
  * @param _A_func Pointer to method that should be wrapped.
  * @return Functor that executes @e _A_func on invokation.
@@ -167,6 +183,7 @@ template <LIST(LOOP(class T_arg%1, $1), class T_return, class T_obj, class T_obj
 inline bound_[$3]mem_functor$1<LIST(T_return, T_obj, LOOP(T_arg%1, $1))>
 mem_fun[]ifelse($2,, $1)(/*$4*/ T_obj* _A_obj, T_return (T_obj2::*_A_func)(LOOP(T_arg%1,$1)) $5)
 { return bound_[$3]mem_functor$1<LIST(T_return, T_obj, LOOP(T_arg%1, $1))>(_A_obj, _A_func); }
+#endif //SIGCXX_DISABLE_DEPRECATED
 
 /** Creates a functor of type sigc::bound_[$3]mem_functor$1 which encapsulates a method and an object instance.
  * @param _A_obj Reference to object instance the functor should operate on.
