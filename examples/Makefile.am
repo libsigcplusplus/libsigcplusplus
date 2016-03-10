@@ -16,7 +16,7 @@
 ## along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 AM_CPPFLAGS = -I$(top_builddir) -I$(top_srcdir)
-AM_CXXFLAGS = $(SIGC_WXXFLAGS)
+AM_CXXFLAGS = $(SIGC_WXXFLAGS) -DSIGCXX_DISABLE_DEPRECATED
 LDADD       = $(top_builddir)/sigc++/libsigc-$(SIGCXX_API_VERSION).la
 
 noinst_PROGRAMS = hello_world member_method
