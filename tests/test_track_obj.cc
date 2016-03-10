@@ -202,10 +202,10 @@ int main(int argc, char* argv[])
     sigc::signal<void> some_signal;
     {
       bar_group4 some_bar;
-      //some_signal.connect(sigc::group(&foo,sigc::ref(some_bar)));
+      //some_signal.connect(sigc::group(&foo,std::ref(some_bar)));
       // disconnected automatically if some_bar goes out of scope
       //some_signal.connect([&some_bar](){ foo_group4(some_bar); }); // no auto-disconnect
-      //some_signal.connect(sigc::bind(&foo_group4, sigc::ref(some_bar))); // auto-disconnects, but we prefer C++11 lambda
+      //some_signal.connect(sigc::bind(&foo_group4, std::ref(some_bar))); // auto-disconnects, but we prefer C++11 lambda
       some_signal.connect(sigc::track_obj([&some_bar](){ foo_group4(some_bar); }, some_bar));
       some_signal.emit();
       util->check_result(result_stream, "foo_group4(bar_group4&)");

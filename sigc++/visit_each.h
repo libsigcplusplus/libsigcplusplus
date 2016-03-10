@@ -181,12 +181,12 @@ void visit_each_type(const T_action& _A_action, const T_functor& _A_functor)
 
   type_limited_action limited_action(_A_action);
 
-  //specifying the types of the template specialization prevents disconnection of bound trackable references (such as with sigc::ref()),
+  //specifying the types of the template specialization prevents disconnection of bound trackable references (such as with std::ref()),
   //probably because the visit_each<> specializations take various different template types,
   //in various sequences, and we are probably specifying only a subset of them with this.
   //
   //But this is required by the AIX (and maybe IRIX MipsPro  and Tru64) compilers.
-  //I guess that sigc::ref() therefore does not work on those platforms. murrayc
+  //I guess that std::ref() therefore does not work on those platforms. murrayc
   // sigc::visit_each<type_limited_action, T_functor>(limited_action, _A_functor);
 
   //g++ (even slightly old ones) is our primary platform, so we could use the non-crashing version.
