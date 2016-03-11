@@ -964,8 +964,7 @@ public:
 };
 
 
-/** Convenience wrapper for the numbered sigc::signal# templates.
- * signal can be used to connect() slots that are invoked
+/** signal can be used to connect() slots that are invoked
  * during subsequent calls to emit(). Any functor or slot
  * can be passed into connect(). It is converted into a slot
  * implicitly.
@@ -986,6 +985,12 @@ public:
  * the emit() function:
  * - @e T_return The desired return type of the emit() function. * - @e T_arg Argument types used in the definition of emit().
  *
+ * For instance, to declare a signal whose connected slot returns void and takes
+ * two parameters of bool and int:
+ * @code
+ * sigc::signal<void, bool, int> some_signal;
+ * @endcode
+ *
  * To specify an accumulator type the nested class signal::accumulated can be used.
  *
  * @par Example:
@@ -1005,8 +1010,7 @@ class signal
 public:
   using accumulator_type = void;
 
-  /** Convenience wrapper for the numbered sigc::signal# templates.
-   * Like sigc::signal but the additional template parameter @e T_accumulator
+  /** Like sigc::signal but the additional template parameter @e T_accumulator
    * defines the accumulator type that should be used.
    *
    * An accumulator is a functor that uses a pair of special iterators
@@ -1015,7 +1019,7 @@ public:
    * executes the slot. The return value is buffered, so that in an expression
    * like @code a = (*i) * (*i); @endcode the slot is executed only once.
    * The accumulator must define its return value as @p result_type.
-   * 
+   *
    * @par Example 1:
    * This accumulator calculates the arithmetic mean value:
    * @code
