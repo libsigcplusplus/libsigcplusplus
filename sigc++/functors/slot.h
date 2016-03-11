@@ -133,7 +133,8 @@ struct slot_call
  * a single, arbitrary functor (or closure) that is executed in operator()().
  *
  * The template arguments determine the function signature of operator()():
- * - @e T_return The return type of operator()(). * - @e T_arg Argument types used in the definition of operator()().
+ * - @e T_return The return type of operator()().
+ * - @e T_arg Argument types used in the definition of operator()().
  *
  * To use simply assign the desired functor to the slot. If the functor
  * is not compatible with the parameter list defined with the template
