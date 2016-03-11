@@ -129,6 +129,28 @@ void test_vector_accumulator()
     "foo: 10, A::foo: 46, bar: 12, Vector accumulator: Result (i=3): 10 46 12 ");
 }
 
+void test_mean_std_function_style_syntax()
+{
+  sigc::signal<int(int)>::accumulated<arithmetic_mean_accumulator> sig;
+
+  A a;
+  sig.connect(sigc::ptr_fun(&foo));
+  sig.connect(sigc::mem_fun(a, &A::foo));
+  sig.connect(sigc::ptr_fun(&bar));
+
+  double dres = sig(1);
+  result_stream << "Mean accumulator: Result (i=1): "
+                << std::fixed << std::setprecision(3) << dres;
+  util->check_result(result_stream,
+    "foo: 4, A::foo: 6, bar: 2, Mean accumulator: Result (i=1): 4.000");
+
+  dres = sig(11);
+  result_stream << "Mean accumulator: Plain Result (i=11): "
+                << std::fixed << std::setprecision(3) << dres;
+  util->check_result(result_stream,
+    "foo: 34, A::foo: 206, bar: 52, Mean accumulator: Plain Result (i=11): 97.333");
+}
+
 } // end anonymous namespace
 
 int main(int argc, char* argv[])
@@ -141,6 +163,7 @@ int main(int argc, char* argv[])
   test_empty_signal();
   test_mean();
   test_vector_accumulator();
+  test_mean_std_function_style_syntax();
 
   return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;
 }

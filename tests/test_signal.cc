@@ -110,6 +110,16 @@ void test_make_slot()
   util->check_result(result_stream, "foo(int 3) bar(float 3) foo(int 3) ");
 }
 
+void test_std_function_style_syntax()
+{
+  sigc::signal<int(int)> sig;
+  sig.connect(sigc::ptr_fun(&foo));
+
+  sig(1);
+  util->check_result(result_stream, "foo(int 1) ");
+}
+
+
 } // end anonymous namespace
 
 int main(int argc, char* argv[])
@@ -124,6 +134,7 @@ int main(int argc, char* argv[])
   test_auto_disconnection();
   test_reference();
   test_make_slot();
+  test_std_function_style_syntax();
 
   return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;
 }

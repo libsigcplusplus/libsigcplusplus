@@ -1088,6 +1088,128 @@ public:
 };
 
 
+/** signal can be used to connect() slots that are invoked
+ * during subsequent calls to emit(). Any functor or slot
+ * can be passed into connect(). It is converted into a slot
+ * implicitly.
+ *
+ * If you want to connect one signal to another, use make_slot()
+ * to retrieve a functor that emits the signal when invoked.
+ *
+ * Be careful if you directly pass one signal into the connect()
+ * method of another: a shallow copy of the signal is made and
+ * the signal's slots are not disconnected until both the signal
+ * and its clone are destroyed, which is probably not what you want!
+ *
+ * An STL-style list interface for the signal's list of slots
+ * can be retrieved with slots(). This interface supports
+ * iteration, insertion and removal of slots.
+ *
+ * The template arguments determine the function signature of
+ * the emit() function:
+ * - @e T_return The desired return type of the emit() function. * - @e T_arg Argument types used in the definition of emit().
+ *
+ * For instance, to declare a signal whose connected slot returns void and takes
+ * two parameters of bool and int:
+ * @code
+ * sigc::signal<void, bool, int> some_signal;
+ * @endcode
+ *
+ * Alternatively, you may use a syntax similar to that used by std::function<>:
+ * @code
+ * sigc::signal<void(bool, int)> some_signal;
+ * @endcode
+ *
+ * To specify an accumulator type the nested class signal::accumulated can be used.
+ *
+ * @par Example:
+ * @code
+ * void foo(int) {}
+ * sigc::signal<void, long> sig;
+ * sig.connect(sigc::ptr_fun(&foo));
+ * sig.emit(19);
+ * @endcode
+ *
+ * @ingroup signal
+ */
+template <class T_return, class... T_arg>
+class signal<T_return(T_arg...)>
+  : public signal_with_accumulator<T_return, void, T_arg...>
+{
+public:
+  using accumulator_type = void;
+
+  /** Like sigc::signal but the additional template parameter @e T_accumulator
+   * defines the accumulator type that should be used.
+   *
+   * An accumulator is a functor that uses a pair of special iterators
+   * to step through a list of slots and calculate a return value
+   * from the results of the slot invokations. The iterators' operator*()
+   * executes the slot. The return value is buffered, so that in an expression
+   * like @code a = (*i) * (*i); @endcode the slot is executed only once.
+   * The accumulator must define its return value as @p result_type.
+   *
+   * @par Example 1:
+   * This accumulator calculates the arithmetic mean value:
+   * @code
+   * struct arithmetic_mean_accumulator
+   * {
+   *   using result_type = double;
+   *   template<typename T_iterator>
+   *   result_type operator()(T_iterator first, T_iterator last) const
+   *   {
+   *     result_type value_ = 0;
+   *     int n_ = 0;
+   *     for (; first != last; ++first, ++n_)
+   *       value_ += *first;
+   *     return value_ / n_;
+   *   }
+   * };
+   * @endcode
+   *
+   * @par Example 2:
+   * This accumulator stops signal emission when a slot returns zero:
+   * @code
+   * struct interruptable_accumulator
+   * {
+   *   using result_type = bool;
+   *   template<typename T_iterator>
+   *   result_type operator()(T_iterator first, T_iterator last) const
+   *   {
+   *     for (; first != last; ++first, ++n_)
+   *       if (!*first) return false;
+   *     return true;
+   *   }
+   * };
+   * @endcode
+   *
+   * @ingroup signal
+   */
+  template <class T_accumulator>
+  using accumulated = typename signal<T_return, T_arg...>::template accumulated<T_accumulator>;
+
+  signal() {}
+
+  signal(const signal& src)
+    : signal_with_accumulator<T_return, accumulator_type, T_arg...>(src) {}
+
+  signal(signal&& src)
+    : signal_with_accumulator<T_return, accumulator_type, T_arg...>(std::move(src)) {}
+
+  signal& operator=(const signal& src)
+  {
+    signal_with_accumulator<T_return, accumulator_type, T_arg...>::operator=(src);
+    return *this;
+  }
+
+  signal& operator=(signal&& src)
+  {
+    signal_with_accumulator<T_return, accumulator_type, T_arg...>::operator=(std::move(src));
+    return *this;
+  }
+};
+
+
 
 } /* namespace sigc */
 
