@@ -50,6 +50,18 @@ void test_simple()
   util->check_result(result_stream, "foo(int 2)");
 }
 
+void test_std_function_style_syntax()
+{
+  // simple test
+  sigc::slot<void(int)> s1 = foo();
+  s1(1);
+  util->check_result(result_stream, "foo(int 1)");
+
+  s1 = foo();
+  s1(2);
+  util->check_result(result_stream, "foo(int 2)");
+}
+
 void test_implicit_conversion()
 {
   // test implicit conversion
@@ -100,6 +112,7 @@ int main(int argc, char* argv[])
     return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;
 
   test_simple();
+  test_std_function_style_syntax();
   test_implicit_conversion();
   test_reference();
   test_operator_equals();
