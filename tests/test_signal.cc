@@ -48,6 +48,15 @@ void test_empty_signal()
   util->check_result(result_stream, "");
 }
 
+void test_simple()
+{
+  sigc::signal<int, int> sig;
+  sig.connect(sigc::ptr_fun(&foo));
+
+  sig(1);
+  util->check_result(result_stream, "foo(int 1) ");
+}
+
 int bar(float i)
 {
   result_stream << "bar(float " << i << ") ";
@@ -111,6 +120,7 @@ int main(int argc, char* argv[])
     return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;
 
   test_empty_signal();
+  test_simple();
   test_auto_disconnection();
   test_reference();
   test_make_slot();
