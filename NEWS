@@ -1,3 +1,24 @@
+2.7.2 (unstable):
+
+* Deprecate sigc::ref() and sigc::reference_wrapper(),
+  adding support instead for std::ref(), std::cref(),
+  and std::reference_wrapper().
+  (Murray Cumming)
+* mem_fun(): Deprecate mem_fun(pointer, func).
+  Leaving just mem_fun(reference, func).
+  Please let us know if you disagree strongly with this.
+  (Murray Cumming) Bug #763215
+* Make all operator bool() explicit. (A C++11 feature.)
+  (Murray Cumming)
+* Build: Remove some now-unnecessary configure checks.
+  But please let us know if this causes problems for you.
+  (Murray Cumming) Bug #762065 (Kjell Ahlstedt)
+* Build: Update MSVC project.
+  (Chun-wei Fan)
+* Documentation: Improve the documentation of mem_fun(), making it clear that
+  mem_fun() does not return a slot.
+  (Kjell Ahlstedt)
+
 2.7.1 (unstable):
 
 * signal: Add a moving connect() method, taking an rvalue reference
