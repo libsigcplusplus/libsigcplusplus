@@ -22,7 +22,7 @@ include $(srcdir)/filelist.am
 # Subdirectories needed also in the build dir
 build_subdirs = functors
 
-dist_noinst_DATA = $(sigc_m4) CMakeLists.txt
+dist_noinst_DATA = CMakeLists.txt
 
 library_includedir = $(includedir)/$(SIGCXX_MODULE_NAME)/sigc++
 nobase_library_include_HEADERS = sigc++.h $(sigc_public_h) $(sigc_built_h)
@@ -48,8 +48,6 @@ AM_CXXFLAGS = $(SIGC_WXXFLAGS)
 BUILT_SOURCES = $(build_subdirs) $(sigc_built_h) $(sigc_built_cc)
 MAINTAINERCLEANFILES = $(sigc_built_h) $(sigc_built_cc)
 
-m4_dir = $(srcdir)/macros
-
 $(build_subdirs):
 	$(AM_V_at)$(MKDIR_P) $@
 
@@ -66,8 +64,3 @@ functors/slot.cc:		\
 	functors/slot_base.h	\
 	functors/functor_trait.h
 
-%.h: macros/%.h.m4 $(m4_dir)/template.macros.m4 | $(build_subdirs)
-	$(AM_V_GEN)$(M4) -I $(m4_dir) -I macros $< >$@
-
-%.cc: macros/%.cc.m4 $(m4_dir)/template.macros.m4 | $(build_subdirs)
-	$(AM_V_GEN)$(M4) -I $(m4_dir) -I macros $< >$@
