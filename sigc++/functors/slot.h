@@ -129,21 +129,25 @@ struct slot_call
 // slot's specialization of the visitor struct.
 
 /** Converts an arbitrary functor to a unified type which is opaque.
- * sigc::slot itself is a functor or to be more precise a closure. It contains
+ * sigc::slot itself is a functor or, to be more precise, a closure. It contains
  * a single, arbitrary functor (or closure) that is executed in operator()().
  *
  * The template arguments determine the function signature of operator()():
  * - @e T_return The return type of operator()().
  * - @e T_arg Argument types used in the definition of operator()().
  *
- * To use simply assign the desired functor to the slot. If the functor
+ * For instance, to declare a slot that returns void and takes two parameters
+ * of bool and int:
+ * @code
+ * sigc::slot<void, bool, int> some_slot;
+ * @endcode
+ *
+ * To use, simply assign the desired functor to the slot. If the functor
  * is not compatible with the parameter list defined with the template
- * arguments compiler errors are triggered. When called the slot
+ * arguments then compiler errors are triggered. When called, the slot
  * will invoke the functor with minimal copies.
  * block() and unblock() can be used to block the functor's invocation
  * from operator()() temporarily.
- *
- * You should use the more convenient unnumbered sigc::slot template.
  *
  * @ingroup slot
  */
