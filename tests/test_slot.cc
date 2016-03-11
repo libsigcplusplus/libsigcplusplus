@@ -14,6 +14,8 @@
 
 namespace
 {
+
+TestUtilities* util = nullptr;
 std::ostringstream result_stream;
 
 class foo
@@ -36,15 +38,8 @@ public:
   }
 };
 
-} // end anonymous namespace
-
-int main(int argc, char* argv[])
+void test_simple()
 {
-  auto util = TestUtilities::get_instance();
-
-  if (!util->check_command_args(argc, argv))
-    return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;
-
   // simple test
   sigc::slot<void,int> s1 = foo();
   s1(1);
@@ -53,32 +48,62 @@ int main(int argc, char* argv[])
   s1 = foo();
   s1(2);
   util->check_result(result_stream, "foo(int 2)");
+}
 
+void test_implicit_conversion()
+{
   // test implicit conversion
   sigc::slot<void,char> s2 = foo();
   s2(3);
   util->check_result(result_stream, "foo(int 3)");
+}
 
+void test_reference()
+{
   // test reference
   sigc::slot<void,std::string&> sl1 = foo();
   std::string str("guest book");
   sl1(str);
   result_stream << str;
   util->check_result(result_stream, "foo(string 'guest book') foo was here");
+}
 
+void test_operator_equals()
+{
   // test operator=
-  str = "guest book";
+  std::string str = "guest book";
+  sigc::slot<void,std::string&> sl1 = foo();
   sigc::slot<void,std::string&> sl2;
   sl2 = sl1;
   sl1 = sl2;
   sl1(str);
   result_stream << str;
   util->check_result(result_stream, "foo(string 'guest book') foo was here");
+}
 
+void test_copy_ctor()
+{
   // test copy ctor
+  sigc::slot<void,int> s1 = foo();
   sigc::slot<void,int> s1_clone(s1);
   s1_clone(4);
   util->check_result(result_stream, "foo(int 4)");
+}
+
+} // end anonymous namespace
+
+int main(int argc, char* argv[])
+{
+  util = TestUtilities::get_instance();
+
+  if (!util->check_command_args(argc, argv))
+    return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;
+
+  test_simple();
+  test_implicit_conversion();
+  test_reference();
+  test_operator_equals();
+  test_copy_ctor();
 
   return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;
 }
