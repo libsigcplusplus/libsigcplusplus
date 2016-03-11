@@ -15,6 +15,8 @@
 
 namespace
 {
+
+TestUtilities* util = nullptr;
 std::ostringstream result_stream;
 
 struct arithmetic_mean_accumulator
@@ -69,32 +71,26 @@ struct A : public sigc::trackable
   }
 };
 
-} // end anonymous namespace
-
-int main(int argc, char* argv[])
+void test_empty_signal()
 {
-  auto util = TestUtilities::get_instance();
-
-  if (!util->check_command_args(argc, argv))
-    return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;
-
-   sigc::signal<int,int>::accumulated<arithmetic_mean_accumulator> sig;
-   sigc::signal<int,int>::accumulated<vector_accumulator<int> > sig_vec;
+  sigc::signal<int,int>::accumulated<arithmetic_mean_accumulator> sig;
+  sigc::signal<int,int>::accumulated<vector_accumulator<int> > sig_vec;
 
   result_stream << "Result (empty slot list): " << sig(0);
   util->check_result(result_stream, "Result (empty slot list): -1");
   result_stream << "Vector result (empty slot list): "
                 << (sig_vec(0).empty() ? "empty" : "not empty");
   util->check_result(result_stream, "Vector result (empty slot list): empty");
+}
+
+void test_mean()
+{
+  sigc::signal<int,int>::accumulated<arithmetic_mean_accumulator> sig;
 
   A a;
   sig.connect(sigc::ptr_fun1(&foo));
   sig.connect(sigc::mem_fun1(a, &A::foo));
   sig.connect(sigc::ptr_fun1(&bar));
-
-  sig_vec.connect(sigc::ptr_fun1(&foo));
-  sig_vec.connect(sigc::mem_fun1(a, &A::foo));
-  sig_vec.connect(sigc::ptr_fun1(&bar));
 
   double dres = sig(1);
   result_stream << "Mean accumulator: Result (i=1): "
@@ -107,7 +103,17 @@ int main(int argc, char* argv[])
                 << std::fixed << std::setprecision(3) << dres;
   util->check_result(result_stream,
     "foo: 34, A::foo: 206, bar: 52, Mean accumulator: Plain Result (i=11): 97.333");
+}
 
+void test_vector_accumulator()
+{
+  sigc::signal<int,int>::accumulated<vector_accumulator<int> > sig_vec;
+
+  A a;
+  sig_vec.connect(sigc::ptr_fun(&foo));
+  sig_vec.connect(sigc::mem_fun(a, &A::foo));
+  sig_vec.connect(sigc::ptr_fun(&bar));
+  
   auto res1 = sig_vec(1);
   result_stream << "Vector accumulator: Result (i=1): ";
   for (auto num : res1)
@@ -121,6 +127,20 @@ int main(int argc, char* argv[])
     result_stream << num << " ";
   util->check_result(result_stream,
     "foo: 10, A::foo: 46, bar: 12, Vector accumulator: Result (i=3): 10 46 12 ");
+}
+
+} // end anonymous namespace
+
+int main(int argc, char* argv[])
+{
+  util = TestUtilities::get_instance();
+
+  if (!util->check_command_args(argc, argv))
+    return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;
+
+  test_empty_signal();
+  test_mean();
+  test_vector_accumulator();
 
   return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;
 }
