@@ -3,6 +3,7 @@
 /test_accumulated
 /test_accum_iter
 /test_bind
+/test_bind_as_slot
 /test_bind_ref
 /test_bind_refptr
 /test_bind_return
@@ -18,6 +19,7 @@
 /test_hide
 /test_limit_reference
 /test_mem_fun
+/test_member_method_trait
 /test_ptr_fun
 /test_retype
 /test_retype_return
@@ -33,5 +35,7 @@
 /test_tuple_cat
 /test_tuple_cdr
 /test_tuple_end
+/test_tuple_for_each
 /test_tuple_start
+/test_tuple_transform_each
 /test_visit_each
