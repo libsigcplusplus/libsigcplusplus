@@ -30,7 +30,7 @@ struct signal_emit$1
 {
   typedef signal_emit$1<LIST(T_return, LOOP(T_arg%1, $1), T_accumulator)> self_type;
   typedef typename T_accumulator::result_type result_type;
-  typedef slot<LIST(T_return, LOOP(T_arg%1, $1))> slot_type;
+  typedef slot<T_return(LIST(LOOP(T_arg%1, $1)))> slot_type;
   typedef internal::slot_iterator_buf<self_type, T_return> slot_iterator_buf_type;
   typedef internal::slot_reverse_iterator_buf<self_type, T_return> slot_reverse_iterator_buf_type;
   typedef signal_impl::const_iterator_type iterator_type;
@@ -112,7 +112,7 @@ struct signal_emit$1<LIST(T_return, LOOP(T_arg%1, $1), nil)>
 {
   typedef signal_emit$1<LIST(T_return, LOOP(T_arg%1, $1), nil) > self_type;
   typedef T_return result_type;
-  typedef slot<LIST(T_return, LOOP(T_arg%1, $1))> slot_type;
+  typedef slot<T_return(LIST(LOOP(T_arg%1, $1)))> slot_type;
   typedef signal_impl::const_iterator_type iterator_type;
   typedef typename slot_type::call_type call_type;
 
@@ -216,7 +216,7 @@ struct signal_emit$1<LIST(void, LOOP(T_arg%1, $1), nil)>
 {
   typedef signal_emit$1<LIST(void, LOOP(T_arg%1, $1), nil)> self_type;
   typedef void result_type;
-  typedef slot<LIST(void, LOOP(T_arg%1, $1))> slot_type;
+  typedef slot<void(LIST(LOOP(T_arg%1, $1)))> slot_type;
   typedef signal_impl::const_iterator_type iterator_type;
   typedef ifelse($1,0,void (*call_type)(slot_rep*),typename slot_type::call_type call_type);
 
@@ -310,7 +310,7 @@ class signal$1
 public:
   typedef internal::signal_emit$1<LIST(T_return, LOOP(T_arg%1, $1), T_accumulator)> emitter_type;
   typedef typename emitter_type::result_type         result_type;
-  typedef slot<LIST(T_return, LOOP(T_arg%1, $1))>    slot_type;
+  typedef slot<T_return(LIST(LOOP(T_arg%1, $1)))>    slot_type;
   typedef slot_list<slot_type>                       slot_list_type;
   typedef typename slot_list_type::iterator               iterator;
   typedef typename slot_list_type::const_iterator         const_iterator;
