@@ -75,6 +75,11 @@ install (FILES
 		DESTINATION
 			"${config_install_dir}")
 
+install (FILES
+			"${CMAKE_CURRENT_BINARY_DIR}/sigc++config.h"
+		DESTINATION
+			"${CMAKE_INSTALL_PREFIX}/lib/sigc++-3.0/include")
+
 
 
 
