@@ -1,0 +1,5 @@
+@PACKAGE_INIT@
+
+include("${CMAKE_CURRENT_LIST_DIR}/@TARGETS_EXPORT_NAME@.cmake")
+include_directories("@LIBSIGCXX_INCLUDE_DIR@")
+check_required_components("@PROJECT_NAME@")

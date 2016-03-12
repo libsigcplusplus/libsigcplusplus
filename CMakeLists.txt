@@ -56,36 +56,51 @@ add_custom_target(uninstall
 	COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake)
 
 
-set(version_config "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake")
-set(project_config "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake")
-set(config_install_dir "${CMAKE_INSTALL_PREFIX}/lib/cmake/${PROJECT_NAME}")
-
-include(CMakePackageConfigHelpers)
-write_basic_package_version_file("${version_config}" VERSION ${PACKAGE_VERSION} COMPATIBILITY SameMajorVersion)
-configure_package_config_file(cmake/libsigcxx-3Config.cmake.in "${project_config}" INSTALL_DESTINATION "${config_install_dir}")
+install (FILES
+			"${CMAKE_CURRENT_BINARY_DIR}/sigc++config.h"
+		DESTINATION
+			"${CMAKE_INSTALL_PREFIX}/lib/${PROJECT_NAME}-${SIGCXX_API_VERSION}/include")
 
 install (FILES 
 			"${CMAKE_CURRENT_BINARY_DIR}/sigc++-${SIGCXX_API_VERSION}.pc"
 		DESTINATION 
 			"${CMAKE_INSTALL_PREFIX}/lib/pkgconfig")
 
-install (FILES
-			"${project_config}"
-			"${version_config}"
-		DESTINATION
-			"${config_install_dir}")
-
-install (FILES
-			"${CMAKE_CURRENT_BINARY_DIR}/sigc++config.h"
-		DESTINATION
-			"${CMAKE_INSTALL_PREFIX}/lib/sigc++-3.0/include")
-
-
-
-
 enable_testing()
+
+
 
 add_subdirectory (sigc++)
 add_subdirectory (examples)
 add_subdirectory (tests)
 
+
+set (PROJECT_CMAKE_NAME		"${PROJECT_NAME}-3")
+set (VERSION_CONFIG     	"${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_CMAKE_NAME}ConfigVersion.cmake")
+set (LIBSIGCXX_INCLUDE_DIR	"${CMAKE_INSTALL_PREFIX}/lib/${PROJECT_NAME}-${SIGCXX_API_VERSION}/include")
+set (PROJECT_CONFIG     	"${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_CMAKE_NAME}Config.cmake")
+set (CONFIG_INSTALL_DIR 	"lib/cmake/${PROJECT_CMAKE_NAME}")
+set (TARGETS_EXPORT_NAME    "${PROJECT_CMAKE_NAME}Targets")
+include (CMakePackageConfigHelpers)
+
+write_basic_package_version_file (
+    "${VERSION_CONFIG}"
+    VERSION ${PACKAGE_VERSION}
+    COMPATIBILITY SameMajorVersion
+)
+
+configure_package_config_file (
+    "cmake/sigc++-3Config.cmake.in"
+    "${PROJECT_CONFIG}"
+    INSTALL_DESTINATION "${CONFIG_INSTALL_DIR}"
+)
+
+install (
+    FILES "${PROJECT_CONFIG}" "${VERSION_CONFIG}"
+    DESTINATION "${CONFIG_INSTALL_DIR}"
+)
+
+install (
+    EXPORT "${TARGETS_EXPORT_NAME}"
+    DESTINATION "${CONFIG_INSTALL_DIR}"
+)
