@@ -43,7 +43,9 @@ set (libdir \${exec_prefix}/lib)
 set (datarootdir \${prefix})
 set (datadir \${datarootdir})
 set (includedir \${prefix}/include)
+set (top_srcdir .)
 configure_file (sigc++.pc.in sigc++-${SIGCXX_API_VERSION}.pc @ONLY)
+configure_file (sigc++-uninstalled.pc.in sigc++-${SIGCXX_API_VERSION}-uninstalled.pc @ONLY)
 
 
 set(version_config "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake")
@@ -54,8 +56,17 @@ include(CMakePackageConfigHelpers)
 write_basic_package_version_file("${version_config}" VERSION ${PACKAGE_VERSION} COMPATIBILITY SameMajorVersion)
 configure_package_config_file(cmake/libsigcxx-3Config.cmake.in "${project_config}" INSTALL_DESTINATION "${config_install_dir}")
 
-install (FILES "${CMAKE_CURRENT_BINARY_DIR}/sigc++-${SIGCXX_API_VERSION}.pc"	DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig")
-install (FILES "${project_config}" "${version_config}"							DESTINATION "${config_install_dir}")
+install (FILES 
+			"${CMAKE_CURRENT_BINARY_DIR}/sigc++-${SIGCXX_API_VERSION}.pc"
+			"${CMAKE_CURRENT_BINARY_DIR}/sigc++-${SIGCXX_API_VERSION}-uninstalled.pc"
+		DESTINATION 
+			"${CMAKE_INSTALL_PREFIX}/lib/pkgconfig")
+
+install (FILES
+			"${project_config}"
+			"${version_config}"
+		DESTINATION
+			"${config_install_dir}")
 
 enable_testing()
 
