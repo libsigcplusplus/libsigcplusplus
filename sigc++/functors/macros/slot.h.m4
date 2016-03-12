@@ -189,7 +189,8 @@ FOR(1,$1,[
  *
  * @ingroup slot
  */
-template <LIST(class T_return, LOOP(class T_arg%1 = nil, $1))>],[dnl
+template <LIST(class T_return, LOOP(class T_arg%1 = nil, $1))>
+class slot],[dnl
 
 /** Convenience wrapper for the numbered sigc::slot$1 template.
  * See the base class for useful methods.
@@ -199,8 +200,8 @@ template <LIST(class T_return, LOOP(class T_arg%1 = nil, $1))>],[dnl
 dnl *
 dnl * @ingroup slot
  */
-template <LIST(class T_return, LOOP(class T_arg%1, $1))>])
-class slot ifelse($1, $2,,[<LIST(T_return, LIST(LOOP(T_arg%1, $1), LOOP(nil, CALL_SIZE - $1)))>])
+template <LIST(class T_return, LOOP(class T_arg%1, $1))>
+class slot <LIST(T_return, LIST(LOOP(T_arg%1, $1), LOOP(nil, CALL_SIZE - $1)))>])
   : public slot$1<LIST(T_return, LOOP(T_arg%1, $1))>
 {
 public:
