@@ -254,6 +254,74 @@ public:
   }
 };
 
+
+/** Convenience wrapper for the numbered sigc::slot$1 template.
+ * See the base class for useful methods.
+ * This is the template specialization of the unnumbered sigc::slot
+ * template for $1 argument(s), specialized for different numbers of arguments
+ * This is possible because the template has default (nil) template types.
+dnl *
+dnl * @ingroup slot
+ *
+ * This specialization allow use of the  sigc::slot<R(Args...)> syntax,
+ */
+template <LIST(class T_return, LOOP(class T_arg%1, $1))>
+class slot<T_return(LIST(LOOP(T_arg%1, $1)))>
+  : public slot$1<LIST(T_return, LOOP(T_arg%1, $1))>
+{
+public:
+  typedef slot$1<LIST(T_return, LOOP(T_arg%1, $1))> parent_type;
+
+  inline slot() {}
+
+  /** Constructs a slot from an arbitrary functor.
+   * @param _A_func The desired functor the new slot should be assigned to.
+   */
+  template <class T_functor>
+  slot(const T_functor& _A_func)
+    : parent_type(_A_func) {}
+
+  // Without static_cast parent_type(const T_functor& _A_func)
+  // is called instead of the copy constructor.
+  /** Constructs a slot, copying an existing one.
+   * @param src The existing slot to copy.
+   */
+  slot(const slot& src)
+    : parent_type(static_cast<const parent_type&>(src)) {}
+
+  // Without static_cast parent_type(const T_functor& _A_func)
+  // is called instead of the move constructor.
+  /** Constructs a slot, moving an existing one.
+   * If @p src is connected to a parent (e.g. a signal), it is copied, not moved.
+   * @param src The existing slot to move or copy.
+   */
+  slot(slot&& src)
+    : parent_type(std::move(static_cast<parent_type&>(src))) {}
+
+  /** Overrides this slot, making a copy from another slot.
+   * @param src The slot from which to make a copy.
+   * @return @p this.
+   */
+  slot& operator=(const slot& src)
+  {
+    parent_type::operator=(src);
+    return *this;
+  }
+
+  /** Overrides this slot, making a move from another slot.
+   * If @p src is connected to a parent (e.g. a signal), it is copied, not moved.
+   * @param src The slot from which to move or copy.
+   * @return @p this.
+   */
+  slot& operator=(slot&& src)
+  {
+    parent_type::operator=(std::move(src));
+    return *this;
+  }
+};
+
+
+
 ifelse($1, $2,[dnl
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 //template specialization of visitor<>::do_visit_each<>(action, functor):
