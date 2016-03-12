@@ -453,6 +453,11 @@ FOR(1,$1,[
  * sig.emit(19);
  * @endcode
  *
+ * @deprecated Please use the syntax similar to that used by std::function<>:
+ * @code
+ * sigc::slot<void(bool, int)> some_slot;
+ * @endcode
+ *
  * @ingroup signal
  */
 template <LIST(class T_return, LOOP(class T_arg%1 = nil, $1))>
@@ -462,6 +467,11 @@ class signal],[dnl
  * See the base class for useful methods.
  * This is the template specialization of the unnumbered sigc::signal
  * template for $1 argument(s).
+ *
+ * @deprecated Please use the syntax similar to that used by std::function<>:
+ * @code
+ * sigc::slot<void(bool, int)> some_slot;
+ * @endcode
 ifelse($1, $2,[dnl
  *
  * @ingroup signal
