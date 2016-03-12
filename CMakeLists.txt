@@ -26,14 +26,14 @@ set (LIBSIGCPP_SOVERSION 0)
 
 option (SIGCXX_DISABLE_DEPRECATED "Disable deprecated" OFF)
 
-project (libsigc++)
+project (sigc++)
 
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1y")
 
-set (PROJECT_SOURCE_DIR "${libsigc++_SOURCE_DIR}/sigc++")
+set (PROJECT_SOURCE_DIR "${sigc++_SOURCE_DIR}/sigc++")
 
-include_directories (${libsigc++_SOURCE_DIR})
-include_directories (${libsigc++_BINARY_DIR})
+include_directories (${sigc++_SOURCE_DIR})
+include_directories (${sigc++_BINARY_DIR})
 
 configure_file (sigc++config.h.cmake sigc++config.h)
 

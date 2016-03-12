@@ -19,7 +19,7 @@ enable_testing ()
 function (add_sigcpp_test TEST_SOURCE_FILE)
 	get_filename_component (test_name ${TEST_SOURCE_FILE} NAME_WE)
 	add_executable (${test_name} ${TEST_SOURCE_FILE} testutilities.cc)
-	target_link_libraries (${test_name} ${PROJECT_NAME}-${SIGCXX_API_VERSION})
+	target_link_libraries (${test_name} sigc-${SIGCXX_API_VERSION})
 	add_test (${test_name} ${CMAKE_CURRENT_BINARY_DIR}/${test_name})
 endfunction (add_sigcpp_test)
 

@@ -42,7 +42,7 @@ install (
 	DIRECTORY	
 		"${PROJECT_SOURCE_DIR}"
 	DESTINATION
-		"include/sigc++-${SIGCXX_API_VERSION}"
+		"include/${PROJECT_NAME}-${SIGCXX_API_VERSION}"
 			FILES_MATCHING PATTERN
 		"*.h"
 )
