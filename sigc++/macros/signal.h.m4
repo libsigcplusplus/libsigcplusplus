@@ -555,6 +555,99 @@ ifelse($1, $2,[dnl
   }
 };
 
+/**
+ * This specialization allow use of the  sigc::signal<R(Args...)> syntax,
+ */
+template <LIST(class T_return, LOOP(class T_arg%1, $1))>
+class signal<T_return(LIST(LOOP(T_arg%1, $1)))>
+  : public signal$1<LIST(T_return, LOOP(T_arg%1, $1),nil)>
+{
+public:
+ifelse($1, $2,[dnl
+  /** Convenience wrapper for the numbered sigc::signal# templates.
+   * Like sigc::signal but the additional template parameter @e T_accumulator
+   * defines the accumulator type that should be used.
+   *
+   * An accumulator is a functor that uses a pair of special iterators
+   * to step through a list of slots and calculate a return value
+   * from the results of the slot invokations. The iterators' operator*()
+   * executes the slot. The return value is buffered, so that in an expression
+   * like @code a = (*i) * (*i); @endcode the slot is executed only once.
+   * The accumulator must define its return value as @p result_type.
+   *
+   * @par Example 1:
+   * This accumulator calculates the arithmetic mean value:
+   * @code
+   * struct arithmetic_mean_accumulator
+   * {
+   *   typedef double result_type;
+   *   template<typename T_iterator>
+   *   result_type operator()(T_iterator first, T_iterator last) const
+   *   {
+   *     result_type value_ = 0;
+   *     int n_ = 0;
+   *     for (; first != last; ++first, ++n_)
+   *       value_ += *first;
+   *     return value_ / n_;
+   *   }
+   * };
+   * @endcode
+   *
+   * @par Example 2:
+   * This accumulator stops signal emission when a slot returns zero:
+   * @code
+   * struct interruptable_accumulator
+   * {
+   *   typedef bool result_type;
+   *   template<typename T_iterator>
+   *   result_type operator()(T_iterator first, T_iterator last) const
+   *   {
+   *     for (; first != last; ++first, ++n_)
+   *       if (!*first) return false;
+   *     return true;
+   *   }
+   * };
+   * @endcode
+   *
+   * @ingroup signal
+],[
+  /** Convenience wrapper for the numbered sigc::signal$1 template.
+   * Like sigc::signal but the additional template parameter @e T_accumulator
+   * defines the accumulator type that should be used.
+])dnl
+   */
+  template <class T_accumulator>
+  class accumulated
+    : public signal$1<LIST(T_return, LOOP(T_arg%1, $1), T_accumulator)>
+  {
+  public:
+    accumulated() {}
+    accumulated(const accumulated& src)
+      : signal$1<LIST(T_return, LOOP(T_arg%1, $1), T_accumulator)>(src) {}
+  };
+
+  signal() {}
+
+  signal(const signal& src)
+    : signal$1<LIST(T_return, LOOP(T_arg%1, $1),nil)>(src) {}
+
+  signal(signal&& src)
+    : signal$1<LIST(T_return, LOOP(T_arg%1, $1),nil)>(std::move(src)) {}
+
+  signal& operator=(const signal& src)
+  {
+    signal$1<LIST(T_return, LOOP(T_arg%1, $1),nil)>::operator=(src);
+    return *this;
+  }
+
+  signal& operator=(signal&& src)
+  {
+    signal$1<LIST(T_return, LOOP(T_arg%1, $1),nil)>::operator=(std::move(src));
+    return *this;
+  }
+};
+
+
 ])
 
 divert(0)
