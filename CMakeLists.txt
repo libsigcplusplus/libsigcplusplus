@@ -20,13 +20,13 @@ set (SIGCXX_MAJOR_VERSION 2)
 set (SIGCXX_MINOR_VERSION 99)
 set (SIGCXX_MICRO_VERSION 1)
 
-set (LIBSIGCPP_PROJECT_VERSION 3.0)
-set (LIBSIGCPP_VERSION ${SIGCXX_MAJOR_VERSION}.${SIGCXX_MINOR_VERSION}.${SIGCXX_MICRO_VERSION})
+set (SIGCXX_API_VERSION 3.0)
+set (PACKAGE_VERSION ${SIGCXX_MAJOR_VERSION}.${SIGCXX_MINOR_VERSION}.${SIGCXX_MICRO_VERSION})
 set (LIBSIGCPP_SOVERSION 0)
 
 option (SIGCXX_DISABLE_DEPRECATED "Disable deprecated" OFF)
 
-project (libsigc++ ${LIBSIGC++_PROJECT_VERSION})
+project (libsigc++)
 
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1y")
 
@@ -36,6 +36,15 @@ include_directories (${libsigc++_SOURCE_DIR})
 include_directories (${libsigc++_BINARY_DIR})
 
 configure_file (sigc++config.h.cmake sigc++config.h)
+
+set (prefix ${CMAKE_INSTALL_PREFIX})
+set (exec_prefix \${prefix})
+set (libdir \${exec_prefix}/lib)
+set (datarootdir \${prefix})
+set (datadir \${datarootdir})
+set (includedir \${prefix}/include)
+configure_file (sigc++.pc.in sigc++-${SIGCXX_API_VERSION}.pc @ONLY)
+install (FILES ${CMAKE_CURRENT_BINARY_DIR}/sigc++-${SIGCXX_API_VERSION}.pc DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/pkgconfig)
 
 enable_testing()
 
