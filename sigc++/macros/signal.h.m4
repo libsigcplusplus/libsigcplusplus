@@ -455,7 +455,8 @@ FOR(1,$1,[
  *
  * @ingroup signal
  */
-template <LIST(class T_return, LOOP(class T_arg%1 = nil, $1))>],[dnl
+template <LIST(class T_return, LOOP(class T_arg%1 = nil, $1))>
+class signal],[dnl
 
 /** Convenience wrapper for the numbered sigc::signal$1 template.
  * See the base class for useful methods.
@@ -466,8 +467,8 @@ ifelse($1, $2,[dnl
  * @ingroup signal
 ])dnl
  */
-template <LIST(class T_return, LOOP(class T_arg%1, $1))>])
-class signal ifelse($1, $2,,[<LIST(T_return, LOOP(T_arg%1,$1), LOOP(nil, CALL_SIZE - $1))>])
+template <LIST(class T_return, LOOP(class T_arg%1, $1))>
+class signal ifelse($1, $2,,[<LIST(T_return, LOOP(T_arg%1,$1), LOOP(nil, CALL_SIZE - $1))>])])
   : public signal$1<LIST(T_return, LOOP(T_arg%1, $1),nil)>
 {
 public:
