@@ -185,7 +185,12 @@ FOR(1,$1,[
  *
  * sigc::slot<> is similar to std::function<>. If you're going to assign the
  * resulting functor to a sigc::slot or connect it to a sigc::signal, it's better
- * not to use std::function. It would become un unnecessary extra wrapper.
+ * not to use std::function. It would become an unnecessary extra wrapper.
+ *
+ * @deprecated Please use the syntax similar to that used by std::function<>:
+ * @code
+ * sigc::slot<void(bool, int)> some_slot;
+ * @endcode
  *
  * @ingroup slot
  */
@@ -197,6 +202,12 @@ class slot],[dnl
  * This is the template specialization of the unnumbered sigc::slot
  * template for $1 argument(s), specialized for different numbers of arguments
  * This is possible because the template has default (nil) template types.
+ *
+ * @deprecated Please use the syntax similar to that used by std::function<>:
+ * @code
+ * sigc::slot<void(bool, int)> some_slot;
+ * @endcode
+ *
 dnl *
 dnl * @ingroup slot
  */
