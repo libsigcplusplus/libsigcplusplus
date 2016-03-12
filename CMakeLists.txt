@@ -66,7 +66,6 @@ configure_package_config_file(cmake/libsigcxx-3Config.cmake.in "${project_config
 
 install (FILES 
 			"${CMAKE_CURRENT_BINARY_DIR}/sigc++-${SIGCXX_API_VERSION}.pc"
-			"${CMAKE_CURRENT_BINARY_DIR}/sigc++-${SIGCXX_API_VERSION}-uninstalled.pc"
 		DESTINATION 
 			"${CMAKE_INSTALL_PREFIX}/lib/pkgconfig")
 
