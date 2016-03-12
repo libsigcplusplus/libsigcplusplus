@@ -47,6 +47,14 @@ set (top_srcdir .)
 configure_file (sigc++.pc.in sigc++-${SIGCXX_API_VERSION}.pc @ONLY)
 configure_file (sigc++-uninstalled.pc.in sigc++-${SIGCXX_API_VERSION}-uninstalled.pc @ONLY)
 
+configure_file(
+	"${CMAKE_CURRENT_SOURCE_DIR}/cmake_uninstall.cmake.in"
+	"${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake"
+ 	IMMEDIATE @ONLY)
+
+add_custom_target(uninstall
+	COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake)
+
 
 set(version_config "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake")
 set(project_config "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake")
@@ -67,6 +75,9 @@ install (FILES
 			"${version_config}"
 		DESTINATION
 			"${config_install_dir}")
+
+
+
 
 enable_testing()
 
