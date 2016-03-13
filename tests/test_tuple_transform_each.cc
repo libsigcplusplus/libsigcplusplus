@@ -292,6 +292,7 @@ public:
   }
 };
 
+/* TODO: See the comment in main().
 constexpr
 void
 test_tuple_transform_each_constexpr() {
@@ -310,6 +311,7 @@ test_tuple_transform_each_constexpr() {
     std::is_same<decltype(t_transformed), decltype(t_expected)>::value,
     "unexpected transform_each()ed tuple type");
 }
+*/
 
 int
 main() {
@@ -325,7 +327,11 @@ main() {
 
   test_tuple_transform_each_empty_tuple();
 
-  test_tuple_transform_each_constexpr();
+  // g++ 5.2.1 gives this error:
+  //   error: accessing uninitialized member ‘std::tuple<char>::<anonymous>’
+  // though it works with clang++.
+  // TODO: Try it with a newer g++.
+  //test_tuple_transform_each_constexpr();
 
   return EXIT_SUCCESS;
 }
