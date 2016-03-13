@@ -14,7 +14,7 @@
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
-cmake_minimum_required (VERSION 3.4)
+cmake_minimum_required (VERSION 3.2)
 
 set (SIGCXX_MAJOR_VERSION 2)
 set (SIGCXX_MINOR_VERSION 99)
