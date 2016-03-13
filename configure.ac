@@ -65,6 +65,7 @@ MM_ARG_DISABLE_DEPRECATED_API([SIGCXX])
 AC_CONFIG_FILES([Makefile
                  ${SIGCXX_MODULE_NAME}.pc:sigc++.pc.in
                  ${SIGCXX_MODULE_NAME}-uninstalled.pc:sigc++-uninstalled.pc.in
+                 cmake/Makefile
                  sigc++/Makefile
                  examples/Makefile
                  tests/Makefile

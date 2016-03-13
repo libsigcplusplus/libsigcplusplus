@@ -22,7 +22,7 @@ include $(srcdir)/filelist.am
 # Subdirectories needed also in the build dir
 build_subdirs = functors
 
-dist_noinst_DATA = $(sigc_m4)
+dist_noinst_DATA = $(sigc_m4) CMakeLists.txt
 
 library_includedir = $(includedir)/$(SIGCXX_MODULE_NAME)/sigc++
 nobase_library_include_HEADERS = sigc++.h $(sigc_public_h) $(sigc_built_h)

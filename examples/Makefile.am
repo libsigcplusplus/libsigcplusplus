@@ -21,5 +21,7 @@ LDADD       = $(top_builddir)/sigc++/libsigc-$(SIGCXX_API_VERSION).la
 
 noinst_PROGRAMS = hello_world member_method
 
+dist_noinst_DATA = CMakeLists.txt
+
 hello_world_SOURCES   = hello_world.cc
 member_method_SOURCES = member_method.cc

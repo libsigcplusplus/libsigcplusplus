@@ -19,6 +19,8 @@ AM_CPPFLAGS = -I$(top_builddir) -I$(top_srcdir)
 AM_CXXFLAGS = $(SIGC_WXXFLAGS)
 LDADD       = $(top_builddir)/sigc++/libsigc-$(SIGCXX_API_VERSION).la
 
+dist_noinst_DATA = CMakeLists.txt
+
 check_PROGRAMS = \
   test_accum_iter \
   test_accumulated \

@@ -22,7 +22,7 @@ doc_subdirs = docs
 else
 doc_subdirs =
 endif
-SUBDIRS = sigc++ tests examples $(doc_subdirs)
+SUBDIRS = sigc++ tests examples cmake $(doc_subdirs)
 
 sigc_configdir = $(libdir)/$(SIGCXX_MODULE_NAME)/include
 nodist_sigc_config_HEADERS = sigc++config.h
@@ -35,7 +35,7 @@ dist_noinst_SCRIPTS = autogen.sh
 
 include $(srcdir)/MSVC_Net2013/filelist.am
 
-dist_noinst_DATA = $(addprefix MSVC_Net2013/,$(msvc_net2013_data))
+dist_noinst_DATA = $(addprefix MSVC_Net2013/,$(msvc_net2013_data)) CMakeLists.txt sigc++config.h.cmake cmake_uninstall.cmake.in
 
 DISTCLEANFILES = MSVC_Net2013/sigc++config.h
 
