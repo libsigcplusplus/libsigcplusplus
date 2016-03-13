@@ -39,11 +39,8 @@ Overview of the distribution:
    examples/                         examples of various signal functions
    
    sigc++/                           source for library
-      sigc++/macros/                 .m4 files used to auto-generate source files
       sigc++/functors/               source for library (various functors)
-      sigc++/functors/macros/        .m4 files used to auto-generate source files
       sigc++/adaptors/               source for library (various adaptors)
-      sigc++/adaptors/macros/        .m4 files used to auto-generate source files
    
    build/                            auxiliary files for building
    
@@ -54,8 +51,4 @@ Overview of the distribution:
 
 Compatibility:
 
-   Compatible compilers must support C++11, such as the decltype() specifier.
-
-   All releases are tested with the gcc (g++) compiler.
-   Release 2.3.2 has been tested with gcc 4.8.2, clang 3.4 and MS Visual C++ 2010.
-   Release 2.5.1 has been tested with gcc 4.9.2, clang 3.6.0 and MS Visual C++ 2013.
+   Compatible compilers must support C++14, such as the decltype(auto) specifier.
