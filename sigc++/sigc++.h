@@ -65,16 +65,34 @@
  * g++ program.cc -o program `pkg-config --cflags --libs sigc++-2.0`
  * @endcode
  *
+ * @subsection autotools Using Autotools
+ *
  * Alternatively, if using autoconf, use the following in @c configure.ac:
  * @code
- * PKG_CHECK_MODULES([LIBSIGC], [sigc++-2.0])
+ * PKG_CHECK_MODULES([DEPS], [sigc++-2.0])
  * @endcode
- * Then use the generated @c LIBSIGC_CFLAGS and @c LIBSIGC_LIBS variables
+ * Then use the generated @c DEPS_CFLAGS and @c DEPS_LIBS variables
  * in the project @c Makefile.am files. For example:
  * @code
- * program_CPPFLAGS = $(LIBSIGC_CFLAGS)
- * program_LDADD = $(LIBSIGC_LIBS)
+ * yourprogram_CPPFLAGS = $(DEPS_CFLAGS)
+ * yourprogram_LDADD = $(DEPS_LIBS)
  * @endcode
+ *
+ * Your @c PKG_CHECK_MODULES() call should also mention any other libraries that
+ * you need to use via pkg-config.
+ *
+ * @subsection cmake Using CMake
+ *
+ * If using CMake, use the following in @c CMakeList.txt:
+ * @code
+ * include(FindPkgConfig)
+ * pkg_check_modules(DEPS REQUIRED sigc++-2.0)
+ * include_directories(${DEPS_INCLUDE_DIRS})
+ * target_link_libraries(yourprogram ${DEPS_LIBRARIES})
+ * @endcode
+ *
+ * Your @c pkg_check_modules() call should also mention any other libraries that
+ * you need to use via pkg-config.
  *
  * @section scope Scope of Documentation
  *
