@@ -78,7 +78,7 @@
  * yourprogram_LDADD = $(DEPS_LIBS)
  * @endcode
  *
- * Your PKG_CHECK_MODULES() call should also mention any other libraries that
+ * Your @c PKG_CHECK_MODULES() call should also mention any other libraries that
  * you need to use via pkg-config.
  *
  * @subsection cmake Using CMake
@@ -91,7 +91,7 @@
  * target_link_libraries(yourprogram ${DEPS_LIBRARIES})
  * @endcode
  *
- * Your pkg_check_modules() call should also mention any other libraries that
+ * Your @c pkg_check_modules() call should also mention any other libraries that
  * you need to use via pkg-config.
  *
  * @section scope Scope of Documentation
