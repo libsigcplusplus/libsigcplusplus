@@ -266,74 +266,6 @@ public:
   }
 };
 
-
-/** Convenience wrapper for the numbered sigc::slot$1 template.
- * See the base class for useful methods.
- * This is the template specialization of the unnumbered sigc::slot
- * template for $1 argument(s), specialized for different numbers of arguments
- * This is possible because the template has default (nil) template types.
-dnl *
-dnl * @ingroup slot
- *
- * This specialization allow use of the  sigc::slot<R(Args...)> syntax,
- */
-template <LIST(class T_return, LOOP(class T_arg%1, $1))>
-class slot<T_return(LIST(LOOP(T_arg%1, $1)))>
-  : public slot$1<LIST(T_return, LOOP(T_arg%1, $1))>
-{
-public:
-  typedef slot$1<LIST(T_return, LOOP(T_arg%1, $1))> parent_type;
-
-  inline slot() {}
-
-  /** Constructs a slot from an arbitrary functor.
-   * @param _A_func The desired functor the new slot should be assigned to.
-   */
-  template <class T_functor>
-  slot(const T_functor& _A_func)
-    : parent_type(_A_func) {}
-
-  // Without static_cast parent_type(const T_functor& _A_func)
-  // is called instead of the copy constructor.
-  /** Constructs a slot, copying an existing one.
-   * @param src The existing slot to copy.
-   */
-  slot(const slot& src)
-    : parent_type(static_cast<const parent_type&>(src)) {}
-
-  // Without static_cast parent_type(const T_functor& _A_func)
-  // is called instead of the move constructor.
-  /** Constructs a slot, moving an existing one.
-   * If @p src is connected to a parent (e.g. a signal), it is copied, not moved.
-   * @param src The existing slot to move or copy.
-   */
-  slot(slot&& src)
-    : parent_type(std::move(static_cast<parent_type&>(src))) {}
-
-  /** Overrides this slot, making a copy from another slot.
-   * @param src The slot from which to make a copy.
-   * @return @p this.
-   */
-  slot& operator=(const slot& src)
-  {
-    parent_type::operator=(src);
-    return *this;
-  }
-
-  /** Overrides this slot, making a move from another slot.
-   * If @p src is connected to a parent (e.g. a signal), it is copied, not moved.
-   * @param src The slot from which to move or copy.
-   * @return @p this.
-   */
-  slot& operator=(slot&& src)
-  {
-    parent_type::operator=(std::move(src));
-    return *this;
-  }
-};
-
-
-
 ifelse($1, $2,[dnl
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 //template specialization of visitor<>::do_visit_each<>(action, functor):
@@ -518,14 +450,184 @@ struct typed_slot_rep : public slot_rep
     }
 };
 
-
 FOR(0,CALL_SIZE,[[SLOT_CALL(%1)]])dnl
+
+/** Abstracts functor execution.
+ * call_it() invokes a functor of type @e T_functor with a list of
+ * parameters whose types are given by the template arguments.
+ * address() forms a function pointer from call_it().
+ *
+ * The following template arguments are used:
+ * - @e T_functor The functor type.
+ * - @e T_return The return type of call_it().
+ * - @e T_arg Argument types used in the definition of call_it().
+ *
+ */
+template<class T_functor, class T_return, class... T_arg>
+struct slot_call
+{
+  /** Invokes a functor of type @p T_functor.
+   * @param rep slot_rep object that holds a functor of type @p T_functor.
+   * @param _A_a Arguments to be passed on to the functor.
+   * @return The return values of the functor invocation.
+   */
+  static T_return call_it(slot_rep* rep, type_trait_take_t<T_arg>... a_)
+    {
+      using typed_slot = typed_slot_rep<T_functor>;
+      typed_slot *typed_rep = static_cast<typed_slot*>(rep);
+      return (typed_rep->functor_).template operator()<type_trait_take_t<T_arg>...>
+               (a_...);
+    }
+
+  /** Forms a function pointer from call_it().
+   * @return A function pointer formed from call_it().
+   */
+  static hook address()
+    { return reinterpret_cast<hook>(&call_it); }
+};
+
+/** Abstracts functor execution.
+ * call_it() invokes a functor without parameters of type @e T_functor.
+ * address() forms a function pointer from call_it().
+ *
+ * This is a specialization for functors without parameters.
+ *
+ * The following template arguments are used:
+ * - @e T_functor The functor type.
+ * - @e T_return The return type of call_it().
+ *
+ */
+template<class T_functor, class T_return>
+struct slot_call<T_functor, T_return>
+{
+  /** Invokes a functor of type @p T_functor.
+   * @param rep slot_rep object that holds a functor of type @p T_functor.
+   * @return The return values of the functor invocation.
+   */
+  static T_return call_it(slot_rep* rep)
+    {
+      using typed_slot = typed_slot_rep<T_functor>;
+      typed_slot *typed_rep = static_cast<typed_slot*>(rep);
+      return (typed_rep->functor_)();
+    }
+
+  /** Forms a function pointer from call_it().
+   * @return A function pointer formed from call_it().
+   */
+  static hook address()
+    { return reinterpret_cast<hook>(&call_it); }
+};
+
 } /* namespace internal */
 
 
 FOR(0,CALL_SIZE,[[SLOT_N(%1,CALL_SIZE)]])
 SLOT(CALL_SIZE,CALL_SIZE)
 FOR(0,eval(CALL_SIZE-1),[[SLOT(%1,CALL_SIZE)]])
+
+/** Converts an arbitrary functor to a unified type which is opaque.
+ * sigc::slot itself is a functor or, to be more precise, a closure. It contains
+ * a single, arbitrary functor (or closure) that is executed in operator()().
+ *
+ * The template arguments determine the function signature of operator()():
+ * - @e T_return The return type of operator()().
+ * - @e T_arg Argument types used in the definition of operator()().
+ *
+ * For instance, to declare a slot that returns void and takes two parameters
+ * of bool and int:
+ * @code
+ * sigc::slot<void(bool, int)> some_slot;
+ * @endcode
+ *
+ * Alternatively, you may use this syntax:
+ * @code
+ * sigc::slot<void, bool, int> some_slot;
+ * @endcode
+ *
+ * To use, simply assign the desired functor to the slot. If the functor
+ * is not compatible with the parameter list defined with the template
+ * arguments then compiler errors are triggered. When called, the slot
+ * will invoke the functor with minimal copies.
+ * block() and unblock() can be used to block the functor's invocation
+ * from operator()() temporarily.
+ *
+ * @ingroup slot
+ */
+template <class T_return, class... T_arg>
+class slot<T_return(T_arg...)>
+  : public slot_base
+{
+public:
+  using result_type = T_return;
+  //TODO: using arg_type_ = type_trait_take_t<T_arg>;
+
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+private:
+  using rep_type = internal::slot_rep;
+public:
+  using call_type = T_return (*)(rep_type*, type_trait_take_t<T_arg>...);
+#endif
+
+  /** Invoke the contained functor unless slot is in blocking state.
+   * @param _A_a Arguments to be passed on to the functor.
+   * @return The return value of the functor invocation.
+   */
+  inline T_return operator()(type_trait_take_t<T_arg>... _A_a) const
+    {
+      if (!empty() && !blocked())
+        return (reinterpret_cast<call_type>(slot_base::rep_->call_))(slot_base::rep_, _A_a...);
+      return T_return();
+    }
+
+  inline slot() {}
+
+  /** Constructs a slot from an arbitrary functor.
+   * @param _A_func The desired functor the new slot should be assigned to.
+   */
+  template <class T_functor>
+  slot(const T_functor& _A_func)
+    : slot_base(new internal::typed_slot_rep<T_functor>(_A_func))
+    {
+      //The slot_base:: is necessary to stop the HP-UX aCC compiler from being confused. murrayc.
+      slot_base::rep_->call_ = internal::slot_call<T_functor, T_return, T_arg...>::address();
+    }
+
+  /** Constructs a slot, copying an existing one.
+   * @param src The existing slot to copy.
+   */
+  slot(const slot& src)
+    : slot_base(src)
+    {}
+
+  /** Constructs a slot, moving an existing one.
+   * If @p src is connected to a parent (e.g. a signal), it is copied, not moved.
+   * @param src The existing slot to move or copy.
+   */
+  slot(slot&& src)
+    : slot_base(std::move(src))
+    {}
+
+  /** Overrides this slot, making a copy from another slot.
+   * @param src The slot from which to make a copy.
+   * @return @p this.
+   */
+  slot& operator=(const slot& src)
+  {
+    slot_base::operator=(src);
+    return *this;
+  }
+
+  /** Overrides this slot, making a move from another slot.
+   * If @p src is connected to a parent (e.g. a signal), it is copied, not moved.
+   * @param src The slot from which to move or copy.
+   * @return @p this.
+   */
+  slot& operator=(slot&& src)
+  {
+    slot_base::operator=(std::move(src));
+    return *this;
+  }
+};
 
 } /* namespace sigc */
 
