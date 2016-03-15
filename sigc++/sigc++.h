@@ -65,6 +65,8 @@
  * g++ program.cc -o program `pkg-config --cflags --libs sigc++-3.0`
  * @endcode
  *
+ * @subsection autotools Using Autotools
+ *
  * Alternatively, if using autoconf, use the following in @c configure.ac:
  * @code
  * PKG_CHECK_MODULES([LIBSIGC], [sigc++-3.0])
@@ -74,6 +76,16 @@
  * @code
  * program_CPPFLAGS = $(LIBSIGC_CFLAGS)
  * program_LDADD = $(LIBSIGC_LIBS)
+ * @endcode
+ *
+ * @subsection cmake Using CMake
+ *
+ * If using CMake, use the following in @c CMakeList.txt:
+ * @code
+ * include(FindPkgConfig)
+ * pkg_check_modules(DEPS REQUIRED sigc++-3.0)
+ * include_directories(${DEPS_INCLUDE_DIRS})
+ * target_link_libraries(yourprogram ${DEPS_LIBRARIES})
  * @endcode
  *
  * @section scope Scope of Documentation
