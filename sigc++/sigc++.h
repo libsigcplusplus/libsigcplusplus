@@ -69,13 +69,13 @@
  *
  * Alternatively, if using autoconf, use the following in @c configure.ac:
  * @code
- * PKG_CHECK_MODULES([LIBSIGC], [sigc++-3.0])
+ * PKG_CHECK_MODULES([DEPS], [sigc++-3.0])
  * @endcode
- * Then use the generated @c LIBSIGC_CFLAGS and @c LIBSIGC_LIBS variables
+ * Then use the generated @c DEPS_CFLAGS and @c DEPS_LIBS variables
  * in the project @c Makefile.am files. For example:
  * @code
- * program_CPPFLAGS = $(LIBSIGC_CFLAGS)
- * program_LDADD = $(LIBSIGC_LIBS)
+ * yourprogram_CPPFLAGS = $(DEPS_CFLAGS)
+ * yourprogram_LDADD = $(DEPS_LIBS)
  * @endcode
  *
  * @subsection cmake Using CMake
