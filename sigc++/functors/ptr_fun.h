@@ -49,7 +49,11 @@ namespace sigc {
  * @ingroup ptr_fun
  */
 template <class T_return, class... T_args>
-class pointer_functor : public functor_base
+class pointer_functor;
+
+template <class T_return, class... T_args>
+class pointer_functor<T_return(T_args...)>
+  : public functor_base
 {
   using function_type = T_return (*)(T_args...);
 protected: 
@@ -81,9 +85,9 @@ public:
  * @ingroup ptr_fun
  */
 template <class T_return, class... T_args>
-inline pointer_functor<T_return, T_args...> 
+inline decltype(auto)
 ptr_fun(T_return (*_A_func)(T_args...))
-{ return pointer_functor<T_return, T_args...>(_A_func); }
+{ return pointer_functor<T_return(T_args...)>(_A_func); }
 
 } /* namespace sigc */
 #endif /* _SIGC_FUNCTORS_PTR_FUN_H_ */

@@ -198,7 +198,7 @@ template <class T_return, class... T_arg>
 struct functor_trait<T_return (*)(T_arg...), false, false>
 {
   using result_type = T_return;
-  using functor_type = pointer_functor<T_return, T_arg...>;
+  using functor_type = pointer_functor<T_return(T_arg...)>;
 };
 
 

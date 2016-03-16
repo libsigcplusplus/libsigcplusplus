@@ -99,6 +99,21 @@ struct visitor<retype_functor<T_functor, T_type...> >
 };
 #endif // DOXYGEN_SHOULD_SKIP_THIS
 
+//This one takes, for instance, a mem_functor or bound_mem_functor:
+/** Creates an adaptor of type sigc::retype_functor which performs C-style casts on the parameters passed on to the functor.
+ *
+ * @param _A_functor Functor that should be wrapped.
+ * @return Adaptor that executes @e _A_functor performing C-style casts on the paramters passed on.
+ *
+ * @ingroup retype
+ */
+template <template<class T_func, class... T_arg> class T_functor, class T_func, class... T_arg>
+inline decltype(auto)
+retype(const T_functor<T_func, T_arg...>& _A_functor)
+{ return retype_functor<T_functor<T_func, T_arg...>, T_arg...>
+    (_A_functor); }
+
+//This one takes, for instance, a pointer_functor or slot:
 /** Creates an adaptor of type sigc::retype_functor which performs C-style casts on the parameters passed on to the functor.
  *
  * @param _A_functor Functor that should be wrapped.
@@ -108,8 +123,8 @@ struct visitor<retype_functor<T_functor, T_type...> >
  */
 template <template<class T_return, class... T_arg> class T_functor, class T_return, class... T_arg>
 inline decltype(auto)
-retype(const T_functor<T_return, T_arg...>& _A_functor)
-{ return retype_functor<T_functor<T_return, T_arg...>, T_arg...>
+retype(const T_functor<T_return(T_arg...)>& _A_functor)
+{ return retype_functor<T_functor<T_return(T_arg...)>, T_arg...>
     (_A_functor); }
 
 } /* namespace sigc */
