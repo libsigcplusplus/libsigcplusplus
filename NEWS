@@ -1,5 +1,14 @@
+2.9.1 (unstable):
 
-2.8.0 (stable)
+* slot: Allow sigc::slot<R(Args...)> syntax, like std::function,
+  deprecating the sigc::slot<R, Args...> syntax.
+  (Murray Cumming, Kjell Ahlstedt) Bug #763393
+* signal: Allow sigc::signal<R(Args...)> syntax, like std::function,
+  deprecating the sigc::signal<R, Args...> syntax.
+  (Murray Cumming, Kjell Ahlstedt) Bug #763393
+
+
+2.8.0 (stable):
 
 * Documentation: Mention use with CMake.
 
