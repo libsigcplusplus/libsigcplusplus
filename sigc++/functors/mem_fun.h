@@ -31,7 +31,7 @@ namespace sigc {
  *   void bar(int) {}
  * };
  * foo my_foo;
- * sigc::slot<void, int> sl = sigc::mem_fun(my_foo, &foo::bar);
+ * sigc::slot<void(int)> sl = sigc::mem_fun(my_foo, &foo::bar);
  * // Note: f is not a slot. It will not be invalidated when my_foo is deleted.
  * auto f = sigc::mem_fun(my_foo, &foo::bar); // Usually not what you want.
  * @endcode
@@ -45,7 +45,7 @@ namespace sigc {
  *   void bar(int) const {}
  * };
  * const foo my_foo;
- * sigc::slot<void, int> sl = sigc::mem_fun(my_foo, &foo::bar);
+ * sigc::slot<void(int)> sl = sigc::mem_fun(my_foo, &foo::bar);
  * @endcode
  *
  * Use mem_fun#() if there is an ambiguity as to the number of arguments.
@@ -59,7 +59,7 @@ namespace sigc {
  *   void bar(int, int) {}
  * };
  * foo my_foo;
- * sigc::slot<void, int> sl = sigc::mem_fun1<int>(my_foo, &foo::bar);
+ * sigc::slot<void(int)> sl = sigc::mem_fun1<int>(my_foo, &foo::bar);
  * @endcode
  *
  * @ingroup sigcfunctors

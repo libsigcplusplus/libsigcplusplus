@@ -13,7 +13,7 @@ namespace sigc {
  * @par Example:
  * @code
  * void foo(int) {}
- * sigc::slot<void, int> sl = sigc::ptr_fun(&foo);
+ * sigc::slot<void(int)> sl = sigc::ptr_fun(&foo);
  * @endcode
  *
  * @par Example:
@@ -21,7 +21,7 @@ namespace sigc {
  * void foo(int) {}  // choose this one
  * void foo(float) {}
  * void foo(int, int) {}
- * sigc::slot<void, long> sl = sigc::ptr_fun<void, int>(&foo);
+ * sigc::slot<void(long)> sl = sigc::ptr_fun<void, int>(&foo);
  * @endcode
  *
  * ptr_fun() can also be used to convert a pointer to a static member
@@ -33,7 +33,7 @@ namespace sigc {
  * {
  *   static void bar(int) {}
  * };
- * sigc::slot<void, int> sl = sigc::ptr_fun(&foo::bar);
+ * sigc::slot<void(int)> sl = sigc::ptr_fun(&foo::bar);
  * @endcode
  *
  * @ingroup sigcfunctors
