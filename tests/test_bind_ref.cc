@@ -43,7 +43,7 @@ int main(int argc, char* argv[])
     return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;
 
   auto slot_full = sigc::ptr_fun(&handler);
-  sigc::slot<void> slot_bound;
+  sigc::slot<void()> slot_bound;
 
   slot_bound();
   util->check_result(result_stream, "");

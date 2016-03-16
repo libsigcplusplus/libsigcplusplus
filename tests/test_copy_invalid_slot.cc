@@ -31,7 +31,7 @@ int main(int argc, char* argv[])
   util->check_result(result_stream, "sigc::trackable instance at " + pointer_stream.str());
   pointer_stream.str("");
 
-  sigc::slot<void> foo = sigc::bind(sigc::ptr_fun(Foo), std::ref(*t));
+  sigc::slot<void()> foo = sigc::bind(sigc::ptr_fun(Foo), std::ref(*t));
   foo();
   util->check_result(result_stream, "Foo(x)");
 
@@ -56,7 +56,7 @@ int main(int argc, char* argv[])
   // Now copy foo: up to libsigc++ version 2.0.11, the copy constructor fails
   // because the pointer value it dereferences does not point to a
   // sigc::trackable anymore, it now points to a polluted buffer.
-  sigc::slot<void> bar = foo;
+  sigc::slot<void()> bar = foo;
   bar();
   util->check_result(result_stream, "");
 

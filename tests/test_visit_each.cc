@@ -160,7 +160,7 @@ int main(int argc, char* argv[])
   if (!util->check_command_args(argc, argv))
     return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;
 
-  sigc::slot<void, int> sl1;
+  sigc::slot<void(int)> sl1;
 
   {
     MyClass1 my_class1("x=");

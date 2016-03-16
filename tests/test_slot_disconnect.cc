@@ -32,7 +32,7 @@ int main(int argc, char* argv[])
     return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;
 
   //Note that sigc::ptr_fun() creates a sig::pointer_functor.
-  sigc::slot<void> theSlot(sigc::ptr_fun(&Foo));
+  sigc::slot<void()> theSlot(sigc::ptr_fun(&Foo));
   theSlot();
   util->check_result(result_stream, "Foo");
 
@@ -44,7 +44,7 @@ int main(int argc, char* argv[])
   theSlot();
   util->check_result(result_stream, "Bar");
 
-  theSlot = sigc::slot<void>(); // Assign an empty slot.
+  theSlot = sigc::slot<void()>(); // Assign an empty slot.
   theSlot();
   util->check_result(result_stream, "");
 

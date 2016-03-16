@@ -41,17 +41,17 @@ int main(int argc, char* argv[])
     return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;
 
   auto instance = new Derived();
-  sigc::slot<void> handler = sigc::mem_fun(*instance, &Derived::method);
+  sigc::slot<void()> handler = sigc::mem_fun(*instance, &Derived::method);
   handler();
   util->check_result(result_stream, "method()");
 
   auto param =
-    sigc::bind(sigc::slot<void, Derived&>(), std::ref(*instance));
+    sigc::bind(sigc::slot<void(Derived&)>(), std::ref(*instance));
   param();
   util->check_result(result_stream, "");
 
   auto ret =
-    sigc::bind_return(sigc::slot<void>(), std::ref(*instance));
+    sigc::bind_return(sigc::slot<void()>(), std::ref(*instance));
   ret();
   util->check_result(result_stream, "");
 

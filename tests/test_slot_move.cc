@@ -46,18 +46,18 @@ int main(int argc, char* argv[])
     return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;
 
   // simple test
-  sigc::slot<void,int> s1 = foo();
+  sigc::slot<void(int)> s1 = foo();
   s1(1);
   util->check_result(result_stream, "foo(int 1)");
 
   // test move constructor:
-  sigc::slot<void,int> s2(std::move(s1));
+  sigc::slot<void(int)> s2(std::move(s1));
   s1(-2);
   s2(2);
   util->check_result(result_stream, "foo(int 2)");
 
   // test move assignment:
-  sigc::slot<void,int> s3;
+  sigc::slot<void(int)> s3;
   s3 = std::move(s2);
   s2(-3);
   s3(3);

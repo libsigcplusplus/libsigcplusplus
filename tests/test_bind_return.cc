@@ -65,7 +65,7 @@ int main(int argc, char* argv[])
   // long as there exists a default constructor for it.
   //
   // Therefore, we use 'bar', and not 'bar&' for this slot signature.
-  sigc::slot<bar, int> sl;
+  sigc::slot<bar(int)> sl;
   {
     bar choco(-1);
     sl = sigc::bind_return(foo(), std::ref(choco));

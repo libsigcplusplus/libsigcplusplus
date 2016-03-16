@@ -147,7 +147,7 @@ int main(int argc, char* argv[])
   result_stream << " " << str; // (This cannot be the default behaviour: just think about what happens if str dies!)
   util->check_result(result_stream, "egon(string 'guest book') egon was here");
 
-  sigc::slot<void> sl;
+  sigc::slot<void()> sl;
   {
     book guest_book("karl");
     sl = sigc::bind(&egon, std::ref(guest_book));

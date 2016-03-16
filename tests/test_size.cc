@@ -33,7 +33,7 @@ int main(int argc, char* argv[])
     std::cout << "sizes of public classes:" << std::endl;
 
     std::cout << "  trackable:               " << sizeof(sigc::trackable) << std::endl;
-    std::cout << "  slot<void>:              " << sizeof(sigc::slot<void>) << std::endl;
+    std::cout << "  slot<void()>:              " << sizeof(sigc::slot<void()>) << std::endl;
     std::cout << "  signal<void()>:            " << sizeof(sigc::signal<void()>) << std::endl;
     std::cout << "  signal<void()>::iterator:  " << sizeof(sigc::signal<void()>::iterator) << std::endl;
     std::cout << "  connection:              " << sizeof(sigc::connection) << std::endl;

@@ -139,7 +139,7 @@ int main(int argc, char* argv[])
 
   { // A slot# within a slot
     A a2;
-    sigc::slot<int, int> setter = sigc::mem_fun(a2, &A::foo);
+    sigc::slot<int(int)> setter = sigc::mem_fun(a2, &A::foo);
     sig.connect(sigc::compose(setter, &foo));
     result_stream << "sig is connected to compose(slot1(A::foo), foo) (size=" << sig.size() << "): ";
     sig(9);
@@ -151,7 +151,7 @@ int main(int argc, char* argv[])
 
   { // A slot within a slot
     A a2;
-    sigc::slot<int, int> setter = sigc::mem_fun(a2, &A::foo);
+    sigc::slot<int(int)> setter = sigc::mem_fun(a2, &A::foo);
     sig.connect(sigc::compose(setter, &foo));
     result_stream << "sig is connected to compose(slot(A::foo), foo) (size=" << sig.size() << "): ";
     sig(11);

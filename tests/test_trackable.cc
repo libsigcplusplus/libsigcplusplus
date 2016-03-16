@@ -34,7 +34,7 @@ int main(int argc, char* argv[])
   if (!util->check_command_args(argc, argv))
     return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;
 
-  sigc::slot<void> sl;
+  sigc::slot<void()> sl;
   {
     my_class t;
     t.i = 10;

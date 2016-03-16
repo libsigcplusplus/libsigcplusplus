@@ -265,7 +265,7 @@ int main(int argc, char* argv[])
   // If you want to auto-disconnect a slot with a C++11 lambda expression
   // that contains references to sigc::trackable-derived objects, you must use
   // sigc::track_obj().
-  sigc::slot<void, std::ostringstream&> sl1;
+  sigc::slot<void(std::ostringstream&)> sl1;
   {
     book guest_book("karl");
     //sl1 = (sigc::var(std::cout) << std::ref(guest_book) << sigc::var("\n"));
@@ -316,7 +316,7 @@ int main(int argc, char* argv[])
   // functor has an unambiguous operator()().
 
   // auto-disconnect
-  sigc::slot<void> sl2;
+  sigc::slot<void()> sl2;
   {
     book guest_book("karl");
     //sl2 = sigc::group(&egon, std::ref(guest_book));

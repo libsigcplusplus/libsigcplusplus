@@ -126,7 +126,7 @@ int main(int argc, char* argv[])
   if (!util->check_command_args(argc, argv))
     return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;
 
-  sigc::slot<std::string, int> sl1;
+  sigc::slot<std::string(int)> sl1;
   {
     bar_group4 bar4;
     sl1 = sigc::track_obj(Functor1(bar4), bar4);
@@ -140,7 +140,7 @@ int main(int argc, char* argv[])
 
   // Allocate on the heap. valgrind can then find erroneous memory accesses.
   // (There should be none, of course.)
-  auto psl2 = new sigc::slot<std::string, int, std::string>;
+  auto psl2 = new sigc::slot<std::string(int, std::string)>;
   bar_group4* pbar4 = new bar_group4;
   book* pbook4 = new book("A Book");
   *psl2 = sigc::track_obj(Functor2(*pbar4, *pbook4), *pbar4, *pbook4);
@@ -163,7 +163,7 @@ int main(int argc, char* argv[])
   // If you want to auto-disconnect a slot with a C++11 lambda expression
   // that contains references to sigc::trackable-derived objects, you must use
   // sigc::track_obj().
-  sigc::slot<void, std::ostringstream&> sl10;
+  sigc::slot<void(std::ostringstream&)> sl10;
   {
     book guest_book("karl");
     // sl1 = [&guest_book](std::ostringstream& stream){ stream << guest_book << "\n"; }; // no auto-disconnect
@@ -177,7 +177,7 @@ int main(int argc, char* argv[])
   util->check_result(result_stream, "");
 
   // auto-disconnect
-  sigc::slot<void> sl20;
+  sigc::slot<void()> sl20;
   {
     book guest_book("karl");
     // sl2 = [&guest_book] () { egon(guest_book); }; // no auto-disconnect

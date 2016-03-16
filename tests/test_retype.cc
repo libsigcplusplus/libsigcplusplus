@@ -57,7 +57,7 @@ void test_ptr_fun()
 void test_member_int_with_slot()
 {
   foo foo_;
-  sigc::slot<float,float> s1 = sigc::retype(sigc::mem_fun(foo_, &foo::test_int));
+  sigc::slot<float(float)> s1 = sigc::retype(sigc::mem_fun(foo_, &foo::test_int));
   result_stream << s1(1.234f);
   util->check_result(result_stream, "foo::test_int(int 1) 1.5");
 }
@@ -65,14 +65,14 @@ void test_member_int_with_slot()
 void test_member_float_with_slot()
 {
   foo foo_;
-  sigc::slot<float,int> s2 = sigc::retype(sigc::mem_fun(foo_, &foo::test_float));
+  sigc::slot<float(int)> s2 = sigc::retype(sigc::mem_fun(foo_, &foo::test_float));
   result_stream << s2(5);
   util->check_result(result_stream, "foo::test_float(float 5) 25");
 }
 
 void test_ptr_fun_with_slot()
 {
-  sigc::slot<void,double> s3 = sigc::retype(sigc::ptr_fun(&bar));
+  sigc::slot<void(double)> s3 = sigc::retype(sigc::ptr_fun(&bar));
   s3(6.789);
   util->check_result(result_stream, "bar(short 6)");
 }
@@ -80,18 +80,10 @@ void test_ptr_fun_with_slot()
 void test_retype_slot()
 {
   foo foo_;
-  sigc::slot<float,float> s1 = sigc::retype(sigc::mem_fun(foo_, &foo::test_int));
-  sigc::slot<float,int> s2 = sigc::retype(s1);
+  sigc::slot<float(float)> s1 = sigc::retype(sigc::mem_fun(foo_, &foo::test_int));
+  sigc::slot<float(int)> s2 = sigc::retype(s1);
   result_stream << s2(5);
   util->check_result(result_stream, "foo::test_int(int 5) 7.5");
-}
-
-void test_std_function_style_syntax()
-{
-  foo foo_;
-  sigc::slot<float(float)> s1 = sigc::retype(sigc::mem_fun(foo_, &foo::test_int));
-  result_stream << s1(1.234f);
-  util->check_result(result_stream, "foo::test_int(int 1) 1.5");
 }
 
 } // end anonymous namespace
@@ -112,8 +104,6 @@ int main(int argc, char* argv[])
   test_ptr_fun_with_slot();
 
   test_retype_slot();
-
-  test_std_function_style_syntax();
 
   return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;
 }

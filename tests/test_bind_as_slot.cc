@@ -46,7 +46,7 @@ int main(int argc, char* argv[])
 
   //Test that sigc::bind()'s result can be converted to a sigc::slot<>.
   {
-    sigc::slot<bool, int> bound_slot = sigc::bind(sigc::ptr_fun(&func_to_bind), 2);
+    sigc::slot<bool(int)> bound_slot = sigc::bind(sigc::ptr_fun(&func_to_bind), 2);
     bound_slot(1);
     util->check_result(result_stream, "func_to_bind(1, 2)");
   }
@@ -54,7 +54,7 @@ int main(int argc, char* argv[])
   //Test with a non-const iterator:
   {
     std::string c = "2";
-    sigc::slot<bool, int> bound_slot = sigc::bind(sigc::ptr_fun(&func_to_bind_with_iter), c.begin());
+    sigc::slot<bool(int)> bound_slot = sigc::bind(sigc::ptr_fun(&func_to_bind_with_iter), c.begin());
     bound_slot(1);
     util->check_result(result_stream, "func_to_bind_with_iter(1, 2)");
   }
@@ -62,7 +62,7 @@ int main(int argc, char* argv[])
   //Test with a const_iterator:
   {
     const std::string c = "2";
-    sigc::slot<bool, int> bound_slot = sigc::bind(sigc::ptr_fun(&func_to_bind_with_const_iter), c.begin());
+    sigc::slot<bool(int)> bound_slot = sigc::bind(sigc::ptr_fun(&func_to_bind_with_const_iter), c.begin());
     bound_slot(1);
     util->check_result(result_stream, "func_to_bind_with_const_iter(1, 2)");
   }

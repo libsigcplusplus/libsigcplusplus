@@ -55,7 +55,7 @@ int main(int argc, char* argv[])
   util->check_result(result_stream, "foo(float 1.234) 6");
 
   // retype_return<void> / hide_return
-  sigc::slot<void, int> sl;
+  sigc::slot<void(int)> sl;
   sl = sigc::retype_return<void>(bar());
   sl(5);
   util->check_result(result_stream, "bar(int 5)");
