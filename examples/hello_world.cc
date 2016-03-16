@@ -16,7 +16,7 @@ void on_print(const std::string& str)
 
 int main()
 {
-  sigc::signal<void, const std::string&> signal_print;
+  sigc::signal<void(const std::string&)> signal_print;
   
   signal_print.connect( sigc::ptr_fun(&on_print) );
   
