@@ -35,7 +35,7 @@ namespace sigc {
  *
  * @par Example:
  * @code
- * sigc::signal<void,int> some_signal;
+ * sigc::signal<void(int)> some_signal;
  * void foo();
  * some_signal.connect(sigc::hide(&foo));
  * @endcode

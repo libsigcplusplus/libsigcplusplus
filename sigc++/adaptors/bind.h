@@ -38,7 +38,7 @@ namespace sigc {
  *
  * @par Example:
  * @code
- * sigc::signal<void> some_signal;
+ * sigc::signal<void()> some_signal;
  * void foo(int);
  * some_signal.connect(sigc::bind(&foo,1));
  * @endcode
@@ -58,7 +58,7 @@ namespace sigc {
  * @par Example:
  * @code
  * int some_int;
- * sigc::signal<void> some_signal;
+ * sigc::signal<void()> some_signal;
  * void foo(int&);
  * some_signal.connect(sigc::bind(&foo, std::ref(some_int)));
  * @endcode
@@ -70,7 +70,7 @@ namespace sigc {
  * @par Example:
  * @code
  * struct bar : public sigc::trackable {} some_bar;
- * sigc::signal<void> some_signal;
+ * sigc::signal<void()> some_signal;
  * void foo(bar&);
  * some_signal.connect(sigc::bind(&foo, std::ref(some_bar)));
  *   // disconnected automatically if some_bar goes out of scope

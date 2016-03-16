@@ -25,7 +25,7 @@ namespace sigc {
  *
  * @par Example:
  * @code
- * sigc::signal<void,float> some_signal;
+ * sigc::signal<void(float)> some_signal;
  * void foo(int);
  * some_signal.connect(sigc::retype(sigc::ptr_fun(&foo)));
  * @endcode

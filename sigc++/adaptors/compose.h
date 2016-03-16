@@ -22,7 +22,7 @@ namespace sigc {
  *
  * @par Example:
  * @code
- * sigc::signal<float,float,float> some_signal;
+ * sigc::signal(float(float, float)> some_signal;
  * some_signal.connect(sigc::compose(&square_root, &sum));
  * @endcode
  *

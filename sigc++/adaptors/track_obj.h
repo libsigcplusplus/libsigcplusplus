@@ -20,7 +20,7 @@ namespace sigc {
  * @par Example:
  * @code
  * struct bar : public sigc::trackable {};
- * sigc::signal<void> some_signal;
+ * sigc::signal<void()> some_signal;
  * void foo(bar&);
  * {
  *   bar some_bar;
