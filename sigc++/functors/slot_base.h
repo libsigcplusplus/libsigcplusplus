@@ -189,11 +189,11 @@ struct SIGC_API slot_do_unbind
  *
  * Use the sigc::mem_fun() and sigc::ptr_fun() template functions to get a sigc::slot, like so:
  * @code
- * sigc::slot<void, int> sl = sigc::mem_fun(someobj, &SomeClass::somemethod);
+ * sigc::slot<void(int)> sl = sigc::mem_fun(someobj, &SomeClass::somemethod);
  * @endcode
  * or
  * @code
- * sigc::slot<void, int> sl = sigc::ptr_fun(&somefunction);
+ * sigc::slot<void(int)> sl = sigc::ptr_fun(&somefunction);
  * @endcode
  * or, in gtkmm,
  * @code
@@ -207,7 +207,7 @@ struct SIGC_API slot_do_unbind
  * sigc::mem_fun() and sigc::ptr_fun() return functors, but those functors are
  * not slots.
  * @code
- * sigc::slot<void, int> sl = sigc::mem_fun(someobj, &SomeClass::somemethod);
+ * sigc::slot<void(int)> sl = sigc::mem_fun(someobj, &SomeClass::somemethod);
  * @endcode
  * is not equivalent to
  * @code
