@@ -1,3 +1,14 @@
+2.99.2 (unstable):
+
+* slots and signal: These should now be declared with the
+  sigc::slot<R(Args...)>
+  and
+  sigc::signal<R(Args...)>
+  syntax, like std::function<>.
+  Version 2.9/2.10 of libsigc++-2.0 supports both the old and new syntax.
+  (Murray Cumming)
+* sigc::men_fun(): Take the instance by reference only.
+
 2.99.1 (unstable):
 
 This is the first release of the libsigc++-3.0 API, which installs in parallel
