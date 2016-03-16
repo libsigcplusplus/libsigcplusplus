@@ -35,7 +35,7 @@ int main(int argc, char* argv[])
   if (!util->check_command_args(argc, argv))
     return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;
 
-  sigc::signal<int>::accumulated<min_accum<int>> signal;
+  sigc::signal<int()>::accumulated<min_accum<int>> signal;
 
   signal.connect(sigc::bind(sigc::ptr_fun(ident), 3));
   signal.connect(sigc::bind(sigc::ptr_fun(ident), 1));

@@ -199,7 +199,7 @@ int main(int argc, char* argv[])
   // -----------------------------------------------------------------------
   {
     //struct bar : public sigc::trackable {} some_bar;
-    sigc::signal<void> some_signal;
+    sigc::signal<void()> some_signal;
     {
       bar_group4 some_bar;
       //some_signal.connect(sigc::group(&foo, std::ref(some_bar)));

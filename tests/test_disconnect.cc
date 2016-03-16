@@ -70,7 +70,7 @@ struct B : public sigc::trackable
     sig.emit();
   }
 
-  sigc::signal<void> sig;
+  sigc::signal<void()> sig;
 };
 
 } // end anonymous namespace
@@ -82,9 +82,9 @@ int main(int argc, char* argv[])
   if (!util->check_command_args(argc, argv))
     return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;
 
-  sigc::signal<int, int> sig;
-  sigc::signal<int, int>::iterator confoo;
-  sigc::signal<int, int>::iterator conbar;
+  sigc::signal<int(int)> sig;
+  sigc::signal<int(int)>::iterator confoo;
+  sigc::signal<int(int)>::iterator conbar;
   sigc::connection cona;  // connection objects are safe to use beyond the life time of a signal.
 
   {

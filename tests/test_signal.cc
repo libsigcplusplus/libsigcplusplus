@@ -41,7 +41,7 @@ struct A : public sigc::trackable
 void test_empty_signal()
 {
   // signal
-  sigc::signal<int,int> sig;
+  sigc::signal<int(int)> sig;
 
   // emit empty signal
   sig(0);
@@ -50,7 +50,7 @@ void test_empty_signal()
 
 void test_simple()
 {
-  sigc::signal<int, int> sig;
+  sigc::signal<int(int)> sig;
   sig.connect(sigc::ptr_fun(&foo));
 
   sig(1);
@@ -66,7 +66,7 @@ int bar(float i)
 void test_auto_disconnection()
 {
   // signal
-  sigc::signal<int,int> sig;
+  sigc::signal<int(int)> sig;
 
   // connect some slots before emitting & test auto-disconnection
   {
@@ -90,7 +90,7 @@ void test_reference()
   // test reference
   A a;
   std::string str("guest book");
-  sigc::signal<void,std::string&> sigstr;
+  sigc::signal<void(std::string&)> sigstr;
   sigstr.connect(sigc::mem_fun(a, &A::bar));
   sigstr(str);
   result_stream << str;
@@ -100,25 +100,15 @@ void test_reference()
 void test_make_slot()
 {
   // test make_slot()
-  sigc::signal<int,int> sig;
+  sigc::signal<int(int)> sig;
   sig.connect(sigc::ptr_fun(&foo));
   sig.connect(sigc::ptr_fun(&bar));
   sig.connect(sigc::ptr_fun(&foo));
-  sigc::signal<int,int> sig2;
+  sigc::signal<int(int)> sig2;
   sig2.connect(sig.make_slot());
   sig2(3);
   util->check_result(result_stream, "foo(int 3) bar(float 3) foo(int 3) ");
 }
-
-void test_std_function_style_syntax()
-{
-  sigc::signal<int(int)> sig;
-  sig.connect(sigc::ptr_fun(&foo));
-
-  sig(1);
-  util->check_result(result_stream, "foo(int 1) ");
-}
-
 
 } // end anonymous namespace
 
@@ -134,7 +124,6 @@ int main(int argc, char* argv[])
   test_auto_disconnection();
   test_reference();
   test_make_slot();
-  test_std_function_style_syntax();
 
   return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;
 }

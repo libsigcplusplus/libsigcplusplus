@@ -425,10 +425,10 @@ public:
 
   void emit_sig1(int n) { sig1.emit(n); }
 
-  sigc::signal<void, int>& signal_sig1() { return sig1; }
+  sigc::signal<void(int)>& signal_sig1() { return sig1; }
 
 private:
-  sigc::signal<void, int> sig1;
+  sigc::signal<void(int)> sig1;
   int ref_count;
 
 };

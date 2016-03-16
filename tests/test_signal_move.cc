@@ -30,19 +30,19 @@ int main(int argc, char* argv[])
     return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;
 
   // signal
-  sigc::signal<int, int> sig;
+  sigc::signal<int(int)> sig;
   sig.connect(sigc::ptr_fun(&foo));
   sig(1);
   util->check_result(result_stream, "foo(int 1)");
 
   //Test the move constructor:
-  sigc::signal<int, int> sig2(std::move(sig));
+  sigc::signal<int(int)> sig2(std::move(sig));
   sig(-2);
   sig2(2);
   util->check_result(result_stream, "foo(int 2)");
 
   //Test the move assignment operator:
-  sigc::signal<int, int> sig3;
+  sigc::signal<int(int)> sig3;
   sig3 = std::move(sig2);
   sig2(-3);
   sig3(3);

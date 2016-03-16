@@ -38,7 +38,7 @@ int main(int argc, char* argv[])
 
   HandlerClass instance;
 
-  sigc::signal<void> signal_test;
+  sigc::signal<void()> signal_test;
   connection = signal_test.connect(sigc::mem_fun(instance, &HandlerClass::handler));
   result_stream << "Number of signal handlers before signal emission: " << signal_test.size();
   util->check_result(result_stream, "Number of signal handlers before signal emission: 1");

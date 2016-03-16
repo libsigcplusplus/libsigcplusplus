@@ -400,7 +400,7 @@ int main(int argc, char* argv[])
   //int main(int argc, char* argv[])
   //{
   //  int data;
-  //  sigc::signal<int> readValue;
+  //  sigc::signal<int()> readValue;
   //
   //  readValue.connect(sigc::var(data));
   //
@@ -412,7 +412,7 @@ int main(int argc, char* argv[])
   //}
   {
     int data;
-    sigc::signal<int> readValue;
+    sigc::signal<int()> readValue;
 
     readValue.connect([&data] () -> int { return data; });
 
@@ -457,7 +457,7 @@ int main(int argc, char* argv[])
   util->check_result(result_stream, "foo_group1(int 18, int 2)");
 
   {
-    sigc::signal<void,int,int> some_signal;
+    sigc::signal<void(int, int)> some_signal;
     //some_signal.connect(sigc::group(&foo,sigc::_2));
     //some_signal.connect(std::bind(&foo_group2, std::placeholders::_2)); // does not compile (gcc 4.6.3)
     some_signal.connect([](int, int y) { foo_group2(y); });
@@ -467,7 +467,7 @@ int main(int argc, char* argv[])
 
   {
     int some_int = 0;
-    sigc::signal<void> some_signal;
+    sigc::signal<void()> some_signal;
     //some_signal.connect(sigc::group(&foo,std::ref(some_int)));
     //some_signal.connect(std::bind(&foo_group3, std::ref(some_int))); // does not compile (gcc 4.6.3)
     //some_signal.connect(sigc::bind(&foo_group3, std::ref(some_int))); // compiles, but we prefer std::bind() or C++11 lambda
@@ -479,7 +479,7 @@ int main(int argc, char* argv[])
 
   {
     //struct bar : public sigc::trackable {} some_bar;
-    sigc::signal<void> some_signal;
+    sigc::signal<void()> some_signal;
     {
       bar_group4 some_bar;
       //some_signal.connect(sigc::group(&foo, std::ref(some_bar)));
