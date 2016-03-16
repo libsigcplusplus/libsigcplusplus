@@ -265,7 +265,7 @@ private:
  * class MyClass
  * {
  * public:
- *   using MySignalType = sigc::signal<void>;
+ *   using MySignalType = sigc::signal<void()>;
  *   MySignalType get_my_signal() { return m_my_signal; }
  * private:
  *   MySignalType m_my_signal;

@@ -47,7 +47,7 @@ namespace sigc {
  *
  * @par Example:
  * @code
- * sigc::signal<int> some_signal;
+ * sigc::signal<int()> some_signal;
  * some_signal.connect(sigc::exception_catch(&foo, my_catch));
  * @endcode
  *
