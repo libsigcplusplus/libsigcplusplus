@@ -86,6 +86,14 @@ void test_retype_slot()
   util->check_result(result_stream, "foo::test_int(int 5) 7.5");
 }
 
+void test_std_function_style_syntax()
+{
+  foo foo_;
+  sigc::slot<float(float)> s1 = sigc::retype(sigc::mem_fun(foo_, &foo::test_int));
+  result_stream << s1(1.234f);
+  util->check_result(result_stream, "foo::test_int(int 1) 1.5");
+}
+
 } // end anonymous namespace
 
 int main(int argc, char* argv[])
@@ -104,6 +112,8 @@ int main(int argc, char* argv[])
   test_ptr_fun_with_slot();
 
   test_retype_slot();
+
+  test_std_function_style_syntax();
 
   return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;
 }
