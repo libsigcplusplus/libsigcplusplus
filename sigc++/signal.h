@@ -599,7 +599,7 @@ struct signal_emit
 {
   using self_type = signal_emit<T_return, T_accumulator, T_arg...>;
   using result_type = typename T_accumulator::result_type;
-  using slot_type = slot<T_return, T_arg...>;
+  using slot_type = slot<T_return(T_arg...)>;
   using slot_iterator_buf_type = internal::slot_iterator_buf<self_type, T_return>;
   using slot_reverse_iterator_buf_type = internal::slot_reverse_iterator_buf<self_type, T_return>;
   using iterator_type = signal_impl::const_iterator_type;
@@ -683,7 +683,7 @@ struct signal_emit<T_return, void, T_arg...>
 {
   using self_type = signal_emit<T_return, void, T_arg...>;
   using result_type = T_return;
-  using slot_type = slot<T_return, T_arg...>;
+  using slot_type = slot<T_return(T_arg...)>;
   using iterator_type = signal_impl::const_iterator_type;
   using call_type = typename slot_type::call_type;
 
@@ -774,7 +774,7 @@ struct signal_emit<void, void, T_arg...>
 {
   using self_type = signal_emit<void, void, T_arg...>;
   using result_type = void;
-  using slot_type = slot<void, T_arg...>;
+  using slot_type = slot<void(T_arg...)>;
   using iterator_type = signal_impl::const_iterator_type;
   using call_type = typename slot_type::call_type;
 
@@ -854,7 +854,7 @@ class signal_with_accumulator
 public:
   using emitter_type = internal::signal_emit<T_return, T_accumulator, T_arg...>;
   using result_type = typename emitter_type::result_type;
-  using slot_type = slot<T_return, T_arg...>;
+  using slot_type = slot<T_return(T_arg...)>;
   using slot_list_type = slot_list<slot_type>;
   using iterator = typename slot_list_type::iterator;
   using const_iterator = typename slot_list_type::const_iterator;
