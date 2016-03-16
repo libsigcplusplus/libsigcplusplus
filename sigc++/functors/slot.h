@@ -139,11 +139,6 @@ struct slot_call
  * For instance, to declare a slot that returns void and takes two parameters
  * of bool and int:
  * @code
- * sigc::slot<void, bool, int> some_slot;
- * @endcode
- *
- * Alternatively, you may use a syntax similar to that used by std::function<>:
- * @code
  * sigc::slot<void(bool, int)> some_slot;
  * @endcode
  *
@@ -157,110 +152,8 @@ struct slot_call
  * @ingroup slot
  */
 template <class T_return, class... T_arg>
-class slot
-  : public slot_base
-{
-public:
-  using result_type = T_return;
-  //TODO: using arg_type_ = type_trait_take_t<T_arg>;
+class slot;
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-private:
-  using rep_type = internal::slot_rep;
-public:
-  using call_type = T_return (*)(rep_type*, type_trait_take_t<T_arg>...);
-#endif
-
-  /** Invoke the contained functor unless slot is in blocking state.
-   * @param _A_a Arguments to be passed on to the functor.
-   * @return The return value of the functor invocation.
-   */
-  inline T_return operator()(type_trait_take_t<T_arg>... _A_a) const
-    {
-      if (!empty() && !blocked())
-        return (reinterpret_cast<call_type>(slot_base::rep_->call_))(slot_base::rep_, _A_a...);
-      return T_return();
-    }
-
-  inline slot() {}
-
-  /** Constructs a slot from an arbitrary functor.
-   * @param _A_func The desired functor the new slot should be assigned to.
-   */
-  template <class T_functor>
-  slot(const T_functor& _A_func)
-    : slot_base(new internal::typed_slot_rep<T_functor>(_A_func))
-    {
-      //The slot_base:: is necessary to stop the HP-UX aCC compiler from being confused. murrayc.
-      slot_base::rep_->call_ = internal::slot_call<T_functor, T_return, T_arg...>::address();
-    }
-
-  /** Constructs a slot, copying an existing one.
-   * @param src The existing slot to copy.
-   */
-  slot(const slot& src)
-    : slot_base(src)
-    {}
-
-  /** Constructs a slot, moving an existing one.
-   * If @p src is connected to a parent (e.g. a signal), it is copied, not moved.
-   * @param src The existing slot to move or copy.
-   */
-  slot(slot&& src)
-    : slot_base(std::move(src))
-    {}
-
-  /** Overrides this slot, making a copy from another slot.
-   * @param src The slot from which to make a copy.
-   * @return @p this.
-   */
-  slot& operator=(const slot& src)
-  {
-    slot_base::operator=(src);
-    return *this;
-  }
-
-  /** Overrides this slot, making a move from another slot.
-   * If @p src is connected to a parent (e.g. a signal), it is copied, not moved.
-   * @param src The slot from which to move or copy.
-   * @return @p this.
-   */
-  slot& operator=(slot&& src)
-  {
-    slot_base::operator=(std::move(src));
-    return *this;
-  }
-};
-
-
-/** Converts an arbitrary functor to a unified type which is opaque.
- * sigc::slot itself is a functor or, to be more precise, a closure. It contains
- * a single, arbitrary functor (or closure) that is executed in operator()().
- *
- * The template arguments determine the function signature of operator()():
- * - @e T_return The return type of operator()().
- * - @e T_arg Argument types used in the definition of operator()().
- *
- * For instance, to declare a slot that returns void and takes two parameters
- * of bool and int:
- * @code
- * sigc::slot<void(bool, int)> some_slot;
- * @endcode
- *
- * Alternatively, you may use this syntax:
- * @code
- * sigc::slot<void, bool, int> some_slot;
- * @endcode
- *
- * To use, simply assign the desired functor to the slot. If the functor
- * is not compatible with the parameter list defined with the template
- * arguments then compiler errors are triggered. When called, the slot
- * will invoke the functor with minimal copies.
- * block() and unblock() can be used to block the functor's invocation
- * from operator()() temporarily.
- *
- * @ingroup slot
- */
 template <class T_return, class... T_arg>
 class slot<T_return(T_arg...)>
   : public slot_base
