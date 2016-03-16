@@ -1,3 +1,8 @@
+
+2.8.0 (stable)
+
+* Documentation: Mention use with CMake.
+
 2.7.2 (unstable):
 
 * Deprecate sigc::ref() and sigc::reference_wrapper(),
