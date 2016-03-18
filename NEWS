@@ -1,3 +1,8 @@
+2.99.3 (unstable):
+
+* Correct the license of some header files from GPL to LGPL.
+  (Murray Cumming) Bug #763616 (Dominique Leuenberger)
+
 2.99.2 (unstable):
 
 * slots and signal: These should now be declared with the
