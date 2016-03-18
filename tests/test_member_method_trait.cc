@@ -9,16 +9,24 @@
 namespace
 {
 
-class Something
-{
+class Something {
 public:
-  void some_func(int a);
-  void some_const_func(int a) const;
-  void some_volatile_func(int a) volatile;
-  void some_const_volatile_func(int a) const volatile;
+  void some_func(int) { }
 
-  int some_int_func();
-  bool some_bool_func();
+  void some_const_func(int) const { }
+
+  void some_volatile_func(int) volatile { }
+
+  void some_const_volatile_func(int) const volatile { }
+
+  int some_int_func() {
+    return 1;
+  }
+
+  bool some_bool_func()
+  {
+    return true;
+  }
 };
 
 } // end anonymous namespace
