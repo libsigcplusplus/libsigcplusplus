@@ -27,11 +27,14 @@ Open <a href="http://bugzilla.gnome.org/buglist.cgi?product=libsigc%2B%2B&bug_st
 Submit a new libsigc++ bug <a href="http://bugzilla.gnome.org/enter_bug.cgi?product=libsigc%2B%2B">here</a>
 </p>
 
+<p>We also accept pull requests via the <a href="https://github.com/GNOME/libsigcplusplus">libsigc++ mirror on GitHub</a>.</p>
+
 <a name="git"><h3>Version Control</h3></a>
 
 <p>
 libsigc++ is in the <a href="http://git.gnome.org/browse/libsigcplusplus/">libsigcplusplus</a> module in GNOME's git repository.
 </p>
+<p>There is also a <a href="https://github.com/GNOME/libsigcplusplus">libsigc++ mirror on GitHub</a>.</p>
 
 <!-- SSI fragments/footer.html_fragment begin -->
 <!--#include virtual="fragments/footer.html_fragment" -->
