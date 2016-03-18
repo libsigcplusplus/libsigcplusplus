@@ -38,38 +38,7 @@ the GNU Library General Public License, <a href="http://www.gnu.org/copyleft/lgp
 <p>
 <a name="news"><h3>News</h3></a>
 
-libsigc++ has reached the major version 2.0.
-libsigc++ 2.0 has been rewritten from scratch adapting modern C++ coding techniques that
-allow for a flexible and powerful but yet simple-to-use API.
-
-In particular the API improvements from libsigc++ 1.2 to 2.0 include:
-<ul>
-  <li>Provides unnumbered signal and slot templates.</li>
-  <li>Supports arbitrary functor types.</li>
-  <li>Supports implicit argument type conversions on signal emission.</li>
-  <li>Adds support for overloaded functions.</li>
-  <li>Borrows powerful accumulator interface from boost::signal.</li>
-  <li>Simplifies use of adaptors like sigc::hide(): argument types need
-  not be specified any more (except for sigc::retype_return()).</li>
-  <li>More powerful adaptors: position of arguments to hide or bind can
-  be chosen freely; up to 7 arguments can be bound at a time.</li>
-  <li>Adds two useful adaptors: sigc::compose(), sigc::exception_catch().</li>
-  <li>Performs only one indirect function call during slot invokation
-  regardless of the number of adaptors used; the direct function
-  calls involved are inline and can be optimized away by the compiler.</li>
-  <li>Conforms to the STL naming scheme: only uses small letters.</li>
-  <li>libsigc++ 2.0 until 2.4.x supported a sigc::group() adaptor and
-  lambda functions. This support is discontinued in later releases, because
-  lambdas are supported by standard C++11.</li>
-</ul>
-</p>
-
-<p>
-Also good to check out are the <a href=
- "http://www.erikyyy.de/sigslot/">Erik Thiele</a> and <a href=
- "http://ucxx.sourceforge.net/">Andreas Rottmann</a> sites which 
-include some interesting libsigc++ tools like cross-thread support.
-</p>
+<p>See the <a href="https://git.gnome.org/browse/libsigcplusplus/tree/NEWS">NEWS</a> file in git.</p>
 
 <p>
 <a name="devel"><h3>Developers</h3></a>
