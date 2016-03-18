@@ -42,14 +42,15 @@ the GNU Library General Public License, <a href="http://www.gnu.org/copyleft/lgp
 
 <p>
 <a name="devel"><h3>Developers</h3></a>
-The original library was composed by Tero Pulkkinen for the
+<p>The original library was composed by Tero Pulkkinen for the
 gtkmm system, a C++ wrapper for the Gtk+ widget set. The revised 
 library was written and mantained by Karl Nelson. Special thanks
 to Esa Pulkkinen for development tips.
 The 1.2 phase was maintained by Murray Cumming after Karl provided the initial 1.2 code.
-A long 1.9 phase led to the major release 2.0 which was previously maintained by Martin Schulze
-and is currently being maintained by Murray Cumming and Kjell Ahlstedt.
-</p>
+A long 1.9 phase led to the major release 2.0, previously maintained by Martin Schulze,
+and then maintained by Murray Cumming and Kjell Ahlstedt.</p>
+<p>Then libsigc++ was rewritten for C++14 using variadic templates, for major release 3.0,
+currently maintained by Murray Cumming and Kjell Ahlstedt.</p>
 
 <!-- SSI fragments/footer.html_fragment begin -->
 <!--#include virtual="fragments/footer.html_fragment" -->
