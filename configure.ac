@@ -40,12 +40,6 @@ MM_AX_CXX_COMPILE_STDCXX([14],[noext],[mandatory])
 AC_DISABLE_STATIC
 LT_INIT([win32-dll])
 
-AC_ARG_VAR([M4], [M4 macro processor command])
-AC_CHECK_PROGS([M4], [gm4 m4])
-
-AS_IF([test "x$M4" = x],
-      [AC_MSG_FAILURE([[The GNU M4 macro processor is required for building libsigc++.]])])
-
 MM_ARG_ENABLE_DOCUMENTATION
 MM_ARG_WITH_TAGFILE_DOC([libstdc++.tag], [mm-common-libstdc++])
 
