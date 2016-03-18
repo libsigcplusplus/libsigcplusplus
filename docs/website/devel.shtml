@@ -23,8 +23,7 @@ There is an archive of messages,
 Patches should be added to bugzilla bugs.</p>
 
 <p>
-Open <a href="http://bugzilla.gnome.org/buglist.cgi?product=libsigc%2B%2B&bug_status=UNCONFIRMED&bug_status=NEW&bug_status=ASSIGNED&bug_status=REOPENED&bug_status=NEEDINFO">libsigc++ bugs</a><br/>
-Submit a new libsigc++ bug <a href="http://bugzilla.gnome.org/enter_bug.cgi?product=libsigc%2B%2B">here</a>
+See the list of <a href="http://bugzilla.gnome.org/buglist.cgi?product=libsigc%2B%2B&bug_status=UNCONFIRMED&bug_status=NEW&bug_status=ASSIGNED&bug_status=REOPENED&bug_status=NEEDINFO">open libsigc++ bugs</a> or <a href="http://bugzilla.gnome.org/enter_bug.cgi?product=libsigc%2B%2B">submit a new libsigc++ bug</a>.
 </p>
 
 <p>We also accept pull requests via the <a href="https://github.com/GNOME/libsigcplusplus">libsigc++ mirror on GitHub</a>.</p>
