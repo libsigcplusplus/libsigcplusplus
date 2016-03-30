@@ -29,32 +29,37 @@ struct foo : public sigc::trackable
   }
 };
 
-void bar(short s)
+void
+bar(short s)
 {
   result_stream << "bar(short " << s << ")";
 }
 
-void test_member_int()
+void
+test_member_int()
 {
   foo foo_;
   result_stream << sigc::retype(sigc::mem_fun(foo_, &foo::test_int))(1.234f);
   util->check_result(result_stream, "foo::test_int(int 1) 1.5");
 }
 
-void test_member_float()
+void
+test_member_float()
 {
   foo foo_;
   result_stream << sigc::retype(sigc::mem_fun(foo_, &foo::test_float))(5);
   util->check_result(result_stream, "foo::test_float(float 5) 25");
 }
 
-void test_ptr_fun()
+void
+test_ptr_fun()
 {
   sigc::retype(sigc::ptr_fun(&bar))(6.789f);
   util->check_result(result_stream, "bar(short 6)");
 }
 
-void test_member_int_with_slot()
+void
+test_member_int_with_slot()
 {
   foo foo_;
   sigc::slot<float(float)> s1 = sigc::retype(sigc::mem_fun(foo_, &foo::test_int));
@@ -62,7 +67,8 @@ void test_member_int_with_slot()
   util->check_result(result_stream, "foo::test_int(int 1) 1.5");
 }
 
-void test_member_float_with_slot()
+void
+test_member_float_with_slot()
 {
   foo foo_;
   sigc::slot<float(int)> s2 = sigc::retype(sigc::mem_fun(foo_, &foo::test_float));
@@ -70,14 +76,16 @@ void test_member_float_with_slot()
   util->check_result(result_stream, "foo::test_float(float 5) 25");
 }
 
-void test_ptr_fun_with_slot()
+void
+test_ptr_fun_with_slot()
 {
   sigc::slot<void(double)> s3 = sigc::retype(sigc::ptr_fun(&bar));
   s3(6.789);
   util->check_result(result_stream, "bar(short 6)");
 }
 
-void test_retype_slot()
+void
+test_retype_slot()
 {
   foo foo_;
   sigc::slot<float(float)> s1 = sigc::retype(sigc::mem_fun(foo_, &foo::test_int));
@@ -88,7 +96,8 @@ void test_retype_slot()
 
 } // end anonymous namespace
 
-int main(int argc, char* argv[])
+int
+main(int argc, char* argv[])
 {
   util = TestUtilities::get_instance();
 

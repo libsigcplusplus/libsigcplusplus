@@ -33,7 +33,6 @@
 //   echo $?
 // If test_track_obj writes nothing and the return code is 0, the test has passed.
 
-
 #include "testutilities.h"
 #include <string>
 #include <iostream>
@@ -42,7 +41,6 @@
 #include <sigc++/adaptors/track_obj.h>
 #include <sigc++/signal.h>
 
-
 namespace
 {
 std::ostringstream result_stream;
@@ -50,8 +48,8 @@ std::ostringstream result_stream;
 struct book : public sigc::trackable
 {
   explicit book(const std::string& name) : name_(name) {}
-  operator std::string& () { return name_; }
-  operator const std::string& () const { return name_; }
+  operator std::string&() { return name_; }
+  operator const std::string&() const { return name_; }
   std::string name_;
 };
 
@@ -64,13 +62,9 @@ class Functor1 : public sigc::functor_base
 public:
   using result_type = std::string;
 
-  Functor1(const bar_group4& bar)
-  : bar_(bar) {}
+  Functor1(const bar_group4& bar) : bar_(bar) {}
 
-  std::string operator()(int i)
-  {
-    return (i<0) ? "negative" : ((i>0) ? "positive" : "zero");
-  }
+  std::string operator()(int i) { return (i < 0) ? "negative" : ((i > 0) ? "positive" : "zero"); }
 
 private:
   const bar_group4& bar_;
@@ -81,12 +75,11 @@ class Functor2 : public sigc::functor_base
 public:
   using result_type = std::string;
 
-  Functor2(const bar_group4& bar, const book& aBook)
-  : bar_(bar), aBook_(aBook) {}
+  Functor2(const bar_group4& bar, const book& aBook) : bar_(bar), aBook_(aBook) {}
 
   std::string operator()(int i, const std::string& str) const
   {
-    std::string result = (i<0) ? "negative, " : ((i>0) ? "positive, " : "zero, ");
+    std::string result = (i < 0) ? "negative, " : ((i > 0) ? "positive, " : "zero, ");
     result += str;
     result += aBook_;
     return result;
@@ -97,29 +90,32 @@ private:
   const book& aBook_;
 };
 
-//C++11 lamba expressions:
+// C++11 lamba expressions:
 
-inline std::ostringstream& operator << (std::ostringstream& s, const book& b)
+inline std::ostringstream&
+operator<<(std::ostringstream& s, const book& b)
 {
   s << b.name_;
   return s;
 }
 
-void egon(std::string& str)
+void
+egon(std::string& str)
 {
   result_stream << "egon(string '" << str << "')";
   str = "egon was here";
 }
 
-void foo_group4(bar_group4&)
+void
+foo_group4(bar_group4&)
 {
   result_stream << "foo_group4(bar_group4&)";
 }
 
 } // end anonymous namespace
 
-
-int main(int argc, char* argv[])
+int
+main(int argc, char* argv[])
 {
   auto util = TestUtilities::get_instance();
 
@@ -156,8 +152,7 @@ int main(int argc, char* argv[])
   delete pbar4;
   pbar4 = nullptr;
 
-
-//C++11 lambda expressions:
+  // C++11 lambda expressions:
 
   // auto-disconnect
   // If you want to auto-disconnect a slot with a C++11 lambda expression
@@ -166,8 +161,10 @@ int main(int argc, char* argv[])
   sigc::slot<void(std::ostringstream&)> sl10;
   {
     book guest_book("karl");
-    // sl1 = [&guest_book](std::ostringstream& stream){ stream << guest_book << "\n"; }; // no auto-disconnect
-    sl10 = sigc::track_obj([&guest_book](std::ostringstream& stream){ stream << guest_book; }, guest_book);
+    // sl1 = [&guest_book](std::ostringstream& stream){ stream << guest_book << "\n"; }; // no
+    // auto-disconnect
+    sl10 = sigc::track_obj(
+      [&guest_book](std::ostringstream& stream) { stream << guest_book; }, guest_book);
     sl10(result_stream);
     util->check_result(result_stream, "karl");
 
@@ -182,7 +179,7 @@ int main(int argc, char* argv[])
     book guest_book("karl");
     // sl2 = [&guest_book] () { egon(guest_book); }; // no auto-disconnect
     // sl2 = std::bind(&egon, std::ref(guest_book)); // does not compile (gcc 4.6.3)
-    sl20 = sigc::track_obj([&guest_book] () { egon(guest_book); }, guest_book);
+    sl20 = sigc::track_obj([&guest_book]() { egon(guest_book); }, guest_book);
     sl20();
     util->check_result(result_stream, "egon(string 'karl')");
 
@@ -194,19 +191,19 @@ int main(int argc, char* argv[])
   sl20();
   util->check_result(result_stream, "");
 
-
   // Code example in the documentation sigc++/adaptors/macros/track_obj.h.m4
   // -----------------------------------------------------------------------
   {
-    //struct bar : public sigc::trackable {} some_bar;
+    // struct bar : public sigc::trackable {} some_bar;
     sigc::signal<void()> some_signal;
     {
       bar_group4 some_bar;
-      //some_signal.connect(sigc::group(&foo, std::ref(some_bar)));
+      // some_signal.connect(sigc::group(&foo, std::ref(some_bar)));
       // disconnected automatically if some_bar goes out of scope
-      //some_signal.connect([&some_bar](){ foo_group4(some_bar); }); // no auto-disconnect
-      //some_signal.connect(sigc::bind(&foo_group4, std::ref(some_bar))); // auto-disconnects, but we prefer C++11 lambda
-      some_signal.connect(sigc::track_obj([&some_bar](){ foo_group4(some_bar); }, some_bar));
+      // some_signal.connect([&some_bar](){ foo_group4(some_bar); }); // no auto-disconnect
+      // some_signal.connect(sigc::bind(&foo_group4, std::ref(some_bar))); // auto-disconnects, but
+      // we prefer C++11 lambda
+      some_signal.connect(sigc::track_obj([&some_bar]() { foo_group4(some_bar); }, some_bar));
       some_signal.emit();
       util->check_result(result_stream, "foo_group4(bar_group4&)");
 
@@ -215,7 +212,6 @@ int main(int argc, char* argv[])
     some_signal.emit();
     util->check_result(result_stream, "");
   }
-
 
   return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;
 }

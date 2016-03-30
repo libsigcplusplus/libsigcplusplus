@@ -14,7 +14,8 @@ namespace
 {
 std::ostringstream result_stream;
 
-int foo(int i)
+int
+foo(int i)
 {
   result_stream << "foo(int " << i << ")";
   return 1;
@@ -22,7 +23,8 @@ int foo(int i)
 
 } // end anonymous namespace
 
-int main(int argc, char* argv[])
+int
+main(int argc, char* argv[])
 {
   auto util = TestUtilities::get_instance();
 
@@ -35,13 +37,13 @@ int main(int argc, char* argv[])
   sig(1);
   util->check_result(result_stream, "foo(int 1)");
 
-  //Test the move constructor:
+  // Test the move constructor:
   sigc::signal<int(int)> sig2(std::move(sig));
   sig(-2);
   sig2(2);
   util->check_result(result_stream, "foo(int 2)");
 
-  //Test the move assignment operator:
+  // Test the move assignment operator:
   sigc::signal<int(int)> sig3;
   sig3 = std::move(sig2);
   sig2(-3);

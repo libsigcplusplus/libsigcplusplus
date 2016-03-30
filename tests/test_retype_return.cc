@@ -43,7 +43,8 @@ struct bar : public sigc::trackable, public sigc::functor_base
 
 } // end anonymous namespace
 
-int main(int argc, char* argv[])
+int
+main(int argc, char* argv[])
 {
   auto util = TestUtilities::get_instance();
 

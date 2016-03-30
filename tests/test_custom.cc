@@ -13,7 +13,8 @@ std::ostringstream result_stream;
 
 } // end anonymous namespace
 
-int main(int argc, char* argv[])
+int
+main(int argc, char* argv[])
 {
   auto util = TestUtilities::get_instance();
 

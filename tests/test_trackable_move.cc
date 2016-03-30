@@ -14,23 +14,15 @@ namespace
 {
 std::ostringstream result_stream;
 
-class my_class: public sigc::trackable
+class my_class : public sigc::trackable
 {
 public:
-
-  my_class()
-  : i(0)
-  {}
+  my_class() : i(0) {}
 
   my_class(const my_class& src) = delete;
   my_class& operator=(const my_class& src) = delete;
 
-  my_class(my_class&& src)
-  : sigc::trackable(std::move(src)),
-    i(std::move(src.i))
-  {
-    src.i = 0;
-  }
+  my_class(my_class&& src) : sigc::trackable(std::move(src)), i(std::move(src.i)) { src.i = 0; }
 
   my_class& operator=(my_class&& src)
   {
@@ -40,17 +32,15 @@ public:
     return *this;
   }
 
-  void foo()
-  {
-    result_stream << i;
-  }
+  void foo() { result_stream << i; }
 
   int i;
 };
 
 } // end anonymous namespace
 
-int main(int argc, char* argv[])
+int
+main(int argc, char* argv[])
 {
   auto util = TestUtilities::get_instance();
 
@@ -65,7 +55,7 @@ int main(int argc, char* argv[])
     sl();
     util->check_result(result_stream, "10");
 
-    //Create another trackable via a move:
+    // Create another trackable via a move:
     my_class t2(std::move(t));
     t2.i = 15;
     result_stream.clear();

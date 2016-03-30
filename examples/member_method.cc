@@ -15,32 +15,32 @@ public:
   Something();
 
 protected:
-
   virtual void on_print(int a);
-  
+
   using type_signal_print = sigc::signal<void(int)>;
   type_signal_print signal_print;
-    
 };
 
 Something::Something()
 {
-  auto iter = signal_print.connect( sigc::mem_fun(*this, &Something::on_print) );
+  auto iter = signal_print.connect(sigc::mem_fun(*this, &Something::on_print));
 
   signal_print.emit(2);
 
-  //This isn't necessary - it's just to demonstrate how to disconnect:
+  // This isn't necessary - it's just to demonstrate how to disconnect:
   iter->disconnect();
-  signal_print.emit(3); //Prove that it is no longer connected.
+  signal_print.emit(3); // Prove that it is no longer connected.
 }
 
-void Something::on_print(int a)
+void
+Something::on_print(int a)
 {
   std::cout << "on_print recieved: " << a << std::endl;
 }
 
-int main()
+int
+main()
 {
-  Something something;  
+  Something something;
   return 0;
 }

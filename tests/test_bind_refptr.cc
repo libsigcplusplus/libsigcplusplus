@@ -130,9 +130,10 @@ public:
   inline explicit operator bool() const;
 
 #ifndef GLIBMM_DISABLE_DEPRECATED
-  /// @deprecated Use reset() instead because this leads to confusion with clear() methods on the underlying class. For instance, people use .clear() when they mean ->clear().
+  /// @deprecated Use reset() instead because this leads to confusion with clear() methods on the
+  /// underlying class. For instance, people use .clear() when they mean ->clear().
   inline void clear();
-#endif //GLIBMM_DISABLE_DEPRECATED
+#endif // GLIBMM_DISABLE_DEPRECATED
 
   /** Set underlying instance to 0, decrementing reference count of existing instance appropriately.
    * @newin{2,16}
@@ -193,43 +194,38 @@ private:
   T_CppObject* pCppObject_;
 };
 
-
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 // RefPtr<>::operator->() comes first here since it's used by other methods.
 // If it would come after them it wouldn't be inlined.
 
-template <class T_CppObject> inline
-T_CppObject* RefPtr<T_CppObject>::operator->() const
+template <class T_CppObject>
+inline T_CppObject* RefPtr<T_CppObject>::operator->() const
 {
   return pCppObject_;
 }
 
-template <class T_CppObject> inline
-RefPtr<T_CppObject>::RefPtr()
-:
-  pCppObject_ (nullptr)
-{}
-
-template <class T_CppObject> inline
-RefPtr<T_CppObject>::~RefPtr()
+template <class T_CppObject>
+inline RefPtr<T_CppObject>::RefPtr() : pCppObject_(nullptr)
 {
-  if(pCppObject_)
+}
+
+template <class T_CppObject>
+inline RefPtr<T_CppObject>::~RefPtr()
+{
+  if (pCppObject_)
     pCppObject_->unreference(); // This could cause pCppObject to be deleted.
 }
 
-template <class T_CppObject> inline
-RefPtr<T_CppObject>::RefPtr(T_CppObject* pCppObject)
-:
-  pCppObject_ (pCppObject)
-{}
-
-template <class T_CppObject> inline
-RefPtr<T_CppObject>::RefPtr(const RefPtr<T_CppObject>& src)
-:
-  pCppObject_ (src.pCppObject_)
+template <class T_CppObject>
+inline RefPtr<T_CppObject>::RefPtr(T_CppObject* pCppObject) : pCppObject_(pCppObject)
 {
-  if(pCppObject_)
+}
+
+template <class T_CppObject>
+inline RefPtr<T_CppObject>::RefPtr(const RefPtr<T_CppObject>& src) : pCppObject_(src.pCppObject_)
+{
+  if (pCppObject_)
     pCppObject_->reference();
 }
 
@@ -237,29 +233,29 @@ RefPtr<T_CppObject>::RefPtr(const RefPtr<T_CppObject>& src)
 // castable.  Thus, it does downcasts:
 //   base_ref = derived_ref
 template <class T_CppObject>
-  template <class T_CastFrom>
-inline
-RefPtr<T_CppObject>::RefPtr(const RefPtr<T_CastFrom>& src)
-:
-  // A different RefPtr<> will not allow us access to pCppObject_.  We need
+template <class T_CastFrom>
+inline RefPtr<T_CppObject>::RefPtr(const RefPtr<T_CastFrom>& src)
+: // A different RefPtr<> will not allow us access to pCppObject_.  We need
   // to add a get_underlying() for this, but that would encourage incorrect
   // use, so we use the less well-known operator->() accessor:
-  pCppObject_ (src.operator->())
+  pCppObject_(src.operator->())
 {
-  if(pCppObject_)
+  if (pCppObject_)
     pCppObject_->reference();
 }
 
-template <class T_CppObject> inline
-void RefPtr<T_CppObject>::swap(RefPtr<T_CppObject>& other)
+template <class T_CppObject>
+inline void
+RefPtr<T_CppObject>::swap(RefPtr<T_CppObject>& other)
 {
   const auto temp = pCppObject_;
   pCppObject_ = other.pCppObject_;
   other.pCppObject_ = temp;
 }
 
-template <class T_CppObject> inline
-RefPtr<T_CppObject>& RefPtr<T_CppObject>::operator=(const RefPtr<T_CppObject>& src)
+template <class T_CppObject>
+inline RefPtr<T_CppObject>&
+RefPtr<T_CppObject>::operator=(const RefPtr<T_CppObject>& src)
 {
   // In case you haven't seen the swap() technique to implement copy
   // assignment before, here's what it does:
@@ -285,113 +281,121 @@ RefPtr<T_CppObject>& RefPtr<T_CppObject>::operator=(const RefPtr<T_CppObject>& s
   //   even thinking about it to implement copy assignment whereever the
   //   object data is managed indirectly via a pointer, which is very common.
 
-  RefPtr<T_CppObject> temp (src);
+  RefPtr<T_CppObject> temp(src);
   this->swap(temp);
   return *this;
 }
 
 template <class T_CppObject>
-  template <class T_CastFrom>
-inline
-RefPtr<T_CppObject>& RefPtr<T_CppObject>::operator=(const RefPtr<T_CastFrom>& src)
+template <class T_CastFrom>
+inline RefPtr<T_CppObject>&
+RefPtr<T_CppObject>::operator=(const RefPtr<T_CastFrom>& src)
 {
-  RefPtr<T_CppObject> temp (src);
+  RefPtr<T_CppObject> temp(src);
   this->swap(temp);
   return *this;
 }
 
-template <class T_CppObject> inline
-bool RefPtr<T_CppObject>::operator==(const RefPtr<T_CppObject>& src) const
+template <class T_CppObject>
+inline bool
+RefPtr<T_CppObject>::operator==(const RefPtr<T_CppObject>& src) const
 {
   return (pCppObject_ == src.pCppObject_);
 }
 
-template <class T_CppObject> inline
-bool RefPtr<T_CppObject>::operator!=(const RefPtr<T_CppObject>& src) const
+template <class T_CppObject>
+inline bool
+RefPtr<T_CppObject>::operator!=(const RefPtr<T_CppObject>& src) const
 {
   return (pCppObject_ != src.pCppObject_);
 }
 
-template <class T_CppObject> inline
-RefPtr<T_CppObject>::operator bool() const
+template <class T_CppObject>
+inline RefPtr<T_CppObject>::operator bool() const
 {
   return (pCppObject_ != nullptr);
 }
 
 #ifndef GLIBMM_DISABLE_DEPRECATED
-template <class T_CppObject> inline
-void RefPtr<T_CppObject>::clear()
+template <class T_CppObject>
+inline void
+RefPtr<T_CppObject>::clear()
 {
   reset();
 }
-#endif //GLIBMM_DISABLE_DEPRECATED
+#endif // GLIBMM_DISABLE_DEPRECATED
 
-template <class T_CppObject> inline
-void RefPtr<T_CppObject>::reset()
+template <class T_CppObject>
+inline void
+RefPtr<T_CppObject>::reset()
 {
   RefPtr<T_CppObject> temp; // swap with an empty RefPtr<> to clear *this
   this->swap(temp);
 }
 
 template <class T_CppObject>
-  template <class T_CastFrom>
-inline
-RefPtr<T_CppObject> RefPtr<T_CppObject>::cast_dynamic(const RefPtr<T_CastFrom>& src)
+template <class T_CastFrom>
+inline RefPtr<T_CppObject>
+RefPtr<T_CppObject>::cast_dynamic(const RefPtr<T_CastFrom>& src)
 {
   const auto pCppObject = dynamic_cast<T_CppObject*>(src.operator->());
 
-  if(pCppObject)
+  if (pCppObject)
     pCppObject->reference();
 
   return RefPtr<T_CppObject>(pCppObject);
 }
 
 template <class T_CppObject>
-  template <class T_CastFrom>
-inline
-RefPtr<T_CppObject> RefPtr<T_CppObject>::cast_static(const RefPtr<T_CastFrom>& src)
+template <class T_CastFrom>
+inline RefPtr<T_CppObject>
+RefPtr<T_CppObject>::cast_static(const RefPtr<T_CastFrom>& src)
 {
   const auto pCppObject = static_cast<T_CppObject*>(src.operator->());
 
-  if(pCppObject)
+  if (pCppObject)
     pCppObject->reference();
 
   return RefPtr<T_CppObject>(pCppObject);
 }
 
 template <class T_CppObject>
-  template <class T_CastFrom>
-inline
-RefPtr<T_CppObject> RefPtr<T_CppObject>::cast_const(const RefPtr<T_CastFrom>& src)
+template <class T_CastFrom>
+inline RefPtr<T_CppObject>
+RefPtr<T_CppObject>::cast_const(const RefPtr<T_CastFrom>& src)
 {
   const auto pCppObject = const_cast<T_CppObject*>(src.operator->());
 
-  if(pCppObject)
+  if (pCppObject)
     pCppObject->reference();
 
   return RefPtr<T_CppObject>(pCppObject);
 }
 
-template <class T_CppObject> inline
-bool RefPtr<T_CppObject>::operator<(const RefPtr<T_CppObject>& src) const
+template <class T_CppObject>
+inline bool
+RefPtr<T_CppObject>::operator<(const RefPtr<T_CppObject>& src) const
 {
   return (pCppObject_ < src.pCppObject_);
 }
 
-template <class T_CppObject> inline
-bool RefPtr<T_CppObject>::operator<=(const RefPtr<T_CppObject>& src) const
+template <class T_CppObject>
+inline bool
+RefPtr<T_CppObject>::operator<=(const RefPtr<T_CppObject>& src) const
 {
   return (pCppObject_ <= src.pCppObject_);
 }
 
-template <class T_CppObject> inline
-bool RefPtr<T_CppObject>::operator>(const RefPtr<T_CppObject>& src) const
+template <class T_CppObject>
+inline bool
+RefPtr<T_CppObject>::operator>(const RefPtr<T_CppObject>& src) const
 {
   return (pCppObject_ > src.pCppObject_);
 }
 
-template <class T_CppObject> inline
-bool RefPtr<T_CppObject>::operator>=(const RefPtr<T_CppObject>& src) const
+template <class T_CppObject>
+inline bool
+RefPtr<T_CppObject>::operator>=(const RefPtr<T_CppObject>& src) const
 {
   return (pCppObject_ >= src.pCppObject_);
 }
@@ -399,17 +403,16 @@ bool RefPtr<T_CppObject>::operator>=(const RefPtr<T_CppObject>& src) const
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
 /** @relates Glib::RefPtr */
-template <class T_CppObject> inline
-void swap(RefPtr<T_CppObject>& lhs, RefPtr<T_CppObject>& rhs)
+template <class T_CppObject>
+inline void
+swap(RefPtr<T_CppObject>& lhs, RefPtr<T_CppObject>& rhs)
 {
   lhs.swap(rhs);
 }
 
 } // namespace Glib
 
-
 #endif /* _GLIBMM_REFPTR_H */
-
 
 namespace
 {
@@ -418,10 +421,14 @@ std::ostringstream result_stream;
 class Action : public sigc::trackable
 {
 public:
-  Action() : ref_count(1) { }
+  Action() : ref_count(1) {}
 
   void reference() { ++ref_count; }
-  void unreference() { if (--ref_count <= 0) delete this; }
+  void unreference()
+  {
+    if (--ref_count <= 0)
+      delete this;
+  }
 
   void emit_sig1(int n) { sig1.emit(n); }
 
@@ -430,17 +437,15 @@ public:
 private:
   sigc::signal<void(int)> sig1;
   int ref_count;
-
 };
 
 class Test : public sigc::trackable
 {
 public:
-  Test()
-  : action(new Action)
+  Test() : action(new Action)
   {
     result_stream << "new Test; ";
-#ifdef ACTIVATE_BUG //See https://bugzilla.gnome.org/show_bug.cgi?id=564005#c14
+#ifdef ACTIVATE_BUG // See https://bugzilla.gnome.org/show_bug.cgi?id=564005#c14
     action->signal_sig1().connect(sigc::bind(sigc::mem_fun(*this, &Test::on_sig1), action));
 #else
     Glib::RefPtr<Action> action2(new Action);
@@ -448,10 +453,7 @@ public:
 #endif
   }
 
-  ~Test()
-  {
-    result_stream << "delete Test; ";
-  }
+  ~Test() { result_stream << "delete Test; "; }
 
   void on_sig1(int n, Glib::RefPtr<Action> /* action */)
   {
@@ -464,7 +466,8 @@ public:
 
 } // end anonymous namespace
 
-int main(int argc, char* argv[])
+int
+main(int argc, char* argv[])
 {
   auto util = TestUtilities::get_instance();
 

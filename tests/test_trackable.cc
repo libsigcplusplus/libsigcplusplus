@@ -14,20 +14,18 @@ namespace
 {
 std::ostringstream result_stream;
 
-class my_class: public sigc::trackable
+class my_class : public sigc::trackable
 {
 public:
   int i;
 
-  void foo()
-  {
-    result_stream << i;
-  }
+  void foo() { result_stream << i; }
 };
 
 } // end anonymous namespace
 
-int main(int argc, char* argv[])
+int
+main(int argc, char* argv[])
 {
   auto util = TestUtilities::get_instance();
 

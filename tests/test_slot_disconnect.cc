@@ -12,26 +12,29 @@ namespace
 {
 std::ostringstream result_stream;
 
-void Foo()
+void
+Foo()
 {
   result_stream << "Foo";
 }
 
-void Bar()
+void
+Bar()
 {
   result_stream << "Bar";
 }
 
 } // end anonymous namespace
 
-int main(int argc, char* argv[])
+int
+main(int argc, char* argv[])
 {
   auto util = TestUtilities::get_instance();
 
   if (!util->check_command_args(argc, argv))
     return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;
 
-  //Note that sigc::ptr_fun() creates a sig::pointer_functor.
+  // Note that sigc::ptr_fun() creates a sig::pointer_functor.
   sigc::slot<void()> theSlot(sigc::ptr_fun(&Foo));
   theSlot();
   util->check_result(result_stream, "Foo");

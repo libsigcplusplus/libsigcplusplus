@@ -17,7 +17,8 @@ namespace
 TestUtilities* util = nullptr;
 std::ostringstream result_stream;
 
-int foo(int i)
+int
+foo(int i)
 {
   result_stream << "foo(int " << i << ") ";
   return 1;
@@ -38,7 +39,8 @@ struct A : public sigc::trackable
   }
 };
 
-void test_empty_signal()
+void
+test_empty_signal()
 {
   // signal
   sigc::signal<int(int)> sig;
@@ -48,7 +50,8 @@ void test_empty_signal()
   util->check_result(result_stream, "");
 }
 
-void test_simple()
+void
+test_simple()
 {
   sigc::signal<int(int)> sig;
   sig.connect(sigc::ptr_fun(&foo));
@@ -57,13 +60,15 @@ void test_simple()
   util->check_result(result_stream, "foo(int 1) ");
 }
 
-int bar(float i)
+int
+bar(float i)
 {
   result_stream << "bar(float " << i << ") ";
   return 1;
 }
 
-void test_auto_disconnection()
+void
+test_auto_disconnection()
 {
   // signal
   sigc::signal<int(int)> sig;
@@ -85,7 +90,8 @@ void test_auto_disconnection()
   util->check_result(result_stream, "foo(int 2) bar(float 2) 2");
 }
 
-void test_reference()
+void
+test_reference()
 {
   // test reference
   A a;
@@ -97,7 +103,8 @@ void test_reference()
   util->check_result(result_stream, "A::foo(string 'guest book') foo was here");
 }
 
-void test_make_slot()
+void
+test_make_slot()
 {
   // test make_slot()
   sigc::signal<int(int)> sig;
@@ -112,7 +119,8 @@ void test_make_slot()
 
 } // end anonymous namespace
 
-int main(int argc, char* argv[])
+int
+main(int argc, char* argv[])
 {
   util = TestUtilities::get_instance();
 

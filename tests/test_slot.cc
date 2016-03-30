@@ -8,8 +8,8 @@
 #include <string>
 #include <cstdlib>
 
-//The Tru64 compiler seems to need this to avoid an unresolved symbol
-//See bug #161503
+// The Tru64 compiler seems to need this to avoid an unresolved symbol
+// See bug #161503
 #include <new>
 
 namespace
@@ -21,24 +21,19 @@ std::ostringstream result_stream;
 class foo
 {
 public:
-  void operator()(int i)
-  {
-    result_stream << "foo(int " << i << ")";
-  }
+  void operator()(int i) { result_stream << "foo(int " << i << ")"; }
 
   void operator()(std::string& str)
   {
     result_stream << "foo(string '" << str << "') ";
-    str="foo was here";
+    str = "foo was here";
   }
 
-  void operator()(int, int)
-  {
-    result_stream << "foo(int, int)";
-  }
+  void operator()(int, int) { result_stream << "foo(int, int)"; }
 };
 
-void test_simple()
+void
+test_simple()
 {
   // simple test
   sigc::slot<void(int)> s1 = foo();
@@ -50,7 +45,8 @@ void test_simple()
   util->check_result(result_stream, "foo(int 2)");
 }
 
-void test_implicit_conversion()
+void
+test_implicit_conversion()
 {
   // test implicit conversion
   sigc::slot<void(char)> s2 = foo();
@@ -58,7 +54,8 @@ void test_implicit_conversion()
   util->check_result(result_stream, "foo(int 3)");
 }
 
-void test_reference()
+void
+test_reference()
 {
   // test reference
   sigc::slot<void(std::string&)> sl1 = foo();
@@ -68,7 +65,8 @@ void test_reference()
   util->check_result(result_stream, "foo(string 'guest book') foo was here");
 }
 
-void test_operator_equals()
+void
+test_operator_equals()
 {
   // test operator=
   std::string str = "guest book";
@@ -81,7 +79,8 @@ void test_operator_equals()
   util->check_result(result_stream, "foo(string 'guest book') foo was here");
 }
 
-void test_copy_ctor()
+void
+test_copy_ctor()
 {
   // test copy ctor
   sigc::slot<void(int)> s1 = foo();
@@ -92,7 +91,8 @@ void test_copy_ctor()
 
 } // end anonymous namespace
 
-int main(int argc, char* argv[])
+int
+main(int argc, char* argv[])
 {
   util = TestUtilities::get_instance();
 

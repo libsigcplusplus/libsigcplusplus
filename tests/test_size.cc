@@ -21,7 +21,8 @@ struct A
 };
 } // end anonymous namespace
 
-int main(int argc, char* argv[])
+int
+main(int argc, char* argv[])
 {
   auto util = TestUtilities::get_instance();
 
@@ -35,16 +36,20 @@ int main(int argc, char* argv[])
     std::cout << "  trackable:               " << sizeof(sigc::trackable) << std::endl;
     std::cout << "  slot<void()>:              " << sizeof(sigc::slot<void()>) << std::endl;
     std::cout << "  signal<void()>:            " << sizeof(sigc::signal<void()>) << std::endl;
-    std::cout << "  signal<void()>::iterator:  " << sizeof(sigc::signal<void()>::iterator) << std::endl;
+    std::cout << "  signal<void()>::iterator:  " << sizeof(sigc::signal<void()>::iterator)
+              << std::endl;
     std::cout << "  connection:              " << sizeof(sigc::connection) << std::endl;
 
     std::cout << std::endl << "sizes of internal classes:" << std::endl;
 
-    std::cout << "  trackable_callback:      " << sizeof(sigc::internal::trackable_callback) << std::endl;
-    std::cout << "  trackable_callback_list: " << sizeof(sigc::internal::trackable_callback_list) << std::endl;
+    std::cout << "  trackable_callback:      " << sizeof(sigc::internal::trackable_callback)
+              << std::endl;
+    std::cout << "  trackable_callback_list: " << sizeof(sigc::internal::trackable_callback_list)
+              << std::endl;
     std::cout << "  slot_rep:                " << sizeof(sigc::internal::slot_rep) << std::endl;
     std::cout << "  typed_slot_rep<mem_functor<void,A> >: "
-              << sizeof(sigc::internal::typed_slot_rep<sigc::mem_functor<void (A::*)()> >) << std::endl;
+              << sizeof(sigc::internal::typed_slot_rep<sigc::mem_functor<void (A::*)()>>)
+              << std::endl;
     std::cout << "  signal_impl:             " << sizeof(sigc::internal::signal_impl) << std::endl;
   }
   return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;

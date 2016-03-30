@@ -21,23 +21,20 @@
 #include <functional>
 
 template <class T_element_from>
-class transform_to_string {
+class transform_to_string
+{
 public:
-  static decltype(auto)
-  transform(T_element_from& from) {
-    return std::to_string(from);
-  }
+  static decltype(auto) transform(T_element_from& from) { return std::to_string(from); }
 };
 
 // In these tests, t_expected has elements all of the same type.
 void
-test_tuple_transform_each_same_types() {
+test_tuple_transform_each_same_types()
+{
   {
     auto t_original = std::make_tuple(1, 2, 3);
-    auto t_transformed =
-      sigc::internal::tuple_transform_each<transform_to_string>(t_original);
-    auto t_expected =
-      std::make_tuple(std::string("1"), std::string("2"), std::string("3"));
+    auto t_transformed = sigc::internal::tuple_transform_each<transform_to_string>(t_original);
+    auto t_expected = std::make_tuple(std::string("1"), std::string("2"), std::string("3"));
 
     static_assert(std::tuple_size<decltype(t_transformed)>::value == 3,
       "unexpected tuple_transform_each()ed tuple size.");
@@ -46,17 +43,14 @@ test_tuple_transform_each_same_types() {
     assert(std::get<1>(t_transformed) == "2");
     assert(std::get<2>(t_transformed) == "3");
 
-    static_assert(
-      std::is_same<decltype(t_transformed), decltype(t_expected)>::value,
+    static_assert(std::is_same<decltype(t_transformed), decltype(t_expected)>::value,
       "unexpected transform_each()ed tuple type");
   }
 
   {
     auto t_original = std::make_tuple(1, (double)2.1f, 3);
-    auto t_transformed =
-      sigc::internal::tuple_transform_each<transform_to_string>(t_original);
-    auto t_expected =
-      std::make_tuple(std::string("1"), std::string("2"), std::string("3"));
+    auto t_transformed = sigc::internal::tuple_transform_each<transform_to_string>(t_original);
+    auto t_expected = std::make_tuple(std::string("1"), std::string("2"), std::string("3"));
 
     static_assert(std::tuple_size<decltype(t_transformed)>::value == 3,
       "unexpected tuple_transform_each()ed tuple size.");
@@ -65,8 +59,7 @@ test_tuple_transform_each_same_types() {
     assert(std::get<1>(t_transformed).substr(0, 3) == "2.1");
     assert(std::get<2>(t_transformed) == "3");
 
-    static_assert(
-      std::is_same<decltype(t_transformed), decltype(t_expected)>::value,
+    static_assert(std::is_same<decltype(t_transformed), decltype(t_expected)>::value,
       "unexpected transform_each()ed tuple type");
   }
 }
@@ -79,40 +72,34 @@ class transform_to_something;
 
 // An int will be converted to a std::string:
 template <>
-class transform_to_something<int> {
+class transform_to_something<int>
+{
 public:
-  static std::string
-  transform(int& from) {
-    return std::to_string(from);
-  }
+  static std::string transform(int& from) { return std::to_string(from); }
 };
 
 // A double will be converted to a char:
 template <>
-class transform_to_something<double> {
+class transform_to_something<double>
+{
 public:
-  static char
-  transform(double& from) {
-    return std::to_string(from)[0];
-  }
+  static char transform(double& from) { return std::to_string(from)[0]; }
 };
 
 // A std::string will be converted to an int:
 template <>
-class transform_to_something<std::string> {
+class transform_to_something<std::string>
+{
 public:
-  static int
-  transform(std::string& from) {
-    return std::stoi(from);
-  }
+  static int transform(std::string& from) { return std::stoi(from); }
 };
 
 // In these tests, t_expected has elements of different types.
 void
-test_tuple_transform_each_multiple_types() {
+test_tuple_transform_each_multiple_types()
+{
   auto t_original = std::make_tuple(1, (double)2.1f, std::string("3"));
-  auto t_transformed =
-    sigc::internal::tuple_transform_each<transform_to_something>(t_original);
+  auto t_transformed = sigc::internal::tuple_transform_each<transform_to_something>(t_original);
   auto t_expected = std::make_tuple(std::string("1"), '2', 3);
 
   static_assert(std::tuple_size<decltype(t_transformed)>::value == 3,
@@ -122,16 +109,16 @@ test_tuple_transform_each_multiple_types() {
   assert(std::get<1>(t_transformed) == '2');
   assert(std::get<2>(t_transformed) == 3);
 
-  static_assert(
-    std::is_same<decltype(t_transformed), decltype(t_expected)>::value,
+  static_assert(std::is_same<decltype(t_transformed), decltype(t_expected)>::value,
     "unexpected transform_each()ed tuple type");
 }
 
 template <class T_element_from>
-class transform_each_nonconst {
+class transform_each_nonconst
+{
 public:
-  static int
-  transform(T_element_from& from) {
+  static int transform(T_element_from& from)
+  {
     from *= 2;
     // Or, for instance, call a non-const method on from.
 
@@ -140,10 +127,10 @@ public:
 };
 
 void
-test_tuple_transform_each_nonconst() {
+test_tuple_transform_each_nonconst()
+{
   auto t = std::make_tuple(1, 2, 3);
-  auto t_transformed =
-    sigc::internal::tuple_transform_each<transform_each_nonconst>(t);
+  auto t_transformed = sigc::internal::tuple_transform_each<transform_each_nonconst>(t);
 
   // Check that t was changed (from * 2):
   assert(std::get<0>(t) == 2);
@@ -157,15 +144,14 @@ test_tuple_transform_each_nonconst() {
 }
 
 void
-test_tuple_transform_each_stdref() {
+test_tuple_transform_each_stdref()
+{
   int a = 1;
   int b = 2;
   int c = 3;
   auto t_original = std::make_tuple(std::ref(a), std::ref(b), std::ref(c));
-  auto t_transformed =
-    sigc::internal::tuple_transform_each<transform_to_string>(t_original);
-  auto t_expected =
-    std::make_tuple(std::string("1"), std::string("2"), std::string("3"));
+  auto t_transformed = sigc::internal::tuple_transform_each<transform_to_string>(t_original);
+  auto t_expected = std::make_tuple(std::string("1"), std::string("2"), std::string("3"));
 
   static_assert(std::tuple_size<decltype(t_transformed)>::value == 3,
     "unexpected tuple_transform_each()ed tuple size.");
@@ -174,27 +160,22 @@ test_tuple_transform_each_stdref() {
   assert(std::get<1>(t_transformed) == "2");
   assert(std::get<2>(t_transformed) == "3");
 
-  static_assert(
-    std::is_same<decltype(t_transformed), decltype(t_expected)>::value,
+  static_assert(std::is_same<decltype(t_transformed), decltype(t_expected)>::value,
     "unexpected transform_each()ed tuple type");
 }
 
-
-//This can only be used via std::ref(), for instance.
-//Any attempt to copy or move it, should cause a compiler error.
-class NonCopyable {
+// This can only be used via std::ref(), for instance.
+// Any attempt to copy or move it, should cause a compiler error.
+class NonCopyable
+{
 public:
-  explicit NonCopyable(int val)
-  : m_val(val)
-  {}
-  
-  int get_val() const {
-    return m_val;
-  }
+  explicit NonCopyable(int val) : m_val(val) {}
+
+  int get_val() const { return m_val; }
 
   NonCopyable(const NonCopyable& src) = delete;
   NonCopyable& operator=(const NonCopyable& src) = delete;
-  
+
   NonCopyable(NonCopyable&& src) = delete;
   NonCopyable& operator=(NonCopyable&& src) = delete;
 
@@ -202,26 +183,23 @@ private:
   int m_val;
 };
 
-
 template <class T_element_from>
-class transform_noncopyable_to_string {
+class transform_noncopyable_to_string
+{
 public:
-  static decltype(auto)
-  transform(T_element_from&& from) {
-    return std::to_string(from.get_val());
-  }
+  static decltype(auto) transform(T_element_from&& from) { return std::to_string(from.get_val()); }
 };
 
 void
-test_tuple_transform_each_stdref_non_copyable() {
+test_tuple_transform_each_stdref_non_copyable()
+{
   NonCopyable a(1);
   NonCopyable b(2);
   NonCopyable c(3);
   auto t_original = std::make_tuple(std::ref(a), std::ref(b), std::ref(c));
   auto t_transformed =
     sigc::internal::tuple_transform_each<transform_noncopyable_to_string>(t_original);
-  auto t_expected =
-    std::make_tuple(std::string("1"), std::string("2"), std::string("3"));
+  auto t_expected = std::make_tuple(std::string("1"), std::string("2"), std::string("3"));
 
   static_assert(std::tuple_size<decltype(t_transformed)>::value == 3,
     "unexpected tuple_transform_each()ed tuple size.");
@@ -230,34 +208,36 @@ test_tuple_transform_each_stdref_non_copyable() {
   assert(std::get<1>(t_transformed) == "2");
   assert(std::get<2>(t_transformed) == "3");
 
-  static_assert(
-    std::is_same<decltype(t_transformed), decltype(t_expected)>::value,
+  static_assert(std::is_same<decltype(t_transformed), decltype(t_expected)>::value,
     "unexpected transform_each()ed tuple type");
 }
 
 static std::string correct_sequence_output;
 
 template <class T_element_from>
-class transform_each_correct_sequence {
+class transform_each_correct_sequence
+{
 public:
-  static decltype(auto)
-  transform(int from) {
+  static decltype(auto) transform(int from)
+  {
     correct_sequence_output += std::to_string(from);
     return std::to_string(from);
   }
 };
 
 void
-test_tuple_transform_each_correct_sequence() {
+test_tuple_transform_each_correct_sequence()
+{
   correct_sequence_output.clear();
   auto t = std::make_tuple(1, 2, 3);
   sigc::internal::tuple_transform_each<transform_each_correct_sequence>(t);
-  //std::cout << "correct_sequence_output: " << correct_sequence_output << std::endl;
+  // std::cout << "correct_sequence_output: " << correct_sequence_output << std::endl;
   assert(correct_sequence_output == "123");
 }
 
 void
-test_tuple_transform_each_empty_tuple() {
+test_tuple_transform_each_empty_tuple()
+{
   auto t = std::tuple<>();
   sigc::internal::tuple_transform_each<transform_to_string>(t);
 }
@@ -270,26 +250,18 @@ class transform_as_constexpr_to_something;
 
 // An int will be converted to a char:
 template <>
-class transform_as_constexpr_to_something<int> {
+class transform_as_constexpr_to_something<int>
+{
 public:
-  constexpr
-  static
-  char
-  transform(int from) {
-    return 'a' + from;
-  }
+  constexpr static char transform(int from) { return 'a' + from; }
 };
 
 // A double will be converted to an int:
 template <>
-class transform_as_constexpr_to_something<const double> {
+class transform_as_constexpr_to_something<const double>
+{
 public:
-  constexpr
-  static
-  int
-  transform(double from) {
-    return (int)from;
-  }
+  constexpr static int transform(double from) { return (int)from; }
 };
 
 /* TODO: See the comment in main().
@@ -314,7 +286,8 @@ test_tuple_transform_each_constexpr() {
 */
 
 int
-main() {
+main()
+{
   test_tuple_transform_each_same_types();
   test_tuple_transform_each_multiple_types();
 
@@ -331,7 +304,7 @@ main() {
   //   error: accessing uninitialized member ‘std::tuple<char>::<anonymous>’
   // though it works with clang++.
   // TODO: Try it with a newer g++.
-  //test_tuple_transform_each_constexpr();
+  // test_tuple_transform_each_constexpr();
 
   return EXIT_SUCCESS;
 }

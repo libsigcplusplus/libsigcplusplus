@@ -45,7 +45,8 @@ class NsExtClass
 };
 
 template <class T_action, class T_functor>
-void visit_each(T_action&, const T_functor&)
+void
+visit_each(T_action&, const T_functor&)
 {
   result_stream << "ns_ext::visit_each() ";
 }
@@ -59,10 +60,7 @@ class MyClass1 : public sigc::trackable
 public:
   MyClass1(const std::string& str) : s(str) {}
 
-  void execute(int i)
-  {
-    result_stream << s << i;
-  }
+  void execute(int i) { result_stream << s << i; }
 private:
   std::string s;
 };
@@ -72,10 +70,7 @@ class MyClass2 : public ns_ext::NsExtClass, public sigc::trackable
 public:
   MyClass2(const std::string& str) : s(str) {}
 
-  void execute(int i)
-  {
-    result_stream << s << i;
-  }
+  void execute(int i) { result_stream << s << i; }
 private:
   std::string s;
 };
@@ -90,24 +85,21 @@ struct MyAdaptor1 : public sigc::adapts<T_functor>
 {
   using result_type = typename sigc::functor_trait<T_functor>::result_type;
 
-  result_type
-  operator()() const
+  result_type operator()() const
   {
     result_stream << "MyAdaptor1()() ";
     return this->functor_();
   }
 
   template <class T_arg1>
-  decltype(auto)
-  operator()(T_arg1 _A_arg1) const
+  decltype(auto) operator()(T_arg1 _A_arg1) const
   {
     result_stream << "MyAdaptor1()(_A_arg1) ";
     return this->functor_(_A_arg1);
   }
 
   template <class T_arg1, class T_arg2>
-  decltype(auto)
-  operator()(T_arg1 _A_arg1, T_arg2 _A_arg2) const
+  decltype(auto) operator()(T_arg1 _A_arg1, T_arg2 _A_arg2) const
   {
     result_stream << "MyAdaptor1()(_A_arg1, _A_arg2) ";
     return this->functor_(_A_arg1, _A_arg2);
@@ -115,13 +107,12 @@ struct MyAdaptor1 : public sigc::adapts<T_functor>
 
   // Constructs a MyAdaptor1 object that wraps the passed functor.
   // Initializes adapts<T_functor>::functor_, which is invoked from operator()().
-  explicit MyAdaptor1(const T_functor& _A_functor)
-    : sigc::adapts<T_functor>(_A_functor) {}
+  explicit MyAdaptor1(const T_functor& _A_functor) : sigc::adapts<T_functor>(_A_functor) {}
 };
 
 template <class T_action, class T_functor>
-void visit_each(const T_action& _A_action,
-                const MyAdaptor1<T_functor>& _A_target)
+void
+visit_each(const T_action& _A_action, const MyAdaptor1<T_functor>& _A_target)
 {
   visit_each(_A_action, _A_target.functor_);
 }
@@ -140,11 +131,10 @@ my_adaptor1(const T_functor& _A_func)
 namespace sigc
 {
 template <class T_functor>
-struct visitor<ns1::MyAdaptor1<T_functor> >
+struct visitor<ns1::MyAdaptor1<T_functor>>
 {
   template <class T_action>
-  static void do_visit_each(const T_action& _A_action,
-                            const ns1::MyAdaptor1<T_functor>& _A_target)
+  static void do_visit_each(const T_action& _A_action, const ns1::MyAdaptor1<T_functor>& _A_target)
   {
     sigc::visit_each(_A_action, _A_target.functor_);
   }
@@ -152,8 +142,8 @@ struct visitor<ns1::MyAdaptor1<T_functor> >
 } // end namespace sigc
 #endif // SIGCTEST_CASE >= 3
 
-
-int main(int argc, char* argv[])
+int
+main(int argc, char* argv[])
 {
   auto util = TestUtilities::get_instance();
 

@@ -9,7 +9,10 @@
 #include <cstdlib>
 
 // assume existance of T_functor::result_type for unknown functor types:
-namespace sigc { SIGC_FUNCTORS_HAVE_RESULT_TYPE }
+namespace sigc
+{
+SIGC_FUNCTORS_HAVE_RESULT_TYPE
+}
 
 namespace
 {
@@ -23,13 +26,13 @@ struct set
   double operator()(int i)
   {
     result_stream << "set(int " << i << ") ";
-    return i*i;
+    return i * i;
   }
 
   double operator()(double i)
   {
     result_stream << "set(double " << i << ") ";
-    return i*5;
+    return i * 5;
   }
 };
 
@@ -37,10 +40,7 @@ struct set_void
 {
   using result_type = void;
 
-  void operator()(double i)
-  {
-    result_stream << "set_void(double " << i << ")";
-  }
+  void operator()(double i) { result_stream << "set_void(double " << i << ")"; }
 };
 
 struct get
@@ -55,13 +55,13 @@ struct get
   int operator()(int i)
   {
     result_stream << "get(" << i << ") ";
-    return i*2;
+    return i * 2;
   }
 
   double operator()(int i, int j)
   {
     result_stream << "get(" << i << ", " << j << ") ";
-    return double(i)/double(j);
+    return double(i) / double(j);
   }
 #else
   // choose a type that can hold all return values
@@ -76,20 +76,21 @@ struct get
   double operator()(int i)
   {
     result_stream << "get(" << i << ") ";
-    return i*2;
+    return i * 2;
   }
 
   double operator()(int i, int j)
   {
     result_stream << "get(" << i << ", " << j << ") ";
-    return double(i)/double(j);
+    return double(i) / double(j);
   }
 #endif
 };
 
 } // end anonymous namespace
 
-int main(int argc, char* argv[])
+int
+main(int argc, char* argv[])
 {
   auto util = TestUtilities::get_instance();
 
@@ -105,7 +106,7 @@ int main(int argc, char* argv[])
   result_stream << sigc::compose(set(), get())(1, 2);
   util->check_result(result_stream, "get(1, 2) set(double 0.5) 2.5");
 
-  sigc::compose(set_void(), get())(3); //void test
+  sigc::compose(set_void(), get())(3); // void test
   util->check_result(result_stream, "get(3) set_void(double 6)");
 
   return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;

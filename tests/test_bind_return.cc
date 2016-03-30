@@ -17,15 +17,12 @@ std::ostringstream result_stream;
 
 struct foo
 {
-  void operator()(int i)
-  {
-    result_stream << "foo(int " << i << ") ";
-  }
+  void operator()(int i) { result_stream << "foo(int " << i << ") "; }
 
   float operator()(float i)
   {
     result_stream << "foo(float " << i << ") ";
-    return i*5;
+    return i * 5;
   }
 };
 
@@ -38,7 +35,8 @@ struct bar : public sigc::trackable
 
 } // end anonymous namespace
 
-int main(int argc, char* argv[])
+int
+main(int argc, char* argv[])
 {
   auto util = TestUtilities::get_instance();
 
@@ -54,7 +52,7 @@ int main(int argc, char* argv[])
   std::string str("guest book");
   // A convoluted way to do
   // sigc::bind_return(foo(), std::ref(str))(6) = "main";
-  sigc::bind_return<std::reference_wrapper<std::string> >(foo(), std::ref(str))(6) = "main";
+  sigc::bind_return<std::reference_wrapper<std::string>>(foo(), std::ref(str))(6) = "main";
   result_stream << str;
   util->check_result(result_stream, "foo(int 6) main");
 

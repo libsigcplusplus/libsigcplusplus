@@ -20,14 +20,14 @@
 #include <functional>
 
 void
-test_tuple_end() {
+test_tuple_end()
+{
   {
-    auto t_original =
-      std::make_tuple(nullptr, std::string("hello"), std::string("world"));
+    auto t_original = std::make_tuple(nullptr, std::string("hello"), std::string("world"));
     auto t_suffix = sigc::internal::tuple_end<3>(t_original);
 
-    static_assert(std::tuple_size<decltype(t_suffix)>::value == 3,
-      "unexpected tuple_end()ed tuple size.");
+    static_assert(
+      std::tuple_size<decltype(t_suffix)>::value == 3, "unexpected tuple_end()ed tuple size.");
 
     assert(std::get<0>(t_suffix) == nullptr);
     assert(std::get<1>(t_suffix) == "hello");
@@ -38,39 +38,38 @@ test_tuple_end() {
   }
 
   {
-    auto t_original =
-      std::make_tuple(nullptr, std::string("hello"), std::string("world"));
+    auto t_original = std::make_tuple(nullptr, std::string("hello"), std::string("world"));
     auto t_suffix = sigc::internal::tuple_end<2>(t_original);
 
-    static_assert(std::tuple_size<decltype(t_suffix)>::value == 2,
-      "unexpected tuple_end()ed tuple size.");
+    static_assert(
+      std::tuple_size<decltype(t_suffix)>::value == 2, "unexpected tuple_end()ed tuple size.");
 
     assert(std::get<0>(t_suffix) == "hello");
     assert(std::get<1>(t_suffix) == "world");
 
     using type_tuple_suffix = std::tuple<std::string, std::string>;
-    static_assert(std::is_same<decltype(t_suffix), type_tuple_suffix>::value,
-      "unexpected end()ed tuple type");
+    static_assert(
+      std::is_same<decltype(t_suffix), type_tuple_suffix>::value, "unexpected end()ed tuple type");
   }
 
   {
-    auto t_original =
-      std::make_tuple(nullptr, std::string("hello"), std::string("world"));
+    auto t_original = std::make_tuple(nullptr, std::string("hello"), std::string("world"));
     auto t_suffix = sigc::internal::tuple_end<1>(t_original);
 
-    static_assert(std::tuple_size<decltype(t_suffix)>::value == 1,
-      "unexpected tuple_end()ed tuple size.");
+    static_assert(
+      std::tuple_size<decltype(t_suffix)>::value == 1, "unexpected tuple_end()ed tuple size.");
 
     assert(std::get<0>(t_suffix) == "world");
 
     using type_tuple_suffix = std::tuple<std::string>;
-    static_assert(std::is_same<decltype(t_suffix), type_tuple_suffix>::value,
-      "unexpected end()ed tuple type");
+    static_assert(
+      std::is_same<decltype(t_suffix), type_tuple_suffix>::value, "unexpected end()ed tuple type");
   }
 }
 
 void
-test_tuple_end_stdref() {
+test_tuple_end_stdref()
+{
   std::string c = "yadda";
   std::string d = "yaddayadda";
   auto t_larger = std::make_tuple(1, 2, std::ref(c), std::ref(d));
@@ -78,33 +77,32 @@ test_tuple_end_stdref() {
   auto t_suffix = sigc::internal::tuple_end<2>(t_larger);
   c = "hello";
   d = "world";
-  //This works, but it's not what we are testing here:
-  //assert(std::get<0>(t_larger) == "hello");
+  // This works, but it's not what we are testing here:
+  // assert(std::get<0>(t_larger) == "hello");
 
   assert(std::get<0>(t_suffix) == "hello");
   assert(std::get<1>(t_suffix) == "world");
 }
 
-
-constexpr
-void
-test_tuple_end_constexpr() {
+constexpr void
+test_tuple_end_constexpr()
+{
   constexpr auto str_hello = "hello";
   constexpr auto str_world = "world";
 
-  constexpr auto t_original =
-    std::make_tuple(nullptr, str_hello, str_world);
+  constexpr auto t_original = std::make_tuple(nullptr, str_hello, str_world);
   constexpr auto t_suffix = sigc::internal::tuple_end<2>(t_original);
 
-  static_assert(std::tuple_size<decltype(t_suffix)>::value == 2,
-    "unexpected tuple_end()ed tuple size.");
+  static_assert(
+    std::tuple_size<decltype(t_suffix)>::value == 2, "unexpected tuple_end()ed tuple size.");
 
   assert(std::get<0>(t_suffix) == str_hello);
   assert(std::get<1>(t_suffix) == str_world);
 }
 
 int
-main() {
+main()
+{
   test_tuple_end();
   test_tuple_end_stdref();
 

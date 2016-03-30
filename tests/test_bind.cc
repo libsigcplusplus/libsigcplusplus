@@ -28,7 +28,7 @@ struct foo : public sigc::functor_base
 
   int operator()(int i, int j)
   {
-    result_stream << "foo(int " << i << ", int "<< j << ") ";
+    result_stream << "foo(int " << i << ", int " << j << ") ";
     return i + j;
   }
 
@@ -43,45 +43,44 @@ struct foo_void : public sigc::functor_base
 {
   using result_type = void;
 
-  void operator()(int i)
-  {
-    result_stream << "foo_void(int " << i << ")";
-  }
+  void operator()(int i) { result_stream << "foo_void(int " << i << ")"; }
 };
 
-int bar(int i, int j)
+int
+bar(int i, int j)
 {
   result_stream << "bar(int " << i << ", int " << j << ") ";
   return i + j;
 }
 
-bool simple(bool test)
+bool
+simple(bool test)
 {
   result_stream << "simple(bool " << test << ") ";
   return test;
 }
 
-void egon(std::string& str)
+void
+egon(std::string& str)
 {
   result_stream << "egon(string '" << str << "')";
   str = "egon was here";
 }
 
-
 struct book : public sigc::trackable
 {
   book(const std::string& name) : name_(name) {}
 
-  //non-copyable:
+  // non-copyable:
   book(const book&) = delete;
   book& operator=(const book&) = delete;
-  
-  //non movable:
+
+  // non movable:
   book(book&&) = delete;
   book& operator=(book&&) = delete;
 
-  std::string& get_name()  { return name_; }
-  operator std::string& () { return get_name(); }
+  std::string& get_name() { return name_; }
+  operator std::string&() { return get_name(); }
 
 private:
   std::string name_;
@@ -89,7 +88,8 @@ private:
 
 } // end anonymous namespace
 
-int main(int argc, char* argv[])
+int
+main(int argc, char* argv[])
 {
   auto util = TestUtilities::get_instance();
 
@@ -126,7 +126,7 @@ int main(int argc, char* argv[])
   util->check_result(result_stream, "foo_void(int 12)");
 
   // function pointer instead of functor
-  sigc::bind(&bar, 13, 14)();
+  sigc::bind (&bar, 13, 14)();
   util->check_result(result_stream, "bar(int 13, int 14) ");
 
   // method pointer instead of functor
@@ -143,8 +143,10 @@ int main(int argc, char* argv[])
 
   // test references
   std::string str("guest book");
-  sigc::bind(&egon, std::ref(str))(); // Tell bind that it shall store a reference.
-  result_stream << " " << str; // (This cannot be the default behaviour: just think about what happens if str dies!)
+  sigc::bind (&egon, std::ref(str))(); // Tell bind that it shall store a reference.
+  result_stream
+    << " "
+    << str; // (This cannot be the default behaviour: just think about what happens if str dies!)
   util->check_result(result_stream, "egon(string 'guest book') egon was here");
 
   sigc::slot<void()> sl;

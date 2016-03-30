@@ -23,13 +23,13 @@
 
 TestUtilities* TestUtilities::instance_ = nullptr;
 
-TestUtilities::TestUtilities()
-: verbose_(false), result_ok_(true), test_number_(0)
+TestUtilities::TestUtilities() : verbose_(false), result_ok_(true), test_number_(0)
 {
 }
 
-//static
-TestUtilities* TestUtilities::get_instance()
+// static
+TestUtilities*
+TestUtilities::get_instance()
 {
   if (!instance_)
     instance_ = new TestUtilities;
@@ -37,7 +37,8 @@ TestUtilities* TestUtilities::get_instance()
   return instance_;
 }
 
-bool TestUtilities::check_command_args(int argc, char* argv[])
+bool
+TestUtilities::check_command_args(int argc, char* argv[])
 {
   bool go_on = true; // Whether the caller shall continue program execution.
   bool print_help = false;
@@ -65,8 +66,8 @@ bool TestUtilities::check_command_args(int argc, char* argv[])
   return go_on;
 }
 
-void TestUtilities::check_result(std::ostringstream& result_stream,
-                                 const std::string& expected_result)
+void
+TestUtilities::check_result(std::ostringstream& result_stream, const std::string& expected_result)
 {
   if (verbose_)
     std::cout << result_stream.str() << std::endl;
@@ -82,8 +83,9 @@ void TestUtilities::check_result(std::ostringstream& result_stream,
   result_stream.str("");
 }
 
-//static
-bool TestUtilities::get_result_and_delete_instance()
+// static
+bool
+TestUtilities::get_result_and_delete_instance()
 {
   const bool result = instance_ ? instance_->result_ok_ : true;
   delete instance_;

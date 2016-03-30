@@ -8,32 +8,26 @@ namespace
 {
 std::ostringstream result_stream;
 
-class Base
-  : virtual public sigc::trackable
+class Base : virtual public sigc::trackable
 {
 };
 
 class Base2
 {
 public:
-  virtual ~Base2()
-  {}
+  virtual ~Base2() {}
 };
 
-class Derived
-  : virtual public Base,
-    public Base2
+class Derived : virtual public Base, public Base2
 {
 public:
-  void method()
-  {
-    result_stream << "method()";
-  }
+  void method() { result_stream << "method()"; }
 };
 
 } // end anonymous namespace
 
-int main(int argc, char* argv[])
+int
+main(int argc, char* argv[])
 {
   auto util = TestUtilities::get_instance();
 
@@ -45,13 +39,11 @@ int main(int argc, char* argv[])
   handler();
   util->check_result(result_stream, "method()");
 
-  auto param =
-    sigc::bind(sigc::slot<void(Derived&)>(), std::ref(*instance));
+  auto param = sigc::bind(sigc::slot<void(Derived&)>(), std::ref(*instance));
   param();
   util->check_result(result_stream, "");
 
-  auto ret =
-    sigc::bind_return(sigc::slot<void()>(), std::ref(*instance));
+  auto ret = sigc::bind_return(sigc::slot<void()>(), std::ref(*instance));
   ret();
   util->check_result(result_stream, "");
 

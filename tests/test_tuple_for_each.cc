@@ -23,16 +23,18 @@
 #include <functional>
 
 template <class T_element_from>
-class for_each_simple {
+class for_each_simple
+{
 public:
-  static void
-  visit(const T_element_from& from) {
+  static void visit(const T_element_from& from)
+  {
     std::cout << "for_each_simple(): " << std::to_string(from) << std::endl;
   }
 };
 
 void
-test_tuple_for_each_same_types() {
+test_tuple_for_each_same_types()
+{
   {
     auto t_original = std::make_tuple(1, 2, 3);
     sigc::internal::tuple_for_each<for_each_simple>(t_original);
@@ -45,35 +47,35 @@ test_tuple_for_each_same_types() {
 }
 
 template <class T_element_from>
-class for_each_simple_with_extras {
+class for_each_simple_with_extras
+{
 public:
-  static void
-  visit(const T_element_from& from, int extra1, const std::string& extra2) {
+  static void visit(const T_element_from& from, int extra1, const std::string& extra2)
+  {
     std::cout << "for_each_simple_with_extras(): from=" << std::to_string(from)
               << ", extra1: " << extra1 << ", extra2: " << extra2 << std::endl;
   }
 };
 
 void
-test_tuple_for_each_same_types_with_extras() {
+test_tuple_for_each_same_types_with_extras()
+{
   {
     auto t_original = std::make_tuple(1, (double)2.1f, 3);
-    sigc::internal::tuple_for_each<for_each_simple_with_extras>(
-      t_original, 89, "eightynine");
+    sigc::internal::tuple_for_each<for_each_simple_with_extras>(t_original, 89, "eightynine");
   }
 }
 
 template <class T_element_from>
-class for_each_simple_with_nonconst_extras {
+class for_each_simple_with_nonconst_extras
+{
 public:
-  static void
-  visit(const T_element_from& from, int& extra) {
-    extra += (int)from;
-  }
+  static void visit(const T_element_from& from, int& extra) { extra += (int)from; }
 };
 
 void
-test_tuple_for_each_same_types_with_nonconst_extras() {
+test_tuple_for_each_same_types_with_nonconst_extras()
+{
   {
     auto t_original = std::make_tuple(1, (double)2.1f, 3);
     int extra = 0;
@@ -92,66 +94,69 @@ class visitor_with_specializations;
 
 // An int will be converted to a std::string:
 template <>
-class visitor_with_specializations<int> {
+class visitor_with_specializations<int>
+{
 public:
-  static void
-  visit(const int& from) {
-    std::cout << "visitor_with_specializations::visit(): "
-              << std::to_string(from) << std::endl;
+  static void visit(const int& from)
+  {
+    std::cout << "visitor_with_specializations::visit(): " << std::to_string(from) << std::endl;
   }
 };
 
 // A double will be converted to a char:
 template <>
-class visitor_with_specializations<double> {
+class visitor_with_specializations<double>
+{
 public:
-  static void
-  visit(const double& from) {
-    std::cout << "visitor_with_specializations::visit(): "
-              << std::to_string(from)[0] << std::endl;
+  static void visit(const double& from)
+  {
+    std::cout << "visitor_with_specializations::visit(): " << std::to_string(from)[0] << std::endl;
   }
 };
 
 // A std::string will be converted to an int:
 template <>
-class visitor_with_specializations<std::string> {
+class visitor_with_specializations<std::string>
+{
 public:
-  static void
-  visit(const std::string& from) {
-    std::cout << "visitor_with_specializations::visit(): " << std::stoi(from)
-              << std::endl;
+  static void visit(const std::string& from)
+  {
+    std::cout << "visitor_with_specializations::visit(): " << std::stoi(from) << std::endl;
   }
 };
 
 // A const char* will be converted to an int:
 template <>
-class visitor_with_specializations<const char*> {
+class visitor_with_specializations<const char*>
+{
 public:
-  static void
-  visit(const char* from) {
-    std::cout << "visitor_with_specializations::visit(): " << std::stoi(from)
-              << std::endl;
+  static void visit(const char* from)
+  {
+    std::cout << "visitor_with_specializations::visit(): " << std::stoi(from) << std::endl;
   }
 };
 
 void
-test_tuple_for_each_multiple_types() {
+test_tuple_for_each_multiple_types()
+{
   auto t_original = std::make_tuple(1, (double)2.1f, std::string("3"));
   sigc::internal::tuple_for_each<visitor_with_specializations>(t_original);
 }
 
 template <class T_element_from>
-class for_each_nonconst {
+class for_each_nonconst
+{
 public:
-  static void
-  visit(T_element_from& from) {
+  static void visit(T_element_from& from)
+  {
     from *= 2;
     // Or, for instance, call a non-const method on from.
   }
 };
 
 void
-test_tuple_for_each_nonconst() {
+test_tuple_for_each_nonconst()
+{
   auto t = std::make_tuple(1, 2, 3);
   sigc::internal::tuple_for_each<for_each_nonconst, decltype(t)&>(t);
   std::cout << std::get<0>(t) << std::endl;
@@ -161,7 +166,8 @@ test_tuple_for_each_nonconst() {
 }
 
 void
-test_tuple_for_each_stdref() {
+test_tuple_for_each_stdref()
+{
   {
     int a = 1;
     int b = 2;
@@ -185,39 +191,43 @@ test_tuple_for_each_stdref() {
 static std::string correct_sequence_output;
 
 template <class T_element_from>
-class for_each_correct_sequence {
+class for_each_correct_sequence
+{
 public:
-  static void
-  visit(const T_element_from& from) {
-    //std::cout << "from: " << from << std::endl;
+  static void visit(const T_element_from& from)
+  {
+    // std::cout << "from: " << from << std::endl;
     correct_sequence_output += std::to_string(from);
   }
 };
 
 void
-test_tuple_for_each_correct_sequence() {
+test_tuple_for_each_correct_sequence()
+{
   correct_sequence_output.clear();
   auto t = std::make_tuple(1, 2, 3);
   sigc::internal::tuple_for_each<for_each_correct_sequence>(t);
-  //std::cout << "correct_sequence_output: " << correct_sequence_output << std::endl;
+  // std::cout << "correct_sequence_output: " << correct_sequence_output << std::endl;
   assert(correct_sequence_output == "123");
 }
 
 void
-test_tuple_for_each_empty_tuple() {
+test_tuple_for_each_empty_tuple()
+{
   auto t = std::tuple<>();
   sigc::internal::tuple_for_each<for_each_simple>(t);
 }
 
-constexpr
-void
-test_tuple_for_each_constexpr() {
+constexpr void
+test_tuple_for_each_constexpr()
+{
   constexpr auto t_original = std::make_tuple(1, (double)2.1f, "3");
   sigc::internal::tuple_for_each<visitor_with_specializations>(t_original);
 }
 
 int
-main() {
+main()
+{
   test_tuple_for_each_same_types();
   test_tuple_for_each_same_types_with_extras();
   test_tuple_for_each_same_types_with_nonconst_extras();
@@ -225,7 +235,7 @@ main() {
   test_tuple_for_each_multiple_types();
 
   test_tuple_for_each_nonconst();
-  
+
   test_tuple_for_each_stdref();
 
   test_tuple_for_each_correct_sequence();

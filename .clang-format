@@ -1,0 +1,14 @@
+BasedOnStyle: Mozilla
+Standard: Cpp11
+AlignAfterOpenBracket: false
+AlignEscapedNewlinesLeft: true
+AlwaysBreakAfterDefinitionReturnType: None
+BreakBeforeBraces: Allman
+BreakConstructorInitializersBeforeComma: false
+ColumnLimit: 100
+ConstructorInitializerAllOnOneLineOrOnePerLine: true
+ConstructorInitializerIndentWidth: 0
+IndentCaseLabels: false
+SortIncludes: false
+AlignTrailingComments: false
+

@@ -8,8 +8,8 @@
 #include <string>
 #include <cstdlib>
 
-//The Tru64 compiler seems to need this to avoid an unresolved symbol
-//See bug #161503
+// The Tru64 compiler seems to need this to avoid an unresolved symbol
+// See bug #161503
 #include <new>
 
 namespace
@@ -19,26 +19,21 @@ std::ostringstream result_stream;
 class foo
 {
 public:
-  void operator()(int i)
-  {
-    result_stream << "foo(int " << i << ")";
-  }
+  void operator()(int i) { result_stream << "foo(int " << i << ")"; }
 
   void operator()(std::string& str)
   {
     result_stream << "foo(string '" << str << "') ";
-    str="foo was here";
+    str = "foo was here";
   }
 
-  void operator()(int, int)
-  {
-    result_stream << "foo(int, int)";
-  }
+  void operator()(int, int) { result_stream << "foo(int, int)"; }
 };
 
 } // end anonymous namespace
 
-int main(int argc, char* argv[])
+int
+main(int argc, char* argv[])
 {
   auto util = TestUtilities::get_instance();
 

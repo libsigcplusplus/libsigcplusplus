@@ -10,14 +10,16 @@ namespace
 {
 std::ostringstream result_stream;
 
-void Foo(sigc::trackable&)
+void
+Foo(sigc::trackable&)
 {
   result_stream << "Foo(x)";
 }
 
 } // end anonymous namespace
 
-int main(int argc, char* argv[])
+int
+main(int argc, char* argv[])
 {
   auto util = TestUtilities::get_instance();
 

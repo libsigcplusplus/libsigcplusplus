@@ -34,17 +34,18 @@ struct foo_void : public sigc::functor_base
 {
   using result_type = void;
 
-  void operator()()
-  {
-    result_stream << "foo_void()";
-  }
+  void operator()() { result_stream << "foo_void()"; }
 };
 
 } // end anonymous namespace
 
-namespace sigc { SIGC_FUNCTOR_TRAIT(foo,bool) }
+namespace sigc
+{
+SIGC_FUNCTOR_TRAIT(foo, bool)
+}
 
-int main(int argc, char* argv[])
+int
+main(int argc, char* argv[])
 {
   auto util = TestUtilities::get_instance();
 
