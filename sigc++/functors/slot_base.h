@@ -66,40 +66,15 @@ struct SIGC_API slot_rep : public trackable
    * down dereferencing of slot list iterators. Martin. */
   // TODO: Try this now? murrayc.
 
-  /// Callback that invokes the contained functor.
-  /* This can't be a virtual function since number of arguments
-   * must be flexible. We use function pointers to slot_call::call_it()
-   * instead. call_ is set to zero to indicate that the slot is invalid.
-   */
-  hook call_;
-
-  /// Callback that detaches the slot_rep object from referred trackables and destroys it.
-  /* This could be a replaced by a virtual dtor. However since this struct is
-   * crucual for the efficiency of the whole library we want to avoid this.
-   */
-  func_destroy_notify destroy_;
-
-  using hook_dup = slot_rep* (*)(slot_rep*);
-
-private:
-  /** Callback that makes a deep copy of the slot_rep object.
-   * @return A deep copy of the slot_rep object.
-   */
-  hook_dup dup_;
-
 public:
-  /** Callback of parent_. */
-  func_destroy_notify cleanup_;
-
-  /** Parent object whose callback cleanup_ is executed on notification. */
-  notifiable* parent_;
+  using hook_dup = slot_rep* (*)(slot_rep*);
 
   inline slot_rep(hook call__, notifiable::func_destroy_notify destroy__, hook_dup dup__) noexcept
     : call_(call__),
-      destroy_(destroy__),
-      dup_(dup__),
       cleanup_(nullptr),
-      parent_(nullptr)
+      parent_(nullptr),
+      destroy_(destroy__),
+      dup_(dup__)
   {
   }
 
@@ -149,6 +124,32 @@ public:
    * @param data The slot_rep object that is becoming invalid (@p this).
    */
   static void notify(notifiable* data);
+
+  /// Callback that invokes the contained functor.
+  /* This can't be a virtual function since number of arguments
+   * must be flexible. We use function pointers to slot_call::call_it()
+   * instead. call_ is set to zero to indicate that the slot is invalid.
+   */
+  hook call_;
+
+  /** Callback of parent_. */
+  func_destroy_notify cleanup_;
+
+  /** Parent object whose callback cleanup_ is executed on notification. */
+  notifiable* parent_;
+
+protected:
+  /// Callback that detaches the slot_rep object from referred trackables and destroys it.
+  /* This could be a replaced by a virtual dtor. However since this struct is
+   * crucual for the efficiency of the whole library we want to avoid this.
+   */
+  func_destroy_notify destroy_;
+
+private:
+  /** Callback that makes a deep copy of the slot_rep object.
+   * @return A deep copy of the slot_rep object.
+   */
+  hook_dup dup_;
 };
 
 /** Functor used to add a dependency to a trackable.
