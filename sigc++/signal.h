@@ -237,7 +237,7 @@ struct slot_list
     erase(--tmp_);
   }
 
-protected:
+private:
   internal::signal_impl* list_;
 };
 
