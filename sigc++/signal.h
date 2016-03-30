@@ -29,7 +29,8 @@
 #include <tuple>
 #include <utility>
 
-namespace sigc {
+namespace sigc
+{
 
 /** STL-style iterator for slot_list.
  *
@@ -50,49 +51,43 @@ struct slot_iterator
 
   using iterator_type = typename internal::signal_impl::iterator_type;
 
-  slot_iterator()
-    {}
+  slot_iterator() {}
 
-  explicit slot_iterator(const iterator_type& i)
-    : i_(i) {}
+  explicit slot_iterator(const iterator_type& i) : i_(i) {}
 
-  reference operator*() const
-    { return static_cast<reference>(*i_); }
+  reference operator*() const { return static_cast<reference>(*i_); }
 
-  pointer operator->() const
-    { return &(operator*()); }
+  pointer operator->() const { return &(operator*()); }
 
   slot_iterator& operator++()
-    {
-      ++i_;
-      return *this;
-    }
+  {
+    ++i_;
+    return *this;
+  }
 
   slot_iterator operator++(int)
-    { 
-      slot_iterator __tmp(*this);
-      ++i_;
-      return __tmp;
-    }
+  {
+    slot_iterator __tmp(*this);
+    ++i_;
+    return __tmp;
+  }
 
   slot_iterator& operator--()
-    {
-      --i_;
-      return *this;
-    }
+  {
+    --i_;
+    return *this;
+  }
 
   slot_iterator operator--(int)
-    {
-      slot_iterator __tmp(*this);
-      --i_;
-      return __tmp;
-    }
+  {
+    slot_iterator __tmp(*this);
+    --i_;
+    return __tmp;
+  }
 
-  bool operator == (const slot_iterator& other) const
-    { return i_ == other.i_; }
+  bool operator==(const slot_iterator& other) const { return i_ == other.i_; }
 
-  bool operator != (const slot_iterator& other) const
-    { return i_ != other.i_; }
+  bool operator!=(const slot_iterator& other) const { return i_ != other.i_; }
 
   iterator_type i_;
 };
@@ -116,49 +111,43 @@ struct slot_const_iterator
 
   using iterator_type = typename internal::signal_impl::const_iterator_type;
 
-  slot_const_iterator()
-    {}
+  slot_const_iterator() {}
 
-  explicit slot_const_iterator(const iterator_type& i)
-    : i_(i) {}
+  explicit slot_const_iterator(const iterator_type& i) : i_(i) {}
 
-  reference operator*() const
-    { return static_cast<reference>(*i_); }
+  reference operator*() const { return static_cast<reference>(*i_); }
 
-  pointer operator->() const
-    { return &(operator*()); }
+  pointer operator->() const { return &(operator*()); }
 
   slot_const_iterator& operator++()
-    {
-      ++i_;
-      return *this;
-    }
+  {
+    ++i_;
+    return *this;
+  }
 
   slot_const_iterator operator++(int)
-    { 
-      slot_const_iterator __tmp(*this);
-      ++i_;
-      return __tmp;
-    }
+  {
+    slot_const_iterator __tmp(*this);
+    ++i_;
+    return __tmp;
+  }
 
   slot_const_iterator& operator--()
-    {
-      --i_;
-      return *this;
-    }
+  {
+    --i_;
+    return *this;
+  }
 
   slot_const_iterator operator--(int)
-    {
-      slot_const_iterator __tmp(*this);
-      --i_;
-      return __tmp;
-    }
+  {
+    slot_const_iterator __tmp(*this);
+    --i_;
+    return __tmp;
+  }
 
-  bool operator == (const slot_const_iterator& other) const
-    { return i_ == other.i_; }
+  bool operator==(const slot_const_iterator& other) const { return i_ == other.i_; }
 
-  bool operator != (const slot_const_iterator& other) const
-    { return i_ != other.i_; }
+  bool operator!=(const slot_const_iterator& other) const { return i_ != other.i_; }
 
   iterator_type i_;
 };
@@ -181,95 +170,79 @@ struct slot_list
 
   using iterator = slot_iterator<slot_type>;
   using const_iterator = slot_const_iterator<slot_type>;
-  
+
   using reverse_iterator = std::reverse_iterator<iterator>;
   using const_reverse_iterator = std::reverse_iterator<const_iterator>;
 
-  slot_list()
-    : list_(nullptr) {}
+  slot_list() : list_(nullptr) {}
 
-  explicit slot_list(internal::signal_impl* __list)
-    : list_(__list) {}
+  explicit slot_list(internal::signal_impl* __list) : list_(__list) {}
 
-  iterator begin()
-    { return iterator(list_->slots_.begin()); }
+  iterator begin() { return iterator(list_->slots_.begin()); }
 
-  const_iterator begin() const
-    { return const_iterator(list_->slots_.begin()); }
+  const_iterator begin() const { return const_iterator(list_->slots_.begin()); }
 
-  iterator end()
-    { return iterator(list_->slots_.end()); }
+  iterator end() { return iterator(list_->slots_.end()); }
 
-  const_iterator end() const
-    { return const_iterator(list_->slots_.end()); }
+  const_iterator end() const { return const_iterator(list_->slots_.end()); }
 
-  reverse_iterator rbegin() 
-    { return reverse_iterator(end()); }
+  reverse_iterator rbegin() { return reverse_iterator(end()); }
 
-  const_reverse_iterator rbegin() const 
-    { return const_reverse_iterator(end()); }
+  const_reverse_iterator rbegin() const { return const_reverse_iterator(end()); }
 
-  reverse_iterator rend()
-    { return reverse_iterator(begin()); }
+  reverse_iterator rend() { return reverse_iterator(begin()); }
 
-  const_reverse_iterator rend() const
-    { return const_reverse_iterator(begin()); }
+  const_reverse_iterator rend() const { return const_reverse_iterator(begin()); }
 
-  reference front()
-    { return *begin(); }
+  reference front() { return *begin(); }
 
-  const_reference front() const
-    { return *begin(); }
+  const_reference front() const { return *begin(); }
 
-  reference back()
-    { return *(--end()); }
+  reference back() { return *(--end()); }
 
-  const_reference back() const
-    { return *(--end()); }
+  const_reference back() const { return *(--end()); }
 
   iterator insert(iterator i, const slot_type& slot_)
-    { return iterator(list_->insert(i.i_, static_cast<const slot_base&>(slot_))); }
+  {
+    return iterator(list_->insert(i.i_, static_cast<const slot_base&>(slot_)));
+  }
 
   iterator insert(iterator i, slot_type&& slot_)
-    { return iterator(list_->insert(i.i_, std::move(static_cast<slot_base&>(slot_)))); }
+  {
+    return iterator(list_->insert(i.i_, std::move(static_cast<slot_base&>(slot_))));
+  }
 
-  void push_front(const slot_type& c)
-    { insert(begin(), c); }
+  void push_front(const slot_type& c) { insert(begin(), c); }
 
-  void push_front(slot_type&& c)
-    { insert(begin(), std::move(c)); }
+  void push_front(slot_type&& c) { insert(begin(), std::move(c)); }
 
-  void push_back(const slot_type& c)
-    { insert(end(), c); }
+  void push_back(const slot_type& c) { insert(end(), c); }
 
-  void push_back(slot_type&& c)
-    { insert(end(), std::move(c)); }
+  void push_back(slot_type&& c) { insert(end(), std::move(c)); }
 
-  iterator erase(iterator i)
-    { return iterator(list_->erase(i.i_)); }
+  iterator erase(iterator i) { return iterator(list_->erase(i.i_)); }
 
   iterator erase(iterator first_, iterator last_)
-    {
-      while (first_ != last_)
-        first_ = erase(first_);
-      return last_;
-    }
+  {
+    while (first_ != last_)
+      first_ = erase(first_);
+    return last_;
+  }
 
-  void pop_front()
-    { erase(begin()); }
+  void pop_front() { erase(begin()); }
 
   void pop_back()
-    { 
-      auto tmp_ = end();
-      erase(--tmp_);
-    }
+  {
+    auto tmp_ = end();
+    erase(--tmp_);
+  }
 
 protected:
   internal::signal_impl* list_;
 };
 
-
-namespace internal {
+namespace internal
+{
 
 /** Special iterator over sigc::internal::signal_impl's slot list that holds extra data.
  * This iterators is for use in accumulators. operator*() executes
@@ -283,8 +256,8 @@ struct slot_iterator_buf
   using difference_type = std::ptrdiff_t;
   using iterator_category = std::bidirectional_iterator_tag;
 
-  //These are needed just to make this a proper C++ iterator, 
-  //that can be used with standard C++ algorithms.
+  // These are needed just to make this a proper C++ iterator,
+  // that can be used with standard C++ algorithms.
   using value_type = T_result;
   using reference = T_result&;
   using pointer = T_result*;
@@ -295,60 +268,61 @@ struct slot_iterator_buf
 
   using iterator_type = signal_impl::const_iterator_type;
 
-  slot_iterator_buf()
-    : c_(nullptr), invoked_(false) {}
+  slot_iterator_buf() : c_(nullptr), invoked_(false) {}
 
-  slot_iterator_buf(const iterator_type& i, const emitter_type* c)
-    : i_(i), c_(c), invoked_(false) {}
+  slot_iterator_buf(const iterator_type& i, const emitter_type* c) : i_(i), c_(c), invoked_(false)
+  {
+  }
 
   decltype(auto) operator*() const
+  {
+    if (!i_->empty() && !i_->blocked() && !invoked_)
     {
-      if (!i_->empty() && !i_->blocked() && !invoked_)
-        {
-          r_ = (*c_)(static_cast<const slot_type&>(*i_));
-          invoked_ = true;
-        }
-      return r_;
+      r_ = (*c_)(static_cast<const slot_type&>(*i_));
+      invoked_ = true;
     }
+    return r_;
+  }
 
   slot_iterator_buf& operator++()
-    {
-      ++i_;
-      invoked_ = false;
-      return *this;
-    }
+  {
+    ++i_;
+    invoked_ = false;
+    return *this;
+  }
 
   slot_iterator_buf operator++(int)
-    { 
-      slot_iterator_buf __tmp(*this);
-      ++i_;
-      invoked_ = false;
-      return __tmp;
-    }
+  {
+    slot_iterator_buf __tmp(*this);
+    ++i_;
+    invoked_ = false;
+    return __tmp;
+  }
 
   slot_iterator_buf& operator--()
-    {
-      --i_;
-      invoked_ = false;
-      return *this;
-    }
+  {
+    --i_;
+    invoked_ = false;
+    return *this;
+  }
 
   slot_iterator_buf operator--(int)
-    {
-      slot_iterator_buf __tmp(*this);
-      --i_;
-      invoked_ = false;
-      return __tmp;
-    }
+  {
+    slot_iterator_buf __tmp(*this);
+    --i_;
+    invoked_ = false;
+    return __tmp;
+  }
 
-  bool operator == (const slot_iterator_buf& other) const
-    { return (!c_ || (i_ == other.i_)); } /* If '!c_' the iterators are empty.
-                                           * Unfortunately, empty stl iterators are not equal.
-                                           * We are forcing equality so that 'first==last'
-                                           * in the accumulator's emit function yields true. */
+  bool operator==(const slot_iterator_buf& other) const
+  {
+    return (!c_ || (i_ == other.i_));
+  } /* If '!c_' the iterators are empty.
+     * Unfortunately, empty stl iterators are not equal.
+     * We are forcing equality so that 'first==last'
+     * in the accumulator's emit function yields true. */
 
-  bool operator != (const slot_iterator_buf& other) const
-    { return (c_ && (i_ != other.i_)); }
+  bool operator!=(const slot_iterator_buf& other) const { return (c_ && (i_ != other.i_)); }
 
 private:
   iterator_type i_;
@@ -372,56 +346,54 @@ struct slot_iterator_buf<T_emitter, void>
 
   using iterator_type = signal_impl::const_iterator_type;
 
-  slot_iterator_buf()
-    : c_(nullptr), invoked_(false) {}
+  slot_iterator_buf() : c_(nullptr), invoked_(false) {}
 
-  slot_iterator_buf(const iterator_type& i, const emitter_type* c)
-    : i_(i), c_(c), invoked_(false) {}
+  slot_iterator_buf(const iterator_type& i, const emitter_type* c) : i_(i), c_(c), invoked_(false)
+  {
+  }
 
   void operator*() const
+  {
+    if (!i_->empty() && !i_->blocked() && !invoked_)
     {
-      if (!i_->empty() && !i_->blocked() && !invoked_)
-        {
-          (*c_)(static_cast<const slot_type&>(*i_));
-          invoked_ = true;
-        }
+      (*c_)(static_cast<const slot_type&>(*i_));
+      invoked_ = true;
     }
+  }
 
   slot_iterator_buf& operator++()
-    {
-      ++i_;
-      invoked_ = false;
-      return *this;
-    }
+  {
+    ++i_;
+    invoked_ = false;
+    return *this;
+  }
 
   slot_iterator_buf operator++(int)
-    { 
-      slot_iterator_buf __tmp(*this);
-      ++i_;
-      invoked_ = false;
-      return __tmp;
-    }
+  {
+    slot_iterator_buf __tmp(*this);
+    ++i_;
+    invoked_ = false;
+    return __tmp;
+  }
 
   slot_iterator_buf& operator--()
-    {
-      --i_;
-      invoked_ = false;
-      return *this;
-    }
+  {
+    --i_;
+    invoked_ = false;
+    return *this;
+  }
 
   slot_iterator_buf operator--(int)
-    {
-      slot_iterator_buf __tmp(*this);
-      --i_;
-      invoked_ = false;
-      return __tmp;
-    }
+  {
+    slot_iterator_buf __tmp(*this);
+    --i_;
+    invoked_ = false;
+    return __tmp;
+  }
 
-  bool operator == (const slot_iterator_buf& other) const
-    { return i_ == other.i_; }
+  bool operator==(const slot_iterator_buf& other) const { return i_ == other.i_; }
 
-  bool operator != (const slot_iterator_buf& other) const
-    { return i_ != other.i_; }
+  bool operator!=(const slot_iterator_buf& other) const { return i_ != other.i_; }
 
 private:
   iterator_type i_;
@@ -437,8 +409,8 @@ struct slot_reverse_iterator_buf
   using difference_type = std::ptrdiff_t;
   using iterator_category = std::bidirectional_iterator_tag;
 
-  //These are needed just to make this a proper C++ iterator, 
-  //that can be used with standard C++ algorithms.
+  // These are needed just to make this a proper C++ iterator,
+  // that can be used with standard C++ algorithms.
   using value_type = T_result;
   using reference = T_result&;
   using pointer = T_result*;
@@ -449,62 +421,64 @@ struct slot_reverse_iterator_buf
 
   using iterator_type = signal_impl::const_iterator_type;
 
-  slot_reverse_iterator_buf()
-    : c_(nullptr), invoked_(false) {}
+  slot_reverse_iterator_buf() : c_(nullptr), invoked_(false) {}
 
   slot_reverse_iterator_buf(const iterator_type& i, const emitter_type* c)
-    : i_(i), c_(c), invoked_(false) {}
+  : i_(i), c_(c), invoked_(false)
+  {
+  }
 
   decltype(auto) operator*() const
+  {
+    iterator_type __tmp(i_);
+    --__tmp;
+    if (!__tmp->empty() && !__tmp->blocked() && !invoked_)
     {
-      iterator_type __tmp(i_);
-	  --__tmp;
-      if (!__tmp->empty() && !__tmp->blocked() && !invoked_)
-        {
-          r_ = (*c_)(static_cast<const slot_type&>(*__tmp));
-          invoked_ = true;
-        }
-      return r_;
+      r_ = (*c_)(static_cast<const slot_type&>(*__tmp));
+      invoked_ = true;
     }
+    return r_;
+  }
 
   slot_reverse_iterator_buf& operator++()
-    {
-      --i_;
-      invoked_ = false;
-      return *this;
-    }
+  {
+    --i_;
+    invoked_ = false;
+    return *this;
+  }
 
   slot_reverse_iterator_buf operator++(int)
-    { 
-      slot_reverse_iterator_buf __tmp(*this);
-      --i_;
-      invoked_ = false;
-      return __tmp;
-    }
+  {
+    slot_reverse_iterator_buf __tmp(*this);
+    --i_;
+    invoked_ = false;
+    return __tmp;
+  }
 
   slot_reverse_iterator_buf& operator--()
-    {
-      ++i_;
-      invoked_ = false;
-      return *this;
-    }
+  {
+    ++i_;
+    invoked_ = false;
+    return *this;
+  }
 
   slot_reverse_iterator_buf operator--(int)
-    {
-      slot_reverse_iterator_buf __tmp(*this);
-      ++i_;
-      invoked_ = false;
-      return __tmp;
-    }
+  {
+    slot_reverse_iterator_buf __tmp(*this);
+    ++i_;
+    invoked_ = false;
+    return __tmp;
+  }
 
-  bool operator == (const slot_reverse_iterator_buf& other) const
-    { return (!c_ || (i_ == other.i_)); } /* If '!c_' the iterators are empty.
-                                           * Unfortunately, empty stl iterators are not equal.
-                                           * We are forcing equality so that 'first==last'
-                                           * in the accumulator's emit function yields true. */
+  bool operator==(const slot_reverse_iterator_buf& other) const
+  {
+    return (!c_ || (i_ == other.i_));
+  } /* If '!c_' the iterators are empty.
+     * Unfortunately, empty stl iterators are not equal.
+     * We are forcing equality so that 'first==last'
+     * in the accumulator's emit function yields true. */
 
-  bool operator != (const slot_reverse_iterator_buf& other) const
-    { return (c_ && (i_ != other.i_)); }
+  bool operator!=(const slot_reverse_iterator_buf& other) const { return (c_ && (i_ != other.i_)); }
 
 private:
   iterator_type i_;
@@ -528,65 +502,63 @@ struct slot_reverse_iterator_buf<T_emitter, void>
 
   using iterator_type = signal_impl::const_iterator_type;
 
-  slot_reverse_iterator_buf()
-    : c_(nullptr), invoked_(false) {}
+  slot_reverse_iterator_buf() : c_(nullptr), invoked_(false) {}
 
   slot_reverse_iterator_buf(const iterator_type& i, const emitter_type* c)
-    : i_(i), c_(c), invoked_(false) {}
+  : i_(i), c_(c), invoked_(false)
+  {
+  }
 
   void operator*() const
+  {
+    iterator_type __tmp(i_);
+    --__tmp;
+    if (!__tmp->empty() && !__tmp->blocked() && !invoked_)
     {
-      iterator_type __tmp(i_);
-	  --__tmp;
-	  if (!__tmp->empty() && !__tmp->blocked() && !invoked_)
-        {
-          (*c_)(static_cast<const slot_type&>(*__tmp));
-          invoked_ = true;
-        }
+      (*c_)(static_cast<const slot_type&>(*__tmp));
+      invoked_ = true;
     }
+  }
 
   slot_reverse_iterator_buf& operator++()
-    {
-      --i_;
-      invoked_ = false;
-      return *this;
-    }
+  {
+    --i_;
+    invoked_ = false;
+    return *this;
+  }
 
   slot_reverse_iterator_buf operator++(int)
-    { 
-      slot_reverse_iterator_buf __tmp(*this);
-      --i_;
-      invoked_ = false;
-      return __tmp;
-    }
+  {
+    slot_reverse_iterator_buf __tmp(*this);
+    --i_;
+    invoked_ = false;
+    return __tmp;
+  }
 
   slot_reverse_iterator_buf& operator--()
-    {
-      ++i_;
-      invoked_ = false;
-      return *this;
-    }
+  {
+    ++i_;
+    invoked_ = false;
+    return *this;
+  }
 
   slot_reverse_iterator_buf operator--(int)
-    {
-      slot_reverse_iterator_buf __tmp(*this);
-      ++i_;
-      invoked_ = false;
-      return __tmp;
-    }
+  {
+    slot_reverse_iterator_buf __tmp(*this);
+    ++i_;
+    invoked_ = false;
+    return __tmp;
+  }
 
-  bool operator == (const slot_reverse_iterator_buf& other) const
-    { return i_ == other.i_; }
+  bool operator==(const slot_reverse_iterator_buf& other) const { return i_ == other.i_; }
 
-  bool operator != (const slot_reverse_iterator_buf& other) const
-    { return i_ != other.i_; }
+  bool operator!=(const slot_reverse_iterator_buf& other) const { return i_ != other.i_; }
 
 private:
   iterator_type i_;
   const emitter_type* c_;
   mutable bool invoked_;
 };
-
 
 /** Abstracts signal emission.
  * This template implements the emit() function of signal_with_accumulator.
@@ -608,18 +580,17 @@ struct signal_emit
    * The parameters are stored in member variables. operator()() passes
    * the values on to some slot.
    */
-  signal_emit(type_trait_take_t<T_arg>... _A_a)
-    : _A_a_(_A_a...) {}
+  signal_emit(type_trait_take_t<T_arg>... _A_a) : _A_a_(_A_a...) {}
 
   /** Invokes a slot using the buffered parameter values.
    * @param _A_slot Some slot to invoke.
    * @return The slot's return value.
    */
   T_return operator()(const slot_type& _A_slot) const
-    {
-      const auto seq = std::make_index_sequence<std::tuple_size<decltype(_A_a_)>::value>();
-      return call_call_type_operator_parentheses_with_tuple(_A_slot, _A_a_, seq);
-    }
+  {
+    const auto seq = std::make_index_sequence<std::tuple_size<decltype(_A_a_)>::value>();
+    return call_call_type_operator_parentheses_with_tuple(_A_slot, _A_a_, seq);
+  }
 
   /** Executes a list of slots using an accumulator of type @e T_accumulator.
    * The arguments are buffered in a temporary instance of signal_emit.
@@ -627,48 +598,48 @@ struct signal_emit
    * @return The accumulated return values of the slot invocations as processed by the accumulator.
    */
   static decltype(auto) emit(signal_impl* impl, type_trait_take_t<T_arg>... _A_a)
-    {
-      T_accumulator accumulator;
+  {
+    T_accumulator accumulator;
 
-      if (!impl)
-        return accumulator(slot_iterator_buf_type(), slot_iterator_buf_type());
+    if (!impl)
+      return accumulator(slot_iterator_buf_type(), slot_iterator_buf_type());
 
-      signal_exec exec(impl);
-      temp_slot_list slots(impl->slots_);
+    signal_exec exec(impl);
+    temp_slot_list slots(impl->slots_);
 
-      self_type self(_A_a...);
-      return accumulator(slot_iterator_buf_type(slots.begin(), &self),
-                         slot_iterator_buf_type(slots.end(), &self));
-    }
+    self_type self(_A_a...);
+    return accumulator(
+      slot_iterator_buf_type(slots.begin(), &self), slot_iterator_buf_type(slots.end(), &self));
+  }
 
-  /** Executes a list of slots using an accumulator of type @e T_accumulator in reverse order.   * The arguments are buffered in a temporary instance of signal_emit.
+  /** Executes a list of slots using an accumulator of type @e T_accumulator in reverse order.   *
+   * The arguments are buffered in a temporary instance of signal_emit.
    * @param _A_a Arguments to be passed on to the slots.
    * @return The accumulated return values of the slot invocations as processed by the accumulator.
    */
   static decltype(auto) emit_reverse(signal_impl* impl, type_trait_take_t<T_arg>... _A_a)
-    {
-      T_accumulator accumulator;
+  {
+    T_accumulator accumulator;
 
-      if (!impl)
-        return accumulator(slot_iterator_buf_type(), slot_iterator_buf_type());
+    if (!impl)
+      return accumulator(slot_iterator_buf_type(), slot_iterator_buf_type());
 
-      signal_exec exec(impl);
-      temp_slot_list slots(impl->slots_);
+    signal_exec exec(impl);
+    temp_slot_list slots(impl->slots_);
 
-      self_type self(_A_a...);
-      return accumulator(slot_reverse_iterator_buf_type(slots.end(), &self),
-                         slot_reverse_iterator_buf_type(slots.begin(), &self));
-    }
+    self_type self(_A_a...);
+    return accumulator(slot_reverse_iterator_buf_type(slots.end(), &self),
+      slot_reverse_iterator_buf_type(slots.begin(), &self));
+  }
 
   std::tuple<type_trait_take_t<T_arg>...> _A_a_;
 
 private:
-  //TODO_variadic: Replace this with std::experimental::apply() if that becomes standard
-  //C++, or add our own implementation, to avoid code duplication.
-  template<std::size_t... Is>
-  decltype(auto)
-  call_call_type_operator_parentheses_with_tuple(const slot_type& _A_slot, const std::tuple<T_arg...>& tuple,
-    std::index_sequence<Is...>) const
+  // TODO_variadic: Replace this with std::experimental::apply() if that becomes standard
+  // C++, or add our own implementation, to avoid code duplication.
+  template <std::size_t... Is>
+  decltype(auto) call_call_type_operator_parentheses_with_tuple(
+    const slot_type& _A_slot, const std::tuple<T_arg...>& tuple, std::index_sequence<Is...>) const
   {
     return (_A_slot)(std::get<Is>(tuple)...);
   }
@@ -691,39 +662,42 @@ struct signal_emit<T_return, void, T_arg...>
    * The arguments are passed directly on to the slots.
    * The return value of the last slot invoked is returned.
    * @param first An iterator pointing to the first slot in the list.
-   * @param last An iterator pointing to the last slot in the list.   * @param _A_a Arguments to be passed on to the slots.
+   * @param last An iterator pointing to the last slot in the list.   * @param _A_a Arguments to be
+   * passed on to the slots.
    * @return The return value of the last slot invoked.
    */
   static decltype(auto) emit(signal_impl* impl, type_trait_take_t<T_arg>... _A_a)
+  {
+    if (!impl || impl->slots_.empty())
+      return T_return();
+
+    signal_exec exec(impl);
+    T_return r_ = T_return();
+
+    // Use this scope to make sure that "slots" is destroyed before "exec" is destroyed.
+    // This avoids a leak on MSVC++ - see http://bugzilla.gnome.org/show_bug.cgi?id=306249
     {
-      if (!impl || impl->slots_.empty())
-        return T_return();
-        
-      signal_exec exec(impl);
-      T_return r_ = T_return(); 
-      
-      //Use this scope to make sure that "slots" is destroyed before "exec" is destroyed.
-      //This avoids a leak on MSVC++ - see http://bugzilla.gnome.org/show_bug.cgi?id=306249
-      { 
-        temp_slot_list slots(impl->slots_);
-        iterator_type it = slots.begin();
-        for (; it != slots.end(); ++it)
-          if (!it->empty() && !it->blocked()) break;
-          
-        if (it == slots.end())
-          return T_return(); // note that 'T_return r_();' doesn't work => define 'r_' after this line and initialize as follows:
-  
+      temp_slot_list slots(impl->slots_);
+      iterator_type it = slots.begin();
+      for (; it != slots.end(); ++it)
+        if (!it->empty() && !it->blocked())
+          break;
+
+      if (it == slots.end())
+        return T_return(); // note that 'T_return r_();' doesn't work => define 'r_' after this line
+                           // and initialize as follows:
+
+      r_ = (reinterpret_cast<call_type>(it->rep_->call_))(it->rep_, _A_a...);
+      for (++it; it != slots.end(); ++it)
+      {
+        if (it->empty() || it->blocked())
+          continue;
         r_ = (reinterpret_cast<call_type>(it->rep_->call_))(it->rep_, _A_a...);
-        for (++it; it != slots.end(); ++it)
-          {
-            if (it->empty() || it->blocked())
-              continue;
-            r_ = (reinterpret_cast<call_type>(it->rep_->call_))(it->rep_, _A_a...);
-          }
       }
-      
-      return r_;
     }
+
+    return r_;
+  }
 
   /** Executes a list of slots using an accumulator of type @e T_accumulator in reverse order.
    * The arguments are passed directly on to the slots.
@@ -731,37 +705,39 @@ struct signal_emit<T_return, void, T_arg...>
    * @return The return value of the last slot invoked.
    */
   static decltype(auto) emit_reverse(signal_impl* impl, type_trait_take_t<T_arg>... _A_a)
-    {
-      if (!impl || impl->slots_.empty())
-        return T_return();
-        
-      signal_exec exec(impl);
-      T_return r_ = T_return(); 
-      
-      //Use this scope to make sure that "slots" is destroyed before "exec" is destroyed.
-      //This avoids a leak on MSVC++ - see http://bugzilla.gnome.org/show_bug.cgi?id=306249
-      { 
-        using reverse_iterator_type = std::reverse_iterator<signal_impl::iterator_type>;
+  {
+    if (!impl || impl->slots_.empty())
+      return T_return();
 
-        temp_slot_list slots(impl->slots_);
-        reverse_iterator_type it(slots.end());
-        for (; it != reverse_iterator_type(slots.begin()); ++it)
-          if (!it->empty() && !it->blocked()) break;
-          
-        if (it == reverse_iterator_type(slots.begin()))
-          return T_return(); // note that 'T_return r_();' doesn't work => define 'r_' after this line and initialize as follows:
-  
+    signal_exec exec(impl);
+    T_return r_ = T_return();
+
+    // Use this scope to make sure that "slots" is destroyed before "exec" is destroyed.
+    // This avoids a leak on MSVC++ - see http://bugzilla.gnome.org/show_bug.cgi?id=306249
+    {
+      using reverse_iterator_type = std::reverse_iterator<signal_impl::iterator_type>;
+
+      temp_slot_list slots(impl->slots_);
+      reverse_iterator_type it(slots.end());
+      for (; it != reverse_iterator_type(slots.begin()); ++it)
+        if (!it->empty() && !it->blocked())
+          break;
+
+      if (it == reverse_iterator_type(slots.begin()))
+        return T_return(); // note that 'T_return r_();' doesn't work => define 'r_' after this line
+                           // and initialize as follows:
+
+      r_ = (reinterpret_cast<call_type>(it->rep_->call_))(it->rep_, _A_a...);
+      for (++it; it != reverse_iterator_type(slots.begin()); ++it)
+      {
+        if (it->empty() || it->blocked())
+          continue;
         r_ = (reinterpret_cast<call_type>(it->rep_->call_))(it->rep_, _A_a...);
-        for (++it; it != reverse_iterator_type(slots.begin()); ++it)
-          {
-            if (it->empty() || it->blocked())
-              continue;
-            r_ = (reinterpret_cast<call_type>(it->rep_->call_))(it->rep_, _A_a...);
-          }
       }
-      
-      return r_;
     }
+
+    return r_;
+  }
 };
 
 /** Abstracts signal emission.
@@ -778,48 +754,51 @@ struct signal_emit<void, void, T_arg...>
   using iterator_type = signal_impl::const_iterator_type;
   using call_type = typename slot_type::call_type;
 
-  /** Executes a list of slots using an accumulator of type @e T_accumulator.   * The arguments are passed directly on to the slots.
+  /** Executes a list of slots using an accumulator of type @e T_accumulator.   * The arguments are
+   * passed directly on to the slots.
    * @param _A_a Arguments to be passed on to the slots.
    */
   static decltype(auto) emit(signal_impl* impl, type_trait_take_t<T_arg>... _A_a)
+  {
+    if (!impl || impl->slots_.empty())
+      return;
+    signal_exec exec(impl);
+    temp_slot_list slots(impl->slots_);
+
+    for (iterator_type it = slots.begin(); it != slots.end(); ++it)
     {
-      if (!impl || impl->slots_.empty()) return;
-      signal_exec exec(impl);
-      temp_slot_list slots(impl->slots_);
-
-      for (iterator_type it = slots.begin(); it != slots.end(); ++it)
-        {
-          if (it->empty() || it->blocked())
-            continue;
-          (reinterpret_cast<call_type>(it->rep_->call_))(it->rep_, _A_a...);
-        }
+      if (it->empty() || it->blocked())
+        continue;
+      (reinterpret_cast<call_type>(it->rep_->call_))(it->rep_, _A_a...);
     }
+  }
 
-  /** Executes a list of slots using an accumulator of type @e T_accumulator in reverse order.   * The arguments are passed directly on to the slots.
+  /** Executes a list of slots using an accumulator of type @e T_accumulator in reverse order.   *
+   * The arguments are passed directly on to the slots.
    * @param first An iterator pointing to the first slot in the list.
-   * @param last An iterator pointing to the last slot in the list.   * @param _A_a Arguments to be passed on to the slots.
+   * @param last An iterator pointing to the last slot in the list.   * @param _A_a Arguments to be
+   * passed on to the slots.
    */
   static decltype(auto) emit_reverse(signal_impl* impl, type_trait_take_t<T_arg>... _A_a)
+  {
+    if (!impl || impl->slots_.empty())
+      return;
+    signal_exec exec(impl);
+    temp_slot_list slots(impl->slots_);
+
+    using reverse_iterator_type = std::reverse_iterator<signal_impl::iterator_type>;
+
+    for (reverse_iterator_type it = reverse_iterator_type(slots.end());
+         it != reverse_iterator_type(slots.begin()); ++it)
     {
-      if (!impl || impl->slots_.empty()) return;
-      signal_exec exec(impl);
-      temp_slot_list slots(impl->slots_);
-
-      using reverse_iterator_type = std::reverse_iterator<signal_impl::iterator_type>;
-
-      for (reverse_iterator_type it = reverse_iterator_type(slots.end()); it != reverse_iterator_type(slots.begin()); ++it)
-        {
-          if (it->empty() || it->blocked())
-            continue;
-          (reinterpret_cast<call_type>(it->rep_->call_))(it->rep_, _A_a...);
-        }
+      if (it->empty() || it->blocked())
+        continue;
+      (reinterpret_cast<call_type>(it->rep_->call_))(it->rep_, _A_a...);
     }
+  }
 };
 
-
-
 } /* namespace internal */
-
 
 /** Signal declaration.
  * signal_with_accumulator can be used to connect() slots that are invoked
@@ -840,7 +819,8 @@ struct signal_emit<void, void, T_arg...>
  * iteration, insertion and removal of slots.
  *
  * The following template arguments are used:
- * - @e T_return The desired return type for the emit() function (may be overridden by the accumulator). * - @e T_arg Argument types used in the definition of emit().
+ * - @e T_return The desired return type for the emit() function (may be overridden by the
+ * accumulator). * - @e T_arg Argument types used in the definition of emit().
  * - @e T_accumulator The accumulator type used for emission. The default
  * @p void means that no accumulator should be used, for example if signal
  * emission returns the return value of the last slot invoked.
@@ -848,8 +828,7 @@ struct signal_emit<void, void, T_arg...>
  * @ingroup signal
  */
 template <class T_return, class T_accumulator, class... T_arg>
-class signal_with_accumulator
-  : public signal_base
+class signal_with_accumulator : public signal_base
 {
 public:
   using emitter_type = internal::signal_emit<T_return, T_accumulator, T_arg...>;
@@ -883,7 +862,9 @@ public:
    * @return An iterator pointing to the new slot in the list.
    */
   iterator connect(const slot_type& slot_)
-    { return iterator(signal_base::connect(static_cast<const slot_base&>(slot_))); }
+  {
+    return iterator(signal_base::connect(static_cast<const slot_base&>(slot_)));
+  }
 
   /** Add a slot to the list of slots.
    * @see connect(const slot_type& slot_).
@@ -891,7 +872,9 @@ public:
    * @newin{2,8}
    */
   iterator connect(slot_type&& slot_)
-    { return iterator(signal_base::connect(std::move(static_cast<slot_base&>(slot_)))); }
+  {
+    return iterator(signal_base::connect(std::move(static_cast<slot_base&>(slot_))));
+  }
 
   /** Triggers the emission of the signal.
    * During signal emission all slots that have been connected
@@ -904,15 +887,18 @@ public:
    * @return The accumulated return values of the slot invocations.
    */
   decltype(auto) emit(type_trait_take_t<T_arg>... _A_a) const
-    { return emitter_type::emit(impl_, _A_a...); }
+  {
+    return emitter_type::emit(impl_, _A_a...);
+  }
 
   /** Triggers the emission of the signal in reverse order (see emit()). */
   decltype(auto) emit_reverse(type_trait_take_t<T_arg>... _A_a) const
-    { return emitter_type::emit_reverse(impl_, _A_a...); }
+  {
+    return emitter_type::emit_reverse(impl_, _A_a...);
+  }
 
   /** Triggers the emission of the signal (see emit()). */
-  decltype(auto) operator()(type_trait_take_t<T_arg>... _A_a) const
-    { return emit(_A_a...); }
+  decltype(auto) operator()(type_trait_take_t<T_arg>... _A_a) const { return emit(_A_a...); }
 
   /** Creates a functor that calls emit() on this signal.
    * @code
@@ -922,33 +908,32 @@ public:
    * @return A functor that calls emit() on this signal.
    */
   decltype(auto) make_slot() const
-    {
-      return bound_mem_functor<
-        result_type (signal_with_accumulator::*)(type_trait_take_t<T_arg>...) const,
-        type_trait_take_t<T_arg>...>(*this, &signal_with_accumulator::emit);
-    }
+  {
+    return bound_mem_functor<result_type (signal_with_accumulator::*)(type_trait_take_t<T_arg>...)
+                               const,
+      type_trait_take_t<T_arg>...>(*this, &signal_with_accumulator::emit);
+  }
 
   /** Creates an STL-style interface for the signal's list of slots.
    * This interface supports iteration, insertion and removal of slots.
    * @return An STL-style interface for the signal's list of slots.
    */
-  slot_list_type slots()
-    { return slot_list_type(impl()); }
+  slot_list_type slots() { return slot_list_type(impl()); }
 
   /** Creates an STL-style interface for the signal's list of slots.
    * This interface supports iteration, insertion and removal of slots.
    * @return An STL-style interface for the signal's list of slots.
    */
   const slot_list_type slots() const
-    { return slot_list_type(const_cast<signal_with_accumulator*>(this)->impl()); }
+  {
+    return slot_list_type(const_cast<signal_with_accumulator*>(this)->impl());
+  }
 
   signal_with_accumulator() {}
 
-  signal_with_accumulator(const signal_with_accumulator& src)
-    : signal_base(src) {}
+  signal_with_accumulator(const signal_with_accumulator& src) : signal_base(src) {}
 
-  signal_with_accumulator(signal_with_accumulator&& src)
-    : signal_base(std::move(src)) {}
+  signal_with_accumulator(signal_with_accumulator&& src) : signal_base(std::move(src)) {}
 
   signal_with_accumulator& operator=(const signal_with_accumulator& src)
   {
@@ -962,7 +947,6 @@ public:
     return *this;
   }
 };
-
 
 /** signal can be used to connect() slots that are invoked
  * during subsequent calls to emit(). Any functor or slot
@@ -983,7 +967,8 @@ public:
  *
  * The template arguments determine the function signature of
  * the emit() function:
- * - @e T_return The desired return type of the emit() function. * - @e T_arg Argument types used in the definition of emit().
+ * - @e T_return The desired return type of the emit() function. * - @e T_arg Argument types used in
+ * the definition of emit().
  *
  * For instance, to declare a signal whose connected slot returns void and takes
  * two parameters of bool and int:
@@ -1007,8 +992,7 @@ template <class T_return, class... T_arg>
 class signal;
 
 template <class T_return, class... T_arg>
-class signal<T_return(T_arg...)>
-  : public signal_with_accumulator<T_return, void, T_arg...>
+class signal<T_return(T_arg...)> : public signal_with_accumulator<T_return, void, T_arg...>
 {
 public:
   using accumulator_type = void;
@@ -1060,22 +1044,24 @@ public:
    * @ingroup signal
    */
   template <class T_accumulator>
-  class accumulated
-    : public signal_with_accumulator<T_return, T_accumulator, T_arg...>
+  class accumulated : public signal_with_accumulator<T_return, T_accumulator, T_arg...>
   {
   public:
     accumulated() {}
     accumulated(const accumulated& src)
-      : signal_with_accumulator<T_return, T_accumulator, T_arg...>(src) {}
+    : signal_with_accumulator<T_return, T_accumulator, T_arg...>(src)
+    {
+    }
   };
 
   signal() {}
 
-  signal(const signal& src)
-    : signal_with_accumulator<T_return, accumulator_type, T_arg...>(src) {}
+  signal(const signal& src) : signal_with_accumulator<T_return, accumulator_type, T_arg...>(src) {}
 
   signal(signal&& src)
-    : signal_with_accumulator<T_return, accumulator_type, T_arg...>(std::move(src)) {}
+  : signal_with_accumulator<T_return, accumulator_type, T_arg...>(std::move(src))
+  {
+  }
 
   signal& operator=(const signal& src)
   {
@@ -1089,8 +1075,6 @@ public:
     return *this;
   }
 };
-
-
 
 } /* namespace sigc */
 

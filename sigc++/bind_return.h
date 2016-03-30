@@ -21,5 +21,4 @@
 
 #include <sigc++/adaptors/bind_return.h>
 
-
 #endif /* _SIGC_BIND_RETURN_HPP_ */

@@ -19,13 +19,14 @@
 #ifndef _SIGC_BOUND_ARGUMENT_H_
 #define _SIGC_BOUND_ARGUMENT_H_
 
-
 #include <sigc++/limit_reference.h>
 #include <sigc++/reference_wrapper.h>
 
-namespace sigc {
+namespace sigc
+{
 
-/** A bound_argument<Foo> object stores a bound (for instance, with sigc::bind(), or sigc::bind_return()) argument.
+/** A bound_argument<Foo> object stores a bound (for instance, with sigc::bind(), or
+ * sigc::bind_return()) argument.
  *
  * If Foo is a wrapped reference to a class Bar (std::reference_wrapper<Bar>) then this
  * object is implemented on top of a limit_reference. When the slot is
@@ -52,21 +53,17 @@ public:
   /** Constructor.
    * @param _A_argument The argument to bind.
    */
-  bound_argument(const T_type& _A_argument)
-    : visited_(_A_argument)
-    {}
+  bound_argument(const T_type& _A_argument) : visited_(_A_argument) {}
 
   /** Retrieve the entity to visit in visit_each().
    * @return The bound argument.
    */
-  inline const T_type& visit() const
-    { return visited_; }
+  inline const T_type& visit() const { return visited_; }
 
   /** Retrieve the entity to pass to the bound functor or return.
    * @return The bound argument.
    */
-  inline T_type& invoke()
-    { return visited_; }
+  inline T_type& invoke() { return visited_; }
 
 private:
   /** The value of the argument.
@@ -74,33 +71,32 @@ private:
   T_type visited_;
 };
 
-//Template specialization:
+// Template specialization:
 /** bound_argument object for a bound argument that is passed by bind() or
  * returned by bind_return() by reference, specialized for std::reference_wrapper<> types.
  * @e T_wrapped The type of the bound argument.
  */
 template <class T_wrapped>
-class bound_argument< std::reference_wrapper<T_wrapped> >
+class bound_argument<std::reference_wrapper<T_wrapped>>
 {
 public:
   /** Constructor.
    * @param _A_argument The argument to bind.
    */
   bound_argument(const std::reference_wrapper<T_wrapped>& _A_argument)
-    : visited_(unwrap(_A_argument))
-    {}
+  : visited_(unwrap(_A_argument))
+  {
+  }
 
   /** Retrieve the entity to visit in visit_each().
    * @return The limited_reference to the bound argument.
    */
-  inline const limit_reference<T_wrapped>& visit() const
-    { return visited_; }
+  inline const limit_reference<T_wrapped>& visit() const { return visited_; }
 
   /** Retrieve the entity to pass to the bound functor or return.
    * @return The bound argument.
    */
-  inline T_wrapped& invoke()
-    { return visited_.invoke(); }
+  inline T_wrapped& invoke() { return visited_.invoke(); }
 
 private:
   /** The limited_reference to the bound argument.
@@ -113,27 +109,26 @@ private:
  * - @e T_wrapped The type of the bound argument.
  */
 template <class T_wrapped>
-class bound_argument< std::reference_wrapper<const T_wrapped> >
+class bound_argument<std::reference_wrapper<const T_wrapped>>
 {
 public:
   /** Constructor.
    * @param _A_argument The argument to bind.
    */
   bound_argument(const std::reference_wrapper<const T_wrapped>& _A_argument)
-    : visited_(unwrap(_A_argument))
-    {}
+  : visited_(unwrap(_A_argument))
+  {
+  }
 
   /** Retrieve the entity to visit in visit_each().
    * @return The const_limited_reference to the bound argument.
    */
-  inline const limit_reference<const T_wrapped>& visit() const
-    { return visited_; }
+  inline const limit_reference<const T_wrapped>& visit() const { return visited_; }
 
   /** Retrieve the entity to pass to the bound functor or return.
    * @return The bound argument.
    */
-  inline const T_wrapped& invoke()
-    { return visited_.invoke(); }
+  inline const T_wrapped& invoke() { return visited_.invoke(); }
 
 private:
   /** The const_limited_reference to the bound argument.
@@ -151,11 +146,10 @@ private:
  * @param _A_argument The visited instance.
  */
 template <class T_type>
-struct visitor<bound_argument<T_type> >
+struct visitor<bound_argument<T_type>>
 {
   template <class T_action>
-  static void do_visit_each(const T_action& _A_action,
-                            const bound_argument<T_type>& _A_argument)
+  static void do_visit_each(const T_action& _A_action, const bound_argument<T_type>& _A_argument)
   {
     sigc::visit_each(_A_action, _A_argument.visit());
   }
@@ -163,6 +157,5 @@ struct visitor<bound_argument<T_type> >
 #endif // DOXYGEN_SHOULD_SKIP_THIS
 
 } /* namespace sigc */
-
 
 #endif /* _SIGC_BOUND_ARGUMENT_H_ */

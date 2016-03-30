@@ -26,7 +26,8 @@
 namespace sigc
 {
 
-namespace internal {
+namespace internal
+{
 
 using hook = void* (*)(void*);
 
@@ -63,7 +64,7 @@ struct SIGC_API slot_rep : public trackable
   /* NB: Instead of slot_rep we could inherit slot_base from trackable.
    * However, a simple benchmark seems to indicate that this slows
    * down dereferencing of slot list iterators. Martin. */
-  //TODO: Try this now? murrayc.
+  // TODO: Try this now? murrayc.
 
   /// Callback that invokes the contained functor.
   /* This can't be a virtual function since number of arguments
@@ -94,12 +95,17 @@ public:
   notifiable* parent_;
 
   inline slot_rep(hook call__, notifiable::func_destroy_notify destroy__, hook_dup dup__) noexcept
-    : call_(call__), destroy_(destroy__), dup_(dup__), cleanup_(nullptr), parent_(nullptr) {}
+    : call_(call__),
+      destroy_(destroy__),
+      dup_(dup__),
+      cleanup_(nullptr),
+      parent_(nullptr)
+  {
+  }
 
-  inline ~slot_rep()
-    { destroy(); }
+  inline ~slot_rep() { destroy(); }
 
-  // only MSVC needs this to guarantee that all new/delete are executed from the DLL module
+// only MSVC needs this to guarantee that all new/delete are executed from the DLL module
 #ifdef SIGC_NEW_DELETE_IN_LIBRARY_ONLY
   void* operator new(size_t size_);
   void operator delete(void* p);
@@ -108,13 +114,18 @@ public:
   /** Destroys the slot_rep object (but doesn't delete it).
    */
   inline void destroy()
-    { if (destroy_) (*destroy_)(this); }
+  {
+    if (destroy_)
+      (*destroy_)(this);
+  }
 
   /** Makes a deep copy of the slot_rep object.
    * @return A deep copy of the slot_rep object.
    */
   inline slot_rep* dup() const
-    { return reinterpret_cast<slot_rep*>((*dup_)(const_cast<slot_rep*>(this))); }
+  {
+    return reinterpret_cast<slot_rep*>((*dup_)(const_cast<slot_rep*>(this)));
+  }
 
   /** Set the parent with a callback.
    * slots have one parent exclusively.
@@ -122,10 +133,10 @@ public:
    * @param cleanup The callback to execute from notify().
    */
   inline void set_parent(notifiable* parent, notifiable::func_destroy_notify cleanup) noexcept
-    {
-      parent_ = parent;
-      cleanup_ = cleanup;
-    }
+  {
+    parent_ = parent;
+    cleanup_ = cleanup;
+  }
 
   /// Invalidates the slot and executes the parent's cleanup callback.
   void disconnect();
@@ -158,7 +169,9 @@ struct SIGC_API slot_do_bind
    * @param t The trackable object to add a callback to.
    */
   inline void operator()(const trackable* t) const
-    { t->add_destroy_notify_callback(rep_, &slot_rep::notify); }
+  {
+    t->add_destroy_notify_callback(rep_, &slot_rep::notify);
+  }
 };
 
 /// Functor used to remove a dependency from a trackable.
@@ -175,12 +188,10 @@ struct SIGC_API slot_do_unbind
   /** Removes a dependency from @p t.
    * @param t The trackable object to remove the callback from.
    */
-  inline void operator()(const trackable* t) const
-    { t->remove_destroy_notify_callback(rep_); }
+  inline void operator()(const trackable* t) const { t->remove_destroy_notify_callback(rep_); }
 };
 
-} //namespace internal
-
+} // namespace internal
 
 /** @defgroup slot Slots
  * Slots are type-safe representations of callback methods and functions.
@@ -300,8 +311,6 @@ public:
    */
   void set_parent(notifiable* parent, notifiable::func_destroy_notify cleanup) const noexcept;
 
-
-
   /** Add a callback that is executed (notified) when the slot is detroyed.
    * This function is used internally by connection objects.
    * @param data Passed into func upon notification.
@@ -318,15 +327,13 @@ public:
   /** Returns whether the slot is invalid.
    * @return @p true if the slot is invalid (empty).
    */
-  inline bool empty() const noexcept
-    { return (!rep_ || !rep_->call_); }
+  inline bool empty() const noexcept { return (!rep_ || !rep_->call_); }
 
   /** Returns whether the slot is blocked.
    * @return @p true if the slot is blocked.
    */
-  inline bool blocked() const noexcept
-    { return blocked_; }
-    
+  inline bool blocked() const noexcept { return blocked_; }
+
   /** Sets the blocking state.
    * If @e should_block is @p true then the blocking state is set.
    * Subsequent calls to slot::operator()() don't invoke the functor
@@ -347,9 +354,10 @@ public:
    */
   void disconnect();
 
-//The Tru64 and Solaris Forte 5.5 compilers needs this operator=() to be public. I'm not sure why, or why it needs to be protected usually. murrayc.
-//See bug #168265. 
-//protected:
+  // The Tru64 and Solaris Forte 5.5 compilers needs this operator=() to be public. I'm not sure
+  // why, or why it needs to be protected usually. murrayc.
+  // See bug #168265.
+  // protected:
   /** Overrides this slot, making a copy from another slot.
    * @param src The slot from which to make a copy.
    * @return @p this.
@@ -365,7 +373,7 @@ public:
 
 public: // public to avoid template friend declarations
   /** Typed slot_rep object that contains a functor. */
-  mutable rep_type *rep_;
+  mutable rep_type* rep_;
 
   /** Indicates whether the slot is blocked. */
   bool blocked_;
@@ -374,7 +382,6 @@ private:
   void delete_rep_with_check();
 };
 
-} //namespace sigc
+} // namespace sigc
 
 #endif //_SIGC_SLOT_BASE_HPP_
-

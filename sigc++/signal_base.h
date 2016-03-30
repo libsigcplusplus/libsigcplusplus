@@ -58,41 +58,47 @@ struct SIGC_API signal_impl : public notifiable
   signal_impl(signal_impl&& src) = delete;
   signal_impl& operator=(signal_impl&& src) = delete;
 
-  // only MSVC needs this to guarantee that all new/delete are executed from the DLL module
+// only MSVC needs this to guarantee that all new/delete are executed from the DLL module
 #ifdef SIGC_NEW_DELETE_IN_LIBRARY_ONLY
   void* operator new(size_t size_);
   void operator delete(void* p);
 #endif
 
   /// Increments the reference counter.
-  inline void reference() noexcept
-    { ++ref_count_; }
+  inline void reference() noexcept { ++ref_count_; }
 
   /// Increments the reference and execution counter.
   inline void reference_exec() noexcept
-    { ++ref_count_; ++exec_count_; }
+  {
+    ++ref_count_;
+    ++exec_count_;
+  }
 
   /** Decrements the reference counter.
    * The object is deleted when the reference counter reaches zero.
    */
   inline void unreference()
-    { if (!(--ref_count_)) delete this; }
+  {
+    if (!(--ref_count_))
+      delete this;
+  }
 
   /** Decrements the reference and execution counter.
    * Invokes sweep() if the execution counter reaches zero and the
    * removal of one or more slots has been deferred.
    */
   inline void unreference_exec()
-    {
-      if (!(--ref_count_)) delete this;
-      else if (!(--exec_count_) && deferred_) sweep();
-    }
+  {
+    if (!(--ref_count_))
+      delete this;
+    else if (!(--exec_count_) && deferred_)
+      sweep();
+  }
 
   /** Returns whether the list of slots is empty.
    * @return @p true if the list of slots is empty.
    */
-  inline bool empty() const noexcept
-    { return slots_.empty(); }
+  inline bool empty() const noexcept { return slots_.empty(); }
 
   /// Empties the list of slots.
   void clear();
@@ -196,13 +202,13 @@ struct SIGC_API signal_exec
   /** Increments the reference and execution counter of the parent sigc::signal_impl object.
    * @param sig The parent sigc::signal_impl object.
    */
-  inline signal_exec(const signal_impl* sig) noexcept
-    : sig_(const_cast<signal_impl*>(sig) )
-    { sig_->reference_exec(); }
+  inline signal_exec(const signal_impl* sig) noexcept : sig_(const_cast<signal_impl*>(sig))
+  {
+    sig_->reference_exec();
+  }
 
   /// Decrements the reference and execution counter of the parent sigc::signal_impl object.
-  inline ~signal_exec()
-    { sig_->unreference_exec(); }
+  inline ~signal_exec() { sig_->unreference_exec(); }
 };
 
 /** Temporary slot list used during signal emission.
@@ -219,15 +225,12 @@ struct temp_slot_list
   using iterator = signal_impl::iterator_type;
   using const_iterator = signal_impl::const_iterator_type;
 
-  temp_slot_list(slot_list &slots) : slots_(slots)
+  temp_slot_list(slot_list& slots) : slots_(slots)
   {
     placeholder = slots_.insert(slots_.end(), slot_base());
   }
 
-  ~temp_slot_list()
-  {
-    slots_.erase(placeholder);
-  }
+  ~temp_slot_list() { slots_.erase(placeholder); }
 
   iterator begin() { return slots_.begin(); }
   iterator end() { return placeholder; }
@@ -235,15 +238,15 @@ struct temp_slot_list
   const_iterator end() const { return placeholder; }
 
 private:
-  slot_list &slots_;
+  slot_list& slots_;
   slot_list::iterator placeholder;
 };
-  
+
 } /* namespace internal */
 
-
 /** @defgroup signal Signals
- * Use sigc::signal::connect() with sigc::mem_fun() and sigc::ptr_fun() to connect a method or function with a signal.
+ * Use sigc::signal::connect() with sigc::mem_fun() and sigc::ptr_fun() to connect a method or
+ * function with a signal.
  *
  * @code
  * signal_clicked.connect( sigc::mem_fun(*this, &MyWindow::on_clicked) );
@@ -319,8 +322,7 @@ struct SIGC_API signal_base : public trackable
   /** Returns whether the list of slots is empty.
    * @return @p true if the list of slots is empty.
    */
-  inline bool empty() const noexcept
-    { return (!impl_ || impl_->empty()); }
+  inline bool empty() const noexcept { return (!impl_ || impl_->empty()); }
 
   /// Empties the list of slots.
   void clear();
@@ -411,6 +413,6 @@ protected:
   mutable internal::signal_impl* impl_;
 };
 
-} //namespace sigc
+} // namespace sigc
 
 #endif /* _SIGC_SIGNAL_BASE_H_ */

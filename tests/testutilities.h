@@ -24,7 +24,6 @@
 class TestUtilities
 {
 public:
-
   // Non-copyable:
   TestUtilities(const TestUtilities&) = delete;
   TestUtilities& operator=(const TestUtilities&) = delete;
@@ -44,8 +43,6 @@ public:
   static bool get_result_and_delete_instance();
 
 private:
-
-
   TestUtilities();
 
   static TestUtilities* instance_;

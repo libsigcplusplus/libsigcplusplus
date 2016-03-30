@@ -5,7 +5,8 @@
 #include <sigc++/tuple-utils/tuple_end.h>
 #include <sigc++/tuple-utils/tuple_start.h>
 
-namespace sigc {
+namespace sigc
+{
 
 /** @defgroup hide hide(), hide_return()
  * sigc::hide() alters an arbitrary functor in that it adds a parameter
@@ -15,7 +16,8 @@ namespace sigc {
  * You may optionally specify the zero-based position of the parameter
  * to ignore as a template argument. The default is to ignore the last
  * parameter.
- * (A value of @p -1 adds a parameter at the end so sigc::hide<-1>() gives the same result as sigc::hide().)
+ * (A value of @p -1 adds a parameter at the end so sigc::hide<-1>() gives the same result as
+ sigc::hide().)
  *
  * The type of the parameter can optionally be specified if not deduced.
  *
@@ -44,7 +46,8 @@ namespace sigc {
  * @par Example:
  * @code
  * // multiple argument hiding ...
- * sigc::hide(sigc::hide(&foo))(1,2,3,4); // adds two dummy parameters at the back and calls foo(1,2)
+ * sigc::hide(sigc::hide(&foo))(1,2,3,4); // adds two dummy parameters at the back and calls
+ foo(1,2)
  * @endcode
 
  * sigc::hide_return() alters an arbitrary functor by
@@ -52,7 +55,6 @@ namespace sigc {
  *
  * @ingroup adaptors
  */
-
 
 /** Adaptor that adds a dummy parameter to the wrapped functor.
  * Use the convenience function sigc::hide() to create an instance of sigc::hide_functor.
@@ -75,48 +77,42 @@ struct hide_functor : public adapts<T_functor>
    * @return The return value of the functor invocation.
    */
   template <class... T_arg>
-  decltype(auto)
-  operator()(T_arg&&... _A_a)
-    {
-       constexpr auto size = sizeof...(T_arg);
-       constexpr auto index_ignore = (I_location == -1 ? size - 1 : I_location);
-       const auto t = std::tuple<T_arg...>(std::forward<T_arg>(_A_a)...);
+  decltype(auto) operator()(T_arg&&... _A_a)
+  {
+    constexpr auto size = sizeof...(T_arg);
+    constexpr auto index_ignore = (I_location == -1 ? size - 1 : I_location);
+    const auto t = std::tuple<T_arg...>(std::forward<T_arg>(_A_a)...);
 
-       const auto t_start = internal::tuple_start<index_ignore>(t);
-       const auto t_end = internal::tuple_end<size - index_ignore - 1>(t);
-       const auto t_used = std::tuple_cat(t_start, t_end);
+    const auto t_start = internal::tuple_start<index_ignore>(t);
+    const auto t_end = internal::tuple_end<size - index_ignore - 1>(t);
+    const auto t_used = std::tuple_cat(t_start, t_end);
 
-       constexpr auto size_used = size - 1;
+    constexpr auto size_used = size - 1;
 
-       //TODO: Remove these? They are just here as a sanity check.
-       static_assert(std::tuple_size<decltype(t_used)>::value == size_used, "Unexpected t_used size.");
+    // TODO: Remove these? They are just here as a sanity check.
+    static_assert(std::tuple_size<decltype(t_used)>::value == size_used, "Unexpected t_used size.");
 
-       const auto seq = std::make_index_sequence<size_used>();
-       return call_functor_operator_parentheses(t_used, seq);
-    }
+    const auto seq = std::make_index_sequence<size_used>();
+    return call_functor_operator_parentheses(t_used, seq);
+  }
 
   /** Constructs a hide_functor object that adds a dummy parameter to the passed functor.
    * @param _A_func Functor to invoke from operator()().
    */
-  explicit hide_functor(const T_functor& _A_func)
-    : adapts<T_functor>(_A_func)
-    {}
+  explicit hide_functor(const T_functor& _A_func) : adapts<T_functor>(_A_func) {}
 
 private:
-  //TODO_variadic: Replace this with std::experimental::apply() if that becomes standard
-  //C++, or add our own implementation, to avoid code duplication.
-  template<class T_tuple, std::size_t... Is>
-  decltype(auto)
-  call_functor_operator_parentheses(T_tuple& tuple,
-    std::index_sequence<Is...>)
+  // TODO_variadic: Replace this with std::experimental::apply() if that becomes standard
+  // C++, or add our own implementation, to avoid code duplication.
+  template <class T_tuple, std::size_t... Is>
+  decltype(auto) call_functor_operator_parentheses(T_tuple& tuple, std::index_sequence<Is...>)
   {
     return this->functor_.template operator()(std::get<Is>(tuple)...);
   }
 };
 
-
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-//template specialization of visitor<>::do_visit_each<>(action, functor):
+// template specialization of visitor<>::do_visit_each<>(action, functor):
 /** Performs a functor on each of the targets of a functor.
  * The function overload for sigc::hide_functor performs a functor on the
  * functor stored in the sigc::hide_functor object.
@@ -124,18 +120,19 @@ private:
  * @ingroup hide
  */
 template <int I_location, class T_functor>
-struct visitor<hide_functor<I_location, T_functor> >
+struct visitor<hide_functor<I_location, T_functor>>
 {
   template <typename T_action>
-  static void do_visit_each(const T_action& _A_action,
-                            const hide_functor<I_location, T_functor>& _A_target)
+  static void do_visit_each(
+    const T_action& _A_action, const hide_functor<I_location, T_functor>& _A_target)
   {
     sigc::visit_each(_A_action, _A_target.functor_);
   }
 };
 #endif // DOXYGEN_SHOULD_SKIP_THIS
 
-/** Creates an adaptor of type sigc::hide_functor which adds a dummy parameter to the passed functor.
+/** Creates an adaptor of type sigc::hide_functor which adds a dummy parameter to the passed
+ * functor.
  * The optional template argument @e I_location specifies the zero-based
  * position of the dummy parameter in the returned functor (@p -1 stands for the last parameter).
  *
@@ -147,9 +144,12 @@ struct visitor<hide_functor<I_location, T_functor> >
 template <int I_location, class T_functor>
 inline decltype(auto)
 hide(const T_functor& _A_func)
-  { return hide_functor<I_location, T_functor>(_A_func); }
+{
+  return hide_functor<I_location, T_functor>(_A_func);
+}
 
-/** Creates an adaptor of type sigc::hide_functor which adds a dummy parameter to the passed functor.
+/** Creates an adaptor of type sigc::hide_functor which adds a dummy parameter to the passed
+ * functor.
  * This overload adds a dummy parameter at the back of the functor's parameter list.
  *
  * @param _A_func Functor that should be wrapped.
@@ -160,7 +160,9 @@ hide(const T_functor& _A_func)
 template <class T_functor>
 inline decltype(auto)
 hide(const T_functor& _A_func)
-  { return hide_functor<-1, T_functor> (_A_func); }
+{
+  return hide_functor<-1, T_functor>(_A_func);
+}
 
 } /* namespace sigc */
 

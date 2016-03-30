@@ -1,9 +1,10 @@
 #ifndef _SIGC_ADAPTORS_DEDUCE_RESULT_TYPE_H_
 #define _SIGC_ADAPTORS_DEDUCE_RESULT_TYPE_H_
 
-namespace sigc {
+namespace sigc
+{
 
-//TODO: Is this necessary now that we don't need deduce_result_type?
+// TODO: Is this necessary now that we don't need deduce_result_type?
 /** A hint to the compiler.
  * Functors which have all methods based on templates
  * should publicly inherit from this hint.
@@ -18,7 +19,9 @@ namespace sigc {
  *
  * @ingroup adaptors
  */
-struct adaptor_base : public functor_base {};
+struct adaptor_base : public functor_base
+{
+};
 
 } /* namespace sigc */
 #endif /* _SIGC_ADAPTORS_DEDUCE_RESULT_TYPE_H_ */

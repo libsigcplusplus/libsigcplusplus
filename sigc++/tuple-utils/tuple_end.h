@@ -20,44 +20,38 @@
 
 #include <sigc++/tuple-utils/tuple_cdr.h>
 
-namespace sigc {
+namespace sigc
+{
 
-namespace internal {
+namespace internal
+{
 
-namespace detail {
+namespace detail
+{
 
 template <typename T, std::size_t remove_from_start>
-struct tuple_end_impl {
-  constexpr
-  static
-  decltype(auto) // typename tuple_type_end<T, size - remove_from_start>::type
-  tuple_end(T&& t) {
+struct tuple_end_impl
+{
+  constexpr static decltype(auto) // typename tuple_type_end<T, size - remove_from_start>::type
+    tuple_end(T&& t)
+  {
     static_assert(remove_from_start > 0, "remove_from_start must be more than zero.");
 
     using cdr = typename tuple_type_cdr<std::decay_t<T>>::type;
-    return tuple_end_impl<cdr, remove_from_start - 1>::tuple_end(
-      tuple_cdr(std::forward<T>(t)));
+    return tuple_end_impl<cdr, remove_from_start - 1>::tuple_end(tuple_cdr(std::forward<T>(t)));
   }
 };
 
 template <typename T>
-struct tuple_end_impl<T, 1> {
-  constexpr
-  static
-  decltype(auto)
-  tuple_end(T&& t) {
-    return tuple_cdr(std::forward<T>(t));
-  }
+struct tuple_end_impl<T, 1>
+{
+  constexpr static decltype(auto) tuple_end(T&& t) { return tuple_cdr(std::forward<T>(t)); }
 };
 
 template <typename T>
-struct tuple_end_impl<T, 0> {
-  constexpr
-  static
-  decltype(auto)
-  tuple_end(T&& t) {
-    return std::forward<T>(t);
-  }
+struct tuple_end_impl<T, 0>
+{
+  constexpr static decltype(auto) tuple_end(T&& t) { return std::forward<T>(t); }
 };
 
 } // detail namespace
@@ -66,10 +60,10 @@ struct tuple_end_impl<T, 0> {
  * Get the tuple with the last @a len items of the original.
  */
 template <std::size_t len, typename T>
-constexpr
-decltype(auto) // typename tuple_type_end<T, len>::type
-  tuple_end(T&& t) {
-  //We use std::decay_t<> because tuple_size is not defined for references.
+constexpr decltype(auto) // typename tuple_type_end<T, len>::type
+  tuple_end(T&& t)
+{
+  // We use std::decay_t<> because tuple_size is not defined for references.
   constexpr auto size = std::tuple_size<std::decay_t<T>>::value;
   static_assert(len <= size, "The tuple size must be less than or equal to the length.");
   constexpr auto size_start = size - len;
@@ -80,4 +74,4 @@ decltype(auto) // typename tuple_type_end<T, len>::type
 
 } // namespace sigc
 
-#endif //SIGC_TUPLE_UTILS_TUPLE_END_H
+#endif // SIGC_TUPLE_UTILS_TUPLE_END_H

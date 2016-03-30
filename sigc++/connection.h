@@ -21,7 +21,8 @@
 #include <sigc++config.h>
 #include <sigc++/signal.h>
 
-namespace sigc {
+namespace sigc
+{
 
 /** Convinience class for safe disconnection.
  * Iterators must not be used beyond the lifetime of the list
@@ -52,7 +53,10 @@ struct SIGC_API connection : public notifiable
    */
   template <typename T_slot>
   connection(const slot_iterator<T_slot>& it) : slot_(&(*it))
-    { if (slot_) slot_->add_destroy_notify_callback(this, &notify); }
+  {
+    if (slot_)
+      slot_->add_destroy_notify_callback(this, &notify);
+  }
 
   /** Constructs a connection object from a slot object.
    * This is only useful if you create your own slot list.
@@ -70,7 +74,10 @@ struct SIGC_API connection : public notifiable
    */
   template <typename T_slot>
   connection& operator=(const slot_iterator<T_slot>& it)
-    { set_slot(&(*it)); return *this; }
+  {
+    set_slot(&(*it));
+    return *this;
+  }
 
   ~connection();
 
@@ -124,6 +131,5 @@ private:
 };
 
 } /* namespace sigc */
-
 
 #endif /* _SIGC_TRACKABLE_HPP_ */

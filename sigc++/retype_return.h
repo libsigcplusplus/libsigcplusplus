@@ -21,5 +21,4 @@
 
 #include <sigc++/adaptors/retype_return.h>
 
-
 #endif /* _SIGC_RETYPE_RETURN_HPP_ */

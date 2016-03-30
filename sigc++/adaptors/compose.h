@@ -2,7 +2,8 @@
 #define _SIGC_ADAPTORS_COMPOSE_H_
 #include <sigc++/adaptors/adaptor_trait.h>
 
-namespace sigc {
+namespace sigc
+{
 
 /** @defgroup compose compose()
  * sigc::compose() combines two or three arbitrary functors.
@@ -14,7 +15,8 @@ namespace sigc {
  * float square_root(float a)  { return sqrtf(a); }
  * float sum(float a, float b) { return a+b; }
  * std::cout << sigc::compose(&square_root, &sum)(9, 16); // calls square_root(sum(3,6))
- * std::cout << sigc::compose(&sum, &square_root, &square_root)(9); // calls sum(square_root(9), square_root(9))
+ * std::cout << sigc::compose(&sum, &square_root, &square_root)(9); // calls sum(square_root(9),
+ * square_root(9))
  * @endcode
  *
  * The functor sigc::compose() returns can be passed directly into
@@ -46,24 +48,23 @@ struct compose1_functor : public adapts<T_setter>
   using getter_type = T_getter;
   using result_type = typename adaptor_type::result_type;
 
-  decltype(auto)
-  operator()()
-    { return this->functor_(get_()); }
-
+  decltype(auto) operator()() { return this->functor_(get_()); }
 
   template <class... T_arg>
-  decltype(auto)
-  operator()(T_arg&&... _A_a)
-    { return this->functor_(get_(std::forward<T_arg>(_A_a)...));
-    }
+  decltype(auto) operator()(T_arg&&... _A_a)
+  {
+    return this->functor_(get_(std::forward<T_arg>(_A_a)...));
+  }
 
   /** Constructs a compose1_functor object that combines the passed functors.
-   * @param _A_setter Functor that receives the return values of the invokation of @e _A_getter1 and @e _A_getter2.
+   * @param _A_setter Functor that receives the return values of the invokation of @e _A_getter1 and
+   * @e _A_getter2.
    * @param _A_getter Functor to invoke from operator()().
    */
   compose1_functor(const T_setter& _A_setter, const T_getter& _A_getter)
-    : adapts<T_setter>(_A_setter), get_(_A_getter)
-    {}
+  : adapts<T_setter>(_A_setter), get_(_A_getter)
+  {
+  }
 
   getter_type get_; // public, so that visit_each() can access it
 };
@@ -87,34 +88,32 @@ struct compose2_functor : public adapts<T_setter>
   using getter2_type = T_getter2;
   using result_type = typename adaptor_type::result_type;
 
-  decltype(auto)
-  operator()()
-    { return this->functor_(get1_(), get2_()); }
-
+  decltype(auto) operator()() { return this->functor_(get1_(), get2_()); }
 
   template <class... T_arg>
-  decltype(auto)
-  operator()(T_arg... _A_a)
-    { return this->functor_(get1_(_A_a...), get2_(_A_a...));
-    }
+  decltype(auto) operator()(T_arg... _A_a)
+  {
+    return this->functor_(get1_(_A_a...), get2_(_A_a...));
+  }
 
   /** Constructs a compose2_functor object that combines the passed functors.
-   * @param _A_setter Functor that receives the return values of the invokation of @e _A_getter1 and @e _A_getter2.
+   * @param _A_setter Functor that receives the return values of the invokation of @e _A_getter1 and
+   * @e _A_getter2.
    * @param _A_getter1 Functor to invoke from operator()().
    * @param _A_getter2 Functor to invoke from operator()().
    */
-  compose2_functor(const T_setter& _A_setter,
-                   const T_getter1& _A_getter1,
-                   const T_getter2& _A_getter2)
-    : adapts<T_setter>(_A_setter), get1_(_A_getter1), get2_(_A_getter2)
-    {}
+  compose2_functor(
+    const T_setter& _A_setter, const T_getter1& _A_getter1, const T_getter2& _A_getter2)
+  : adapts<T_setter>(_A_setter), get1_(_A_getter1), get2_(_A_getter2)
+  {
+  }
 
   getter1_type get1_; // public, so that visit_each() can access it
   getter2_type get2_; // public, so that visit_each() can access it
 };
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-//template specialization of visitor<>::do_visit_each<>(action, functor):
+// template specialization of visitor<>::do_visit_each<>(action, functor):
 /** Performs a functor on each of the targets of a functor.
  * The function overload for sigc::compose1_functor performs a functor on the
  * functors stored in the sigc::compose1_functor object.
@@ -122,18 +121,18 @@ struct compose2_functor : public adapts<T_setter>
  * @ingroup compose
  */
 template <class T_setter, class T_getter>
-struct visitor<compose1_functor<T_setter, T_getter> >
+struct visitor<compose1_functor<T_setter, T_getter>>
 {
   template <class T_action>
-  static void do_visit_each(const T_action& _A_action,
-                            const compose1_functor<T_setter, T_getter>& _A_target)
+  static void do_visit_each(
+    const T_action& _A_action, const compose1_functor<T_setter, T_getter>& _A_target)
   {
     sigc::visit_each(_A_action, _A_target.functor_);
     sigc::visit_each(_A_action, _A_target.get_);
   }
 };
 
-//template specialization of visitor<>::do_visit_each<>(action, functor):
+// template specialization of visitor<>::do_visit_each<>(action, functor):
 /** Performs a functor on each of the targets of a functor.
  * The function overload for sigc::compose2_functor performs a functor on the
  * functors stored in the sigc::compose2_functor object.
@@ -141,11 +140,11 @@ struct visitor<compose1_functor<T_setter, T_getter> >
  * @ingroup compose
  */
 template <class T_setter, class T_getter1, class T_getter2>
-struct visitor<compose2_functor<T_setter, T_getter1, T_getter2> >
+struct visitor<compose2_functor<T_setter, T_getter1, T_getter2>>
 {
   template <class T_action>
-  static void do_visit_each(const T_action& _A_action,
-                            const compose2_functor<T_setter, T_getter1, T_getter2>& _A_target)
+  static void do_visit_each(
+    const T_action& _A_action, const compose2_functor<T_setter, T_getter1, T_getter2>& _A_target)
   {
     sigc::visit_each(_A_action, _A_target.functor_);
     sigc::visit_each(_A_action, _A_target.get1_);
@@ -158,28 +157,35 @@ struct visitor<compose2_functor<T_setter, T_getter1, T_getter2> >
  *
  * @param _A_setter Functor that receives the return value of the invokation of @e _A_getter.
  * @param _A_getter Functor to invoke from operator()().
- * @return Adaptor that executes @e _A_setter with the value returned from invokation of @e _A_getter.
+ * @return Adaptor that executes @e _A_setter with the value returned from invokation of @e
+ * _A_getter.
  *
  * @ingroup compose
  */
 template <class T_setter, class T_getter>
 inline compose1_functor<T_setter, T_getter>
 compose(const T_setter& _A_setter, const T_getter& _A_getter)
-  { return compose1_functor<T_setter, T_getter>(_A_setter, _A_getter); }
+{
+  return compose1_functor<T_setter, T_getter>(_A_setter, _A_getter);
+}
 
 /** Creates an adaptor of type sigc::compose2_functor which combines three functors.
  *
- * @param _A_setter Functor that receives the return values of the invokation of @e _A_getter1 and @e _A_getter2.
+ * @param _A_setter Functor that receives the return values of the invokation of @e _A_getter1 and
+ * @e _A_getter2.
  * @param _A_getter1 Functor to invoke from operator()().
  * @param _A_getter2 Functor to invoke from operator()().
- * @return Adaptor that executes @e _A_setter with the values return from invokation of @e _A_getter1 and @e _A_getter2.
+ * @return Adaptor that executes @e _A_setter with the values return from invokation of @e
+ * _A_getter1 and @e _A_getter2.
  *
  * @ingroup compose
  */
 template <class T_setter, class T_getter1, class T_getter2>
 inline compose2_functor<T_setter, T_getter1, T_getter2>
 compose(const T_setter& _A_setter, const T_getter1& _A_getter1, const T_getter2& _A_getter2)
-  { return compose2_functor<T_setter, T_getter1, T_getter2>(_A_setter, _A_getter1, _A_getter2); }
+{
+  return compose2_functor<T_setter, T_getter1, T_getter2>(_A_setter, _A_getter1, _A_getter2);
+}
 
 } /* namespace sigc */
 #endif /* _SIGC_ADAPTORS_COMPOSE_H_ */

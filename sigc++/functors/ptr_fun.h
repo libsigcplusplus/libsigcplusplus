@@ -2,7 +2,8 @@
 #define _SIGC_FUNCTORS_PTR_FUN_H_
 #include <sigc++/type_traits.h>
 
-namespace sigc {
+namespace sigc
+{
 
 /** @defgroup ptr_fun ptr_fun()
  * ptr_fun() is used to convert a pointer to a function to a functor.
@@ -52,12 +53,13 @@ template <class T_return, class... T_args>
 class pointer_functor;
 
 template <class T_return, class... T_args>
-class pointer_functor<T_return(T_args...)>
-  : public functor_base
+class pointer_functor<T_return(T_args...)> : public functor_base
 {
   using function_type = T_return (*)(T_args...);
-protected: 
+
+protected:
   function_type func_ptr_;
+
 public:
   using result_type = T_return;
 
@@ -67,15 +69,14 @@ public:
   /** Constructs a pointer_functor2 object that wraps an existing function.
    * @param _A_func Pointer to function that will be invoked from operator()().
    */
-  explicit pointer_functor(function_type _A_func): func_ptr_(_A_func) {}
+  explicit pointer_functor(function_type _A_func) : func_ptr_(_A_func) {}
 
   /** Execute the wrapped function.
    * @param _A_a1 Argument to be passed on to the function.
    * @param _A_a2 Argument to be passed on to the function.
    * @return The return value of the function invocation.
    */
-  T_return operator()(type_trait_take_t<T_args>... _A_a) const 
-    { return func_ptr_(_A_a...); }
+  T_return operator()(type_trait_take_t<T_args>... _A_a) const { return func_ptr_(_A_a...); }
 };
 
 /** Creates a functor of type sigc::pointer_functor which wraps an existing non-member function.
@@ -85,9 +86,10 @@ public:
  * @ingroup ptr_fun
  */
 template <class T_return, class... T_args>
-inline decltype(auto)
-ptr_fun(T_return (*_A_func)(T_args...))
-{ return pointer_functor<T_return(T_args...)>(_A_func); }
+inline decltype(auto) ptr_fun(T_return (*_A_func)(T_args...))
+{
+  return pointer_functor<T_return(T_args...)>(_A_func);
+}
 
 } /* namespace sigc */
 #endif /* _SIGC_FUNCTORS_PTR_FUN_H_ */

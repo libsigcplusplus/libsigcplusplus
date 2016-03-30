@@ -5,7 +5,8 @@
 #include <sigc++/type_traits.h>
 #include <sigc++/trackable.h>
 
-namespace sigc {
+namespace sigc
+{
 
 /** A limit_reference<Foo> object stores a reference (Foo&), but makes sure that,
  * if Foo inherits from sigc::trackable, then visit_each<>() will "limit" itself to the
@@ -28,8 +29,7 @@ namespace sigc {
  * - @e T_type The type of the reference.
  */
 template <class T_type,
-          bool I_derives_trackable =
-            std::is_base_of<trackable, std::decay_t<T_type>>::value>
+  bool I_derives_trackable = std::is_base_of<trackable, std::decay_t<T_type>>::value>
 class limit_reference
 {
 public:
@@ -38,23 +38,20 @@ public:
   /** Constructor.
    * @param _A_target The reference to limit.
    */
-  limit_reference(reference_type& _A_target)
-    : visited(_A_target)
-    {}
+  limit_reference(reference_type& _A_target) : visited(_A_target) {}
 
   /** Retrieve the entity to visit for visit_each().
-   * Depending on the template specialization, this is either a derived reference, or sigc::trackable& if T_type derives from sigc::trackable.
+   * Depending on the template specialization, this is either a derived reference, or
+   * sigc::trackable& if T_type derives from sigc::trackable.
    * @return The reference.
    */
-  inline const reference_type& visit() const
-    { return visited; }
+  inline const reference_type& visit() const { return visited; }
 
   /** Retrieve the reference.
    * This is always a reference to the derived instance.
    * @return The reference.
    */
-  inline T_type& invoke() const
-    { return visited; }
+  inline T_type& invoke() const { return visited; }
 
 private:
   /** The reference.
@@ -74,28 +71,24 @@ public:
   /** Constructor.
    * @param _A_target The reference to limit.
    */
-  limit_reference(reference_type& _A_target)
-    : visited(_A_target),
-      invoked(_A_target)
-    {}
+  limit_reference(reference_type& _A_target) : visited(_A_target), invoked(_A_target) {}
 
   /** Retrieve the entity to visit for visit_each().
-   * Depending on the template specialization, this is either a derived reference, or sigc::trackable& if T_type derives from sigc::trackable.
+   * Depending on the template specialization, this is either a derived reference, or
+   * sigc::trackable& if T_type derives from sigc::trackable.
    * @return The reference.
    */
-  inline const trackable& visit() const
-    { return visited; }
+  inline const trackable& visit() const { return visited; }
 
   /** Retrieve the reference.
    * This is always a reference to the derived instance.
    * @return The reference.
    */
-  inline T_type& invoke() const
-    { return invoked; }
+  inline T_type& invoke() const { return invoked; }
 
 private:
-  using trackable_type = typename std::conditional_t<
-    std::is_const<reference_type>::value, const trackable, trackable>;
+  using trackable_type =
+    typename std::conditional_t<std::is_const<reference_type>::value, const trackable, trackable>;
 
   /** The trackable reference.
    */
@@ -116,11 +109,10 @@ private:
  * @param _A_target The visited instance.
  */
 template <class T_type>
-struct visitor<limit_reference<T_type> >
+struct visitor<limit_reference<T_type>>
 {
   template <class T_action>
-  static void do_visit_each(const T_action& _A_action,
-                            const limit_reference<T_type>& _A_target)
+  static void do_visit_each(const T_action& _A_action, const limit_reference<T_type>& _A_target)
   {
     sigc::visit_each(_A_action, _A_target.visit());
   }

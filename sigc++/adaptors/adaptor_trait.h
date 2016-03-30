@@ -30,11 +30,13 @@
  * via the callof<> template - a tricky way to detect the return
  * type of a functor when the argument types are known. Martin.
  */
- 
-namespace sigc {
+
+namespace sigc
+{
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-template <class T_functor> struct adapts;
+template <class T_functor>
+struct adapts;
 #endif
 
 /** @defgroup adaptors Adaptors
@@ -73,45 +75,41 @@ struct adaptor_functor : public adaptor_base
   /** Invokes the wrapped functor passing on the arguments.
    * @return The return value of the functor invocation.
    */
-  decltype(auto)
-  operator()() const
-  { return functor_(); }
+  decltype(auto) operator()() const { return functor_(); }
 
   /** Invokes the wrapped functor passing on the arguments.
    * @param _A_arg... Arguments to be passed on to the functor.
    * @return The return value of the functor invocation.
    */
   template <class... T_arg>
-  decltype(auto)
-  operator()(T_arg&&... _A_arg) const
-    { return functor_(std::forward<T_arg>(_A_arg)...); }
+  decltype(auto) operator()(T_arg&&... _A_arg) const
+  {
+    return functor_(std::forward<T_arg>(_A_arg)...);
+  }
 
   /// Constructs an invalid functor.
-  adaptor_functor()
-    {}
+  adaptor_functor() {}
 
   /** Constructs an adaptor_functor object that wraps the passed functor.
    * @param _A_functor Functor to invoke from operator()().
    */
-  explicit adaptor_functor(const T_functor& _A_functor)
-    : functor_(_A_functor)
-    {}
+  explicit adaptor_functor(const T_functor& _A_functor) : functor_(_A_functor) {}
 
   /** Constructs an adaptor_functor object that wraps the passed (member)
    * function pointer.
    * @param _A_type Pointer to function or class method to invoke from operator()().
    */
   template <class T_type>
-  explicit adaptor_functor(const T_type& _A_type)
-    : functor_(_A_type)
-    {}
+  explicit adaptor_functor(const T_type& _A_type) : functor_(_A_type)
+  {
+  }
 
   /// Functor that is invoked from operator()().
   mutable T_functor functor_;
 };
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-//template specialization of visitor<>::do_visit_each<>(action, functor):
+// template specialization of visitor<>::do_visit_each<>(action, functor):
 /** Performs a functor on each of the targets of a functor.
  * The function overload for sigc::adaptor_functor performs a functor
  * on the functor stored in the sigc::adaptor_functor object.
@@ -119,11 +117,10 @@ struct adaptor_functor : public adaptor_base
  * @ingroup adaptors
  */
 template <class T_functor>
-struct visitor<adaptor_functor<T_functor> >
+struct visitor<adaptor_functor<T_functor>>
 {
   template <class T_action>
-  static void do_visit_each(const T_action& _A_action,
-                            const adaptor_functor<T_functor>& _A_target)
+  static void do_visit_each(const T_action& _A_action, const adaptor_functor<T_functor>& _A_target)
   {
     sigc::visit_each(_A_action, _A_target.functor_);
   }
@@ -140,9 +137,13 @@ struct visitor<adaptor_functor<T_functor> >
  * @ingroup adaptors
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-template <class T_functor, bool I_isadaptor = std::is_base_of<adaptor_base, T_functor>::value> struct adaptor_trait;
+template <class T_functor, bool I_isadaptor = std::is_base_of<adaptor_base, T_functor>::value>
+struct adaptor_trait;
 #else
-template <class T_functor, bool I_isadaptor = std::is_base_of<adaptor_base, T_functor>::value> struct adaptor_trait {};
+template <class T_functor, bool I_isadaptor = std::is_base_of<adaptor_base, T_functor>::value>
+struct adaptor_trait
+{
+};
 #endif
 
 /** Trait that specifies what is the adaptor version of a functor type.
@@ -243,9 +244,7 @@ struct adapts : public adaptor_base
   /** Constructs an adaptor that wraps the passed functor.
    * @param _A_functor Functor to invoke from operator()().
    */
-  explicit adapts(const T_functor& _A_functor)
-    : functor_(_A_functor)
-    {}
+  explicit adapts(const T_functor& _A_functor) : functor_(_A_functor) {}
 
   /// Adaptor that is invoked from operator()().
   mutable adaptor_type functor_;

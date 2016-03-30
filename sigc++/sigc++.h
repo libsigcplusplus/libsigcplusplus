@@ -24,24 +24,26 @@
  *
  * @section description Description
  *
- * libsigc++ provides a typesafe (at compile time) callback system for standard 
- * C++. It allows you to define signals and to connect those signals to any 
- * callback function, either a global or a member function, regardless of whether 
- * it is static or virtual. It also contains adaptor classes for connection of 
+ * libsigc++ provides a typesafe (at compile time) callback system for standard
+ * C++. It allows you to define signals and to connect those signals to any
+ * callback function, either a global or a member function, regardless of whether
+ * it is static or virtual. It also contains adaptor classes for connection of
  * dissimilar callbacks.
  *
- * For instance, see the @ref signal "Signals", @ref sigcfunctors "Functors", 
+ * For instance, see the @ref signal "Signals", @ref sigcfunctors "Functors",
  * @ref slot "Slots" and @ref adaptors "Adaptors".
  *
- * See also the 
- * <a href="http://libsigc.sourceforge.net/libsigc2/docs/manual/html/index.html">libsigc++ tutorial</a>, 
- * the <a href="http://libsigc.sourceforge.net/">libsigc++ website</a>, and 
- * the <a href="http://library.gnome.org/devel/gtkmm-tutorial/unstable/chapter-signals.html">Signals appendix of the Programming with gtkmm book</a>.
+ * See also the
+ * <a href="http://libsigc.sourceforge.net/libsigc2/docs/manual/html/index.html">libsigc++
+ * tutorial</a>,
+ * the <a href="http://libsigc.sourceforge.net/">libsigc++ website</a>, and
+ * the <a href="http://library.gnome.org/devel/gtkmm-tutorial/unstable/chapter-signals.html">Signals
+ * appendix of the Programming with gtkmm book</a>.
  *
  * @section features Features
  *
  * - Compile-time typesafe callbacks (also faster than run time checks)
- * - Type-safety violations report the line number correctly with template names 
+ * - Type-safety violations report the line number correctly with template names
  *   (no tracing template failures into headers)
  * - No compiler extensions or meta compilers required
  * - Proper handling of dynamic objects and signals (deleted objects will not
