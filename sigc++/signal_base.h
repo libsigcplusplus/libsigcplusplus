@@ -176,6 +176,11 @@ struct SIGC_API signal_impl : public notifiable
    */
   static void notify(notifiable* d);
 
+public:
+  /// The list of slots.
+  std::list<slot_base> slots_;
+
+private:
   /** Reference counter.
    * The object is destroyed when @em ref_count_ reaches zero.
    */
@@ -188,17 +193,11 @@ struct SIGC_API signal_impl : public notifiable
 
   /// Indicates whether the execution of sweep() is being deferred.
   bool deferred_;
-
-  /// The list of slots.
-  std::list<slot_base> slots_;
 };
 
 /// Exception safe sweeper for cleaning up invalid slots on the slot list.
 struct SIGC_API signal_exec
 {
-  /// The parent sigc::signal_impl object.
-  signal_impl* sig_;
-
   /** Increments the reference and execution counter of the parent sigc::signal_impl object.
    * @param sig The parent sigc::signal_impl object.
    */
@@ -209,6 +208,11 @@ struct SIGC_API signal_exec
 
   /// Decrements the reference and execution counter of the parent sigc::signal_impl object.
   inline ~signal_exec() { sig_->unreference_exec(); }
+
+protected:
+  /// The parent sigc::signal_impl object.
+  signal_impl* sig_;
+
 };
 
 /** Temporary slot list used during signal emission.
