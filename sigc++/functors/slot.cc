@@ -19,7 +19,7 @@
  */
 #include <sigc++/functors/slot.h>
 
-namespace sigc {
-
+namespace sigc
+{
 
 } /* namespace sigc */

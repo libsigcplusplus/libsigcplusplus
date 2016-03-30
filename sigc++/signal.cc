@@ -19,7 +19,7 @@
  */
 #include <sigc++/signal.h>
 
-namespace sigc {
-
+namespace sigc
+{
 
 } /* sigc */

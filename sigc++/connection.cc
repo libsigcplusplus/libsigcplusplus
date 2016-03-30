@@ -19,28 +19,28 @@
 
 #include <sigc++/connection.h>
 
-namespace sigc {
-
-connection::connection() noexcept
-: slot_(nullptr)
-{}
-
-connection::connection(const connection& c)
-: slot_(c.slot_)
+namespace sigc
 {
-  //Let the connection forget about the signal handler when the handler object dies:
+
+connection::connection() noexcept : slot_(nullptr)
+{
+}
+
+connection::connection(const connection& c) : slot_(c.slot_)
+{
+  // Let the connection forget about the signal handler when the handler object dies:
   if (slot_)
     slot_->add_destroy_notify_callback(this, &notify);
 }
 
-connection::connection(slot_base& sl)
-: slot_(&sl)
+connection::connection(slot_base& sl) : slot_(&sl)
 {
-  //Let the connection forget about the signal handler when the handler object dies:
+  // Let the connection forget about the signal handler when the handler object dies:
   slot_->add_destroy_notify_callback(this, &notify);
 }
 
-connection& connection::operator=(const connection& c)
+connection&
+connection::operator=(const connection& c)
 {
   set_slot(c.slot_);
   return *this;
@@ -52,43 +52,50 @@ connection::~connection()
     slot_->remove_destroy_notify_callback(this);
 }
 
-bool connection::empty() const noexcept
+bool
+connection::empty() const noexcept
 {
   return (!slot_ || slot_->empty());
 }
 
-bool connection::connected() const noexcept
+bool
+connection::connected() const noexcept
 {
   return !empty();
 }
 
-bool connection::blocked() const noexcept
+bool
+connection::blocked() const noexcept
 {
   return (slot_ ? slot_->blocked() : false);
 }
 
-bool connection::block(bool should_block) noexcept
+bool
+connection::block(bool should_block) noexcept
 {
   return (slot_ ? slot_->block(should_block) : false);
 }
 
-bool connection::unblock() noexcept
+bool
+connection::unblock() noexcept
 {
   return (slot_ ? slot_->unblock() : false);
 }
 
-void connection::disconnect()
+void
+connection::disconnect()
 {
   if (slot_)
     slot_->disconnect(); // This notifies slot_'s parent.
-} 
+}
 
 connection::operator bool() const noexcept
 {
   return !empty();
 }
-    
-void connection::set_slot(slot_base* sl)
+
+void
+connection::set_slot(slot_base* sl)
 {
   if (slot_)
     slot_->remove_destroy_notify_callback(this);
@@ -99,7 +106,8 @@ void connection::set_slot(slot_base* sl)
     slot_->add_destroy_notify_callback(this, &notify);
 }
 
-void connection::notify(notifiable* data)
+void
+connection::notify(notifiable* data)
 {
   auto self = reinterpret_cast<connection*>(data);
   self->slot_ = nullptr;

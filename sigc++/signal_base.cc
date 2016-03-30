@@ -18,8 +18,10 @@
 #include <sigc++/signal_base.h>
 #include <memory> // std::unique_ptr
 
-namespace sigc {
-namespace internal {
+namespace sigc
+{
+namespace internal
+{
 
 // Data sent from signal_impl::insert() to slot_rep::set_parent() when a slot is
 // connected, and then sent from slot_rep::disconnect() to signal_impl::notify()
@@ -29,13 +31,12 @@ struct self_and_iter : public notifiable
   signal_impl* self_;
   signal_impl::iterator_type iter_;
 
-  self_and_iter(signal_impl* self, signal_impl::iterator_type iter)
-    : self_(self), iter_(iter) {}
+  self_and_iter(signal_impl* self, signal_impl::iterator_type iter) : self_(self), iter_(iter) {}
 };
 
-signal_impl::signal_impl()
-: ref_count_(0), exec_count_(0), deferred_(false)
-{}
+signal_impl::signal_impl() : ref_count_(0), exec_count_(0), deferred_(false)
+{
+}
 
 signal_impl::~signal_impl()
 {
@@ -52,18 +53,21 @@ signal_impl::~signal_impl()
 
 // only MSVC needs this to guarantee that all new/delete are executed from the DLL module
 #ifdef SIGC_NEW_DELETE_IN_LIBRARY_ONLY
-void* signal_impl::operator new(size_t size_)
+void*
+signal_impl::operator new(size_t size_)
 {
   return malloc(size_);
 }
 
-void signal_impl::operator delete(void* p)
+void
+signal_impl::operator delete(void* p)
 {
   free(p);
 }
 #endif
 
-void signal_impl::clear()
+void
+signal_impl::clear()
 {
   // Don't let signal_impl::notify() erase the slots. It would invalidate the
   // iterator in the following loop.
@@ -80,12 +84,14 @@ void signal_impl::clear()
   slots_.clear();
 }
 
-signal_impl::size_type signal_impl::size() const noexcept
+signal_impl::size_type
+signal_impl::size() const noexcept
 {
   return slots_.size();
 }
 
-bool signal_impl::blocked() const noexcept
+bool
+signal_impl::blocked() const noexcept
 {
   for (const auto& slot : const_cast<const std::list<slot_base>&>(slots_))
   {
@@ -95,7 +101,8 @@ bool signal_impl::blocked() const noexcept
   return true;
 }
 
-void signal_impl::block(bool should_block) noexcept
+void
+signal_impl::block(bool should_block) noexcept
 {
   for (auto& slot : slots_)
   {
@@ -103,17 +110,20 @@ void signal_impl::block(bool should_block) noexcept
   }
 }
 
-signal_impl::iterator_type signal_impl::connect(const slot_base& slot_)
+signal_impl::iterator_type
+signal_impl::connect(const slot_base& slot_)
 {
   return insert(slots_.end(), slot_);
 }
 
-signal_impl::iterator_type signal_impl::connect(slot_base&& slot_)
+signal_impl::iterator_type
+signal_impl::connect(slot_base&& slot_)
 {
   return insert(slots_.end(), std::move(slot_));
 }
 
-signal_impl::iterator_type signal_impl::erase(iterator_type i)
+signal_impl::iterator_type
+signal_impl::erase(iterator_type i)
 {
   // Don't let signal_impl::notify() erase the slot. It would be more
   // difficult to get the correct return value from signal_impl::erase().
@@ -128,8 +138,9 @@ signal_impl::iterator_type signal_impl::erase(iterator_type i)
 
   return slots_.erase(i);
 }
-    
-signal_impl::iterator_type signal_impl::insert(signal_impl::iterator_type i, const slot_base& slot_)
+
+signal_impl::iterator_type
+signal_impl::insert(signal_impl::iterator_type i, const slot_base& slot_)
 {
   auto temp = slots_.insert(i, slot_);
   auto si = new self_and_iter(this, temp);
@@ -137,7 +148,8 @@ signal_impl::iterator_type signal_impl::insert(signal_impl::iterator_type i, con
   return temp;
 }
 
-signal_impl::iterator_type signal_impl::insert(signal_impl::iterator_type i, slot_base&& slot_)
+signal_impl::iterator_type
+signal_impl::insert(signal_impl::iterator_type i, slot_base&& slot_)
 {
   auto temp = slots_.insert(i, std::move(slot_));
   auto si = new self_and_iter(this, temp);
@@ -145,7 +157,8 @@ signal_impl::iterator_type signal_impl::insert(signal_impl::iterator_type i, slo
   return temp;
 }
 
-void signal_impl::sweep()
+void
+signal_impl::sweep()
 {
   // The deletion of a slot may cause the deletion of a signal_base,
   // a decrementation of ref_count_, and the deletion of this.
@@ -161,8 +174,9 @@ void signal_impl::sweep()
       ++i;
 }
 
-//static
-void signal_impl::notify(notifiable* d)
+// static
+void
+signal_impl::notify(notifiable* d)
 {
   std::unique_ptr<self_and_iter> si(static_cast<self_and_iter*>(d));
 
@@ -174,28 +188,25 @@ void signal_impl::notify(notifiable* d)
     signal_exec exec(si->self_);
     si->self_->slots_.erase(si->iter_);
   }
-  else                           // This is occuring during signal emission or slot erasure.
-    si->self_->deferred_ = true; // => sweep() will be called from ~signal_exec() after signal emission.
-                                 // This is safer because we don't have to care about our
-                                 // iterators in emit(), clear(), and erase().
+  else // This is occuring during signal emission or slot erasure.
+    si->self_->deferred_ =
+      true; // => sweep() will be called from ~signal_exec() after signal emission.
+  // This is safer because we don't have to care about our
+  // iterators in emit(), clear(), and erase().
 }
 
 } /* namespace internal */
 
-signal_base::signal_base() noexcept
-: impl_(nullptr)
-{}
+signal_base::signal_base() noexcept : impl_(nullptr)
+{
+}
 
-signal_base::signal_base(const signal_base& src) noexcept
-: trackable(),
-  impl_(src.impl())
+signal_base::signal_base(const signal_base& src) noexcept : trackable(), impl_(src.impl())
 {
   impl_->reference();
 }
 
-signal_base::signal_base(signal_base&& src)
-: trackable(std::move(src)),
-  impl_(std::move(src.impl_))
+signal_base::signal_base(signal_base&& src) : trackable(std::move(src)), impl_(std::move(src.impl_))
 {
   src.impl_ = nullptr;
 }
@@ -208,62 +219,74 @@ signal_base::~signal_base()
   }
 }
 
-void signal_base::clear()
+void
+signal_base::clear()
 {
   if (impl_)
     impl_->clear();
 }
 
-signal_base::size_type signal_base::size() const noexcept
+signal_base::size_type
+signal_base::size() const noexcept
 {
   return (impl_ ? impl_->size() : 0);
 }
 
-bool signal_base::blocked() const noexcept
+bool
+signal_base::blocked() const noexcept
 {
   return (impl_ ? impl_->blocked() : true);
 }
 
-void signal_base::block(bool should_block) noexcept
+void
+signal_base::block(bool should_block) noexcept
 {
   if (impl_)
     impl_->block(should_block);
 }
 
-void signal_base::unblock() noexcept
+void
+signal_base::unblock() noexcept
 {
   if (impl_)
     impl_->block(false);
 }
 
-signal_base::iterator_type signal_base::connect(const slot_base& slot_)
+signal_base::iterator_type
+signal_base::connect(const slot_base& slot_)
 {
   return impl()->connect(slot_);
 }
 
-signal_base::iterator_type signal_base::connect(slot_base&& slot_)
+signal_base::iterator_type
+signal_base::connect(slot_base&& slot_)
 {
   return impl()->connect(std::move(slot_));
 }
 
-signal_base::iterator_type signal_base::insert(iterator_type i, const slot_base& slot_)
+signal_base::iterator_type
+signal_base::insert(iterator_type i, const slot_base& slot_)
 {
   return impl()->insert(i, slot_);
 }
 
-signal_base::iterator_type signal_base::insert(iterator_type i, slot_base&& slot_)
+signal_base::iterator_type
+signal_base::insert(iterator_type i, slot_base&& slot_)
 {
   return impl()->insert(i, std::move(slot_));
 }
 
-signal_base::iterator_type signal_base::erase(iterator_type i)
+signal_base::iterator_type
+signal_base::erase(iterator_type i)
 {
   return impl()->erase(i);
 }
 
-signal_base& signal_base::operator=(const signal_base& src)
+signal_base&
+signal_base::operator=(const signal_base& src)
 {
-  if (src.impl_ == impl_) return *this;
+  if (src.impl_ == impl_)
+    return *this;
 
   if (impl_)
   {
@@ -275,9 +298,11 @@ signal_base& signal_base::operator=(const signal_base& src)
   return *this;
 }
 
-signal_base& signal_base::operator=(signal_base&& src)
+signal_base&
+signal_base::operator=(signal_base&& src)
 {
-  if (src.impl_ == impl_) return *this;
+  if (src.impl_ == impl_)
+    return *this;
 
   if (impl_)
   {
@@ -291,11 +316,13 @@ signal_base& signal_base::operator=(signal_base&& src)
   return *this;
 }
 
-internal::signal_impl* signal_base::impl() const
+internal::signal_impl*
+signal_base::impl() const
 {
-  if (!impl_) {
+  if (!impl_)
+  {
     impl_ = new internal::signal_impl;
-    impl_->reference();  // start with a reference count of 1
+    impl_->reference(); // start with a reference count of 1
   }
   return impl_;
 }
