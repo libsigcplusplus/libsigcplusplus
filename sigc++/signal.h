@@ -684,8 +684,11 @@ struct signal_emit<T_return, void, T_arg...>
           break;
 
       if (it == slots.end())
-        return T_return(); // note that 'T_return r_();' doesn't work => define 'r_' after this line
-                           // and initialize as follows:
+      {
+        // note that 'T_return r_();' doesn't work => define 'r_' after this line
+        // and initialize as follows:
+        return T_return();
+      }
 
       r_ = (reinterpret_cast<call_type>(it->rep_->call_))(it->rep_, _A_a...);
       for (++it; it != slots.end(); ++it)
@@ -724,8 +727,11 @@ struct signal_emit<T_return, void, T_arg...>
           break;
 
       if (it == reverse_iterator_type(slots.begin()))
-        return T_return(); // note that 'T_return r_();' doesn't work => define 'r_' after this line
-                           // and initialize as follows:
+      {
+        // note that 'T_return r_();' doesn't work => define 'r_' after this line
+        // and initialize as follows:
+        return T_return();
+      }
 
       r_ = (reinterpret_cast<call_type>(it->rep_->call_))(it->rep_, _A_a...);
       for (++it; it != reverse_iterator_type(slots.begin()); ++it)
