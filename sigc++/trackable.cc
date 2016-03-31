@@ -113,10 +113,11 @@ trackable_callback_list::~trackable_callback_list()
 void
 trackable_callback_list::add_callback(notifiable* data, func_destroy_notify func)
 {
-  if (!clearing_) // TODO: Is it okay to silently ignore attempts to add dependencies when the list
-                  // is being cleared?
-    //       I'd consider this a serious application bug, since the app is likely to segfault.
-    //       But then, how should we handle it? Throw an exception? Martin.
+  // TODO: Is it okay to silently ignore attempts to add dependencies when the list
+  // is being cleared?
+  // I'd consider this a serious application bug, since the app is likely to segfault.
+  // But then, how should we handle it? Throw an exception? Martin.
+  if (!clearing_)
     callbacks_.push_back(trackable_callback(data, func));
 }
 
