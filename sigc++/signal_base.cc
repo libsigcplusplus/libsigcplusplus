@@ -168,10 +168,12 @@ signal_impl::sweep()
   deferred_ = false;
   auto i = slots_.begin();
   while (i != slots_.end())
+  {
     if ((*i).empty())
       i = slots_.erase(i);
     else
       ++i;
+  }
 }
 
 // static
