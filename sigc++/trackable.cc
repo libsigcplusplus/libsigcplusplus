@@ -106,8 +106,10 @@ trackable_callback_list::~trackable_callback_list()
   clearing_ = true;
 
   for (auto& callback : callbacks_)
+  {
     if (callback.func_)
       callback.func_(callback.data_);
+  }
 }
 
 void
@@ -127,8 +129,10 @@ trackable_callback_list::clear()
   clearing_ = true;
 
   for (auto& callback : callbacks_)
+  {
     if (callback.func_)
       callback.func_(callback.data_);
+  }
 
   callbacks_.clear();
 

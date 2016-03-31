@@ -680,8 +680,10 @@ struct signal_emit<T_return, void, T_arg...>
       temp_slot_list slots(impl->slots_);
       iterator_type it = slots.begin();
       for (; it != slots.end(); ++it)
+      {
         if (!it->empty() && !it->blocked())
           break;
+      }
 
       if (it == slots.end())
       {
@@ -723,8 +725,10 @@ struct signal_emit<T_return, void, T_arg...>
       temp_slot_list slots(impl->slots_);
       reverse_iterator_type it(slots.end());
       for (; it != reverse_iterator_type(slots.begin()); ++it)
+      {
         if (!it->empty() && !it->blocked())
           break;
+      }
 
       if (it == reverse_iterator_type(slots.begin()))
       {
