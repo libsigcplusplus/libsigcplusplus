@@ -164,7 +164,7 @@ struct SIGC_API slot_do_bind
   /** Construct a slot_do_bind functor.
    * @param rep The slot_rep object trackables should notify on destruction.
    */
-  inline slot_do_bind(slot_rep* rep) noexcept : rep_(rep) {}
+  inline explicit slot_do_bind(slot_rep* rep) noexcept : rep_(rep) {}
 
   /** Adds a dependency to @p t.
    * @param t The trackable object to add a callback to.
@@ -184,7 +184,7 @@ struct SIGC_API slot_do_unbind
   /** Construct a slot_do_unbind functor.
    * @param rep The slot_rep object trackables don't need to notify on destruction any more.
    */
-  inline slot_do_unbind(slot_rep* rep) noexcept : rep_(rep) {}
+  inline explicit slot_do_unbind(slot_rep* rep) noexcept : rep_(rep) {}
 
   /** Removes a dependency from @p t.
    * @param t The trackable object to remove the callback from.
