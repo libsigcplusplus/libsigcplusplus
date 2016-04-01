@@ -142,7 +142,7 @@ trackable_callback_list::clear()
 void
 trackable_callback_list::remove_callback(notifiable* data)
 {
-  for (callback_list::iterator i = callbacks_.begin(); i != callbacks_.end(); ++i)
+  for (auto i = callbacks_.begin(); i != callbacks_.end(); ++i)
   {
     auto& callback = *i;
     if (callback.data_ == data && callback.func_ != nullptr)
