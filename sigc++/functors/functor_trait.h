@@ -166,30 +166,6 @@ struct functor_trait<T_functor, false, true>
     using functor_type = T_functor;             \
   };
 
-#ifndef SIGCXX_DISABLE_DEPRECATED
-/** Helper macro, if you want to mix user-defined and third party functors with libsigc++.
- *
- * If you want to mix functors not derived from sigc::functor_base with libsigc++,
- * and your compiler can deduce the result type of the functor with the C++11
- * keyword <tt>decltype</tt>, use this macro inside namespace sigc like so:
- * @code
- * namespace sigc {
- *   SIGC_FUNCTORS_DEDUCE_RESULT_TYPE_WITH_DECLTYPE
- * }
- * @endcode
- *
- * Functors with overloaded operator()() are not supported.
- *
- * @newin{2,2,11}
- *
- * @deprecated This macro does nothing. The test it activated in libsigc++
- *             versions before 2.6, is now unconditionally activated.
- *
- * @ingroup sigcfunctors
- */
-#define SIGC_FUNCTORS_DEDUCE_RESULT_TYPE_WITH_DECLTYPE // Empty
-#endif // SIGCXX_DISABLE_DEPRECATED
-
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 // detect the return type and the functor version of non-functor types.
 
