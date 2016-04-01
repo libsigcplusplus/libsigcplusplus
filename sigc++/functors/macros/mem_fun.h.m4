@@ -213,7 +213,7 @@ _FIREWALL([FUNCTORS_MEM_FUN])
 namespace sigc {
 
 /** @defgroup mem_fun mem_fun()
- * mem_fun() is used to convert a pointer to a method to a functor.
+ * mem_fun() Creates a functor from a pointer to a method.
  *
  * Optionally, a reference or pointer to an object can be bound to the functor.
  *
