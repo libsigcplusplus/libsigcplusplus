@@ -14,6 +14,8 @@
 
 namespace
 {
+
+TestUtilities* util = nullptr;
 std::ostringstream result_stream;
 
 struct test
@@ -50,88 +52,116 @@ struct test
 
 } // end anonymous namespace
 
+void test_non_const()
+{
+  test t;
+  sigc::mem_fun (&test::foo)(t, 1);
+  util->check_result(result_stream, "test::foo(short 1)");
+}
+
+void test_const()
+{
+  test t;
+  sigc::mem_fun (&test::foo_const)(t, 2);
+  util->check_result(result_stream, "test::foo_const(int 2)");
+}
+
+void test_const_with_const_object()
+{
+  const auto t = test();
+  sigc::mem_fun (&test::foo_const)(t, 3);
+  util->check_result(result_stream, "test::foo_const(int 3)");
+}
+
+void test_non_const_volatile()
+{
+  test t;
+  sigc::mem_fun (&test::foo_volatile)(t, 4);
+  util->check_result(result_stream, "test::foo_volatile(float 4)");
+}
+
+void test_const_volatile()
+{
+  test t;
+  sigc::mem_fun (&test::foo_const_volatile)(t, 5);
+  util->check_result(result_stream, "test::foo_const_volatile(double 5)");
+}
+
+void test_const_volatile_with_const_object()
+{
+  const auto t = test();
+  sigc::mem_fun (&test::foo_const_volatile)(t, 6);
+  util->check_result(result_stream, "test::foo_const_volatile(double 6)");
+}
+
+#if ENABLE_TEST_OF_OVERLOADED_FUNCTIONS
+void test_overloaded()
+{
+  test t;
+  sigc::mem_fun<char> (&test::foo_overloaded)(t, 7);
+  util->check_result(result_stream, "test::foo_overloaded(char 7)");
+
+  sigc::mem_fun<short> (&test::foo_overloaded)(t, 7);
+  util->check_result(result_stream, "test::foo_overloaded(short 7)");
+
+  // sigc::mem_fun(&test::foo_overloaded)(t, 7);
+  // util->check_result(result_stream, "test::foo_overloaded(short 7)");
+
+  sigc::mem_fun (&test::foo_overloaded)(t, 7, 8);
+  util->check_result(result_stream, "test::foo_overloaded(int 7, int 8)");
+}
+#endif
+
+void test_bound()
+{
+  test t;
+  sigc::mem_fun(t, &test::foo)(9);
+  util->check_result(result_stream, "test::foo(short 9)");
+
+  sigc::mem_fun(t, &test::foo)(9);
+  util->check_result(result_stream, "test::foo(short 9)");
+
+  sigc::mem_fun(t, &test::foo_const)(9);
+  util->check_result(result_stream, "test::foo_const(int 9)");
+
+  sigc::mem_fun(t, &test::foo_const)(9);
+  util->check_result(result_stream, "test::foo_const(int 9)");
+
+  sigc::mem_fun(t, &test::foo_volatile)(9);
+  util->check_result(result_stream, "test::foo_volatile(float 9)");
+
+  sigc::mem_fun(t, &test::foo_volatile)(9);
+  util->check_result(result_stream, "test::foo_volatile(float 9)");
+
+#if ENABLE_TEST_OF_OVERLOADED_FUNCTIONS
+  sigc::mem_fun(t, &test::foo_overloaded)(9, 10);
+  util->check_result(result_stream, "test::foo_overloaded(int 9, int 10)");
+
+  sigc::mem_fun(t, &test::foo_overloaded)(9, 10);
+  util->check_result(result_stream, "test::foo_overloaded(int 9, int 10)");
+#endif
+}
+
 int
 main(int argc, char* argv[])
 {
-  auto util = TestUtilities::get_instance();
+  util = TestUtilities::get_instance();
 
   if (!util->check_command_args(argc, argv))
     return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;
 
-  { /* test non-const */
-    test t;
-    sigc::mem_fun (&test::foo)(t, 1);
-    util->check_result(result_stream, "test::foo(short 1)");
-  }
-  { /* test const */
-    test t;
-    sigc::mem_fun (&test::foo_const)(t, 2);
-    util->check_result(result_stream, "test::foo_const(int 2)");
-  }
-  { /* test const with const object */
-    const auto t = test();
-    sigc::mem_fun (&test::foo_const)(t, 3);
-    util->check_result(result_stream, "test::foo_const(int 3)");
-  }
-  { /* test non-const volatile */
-    test t;
-    sigc::mem_fun (&test::foo_volatile)(t, 4);
-    util->check_result(result_stream, "test::foo_volatile(float 4)");
-  }
-  { /* test const volatile */
-    test t;
-    sigc::mem_fun (&test::foo_const_volatile)(t, 5);
-    util->check_result(result_stream, "test::foo_const_volatile(double 5)");
-  }
-  { /* test const volatile with const object */
-    const auto t = test();
-    sigc::mem_fun (&test::foo_const_volatile)(t, 6);
-    util->check_result(result_stream, "test::foo_const_volatile(double 6)");
-  }
-#if ENABLE_TEST_OF_OVERLOADED_FUNCTIONS
-  { /* test overloaded */
-    test t;
-    sigc::mem_fun<char> (&test::foo_overloaded)(t, 7);
-    util->check_result(result_stream, "test::foo_overloaded(char 7)");
-
-    sigc::mem_fun<short> (&test::foo_overloaded)(t, 7);
-    util->check_result(result_stream, "test::foo_overloaded(short 7)");
-
-    // sigc::mem_fun(&test::foo_overloaded)(t, 7);
-    // util->check_result(result_stream, "test::foo_overloaded(short 7)");
-
-    sigc::mem_fun (&test::foo_overloaded)(t, 7, 8);
-    util->check_result(result_stream, "test::foo_overloaded(int 7, int 8)");
-  }
-#endif
-  { /* test bound */
-    test t;
-    sigc::mem_fun(t, &test::foo)(9);
-    util->check_result(result_stream, "test::foo(short 9)");
-
-    sigc::mem_fun(t, &test::foo)(9);
-    util->check_result(result_stream, "test::foo(short 9)");
-
-    sigc::mem_fun(t, &test::foo_const)(9);
-    util->check_result(result_stream, "test::foo_const(int 9)");
-
-    sigc::mem_fun(t, &test::foo_const)(9);
-    util->check_result(result_stream, "test::foo_const(int 9)");
-
-    sigc::mem_fun(t, &test::foo_volatile)(9);
-    util->check_result(result_stream, "test::foo_volatile(float 9)");
-
-    sigc::mem_fun(t, &test::foo_volatile)(9);
-    util->check_result(result_stream, "test::foo_volatile(float 9)");
+  test_non_const();
+  test_const();
+  test_const_with_const_object();
+  test_non_const_volatile();
+  test_const_volatile();
+  test_const_volatile_with_const_object();
 
 #if ENABLE_TEST_OF_OVERLOADED_FUNCTIONS
-    sigc::mem_fun(t, &test::foo_overloaded)(9, 10);
-    util->check_result(result_stream, "test::foo_overloaded(int 9, int 10)");
-
-    sigc::mem_fun(t, &test::foo_overloaded)(9, 10);
-    util->check_result(result_stream, "test::foo_overloaded(int 9, int 10)");
+  test_overload();
 #endif
-  }
+
+  test_bound();
 
   return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;
 }
