@@ -216,9 +216,9 @@ template <typename T_element>
 struct TupleVisitorVisitEach
 {
   template <typename T_action>
-  constexpr static void visit(const T_element& element, const T_action& action)
+  constexpr static void visit(const T_element& element, T_action&& action)
   {
-    sigc::visit_each(action, element);
+    sigc::visit_each(std::forward<T_action>(action), element);
   }
 };
 
