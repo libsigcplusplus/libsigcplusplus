@@ -70,7 +70,7 @@ struct limit_derived_target
       T_type, T_self>::execute_(std::forward<T_type>(_A_type), *this);
   }
 
-  limit_derived_target(const T_action& _A_action) : action_(_A_action) {}
+  explicit limit_derived_target(const T_action& _A_action) : action_(_A_action) {}
 
   T_action action_;
 };
@@ -110,7 +110,7 @@ struct limit_derived_target<T_target*, T_action>
       T_type, T_self>::execute_(std::forward<T_type>(_A_type), *this);
   }
 
-  limit_derived_target(const T_action& _A_action) : action_(_A_action) {}
+  explicit limit_derived_target(const T_action& _A_action) : action_(_A_action) {}
 
   T_action action_;
 };
