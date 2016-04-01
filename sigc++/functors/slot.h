@@ -193,7 +193,7 @@ public:
   /** Constructs a slot, copying an existing one.
    * @param src The existing slot to copy.
    */
-  slot(const slot& src) : slot_base(src) {}
+  slot(const slot& src) = default;
 
   /** Constructs a slot, moving an existing one.
    * If @p src is connected to a parent (e.g. a signal), it is copied, not moved.
@@ -206,10 +206,7 @@ public:
    * @return @p this.
    */
   slot& operator=(const slot& src)
-  {
-    slot_base::operator=(src);
-    return *this;
-  }
+  = default;
 
   /** Overrides this slot, making a move from another slot.
    * If @p src is connected to a parent (e.g. a signal), it is copied, not moved.
