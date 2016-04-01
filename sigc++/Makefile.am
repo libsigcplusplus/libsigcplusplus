@@ -34,7 +34,6 @@ libsigc_@SIGCXX_API_VERSION@_la_SOURCES =	\
 	signal_base.cc				\
 	trackable.cc				\
 	connection.cc				\
-	functors/slot.cc			\
 	functors/slot_base.cc			\
 	adaptors/lambda/lambda.cc
 
