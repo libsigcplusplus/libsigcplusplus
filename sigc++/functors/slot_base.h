@@ -218,7 +218,7 @@ struct SIGC_API slot_do_unbind
  *
  * You can also pass slots as method parameters where you might normally pass a function pointer.
  *
- * @section slots-auto-disconnect Member Methods and Automatic Disconnection.
+ * @section slots-auto-disconnect Member Methods and Automatic Disconnection
  *
  * See @ref mem_fun "sigc::mem_fun()" about deriving from sigc::trackable to prevent member
  * methods from being called after the instance has been destroyed.
