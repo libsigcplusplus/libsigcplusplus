@@ -430,7 +430,7 @@ struct slot_reverse_iterator_buf
 
   decltype(auto) operator*() const
   {
-    iterator_type __tmp(i_);
+    auto __tmp(i_);
     --__tmp;
     if (!__tmp->empty() && !__tmp->blocked() && !invoked_)
     {
@@ -511,7 +511,7 @@ struct slot_reverse_iterator_buf<T_emitter, void>
 
   void operator*() const
   {
-    iterator_type __tmp(i_);
+    auto __tmp(i_);
     --__tmp;
     if (!__tmp->empty() && !__tmp->blocked() && !invoked_)
     {
