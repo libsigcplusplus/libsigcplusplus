@@ -127,10 +127,8 @@ test_tuple_start_constexpr()
   static_assert(
     std::tuple_size<decltype(t_prefix)>::value == 2, "unexpected tuple_start()ed tuple size.");
 
-  static_assert(std::get<0>(t_prefix) == nullptr,
-    "unexpected tuple element value.");
-  static_assert(std::get<1>(t_prefix) == str_hello,
-    "unexpected tuple element value.");
+  assert(std::get<0>(t_prefix) == nullptr);
+  assert(std::get<1>(t_prefix) == str_hello);
 }
 
 int

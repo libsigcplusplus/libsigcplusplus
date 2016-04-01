@@ -75,10 +75,8 @@ test_tuple_cdr_constexpr()
 
   constexpr auto t_larger = std::make_tuple(nullptr, str_hello, str_world);
   constexpr auto t_suffix = sigc::internal::tuple_cdr(t_larger);
-  static_assert(std::get<0>(t_suffix) == str_hello,
-    "unexpected tuple element value.");
-  static_assert(std::get<1>(t_suffix) == str_world,
-    "unexpected tuple element value.");
+  assert(std::get<0>(t_suffix) == str_hello);
+  assert(std::get<1>(t_suffix) == str_world);
 }
 
 int
