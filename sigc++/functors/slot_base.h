@@ -182,7 +182,9 @@ struct SIGC_API slot_do_unbind
  * A slot can be constructed from any function object or function, regardless of
  * whether it is a global function, a member method, static, or virtual.
  *
- * Use the sigc::mem_fun() and sigc::ptr_fun() template functions to get a sigc::slot, like so:
+ * @section slots-creating Creating Slots
+ *
+ * Use the sigc::mem_fun() or sigc::ptr_fun() template functions to get a sigc::slot, like so:
  * @code
  * sigc::slot<void, int> sl = sigc::mem_fun(someobj, &SomeClass::somemethod);
  * @endcode
@@ -199,6 +201,8 @@ struct SIGC_API slot_do_unbind
  *
  * You can also pass slots as method parameters where you might normally pass a function pointer.
  *
+ * @section slots-auto auto
+ *
  * sigc::mem_fun() and sigc::ptr_fun() return functors, but those functors are
  * not slots.
  * @code
@@ -208,6 +212,8 @@ struct SIGC_API slot_do_unbind
  * @code
  * auto sl = sigc::mem_fun(someobj, &SomeClass::somemethod); // Not a slot!
  * @endcode
+ *
+ * @section slots-with-lambdas C++ Lambdas
  *
  * A C++11 lambda expression is a functor (function object). It is automatically
  * wrapped in a slot, if it is connected to a signal.
