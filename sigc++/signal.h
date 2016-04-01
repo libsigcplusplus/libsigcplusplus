@@ -775,11 +775,12 @@ struct signal_emit<void, void, T_arg...>
     signal_exec exec(impl);
     temp_slot_list slots(impl->slots_);
 
-    for (iterator_type it = slots.begin(); it != slots.end(); ++it)
+    for (const auto& slot : slots)
     {
-      if (it->empty() || it->blocked())
+      if (slot.empty() || slot.blocked())
         continue;
-      (reinterpret_cast<call_type>(it->rep_->call_))(it->rep_, _A_a...);
+
+      (reinterpret_cast<call_type>(slot.rep_->call_))(slot.rep_, _A_a...);
     }
   }
 
