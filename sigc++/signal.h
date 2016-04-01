@@ -678,7 +678,7 @@ struct signal_emit<T_return, void, T_arg...>
     // This avoids a leak on MSVC++ - see http://bugzilla.gnome.org/show_bug.cgi?id=306249
     {
       temp_slot_list slots(impl->slots_);
-      iterator_type it = slots.begin();
+      auto it = slots.begin();
       for (; it != slots.end(); ++it)
       {
         if (!it->empty() && !it->blocked())
@@ -798,7 +798,7 @@ struct signal_emit<void, void, T_arg...>
 
     using reverse_iterator_type = std::reverse_iterator<signal_impl::iterator_type>;
 
-    for (reverse_iterator_type it = reverse_iterator_type(slots.end());
+    for (auto it = reverse_iterator_type(slots.end());
          it != reverse_iterator_type(slots.begin()); ++it)
     {
       if (it->empty() || it->blocked())
