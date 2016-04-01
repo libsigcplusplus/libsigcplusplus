@@ -30,7 +30,8 @@ namespace internal
 
 template <class Base, class Derived>
 constexpr bool is_base_of_or_same_v =
-  std::is_base_of<Base, Derived>::value || std::is_same<Base, Derived>::value;
+  std::is_base_of<std::decay_t<Base>, std::decay_t<Derived>>::value ||
+    std::is_same<std::decay_t<Base>, std::decay_t<Derived>>::value;
 
 // This should really be an inner class of limit_derived_target, without the T_limit template type,
 // But the SUN CC 5.7 (not earlier versions) compiler finds it ambiguous when we specify a
@@ -63,10 +64,10 @@ struct limit_derived_target
   using T_self = limit_derived_target<T_target, T_action>;
 
   template <class T_type>
-  void operator()(const T_type& _A_type) const
+  void operator()(T_type&& _A_type) const
   {
     with_type<is_base_of_or_same_v<T_target, T_type>,
-      T_type, T_self>::execute_(_A_type, *this);
+      T_type, T_self>::execute_(std::forward<T_type>(_A_type), *this);
   }
 
   limit_derived_target(const T_action& _A_action) : action_(_A_action) {}
@@ -103,10 +104,10 @@ struct limit_derived_target<T_target*, T_action>
   using T_self = limit_derived_target<T_target*, T_action>;
 
   template <class T_type>
-  void operator()(const T_type& _A_type) const
+  void operator()(T_type&& _A_type) const
   {
     with_type_pointer<is_base_of_or_same_v<T_target, T_type>,
-      T_type, T_self>::execute_(_A_type, *this);
+      T_type, T_self>::execute_(std::forward<T_type>(_A_type), *this);
   }
 
   limit_derived_target(const T_action& _A_action) : action_(_A_action) {}
