@@ -6,7 +6,7 @@ namespace sigc
 {
 
 /** @defgroup ptr_fun ptr_fun()
- * ptr_fun() is used to convert a pointer to a function to a functor.
+ * ptr_fun() creates a functor from a pointer to a function.
  * If the function pointer is to an overloaded type, you must specify
  * the types using template arguments starting with the first argument.
  * It is not necessary to supply the return type.
