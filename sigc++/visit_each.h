@@ -28,6 +28,10 @@ namespace sigc
 namespace internal
 {
 
+template <class Base, class Derived>
+constexpr bool is_base_of_or_same_v =
+  std::is_base_of<Base, Derived>::value || std::is_same<Base, Derived>::value;
+
 // This should really be an inner class of limit_derived_target, without the T_limit template type,
 // But the SUN CC 5.7 (not earlier versions) compiler finds it ambiguous when we specify a
 // particular specialization of it.
@@ -61,7 +65,7 @@ struct limit_derived_target
   template <class T_type>
   void operator()(const T_type& _A_type) const
   {
-    with_type<std::is_base_of<T_target, T_type>::value || std::is_same<T_target, T_type>::value,
+    with_type<is_base_of_or_same_v<T_target, T_type>,
       T_type, T_self>::execute_(_A_type, *this);
   }
 
@@ -101,8 +105,7 @@ struct limit_derived_target<T_target*, T_action>
   template <class T_type>
   void operator()(const T_type& _A_type) const
   {
-    with_type_pointer<std::is_base_of<T_target, T_type>::value ||
-                        std::is_same<T_target, T_type>::value,
+    with_type_pointer<is_base_of_or_same_v<T_target, T_type>,
       T_type, T_self>::execute_(_A_type, *this);
   }
 
