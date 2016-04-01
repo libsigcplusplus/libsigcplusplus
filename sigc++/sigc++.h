@@ -95,12 +95,6 @@
  *
  * Your @c pkg_check_modules() call should also mention any other libraries that
  * you need to use via pkg-config.
- *
- * @section scope Scope of Documentation
- *
- * libsigc++ contains many template functions and template classes/structs,
- * some with many specializations. This reference manual does not show all
- * specializations of those templates that hardly any user will use directly.
  */
 
 #include <sigc++/signal.h>
