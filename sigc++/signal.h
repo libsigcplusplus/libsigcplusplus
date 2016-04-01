@@ -51,7 +51,7 @@ struct slot_iterator
 
   using iterator_type = typename internal::signal_impl::iterator_type;
 
-  slot_iterator() {}
+  slot_iterator() = default;
 
   explicit slot_iterator(const iterator_type& i) : i_(i) {}
 
@@ -111,7 +111,7 @@ struct slot_const_iterator
 
   using iterator_type = typename internal::signal_impl::const_iterator_type;
 
-  slot_const_iterator() {}
+  slot_const_iterator() = default;
 
   explicit slot_const_iterator(const iterator_type& i) : i_(i) {}
 
@@ -940,7 +940,7 @@ public:
     return slot_list_type(const_cast<signal_with_accumulator*>(this)->impl());
   }
 
-  signal_with_accumulator() {}
+  signal_with_accumulator() = default;
 
   signal_with_accumulator(const signal_with_accumulator& src) : signal_base(src) {}
 
@@ -1058,14 +1058,14 @@ public:
   class accumulated : public signal_with_accumulator<T_return, T_accumulator, T_arg...>
   {
   public:
-    accumulated() {}
+    accumulated() = default;
     accumulated(const accumulated& src)
     : signal_with_accumulator<T_return, T_accumulator, T_arg...>(src)
     {
     }
   };
 
-  signal() {}
+  signal() = default;
 
   signal(const signal& src) : signal_with_accumulator<T_return, accumulator_type, T_arg...>(src) {}
 

@@ -178,7 +178,7 @@ public:
     return T_return();
   }
 
-  inline slot() {}
+  inline slot() = default;
 
   /** Constructs a slot from an arbitrary functor.
    * @param _A_func The desired functor the new slot should be assigned to.

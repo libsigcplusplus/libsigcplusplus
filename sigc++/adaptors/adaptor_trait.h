@@ -88,7 +88,7 @@ struct adaptor_functor : public adaptor_base
   }
 
   /// Constructs an invalid functor.
-  adaptor_functor() {}
+  adaptor_functor() = default;
 
   /** Constructs an adaptor_functor object that wraps the passed functor.
    * @param _A_functor Functor to invoke from operator()().

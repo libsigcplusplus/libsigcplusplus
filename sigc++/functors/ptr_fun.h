@@ -64,7 +64,7 @@ public:
   using result_type = T_return;
 
   /// Constructs an invalid functor.
-  pointer_functor() {}
+  pointer_functor() = default;
 
   /** Constructs a pointer_functor2 object that wraps an existing function.
    * @param _A_func Pointer to function that will be invoked from operator()().

@@ -28,7 +28,7 @@ struct retype_return_functor : public adapts<T_functor>
     return T_return(this->functor_.template operator() < T_arg... > (std::forward<T_arg>(_A_a)...));
   }
 
-  retype_return_functor() {}
+  retype_return_functor() = default;
 
   /** Constructs a retype_return_functor object that perform a C-style cast on the return value of
    * the passed functor.
@@ -70,7 +70,7 @@ struct retype_return_functor<void, T_functor> : public adapts<T_functor>
     this->functor_.template operator()<T_arg...>(_A_a...);
   }
 
-  retype_return_functor() {}
+  retype_return_functor() = default;
   retype_return_functor(type_trait_take_t<T_functor> _A_functor) : adapts<T_functor>(_A_functor) {}
 };
 

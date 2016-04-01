@@ -115,12 +115,12 @@ struct exception_catch_functor<T_functor, T_catcher, void> : public adapts<T_fun
     }
   }
 
-  exception_catch_functor() {}
+  exception_catch_functor() = default;
   exception_catch_functor(const T_functor& _A_func, const T_catcher& _A_catcher)
   : adapts<T_functor>(_A_func), catcher_(_A_catcher)
   {
   }
-  ~exception_catch_functor() {}
+  ~exception_catch_functor() = default;
 
   T_catcher catcher_;
 };
