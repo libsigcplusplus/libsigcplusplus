@@ -30,7 +30,6 @@ nobase_library_include_HEADERS = sigc++.h $(sigc_public_h) $(sigc_built_h)
 lib_LTLIBRARIES = libsigc-@SIGCXX_API_VERSION@.la
 
 libsigc_@SIGCXX_API_VERSION@_la_SOURCES =	\
-	signal.cc				\
 	signal_base.cc				\
 	trackable.cc				\
 	connection.cc				\
