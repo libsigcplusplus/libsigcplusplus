@@ -142,6 +142,34 @@ void test_bound()
 #endif
 }
 
+class TestAutoDisconnect : public sigc::trackable
+{
+public:
+  void foo()
+  {
+    result_stream << "TestAutoDisconnect::foo() called.";
+  }
+};
+
+void test_auto_disconnect()
+{
+  //Check that slot doesn't try to call a method on a destroyed instance,
+  //when the instance's class derives from trackable.
+  sigc::slot<void()> slot_of_member_method;
+  {
+    TestAutoDisconnect t;
+    slot_of_member_method = sigc::mem_fun(t, &TestAutoDisconnect::foo);
+
+    //The method should be called:
+    slot_of_member_method();
+    util->check_result(result_stream, "TestAutoDisconnect::foo() called.");
+  }
+
+  //The method should not be called:
+  slot_of_member_method();
+  util->check_result(result_stream, "");
+}
+
 int
 main(int argc, char* argv[])
 {
@@ -162,6 +190,8 @@ main(int argc, char* argv[])
 #endif
 
   test_bound();
+
+  test_auto_disconnect();
 
   return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;
 }
