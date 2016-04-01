@@ -213,6 +213,10 @@ struct SIGC_API slot_do_unbind
  * auto sl = sigc::mem_fun(someobj, &SomeClass::somemethod); // Not a slot!
  * @endcode
  *
+ * If you don't explicitly use a sigc::slot then the slot could call a method
+ * on an instance after it has been destroyed even if the method is in a class
+ * that derives from sigc::trackable.
+ *
  * @section slots-with-lambdas C++ Lambdas
  *
  * A C++11 lambda expression is a functor (function object). It is automatically
