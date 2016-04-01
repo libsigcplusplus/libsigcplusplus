@@ -20,7 +20,6 @@ set (SOURCE_FILES
 	signal.cc
 	trackable.cc
 	functors/slot_base.cc
-	functors/slot.cc
 )
 
 set (SIGCPP_LIB_NAME sigc-${SIGCXX_API_VERSION})
