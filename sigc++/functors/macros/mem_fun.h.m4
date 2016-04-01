@@ -217,9 +217,11 @@ namespace sigc {
  *
  * Optionally, a reference or pointer to an object can be bound to the functor.
  *
- * @note Only if the object type inherits from sigc::trackable, and the
- * functor returned from mem_fun() is assigned to a sigc::slot, is the functor
- * automatically cleared when the object goes out of scope!
+ * @note If the object type inherits from sigc::trackable, and the
+ * functor returned from mem_fun() is assigned to a sigc::slot, the functor
+ * will be automatically cleared when the object goes out of scope. Invoking
+ * that slot will then have no effect and will not try to use the destroyed
+ * instance.
  *
  * If the member function pointer is to an overloaded type, you must specify
  * the types using template arguments starting with the first argument.
