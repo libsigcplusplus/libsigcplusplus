@@ -138,7 +138,7 @@ FOR(1, $1,[
       //This avoids a leak on MSVC++ - see http://bugzilla.gnome.org/show_bug.cgi?id=306249
       { 
         temp_slot_list slots(impl->slots_);
-        iterator_type it = slots.begin();
+        auto it = slots.begin();
         for (; it != slots.end(); ++it)
           if (!it->empty() && !it->blocked()) break;
           
@@ -234,7 +234,7 @@ FOR(1, $1,[
       signal_exec exec(impl);
       temp_slot_list slots(impl->slots_);
 
-      for (iterator_type it = slots.begin(); it != slots.end(); ++it)
+      for (auto it = slots.begin(); it != slots.end(); ++it)
         {
           if (it->empty() || it->blocked())
             continue;
@@ -262,7 +262,7 @@ FOR(1, $1,[
       typedef std::reverse_iterator<signal_impl::iterator_type, std::random_access_iterator_tag,
                                      slot_base, slot_base&, slot_base*, std::ptrdiff_t> reverse_iterator_type;
 #endif
-      for (reverse_iterator_type it = reverse_iterator_type(slots.end()); it != reverse_iterator_type(slots.begin()); ++it)
+      for (auto it = reverse_iterator_type(slots.end()); it != reverse_iterator_type(slots.begin()); ++it)
         {
           if (it->empty() || it->blocked())
             continue;
@@ -1126,7 +1126,7 @@ struct slot_reverse_iterator_buf
 
   result_type operator*() const
     {
-      iterator_type __tmp(i_);
+      auto __tmp(i_);
 	  --__tmp;
       if (!__tmp->empty() && !__tmp->blocked() && !invoked_)
         {
@@ -1205,7 +1205,7 @@ struct slot_reverse_iterator_buf<T_emitter, void>
 
   void operator*() const
     {
-      iterator_type __tmp(i_);
+      auto __tmp(i_);
 	  --__tmp;
 	  if (!__tmp->empty() && !__tmp->blocked() && !invoked_)
         {
