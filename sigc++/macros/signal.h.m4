@@ -234,11 +234,11 @@ FOR(1, $1,[
       signal_exec exec(impl);
       temp_slot_list slots(impl->slots_);
 
-      for (auto it = slots.begin(); it != slots.end(); ++it)
+      for (const auto& slot : slots)
         {
-          if (it->empty() || it->blocked())
+          if (slot.empty() || slot.blocked())
             continue;
-          (reinterpret_cast<call_type>(it->rep_->call_))(LIST(it->rep_, LOOP(_A_a%1, $1)));
+          (reinterpret_cast<call_type>(slot.rep_->call_))(LIST(slot.rep_, LOOP(_A_a%1, $1)));
         }
     }
 
