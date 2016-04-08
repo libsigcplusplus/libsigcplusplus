@@ -1,3 +1,11 @@
+2.9.2 (unstable):
+
+* Minor documentation improvements.
+  (Murray Cumming)
+* Some more minor uses of C++11 syntax.
+  (Murray Cumming)
+
+
 2.9.1 (unstable):
 
 * slot: Allow sigc::slot<R(Args...)> syntax, like std::function,
