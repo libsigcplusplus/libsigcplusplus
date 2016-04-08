@@ -1,3 +1,16 @@
+2.9.4 (unstable):
+
+* Minor documentation improvements.
+  (Murray Cumming)
+* Make some constructors explicit.
+  (Murray Cumming)
+* Some more minor uses of C++11 syntax.
+  (Murray Cumming)
+* Remove unused SIGC_FUNCTORS_DEDUCE_RESULT_TYPE_WITH_DECLTYPE.
+  (Murray Cumming)
+* Reformat code with clang-format.
+  (Murray Cumming)
+
 2.99.3 (unstable):
 
 * Correct the license of some header files from GPL to LGPL.
