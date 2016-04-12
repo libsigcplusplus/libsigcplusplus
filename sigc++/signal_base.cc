@@ -190,11 +190,14 @@ signal_impl::notify(notifiable* d)
     signal_exec exec(si->self_);
     si->self_->slots_.erase(si->iter_);
   }
-  else // This is occuring during signal emission or slot erasure.
-    si->self_->deferred_ =
-      true; // => sweep() will be called from ~signal_exec() after signal emission.
-  // This is safer because we don't have to care about our
-  // iterators in emit(), clear(), and erase().
+  else
+  {
+    // This is occuring during signal emission or slot erasure.
+    // => sweep() will be called from ~signal_exec() after signal emission.
+    // This is safer because we don't have to care about our
+    // iterators in emit(), clear(), and erase().
+    si->self_->deferred_ = true;
+  }
 }
 
 } /* namespace internal */
