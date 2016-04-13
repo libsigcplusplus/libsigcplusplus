@@ -560,6 +560,37 @@ private:
   mutable bool invoked_;
 };
 
+/** Temporary slot list used during signal emission.
+ *  Through evolution this class is slightly misnamed.  It is now
+ *  an index into the slot_list passed into it.  It simply keeps track
+ *  of where the end of this list was at construction, and pretends that's
+ *  the end of your list.  This way you may connect during emission without
+ *  inadvertently entering an infinite loop, as well as make other
+ *  modifications to the slot_list at your own risk.
+ */
+struct temp_slot_list
+{
+  using slot_list = signal_impl::slot_list;
+  using iterator = signal_impl::iterator_type;
+  using const_iterator = signal_impl::const_iterator_type;
+
+  temp_slot_list(slot_list& slots) : slots_(slots)
+  {
+    placeholder = slots_.insert(slots_.end(), slot_base());
+  }
+
+  ~temp_slot_list() { slots_.erase(placeholder); }
+
+  iterator begin() { return slots_.begin(); }
+  iterator end() { return placeholder; }
+  const_iterator begin() const { return slots_.begin(); }
+  const_iterator end() const { return placeholder; }
+
+private:
+  slot_list& slots_;
+  slot_list::iterator placeholder;
+};
+
 /** Abstracts signal emission.
  * This template implements the emit() function of signal_with_accumulator.
  * Template specializations are available to optimize signal
