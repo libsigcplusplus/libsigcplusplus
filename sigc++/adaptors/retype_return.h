@@ -1,6 +1,6 @@
 #ifndef _SIGC_ADAPTORS_RETYPE_RETURN_H_
 #define _SIGC_ADAPTORS_RETYPE_RETURN_H_
-#include <sigc++/adaptors/adaptor_trait.h>
+#include <sigc++/adaptors/adapts.h>
 
 namespace sigc
 {

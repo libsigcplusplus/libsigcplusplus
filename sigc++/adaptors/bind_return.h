@@ -1,6 +1,6 @@
 #ifndef _SIGC_ADAPTORS_BIND_RETURN_H_
 #define _SIGC_ADAPTORS_BIND_RETURN_H_
-#include <sigc++/adaptors/adaptor_trait.h>
+#include <sigc++/adaptors/adapts.h>
 #include <sigc++/adaptors/bound_argument.h>
 
 namespace sigc

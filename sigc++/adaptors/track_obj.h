@@ -1,7 +1,7 @@
 #ifndef _SIGC_ADAPTORS_TRACK_OBJ_H_
 #define _SIGC_ADAPTORS_TRACK_OBJ_H_
 
-#include <sigc++/adaptors/adaptor_trait.h>
+#include <sigc++/adaptors/adapts.h>
 #include <sigc++/adaptors/tuple_visitor_visit_each.h>
 #include <sigc++/limit_reference.h>
 #include <sigc++/tuple-utils/tuple_for_each.h>

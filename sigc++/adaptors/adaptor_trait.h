@@ -34,11 +34,6 @@
 namespace sigc
 {
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-template <class T_functor>
-struct adapts;
-#endif
-
 /** @defgroup adaptors Adaptors
  * Adaptors are functors that alter the signature of a functor's
  * operator()().
@@ -166,84 +161,6 @@ private:
 public:
   using result_type = typename functor_trait<T_functor>::result_type;
   using adaptor_type = adaptor_functor<functor_type>;
-};
-
-// Doxygen (at least version 1.8.4) removes blank lines in a code block.
-// That's why there are empty comment lines in the following code block.
-/** Base type for adaptors.
- * sigc::adapts wraps adaptors, functors, function pointers and class methods.
- * It contains a single member functor which is always a sigc::adaptor_base.
- * The adaptor_type alias defines the exact type that is used
- * to store the adaptor, functor, function pointer or class method passed
- * into the constructor. It differs from @a T_functor unless @a T_functor
- * inherits from sigc::adaptor_base.
- *
- * @par Example of a simple adaptor:
- * @code
- * namespace my_ns
- * {
- * template <class T_functor>
- * struct my_adaptor : public sigc::adapts<T_functor>
- * {
- *   using result_type = typename sigc::functor_trait<T_functor>::result_type;
- *   //
- *   result_type
- *   operator()() const;
- *   //
- *   template <class T_arg1>
- *   decltype(auto)
- *   operator()(T_arg1 _A_arg1) const;
- *   //
- *   template <class T_arg1, class T_arg2>
- *   decltype(auto)
- *   operator()(T_arg1 _A_arg1, T_arg2 _A_arg2) const;
- *   //
- *   // Constructs a my_adaptor object that wraps the passed functor.
- *   // Initializes adapts<T_functor>::functor_, which is invoked from operator()().
- *   explicit my_adaptor(const T_functor& _A_functor)
- *     : sigc::adapts<T_functor>(_A_functor) {}
- * };
- * } // end namespace my_ns
- * //
- * // Specialization of sigc::visitor for my_adaptor.
- * namespace sigc
- * {
- * template <class T_functor>
- * struct visitor<my_ns::my_adaptor<T_functor> >
- * {
- *   template <class T_action>
- *   static void do_visit_each(const T_action& _A_action,
- *                             const my_ns::my_adaptor<T_functor>& _A_target)
- *   {
- *     sigc::visit_each(_A_action, _A_target.functor_);
- *   }
- * };
- * } // end namespace sigc
- * @endcode
- *
- * If you implement your own adaptor, you must also provide your specialization
- * of sigc::visitor<>::do_visit_each<>() that will forward the call to the functor(s)
- * your adapter is wrapping. Otherwise, pointers stored within the functor won't be
- * invalidated when a sigc::trackable object is destroyed and you can end up
- * executing callbacks on destroyed objects.
- *
- * Your specialization of sigc::visitor<> must be in namespace sigc.
- *
- * @ingroup adaptors
- */
-template <class T_functor>
-struct adapts : public adaptor_base
-{
-  using result_type = typename adaptor_trait<T_functor>::result_type;
-  using adaptor_type = typename adaptor_trait<T_functor>::adaptor_type;
-
-  /** Constructs an adaptor that wraps the passed functor.
-   * @param _A_functor Functor to invoke from operator()().
-   */
-  explicit adapts(const T_functor& _A_functor) : functor_(_A_functor) {}
-
-  /// Adaptor that is invoked from operator()().
-  mutable adaptor_type functor_;
 };
 
 } /* namespace sigc */

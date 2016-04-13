@@ -35,6 +35,7 @@ sigc_public_h =				\
 	tuple-utils/tuple_transform_each.h \
 	type_traits.h			\
 	visit_each.h			\
+	adaptors/adapts.h		\
 	adaptors/adaptor_base.h \
 	adaptors/adaptors.h		\
 	adaptors/adaptor_trait.h		\

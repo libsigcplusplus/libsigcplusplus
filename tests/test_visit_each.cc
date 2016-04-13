@@ -22,6 +22,7 @@
 #include <sstream>
 #include <cstdlib>
 #include <sigc++/signal.h>
+#include <sigc++/adaptors/adapts.h>
 
 // SIGCTEST_CASE 1  Assume that class sigc::visitor has not been implemented.
 //                  Don't test with MyClass2, which is expected to fail in this case.
