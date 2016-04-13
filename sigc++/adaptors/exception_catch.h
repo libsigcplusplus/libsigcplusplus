@@ -59,9 +59,6 @@ template <class T_functor, class T_catcher,
   class T_return = typename adapts<T_functor>::result_type>
 struct exception_catch_functor : public adapts<T_functor>
 {
-private:
-  using adaptor_type = typename adapts<T_functor>::adaptor_type;
-
 public:
   using result_type = T_return;
 
@@ -102,9 +99,6 @@ public:
 template <class T_functor, class T_catcher>
 struct exception_catch_functor<T_functor, T_catcher, void> : public adapts<T_functor>
 {
-private:
-  using adaptor_type = typename adapts<T_functor>::adaptor_type;
-
 public:
   using result_type = void;
 
