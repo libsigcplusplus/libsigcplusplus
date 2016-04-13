@@ -13,7 +13,7 @@ namespace
 {
 std::ostringstream result_stream;
 
-struct f : public sigc::functor_base
+struct f
 {
   using result_type = int;
 
@@ -24,7 +24,7 @@ struct f : public sigc::functor_base
   }
 };
 
-struct g : public sigc::functor_base
+struct g
 {
   using result_type = int;
 
@@ -35,7 +35,7 @@ struct g : public sigc::functor_base
   }
 };
 
-struct g_void : public sigc::functor_base
+struct g_void
 {
   using result_type = void;
 

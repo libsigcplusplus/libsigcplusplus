@@ -13,7 +13,7 @@ namespace
 {
 std::ostringstream result_stream;
 
-struct foo : public sigc::functor_base
+struct foo
 {
   using result_type = float;
 
@@ -30,7 +30,7 @@ struct foo : public sigc::functor_base
   }
 };
 
-struct bar : public sigc::trackable, public sigc::functor_base
+struct bar : public sigc::trackable
 {
   using result_type = int;
 

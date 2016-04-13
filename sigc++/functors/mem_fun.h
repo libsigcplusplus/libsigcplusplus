@@ -69,7 +69,7 @@ namespace sigc
  */
 
 template <class T_func, class... T_arg>
-class mem_functor : public functor_base
+class mem_functor
 {
 public:
   using object_type = typename internal::member_method_class<T_func>::type;

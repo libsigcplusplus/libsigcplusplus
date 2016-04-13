@@ -53,7 +53,7 @@ template <class T_return, class... T_args>
 class pointer_functor;
 
 template <class T_return, class... T_args>
-class pointer_functor<T_return(T_args...)> : public functor_base
+class pointer_functor<T_return(T_args...)>
 {
   using function_type = T_return (*)(T_args...);
 

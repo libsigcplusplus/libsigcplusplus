@@ -21,7 +21,6 @@
 
 #include <sigc++config.h>
 #include <sigc++/trackable.h>
-#include <sigc++/functors/functor_base.h>
 
 namespace sigc
 {
@@ -275,7 +274,7 @@ struct SIGC_API slot_do_unbind
  *
  * @ingroup slot
  */
-class SIGC_API slot_base : public functor_base
+class SIGC_API slot_base
 {
   using rep_type = internal::slot_rep;
 

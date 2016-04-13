@@ -1,6 +1,5 @@
 #ifndef _SIGC_FUNCTORS_FUNCTOR_TRAIT_H_
 #define _SIGC_FUNCTORS_FUNCTOR_TRAIT_H_
-#include <sigc++/functors/functor_base.h>
 #include <sigc++/functors/mem_fun.h>
 #include <sigc++/functors/ptr_fun.h>
 #include <sigc++/type_traits.h>

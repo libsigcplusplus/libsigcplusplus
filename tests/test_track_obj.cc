@@ -57,7 +57,7 @@ struct bar_group4 : public sigc::trackable
 {
 };
 
-class Functor1 : public sigc::functor_base
+class Functor1
 {
 public:
   using result_type = std::string;
@@ -70,7 +70,7 @@ private:
   const bar_group4& bar_;
 };
 
-class Functor2 : public sigc::functor_base
+class Functor2
 {
 public:
   using result_type = std::string;

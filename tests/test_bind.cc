@@ -15,7 +15,7 @@ namespace
 {
 std::ostringstream result_stream;
 
-struct foo : public sigc::functor_base
+struct foo
 {
   // choose a type that can hold all return values
   using result_type = int;
@@ -39,7 +39,7 @@ struct foo : public sigc::functor_base
   }
 };
 
-struct foo_void : public sigc::functor_base
+struct foo_void
 {
   using result_type = void;
 

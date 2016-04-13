@@ -16,7 +16,7 @@ namespace sigc
  *
  * @ingroup adaptors
  */
-struct adaptor_base : public functor_base
+struct adaptor_base
 {
 };
 
