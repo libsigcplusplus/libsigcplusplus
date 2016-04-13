@@ -2,11 +2,12 @@
 #define _SIGC_ADAPTORS_BIND_H_
 #include <sigc++/adaptors/adaptor_trait.h>
 #include <sigc++/adaptors/bound_argument.h>
-#include <tuple>
+#include <sigc++/adaptors/tuple_visitor_visit_each.h>
 #include <sigc++/tuple-utils/tuple_for_each.h>
 #include <sigc++/tuple-utils/tuple_start.h>
 #include <sigc++/tuple-utils/tuple_end.h>
 #include <sigc++/tuple-utils/tuple_transform_each.h>
+
 
 namespace sigc
 {
@@ -208,22 +209,6 @@ private:
   }
 };
 
-namespace
-{
-
-// TODO: Avoid duplication with TrackObjVisitForEach in track_obj.h
-template <typename T_element>
-struct TupleVisitorVisitEach
-{
-  template <typename T_action>
-  constexpr static void visit(const T_element& element, T_action&& action)
-  {
-    sigc::visit_each(std::forward<T_action>(action), element);
-  }
-};
-
-} // anonymous namespace
-
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 // template specialization of visitor<>::do_visit_each<>(action, functor):
 /** Performs a functor on each of the targets of a functor.
@@ -260,7 +245,7 @@ struct visitor<bind_functor<-1, T_functor, T_type...>>
   {
     sigc::visit_each(_A_action, _A_target.functor_);
 
-    sigc::internal::tuple_for_each<TupleVisitorVisitEach>(_A_target.bound_, _A_action);
+    sigc::internal::tuple_for_each<internal::TupleVisitorVisitEach>(_A_target.bound_, _A_action);
   }
 };
 

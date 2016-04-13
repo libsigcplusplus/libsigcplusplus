@@ -2,6 +2,7 @@
 #define _SIGC_ADAPTORS_TRACK_OBJ_H_
 
 #include <sigc++/adaptors/adaptor_trait.h>
+#include <sigc++/adaptors/tuple_visitor_visit_each.h>
 #include <sigc++/limit_reference.h>
 #include <sigc++/tuple-utils/tuple_for_each.h>
 
@@ -110,19 +111,8 @@ struct visitor<track_obj_functor<T_functor, T_obj...>>
 
     // Call sigc::visit_each(_A_action, element) on each element in the
     //_A_target.obj_ tuple:
-    sigc::internal::tuple_for_each<TrackObjVisitForEach>(_A_target.obj_, _A_action);
+    sigc::internal::tuple_for_each<internal::TupleVisitorVisitEach>(_A_target.obj_, _A_action);
   }
-
-private:
-  template <typename T_element>
-  struct TrackObjVisitForEach
-  {
-    template <typename T_action>
-    constexpr static void visit(const T_element& element, T_action&& action)
-    {
-      sigc::visit_each(std::forward<T_action>(action), element);
-    }
-  };
 };
 #endif // DOXYGEN_SHOULD_SKIP_THIS
 

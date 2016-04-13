@@ -47,6 +47,7 @@ sigc_public_h =				\
 	adaptors/retype.h \
 	adaptors/track_obj.h \
 	adaptors/retype_return.h \
+	adaptors/tuple_visitor_visit_each.h \
 	functors/functor_base.h \
 	functors/functor_trait.h		\
 	functors/functors.h		\
