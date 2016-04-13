@@ -43,13 +43,9 @@ namespace sigc
 template <class T_setter, class T_getter>
 struct compose1_functor : public adapts<T_setter>
 {
-private:
-  using adaptor_type = typename adapts<T_setter>::adaptor_type;
-
-public:
   using setter_type = T_setter;
   using getter_type = T_getter;
-  using result_type = typename adaptor_type::result_type;
+  using result_type = typename functor_trait<T_setter>::result_type;
 
   decltype(auto) operator()() { return this->functor_(get_()); }
 

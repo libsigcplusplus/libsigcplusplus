@@ -56,7 +56,7 @@ namespace sigc
  */
 
 template <class T_functor, class T_catcher,
-  class T_return = typename adapts<T_functor>::result_type>
+  class T_return = typename functor_trait<T_functor>::result_type>
 struct exception_catch_functor : public adapts<T_functor>
 {
 public:

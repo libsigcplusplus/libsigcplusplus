@@ -65,8 +65,6 @@ namespace sigc
 template <class T_functor>
 struct adaptor_functor : public adaptor_base
 {
-  using result_type = typename functor_trait<T_functor>::result_type;
-
   /** Invokes the wrapped functor passing on the arguments.
    * @return The return value of the functor invocation.
    */

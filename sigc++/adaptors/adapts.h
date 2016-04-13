@@ -76,7 +76,6 @@ namespace sigc
 template <class T_functor>
 struct adapts : public adaptor_base
 {
-  using result_type = typename functor_trait<T_functor>::result_type;
   using adaptor_type = typename adaptor_trait<T_functor>::adaptor_type;
 
   /** Constructs an adaptor that wraps the passed functor.

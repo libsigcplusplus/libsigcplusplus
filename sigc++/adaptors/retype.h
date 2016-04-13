@@ -61,11 +61,7 @@ namespace sigc
 template <class T_functor, class... T_type>
 struct retype_functor : public adapts<T_functor>
 {
-private:
-  using adaptor_type = typename adapts<T_functor>::adaptor_type;
-
-public:
-  using result_type = typename adapts<T_functor>::result_type;
+  using result_type = typename functor_trait<T_functor>::result_type;
 
   template <class... T_arg>
   decltype(auto) operator()(T_arg... _A_a)
