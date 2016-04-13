@@ -263,7 +263,6 @@ struct slot_iterator_buf
   using pointer = T_result*;
 
   using emitter_type = T_emitter;
-  using result_type = T_result;
   using slot_type = typename T_emitter::slot_type;
 
   using iterator_type = signal_impl::const_iterator_type;
@@ -327,7 +326,7 @@ struct slot_iterator_buf
 private:
   iterator_type i_;
   const emitter_type* c_;
-  mutable result_type r_;
+  mutable T_result r_;
   mutable bool invoked_;
 };
 
@@ -341,7 +340,6 @@ struct slot_iterator_buf<T_emitter, void>
   using iterator_category = std::bidirectional_iterator_tag;
 
   using emitter_type = T_emitter;
-  using result_type = void;
   using slot_type = typename T_emitter::slot_type;
 
   using iterator_type = signal_impl::const_iterator_type;
@@ -416,7 +414,6 @@ struct slot_reverse_iterator_buf
   using pointer = T_result*;
 
   using emitter_type = T_emitter;
-  using result_type = T_result;
   using slot_type = typename T_emitter::slot_type;
 
   using iterator_type = signal_impl::const_iterator_type;
@@ -483,7 +480,7 @@ struct slot_reverse_iterator_buf
 private:
   iterator_type i_;
   const emitter_type* c_;
-  mutable result_type r_;
+  mutable T_result r_;
   mutable bool invoked_;
 };
 
@@ -497,7 +494,6 @@ struct slot_reverse_iterator_buf<T_emitter, void>
   using iterator_category = std::bidirectional_iterator_tag;
 
   using emitter_type = T_emitter;
-  using result_type = void;
   using slot_type = typename T_emitter::slot_type;
 
   using iterator_type = signal_impl::const_iterator_type;
@@ -874,7 +870,6 @@ class signal_with_accumulator : public signal_base
 {
 public:
   using emitter_type = internal::signal_emit<T_return, T_accumulator, T_arg...>;
-  using result_type = typename emitter_type::result_type;
   using slot_type = slot<T_return(T_arg...)>;
   using slot_list_type = slot_list<slot_type>;
   using iterator = typename slot_list_type::iterator;
@@ -951,6 +946,7 @@ public:
    */
   decltype(auto) make_slot() const
   {
+    using result_type = typename emitter_type::result_type;
     return bound_mem_functor<result_type (signal_with_accumulator::*)(type_trait_take_t<T_arg>...)
                                const,
       type_trait_take_t<T_arg>...>(*this, &signal_with_accumulator::emit);
