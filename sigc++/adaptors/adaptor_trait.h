@@ -123,8 +123,8 @@ struct visitor<adaptor_functor<T_functor>>
 #endif // DOXYGEN_SHOULD_SKIP_THIS
 
 /** Trait that specifies what is the adaptor version of a functor type.
- * Template specializations for sigc::adaptor_base derived functors,
- * for function pointers and for class methods are provided.
+ * Template specializations exist for sigc::adaptor_base-derived functors,
+ * for function pointers and for class methods.
  *
  * The template argument @e T_functor is the functor type to convert.
  * @e I_isadaptor indicates whether @e T_functor inherits from sigc::adaptor_base.
@@ -135,7 +135,7 @@ template <class T_functor, bool I_isadaptor = std::is_base_of<adaptor_base, T_fu
 struct adaptor_trait;
 
 
-/** Trait that specifies what is the adaptor version of a functor type.
+/** Trait that specifies the adaptor version of a functor type.
  * This template specialization is used for types that inherit from adaptor_base.
  * adaptor_type is equal to @p T_functor in this case.
  */
@@ -146,9 +146,9 @@ struct adaptor_trait<T_functor, true>
   using adaptor_type = T_functor;
 };
 
-/** Trait that specifies what is the adaptor version of a functor type.
+/** Trait that specifies the adaptor version of a functor type.
  * This template specialization is used for arbitrary functors,
- * for function pointers and for class methods are provided.
+ * for function pointers and for class methods.
  * The latter are converted into @p pointer_functor or @p mem_functor types.
  * adaptor_type is equal to @p adaptor_functor<functor_type>.
  */
