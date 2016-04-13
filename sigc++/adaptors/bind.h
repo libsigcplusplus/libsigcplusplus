@@ -107,7 +107,10 @@ struct TransformEachInvoker
 template <int I_location, class T_functor, class... T_bound>
 struct bind_functor : public adapts<T_functor>
 {
+private:
   using adaptor_type = typename adapts<T_functor>::adaptor_type;
+
+public:
   using result_type = typename adaptor_type::result_type;
 
   /** Invokes the wrapped functor passing on the arguments.
@@ -167,7 +170,10 @@ private:
 template <class T_functor, class... T_type>
 struct bind_functor<-1, T_functor, T_type...> : public adapts<T_functor>
 {
+private:
   using adaptor_type = typename adapts<T_functor>::adaptor_type;
+
+public:
   using result_type = typename adaptor_type::result_type;
 
   /** Invokes the wrapped functor passing on the arguments.

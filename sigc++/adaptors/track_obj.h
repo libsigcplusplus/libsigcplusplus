@@ -51,8 +51,10 @@ namespace sigc
 template <typename T_functor, typename... T_obj>
 class track_obj_functor : public adapts<T_functor>
 {
-public:
+private:
   using adaptor_type = typename adapts<T_functor>::adaptor_type;
+
+public:
   using result_type = typename adaptor_type::result_type;
 
   /** Constructs a track_obj_functor object that wraps the passed functor and

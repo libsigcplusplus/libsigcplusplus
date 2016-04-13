@@ -43,7 +43,10 @@ namespace sigc
 template <class T_setter, class T_getter>
 struct compose1_functor : public adapts<T_setter>
 {
+private:
   using adaptor_type = typename adapts<T_setter>::adaptor_type;
+
+public:
   using setter_type = T_setter;
   using getter_type = T_getter;
   using result_type = typename adaptor_type::result_type;
@@ -82,7 +85,10 @@ struct compose1_functor : public adapts<T_setter>
 template <class T_setter, class T_getter1, class T_getter2>
 struct compose2_functor : public adapts<T_setter>
 {
+private:
   using adaptor_type = typename adapts<T_setter>::adaptor_type;
+
+public:
   using setter_type = T_setter;
   using getter1_type = T_getter1;
   using getter2_type = T_getter2;

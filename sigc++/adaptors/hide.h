@@ -69,7 +69,10 @@ namespace sigc
 template <int I_location, class T_functor>
 struct hide_functor : public adapts<T_functor>
 {
+private:
   using adaptor_type = typename adapts<T_functor>::adaptor_type;
+
+public:
   using result_type = typename adaptor_type::result_type;
 
   /** Invokes the wrapped functor, ignoring the argument at index @e I_location (0-indexed).
