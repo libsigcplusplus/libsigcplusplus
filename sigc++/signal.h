@@ -597,7 +597,6 @@ template <class T_return, class T_accumulator, class... T_arg>
 struct signal_emit
 {
   using self_type = signal_emit<T_return, T_accumulator, T_arg...>;
-  using result_type = typename T_accumulator::result_type;
   using slot_type = slot<T_return(T_arg...)>;
   using slot_iterator_buf_type = internal::slot_iterator_buf<self_type, T_return>;
   using slot_reverse_iterator_buf_type = internal::slot_reverse_iterator_buf<self_type, T_return>;
@@ -680,7 +679,6 @@ template <class T_return, class... T_arg>
 struct signal_emit<T_return, void, T_arg...>
 {
   using self_type = signal_emit<T_return, void, T_arg...>;
-  using result_type = T_return;
   using slot_type = slot<T_return(T_arg...)>;
   using iterator_type = signal_impl::const_iterator_type;
   using call_type = typename slot_type::call_type;
@@ -786,7 +784,6 @@ template <class... T_arg>
 struct signal_emit<void, void, T_arg...>
 {
   using self_type = signal_emit<void, void, T_arg...>;
-  using result_type = void;
   using slot_type = slot<void(T_arg...)>;
   using iterator_type = signal_impl::const_iterator_type;
   using call_type = typename slot_type::call_type;
@@ -946,7 +943,8 @@ public:
    */
   decltype(auto) make_slot() const
   {
-    using result_type = typename emitter_type::result_type;
+    //TODO: Instead use std::result_of<> on the static emitter_type::emit()
+    using result_type = typename internal::member_method_result<decltype(&signal_with_accumulator::emit)>::type;
     return bound_mem_functor<result_type (signal_with_accumulator::*)(type_trait_take_t<T_arg>...)
                                const,
       type_trait_take_t<T_arg>...>(*this, &signal_with_accumulator::emit);
@@ -1043,18 +1041,16 @@ public:
    * from the results of the slot invokations. The iterators' operator*()
    * executes the slot. The return value is buffered, so that in an expression
    * like @code a = (*i) * (*i); @endcode the slot is executed only once.
-   * The accumulator must define its return value as @p result_type.
    *
    * @par Example 1:
    * This accumulator calculates the arithmetic mean value:
    * @code
    * struct arithmetic_mean_accumulator
    * {
-   *   using result_type = double;
    *   template<typename T_iterator>
-   *   result_type operator()(T_iterator first, T_iterator last) const
+   *   double operator()(T_iterator first, T_iterator last) const
    *   {
-   *     result_type value_ = 0;
+   *     double value_ = 0;
    *     int n_ = 0;
    *     for (; first != last; ++first, ++n_)
    *       value_ += *first;
@@ -1068,9 +1064,8 @@ public:
    * @code
    * struct interruptable_accumulator
    * {
-   *   using result_type = bool;
    *   template<typename T_iterator>
-   *   result_type operator()(T_iterator first, T_iterator last) const
+   *   bool operator()(T_iterator first, T_iterator last) const
    *   {
    *     for (; first != last; ++first, ++n_)
    *       if (!*first) return false;
