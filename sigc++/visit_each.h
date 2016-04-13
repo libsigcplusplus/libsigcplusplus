@@ -61,11 +61,11 @@ struct with_type<true, T_type, T_limit>
 template <class T_target, class T_action>
 struct limit_derived_target
 {
-  using T_self = limit_derived_target<T_target, T_action>;
-
   template <class T_type>
   void operator()(T_type&& _A_type) const
   {
+    using T_self = limit_derived_target<T_target, T_action>;
+
     with_type<is_base_of_or_same_v<T_target, T_type>,
       T_type, T_self>::execute_(std::forward<T_type>(_A_type), *this);
   }
@@ -101,11 +101,11 @@ struct with_type_pointer<true, T_type, T_limit>
 template <class T_target, class T_action>
 struct limit_derived_target<T_target*, T_action>
 {
-  using T_self = limit_derived_target<T_target*, T_action>;
-
   template <class T_type>
   void operator()(T_type&& _A_type) const
   {
+    using T_self = limit_derived_target<T_target*, T_action>;
+
     with_type_pointer<is_base_of_or_same_v<T_target, T_type>,
       T_type, T_self>::execute_(std::forward<T_type>(_A_type), *this);
   }
