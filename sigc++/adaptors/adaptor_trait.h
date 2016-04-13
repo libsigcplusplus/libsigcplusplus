@@ -136,15 +136,9 @@ struct visitor<adaptor_functor<T_functor>>
  *
  * @ingroup adaptors
  */
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
 template <class T_functor, bool I_isadaptor = std::is_base_of<adaptor_base, T_functor>::value>
 struct adaptor_trait;
-#else
-template <class T_functor, bool I_isadaptor = std::is_base_of<adaptor_base, T_functor>::value>
-struct adaptor_trait
-{
-};
-#endif
+
 
 /** Trait that specifies what is the adaptor version of a functor type.
  * This template specialization is used for types that inherit from adaptor_base.
