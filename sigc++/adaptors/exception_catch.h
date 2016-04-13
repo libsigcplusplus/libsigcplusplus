@@ -55,13 +55,9 @@ namespace sigc
  * @ingroup adaptors
  */
 
-template <class T_functor, class T_catcher,
-  class T_return = typename functor_trait<T_functor>::result_type>
+template <class T_functor, class T_catcher>
 struct exception_catch_functor : public adapts<T_functor>
 {
-public:
-  using result_type = T_return;
-
   decltype(auto) operator()()
   {
     try
@@ -95,45 +91,14 @@ public:
   T_catcher catcher_;
 };
 
-// void specialization
-template <class T_functor, class T_catcher>
-struct exception_catch_functor<T_functor, T_catcher, void> : public adapts<T_functor>
-{
-public:
-  using result_type = void;
-
-
-  template <class... T_arg>
-  decltype(auto) operator()(T_arg... _A_a)
-  {
-    try
-    {
-      return this->functor_.template operator()<type_trait_pass_t<T_arg>...>(_A_a...);
-    }
-    catch (...)
-    {
-      return catcher_();
-    }
-  }
-
-  exception_catch_functor() = default;
-  exception_catch_functor(const T_functor& _A_func, const T_catcher& _A_catcher)
-  : adapts<T_functor>(_A_func), catcher_(_A_catcher)
-  {
-  }
-  ~exception_catch_functor() = default;
-
-  T_catcher catcher_;
-};
-
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 // template specialization of visitor<>::do_visit_each<>(action, functor):
-template <class T_functor, class T_catcher, class T_return>
-struct visitor<exception_catch_functor<T_functor, T_catcher, T_return>>
+template <class T_functor, class T_catcher>
+struct visitor<exception_catch_functor<T_functor, T_catcher>>
 {
   template <typename T_action>
   static void do_visit_each(const T_action& _A_action,
-    const exception_catch_functor<T_functor, T_catcher, T_return>& _A_target)
+    const exception_catch_functor<T_functor, T_catcher>& _A_target)
   {
     sigc::visit_each(_A_action, _A_target.functor_);
     sigc::visit_each(_A_action, _A_target.catcher_);

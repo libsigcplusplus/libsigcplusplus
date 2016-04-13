@@ -75,7 +75,6 @@ public:
   using object_type = typename internal::member_method_class<T_func>::type;
 
   using function_type = T_func;
-  using result_type = typename internal::member_method_result<T_func>::type;
 
   using obj_type_with_modifier =
     typename std::conditional_t<internal::member_method_is_const<T_func>::value, const object_type,
@@ -110,7 +109,6 @@ class bound_mem_functor : mem_functor<T_func, T_arg...>
 
 public:
   using function_type = typename base_type::function_type;
-  using result_type = typename base_type::result_type;
 
   using object_type = typename base_type::object_type;
 

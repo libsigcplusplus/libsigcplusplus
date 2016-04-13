@@ -44,10 +44,6 @@ namespace sigc
  *   whose result type can't be deduced in any other way.
  *
  * If all these ways to deduce the result type fail, void is assumed.
- *
- * With libsigc++ versions before 2.6, the macro
- * #SIGC_FUNCTORS_DEDUCE_RESULT_TYPE_WITH_DECLTYPE activated the test with
- * decltype(). That macro is now unneccesary and deprecated.
  */
 
 /** Helper class, to determine if decltype() can deduce the result type of a functor.
@@ -98,7 +94,6 @@ template <class T_functor,
   bool I_can_use_decltype = can_deduce_result_type_with_decltype<T_functor>::value>
 struct functor_trait
 {
-  using result_type = void;
   using functor_type = T_functor;
 };
 
@@ -106,65 +101,15 @@ struct functor_trait
 template <class T_functor, bool I_can_use_decltype>
 struct functor_trait<T_functor, true, I_can_use_decltype>
 {
-  using result_type = typename T_functor::result_type;
   using functor_type = T_functor;
 };
 
 template <typename T_functor>
 struct functor_trait<T_functor, false, true>
 {
-  using result_type =
-    typename functor_trait<decltype(&T_functor::operator()), false, false>::result_type;
   using functor_type = T_functor;
 };
 #endif // DOXYGEN_SHOULD_SKIP_THIS
-
-/** Helper macro, if you want to mix user-defined and third party functors with libsigc++.
- *
- * If you want to mix functors not derived from sigc::functor_base with libsigc++, and
- * these functors define @p result_type, use this macro inside namespace sigc like so:
- * @code
- * namespace sigc { SIGC_FUNCTORS_HAVE_RESULT_TYPE }
- * @endcode
- *
- * @ingroup sigcfunctors
- */
-#define SIGC_FUNCTORS_HAVE_RESULT_TYPE                   \
-  template <class T_functor>                             \
-  struct functor_trait<T_functor, false, false>          \
-  {                                                      \
-    using result_type = typename T_functor::result_type; \
-    using functor_type = T_functor;                      \
-  };
-
-/** Helper macro, if you want to mix user-defined and third party functors with libsigc++.
- *
- * If you want to mix functors not derived from sigc::functor_base with libsigc++, and
- * these functors don't define @p result_type, use this macro inside namespace sigc
- * to expose the return type of the functors like so:
- * @code
- * namespace sigc {
- *   SIGC_FUNCTOR_TRAIT(first_functor_type, return_type_of_first_functor_type)
- *   SIGC_FUNCTOR_TRAIT(second_functor_type, return_type_of_second_functor_type)
- *   ...
- * }
- * @endcode
- *
- * @ingroup sigcfunctors
- */
-#define SIGC_FUNCTOR_TRAIT(T_functor, T_return) \
-  template <>                                   \
-  struct functor_trait<T_functor, false, false> \
-  {                                             \
-    using result_type = T_return;               \
-    using functor_type = T_functor;             \
-  };                                            \
-  template <>                                   \
-  struct functor_trait<T_functor, false, true>  \
-  {                                             \
-    using result_type = T_return;               \
-    using functor_type = T_functor;             \
-  };
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 // detect the return type and the functor version of non-functor types.
@@ -174,7 +119,6 @@ struct functor_trait<T_functor, false, true>
 template <class T_return, class... T_arg>
 struct functor_trait<T_return (*)(T_arg...), false, false>
 {
-  using result_type = T_return;
   using functor_type = pointer_functor<T_return(T_arg...)>;
 };
 
@@ -183,14 +127,12 @@ struct functor_trait<T_return (*)(T_arg...), false, false>
 template <class T_return, class T_obj, class... T_arg>
 struct functor_trait<T_return (T_obj::*)(T_arg...), false, false>
 {
-  using result_type = T_return;
   using functor_type = mem_functor<T_return (T_obj::*)(T_arg...), T_arg...>;
 };
 
 template <class T_return, class T_obj, class... T_arg>
 struct functor_trait<T_return (T_obj::*)(T_arg...) const, false, false>
 {
-  using result_type = T_return;
   using functor_type = mem_functor<T_return (T_obj::*)(T_arg...) const, T_arg...>;
 };
 

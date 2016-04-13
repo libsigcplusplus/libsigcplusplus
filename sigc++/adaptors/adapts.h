@@ -27,9 +27,8 @@ namespace sigc
  * template <class T_functor>
  * struct my_adaptor : public sigc::adapts<T_functor>
  * {
- *   using result_type = typename sigc::functor_trait<T_functor>::result_type;
  *   //
- *   result_type
+ *   decltype(auto)
  *   operator()() const;
  *   //
  *   template <class T_arg1>

@@ -156,7 +156,6 @@ template <class T_return, class... T_arg>
 class slot<T_return(T_arg...)> : public slot_base
 {
 public:
-  using result_type = T_return;
 // TODO: using arg_type_ = type_trait_take_t<T_arg>;
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS

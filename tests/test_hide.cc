@@ -39,11 +39,6 @@ struct foo_void : public sigc::functor_base
 
 } // end anonymous namespace
 
-namespace sigc
-{
-SIGC_FUNCTOR_TRAIT(foo, bool)
-}
-
 int
 main(int argc, char* argv[])
 {

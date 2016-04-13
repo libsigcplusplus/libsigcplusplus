@@ -18,8 +18,6 @@ namespace sigc
 template <class T_return, class T_functor>
 struct retype_return_functor : public adapts<T_functor>
 {
-  using result_type = T_return;
-
   T_return operator()();
 
   template <class... T_arg>
@@ -60,8 +58,6 @@ retype_return_functor<T_return, T_functor>::operator()()
 template <class T_functor>
 struct retype_return_functor<void, T_functor> : public adapts<T_functor>
 {
-  using result_type = void;
-
   void operator()();
 
   template <class... T_arg>

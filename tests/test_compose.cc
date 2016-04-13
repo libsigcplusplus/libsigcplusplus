@@ -8,12 +8,6 @@
 #include <sstream>
 #include <cstdlib>
 
-// assume existance of T_functor::result_type for unknown functor types:
-namespace sigc
-{
-SIGC_FUNCTORS_HAVE_RESULT_TYPE
-}
-
 namespace
 {
 std::ostringstream result_stream;

@@ -45,7 +45,6 @@ struct compose1_functor : public adapts<T_setter>
 {
   using setter_type = T_setter;
   using getter_type = T_getter;
-  using result_type = typename functor_trait<T_setter>::result_type;
 
   decltype(auto) operator()() { return this->functor_(get_()); }
 
@@ -88,7 +87,6 @@ public:
   using setter_type = T_setter;
   using getter1_type = T_getter1;
   using getter2_type = T_getter2;
-  using result_type = typename adaptor_type::result_type;
 
   decltype(auto) operator()() { return this->functor_(get1_(), get2_()); }
 

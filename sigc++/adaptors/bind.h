@@ -107,8 +107,6 @@ struct TransformEachInvoker
 template <int I_location, class T_functor, class... T_bound>
 struct bind_functor : public adapts<T_functor>
 {
-  using result_type = typename functor_trait<T_functor>::result_type;
-
   /** Invokes the wrapped functor passing on the arguments.
    * bound_ is passed as the next argument.
    * @param _A_arg Arguments to be passed on to the functor.
@@ -167,8 +165,6 @@ template <class T_functor, class... T_type>
 struct bind_functor<-1, T_functor, T_type...> : public adapts<T_functor>
 {
 public:
-  using result_type = typename functor_trait<T_functor>::result_type;
-
   /** Invokes the wrapped functor passing on the arguments.
    * bound_ is passed as the next argument.
    * @param _A_arg Arguments to be passed on to the functor.
