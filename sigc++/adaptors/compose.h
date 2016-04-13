@@ -43,9 +43,6 @@ namespace sigc
 template <class T_setter, class T_getter>
 struct compose1_functor : public adapts<T_setter>
 {
-  using setter_type = T_setter;
-  using getter_type = T_getter;
-
   decltype(auto) operator()() { return this->functor_(get_()); }
 
   template <class... T_arg>
@@ -64,7 +61,7 @@ struct compose1_functor : public adapts<T_setter>
   {
   }
 
-  getter_type get_; // public, so that visit_each() can access it
+  T_getter get_; // public, so that visit_each() can access it
 };
 
 /** Adaptor that combines three functors.
@@ -84,10 +81,6 @@ private:
   using adaptor_type = typename adapts<T_setter>::adaptor_type;
 
 public:
-  using setter_type = T_setter;
-  using getter1_type = T_getter1;
-  using getter2_type = T_getter2;
-
   decltype(auto) operator()() { return this->functor_(get1_(), get2_()); }
 
   template <class... T_arg>
@@ -108,8 +101,8 @@ public:
   {
   }
 
-  getter1_type get1_; // public, so that visit_each() can access it
-  getter2_type get2_; // public, so that visit_each() can access it
+  T_getter1 get1_; // public, so that visit_each() can access it
+  T_getter2 get2_; // public, so that visit_each() can access it
 };
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
