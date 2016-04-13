@@ -77,10 +77,6 @@ struct compose1_functor : public adapts<T_setter>
 template <class T_setter, class T_getter1, class T_getter2>
 struct compose2_functor : public adapts<T_setter>
 {
-private:
-  using adaptor_type = typename adapts<T_setter>::adaptor_type;
-
-public:
   decltype(auto) operator()() { return this->functor_(get1_(), get2_()); }
 
   template <class... T_arg>
