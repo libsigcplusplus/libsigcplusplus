@@ -25,10 +25,10 @@ struct typed_slot_rep : public slot_rep
 private:
   using self = typed_slot_rep<T_functor>;
 
-public:
   /* Use an adaptor type so that arguments can be passed as const references
    * through explicit template instantiation from slot_call#::call_it() */
   using adaptor_type = typename adaptor_trait<T_functor>::adaptor_type;
+public:
 
   /** The functor contained by this slot_rep object. */
   adaptor_type functor_;

@@ -75,8 +75,10 @@ namespace sigc
 template <class T_functor>
 struct adapts : public adaptor_base
 {
+private:
   using adaptor_type = typename adaptor_trait<T_functor>::adaptor_type;
 
+public:
   /** Constructs an adaptor that wraps the passed functor.
    * @param _A_functor Functor to invoke from operator()().
    */
