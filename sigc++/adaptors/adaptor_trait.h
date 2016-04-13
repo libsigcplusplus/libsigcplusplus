@@ -142,7 +142,6 @@ struct adaptor_trait;
 template <class T_functor>
 struct adaptor_trait<T_functor, true>
 {
-  using result_type = typename T_functor::result_type;
   using adaptor_type = T_functor;
 };
 
@@ -159,7 +158,6 @@ private:
   using functor_type = typename functor_trait<T_functor>::functor_type;
 
 public:
-  using result_type = typename functor_trait<T_functor>::result_type;
   using adaptor_type = adaptor_functor<functor_type>;
 };
 
