@@ -1,3 +1,13 @@
+2.99.5 (unstable):
+
+* Functors (mem_functor, ptr_functor) no longer need to derive from a common
+  functor_base base class, and functors no longer need to have a result_type
+  typedef or alias.
+* emitters and accumulators no longer need t ohave a result_type typedef or
+  alias.
+* Remove now-unnecessary adaptor_type type aliases.
+* Remove some more unused and unnecessary public type aliases.
+
 2.99.4 (unstable):
 
 * Minor documentation improvements.
