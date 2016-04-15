@@ -54,6 +54,7 @@ using hook = void* (*)(void*);
  */
 struct SIGC_API slot_rep : public trackable
 {
+public:
   slot_rep(const slot_rep& src) = delete;
   slot_rep& operator=(const slot_rep& src) = delete;
 
@@ -65,7 +66,6 @@ struct SIGC_API slot_rep : public trackable
    * down dereferencing of slot list iterators. Martin. */
   // TODO: Try this now? murrayc.
 
-public:
   using hook_dup = slot_rep* (*)(slot_rep*);
 
   inline slot_rep(hook call__, notifiable::func_destroy_notify destroy__, hook_dup dup__) noexcept
