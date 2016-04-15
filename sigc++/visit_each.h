@@ -146,10 +146,10 @@ visit_each(const T_action& _A_action, const T_functor& _A_functor)
  * of a functor limited to a restricted type.
  *
  * It is currently used only to call slot_do_bind and slot_do_unbind
- * only on trackable-derived functors, like a compile-time version of
- *   if(dynamic_cast<trackable*)(&functor) { slot_do_unbind(functor); }
+ * only on trackable-derived arguments of the functors, like a compile-time version of
+ *   if(dynamic_cast<trackable*)(&arg) { slot_do_unbind(arg); }
  * This also depends on do_visit_each() method overloads for
- * limit_trackable_target< , slot_do_bind/slot_do_unbind> parameters
+ * limit_trackable_target<slot_do_bind/slot_do_unbind> parameters
  * in the visitor<slot> template specialization.
  * TODO: Remove the need for slot_do_bind/slot_do_unbind, limit_trackable_target,
  * and visit_each_type() by just using a constexpr_if
