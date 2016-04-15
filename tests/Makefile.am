@@ -36,7 +36,6 @@ check_PROGRAMS = \
   test_disconnect \
   test_disconnect_during_emit \
   test_exception_catch \
-  test_functor_trait \
   test_hide \
   test_limit_reference \
   test_member_method_trait \
@@ -58,7 +57,8 @@ check_PROGRAMS = \
   test_tuple_for_each \
   test_tuple_start \
   test_tuple_transform_each \
-  test_visit_each
+  test_visit_each \
+  test_visit_each_type
 
 TESTS = $(check_PROGRAMS)
 
@@ -78,7 +78,6 @@ test_custom_SOURCES          = test_custom.cc $(sigc_test_util)
 test_disconnect_SOURCES      = test_disconnect.cc $(sigc_test_util)
 test_disconnect_during_emit_SOURCES = test_disconnect_during_emit.cc $(sigc_test_util)
 test_exception_catch_SOURCES = test_exception_catch.cc $(sigc_test_util)
-test_functor_trait_SOURCES   = test_functor_trait.cc $(sigc_test_util)
 test_hide_SOURCES            = test_hide.cc $(sigc_test_util)
 test_limit_reference_SOURCES = test_limit_reference.cc $(sigc_test_util)
 test_member_method_trait_SOURCES = test_member_method_trait.cc $(sigc_test_util)
@@ -101,3 +100,4 @@ test_tuple_for_each_SOURCES  = test_tuple_for_each.cc $(sigc_test_util)
 test_tuple_start_SOURCES     = test_tuple_start.cc $(sigc_test_util)
 test_tuple_transform_each_SOURCES = test_tuple_transform_each.cc $(sigc_test_util)
 test_visit_each_SOURCES      = test_visit_each.cc $(sigc_test_util)
+test_visit_each_type_SOURCES   = test_visit_each_type.cc $(sigc_test_util)

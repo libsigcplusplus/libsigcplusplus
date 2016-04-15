@@ -31,7 +31,6 @@ set (TEST_SOURCE_FILES
   test_disconnect.cc
   test_disconnect_during_emit.cc
   test_exception_catch.cc
-  test_functor_trait.cc
   test_hide.cc
   test_limit_reference.cc
   test_member_method_trait.cc
@@ -53,7 +52,8 @@ set (TEST_SOURCE_FILES
   test_tuple_for_each.cc
   test_tuple_start.cc
   test_tuple_transform_each.cc
-  test_visit_each.cc)
+  test_visit_each.cc
+  test_visit_each_type.cc)
 
 function (add_sigcpp_test TEST_SOURCE_FILE)
 	get_filename_component (test_name ${TEST_SOURCE_FILE} NAME_WE)
