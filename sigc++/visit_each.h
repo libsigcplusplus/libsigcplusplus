@@ -192,6 +192,10 @@ visit_each(const T_action& _A_action, const T_functor& _A_functor)
 /** This function performs a functor on each of the targets
  * of a functor limited to a restricted type.
  *
+ * It is currently used only to call slot_do_bind and slot_do_unbind
+ * only on trackable-derived functors, like a compile-time version of
+ * if(dynamic_cast<trackable*)(&functor) { slot_do_unbind(functor); }
+ *
  * @ingroup sigcfunctors
  */
 template <class T_type, class T_action, class T_functor>
