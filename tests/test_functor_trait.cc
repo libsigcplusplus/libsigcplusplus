@@ -13,6 +13,8 @@
 
 namespace
 {
+
+TestUtilities* util = nullptr;
 std::ostringstream result_stream;
 
 class trackable
@@ -66,32 +68,47 @@ bar(int)
 
 } // end anonymous namespace
 
-int
-main(int argc, char* argv[])
+void test_hit_all_targets()
 {
-  auto util = TestUtilities::get_instance();
-
-  if (!util->check_command_args(argc, argv))
-    return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;
-
   int i = 1;
-  int j = 2;
-  int k = 3;
   A a;
   result_stream << "hit all targets: ";
   sigc::visit_each(
     print(), sigc::compose(sigc::bind(sigc::ptr_fun(&foo), std::ref(a), i), sigc::ptr_fun(&bar)));
   util->check_result(result_stream, "hit all targets: other trackable int: 1 other ");
+}
 
+void test_hit_all_ints()
+{
+  int i = 2;
+  A a;
   result_stream << "hit all ints: ";
   sigc::visit_each_type<int>(
-    print(), sigc::compose(sigc::bind(sigc::ptr_fun(&foo), std::ref(a), j), sigc::ptr_fun(&bar)));
+    print(), sigc::compose(sigc::bind(sigc::ptr_fun(&foo), std::ref(a), i), sigc::ptr_fun(&bar)));
   util->check_result(result_stream, "hit all ints: int: 2 ");
+}
 
+void test_hit_all_trackable()
+{
+  int i = 3;
+  A a;
   result_stream << "hit all trackable: ";
   sigc::visit_each_type<trackable>(
-    print(), sigc::compose(sigc::bind(sigc::ptr_fun(&foo), std::ref(a), k), sigc::ptr_fun(&bar)));
+    print(), sigc::compose(sigc::bind(sigc::ptr_fun(&foo), std::ref(a), i), sigc::ptr_fun(&bar)));
   util->check_result(result_stream, "hit all trackable: trackable ");
+}
+
+int
+main(int argc, char* argv[])
+{
+  util = TestUtilities::get_instance();
+
+  if (!util->check_command_args(argc, argv))
+    return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;
+
+  test_hit_all_targets();
+  test_hit_all_ints();
+  test_hit_all_trackable();
 
   return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;
 }
