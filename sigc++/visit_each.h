@@ -24,7 +24,7 @@
 namespace sigc
 {
 
-class trackable;
+struct trackable;
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 namespace internal
