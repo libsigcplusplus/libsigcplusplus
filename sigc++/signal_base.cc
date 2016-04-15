@@ -29,9 +29,9 @@ namespace internal
 struct self_and_iter : public notifiable
 {
   signal_impl* self_;
-  signal_impl::iterator_type iter_;
+  const signal_impl::iterator_type iter_;
 
-  self_and_iter(signal_impl* self, signal_impl::iterator_type iter) : self_(self), iter_(iter) {}
+  self_and_iter(signal_impl* self, const signal_impl::iterator_type& iter) : self_(self), iter_(iter) {}
 };
 
 signal_impl::signal_impl() : ref_count_(0), exec_count_(0), deferred_(false)
