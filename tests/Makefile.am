@@ -58,7 +58,7 @@ check_PROGRAMS = \
   test_tuple_start \
   test_tuple_transform_each \
   test_visit_each \
-  test_visit_each_type
+  test_visit_each_trackable
 
 TESTS = $(check_PROGRAMS)
 
@@ -100,4 +100,4 @@ test_tuple_for_each_SOURCES  = test_tuple_for_each.cc $(sigc_test_util)
 test_tuple_start_SOURCES     = test_tuple_start.cc $(sigc_test_util)
 test_tuple_transform_each_SOURCES = test_tuple_transform_each.cc $(sigc_test_util)
 test_visit_each_SOURCES      = test_visit_each.cc $(sigc_test_util)
-test_visit_each_type_SOURCES   = test_visit_each_type.cc $(sigc_test_util)
+test_visit_each_trackable_SOURCES = test_visit_each_trackable.cc $(sigc_test_util)
