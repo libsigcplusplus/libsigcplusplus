@@ -53,10 +53,6 @@ struct limit_derived_target
 private:
   using target_type = T_target;
 
-  // This should really be an inner class of limit_derived_target, without the T_limit template type,
-  // But the SUN CC 5.7 (not earlier versions) compiler finds it ambiguous when we specify a
-  // particular specialization of it.
-  // and does not seem to allow us to tell it explicitly that it's an inner class.
   template <class T_type, class T_limit, bool I_derived = is_base_of_or_same_v<typename T_limit::target_type, T_type>>
   struct with_type;
 
