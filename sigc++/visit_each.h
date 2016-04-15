@@ -33,36 +33,10 @@ constexpr bool is_base_of_or_same_v =
   std::is_base_of<std::decay_t<Base>, std::decay_t<Derived>>::value ||
     std::is_same<std::decay_t<Base>, std::decay_t<Derived>>::value;
 
-// This should really be an inner class of limit_derived_target, without the T_limit template type,
-// But the SUN CC 5.7 (not earlier versions) compiler finds it ambiguous when we specify a
-// particular specialization of it.
-// and does not seem to allow us to tell it explicitly that it's an inner class.
-template <class T_type, class T_limit, bool I_derived = is_base_of_or_same_v<typename T_limit::target_type, T_type>>
-struct with_type;
-
-// Specialization for I_derived = false
-template <class T_type, class T_limit>
-struct with_type<T_type, T_limit, false>
-{
-  static void execute_(const T_type&, const T_limit&) {}
-};
-
-// Specialization for I_derived = true
-template <class T_type, class T_limit>
-struct with_type<T_type, T_limit, true>
-{
-  static void execute_(const T_type& _A_type, const T_limit& _A_action)
-  {
-    _A_action.action_(_A_type);
-  }
-};
-
 /// Helper struct for visit_each_type().
 template <class T_target, class T_action>
 struct limit_derived_target
 {
-  using target_type = T_target;
-
   template <class T_type>
   void operator()(T_type&& _A_type) const
   {
@@ -74,36 +48,41 @@ struct limit_derived_target
   explicit limit_derived_target(const T_action& _A_action) : action_(_A_action) {}
 
   T_action action_;
+
+private:
+  using target_type = T_target;
+
+  // This should really be an inner class of limit_derived_target, without the T_limit template type,
+  // But the SUN CC 5.7 (not earlier versions) compiler finds it ambiguous when we specify a
+  // particular specialization of it.
+  // and does not seem to allow us to tell it explicitly that it's an inner class.
+  template <class T_type, class T_limit, bool I_derived = is_base_of_or_same_v<typename T_limit::target_type, T_type>>
+  struct with_type;
+
+  // Specialization for I_derived = false
+  template <class T_type, class T_limit>
+  struct with_type<T_type, T_limit, false>
+  {
+    static void execute_(const T_type&, const T_limit&) {}
+  };
+
+  // Specialization for I_derived = true
+  template <class T_type, class T_limit>
+  struct with_type<T_type, T_limit, true>
+  {
+    static void execute_(const T_type& _A_type, const T_limit& _A_action)
+    {
+      _A_action.action_(_A_type);
+    }
+  };
 };
 
 // Specialization for T_target pointer types, to provide a slightly different execute_()
 // implementation.
 
-template <class T_type, class T_limit, bool I_derived = is_base_of_or_same_v<typename T_limit::target_type, T_type>>
-struct with_type_pointer;
-
-// Specialization for I_derived = false
-template <class T_type, class T_limit>
-struct with_type_pointer<T_type, T_limit, false>
-{
-  static void execute_(const T_type&, const T_limit&) {}
-};
-
-// Specialization for I_derived = true
-template <class T_type, class T_limit>
-struct with_type_pointer<T_type, T_limit, true>
-{
-  static void execute_(const T_type& _A_type, const T_limit& _A_action)
-  {
-    _A_action.action_(&_A_type);
-  }
-};
-
 template <class T_target, class T_action>
 struct limit_derived_target<T_target*, T_action>
 {
-  using target_type = T_target;
-
   template <class T_type>
   void operator()(T_type&& _A_type) const
   {
@@ -115,6 +94,29 @@ struct limit_derived_target<T_target*, T_action>
   explicit limit_derived_target(const T_action& _A_action) : action_(_A_action) {}
 
   T_action action_;
+
+private:
+  using target_type = T_target;
+
+  template <class T_type, class T_limit, bool I_derived = is_base_of_or_same_v<typename T_limit::target_type, T_type>>
+  struct with_type_pointer;
+
+  // Specialization for I_derived = false
+  template <class T_type, class T_limit>
+  struct with_type_pointer<T_type, T_limit, false>
+  {
+    static void execute_(const T_type&, const T_limit&) {}
+  };
+
+  // Specialization for I_derived = true
+  template <class T_type, class T_limit>
+  struct with_type_pointer<T_type, T_limit, true>
+  {
+    static void execute_(const T_type& _A_type, const T_limit& _A_action)
+    {
+      _A_action.action_(&_A_type);
+    }
+  };
 };
 
 } /* namespace internal */
