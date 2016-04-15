@@ -40,13 +40,13 @@ public:
   inline typed_slot_rep(const T_functor& functor)
   : slot_rep(nullptr, &destroy, &dup), functor_(functor)
   {
-    sigc::visit_each_type<trackable*>(slot_do_bind(this), functor_);
+    sigc::visit_each_type<trackable>(slot_do_bind(this), functor_);
   }
 
   inline typed_slot_rep(const typed_slot_rep& cl)
   : slot_rep(cl.call_, &destroy, &dup), functor_(cl.functor_)
   {
-    sigc::visit_each_type<trackable*>(slot_do_bind(this), functor_);
+    sigc::visit_each_type<trackable>(slot_do_bind(this), functor_);
   }
 
   typed_slot_rep& operator=(const typed_slot_rep& src) = delete;
@@ -58,7 +58,7 @@ public:
   {
     call_ = nullptr;
     destroy_ = nullptr;
-    sigc::visit_each_type<trackable*>(slot_do_unbind(this), functor_);
+    sigc::visit_each_type<trackable>(slot_do_unbind(this), functor_);
   }
 
 private:
@@ -70,7 +70,7 @@ private:
     self* self_ = static_cast<self*>(reinterpret_cast<slot_rep*>(data));
     self_->call_ = nullptr;
     self_->destroy_ = nullptr;
-    sigc::visit_each_type<trackable*>(slot_do_unbind(self_), self_->functor_);
+    sigc::visit_each_type<trackable>(slot_do_unbind(self_), self_->functor_);
     self_->functor_.~adaptor_type();
     /* don't call disconnect() here: destroy() is either called
      * a) from the parent itself (in which case disconnect() leads to a segfault) or
@@ -246,7 +246,7 @@ template <typename T_return, typename... T_arg>
 struct visitor<slot<T_return, T_arg...>>
 {
   static void do_visit_each(
-    const internal::limit_derived_target<trackable*, internal::slot_do_bind>& _A_action,
+    const internal::limit_derived_target<trackable, internal::slot_do_bind>& _A_action,
     const slot<T_return, T_arg...>& _A_target)
   {
     if (_A_target.rep_ && _A_target.rep_->parent_ == nullptr)
@@ -254,7 +254,7 @@ struct visitor<slot<T_return, T_arg...>>
   }
 
   static void do_visit_each(
-    const internal::limit_derived_target<trackable*, internal::slot_do_unbind>& _A_action,
+    const internal::limit_derived_target<trackable, internal::slot_do_unbind>& _A_action,
     const slot<T_return, T_arg...>& _A_target)
   {
     if (_A_target.rep_ && _A_target.rep_->parent_ == _A_action.action_.rep_)

@@ -168,9 +168,9 @@ struct SIGC_API slot_do_bind
   /** Adds a dependency to @p t.
    * @param t The trackable object to add a callback to.
    */
-  inline void operator()(const trackable* t) const
+  inline void operator()(const trackable& t) const
   {
-    t->add_destroy_notify_callback(rep_, &slot_rep::notify);
+    t.add_destroy_notify_callback(rep_, &slot_rep::notify);
   }
 };
 
@@ -188,7 +188,7 @@ struct SIGC_API slot_do_unbind
   /** Removes a dependency from @p t.
    * @param t The trackable object to remove the callback from.
    */
-  inline void operator()(const trackable* t) const { t->remove_destroy_notify_callback(rep_); }
+  inline void operator()(const trackable& t) const { t.remove_destroy_notify_callback(rep_); }
 };
 
 } // namespace internal
