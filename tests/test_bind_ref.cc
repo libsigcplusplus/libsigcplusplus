@@ -66,10 +66,6 @@ main(int argc, char* argv[])
   result_stream << "Calling slot when param does not exist:";
   slot_bound();
   util->check_result(result_stream, "Calling slot when param does not exist:");
-  // This causes a crash when using g++ 3.3.4 or 3.3.5 (but not 3.4.x) when not specifying
-  // the exact template specialization in visit_each_type() - see the comments there.
-  // It looks like the auto-disconnect does not work, so the last slot_bound() call tries
-  // to access the param data again.
 
   return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;
 }
