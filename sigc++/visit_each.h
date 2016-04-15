@@ -36,26 +36,24 @@ constexpr bool is_base_of_or_same_v =
     std::is_same<std::decay_t<Base>, std::decay_t<Derived>>::value;
 
 /// Helper struct for visit_each_type().
-template <class T_target, class T_action>
-struct limit_derived_target
+template <class T_action>
+struct limit_trackable_target
 {
   template <class T_type>
   void operator()(T_type&& _A_type) const
   {
-    using T_self = limit_derived_target<T_target, T_action>;
+    using T_self = limit_trackable_target<T_action>;
 
-    //Only call action_() if T_Target derives from T_Type.
+    //Only call action_() if T_Type derives from trackable.
     with_type<T_type, T_self>::execute_(std::forward<T_type>(_A_type), *this);
   }
 
-  explicit limit_derived_target(const T_action& _A_action) : action_(_A_action) {}
+  explicit limit_trackable_target(const T_action& _A_action) : action_(_A_action) {}
 
   T_action action_;
 
 private:
-  using target_type = T_target;
-
-  template <class T_type, class T_limit, bool I_derived = is_base_of_or_same_v<typename T_limit::target_type, T_type>>
+  template <class T_type, class T_limit, bool I_derived = is_base_of_or_same_v<sigc::trackable, T_type>>
   struct with_type;
 
   // Specialization for I_derived = false
@@ -151,9 +149,9 @@ visit_each(const T_action& _A_action, const T_functor& _A_functor)
  * only on trackable-derived functors, like a compile-time version of
  *   if(dynamic_cast<trackable*)(&functor) { slot_do_unbind(functor); }
  * This also depends on do_visit_each() method overloads for
- * limit_derived_target< , slot_do_bind/slot_do_unbind> parameters
+ * limit_trackable_target< , slot_do_bind/slot_do_unbind> parameters
  * in the visitor<slot> template specialization.
- * TODO: Remove the need for slot_do_bind/slot_do_unbind, limit_derived_target,
+ * TODO: Remove the need for slot_do_bind/slot_do_unbind, limit_trackable_target,
  * and visit_each_type() by just using a constexpr_if
  * (previously known as static_if) if that ends up in C++17.
  *
@@ -163,7 +161,7 @@ template <class T_action, class T_functor>
 void
 visit_each_trackable(const T_action& _A_action, const T_functor& _A_functor)
 {
-  internal::limit_derived_target<sigc::trackable, T_action> limited_action(_A_action);
+  internal::limit_trackable_target<T_action> limited_action(_A_action);
 
   sigc::visit_each(limited_action, _A_functor);
 }
