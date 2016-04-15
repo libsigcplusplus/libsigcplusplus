@@ -28,27 +28,20 @@ namespace internal
 // when the slot is disconnected. Bug 167714.
 struct self_and_iter : public notifiable
 {
-  signal_impl* self_;
+  const std::shared_ptr<signal_impl> self_;
   const signal_impl::iterator_type iter_;
 
-  self_and_iter(signal_impl* self, const signal_impl::iterator_type& iter) : self_(self), iter_(iter) {}
+  self_and_iter(const std::shared_ptr<signal_impl>& self, const signal_impl::iterator_type& iter) : self_(self), iter_(iter) {}
 };
 
-signal_impl::signal_impl() : ref_count_(0), exec_count_(0), deferred_(false)
+signal_impl::signal_impl() : exec_count_(0), deferred_(false)
 {
 }
 
 signal_impl::~signal_impl()
 {
-  // unreference() must not call ~signal_impl() while clear() is executing.
-  ++ref_count_;
-
   // Disconnect all slots before *this is deleted.
   clear();
-
-  // Now ref_count_ can be cleared again (not really necessary), but don't do it
-  // with a call to unreference(). That would invoke ~signal_impl() recursively.
-  --ref_count_;
 }
 
 // only MSVC needs this to guarantee that all new/delete are executed from the DLL module
@@ -72,7 +65,7 @@ signal_impl::clear()
   // Don't let signal_impl::notify() erase the slots. It would invalidate the
   // iterator in the following loop.
   const bool saved_deferred = deferred_;
-  signal_exec exec(this);
+  signal_exec exec(shared_from_this());
 
   // Disconnect all connected slots before they are deleted.
   // signal_impl::notify() will be called and delete the self_and_iter structs.
@@ -128,7 +121,7 @@ signal_impl::erase(iterator_type i)
   // Don't let signal_impl::notify() erase the slot. It would be more
   // difficult to get the correct return value from signal_impl::erase().
   const bool saved_deferred = deferred_;
-  signal_exec exec(this);
+  signal_exec exec(shared_from_this());
 
   // Disconnect the slot before it is deleted.
   // signal_impl::notify() will be called and delete the self_and_iter struct.
@@ -142,7 +135,7 @@ signal_impl::erase(iterator_type i)
 void
 signal_impl::add_notification_to_iter(const signal_impl::iterator_type& iter)
 {
-  auto si = new self_and_iter(this, iter);
+  auto si = new self_and_iter(shared_from_this(), iter);
   iter->set_parent(si, &signal_impl::notify_self_and_iter_of_invalidated_slot);
 }
 
@@ -168,7 +161,7 @@ signal_impl::sweep()
   // The deletion of a slot may cause the deletion of a signal_base,
   // a decrementation of ref_count_, and the deletion of this.
   // In that case, the deletion of this is deferred to ~signal_exec().
-  signal_exec exec(this);
+  signal_exec exec(shared_from_this());
 
   deferred_ = false;
   auto i = slots_.begin();
@@ -207,13 +200,12 @@ signal_impl::notify_self_and_iter_of_invalidated_slot(notifiable* d)
 
 } /* namespace internal */
 
-signal_base::signal_base() noexcept : impl_(nullptr)
+signal_base::signal_base() noexcept
 {
 }
 
 signal_base::signal_base(const signal_base& src) noexcept : trackable(), impl_(src.impl())
 {
-  impl_->reference();
 }
 
 signal_base::signal_base(signal_base&& src) : trackable(std::move(src)), impl_(std::move(src.impl_))
@@ -223,10 +215,6 @@ signal_base::signal_base(signal_base&& src) : trackable(std::move(src)), impl_(s
 
 signal_base::~signal_base()
 {
-  if (impl_)
-  {
-    impl_->unreference();
-  }
 }
 
 void
@@ -298,13 +286,7 @@ signal_base::operator=(const signal_base& src)
   if (src.impl_ == impl_)
     return *this;
 
-  if (impl_)
-  {
-    impl_->unreference();
-  }
-
   impl_ = src.impl();
-  impl_->reference();
   return *this;
 }
 
@@ -314,11 +296,6 @@ signal_base::operator=(signal_base&& src)
   if (src.impl_ == impl_)
     return *this;
 
-  if (impl_)
-  {
-    impl_->unreference();
-  }
-
   src.notify_callbacks();
   impl_ = src.impl_;
   src.impl_ = nullptr;
@@ -326,13 +303,12 @@ signal_base::operator=(signal_base&& src)
   return *this;
 }
 
-internal::signal_impl*
+std::shared_ptr<internal::signal_impl>
 signal_base::impl() const
 {
   if (!impl_)
   {
-    impl_ = new internal::signal_impl;
-    impl_->reference(); // start with a reference count of 1
+    impl_ = std::make_shared<internal::signal_impl>();
   }
   return impl_;
 }

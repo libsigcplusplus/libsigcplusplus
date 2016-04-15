@@ -255,7 +255,7 @@ struct signal_emit
    * @param a Arguments to be passed on to the slots.
    * @return The accumulated return values of the slot invocations as processed by the accumulator.
    */
-  static decltype(auto) emit(signal_impl* impl, type_trait_take_t<T_arg>... a)
+  static decltype(auto) emit(const std::shared_ptr<internal::signal_impl>& impl, type_trait_take_t<T_arg>... a)
   {
     using slot_iterator_buf_type = internal::slot_iterator_buf<self_type, T_return>;
 
@@ -306,7 +306,7 @@ public:
    * @param a Arguments to be passed on to the slots.
    * @return The return value of the last slot invoked.
    */
-  static decltype(auto) emit(signal_impl* impl, type_trait_take_t<T_arg>... a)
+  static decltype(auto) emit(const std::shared_ptr<internal::signal_impl>& impl, type_trait_take_t<T_arg>... a)
   {
     if (!impl || impl->slots_.empty())
       return T_return();
@@ -363,7 +363,7 @@ public:
    * passed directly on to the slots.
    * @param a Arguments to be passed on to the slots.
    */
-  static decltype(auto) emit(signal_impl* impl, type_trait_take_t<T_arg>... a)
+  static decltype(auto) emit(const std::shared_ptr<internal::signal_impl>& impl, type_trait_take_t<T_arg>... a)
   {
     if (!impl || impl->slots_.empty())
       return;

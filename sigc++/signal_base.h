@@ -21,6 +21,7 @@
 
 #include <cstddef>
 #include <list>
+#include <memory> //For std::shared_ptr<>
 #include <sigc++config.h>
 #include <sigc++/type_traits.h>
 #include <sigc++/trackable.h>
@@ -42,7 +43,9 @@ namespace internal
  * erase() to sweep() when the signal is being emitted. sweep() removes all
  * invalid slots from the list.
  */
-struct SIGC_API signal_impl : public notifiable
+struct SIGC_API signal_impl
+ : public notifiable,
+   public std::enable_shared_from_this<signal_impl>
 {
   using size_type = std::size_t;
   using slot_list = std::list<slot_base>;
@@ -64,23 +67,10 @@ struct SIGC_API signal_impl : public notifiable
   void operator delete(void* p);
 #endif
 
-  /// Increments the reference counter.
-  inline void reference() noexcept { ++ref_count_; }
-
   /// Increments the reference and execution counter.
   inline void reference_exec() noexcept
   {
-    ++ref_count_;
     ++exec_count_;
-  }
-
-  /** Decrements the reference counter.
-   * The object is deleted when the reference counter reaches zero.
-   */
-  inline void unreference()
-  {
-    if (!(--ref_count_))
-      delete this;
   }
 
   /** Decrements the reference and execution counter.
@@ -89,9 +79,7 @@ struct SIGC_API signal_impl : public notifiable
    */
   inline void unreference_exec()
   {
-    if (!(--ref_count_))
-      delete this;
-    else if (!(--exec_count_) && deferred_)
+    if (!(--exec_count_) && deferred_)
       sweep();
   }
 
@@ -184,11 +172,6 @@ public:
   std::list<slot_base> slots_;
 
 private:
-  /** Reference counter.
-   * The object is destroyed when @em ref_count_ reaches zero.
-   */
-  short ref_count_;
-
   /** Execution counter.
    * Indicates whether the signal is being emitted.
    */
@@ -204,7 +187,8 @@ struct SIGC_API signal_exec
   /** Increments the reference and execution counter of the parent sigc::signal_impl object.
    * @param sig The parent sigc::signal_impl object.
    */
-  inline signal_exec(const signal_impl* sig) noexcept : sig_(const_cast<signal_impl*>(sig))
+  inline signal_exec(const std::shared_ptr<signal_impl>& sig) noexcept
+  : sig_(sig)
   {
     sig_->reference_exec();
   }
@@ -220,7 +204,7 @@ struct SIGC_API signal_exec
 
 protected:
   /// The parent sigc::signal_impl object.
-  signal_impl* sig_;
+  const std::shared_ptr<signal_impl> sig_;
 };
 
 } /* namespace internal */
@@ -388,10 +372,10 @@ protected:
   /** Returns the signal_impl object encapsulating the list of slots.
    * @return The signal_impl object encapsulating the list of slots.
    */
-  internal::signal_impl* impl() const;
+  std::shared_ptr<internal::signal_impl> impl() const;
 
   /// The signal_impl object encapsulating the slot list.
-  mutable internal::signal_impl* impl_;
+  mutable std::shared_ptr<internal::signal_impl> impl_;
 };
 
 } // namespace sigc
