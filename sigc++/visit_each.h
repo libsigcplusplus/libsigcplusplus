@@ -50,6 +50,11 @@ struct limit_trackable_target
 
   explicit limit_trackable_target(const T_action& _A_action) : action_(_A_action) {}
 
+  limit_trackable_target(const limit_trackable_target& src) = delete;
+  limit_trackable_target& operator=(const limit_trackable_target& src) = delete;
+  limit_trackable_target(limit_trackable_target&& src) = delete;
+  limit_trackable_target& operator=(limit_trackable_target&& src) = delete;
+
   T_action action_;
 
 private:
