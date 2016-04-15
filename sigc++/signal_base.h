@@ -206,6 +206,12 @@ struct SIGC_API signal_exec
     sig_->reference_exec();
   }
 
+  signal_exec(const signal_exec& src) = delete;
+  signal_exec operator=(const signal_exec& src) = delete;
+
+  signal_exec(signal_exec&& src) = delete;
+  signal_exec operator=(signal_exec&& src) = delete;
+
   /// Decrements the reference and execution counter of the parent sigc::signal_impl object.
   inline ~signal_exec() { sig_->unreference_exec(); }
 
