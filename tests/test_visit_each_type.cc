@@ -17,16 +17,12 @@ namespace
 TestUtilities* util = nullptr;
 std::ostringstream result_stream;
 
-class trackable
-{
-};
-
-struct A : public trackable
+struct A : public sigc::trackable
 {
   A() {}
 };
 
-template <class T_type, bool I_derived = std::is_base_of<trackable, T_type>::value>
+template <class T_type, bool I_derived = std::is_base_of<sigc::trackable, T_type>::value>
 struct with_trackable;
 
 template <class T_type>
@@ -78,22 +74,12 @@ void test_hit_all_targets()
   util->check_result(result_stream, "hit all targets: other trackable int: 1 other ");
 }
 
-void test_hit_all_ints()
-{
-  int i = 2;
-  A a;
-  result_stream << "hit all ints: ";
-  sigc::visit_each_type<int>(
-    print(), sigc::compose(sigc::bind(sigc::ptr_fun(&foo), std::ref(a), i), sigc::ptr_fun(&bar)));
-  util->check_result(result_stream, "hit all ints: int: 2 ");
-}
-
 void test_hit_all_trackable()
 {
   int i = 3;
   A a;
   result_stream << "hit all trackable: ";
-  sigc::visit_each_type<trackable>(
+  sigc::visit_each_trackable(
     print(), sigc::compose(sigc::bind(sigc::ptr_fun(&foo), std::ref(a), i), sigc::ptr_fun(&bar)));
   util->check_result(result_stream, "hit all trackable: trackable ");
 }
@@ -107,7 +93,6 @@ main(int argc, char* argv[])
     return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;
 
   test_hit_all_targets();
-  test_hit_all_ints();
   test_hit_all_trackable();
 
   return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;

@@ -24,6 +24,8 @@
 namespace sigc
 {
 
+class trackable;
+
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 namespace internal
 {
@@ -157,11 +159,11 @@ visit_each(const T_action& _A_action, const T_functor& _A_functor)
  *
  * @ingroup sigcfunctors
  */
-template <class T_type, class T_action, class T_functor>
+template <class T_action, class T_functor>
 void
-visit_each_type(const T_action& _A_action, const T_functor& _A_functor)
+visit_each_trackable(const T_action& _A_action, const T_functor& _A_functor)
 {
-  internal::limit_derived_target<T_type, T_action> limited_action(_A_action);
+  internal::limit_derived_target<sigc::trackable, T_action> limited_action(_A_action);
 
   sigc::visit_each(limited_action, _A_functor);
 }
