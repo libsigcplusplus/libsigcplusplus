@@ -91,9 +91,10 @@ slot_rep::notify(notifiable* data)
   if (!notifier.deleted_)
   {
     self_->remove_destroy_notify_callback(&notifier);
-    self_
-      ->destroy(); // Detach the stored functor from the other referred trackables and destroy it.
+
+    // Detach the stored functor from the other referred trackables and destroy it.
     // destroy() might lead to deletion of self_. Bug #564005.
+    self_->destroy();
   }
 }
 
