@@ -35,7 +35,7 @@ constexpr bool is_base_of_or_same_v =
   std::is_base_of<std::decay_t<Base>, std::decay_t<Derived>>::value ||
     std::is_same<std::decay_t<Base>, std::decay_t<Derived>>::value;
 
-/// Helper struct for visit_each_type().
+/// Helper struct for visit_each_trackable().
 template <class T_action>
 struct limit_trackable_target
 {
@@ -152,7 +152,7 @@ visit_each(const T_action& _A_action, const T_functor& _A_functor)
  * limit_trackable_target<slot_do_bind/slot_do_unbind> parameters
  * in the visitor<slot> template specialization.
  * TODO: Remove the need for slot_do_bind/slot_do_unbind, limit_trackable_target,
- * and visit_each_type() by just using a constexpr_if
+ * and visit_each_trackable() by just using a constexpr_if
  * (previously known as static_if) if that ends up in C++17.
  *
  * @ingroup sigcfunctors
