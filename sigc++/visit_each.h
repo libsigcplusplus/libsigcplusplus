@@ -42,6 +42,7 @@ struct limit_derived_target
   {
     using T_self = limit_derived_target<T_target, T_action>;
 
+    //Only call action_() if T_Target derives from T_Type.
     with_type<T_type, T_self>::execute_(std::forward<T_type>(_A_type), *this);
   }
 
@@ -88,6 +89,7 @@ struct limit_derived_target<T_target*, T_action>
   {
     using T_self = limit_derived_target<T_target*, T_action>;
 
+    //Only call action_() if T_Target derives from T_Type.
     with_type_pointer<T_type, T_self>::execute_(std::forward<T_type>(_A_type), *this);
   }
 
