@@ -872,6 +872,7 @@ public:
   using slot_type = slot<T_return(T_arg...)>;
   using slot_list_type = slot_list<slot_type>;
   using iterator = typename slot_list_type::iterator;
+  //TODO: Test these? These type aliases are currently unused in libsigc++ or its tests:
   using const_iterator = typename slot_list_type::const_iterator;
   using reverse_iterator = typename slot_list_type::reverse_iterator;
   using const_reverse_iterator = typename slot_list_type::const_reverse_iterator;
