@@ -678,10 +678,11 @@ private:
 template <class T_return, class... T_arg>
 struct signal_emit<T_return, void, T_arg...>
 {
-  using self_type = signal_emit<T_return, void, T_arg...>;
+private:
   using slot_type = slot<T_return(T_arg...)>;
-  using iterator_type = signal_impl::const_iterator_type;
   using call_type = typename slot_type::call_type;
+
+public:
 
   /** Executes a list of slots.
    * The arguments are passed directly on to the slots.
@@ -783,10 +784,11 @@ struct signal_emit<T_return, void, T_arg...>
 template <class... T_arg>
 struct signal_emit<void, void, T_arg...>
 {
-  using self_type = signal_emit<void, void, T_arg...>;
+private:
   using slot_type = slot<void(T_arg...)>;
-  using iterator_type = signal_impl::const_iterator_type;
   using call_type = typename slot_type::call_type;
+
+public:
 
   /** Executes a list of slots using an accumulator of type @e T_accumulator.   * The arguments are
    * passed directly on to the slots.
