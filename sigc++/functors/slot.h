@@ -67,7 +67,7 @@ private:
    */
   static void destroy(notifiable* data)
   {
-    self* self_ = static_cast<self*>(data);
+    auto self_ = static_cast<self*>(data);
     self_->call_ = nullptr;
     self_->destroy_ = nullptr;
     sigc::visit_each_trackable(slot_do_unbind(self_), self_->functor_);
@@ -107,8 +107,7 @@ struct slot_call
    */
   static T_return call_it(slot_rep* rep, type_trait_take_t<T_arg>... a_)
   {
-    using typed_slot = typed_slot_rep<T_functor>;
-    typed_slot* typed_rep = static_cast<typed_slot*>(rep);
+    auto typed_rep = static_cast<typed_slot_rep<T_functor>*>(rep);
     return (typed_rep->functor_).template operator()<type_trait_take_t<T_arg>...>(a_...);
   }
 
