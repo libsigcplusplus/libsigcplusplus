@@ -67,7 +67,7 @@ private:
    */
   static void destroy(notifiable* data)
   {
-    self* self_ = static_cast<self*>(reinterpret_cast<slot_rep*>(data));
+    self* self_ = static_cast<self*>(data);
     self_->call_ = nullptr;
     self_->destroy_ = nullptr;
     sigc::visit_each_trackable(slot_do_unbind(self_), self_->functor_);

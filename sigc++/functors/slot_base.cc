@@ -29,7 +29,7 @@ struct destroy_notify_struct : public sigc::notifiable
 
   static void notify(notifiable* data) noexcept
   {
-    auto self_ = reinterpret_cast<destroy_notify_struct*>(data);
+    auto self_ = static_cast<destroy_notify_struct*>(data);
     self_->deleted_ = true;
   }
 
@@ -79,7 +79,7 @@ slot_rep::disconnect()
 void
 slot_rep::notify(notifiable* data)
 {
-  auto self_ = reinterpret_cast<slot_rep*>(data);
+  auto self_ = static_cast<slot_rep*>(data);
 
   self_->call_ = nullptr; // Invalidate the slot.
 
