@@ -181,6 +181,31 @@ private:
   bool deferred_;
 };
 
+struct SIGC_API signal_impl_exec_holder
+{
+  /** Increments the execution counter of the parent sigc::signal_impl object.
+   * @param sig The parent sigc::signal_impl object.
+   */
+  inline signal_impl_exec_holder(signal_impl* sig) noexcept
+  : sig_(sig)
+  {
+    sig_->reference_exec();
+  }
+
+  signal_impl_exec_holder(const signal_impl_exec_holder& src) = delete;
+  signal_impl_exec_holder operator=(const signal_impl_exec_holder& src) = delete;
+
+  signal_impl_exec_holder(signal_impl_exec_holder&& src) = delete;
+  signal_impl_exec_holder operator=(signal_impl_exec_holder&& src) = delete;
+
+  /// Decrements the reference and execution counter of the parent sigc::signal_impl object.
+  inline ~signal_impl_exec_holder() { sig_->unreference_exec(); }
+
+protected:
+  /// The parent sigc::signal_impl object.
+  signal_impl* sig_;
+};
+
 /// Exception safe sweeper for cleaning up invalid slots on the slot list.
 struct SIGC_API signal_impl_holder
 {
@@ -188,9 +213,8 @@ struct SIGC_API signal_impl_holder
    * @param sig The parent sigc::signal_impl object.
    */
   inline signal_impl_holder(const std::shared_ptr<signal_impl>& sig) noexcept
-  : sig_(sig)
+  : sig_(sig), exec_holder_(sig.get())
   {
-    sig_->reference_exec();
   }
 
   signal_impl_holder(const signal_impl_holder& src) = delete;
@@ -199,12 +223,10 @@ struct SIGC_API signal_impl_holder
   signal_impl_holder(signal_impl_holder&& src) = delete;
   signal_impl_holder operator=(signal_impl_holder&& src) = delete;
 
-  /// Decrements the reference and execution counter of the parent sigc::signal_impl object.
-  inline ~signal_impl_holder() { sig_->unreference_exec(); }
-
 protected:
   /// The parent sigc::signal_impl object.
   const std::shared_ptr<signal_impl> sig_;
+  signal_impl_exec_holder exec_holder_;
 };
 
 } /* namespace internal */
