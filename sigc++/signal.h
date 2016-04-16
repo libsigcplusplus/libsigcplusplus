@@ -264,7 +264,7 @@ struct signal_emit
     if (!impl)
       return accumulator(slot_iterator_buf_type(), slot_iterator_buf_type());
 
-    signal_exec exec(impl);
+    signal_impl_holder exec(impl);
     const temp_slot_list slots(impl->slots_);
 
     self_type self(a...);
@@ -311,7 +311,7 @@ public:
     if (!impl || impl->slots_.empty())
       return T_return();
 
-    signal_exec exec(impl);
+    signal_impl_holder exec(impl);
     T_return r_ = T_return();
 
     // Use this scope to make sure that "slots" is destroyed before "exec" is destroyed.
@@ -367,7 +367,7 @@ public:
   {
     if (!impl || impl->slots_.empty())
       return;
-    signal_exec exec(impl);
+    signal_impl_holder exec(impl);
     const temp_slot_list slots(impl->slots_);
 
     for (const auto& slot : slots)

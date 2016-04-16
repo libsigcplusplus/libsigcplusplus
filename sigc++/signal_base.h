@@ -182,25 +182,25 @@ private:
 };
 
 /// Exception safe sweeper for cleaning up invalid slots on the slot list.
-struct SIGC_API signal_exec
+struct SIGC_API signal_impl_holder
 {
   /** Increments the reference and execution counter of the parent sigc::signal_impl object.
    * @param sig The parent sigc::signal_impl object.
    */
-  inline signal_exec(const std::shared_ptr<signal_impl>& sig) noexcept
+  inline signal_impl_holder(const std::shared_ptr<signal_impl>& sig) noexcept
   : sig_(sig)
   {
     sig_->reference_exec();
   }
 
-  signal_exec(const signal_exec& src) = delete;
-  signal_exec operator=(const signal_exec& src) = delete;
+  signal_impl_holder(const signal_impl_holder& src) = delete;
+  signal_impl_holder operator=(const signal_impl_holder& src) = delete;
 
-  signal_exec(signal_exec&& src) = delete;
-  signal_exec operator=(signal_exec&& src) = delete;
+  signal_impl_holder(signal_impl_holder&& src) = delete;
+  signal_impl_holder operator=(signal_impl_holder&& src) = delete;
 
   /// Decrements the reference and execution counter of the parent sigc::signal_impl object.
-  inline ~signal_exec() { sig_->unreference_exec(); }
+  inline ~signal_impl_holder() { sig_->unreference_exec(); }
 
 protected:
   /// The parent sigc::signal_impl object.

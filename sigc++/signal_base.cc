@@ -65,7 +65,7 @@ signal_impl::clear()
   // Don't let signal_impl::notify() erase the slots. It would invalidate the
   // iterator in the following loop.
   const bool saved_deferred = deferred_;
-  signal_exec exec(shared_from_this());
+  signal_impl_holder exec(shared_from_this());
 
   // Disconnect all connected slots before they are deleted.
   // signal_impl::notify() will be called and delete the self_and_iter structs.
@@ -121,7 +121,7 @@ signal_impl::erase(iterator_type i)
   // Don't let signal_impl::notify() erase the slot. It would be more
   // difficult to get the correct return value from signal_impl::erase().
   const bool saved_deferred = deferred_;
-  signal_exec exec(shared_from_this());
+  signal_impl_holder exec(shared_from_this());
 
   // Disconnect the slot before it is deleted.
   // signal_impl::notify() will be called and delete the self_and_iter struct.
@@ -160,8 +160,8 @@ signal_impl::sweep()
 {
   // The deletion of a slot may cause the deletion of a signal_base,
   // a decrementation of ref_count_, and the deletion of this.
-  // In that case, the deletion of this is deferred to ~signal_exec().
-  signal_exec exec(shared_from_this());
+  // In that case, the deletion of this is deferred to ~signal_impl_holder().
+  signal_impl_holder exec(shared_from_this());
 
   deferred_ = false;
   auto i = slots_.begin();
@@ -184,14 +184,14 @@ signal_impl::notify_self_and_iter_of_invalidated_slot(notifiable* d)
   {
     // The deletion of a slot may cause the deletion of a signal_base,
     // a decrementation of si->self_->ref_count_, and the deletion of si->self_.
-    // In that case, the deletion of si->self_ is deferred to ~signal_exec().
-    signal_exec exec(si->self_);
+    // In that case, the deletion of si->self_ is deferred to ~signal_impl_holder().
+    signal_impl_holder exec(si->self_);
     si->self_->slots_.erase(si->iter_);
   }
   else
   {
     // This is occuring during signal emission or slot erasure.
-    // => sweep() will be called from ~signal_exec() after signal emission.
+    // => sweep() will be called from ~signal_impl_holder() after signal emission.
     // This is safer because we don't have to care about our
     // iterators in emit(), clear(), and erase().
     si->self_->deferred_ = true;
