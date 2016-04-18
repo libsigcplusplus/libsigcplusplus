@@ -7,6 +7,7 @@
 #include <sigc++/tuple-utils/tuple_start.h>
 #include <sigc++/tuple-utils/tuple_end.h>
 #include <sigc++/tuple-utils/tuple_transform_each.h>
+#include <origin/core/function.hpp>
 
 
 namespace sigc
@@ -104,7 +105,7 @@ struct TransformEachInvoker
  *
  * @ingroup bind
  */
-template <int I_location, class T_functor, class... T_bound>
+template <int I_location, class T_functor, origin::Copy_constructible... T_bound>
 struct bind_functor : public adapts<T_functor>
 {
   /** Invokes the wrapped functor passing on the arguments.
@@ -170,7 +171,7 @@ public:
    * @param _A_arg Arguments to be passed on to the functor.
    * @return The return value of the functor invocation.
    */
-  template <class... T_arg>
+  template <typename... T_arg>
   decltype(auto) operator()(T_arg&&... _A_arg)
   {
     // For instance, if _A_arg has 4 arguments,
@@ -212,7 +213,7 @@ private:
  *
  * @ingroup bind
  */
-template <int T_loc, class T_functor, class... T_bound>
+template <int T_loc, class T_functor, origin::Copy_constructible... T_bound>
 struct visitor<bind_functor<T_loc, T_functor, T_bound...>>
 {
   template <class T_action>
@@ -231,7 +232,7 @@ struct visitor<bind_functor<T_loc, T_functor, T_bound...>>
  *
  * @ingroup bind
  */
-template <class T_functor, class... T_type>
+template <class T_functor, origin::Copy_constructible... T_type>
 struct visitor<bind_functor<-1, T_functor, T_type...>>
 {
   template <typename T_action>
@@ -257,7 +258,7 @@ struct visitor<bind_functor<-1, T_functor, T_type...>>
  *
  * @ingroup bind
  */
-template <int I_location, class T_functor, class... T_bound>
+template <int I_location, class T_functor, origin::Copy_constructible... T_bound>
 inline decltype(auto)
 bind(const T_functor& _A_func, T_bound... _A_b)
 {
@@ -274,7 +275,7 @@ bind(const T_functor& _A_func, T_bound... _A_b)
  *
  * @ingroup bind
  */
-template <class T_functor, class... T_type>
+template <class T_functor, origin::Copy_constructible... T_type>
 inline decltype(auto)
 bind(const T_functor& _A_func, T_type... _A_b)
 {
