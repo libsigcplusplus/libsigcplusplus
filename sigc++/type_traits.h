@@ -24,28 +24,28 @@
 namespace sigc
 {
 
-template <class T_type>
+template <typename T_type>
 struct type_trait
 {
   using pass = T_type&;
   using take = const T_type&;
 };
 
-template <class T_type, int N>
+template <typename T_type, int N>
 struct type_trait<T_type[N]>
 {
   using pass = T_type*&;
   using take = const T_type*&;
 };
 
-template <class T_type>
+template <typename T_type>
 struct type_trait<T_type&>
 {
   using pass = T_type&;
   using take = T_type&;
 };
 
-template <class T_type>
+template <typename T_type>
 struct type_trait<const T_type&>
 {
   using pass = const T_type&;

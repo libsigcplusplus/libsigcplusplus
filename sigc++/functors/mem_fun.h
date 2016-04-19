@@ -68,7 +68,7 @@ namespace sigc
  * @ingroup sigcfunctors
  */
 
-template <class T_func, class... T_arg>
+template <typename T_func, typename... T_arg>
 class mem_functor
 {
 public:
@@ -102,7 +102,7 @@ protected:
   function_type func_ptr_;
 };
 
-template <class T_func, class... T_arg>
+template <typename T_func, typename... T_arg>
 class bound_mem_functor : mem_functor<T_func, T_arg...>
 {
   using base_type = mem_functor<T_func, T_arg...>;
@@ -151,10 +151,10 @@ public:
  *
  * @ingroup mem_fun
  */
-template <class T_func, class... T_arg>
+template <typename T_func, typename... T_arg>
 struct visitor<bound_mem_functor<T_func, T_arg...>>
 {
-  template <class T_action>
+  template <typename T_action>
   static void do_visit_each(
     const T_action& _A_action, const bound_mem_functor<T_func, T_arg...>& _A_target)
   {
@@ -169,7 +169,7 @@ struct visitor<bound_mem_functor<T_func, T_arg...>>
  *
  * @ingroup mem_fun
  */
-template <class T_return, class T_obj, class... T_arg>
+template <typename T_return, typename T_obj, typename... T_arg>
 inline decltype(auto)
 mem_fun(T_return (T_obj::*_A_func)(T_arg...))
 {
@@ -182,7 +182,7 @@ mem_fun(T_return (T_obj::*_A_func)(T_arg...))
  *
  * @ingroup mem_fun
  */
-template <class T_return, class T_obj, class... T_arg>
+template <typename T_return, typename T_obj, typename... T_arg>
 inline decltype(auto)
 mem_fun(T_return (T_obj::*_A_func)(T_arg...) const)
 {
@@ -195,7 +195,7 @@ mem_fun(T_return (T_obj::*_A_func)(T_arg...) const)
  *
  * @ingroup mem_fun
  */
-template <class T_return, class T_obj, class... T_arg>
+template <typename T_return, typename T_obj, typename... T_arg>
 inline decltype(auto)
 mem_fun(T_return (T_obj::*_A_func)(T_arg...) volatile)
 {
@@ -208,7 +208,7 @@ mem_fun(T_return (T_obj::*_A_func)(T_arg...) volatile)
  *
  * @ingroup mem_fun
  */
-template <class T_return, class T_obj, class... T_arg>
+template <typename T_return, typename T_obj, typename... T_arg>
 inline decltype(auto)
 mem_fun(T_return (T_obj::*_A_func)(T_arg...) const volatile)
 {
@@ -223,7 +223,7 @@ mem_fun(T_return (T_obj::*_A_func)(T_arg...) const volatile)
  *
  * @ingroup mem_fun
  */
-template <class T_return, class T_obj, class T_obj2, class... T_arg>
+template <typename T_return, typename T_obj, typename T_obj2, typename... T_arg>
 inline decltype(auto)
 mem_fun(/**/ T_obj& _A_obj, T_return (T_obj2::*_A_func)(T_arg...))
 {
@@ -238,7 +238,7 @@ mem_fun(/**/ T_obj& _A_obj, T_return (T_obj2::*_A_func)(T_arg...))
  *
  * @ingroup mem_fun
  */
-template <class T_return, class T_obj, class T_obj2, class... T_arg>
+template <typename T_return, typename T_obj, typename T_obj2, typename... T_arg>
 inline decltype(auto)
 mem_fun(/*const*/ T_obj& _A_obj, T_return (T_obj2::*_A_func)(T_arg...) const)
 {
@@ -253,7 +253,7 @@ mem_fun(/*const*/ T_obj& _A_obj, T_return (T_obj2::*_A_func)(T_arg...) const)
  *
  * @ingroup mem_fun
  */
-template <class T_return, class T_obj, class T_obj2, class... T_arg>
+template <typename T_return, typename T_obj, typename T_obj2, typename... T_arg>
 inline decltype(auto)
 mem_fun(/**/ T_obj& _A_obj, T_return (T_obj2::*_A_func)(T_arg...) volatile)
 {
@@ -268,7 +268,7 @@ mem_fun(/**/ T_obj& _A_obj, T_return (T_obj2::*_A_func)(T_arg...) volatile)
  *
  * @ingroup mem_fun
  */
-template <class T_return, class T_obj, class T_obj2, class... T_arg>
+template <typename T_return, typename T_obj, typename T_obj2, typename... T_arg>
 inline decltype(auto)
 mem_fun(/*const*/ T_obj& _A_obj, T_return (T_obj2::*_A_func)(T_arg...) const volatile)
 {

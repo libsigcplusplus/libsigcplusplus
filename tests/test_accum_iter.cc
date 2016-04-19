@@ -20,7 +20,7 @@ struct min_accum
 {
   using result_type = T;
 
-  template <class I>
+  template <typename I>
   typename std::iterator_traits<I>::value_type operator()(I i1, I i2)
   {
     return *std::min_element(i1, i2);

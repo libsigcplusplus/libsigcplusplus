@@ -68,7 +68,7 @@ struct tuple_transform_each_impl
   }
 };
 
-template <template <typename> class T_transformer>
+template <template <typename> typename T_transformer>
 struct tuple_transform_each_impl<T_transformer, 1>
 {
   template <typename T_current, typename T_original>

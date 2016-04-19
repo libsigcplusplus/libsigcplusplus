@@ -35,7 +35,7 @@ namespace sigc
  *
  * @ingroup sigcfunctors
  */
-template <class T_functor>
+template <typename T_functor>
 struct functor_trait
 {
   using functor_type = T_functor;
@@ -46,7 +46,7 @@ struct functor_trait
 
 // functor ptr fun:
 
-template <class T_return, class... T_arg>
+template <typename T_return, typename... T_arg>
 struct functor_trait<T_return (*)(T_arg...)>
 {
   using functor_type = pointer_functor<T_return(T_arg...)>;
@@ -54,13 +54,13 @@ struct functor_trait<T_return (*)(T_arg...)>
 
 // functor mem fun:
 
-template <class T_return, class T_obj, class... T_arg>
+template <typename T_return, typename T_obj, typename... T_arg>
 struct functor_trait<T_return (T_obj::*)(T_arg...)>
 {
   using functor_type = mem_functor<T_return (T_obj::*)(T_arg...), T_arg...>;
 };
 
-template <class T_return, class T_obj, class... T_arg>
+template <typename T_return, typename T_obj, typename... T_arg>
 struct functor_trait<T_return (T_obj::*)(T_arg...) const>
 {
   using functor_type = mem_functor<T_return (T_obj::*)(T_arg...) const, T_arg...>;
