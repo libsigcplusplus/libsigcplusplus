@@ -46,7 +46,7 @@ namespace sigc
  * The general template implementation is used for parameters that are passed by value.
  * @e T_type The type of the bound argument.
  */
-template <typename T_type>
+template <class T_type>
 class bound_argument
 {
 public:
@@ -76,7 +76,7 @@ private:
  * returned by bind_return() by reference, specialized for std::reference_wrapper<> types.
  * @e T_wrapped The type of the bound argument.
  */
-template <typename T_wrapped>
+template <class T_wrapped>
 class bound_argument<std::reference_wrapper<T_wrapped>>
 {
 public:
@@ -108,7 +108,7 @@ private:
  * returned by bind_return() by const reference, specialized for const reference_wrapper<> types.
  * - @e T_wrapped The type of the bound argument.
  */
-template <typename T_wrapped>
+template <class T_wrapped>
 class bound_argument<std::reference_wrapper<const T_wrapped>>
 {
 public:
@@ -145,10 +145,10 @@ private:
  * @param _A_action The functor to invoke.
  * @param _A_argument The visited instance.
  */
-template <typename T_type>
+template <class T_type>
 struct visitor<bound_argument<T_type>>
 {
-  template <typename T_action>
+  template <class T_action>
   static void do_visit_each(const T_action& _A_action, const bound_argument<T_type>& _A_argument)
   {
     sigc::visit_each(_A_action, _A_argument.visit());

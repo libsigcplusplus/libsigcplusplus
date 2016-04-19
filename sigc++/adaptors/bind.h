@@ -85,7 +85,7 @@ namespace sigc
 namespace internal
 {
 
-template <typename T_element>
+template <class T_element>
 struct TransformEachInvoker
 {
   // We take T_element as non-const because invoke() is not const.
@@ -105,7 +105,7 @@ struct TransformEachInvoker
  *
  * @ingroup bind
  */
-template <int I_location, typename T_functor, origin::Copy_constructible... T_bound>
+template <int I_location, class T_functor, origin::Copy_constructible... T_bound>
 struct bind_functor : public adapts<T_functor>
 {
   /** Invokes the wrapped functor passing on the arguments.
@@ -113,7 +113,7 @@ struct bind_functor : public adapts<T_functor>
    * @param _A_arg Arguments to be passed on to the functor.
    * @return The return value of the functor invocation.
    */
-  template <typename... T_arg>
+  template <class... T_arg>
   decltype(auto) operator()(T_arg&&... _A_arg)
   {
     // For instance, if I_location is 1, and _A_arg has 4 arguments,
@@ -150,7 +150,7 @@ private:
   /// The arguments bound to the functor.
   std::tuple<bound_argument<T_bound>...> bound_;
 
-  template <typename T, std::size_t... Is>
+  template <class T, std::size_t... Is>
   decltype(auto) call_functor_operator_parentheses(T&& tuple, std::index_sequence<Is...>)
   {
     return (this->functor_)(std::get<Is>(std::forward<T>(tuple))...);
@@ -162,7 +162,7 @@ private:
  *
  * @ingroup bind
  */
-template <typename T_functor, typename... T_type>
+template <class T_functor, class... T_type>
 struct bind_functor<-1, T_functor, T_type...> : public adapts<T_functor>
 {
 public:
@@ -198,7 +198,7 @@ public:
   std::tuple<bound_argument<T_type>...> bound_;
 
 private:
-  template <typename T, std::size_t... Is>
+  template <class T, std::size_t... Is>
   decltype(auto) call_functor_operator_parentheses(T&& tuple, std::index_sequence<Is...>)
   {
     return (this->functor_)(std::get<Is>(std::forward<T>(tuple))...);
@@ -213,10 +213,10 @@ private:
  *
  * @ingroup bind
  */
-template <int T_loc, typename T_functor, origin::Copy_constructible... T_bound>
+template <int T_loc, class T_functor, origin::Copy_constructible... T_bound>
 struct visitor<bind_functor<T_loc, T_functor, T_bound...>>
 {
-  template <typename T_action>
+  template <class T_action>
   static void do_visit_each(
     const T_action& _A_action, const bind_functor<T_loc, T_functor, T_bound...>& _A_target)
   {
@@ -232,7 +232,7 @@ struct visitor<bind_functor<T_loc, T_functor, T_bound...>>
  *
  * @ingroup bind
  */
-template <typename T_functor, origin::Copy_constructible... T_type>
+template <class T_functor, origin::Copy_constructible... T_type>
 struct visitor<bind_functor<-1, T_functor, T_type...>>
 {
   template <typename T_action>
@@ -258,7 +258,7 @@ struct visitor<bind_functor<-1, T_functor, T_type...>>
  *
  * @ingroup bind
  */
-template <int I_location, typename T_functor, origin::Copy_constructible... T_bound>
+template <int I_location, class T_functor, origin::Copy_constructible... T_bound>
 inline decltype(auto)
 bind(const T_functor& _A_func, T_bound... _A_b)
 {
@@ -275,7 +275,7 @@ bind(const T_functor& _A_func, T_bound... _A_b)
  *
  * @ingroup bind
  */
-template <typename T_functor, origin::Copy_constructible... T_type>
+template <class T_functor, origin::Copy_constructible... T_type>
 inline decltype(auto)
 bind(const T_functor& _A_func, T_type... _A_b)
 {

@@ -22,32 +22,32 @@
 namespace sigc
 {
 
-template <typename T_type>
+template <class T_type>
 struct unwrap_reference
 {
   using type = T_type;
 };
 
-template <typename T_type>
+template <class T_type>
 struct unwrap_reference<std::reference_wrapper<T_type>>
 {
   using type = T_type&;
 };
 
-template <typename T_type>
+template <class T_type>
 struct unwrap_reference<std::reference_wrapper<const T_type>>
 {
   using type = const T_type&;
 };
 
-template <typename T_type>
+template <class T_type>
 T_type&
 unwrap(const std::reference_wrapper<T_type>& v)
 {
   return v;
 }
 
-template <typename T_type>
+template <class T_type>
 const T_type&
 unwrap(const std::reference_wrapper<const T_type>& v)
 {

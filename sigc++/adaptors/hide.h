@@ -66,14 +66,14 @@ namespace sigc
  *
  * @ingroup hide
  */
-template <int I_location, typename T_functor>
+template <int I_location, class T_functor>
 struct hide_functor : public adapts<T_functor>
 {
   /** Invokes the wrapped functor, ignoring the argument at index @e I_location (0-indexed).
    * @param _A_a Arguments to be passed on to the functor, apart from the ignored argument.
    * @return The return value of the functor invocation.
    */
-  template <typename... T_arg>
+  template <class... T_arg>
   decltype(auto) operator()(T_arg&&... _A_a)
   {
     constexpr auto size = sizeof...(T_arg);
@@ -101,7 +101,7 @@ struct hide_functor : public adapts<T_functor>
 private:
   // TODO_variadic: Replace this with std::experimental::apply() if that becomes standard
   // C++, or add our own implementation, to avoid code duplication.
-  template <typename T_tuple, std::size_t... Is>
+  template <class T_tuple, std::size_t... Is>
   decltype(auto) call_functor_operator_parentheses(T_tuple& tuple, std::index_sequence<Is...>)
   {
     return this->functor_.template operator()(std::get<Is>(tuple)...);
@@ -116,7 +116,7 @@ private:
  *
  * @ingroup hide
  */
-template <int I_location, typename T_functor>
+template <int I_location, class T_functor>
 struct visitor<hide_functor<I_location, T_functor>>
 {
   template <typename T_action>
@@ -138,7 +138,7 @@ struct visitor<hide_functor<I_location, T_functor>>
  *
  * @ingroup hide
  */
-template <int I_location, typename T_functor>
+template <int I_location, class T_functor>
 inline decltype(auto)
 hide(const T_functor& _A_func)
 {
@@ -154,7 +154,7 @@ hide(const T_functor& _A_func)
  *
  * @ingroup hide
  */
-template <typename T_functor>
+template <class T_functor>
 inline decltype(auto)
 hide(const T_functor& _A_func)
 {

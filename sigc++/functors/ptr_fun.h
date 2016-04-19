@@ -49,10 +49,10 @@ namespace sigc
  *
  * @ingroup ptr_fun
  */
-template <typename T_return, typename... T_args>
+template <class T_return, class... T_args>
 class pointer_functor;
 
-template <typename T_return, typename... T_args>
+template <class T_return, class... T_args>
 class pointer_functor<T_return(T_args...)>
 {
   using function_type = T_return (*)(T_args...);
@@ -84,7 +84,7 @@ public:
  *
  * @ingroup ptr_fun
  */
-template <typename T_return, typename... T_args>
+template <class T_return, class... T_args>
 inline decltype(auto) ptr_fun(T_return (*_A_func)(T_args...))
 {
   return pointer_functor<T_return(T_args...)>(_A_func);

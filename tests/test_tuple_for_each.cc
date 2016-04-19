@@ -22,7 +22,7 @@
 #include <iostream>
 #include <functional>
 
-template <typename T_element_from>
+template <class T_element_from>
 class for_each_simple
 {
 public:
@@ -46,7 +46,7 @@ test_tuple_for_each_same_types()
   }
 }
 
-template <typename T_element_from>
+template <class T_element_from>
 class for_each_simple_with_extras
 {
 public:
@@ -66,7 +66,7 @@ test_tuple_for_each_same_types_with_extras()
   }
 }
 
-template <typename T_element_from>
+template <class T_element_from>
 class for_each_simple_with_nonconst_extras
 {
 public:
@@ -89,7 +89,7 @@ test_tuple_for_each_same_types_with_nonconst_extras()
 // The general template declaration.
 // We then provide specializations for each type,
 // so we can test having a different return value for each T_element_from type.
-template <typename T_element_from>
+template <class T_element_from>
 class visitor_with_specializations;
 
 // An int will be converted to a std::string:
@@ -143,7 +143,7 @@ test_tuple_for_each_multiple_types()
   sigc::internal::tuple_for_each<visitor_with_specializations>(t_original);
 }
 
-template <typename T_element_from>
+template <class T_element_from>
 class for_each_nonconst
 {
 public:
@@ -190,7 +190,7 @@ test_tuple_for_each_stdref()
 
 static std::string correct_sequence_output;
 
-template <typename T_element_from>
+template <class T_element_from>
 class for_each_correct_sequence
 {
 public:

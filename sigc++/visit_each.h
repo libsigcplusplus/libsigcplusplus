@@ -30,16 +30,16 @@ struct trackable;
 namespace internal
 {
 
-template <typename Base, typename Derived>
+template <class Base, class Derived>
 constexpr bool is_base_of_or_same_v =
   std::is_base_of<std::decay_t<Base>, std::decay_t<Derived>>::value ||
     std::is_same<std::decay_t<Base>, std::decay_t<Derived>>::value;
 
 /// Helper struct for visit_each_trackable().
-template <typename T_action>
+template <class T_action>
 struct limit_trackable_target
 {
-  template <typename T_type>
+  template <class T_type>
   void operator()(T_type&& _A_type) const
   {
     using T_self = limit_trackable_target<T_action>;
@@ -58,18 +58,18 @@ struct limit_trackable_target
   T_action action_;
 
 private:
-  template <typename T_type, typename T_limit, bool I_derived = is_base_of_or_same_v<sigc::trackable, T_type>>
+  template <class T_type, class T_limit, bool I_derived = is_base_of_or_same_v<sigc::trackable, T_type>>
   struct with_type;
 
   // Specialization for I_derived = false
-  template <typename T_type, typename T_limit>
+  template <class T_type, class T_limit>
   struct with_type<T_type, T_limit, false>
   {
     static void execute_(const T_type&, const T_limit&) {}
   };
 
   // Specialization for I_derived = true
-  template <typename T_type, typename T_limit>
+  template <class T_type, class T_limit>
   struct with_type<T_type, T_limit, true>
   {
     static void execute_(const T_type& _A_type, const T_limit& _A_action)
@@ -113,7 +113,7 @@ private:
  *     template <>
  *     struct visitor<some_ns::some_functor>
  *     {
- *       template <typename T_action>
+ *       template <class T_action>
  *       static void do_visit_each(const T_action& _A_action,
  *                                 const some_ns::some_functor& _A_target)
  *       {
@@ -126,10 +126,10 @@ private:
  *
  * @ingroup sigcfunctors
  */
-template <typename T_functor>
+template <class T_functor>
 struct visitor
 {
-  template <typename T_action>
+  template <class T_action>
   static void do_visit_each(const T_action& _A_action, const T_functor& _A_functor)
   {
     _A_action(_A_functor);
@@ -140,7 +140,7 @@ struct visitor
  *
  * @ingroup sigcfunctors
  */
-template <typename T_action, typename T_functor>
+template <class T_action, class T_functor>
 void
 visit_each(const T_action& _A_action, const T_functor& _A_functor)
 {
@@ -162,7 +162,7 @@ visit_each(const T_action& _A_action, const T_functor& _A_functor)
  *
  * @ingroup sigcfunctors
  */
-template <typename T_action, typename T_functor>
+template <class T_action, class T_functor>
 void
 visit_each_trackable(const T_action& _A_action, const T_functor& _A_functor)
 {

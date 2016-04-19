@@ -33,7 +33,7 @@ struct arithmetic_mean_accumulator
   }
 };
 
-template <typename Ret>
+template <class Ret>
 struct vector_accumulator
 {
   using result_type = std::vector<Ret>;

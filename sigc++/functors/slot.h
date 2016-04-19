@@ -19,7 +19,7 @@ namespace internal
  * notification callback. Consequently the slot_rep object will be
  * notified when some referred object is destroyed or overwritten.
  */
-template <typename T_functor>
+template <class T_functor>
 struct typed_slot_rep : public slot_rep
 {
 private:
@@ -97,7 +97,7 @@ private:
  * - @e T_arg Argument types used in the definition of call_it().
  *
  */
-template <typename T_functor, typename T_return, typename... T_arg>
+template <class T_functor, class T_return, class... T_arg>
 struct slot_call
 {
   /** Invokes a functor of type @p T_functor.
@@ -148,10 +148,10 @@ struct slot_call
  *
  * @ingroup slot
  */
-template <typename T_return, typename... T_arg>
+template <class T_return, class... T_arg>
 class slot;
 
-template <typename T_return, typename... T_arg>
+template <class T_return, class... T_arg>
 class slot<T_return(T_arg...)> : public slot_base
 {
 public:
@@ -181,7 +181,7 @@ public:
   /** Constructs a slot from an arbitrary functor.
    * @param _A_func The desired functor the new slot should be assigned to.
    */
-  template <typename T_functor>
+  template <class T_functor>
   slot(const T_functor& _A_func) : slot_base(new internal::typed_slot_rep<T_functor>(_A_func))
   {
     // The slot_base:: is necessary to stop the HP-UX aCC compiler from being confused. murrayc.
