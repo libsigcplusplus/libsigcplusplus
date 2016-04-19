@@ -40,12 +40,12 @@ namespace sigc
  *
  * @ingroup compose
  */
-template <class T_setter, class T_getter>
+template <typename T_setter, typename T_getter>
 struct compose1_functor : public adapts<T_setter>
 {
   decltype(auto) operator()() { return this->functor_(get_()); }
 
-  template <class... T_arg>
+  template <typename... T_arg>
   decltype(auto) operator()(T_arg&&... _A_a)
   {
     return this->functor_(get_(std::forward<T_arg>(_A_a)...));
@@ -74,12 +74,12 @@ struct compose1_functor : public adapts<T_setter>
  *
  * @ingroup compose
  */
-template <class T_setter, class T_getter1, class T_getter2>
+template <typename T_setter, typename T_getter1, typename T_getter2>
 struct compose2_functor : public adapts<T_setter>
 {
   decltype(auto) operator()() { return this->functor_(get1_(), get2_()); }
 
-  template <class... T_arg>
+  template <typename... T_arg>
   decltype(auto) operator()(T_arg... _A_a)
   {
     return this->functor_(get1_(_A_a...), get2_(_A_a...));
@@ -109,10 +109,10 @@ struct compose2_functor : public adapts<T_setter>
  *
  * @ingroup compose
  */
-template <class T_setter, class T_getter>
+template <typename T_setter, typename T_getter>
 struct visitor<compose1_functor<T_setter, T_getter>>
 {
-  template <class T_action>
+  template <typename T_action>
   static void do_visit_each(
     const T_action& _A_action, const compose1_functor<T_setter, T_getter>& _A_target)
   {
@@ -128,10 +128,10 @@ struct visitor<compose1_functor<T_setter, T_getter>>
  *
  * @ingroup compose
  */
-template <class T_setter, class T_getter1, class T_getter2>
+template <typename T_setter, typename T_getter1, typename T_getter2>
 struct visitor<compose2_functor<T_setter, T_getter1, T_getter2>>
 {
-  template <class T_action>
+  template <typename T_action>
   static void do_visit_each(
     const T_action& _A_action, const compose2_functor<T_setter, T_getter1, T_getter2>& _A_target)
   {
@@ -151,7 +151,7 @@ struct visitor<compose2_functor<T_setter, T_getter1, T_getter2>>
  *
  * @ingroup compose
  */
-template <class T_setter, class T_getter>
+template <typename T_setter, typename T_getter>
 inline compose1_functor<T_setter, T_getter>
 compose(const T_setter& _A_setter, const T_getter& _A_getter)
 {
@@ -169,7 +169,7 @@ compose(const T_setter& _A_setter, const T_getter& _A_getter)
  *
  * @ingroup compose
  */
-template <class T_setter, class T_getter1, class T_getter2>
+template <typename T_setter, typename T_getter1, typename T_getter2>
 inline compose2_functor<T_setter, T_getter1, T_getter2>
 compose(const T_setter& _A_setter, const T_getter1& _A_getter1, const T_getter2& _A_getter2)
 {

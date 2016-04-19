@@ -22,16 +22,16 @@ struct A : public sigc::trackable
   A() {}
 };
 
-template <class T_type, bool I_derived = std::is_base_of<sigc::trackable, T_type>::value>
+template <typename T_type, bool I_derived = std::is_base_of<sigc::trackable, T_type>::value>
 struct with_trackable;
 
-template <class T_type>
+template <typename T_type>
 struct with_trackable<T_type, false>
 {
   static void perform(const T_type&) { result_stream << "other "; }
 };
 
-template <class T_type>
+template <typename T_type>
 struct with_trackable<T_type, true>
 {
   static void perform(const T_type&) { result_stream << "trackable "; }
@@ -45,7 +45,7 @@ struct print
 {
   void operator()(int i) const { result_stream << "int: " << i << " "; }
 
-  template <class T>
+  template <typename T>
   void operator()(const T& t) const
   {
     with_trackable<T>::perform(t);

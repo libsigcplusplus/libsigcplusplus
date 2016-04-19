@@ -62,7 +62,7 @@ namespace sigc
  *
  * @ingroup adaptors
  */
-template <class T_functor>
+template <typename T_functor>
 struct adaptor_functor : public adaptor_base
 {
   /** Invokes the wrapped functor passing on the arguments.
@@ -74,7 +74,7 @@ struct adaptor_functor : public adaptor_base
    * @param _A_arg... Arguments to be passed on to the functor.
    * @return The return value of the functor invocation.
    */
-  template <class... T_arg>
+  template <typename... T_arg>
   decltype(auto) operator()(T_arg&&... _A_arg) const
   {
     return functor_(std::forward<T_arg>(_A_arg)...);
@@ -92,7 +92,7 @@ struct adaptor_functor : public adaptor_base
    * function pointer.
    * @param _A_type Pointer to function or class method to invoke from operator()().
    */
-  template <class T_type>
+  template <typename T_type>
   explicit adaptor_functor(const T_type& _A_type) : functor_(_A_type)
   {
   }
@@ -109,10 +109,10 @@ struct adaptor_functor : public adaptor_base
  *
  * @ingroup adaptors
  */
-template <class T_functor>
+template <typename T_functor>
 struct visitor<adaptor_functor<T_functor>>
 {
-  template <class T_action>
+  template <typename T_action>
   static void do_visit_each(const T_action& _A_action, const adaptor_functor<T_functor>& _A_target)
   {
     sigc::visit_each(_A_action, _A_target.functor_);
@@ -129,7 +129,7 @@ struct visitor<adaptor_functor<T_functor>>
  *
  * @ingroup adaptors
  */
-template <class T_functor, bool I_isadaptor = std::is_base_of<adaptor_base, T_functor>::value>
+template <typename T_functor, bool I_isadaptor = std::is_base_of<adaptor_base, T_functor>::value>
 struct adaptor_trait;
 
 
@@ -137,7 +137,7 @@ struct adaptor_trait;
  * This template specialization is used for types that inherit from adaptor_base.
  * adaptor_type is equal to @p T_functor in this case.
  */
-template <class T_functor>
+template <typename T_functor>
 struct adaptor_trait<T_functor, true>
 {
   using adaptor_type = T_functor;
@@ -149,7 +149,7 @@ struct adaptor_trait<T_functor, true>
  * The latter are converted into @p pointer_functor or @p mem_functor types.
  * adaptor_type is equal to @p adaptor_functor<functor_type>.
  */
-template <class T_functor>
+template <typename T_functor>
 struct adaptor_trait<T_functor, false>
 {
 private:

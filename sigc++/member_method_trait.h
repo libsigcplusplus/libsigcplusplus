@@ -27,55 +27,55 @@ namespace sigc
 namespace internal
 {
 
-template <class>
+template <typename>
 struct member_method_is_const;
 
-template <class T_obj, class T_result, class... T_arg>
+template <typename T_obj, typename T_result, typename... T_arg>
 struct member_method_is_const<T_result (T_obj::*)(T_arg...)>
 {
   constexpr static bool value = false;
 };
 
-template <class T_obj, class T_result, class... T_arg>
+template <typename T_obj, typename T_result, typename... T_arg>
 struct member_method_is_const<T_result (T_obj::*)(T_arg...) volatile>
 {
   constexpr static bool value = false;
 };
 
-template <class T_obj, class T_result, class... T_arg>
+template <typename T_obj, typename T_result, typename... T_arg>
 struct member_method_is_const<T_result (T_obj::*)(T_arg...) const>
 {
   constexpr static bool value = true;
 };
 
-template <class T_obj, class T_result, class... T_arg>
+template <typename T_obj, typename T_result, typename... T_arg>
 struct member_method_is_const<T_result (T_obj::*)(T_arg...) const volatile>
 {
   constexpr static bool value = true;
 };
 
-template <class>
+template <typename>
 struct member_method_is_volatile;
 
-template <class T_obj, class T_result, class... T_arg>
+template <typename T_obj, typename T_result, typename... T_arg>
 struct member_method_is_volatile<T_result (T_obj::*)(T_arg...)>
 {
   constexpr static bool value = false;
 };
 
-template <class T_obj, class T_result, class... T_arg>
+template <typename T_obj, typename T_result, typename... T_arg>
 struct member_method_is_volatile<T_result (T_obj::*)(T_arg...) const>
 {
   constexpr static bool value = false;
 };
 
-template <class T_obj, class T_result, class... T_arg>
+template <typename T_obj, typename T_result, typename... T_arg>
 struct member_method_is_volatile<T_result (T_obj::*)(T_arg...) volatile>
 {
   constexpr static bool value = true;
 };
 
-template <class T_obj, class T_result, class... T_arg>
+template <typename T_obj, typename T_result, typename... T_arg>
 struct member_method_is_volatile<T_result (T_obj::*)(T_arg...) const volatile>
 {
   constexpr static bool value = true;
@@ -83,30 +83,30 @@ struct member_method_is_volatile<T_result (T_obj::*)(T_arg...) const volatile>
 
 // member method class:
 
-template <class T_result, class... T_arg>
+template <typename T_result, typename... T_arg>
 struct member_method_class
 {
 };
 
-template <class T_obj, class T_result, class... T_arg>
+template <typename T_obj, typename T_result, typename... T_arg>
 struct member_method_class<T_result (T_obj::*)(T_arg...)>
 {
   using type = T_obj;
 };
 
-template <class T_obj, class T_result, class... T_arg>
+template <typename T_obj, typename T_result, typename... T_arg>
 struct member_method_class<T_result (T_obj::*)(T_arg...) volatile>
 {
   using type = T_obj;
 };
 
-template <class T_obj, class T_result, class... T_arg>
+template <typename T_obj, typename T_result, typename... T_arg>
 struct member_method_class<T_result (T_obj::*)(T_arg...) const>
 {
   using type = T_obj;
 };
 
-template <class T_obj, class T_result, class... T_arg>
+template <typename T_obj, typename T_result, typename... T_arg>
 struct member_method_class<T_result (T_obj::*)(T_arg...) const volatile>
 {
   using type = T_obj;
@@ -114,30 +114,30 @@ struct member_method_class<T_result (T_obj::*)(T_arg...) const volatile>
 
 // member method result:
 
-template <class T_result, class... T_arg>
+template <typename T_result, typename... T_arg>
 struct member_method_result
 {
 };
 
-template <class T_obj, class T_result, class... T_arg>
+template <typename T_obj, typename T_result, typename... T_arg>
 struct member_method_result<T_result (T_obj::*)(T_arg...)>
 {
   using type = T_result;
 };
 
-template <class T_obj, class T_result, class... T_arg>
+template <typename T_obj, typename T_result, typename... T_arg>
 struct member_method_result<T_result (T_obj::*)(T_arg...) volatile>
 {
   using type = T_result;
 };
 
-template <class T_obj, class T_result, class... T_arg>
+template <typename T_obj, typename T_result, typename... T_arg>
 struct member_method_result<T_result (T_obj::*)(T_arg...) const>
 {
   using type = T_result;
 };
 
-template <class T_obj, class T_result, class... T_arg>
+template <typename T_obj, typename T_result, typename... T_arg>
 struct member_method_result<T_result (T_obj::*)(T_arg...) const volatile>
 {
   using type = T_result;

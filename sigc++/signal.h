@@ -160,7 +160,7 @@ struct slot_const_iterator
  *
  * @ingroup signal
  */
-template <class T_slot>
+template <typename T_slot>
 struct slot_list
 {
   using slot_type = T_slot;
@@ -249,7 +249,7 @@ namespace internal
  * the slot. The return value is buffered, so that in an expression
  * like @code a = (*i) * (*i); @endcode the slot is executed only once.
  */
-template <class T_emitter, class T_result = typename T_emitter::result_type>
+template <typename T_emitter, typename T_result = typename T_emitter::result_type>
 struct slot_iterator_buf
 {
   using size_type = std::size_t;
@@ -332,7 +332,7 @@ private:
 
 /** Template specialization of slot_iterator_buf for void return signals.
  */
-template <class T_emitter>
+template <typename T_emitter>
 struct slot_iterator_buf<T_emitter, void>
 {
   using size_type = std::size_t;
@@ -400,7 +400,7 @@ private:
 };
 
 /** Reverse version of sigc::internal::slot_iterator_buf. */
-template <class T_emitter, class T_result = typename T_emitter::result_type>
+template <typename T_emitter, typename T_result = typename T_emitter::result_type>
 struct slot_reverse_iterator_buf
 {
   using size_type = std::size_t;
@@ -486,7 +486,7 @@ private:
 
 /** Template specialization of slot_reverse_iterator_buf for void return signals.
  */
-template <class T_emitter>
+template <typename T_emitter>
 struct slot_reverse_iterator_buf<T_emitter, void>
 {
   using size_type = std::size_t;
@@ -593,7 +593,7 @@ private:
  * emission when no accumulator is used, for example when the template
  * argument @e T_accumulator is @p void.
  */
-template <class T_return, class T_accumulator, class... T_arg>
+template <typename T_return, typename T_accumulator, typename... T_arg>
 struct signal_emit
 {
   using self_type = signal_emit<T_return, T_accumulator, T_arg...>;
@@ -675,7 +675,7 @@ private:
  * This template specialization implements an optimized emit()
  * function for the case that no accumulator is used.
  */
-template <class T_return, class... T_arg>
+template <typename T_return, typename... T_arg>
 struct signal_emit<T_return, void, T_arg...>
 {
 private:
@@ -781,7 +781,7 @@ public:
  * function for the case that no accumulator is used and the
  * return type is @p void.
  */
-template <class... T_arg>
+template <typename... T_arg>
 struct signal_emit<void, void, T_arg...>
 {
 private:
@@ -864,7 +864,7 @@ public:
  *
  * @ingroup signal
  */
-template <class T_return, class T_accumulator, class... T_arg>
+template <typename T_return, typename T_accumulator, typename... T_arg>
 class signal_with_accumulator : public signal_base
 {
 public:
@@ -1027,10 +1027,10 @@ public:
  *
  * @ingroup signal
  */
-template <class T_return, class... T_arg>
+template <typename T_return, typename... T_arg>
 class signal;
 
-template <class T_return, class... T_arg>
+template <typename T_return, typename... T_arg>
 class signal<T_return(T_arg...)> : public signal_with_accumulator<T_return, void, T_arg...>
 {
 public:
@@ -1079,7 +1079,7 @@ public:
    *
    * @ingroup signal
    */
-  template <class T_accumulator>
+  template <typename T_accumulator>
   class accumulated : public signal_with_accumulator<T_return, T_accumulator, T_arg...>
   {
   public:

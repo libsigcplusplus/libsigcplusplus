@@ -24,18 +24,18 @@ namespace sigc
  * @code
  * namespace my_ns
  * {
- * template <class T_functor>
+ * template <typename T_functor>
  * struct my_adaptor : public sigc::adapts<T_functor>
  * {
  *   //
  *   decltype(auto)
  *   operator()() const;
  *   //
- *   template <class T_arg1>
+ *   template <typename T_arg1>
  *   decltype(auto)
  *   operator()(T_arg1 _A_arg1) const;
  *   //
- *   template <class T_arg1, class T_arg2>
+ *   template <typename T_arg1, typename T_arg2>
  *   decltype(auto)
  *   operator()(T_arg1 _A_arg1, T_arg2 _A_arg2) const;
  *   //
@@ -49,10 +49,10 @@ namespace sigc
  * // Specialization of sigc::visitor for my_adaptor.
  * namespace sigc
  * {
- * template <class T_functor>
+ * template <typename T_functor>
  * struct visitor<my_ns::my_adaptor<T_functor> >
  * {
- *   template <class T_action>
+ *   template <typename T_action>
  *   static void do_visit_each(const T_action& _A_action,
  *                             const my_ns::my_adaptor<T_functor>& _A_target)
  *   {
@@ -72,7 +72,7 @@ namespace sigc
  *
  * @ingroup adaptors
  */
-template <class T_functor>
+template <typename T_functor>
 struct adapts : public adaptor_base
 {
 private:

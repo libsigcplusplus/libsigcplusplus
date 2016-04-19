@@ -20,7 +20,7 @@
 #include <utility>
 #include <functional>
 
-template <class T_element_from>
+template <typename T_element_from>
 class transform_to_string
 {
 public:
@@ -67,7 +67,7 @@ test_tuple_transform_each_same_types()
 // The general template declaration.
 // We then provide specializations for each type,
 // so we can test having a different return value for each T_element_from type.
-template <class T_element_from>
+template <typename T_element_from>
 class transform_to_something;
 
 // An int will be converted to a std::string:
@@ -113,7 +113,7 @@ test_tuple_transform_each_multiple_types()
     "unexpected transform_each()ed tuple type");
 }
 
-template <class T_element_from>
+template <typename T_element_from>
 class transform_each_nonconst
 {
 public:
@@ -183,7 +183,7 @@ private:
   int m_val;
 };
 
-template <class T_element_from>
+template <typename T_element_from>
 class transform_noncopyable_to_string
 {
 public:
@@ -214,7 +214,7 @@ test_tuple_transform_each_stdref_non_copyable()
 
 static std::string correct_sequence_output;
 
-template <class T_element_from>
+template <typename T_element_from>
 class transform_each_correct_sequence
 {
 public:
@@ -245,7 +245,7 @@ test_tuple_transform_each_empty_tuple()
 // The general template declaration.
 // We then provide specializations for each type,
 // so we can test having a different return value for each T_element_from type.
-template <class T_element_from>
+template <typename T_element_from>
 class transform_as_constexpr_to_something;
 
 // An int will be converted to a char:

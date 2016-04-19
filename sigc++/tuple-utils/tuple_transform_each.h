@@ -32,7 +32,7 @@ namespace internal
 namespace detail
 {
 
-template <template <typename> class T_transformer, std::size_t size_from_index>
+template <template <typename> typename T_transformer, std::size_t size_from_index>
 struct tuple_transform_each_impl
 {
   // TODO: Avoid the need to pass t_original all the way into the recursion?
@@ -68,7 +68,7 @@ struct tuple_transform_each_impl
   }
 };
 
-template <template <typename> class T_transformer>
+template <template <typename> typename T_transformer>
 struct tuple_transform_each_impl<T_transformer, 1>
 {
   template <typename T_current, typename T_original>
@@ -92,7 +92,7 @@ struct tuple_transform_each_impl<T_transformer, 1>
   }
 };
 
-template <template <typename> class T_transformer>
+template <template <typename> typename T_transformer>
 struct tuple_transform_each_impl<T_transformer, 0>
 {
   template <typename T_current, typename T_original>
@@ -109,7 +109,7 @@ struct tuple_transform_each_impl<T_transformer, 0>
  * Get a tuple with each element having the transformed value of the element
  * in the original tuple.
  */
-template <template <typename> class T_transformer, typename T>
+template <template <typename> typename T_transformer, typename T>
 constexpr decltype(auto)
 tuple_transform_each(T&& t)
 {

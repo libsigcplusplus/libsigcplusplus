@@ -29,7 +29,7 @@ namespace internal
 namespace detail
 {
 
-template <template <typename> class T_visitor, std::size_t size_from_index, typename... T_extras>
+template <template <typename> typename T_visitor, std::size_t size_from_index, typename... T_extras>
 struct tuple_for_each_impl
 {
   template <typename T>
@@ -50,7 +50,7 @@ struct tuple_for_each_impl
   }
 };
 
-template <template <typename> class T_visitor, typename... T_extras>
+template <template <typename> typename T_visitor, typename... T_extras>
 struct tuple_for_each_impl<T_visitor, 1, T_extras...>
 {
   template <typename T>
@@ -69,7 +69,7 @@ struct tuple_for_each_impl<T_visitor, 1, T_extras...>
   }
 };
 
-template <template <typename> class T_visitor, typename... T_extras>
+template <template <typename> typename T_visitor, typename... T_extras>
 struct tuple_for_each_impl<T_visitor, 0, T_extras...>
 {
   template <typename T>
@@ -92,7 +92,7 @@ struct tuple_for_each_impl<T_visitor, 0, T_extras...>
  * @param t The tuple whose elements should be visited.
  * @param extras Any extra arguments to pass to @e T_Visitor's visit() method.
  */
-template <template <typename> class T_visitor, typename T, typename... T_extras>
+template <template <typename> typename T_visitor, typename T, typename... T_extras>
 constexpr void
 tuple_for_each(T&& t, T_extras&&... extras)
 {

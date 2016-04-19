@@ -60,7 +60,7 @@ namespace Glib
  * See the "Memory Management" section in the "Programming with gtkmm"
  * book for further information.
  */
-template <class T_CppObject>
+template <typename T_CppObject>
 class RefPtr
 {
 public:
@@ -86,7 +86,7 @@ public:
    *
    * Increments the reference count.
    */
-  template <class T_CastFrom>
+  template <typename T_CastFrom>
   inline RefPtr(const RefPtr<T_CastFrom>& src);
 
   /** Swap the contents of two RefPtr<>.
@@ -103,7 +103,7 @@ public:
    *
    * Increments the reference count.
    */
-  template <class T_CastFrom>
+  template <typename T_CastFrom>
   inline RefPtr<T_CppObject>& operator=(const RefPtr<T_CastFrom>& src);
 
   /// Tests whether the RefPtr<> point to the same underlying instance.
@@ -147,7 +147,7 @@ public:
    *   ptr_derived = RefPtr<Derived>::cast_dynamic(ptr_base);
    * @endcode
    */
-  template <class T_CastFrom>
+  template <typename T_CastFrom>
   static inline RefPtr<T_CppObject> cast_dynamic(const RefPtr<T_CastFrom>& src);
 
   /** Static cast to derived class.
@@ -157,7 +157,7 @@ public:
    *   ptr_derived = RefPtr<Derived>::cast_static(ptr_base);
    * @endcode
    */
-  template <class T_CastFrom>
+  template <typename T_CastFrom>
   static inline RefPtr<T_CppObject> cast_static(const RefPtr<T_CastFrom>& src);
 
   /** Cast to non-const.
@@ -167,7 +167,7 @@ public:
    *   ptr_unconst = RefPtr<UnConstType>::cast_const(ptr_const);
    * @endcode
    */
-  template <class T_CastFrom>
+  template <typename T_CastFrom>
   static inline RefPtr<T_CppObject> cast_const(const RefPtr<T_CastFrom>& src);
 
   /** Compare based on the underlying instance address.
@@ -199,30 +199,30 @@ private:
 // RefPtr<>::operator->() comes first here since it's used by other methods.
 // If it would come after them it wouldn't be inlined.
 
-template <class T_CppObject>
+template <typename T_CppObject>
 inline T_CppObject* RefPtr<T_CppObject>::operator->() const
 {
   return pCppObject_;
 }
 
-template <class T_CppObject>
+template <typename T_CppObject>
 inline RefPtr<T_CppObject>::RefPtr() : pCppObject_(nullptr)
 {
 }
 
-template <class T_CppObject>
+template <typename T_CppObject>
 inline RefPtr<T_CppObject>::~RefPtr()
 {
   if (pCppObject_)
     pCppObject_->unreference(); // This could cause pCppObject to be deleted.
 }
 
-template <class T_CppObject>
+template <typename T_CppObject>
 inline RefPtr<T_CppObject>::RefPtr(T_CppObject* pCppObject) : pCppObject_(pCppObject)
 {
 }
 
-template <class T_CppObject>
+template <typename T_CppObject>
 inline RefPtr<T_CppObject>::RefPtr(const RefPtr<T_CppObject>& src) : pCppObject_(src.pCppObject_)
 {
   if (pCppObject_)
@@ -232,8 +232,8 @@ inline RefPtr<T_CppObject>::RefPtr(const RefPtr<T_CppObject>& src) : pCppObject_
 // The templated ctor allows copy construction from any object that's
 // castable.  Thus, it does downcasts:
 //   base_ref = derived_ref
-template <class T_CppObject>
-template <class T_CastFrom>
+template <typename T_CppObject>
+template <typename T_CastFrom>
 inline RefPtr<T_CppObject>::RefPtr(const RefPtr<T_CastFrom>& src)
 : // A different RefPtr<> will not allow us access to pCppObject_.  We need
   // to add a get_underlying() for this, but that would encourage incorrect
@@ -244,7 +244,7 @@ inline RefPtr<T_CppObject>::RefPtr(const RefPtr<T_CastFrom>& src)
     pCppObject_->reference();
 }
 
-template <class T_CppObject>
+template <typename T_CppObject>
 inline void
 RefPtr<T_CppObject>::swap(RefPtr<T_CppObject>& other)
 {
@@ -253,7 +253,7 @@ RefPtr<T_CppObject>::swap(RefPtr<T_CppObject>& other)
   other.pCppObject_ = temp;
 }
 
-template <class T_CppObject>
+template <typename T_CppObject>
 inline RefPtr<T_CppObject>&
 RefPtr<T_CppObject>::operator=(const RefPtr<T_CppObject>& src)
 {
@@ -286,8 +286,8 @@ RefPtr<T_CppObject>::operator=(const RefPtr<T_CppObject>& src)
   return *this;
 }
 
-template <class T_CppObject>
-template <class T_CastFrom>
+template <typename T_CppObject>
+template <typename T_CastFrom>
 inline RefPtr<T_CppObject>&
 RefPtr<T_CppObject>::operator=(const RefPtr<T_CastFrom>& src)
 {
@@ -296,28 +296,28 @@ RefPtr<T_CppObject>::operator=(const RefPtr<T_CastFrom>& src)
   return *this;
 }
 
-template <class T_CppObject>
+template <typename T_CppObject>
 inline bool
 RefPtr<T_CppObject>::operator==(const RefPtr<T_CppObject>& src) const
 {
   return (pCppObject_ == src.pCppObject_);
 }
 
-template <class T_CppObject>
+template <typename T_CppObject>
 inline bool
 RefPtr<T_CppObject>::operator!=(const RefPtr<T_CppObject>& src) const
 {
   return (pCppObject_ != src.pCppObject_);
 }
 
-template <class T_CppObject>
+template <typename T_CppObject>
 inline RefPtr<T_CppObject>::operator bool() const
 {
   return (pCppObject_ != nullptr);
 }
 
 #ifndef GLIBMM_DISABLE_DEPRECATED
-template <class T_CppObject>
+template <typename T_CppObject>
 inline void
 RefPtr<T_CppObject>::clear()
 {
@@ -325,7 +325,7 @@ RefPtr<T_CppObject>::clear()
 }
 #endif // GLIBMM_DISABLE_DEPRECATED
 
-template <class T_CppObject>
+template <typename T_CppObject>
 inline void
 RefPtr<T_CppObject>::reset()
 {
@@ -333,8 +333,8 @@ RefPtr<T_CppObject>::reset()
   this->swap(temp);
 }
 
-template <class T_CppObject>
-template <class T_CastFrom>
+template <typename T_CppObject>
+template <typename T_CastFrom>
 inline RefPtr<T_CppObject>
 RefPtr<T_CppObject>::cast_dynamic(const RefPtr<T_CastFrom>& src)
 {
@@ -346,8 +346,8 @@ RefPtr<T_CppObject>::cast_dynamic(const RefPtr<T_CastFrom>& src)
   return RefPtr<T_CppObject>(pCppObject);
 }
 
-template <class T_CppObject>
-template <class T_CastFrom>
+template <typename T_CppObject>
+template <typename T_CastFrom>
 inline RefPtr<T_CppObject>
 RefPtr<T_CppObject>::cast_static(const RefPtr<T_CastFrom>& src)
 {
@@ -359,8 +359,8 @@ RefPtr<T_CppObject>::cast_static(const RefPtr<T_CastFrom>& src)
   return RefPtr<T_CppObject>(pCppObject);
 }
 
-template <class T_CppObject>
-template <class T_CastFrom>
+template <typename T_CppObject>
+template <typename T_CastFrom>
 inline RefPtr<T_CppObject>
 RefPtr<T_CppObject>::cast_const(const RefPtr<T_CastFrom>& src)
 {
@@ -372,28 +372,28 @@ RefPtr<T_CppObject>::cast_const(const RefPtr<T_CastFrom>& src)
   return RefPtr<T_CppObject>(pCppObject);
 }
 
-template <class T_CppObject>
+template <typename T_CppObject>
 inline bool
 RefPtr<T_CppObject>::operator<(const RefPtr<T_CppObject>& src) const
 {
   return (pCppObject_ < src.pCppObject_);
 }
 
-template <class T_CppObject>
+template <typename T_CppObject>
 inline bool
 RefPtr<T_CppObject>::operator<=(const RefPtr<T_CppObject>& src) const
 {
   return (pCppObject_ <= src.pCppObject_);
 }
 
-template <class T_CppObject>
+template <typename T_CppObject>
 inline bool
 RefPtr<T_CppObject>::operator>(const RefPtr<T_CppObject>& src) const
 {
   return (pCppObject_ > src.pCppObject_);
 }
 
-template <class T_CppObject>
+template <typename T_CppObject>
 inline bool
 RefPtr<T_CppObject>::operator>=(const RefPtr<T_CppObject>& src) const
 {
@@ -403,7 +403,7 @@ RefPtr<T_CppObject>::operator>=(const RefPtr<T_CppObject>& src) const
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
 /** @relates Glib::RefPtr */
-template <class T_CppObject>
+template <typename T_CppObject>
 inline void
 swap(RefPtr<T_CppObject>& lhs, RefPtr<T_CppObject>& rhs)
 {

@@ -58,10 +58,10 @@ namespace sigc
  *
  * @ingroup retype
  */
-template <class T_functor, class... T_type>
+template <typename T_functor, typename... T_type>
 struct retype_functor : public adapts<T_functor>
 {
-  template <class... T_arg>
+  template <typename... T_arg>
   decltype(auto) operator()(T_arg... _A_a)
   {
     return this->functor_.template operator()<type_trait_take_t<T_type>...>(
@@ -85,7 +85,7 @@ struct retype_functor : public adapts<T_functor>
  *
  * @ingroup retype
  */
-template <class T_functor, class... T_type>
+template <typename T_functor, typename... T_type>
 struct visitor<retype_functor<T_functor, T_type...>>
 {
   template <typename T_action>
@@ -106,7 +106,7 @@ struct visitor<retype_functor<T_functor, T_type...>>
  *
  * @ingroup retype
  */
-template <template <class T_func, class... T_arg> class T_functor, class T_func, class... T_arg>
+template <template <typename T_func, typename... T_arg> typename T_functor, typename T_func, typename... T_arg>
 inline decltype(auto)
 retype(const T_functor<T_func, T_arg...>& _A_functor)
 {
@@ -122,7 +122,7 @@ retype(const T_functor<T_func, T_arg...>& _A_functor)
  *
  * @ingroup retype
  */
-template <template <class T_return, class... T_arg> class T_functor, class T_return, class... T_arg>
+template <template <typename T_return, typename... T_arg> typename T_functor, typename T_return, typename... T_arg>
 inline decltype(auto)
 retype(const T_functor<T_return(T_arg...)>& _A_functor)
 {

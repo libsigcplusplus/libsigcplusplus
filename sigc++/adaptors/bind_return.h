@@ -16,7 +16,7 @@ namespace sigc
  *
  * @ingroup bind
  */
-template <class T_return, class T_functor>
+template <typename T_return, typename T_functor>
 struct bind_return_functor : public adapts<T_functor>
 {
   /** Invokes the wrapped functor dropping its return value.
@@ -28,7 +28,7 @@ struct bind_return_functor : public adapts<T_functor>
    * @param _A_a... Arguments to be passed on to the functor.
    * @return The fixed return value.
    */
-  template <class... T_arg>
+  template <typename... T_arg>
   inline typename unwrap_reference<T_return>::type operator()(T_arg... _A_a)
   {
     this->functor_.template operator()<type_trait_pass_t<T_arg>...>(_A_a...);
@@ -49,7 +49,7 @@ struct bind_return_functor : public adapts<T_functor>
   bound_argument<T_return> ret_value_; // public, so that visit_each() can access it
 };
 
-template <class T_return, class T_functor>
+template <typename T_return, typename T_functor>
 typename unwrap_reference<T_return>::type
 bind_return_functor<T_return, T_functor>::operator()()
 {
@@ -65,10 +65,10 @@ bind_return_functor<T_return, T_functor>::operator()()
  *
  * @ingroup bind
  */
-template <class T_return, class T_functor>
+template <typename T_return, typename T_functor>
 struct visitor<bind_return_functor<T_return, T_functor>>
 {
-  template <class T_action>
+  template <typename T_action>
   static void do_visit_each(
     const T_action& _A_action, const bind_return_functor<T_return, T_functor>& _A_target)
   {
@@ -87,7 +87,7 @@ struct visitor<bind_return_functor<T_return, T_functor>>
  *
  * @ingroup bind
  */
-template <class T_return, class T_functor>
+template <typename T_return, typename T_functor>
 inline bind_return_functor<T_return, T_functor>
 bind_return(const T_functor& _A_functor, T_return _A_ret_value)
 {
