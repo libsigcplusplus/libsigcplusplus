@@ -174,17 +174,17 @@ struct slot_list
   using reverse_iterator = std::reverse_iterator<iterator>;
   using const_reverse_iterator = std::reverse_iterator<const_iterator>;
 
-  slot_list() : list_(nullptr) {}
+  slot_list() : sig_impl_(nullptr) {}
 
-  explicit slot_list(internal::signal_impl* __list) : list_(__list) {}
+  explicit slot_list(internal::signal_impl* sig_impl) : sig_impl_(sig_impl) {}
 
-  iterator begin() { return iterator(list_->slots_.begin()); }
+  iterator begin() { return iterator(sig_impl_->slots_.begin()); }
 
-  const_iterator begin() const { return const_iterator(list_->slots_.begin()); }
+  const_iterator begin() const { return const_iterator(sig_impl_->slots_.begin()); }
 
-  iterator end() { return iterator(list_->slots_.end()); }
+  iterator end() { return iterator(sig_impl_->slots_.end()); }
 
-  const_iterator end() const { return const_iterator(list_->slots_.end()); }
+  const_iterator end() const { return const_iterator(sig_impl_->slots_.end()); }
 
   reverse_iterator rbegin() { return reverse_iterator(end()); }
 
@@ -204,12 +204,12 @@ struct slot_list
 
   iterator insert(iterator i, const slot_type& slot_)
   {
-    return iterator(list_->insert(i.i_, static_cast<const slot_base&>(slot_)));
+    return iterator(sig_impl_->insert(i.i_, static_cast<const slot_base&>(slot_)));
   }
 
   iterator insert(iterator i, slot_type&& slot_)
   {
-    return iterator(list_->insert(i.i_, std::move(static_cast<slot_base&>(slot_))));
+    return iterator(sig_impl_->insert(i.i_, std::move(static_cast<slot_base&>(slot_))));
   }
 
   void push_front(const slot_type& c) { insert(begin(), c); }
@@ -220,7 +220,7 @@ struct slot_list
 
   void push_back(slot_type&& c) { insert(end(), std::move(c)); }
 
-  iterator erase(iterator i) { return iterator(list_->erase(i.i_)); }
+  iterator erase(iterator i) { return iterator(sig_impl_->erase(i.i_)); }
 
   iterator erase(iterator first_, iterator last_)
   {
@@ -238,7 +238,7 @@ struct slot_list
   }
 
 private:
-  internal::signal_impl* list_;
+  internal::signal_impl* sig_impl_;
 };
 
 namespace internal
