@@ -16,9 +16,9 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
-#ifndef _SIGC_BIND_HPP_
-#define _SIGC_BIND_HPP_
+#ifndef SIGC_BIND_HPP
+#define SIGC_BIND_HPP
 
 #include <sigc++/adaptors/bind.h>
 
-#endif /* _SIGC_BIND_HPP_ */
+#endif /* SIGC_BIND_HPP */

@@ -1,5 +1,5 @@
-#ifndef _SIGC_ADAPTORS_RETYPE_H_
-#define _SIGC_ADAPTORS_RETYPE_H_
+#ifndef SIGC_ADAPTORS_RETYPE_H
+#define SIGC_ADAPTORS_RETYPE_H
 
 #include <sigc++/adaptors/adapts.h>
 #include <sigc++/functors/ptr_fun.h>
@@ -131,4 +131,4 @@ retype(const T_functor<T_return(T_arg...)>& _A_functor)
 
 } /* namespace sigc */
 
-#endif /* _SIGC_ADAPTORS_RETYPE_H_ */
+#endif /* SIGC_ADAPTORS_RETYPE_H */

@@ -1,5 +1,5 @@
-#ifndef _SIGC_ADAPTORS_BIND_H_
-#define _SIGC_ADAPTORS_BIND_H_
+#ifndef SIGC_ADAPTORS_BIND_H
+#define SIGC_ADAPTORS_BIND_H
 #include <sigc++/adaptors/adapts.h>
 #include <sigc++/adaptors/bound_argument.h>
 #include <sigc++/adaptors/tuple_visitor_visit_each.h>
@@ -284,4 +284,4 @@ bind(const T_functor& _A_func, T_type... _A_b)
 
 } /* namespace sigc */
 
-#endif /* _SIGC_ADAPTORS_BIND_H_ */
+#endif /* SIGC_ADAPTORS_BIND_H */

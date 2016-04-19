@@ -16,8 +16,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef _SIGC_SIGNAL_BASE_H_
-#define _SIGC_SIGNAL_BASE_H_
+#ifndef SIGC_SIGNAL_BASE_H
+#define SIGC_SIGNAL_BASE_H
 
 #include <cstddef>
 #include <list>
@@ -393,4 +393,4 @@ protected:
 
 } // namespace sigc
 
-#endif /* _SIGC_SIGNAL_BASE_H_ */
+#endif /* SIGC_SIGNAL_BASE_H */

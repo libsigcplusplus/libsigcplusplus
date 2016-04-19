@@ -16,8 +16,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
-#ifndef _SIGC_REFERENCE_WRAPPER_H_
-#define _SIGC_REFERENCE_WRAPPER_H_
+#ifndef SIGC_REFERENCE_WRAPPER_H
+#define SIGC_REFERENCE_WRAPPER_H
 
 namespace sigc
 {
@@ -56,4 +56,4 @@ unwrap(const std::reference_wrapper<const T_type>& v)
 
 } /* namespace sigc */
 
-#endif /* _SIGC_REFERENCE_WRAPPER_H_ */
+#endif /* SIGC_REFERENCE_WRAPPER_H */

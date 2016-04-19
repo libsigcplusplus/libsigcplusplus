@@ -1,5 +1,5 @@
-#ifndef _SIGC_FUNCTORS_SLOT_H_
-#define _SIGC_FUNCTORS_SLOT_H_
+#ifndef SIGC_FUNCTORS_SLOT_H
+#define SIGC_FUNCTORS_SLOT_H
 
 #include <sigc++/trackable.h>
 #include <sigc++/visit_each.h>
@@ -270,4 +270,4 @@ struct visitor<slot<T_return, T_arg...>>
 
 } /* namespace sigc */
 
-#endif /* _SIGC_FUNCTORS_SLOT_H_ */
+#endif /* SIGC_FUNCTORS_SLOT_H */

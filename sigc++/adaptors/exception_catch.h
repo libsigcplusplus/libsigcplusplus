@@ -1,5 +1,5 @@
-#ifndef _SIGC_ADAPTORS_EXCEPTION_CATCH_H_
-#define _SIGC_ADAPTORS_EXCEPTION_CATCH_H_
+#ifndef SIGC_ADAPTORS_EXCEPTION_CATCH_H
+#define SIGC_ADAPTORS_EXCEPTION_CATCH_H
 #include <sigc++/adaptors/adapts.h>
 
 namespace sigc
@@ -114,4 +114,4 @@ exception_catch(const T_functor& _A_func, const T_catcher& _A_catcher)
 }
 
 } /* namespace sigc */
-#endif /* _SIGC_ADAPTORS_EXCEPTION_CATCH_H_ */
+#endif /* SIGC_ADAPTORS_EXCEPTION_CATCH_H */

@@ -16,8 +16,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
-#ifndef _SIGC_MEMBER_METHOD_TRAITS_H_
-#define _SIGC_MEMBER_METHOD_TRAITS_H_
+#ifndef SIGC_MEMBER_METHOD_TRAITS_H
+#define SIGC_MEMBER_METHOD_TRAITS_H
 
 #include <sigc++config.h>
 
@@ -147,4 +147,4 @@ struct member_method_result<T_result (T_obj::*)(T_arg...) const volatile>
 
 } // namespace sigc
 
-#endif /* _SIGC_MEMBER_METHOD_TRAITS_H_ */
+#endif /* SIGC_MEMBER_METHOD_TRAITS_H */

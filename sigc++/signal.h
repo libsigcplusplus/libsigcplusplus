@@ -17,8 +17,8 @@
  *
  */
 
-#ifndef _SIGC_SIGNAL_H_
-#define _SIGC_SIGNAL_H_
+#ifndef SIGC_SIGNAL_H
+#define SIGC_SIGNAL_H
 
 #include <list>
 #include <sigc++/signal_base.h>
@@ -1114,4 +1114,4 @@ public:
 
 } /* namespace sigc */
 
-#endif /* _SIGC_SIGNAL_H_ */
+#endif /* SIGC_SIGNAL_H */

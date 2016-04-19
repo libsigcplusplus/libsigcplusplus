@@ -1,5 +1,5 @@
-#ifndef _SIGC_LIMIT_REFERENCE_H_
-#define _SIGC_LIMIT_REFERENCE_H_
+#ifndef SIGC_LIMIT_REFERENCE_H
+#define SIGC_LIMIT_REFERENCE_H
 
 #include <sigc++/visit_each.h>
 #include <sigc++/type_traits.h>
@@ -121,4 +121,4 @@ struct visitor<limit_reference<T_type>>
 
 } /* namespace sigc */
 
-#endif /* _SIGC_LIMIT_REFERENCE_H_ */
+#endif /* SIGC_LIMIT_REFERENCE_H */

@@ -1,5 +1,5 @@
-#ifndef _SIGC_ADAPTORS_ADAPTOR_TRAIT_H_
-#define _SIGC_ADAPTORS_ADAPTOR_TRAIT_H_
+#ifndef SIGC_ADAPTORS_ADAPTOR_TRAIT_H
+#define SIGC_ADAPTORS_ADAPTOR_TRAIT_H
 #include <sigc++config.h> //To get SIGC_TEMPLATE_KEYWORD_OPERATOR_OVERLOAD
 #include <sigc++/visit_each.h>
 #include <sigc++/functors/functor_trait.h>
@@ -160,4 +160,4 @@ public:
 };
 
 } /* namespace sigc */
-#endif /* _SIGC_ADAPTORS_ADAPTOR_TRAIT_H_ */
+#endif /* SIGC_ADAPTORS_ADAPTOR_TRAIT_H */

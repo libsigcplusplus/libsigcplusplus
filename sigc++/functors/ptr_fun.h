@@ -1,5 +1,5 @@
-#ifndef _SIGC_FUNCTORS_PTR_FUN_H_
-#define _SIGC_FUNCTORS_PTR_FUN_H_
+#ifndef SIGC_FUNCTORS_PTR_FUN_H
+#define SIGC_FUNCTORS_PTR_FUN_H
 #include <sigc++/type_traits.h>
 
 namespace sigc
@@ -91,4 +91,4 @@ inline decltype(auto) ptr_fun(T_return (*_A_func)(T_args...))
 }
 
 } /* namespace sigc */
-#endif /* _SIGC_FUNCTORS_PTR_FUN_H_ */
+#endif /* SIGC_FUNCTORS_PTR_FUN_H */

@@ -16,8 +16,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
-#ifndef _SIGC_SLOT_BASE_HPP_
-#define _SIGC_SLOT_BASE_HPP_
+#ifndef SIGC_SLOT_BASE_HPP
+#define SIGC_SLOT_BASE_HPP
 
 #include <sigc++config.h>
 #include <sigc++/trackable.h>
@@ -397,4 +397,4 @@ private:
 
 } // namespace sigc
 
-#endif //_SIGC_SLOT_BASE_HPP_
+#endif //SIGC_SLOT_BASE_HPP

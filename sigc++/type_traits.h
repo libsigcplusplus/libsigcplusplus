@@ -16,8 +16,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
-#ifndef _SIGC_TYPE_TRAIT_H_
-#define _SIGC_TYPE_TRAIT_H_
+#ifndef SIGC_TYPE_TRAIT_H
+#define SIGC_TYPE_TRAIT_H
 
 #include <sigc++config.h>
 
@@ -67,4 +67,4 @@ using type_trait_take_t = typename type_trait<T>::take;
 
 } /* namespace sigc */
 
-#endif /* _SIGC_TYPE_TRAIT_H_ */
+#endif /* SIGC_TYPE_TRAIT_H */

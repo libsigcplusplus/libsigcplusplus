@@ -16,8 +16,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef _SIGC_BOUND_ARGUMENT_H_
-#define _SIGC_BOUND_ARGUMENT_H_
+#ifndef SIGC_BOUND_ARGUMENT_H
+#define SIGC_BOUND_ARGUMENT_H
 
 #include <sigc++/limit_reference.h>
 #include <sigc++/reference_wrapper.h>
@@ -158,4 +158,4 @@ struct visitor<bound_argument<T_type>>
 
 } /* namespace sigc */
 
-#endif /* _SIGC_BOUND_ARGUMENT_H_ */
+#endif /* SIGC_BOUND_ARGUMENT_H */

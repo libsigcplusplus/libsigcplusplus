@@ -16,8 +16,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
-#ifndef _SIGC_CONNECTION_HPP_
-#define _SIGC_CONNECTION_HPP_
+#ifndef SIGC_CONNECTION_HPP
+#define SIGC_CONNECTION_HPP
 #include <sigc++config.h>
 #include <sigc++/signal.h>
 
@@ -132,4 +132,4 @@ private:
 
 } /* namespace sigc */
 
-#endif /* _SIGC_TRACKABLE_HPP_ */
+#endif /* SIGC_TRACKABLE_HPP */

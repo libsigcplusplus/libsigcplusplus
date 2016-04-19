@@ -15,8 +15,8 @@
  *  License along with this library; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
-#ifndef _SIGC_VISIT_EACH_HPP_
-#define _SIGC_VISIT_EACH_HPP_
+#ifndef SIGC_VISIT_EACH_HPP
+#define SIGC_VISIT_EACH_HPP
 
 #include <sigc++/type_traits.h>
 #include <type_traits>

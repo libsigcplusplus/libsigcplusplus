@@ -1,5 +1,5 @@
-#ifndef _SIGC_ADAPTORS_COMPOSE_H_
-#define _SIGC_ADAPTORS_COMPOSE_H_
+#ifndef SIGC_ADAPTORS_COMPOSE_H
+#define SIGC_ADAPTORS_COMPOSE_H
 #include <sigc++/adaptors/adapts.h>
 
 namespace sigc
@@ -177,4 +177,4 @@ compose(const T_setter& _A_setter, const T_getter1& _A_getter1, const T_getter2&
 }
 
 } /* namespace sigc */
-#endif /* _SIGC_ADAPTORS_COMPOSE_H_ */
+#endif /* SIGC_ADAPTORS_COMPOSE_H */

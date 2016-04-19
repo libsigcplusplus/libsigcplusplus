@@ -1,5 +1,5 @@
-#ifndef _SIGC_FUNCTORS_FUNCTOR_TRAIT_H_
-#define _SIGC_FUNCTORS_FUNCTOR_TRAIT_H_
+#ifndef SIGC_FUNCTORS_FUNCTOR_TRAIT_H
+#define SIGC_FUNCTORS_FUNCTOR_TRAIT_H
 #include <sigc++/functors/mem_fun.h>
 #include <sigc++/functors/ptr_fun.h>
 #include <sigc++/type_traits.h>
@@ -69,4 +69,4 @@ struct functor_trait<T_return (T_obj::*)(T_arg...) const>
 #endif // DOXYGEN_SHOULD_SKIP_THIS
 
 } /* namespace sigc */
-#endif /* _SIGC_FUNCTORS_FUNCTOR_TRAIT_H_ */
+#endif /* SIGC_FUNCTORS_FUNCTOR_TRAIT_H */

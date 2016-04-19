@@ -1,5 +1,5 @@
-#ifndef _SIGC_ADAPTORS_BIND_RETURN_H_
-#define _SIGC_ADAPTORS_BIND_RETURN_H_
+#ifndef SIGC_ADAPTORS_BIND_RETURN_H
+#define SIGC_ADAPTORS_BIND_RETURN_H
 #include <sigc++/adaptors/adapts.h>
 #include <sigc++/adaptors/bound_argument.h>
 
@@ -95,4 +95,4 @@ bind_return(const T_functor& _A_functor, T_return _A_ret_value)
 }
 
 } /* namespace sigc */
-#endif /* _SIGC_ADAPTORS_BIND_RETURN_H_ */
+#endif /* SIGC_ADAPTORS_BIND_RETURN_H */

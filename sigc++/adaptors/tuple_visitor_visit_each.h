@@ -1,5 +1,5 @@
-#ifndef _SIGC_TUPLE_VISITOR_VISIT_EACH_H_
-#define _SIGC_TUPLE_VISITOR_VISIT_EACH_H_
+#ifndef SIGC_TUPLE_VISITOR_VISIT_EACH_H
+#define SIGC_TUPLE_VISITOR_VISIT_EACH_H
 
 #include <tuple>
 
@@ -25,4 +25,4 @@ struct TupleVisitorVisitEach
 
 } // namespace sigc
 
-#endif /* _SIGC_TUPLE_VISITOR_VISIT_EACH_H_ */
+#endif /* SIGC_TUPLE_VISITOR_VISIT_EACH_H */

@@ -1,5 +1,5 @@
-#ifndef _SIGC_ADAPTORS_RETYPE_RETURN_H_
-#define _SIGC_ADAPTORS_RETYPE_RETURN_H_
+#ifndef SIGC_ADAPTORS_RETYPE_RETURN_H
+#define SIGC_ADAPTORS_RETYPE_RETURN_H
 #include <sigc++/adaptors/adapts.h>
 
 namespace sigc
@@ -129,4 +129,4 @@ hide_return(const T_functor& _A_functor)
 }
 
 } /* namespace sigc */
-#endif /* _SIGC_ADAPTORS_RETYPE_RETURN_H_ */
+#endif /* SIGC_ADAPTORS_RETYPE_RETURN_H */

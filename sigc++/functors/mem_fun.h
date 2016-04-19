@@ -1,5 +1,5 @@
-#ifndef _SIGC_FUNCTORS_MEM_FUN_H_
-#define _SIGC_FUNCTORS_MEM_FUN_H_
+#ifndef SIGC_FUNCTORS_MEM_FUN_H
+#define SIGC_FUNCTORS_MEM_FUN_H
 #include <sigc++/type_traits.h>
 #include <sigc++/limit_reference.h>
 #include <sigc++/member_method_trait.h>
@@ -276,4 +276,4 @@ mem_fun(/*const*/ T_obj& _A_obj, T_return (T_obj2::*_A_func)(T_arg...) const vol
 }
 
 } /* namespace sigc */
-#endif /* _SIGC_FUNCTORS_MEM_FUN_H_ */
+#endif /* SIGC_FUNCTORS_MEM_FUN_H */

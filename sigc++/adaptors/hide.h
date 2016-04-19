@@ -1,5 +1,5 @@
-#ifndef _SIGC_ADAPTORS_HIDE_H_
-#define _SIGC_ADAPTORS_HIDE_H_
+#ifndef SIGC_ADAPTORS_HIDE_H
+#define SIGC_ADAPTORS_HIDE_H
 
 #include <sigc++/adaptors/adapts.h>
 #include <sigc++/tuple-utils/tuple_end.h>
@@ -163,4 +163,4 @@ hide(const T_functor& _A_func)
 
 } /* namespace sigc */
 
-#endif /* _SIGC_ADAPTORS_HIDE_H_ */
+#endif /* SIGC_ADAPTORS_HIDE_H */
