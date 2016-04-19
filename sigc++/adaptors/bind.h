@@ -7,7 +7,6 @@
 #include <sigc++/tuple-utils/tuple_start.h>
 #include <sigc++/tuple-utils/tuple_end.h>
 #include <sigc++/tuple-utils/tuple_transform_each.h>
-#include <origin/core/function.hpp>
 
 
 namespace sigc
@@ -105,7 +104,7 @@ struct TransformEachInvoker
  *
  * @ingroup bind
  */
-template <int I_location, typename T_functor, origin::Copy_constructible... T_bound>
+template <int I_location, typename T_functor, typename... T_bound>
 struct bind_functor : public adapts<T_functor>
 {
   /** Invokes the wrapped functor passing on the arguments.
@@ -213,7 +212,7 @@ private:
  *
  * @ingroup bind
  */
-template <int T_loc, typename T_functor, origin::Copy_constructible... T_bound>
+template <int T_loc, typename T_functor, typename... T_bound>
 struct visitor<bind_functor<T_loc, T_functor, T_bound...>>
 {
   template <typename T_action>
@@ -232,7 +231,7 @@ struct visitor<bind_functor<T_loc, T_functor, T_bound...>>
  *
  * @ingroup bind
  */
-template <typename T_functor, origin::Copy_constructible... T_type>
+template <typename T_functor, typename... T_type>
 struct visitor<bind_functor<-1, T_functor, T_type...>>
 {
   template <typename T_action>
@@ -258,7 +257,7 @@ struct visitor<bind_functor<-1, T_functor, T_type...>>
  *
  * @ingroup bind
  */
-template <int I_location, typename T_functor, origin::Copy_constructible... T_bound>
+template <int I_location, typename T_functor, typename... T_bound>
 inline decltype(auto)
 bind(const T_functor& func, T_bound... b)
 {
@@ -275,7 +274,7 @@ bind(const T_functor& func, T_bound... b)
  *
  * @ingroup bind
  */
-template <typename T_functor, origin::Copy_constructible... T_type>
+template <typename T_functor, typename... T_type>
 inline decltype(auto)
 bind(const T_functor& func, T_type... b)
 {
