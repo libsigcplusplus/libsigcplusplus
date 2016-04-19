@@ -67,9 +67,9 @@ struct slot_iterator
 
   slot_iterator operator++(int)
   {
-    slot_iterator __tmp(*this);
+    slot_iterator tmp(*this);
     ++i_;
-    return __tmp;
+    return tmp;
   }
 
   slot_iterator& operator--()
@@ -80,9 +80,9 @@ struct slot_iterator
 
   slot_iterator operator--(int)
   {
-    slot_iterator __tmp(*this);
+    slot_iterator tmp(*this);
     --i_;
-    return __tmp;
+    return tmp;
   }
 
   bool operator==(const slot_iterator& other) const { return i_ == other.i_; }
@@ -127,9 +127,9 @@ struct slot_const_iterator
 
   slot_const_iterator operator++(int)
   {
-    slot_const_iterator __tmp(*this);
+    slot_const_iterator tmp(*this);
     ++i_;
-    return __tmp;
+    return tmp;
   }
 
   slot_const_iterator& operator--()
@@ -140,9 +140,9 @@ struct slot_const_iterator
 
   slot_const_iterator operator--(int)
   {
-    slot_const_iterator __tmp(*this);
+    slot_const_iterator tmp(*this);
     --i_;
-    return __tmp;
+    return tmp;
   }
 
   bool operator==(const slot_const_iterator& other) const { return i_ == other.i_; }
@@ -292,10 +292,10 @@ struct slot_iterator_buf
 
   slot_iterator_buf operator++(int)
   {
-    slot_iterator_buf __tmp(*this);
+    slot_iterator_buf tmp(*this);
     ++i_;
     invoked_ = false;
-    return __tmp;
+    return tmp;
   }
 
   slot_iterator_buf& operator--()
@@ -307,10 +307,10 @@ struct slot_iterator_buf
 
   slot_iterator_buf operator--(int)
   {
-    slot_iterator_buf __tmp(*this);
+    slot_iterator_buf tmp(*this);
     --i_;
     invoked_ = false;
-    return __tmp;
+    return tmp;
   }
 
   bool operator==(const slot_iterator_buf& other) const
@@ -368,10 +368,10 @@ struct slot_iterator_buf<T_emitter, void>
 
   slot_iterator_buf operator++(int)
   {
-    slot_iterator_buf __tmp(*this);
+    slot_iterator_buf tmp(*this);
     ++i_;
     invoked_ = false;
-    return __tmp;
+    return tmp;
   }
 
   slot_iterator_buf& operator--()
@@ -383,10 +383,10 @@ struct slot_iterator_buf<T_emitter, void>
 
   slot_iterator_buf operator--(int)
   {
-    slot_iterator_buf __tmp(*this);
+    slot_iterator_buf tmp(*this);
     --i_;
     invoked_ = false;
-    return __tmp;
+    return tmp;
   }
 
   bool operator==(const slot_iterator_buf& other) const { return i_ == other.i_; }
@@ -427,11 +427,11 @@ struct slot_reverse_iterator_buf
 
   decltype(auto) operator*() const
   {
-    auto __tmp(i_);
-    --__tmp;
-    if (!__tmp->empty() && !__tmp->blocked() && !invoked_)
+    auto tmp(i_);
+    --tmp;
+    if (!tmp->empty() && !tmp->blocked() && !invoked_)
     {
-      r_ = (*c_)(static_cast<const slot_type&>(*__tmp));
+      r_ = (*c_)(static_cast<const slot_type&>(*tmp));
       invoked_ = true;
     }
     return r_;
@@ -446,10 +446,10 @@ struct slot_reverse_iterator_buf
 
   slot_reverse_iterator_buf operator++(int)
   {
-    slot_reverse_iterator_buf __tmp(*this);
+    slot_reverse_iterator_buf tmp(*this);
     --i_;
     invoked_ = false;
-    return __tmp;
+    return tmp;
   }
 
   slot_reverse_iterator_buf& operator--()
@@ -461,10 +461,10 @@ struct slot_reverse_iterator_buf
 
   slot_reverse_iterator_buf operator--(int)
   {
-    slot_reverse_iterator_buf __tmp(*this);
+    slot_reverse_iterator_buf tmp(*this);
     ++i_;
     invoked_ = false;
-    return __tmp;
+    return tmp;
   }
 
   bool operator==(const slot_reverse_iterator_buf& other) const
@@ -507,11 +507,11 @@ struct slot_reverse_iterator_buf<T_emitter, void>
 
   void operator*() const
   {
-    auto __tmp(i_);
-    --__tmp;
-    if (!__tmp->empty() && !__tmp->blocked() && !invoked_)
+    auto tmp(i_);
+    --tmp;
+    if (!tmp->empty() && !tmp->blocked() && !invoked_)
     {
-      (*c_)(static_cast<const slot_type&>(*__tmp));
+      (*c_)(static_cast<const slot_type&>(*tmp));
       invoked_ = true;
     }
   }
@@ -525,10 +525,10 @@ struct slot_reverse_iterator_buf<T_emitter, void>
 
   slot_reverse_iterator_buf operator++(int)
   {
-    slot_reverse_iterator_buf __tmp(*this);
+    slot_reverse_iterator_buf tmp(*this);
     --i_;
     invoked_ = false;
-    return __tmp;
+    return tmp;
   }
 
   slot_reverse_iterator_buf& operator--()
@@ -540,10 +540,10 @@ struct slot_reverse_iterator_buf<T_emitter, void>
 
   slot_reverse_iterator_buf operator--(int)
   {
-    slot_reverse_iterator_buf __tmp(*this);
+    slot_reverse_iterator_buf tmp(*this);
     ++i_;
     invoked_ = false;
-    return __tmp;
+    return tmp;
   }
 
   bool operator==(const slot_reverse_iterator_buf& other) const { return i_ == other.i_; }
