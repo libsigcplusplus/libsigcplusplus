@@ -25,23 +25,23 @@ struct bind_return_functor : public adapts<T_functor>
   typename unwrap_reference<T_return>::type operator()();
 
   /** Invokes the wrapped functor passing on the arguments.
-   * @param _A_a... Arguments to be passed on to the functor.
+   * @param a... Arguments to be passed on to the functor.
    * @return The fixed return value.
    */
   template <typename... T_arg>
-  inline typename unwrap_reference<T_return>::type operator()(T_arg... _A_a)
+  inline typename unwrap_reference<T_return>::type operator()(T_arg... a)
   {
-    this->functor_.template operator()<type_trait_pass_t<T_arg>...>(_A_a...);
+    this->functor_.template operator()<type_trait_pass_t<T_arg>...>(a...);
     return ret_value_.invoke();
   }
 
-  /** Constructs a bind_return_functor object that fixes the return value to @p _A_ret_value.
-   * @param _A_functor Functor to invoke from operator()().
-   * @param _A_ret_value Value to return from operator()().
+  /** Constructs a bind_return_functor object that fixes the return value to @p ret_value.
+   * @param functor Functor to invoke from operator()().
+   * @param ret_value Value to return from operator()().
    */
   bind_return_functor(
-    type_trait_take_t<T_functor> _A_functor, type_trait_take_t<T_return> _A_ret_value)
-  : adapts<T_functor>(_A_functor), ret_value_(_A_ret_value)
+    type_trait_take_t<T_functor> functor, type_trait_take_t<T_return> ret_value)
+  : adapts<T_functor>(functor), ret_value_(ret_value)
   {
   }
 
@@ -70,10 +70,10 @@ struct visitor<bind_return_functor<T_return, T_functor>>
 {
   template <typename T_action>
   static void do_visit_each(
-    const T_action& _A_action, const bind_return_functor<T_return, T_functor>& _A_target)
+    const T_action& action, const bind_return_functor<T_return, T_functor>& target)
   {
-    sigc::visit_each(_A_action, _A_target.ret_value_);
-    sigc::visit_each(_A_action, _A_target.functor_);
+    sigc::visit_each(action, target.ret_value_);
+    sigc::visit_each(action, target.functor_);
   }
 };
 #endif // DOXYGEN_SHOULD_SKIP_THIS
@@ -81,17 +81,17 @@ struct visitor<bind_return_functor<T_return, T_functor>>
 /** Creates an adaptor of type sigc::bind_return_functor which fixes the return value of the passed
  * functor to the passed argument.
  *
- * @param _A_functor Functor that should be wrapped.
- * @param _A_ret_value Argument to fix the return value of @e _A_functor to.
- * @return Adaptor that executes @e _A_functor on invokation and returns @e _A_ret_value.
+ * @param functor Functor that should be wrapped.
+ * @param ret_value Argument to fix the return value of @e functor to.
+ * @return Adaptor that executes @e functor on invokation and returns @e ret_value.
  *
  * @ingroup bind
  */
 template <typename T_return, typename T_functor>
 inline bind_return_functor<T_return, T_functor>
-bind_return(const T_functor& _A_functor, T_return _A_ret_value)
+bind_return(const T_functor& functor, T_return ret_value)
 {
-  return bind_return_functor<T_return, T_functor>(_A_functor, _A_ret_value);
+  return bind_return_functor<T_return, T_functor>(functor, ret_value);
 }
 
 } /* namespace sigc */

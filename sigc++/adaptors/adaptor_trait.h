@@ -71,29 +71,29 @@ struct adaptor_functor : public adaptor_base
   decltype(auto) operator()() const { return functor_(); }
 
   /** Invokes the wrapped functor passing on the arguments.
-   * @param _A_arg... Arguments to be passed on to the functor.
+   * @param arg... Arguments to be passed on to the functor.
    * @return The return value of the functor invocation.
    */
   template <typename... T_arg>
-  decltype(auto) operator()(T_arg&&... _A_arg) const
+  decltype(auto) operator()(T_arg&&... arg) const
   {
-    return functor_(std::forward<T_arg>(_A_arg)...);
+    return functor_(std::forward<T_arg>(arg)...);
   }
 
   /// Constructs an invalid functor.
   adaptor_functor() = default;
 
   /** Constructs an adaptor_functor object that wraps the passed functor.
-   * @param _A_functor Functor to invoke from operator()().
+   * @param functor Functor to invoke from operator()().
    */
-  explicit adaptor_functor(const T_functor& _A_functor) : functor_(_A_functor) {}
+  explicit adaptor_functor(const T_functor& functor) : functor_(functor) {}
 
   /** Constructs an adaptor_functor object that wraps the passed (member)
    * function pointer.
-   * @param _A_type Pointer to function or class method to invoke from operator()().
+   * @param type Pointer to function or class method to invoke from operator()().
    */
   template <typename T_type>
-  explicit adaptor_functor(const T_type& _A_type) : functor_(_A_type)
+  explicit adaptor_functor(const T_type& type) : functor_(type)
   {
   }
 
@@ -113,9 +113,9 @@ template <typename T_functor>
 struct visitor<adaptor_functor<T_functor>>
 {
   template <typename T_action>
-  static void do_visit_each(const T_action& _A_action, const adaptor_functor<T_functor>& _A_target)
+  static void do_visit_each(const T_action& action, const adaptor_functor<T_functor>& target)
   {
-    sigc::visit_each(_A_action, _A_target.functor_);
+    sigc::visit_each(action, target.functor_);
   }
 };
 #endif // DOXYGEN_SHOULD_SKIP_THIS

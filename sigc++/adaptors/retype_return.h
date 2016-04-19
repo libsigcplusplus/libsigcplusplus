@@ -21,19 +21,19 @@ struct retype_return_functor : public adapts<T_functor>
   T_return operator()();
 
   template <typename... T_arg>
-  inline T_return operator()(T_arg&&... _A_a)
+  inline T_return operator()(T_arg&&... a)
   {
-    return T_return(this->functor_.template operator() < T_arg... > (std::forward<T_arg>(_A_a)...));
+    return T_return(this->functor_.template operator() < T_arg... > (std::forward<T_arg>(a)...));
   }
 
   retype_return_functor() = default;
 
   /** Constructs a retype_return_functor object that perform a C-style cast on the return value of
    * the passed functor.
-   * @param _A_functor Functor to invoke from operator()().
+   * @param functor Functor to invoke from operator()().
    */
-  explicit retype_return_functor(type_trait_take_t<T_functor> _A_functor)
-  : adapts<T_functor>(_A_functor)
+  explicit retype_return_functor(type_trait_take_t<T_functor> functor)
+  : adapts<T_functor>(functor)
   {
   }
 };
@@ -61,13 +61,13 @@ struct retype_return_functor<void, T_functor> : public adapts<T_functor>
   void operator()();
 
   template <typename... T_arg>
-  inline void operator()(T_arg... _A_a)
+  inline void operator()(T_arg... a)
   {
-    this->functor_.template operator()<T_arg...>(_A_a...);
+    this->functor_.template operator()<T_arg...>(a...);
   }
 
   retype_return_functor() = default;
-  retype_return_functor(type_trait_take_t<T_functor> _A_functor) : adapts<T_functor>(_A_functor) {}
+  retype_return_functor(type_trait_take_t<T_functor> functor) : adapts<T_functor>(functor) {}
 };
 
 template <typename T_functor>
@@ -90,9 +90,9 @@ struct visitor<retype_return_functor<T_return, T_functor>>
 {
   template <typename T_action>
   static void do_visit_each(
-    const T_action& _A_action, const retype_return_functor<T_return, T_functor>& _A_target)
+    const T_action& action, const retype_return_functor<T_return, T_functor>& target)
   {
-    sigc::visit_each(_A_action, _A_target.functor_);
+    sigc::visit_each(action, target.functor_);
   }
 };
 #endif // DOXYGEN_SHOULD_SKIP_THIS
@@ -101,31 +101,31 @@ struct visitor<retype_return_functor<T_return, T_functor>>
  * return value of the passed functor.
  * The template argument @e T_return specifies the target type of the cast.
  *
- * @param _A_functor Functor that should be wrapped.
- * @return Adaptor that executes @e _A_functor performing a C-style cast on the return value.
+ * @param functor Functor that should be wrapped.
+ * @return Adaptor that executes @e functor performing a C-style cast on the return value.
  *
  * @ingroup retype
  */
 template <typename T_return, typename T_functor>
 inline retype_return_functor<T_return, T_functor>
-retype_return(const T_functor& _A_functor)
+retype_return(const T_functor& functor)
 {
-  return retype_return_functor<T_return, T_functor>(_A_functor);
+  return retype_return_functor<T_return, T_functor>(functor);
 }
 
 /** Creates an adaptor of type sigc::retype_return_functor which drops the return value of the
  * passed functor.
  *
- * @param _A_functor Functor that should be wrapped.
- * @return Adaptor that executes @e _A_functor dropping its return value.
+ * @param functor Functor that should be wrapped.
+ * @return Adaptor that executes @e functor dropping its return value.
  *
  * @ingroup hide
  */
 template <typename T_functor>
 inline retype_return_functor<void, T_functor>
-hide_return(const T_functor& _A_functor)
+hide_return(const T_functor& functor)
 {
-  return retype_return_functor<void, T_functor>(_A_functor);
+  return retype_return_functor<void, T_functor>(functor);
 }
 
 } /* namespace sigc */

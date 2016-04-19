@@ -36,9 +36,9 @@ public:
   using reference_type = typename std::remove_volatile_t<T_type>;
 
   /** Constructor.
-   * @param _A_target The reference to limit.
+   * @param target The reference to limit.
    */
-  limit_reference(reference_type& _A_target) : visited(_A_target) {}
+  limit_reference(reference_type& target) : visited(target) {}
 
   /** Retrieve the entity to visit for visit_each().
    * Depending on the template specialization, this is either a derived reference, or
@@ -69,9 +69,9 @@ public:
   using reference_type = typename std::remove_volatile_t<T_type>;
 
   /** Constructor.
-   * @param _A_target The reference to limit.
+   * @param target The reference to limit.
    */
-  limit_reference(reference_type& _A_target) : visited(_A_target), invoked(_A_target) {}
+  limit_reference(reference_type& target) : visited(target), invoked(target) {}
 
   /** Retrieve the entity to visit for visit_each().
    * Depending on the template specialization, this is either a derived reference, or
@@ -105,16 +105,16 @@ private:
  * visit() method.
  * @tparam T_type The type of the reference
  * @tparam T_action The type of functor to invoke.
- * @param _A_action The functor to invoke.
- * @param _A_target The visited instance.
+ * @param action The functor to invoke.
+ * @param target The visited instance.
  */
 template <typename T_type>
 struct visitor<limit_reference<T_type>>
 {
   template <typename T_action>
-  static void do_visit_each(const T_action& _A_action, const limit_reference<T_type>& _A_target)
+  static void do_visit_each(const T_action& action, const limit_reference<T_type>& target)
   {
-    sigc::visit_each(_A_action, _A_target.visit());
+    sigc::visit_each(action, target.visit());
   }
 };
 #endif // DOXYGEN_SHOULD_SKIP_THIS

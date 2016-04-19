@@ -84,18 +84,18 @@ public:
   mem_functor() : func_ptr_(nullptr) {}
 
   /** Constructs a mem_functor object that wraps the passed method.
-   * @param _A_func Pointer to method will be invoked from operator()().
+   * @param func Pointer to method will be invoked from operator()().
    */
-  explicit mem_functor(function_type _A_func) : func_ptr_(_A_func) {}
+  explicit mem_functor(function_type func) : func_ptr_(func) {}
 
   /** Execute the wrapped method operating on the passed instance.
-   * @param _A_obj Reference to instance the method should operate on.
-   * @param _A_a... Argument to be passed on to the method.
+   * @param obj Reference to instance the method should operate on.
+   * @param a... Argument to be passed on to the method.
    * @return The return value of the method invocation.
    */
-  decltype(auto) operator()(obj_type_with_modifier& _A_obj, type_trait_take_t<T_arg>... _A_a) const
+  decltype(auto) operator()(obj_type_with_modifier& obj, type_trait_take_t<T_arg>... a) const
   {
-    return (_A_obj.*func_ptr_)(_A_a...);
+    return (obj.*func_ptr_)(a...);
   }
 
 protected:
@@ -120,21 +120,21 @@ public:
       limit_reference<const object_type>, limit_reference<object_type>>;
 
   /** Constructs a bound_mem_functor object that wraps the passed method.
-   * @param _A_obj Reference to instance the method will operate on.
-   * @param _A_func Pointer to method will be invoked from operator()().
+   * @param obj Reference to instance the method will operate on.
+   * @param func Pointer to method will be invoked from operator()().
    */
-  bound_mem_functor(obj_type_with_modifier& _A_obj, function_type _A_func)
-  : base_type(_A_func), obj_(_A_obj)
+  bound_mem_functor(obj_type_with_modifier& obj, function_type func)
+  : base_type(func), obj_(obj)
   {
   }
 
   /** Execute the wrapped method operating on the stored instance.
-   * @param _A_a... Argument to be passed on to the method.
+   * @param a... Argument to be passed on to the method.
    * @return The return value of the method invocation.
    */
-  decltype(auto) operator()(type_trait_take_t<T_arg>... _A_a) const
+  decltype(auto) operator()(type_trait_take_t<T_arg>... a) const
   {
-    return (obj_.invoke().*(this->func_ptr_))(_A_a...);
+    return (obj_.invoke().*(this->func_ptr_))(a...);
   }
 
   // protected:
@@ -156,123 +156,123 @@ struct visitor<bound_mem_functor<T_func, T_arg...>>
 {
   template <typename T_action>
   static void do_visit_each(
-    const T_action& _A_action, const bound_mem_functor<T_func, T_arg...>& _A_target)
+    const T_action& action, const bound_mem_functor<T_func, T_arg...>& target)
   {
-    sigc::visit_each(_A_action, _A_target.obj_);
+    sigc::visit_each(action, target.obj_);
   }
 };
 #endif // DOXYGEN_SHOULD_SKIP_THIS
 
 /** Creates a functor of type sigc::mem_functor which wraps a  method.
- * @param _A_func Pointer to method that should be wrapped.
- * @return Functor that executes _A_func on invokation.
+ * @param func Pointer to method that should be wrapped.
+ * @return Functor that executes func on invokation.
  *
  * @ingroup mem_fun
  */
 template <typename T_return, typename T_obj, typename... T_arg>
 inline decltype(auto)
-mem_fun(T_return (T_obj::*_A_func)(T_arg...))
+mem_fun(T_return (T_obj::*func)(T_arg...))
 {
-  return mem_functor<T_return (T_obj::*)(T_arg...), T_arg...>(_A_func);
+  return mem_functor<T_return (T_obj::*)(T_arg...), T_arg...>(func);
 }
 
 /** Creates a functor of type sigc::const_mem_functor which wraps a const method.
- * @param _A_func Pointer to method that should be wrapped.
- * @return Functor that executes _A_func on invokation.
+ * @param func Pointer to method that should be wrapped.
+ * @return Functor that executes func on invokation.
  *
  * @ingroup mem_fun
  */
 template <typename T_return, typename T_obj, typename... T_arg>
 inline decltype(auto)
-mem_fun(T_return (T_obj::*_A_func)(T_arg...) const)
+mem_fun(T_return (T_obj::*func)(T_arg...) const)
 {
-  return mem_functor<T_return (T_obj::*)(T_arg...) const, T_arg...>(_A_func);
+  return mem_functor<T_return (T_obj::*)(T_arg...) const, T_arg...>(func);
 }
 
 /** Creates a functor of type sigc::volatile_mem_functor which wraps a volatile method.
- * @param _A_func Pointer to method that should be wrapped.
- * @return Functor that executes _A_func on invokation.
+ * @param func Pointer to method that should be wrapped.
+ * @return Functor that executes func on invokation.
  *
  * @ingroup mem_fun
  */
 template <typename T_return, typename T_obj, typename... T_arg>
 inline decltype(auto)
-mem_fun(T_return (T_obj::*_A_func)(T_arg...) volatile)
+mem_fun(T_return (T_obj::*func)(T_arg...) volatile)
 {
-  return mem_functor<T_return (T_obj::*)(T_arg...) volatile, T_arg...>(_A_func);
+  return mem_functor<T_return (T_obj::*)(T_arg...) volatile, T_arg...>(func);
 }
 
 /** Creates a functor of type sigc::const_volatile_mem_functor which wraps a const volatile method.
- * @param _A_func Pointer to method that should be wrapped.
- * @return Functor that executes _A_func on invokation.
+ * @param func Pointer to method that should be wrapped.
+ * @return Functor that executes func on invokation.
  *
  * @ingroup mem_fun
  */
 template <typename T_return, typename T_obj, typename... T_arg>
 inline decltype(auto)
-mem_fun(T_return (T_obj::*_A_func)(T_arg...) const volatile)
+mem_fun(T_return (T_obj::*func)(T_arg...) const volatile)
 {
-  return mem_functor<T_return (T_obj::*)(T_arg...) const volatile, T_arg...>(_A_func);
+  return mem_functor<T_return (T_obj::*)(T_arg...) const volatile, T_arg...>(func);
 }
 
 /** Creates a functor of type sigc::bound_mem_functor which encapsulates a method and an object
  * instance.
- * @param _A_obj Reference to object instance the functor should operate on.
- * @param _A_func Pointer to method that should be wrapped.
- * @return Functor that executes @e _A_func on invokation.
+ * @param obj Reference to object instance the functor should operate on.
+ * @param func Pointer to method that should be wrapped.
+ * @return Functor that executes @e func on invokation.
  *
  * @ingroup mem_fun
  */
 template <typename T_return, typename T_obj, typename T_obj2, typename... T_arg>
 inline decltype(auto)
-mem_fun(/**/ T_obj& _A_obj, T_return (T_obj2::*_A_func)(T_arg...))
+mem_fun(/**/ T_obj& obj, T_return (T_obj2::*func)(T_arg...))
 {
-  return bound_mem_functor<T_return (T_obj::*)(T_arg...), T_arg...>(_A_obj, _A_func);
+  return bound_mem_functor<T_return (T_obj::*)(T_arg...), T_arg...>(obj, func);
 }
 
 /** Creates a functor of type sigc::bound_const_mem_functor which encapsulates a method and an
  * object instance.
- * @param _A_obj Reference to object instance the functor should operate on.
- * @param _A_func Pointer to method that should be wrapped.
- * @return Functor that executes @e _A_func on invokation.
+ * @param obj Reference to object instance the functor should operate on.
+ * @param func Pointer to method that should be wrapped.
+ * @return Functor that executes @e func on invokation.
  *
  * @ingroup mem_fun
  */
 template <typename T_return, typename T_obj, typename T_obj2, typename... T_arg>
 inline decltype(auto)
-mem_fun(/*const*/ T_obj& _A_obj, T_return (T_obj2::*_A_func)(T_arg...) const)
+mem_fun(/*const*/ T_obj& obj, T_return (T_obj2::*func)(T_arg...) const)
 {
-  return bound_mem_functor<T_return (T_obj::*)(T_arg...) const, T_arg...>(_A_obj, _A_func);
+  return bound_mem_functor<T_return (T_obj::*)(T_arg...) const, T_arg...>(obj, func);
 }
 
 /** Creates a functor of type sigc::bound_volatile_mem_functor which encapsulates a method and an
  * object instance.
- * @param _A_obj Reference to object instance the functor should operate on.
- * @param _A_func Pointer to method that should be wrapped.
- * @return Functor that executes @e _A_func on invokation.
+ * @param obj Reference to object instance the functor should operate on.
+ * @param func Pointer to method that should be wrapped.
+ * @return Functor that executes @e func on invokation.
  *
  * @ingroup mem_fun
  */
 template <typename T_return, typename T_obj, typename T_obj2, typename... T_arg>
 inline decltype(auto)
-mem_fun(/**/ T_obj& _A_obj, T_return (T_obj2::*_A_func)(T_arg...) volatile)
+mem_fun(/**/ T_obj& obj, T_return (T_obj2::*func)(T_arg...) volatile)
 {
-  return bound_mem_functor<T_return (T_obj::*)(T_arg...) volatile, T_arg...>(_A_obj, _A_func);
+  return bound_mem_functor<T_return (T_obj::*)(T_arg...) volatile, T_arg...>(obj, func);
 }
 
 /** Creates a functor of type sigc::bound_const_volatile_mem_functor which encapsulates a method and
  * an object instance.
- * @param _A_obj Reference to object instance the functor should operate on.
- * @param _A_func Pointer to method that should be wrapped.
- * @return Functor that executes @e _A_func on invokation.
+ * @param obj Reference to object instance the functor should operate on.
+ * @param func Pointer to method that should be wrapped.
+ * @return Functor that executes @e func on invokation.
  *
  * @ingroup mem_fun
  */
 template <typename T_return, typename T_obj, typename T_obj2, typename... T_arg>
 inline decltype(auto)
-mem_fun(/*const*/ T_obj& _A_obj, T_return (T_obj2::*_A_func)(T_arg...) const volatile)
+mem_fun(/*const*/ T_obj& obj, T_return (T_obj2::*func)(T_arg...) const volatile)
 {
-  return bound_mem_functor<T_return (T_obj::*)(T_arg...) const volatile, T_arg...>(_A_obj, _A_func);
+  return bound_mem_functor<T_return (T_obj::*)(T_arg...) const volatile, T_arg...>(obj, func);
 }
 
 } /* namespace sigc */

@@ -33,16 +33,16 @@ namespace sigc
  *   //
  *   template <typename T_arg1>
  *   decltype(auto)
- *   operator()(T_arg1 _A_arg1) const;
+ *   operator()(T_arg1 arg1) const;
  *   //
  *   template <typename T_arg1, typename T_arg2>
  *   decltype(auto)
- *   operator()(T_arg1 _A_arg1, T_arg2 _A_arg2) const;
+ *   operator()(T_arg1 arg1, T_arg2 arg2) const;
  *   //
  *   // Constructs a my_adaptor object that wraps the passed functor.
  *   // Initializes adapts<T_functor>::functor_, which is invoked from operator()().
- *   explicit my_adaptor(const T_functor& _A_functor)
- *     : sigc::adapts<T_functor>(_A_functor) {}
+ *   explicit my_adaptor(const T_functor& functor)
+ *     : sigc::adapts<T_functor>(functor) {}
  * };
  * } // end namespace my_ns
  * //
@@ -53,10 +53,10 @@ namespace sigc
  * struct visitor<my_ns::my_adaptor<T_functor> >
  * {
  *   template <typename T_action>
- *   static void do_visit_each(const T_action& _A_action,
- *                             const my_ns::my_adaptor<T_functor>& _A_target)
+ *   static void do_visit_each(const T_action& action,
+ *                             const my_ns::my_adaptor<T_functor>& target)
  *   {
- *     sigc::visit_each(_A_action, _A_target.functor_);
+ *     sigc::visit_each(action, target.functor_);
  *   }
  * };
  * } // end namespace sigc
@@ -80,9 +80,9 @@ private:
 
 public:
   /** Constructs an adaptor that wraps the passed functor.
-   * @param _A_functor Functor to invoke from operator()().
+   * @param functor Functor to invoke from operator()().
    */
-  explicit adapts(const T_functor& _A_functor) : functor_(_A_functor) {}
+  explicit adapts(const T_functor& functor) : functor_(functor) {}
 
   /// Adaptor that is invoked from operator()().
   mutable adaptor_type functor_;

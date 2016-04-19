@@ -110,17 +110,17 @@ struct bind_functor : public adapts<T_functor>
 {
   /** Invokes the wrapped functor passing on the arguments.
    * bound_ is passed as the next argument.
-   * @param _A_arg Arguments to be passed on to the functor.
+   * @param arg Arguments to be passed on to the functor.
    * @return The return value of the functor invocation.
    */
   template <typename... T_arg>
-  decltype(auto) operator()(T_arg&&... _A_arg)
+  decltype(auto) operator()(T_arg&&... arg)
   {
-    // For instance, if I_location is 1, and _A_arg has 4 arguments,
-    // we would want to call operator() with (_A_arg0, bound, _A_arg1, _A_arg2).
+    // For instance, if I_location is 1, and arg has 4 arguments,
+    // we would want to call operator() with (arg0, bound, arg1, arg2).
 
     using tuple_type_args = std::tuple<type_trait_pass_t<T_arg>...>;
-    const auto t_args = std::tuple<T_arg...>(std::forward<T_arg>(_A_arg)...);
+    const auto t_args = std::tuple<T_arg...>(std::forward<T_arg>(arg)...);
     constexpr auto t_args_size = std::tuple_size<tuple_type_args>::value;
 
     // Prevent calling tuple_start<> with values that will cause a compilation error.
@@ -138,11 +138,11 @@ struct bind_functor : public adapts<T_functor>
   }
 
   /** Constructs a bind_functor object that binds an argument to the passed functor.
-   * @param _A_func Functor to invoke from operator()().
-   * @param _A_bound Argument to bind to the functor.
+   * @param func Functor to invoke from operator()().
+   * @param bound Argument to bind to the functor.
    */
-  bind_functor(type_trait_take_t<T_functor> _A_func, type_trait_take_t<T_bound>... _A_bound)
-  : adapts<T_functor>(_A_func), bound_(_A_bound...)
+  bind_functor(type_trait_take_t<T_functor> func, type_trait_take_t<T_bound>... bound)
+  : adapts<T_functor>(func), bound_(bound...)
   {
   }
 
@@ -168,16 +168,16 @@ struct bind_functor<-1, T_functor, T_type...> : public adapts<T_functor>
 public:
   /** Invokes the wrapped functor passing on the arguments.
    * bound_ is passed as the next argument.
-   * @param _A_arg Arguments to be passed on to the functor.
+   * @param arg Arguments to be passed on to the functor.
    * @return The return value of the functor invocation.
    */
   template <typename... T_arg>
-  decltype(auto) operator()(T_arg&&... _A_arg)
+  decltype(auto) operator()(T_arg&&... arg)
   {
-    // For instance, if _A_arg has 4 arguments,
-    // we would want to call operator() with (_A_arg0, _A_arg1, _A_arg2, bound).
+    // For instance, if arg has 4 arguments,
+    // we would want to call operator() with (arg0, arg1, arg2, bound).
 
-    const auto t_args = std::tuple<T_arg...>(std::forward<T_arg>(_A_arg)...);
+    const auto t_args = std::tuple<T_arg...>(std::forward<T_arg>(arg)...);
     const auto t_bound = internal::tuple_transform_each<internal::TransformEachInvoker>(bound_);
     const auto t_with_bound = std::tuple_cat(t_args, t_bound);
 
@@ -186,11 +186,11 @@ public:
   }
 
   /** Constructs a bind_functor object that binds an argument to the passed functor.
-   * @param _A_func Functor to invoke from operator()().
-   * @param _A_bound Arguments to bind to the functor.
+   * @param func Functor to invoke from operator()().
+   * @param bound Arguments to bind to the functor.
    */
-  bind_functor(type_trait_take_t<T_functor> _A_func, type_trait_take_t<T_type>... _A_bound)
-  : adapts<T_functor>(_A_func), bound_(_A_bound...)
+  bind_functor(type_trait_take_t<T_functor> func, type_trait_take_t<T_type>... bound)
+  : adapts<T_functor>(func), bound_(bound...)
   {
   }
 
@@ -218,10 +218,10 @@ struct visitor<bind_functor<T_loc, T_functor, T_bound...>>
 {
   template <typename T_action>
   static void do_visit_each(
-    const T_action& _A_action, const bind_functor<T_loc, T_functor, T_bound...>& _A_target)
+    const T_action& action, const bind_functor<T_loc, T_functor, T_bound...>& target)
   {
-    sigc::visit_each(_A_action, _A_target.functor_);
-    sigc::visit_each(_A_action, std::get<0>(_A_target.bound_));
+    sigc::visit_each(action, target.functor_);
+    sigc::visit_each(action, std::get<0>(target.bound_));
   }
 };
 
@@ -237,11 +237,11 @@ struct visitor<bind_functor<-1, T_functor, T_type...>>
 {
   template <typename T_action>
   static void do_visit_each(
-    const T_action& _A_action, const bind_functor<-1, T_functor, T_type...>& _A_target)
+    const T_action& action, const bind_functor<-1, T_functor, T_type...>& target)
   {
-    sigc::visit_each(_A_action, _A_target.functor_);
+    sigc::visit_each(action, target.functor_);
 
-    sigc::internal::tuple_for_each<internal::TupleVisitorVisitEach>(_A_target.bound_, _A_action);
+    sigc::internal::tuple_for_each<internal::TupleVisitorVisitEach>(target.bound_, action);
   }
 };
 
@@ -252,34 +252,34 @@ struct visitor<bind_functor<-1, T_functor, T_type...>>
  * The optional template argument @e I_location specifies the zero-based
  * position of the argument to be fixed (@p -1 stands for the last argument).
  *
- * @param _A_func Functor that should be wrapped.
- * @param _A_b1 Argument to bind to @e _A_func.
- * @return Adaptor that executes @e _A_func with the bound argument on invokation.
+ * @param func Functor that should be wrapped.
+ * @param b1 Argument to bind to @e func.
+ * @return Adaptor that executes @e func with the bound argument on invokation.
  *
  * @ingroup bind
  */
 template <int I_location, typename T_functor, origin::Copy_constructible... T_bound>
 inline decltype(auto)
-bind(const T_functor& _A_func, T_bound... _A_b)
+bind(const T_functor& func, T_bound... b)
 {
-  return bind_functor<I_location, T_functor, T_bound...>(_A_func, _A_b...);
+  return bind_functor<I_location, T_functor, T_bound...>(func, b...);
 }
 
 /** Creates an adaptor of type sigc::bind_functor which fixes the last arguments of the passed
  * functor.
- * This function overload fixes the last arguments of @e _A_func.
+ * This function overload fixes the last arguments of @e func.
  *
- * @param _A_func Functor that should be wrapped.
- * @param _A_b Arguments to bind to @e _A_func.
- * @return Adaptor that executes _A_func with the bound argument on invokation.
+ * @param func Functor that should be wrapped.
+ * @param b Arguments to bind to @e func.
+ * @return Adaptor that executes func with the bound argument on invokation.
  *
  * @ingroup bind
  */
 template <typename T_functor, origin::Copy_constructible... T_type>
 inline decltype(auto)
-bind(const T_functor& _A_func, T_type... _A_b)
+bind(const T_functor& func, T_type... b)
 {
-  return bind_functor<-1, T_functor, T_type...>(_A_func, _A_b...);
+  return bind_functor<-1, T_functor, T_type...>(func, b...);
 }
 
 } /* namespace sigc */

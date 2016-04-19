@@ -70,15 +70,15 @@ template <int I_location, typename T_functor>
 struct hide_functor : public adapts<T_functor>
 {
   /** Invokes the wrapped functor, ignoring the argument at index @e I_location (0-indexed).
-   * @param _A_a Arguments to be passed on to the functor, apart from the ignored argument.
+   * @param a Arguments to be passed on to the functor, apart from the ignored argument.
    * @return The return value of the functor invocation.
    */
   template <typename... T_arg>
-  decltype(auto) operator()(T_arg&&... _A_a)
+  decltype(auto) operator()(T_arg&&... a)
   {
     constexpr auto size = sizeof...(T_arg);
     constexpr auto index_ignore = (I_location == -1 ? size - 1 : I_location);
-    const auto t = std::tuple<T_arg...>(std::forward<T_arg>(_A_a)...);
+    const auto t = std::tuple<T_arg...>(std::forward<T_arg>(a)...);
 
     const auto t_start = internal::tuple_start<index_ignore>(t);
     const auto t_end = internal::tuple_end<size - index_ignore - 1>(t);
@@ -94,9 +94,9 @@ struct hide_functor : public adapts<T_functor>
   }
 
   /** Constructs a hide_functor object that adds a dummy parameter to the passed functor.
-   * @param _A_func Functor to invoke from operator()().
+   * @param func Functor to invoke from operator()().
    */
-  explicit hide_functor(const T_functor& _A_func) : adapts<T_functor>(_A_func) {}
+  explicit hide_functor(const T_functor& func) : adapts<T_functor>(func) {}
 
 private:
   // TODO_variadic: Replace this with std::experimental::apply() if that becomes standard
@@ -121,9 +121,9 @@ struct visitor<hide_functor<I_location, T_functor>>
 {
   template <typename T_action>
   static void do_visit_each(
-    const T_action& _A_action, const hide_functor<I_location, T_functor>& _A_target)
+    const T_action& action, const hide_functor<I_location, T_functor>& target)
   {
-    sigc::visit_each(_A_action, _A_target.functor_);
+    sigc::visit_each(action, target.functor_);
   }
 };
 #endif // DOXYGEN_SHOULD_SKIP_THIS
@@ -133,32 +133,32 @@ struct visitor<hide_functor<I_location, T_functor>>
  * The optional template argument @e I_location specifies the zero-based
  * position of the dummy parameter in the returned functor (@p -1 stands for the last parameter).
  *
- * @param _A_func Functor that should be wrapped.
- * @return Adaptor that executes @e _A_func, ignoring the value of the dummy parameter.
+ * @param func Functor that should be wrapped.
+ * @return Adaptor that executes @e func, ignoring the value of the dummy parameter.
  *
  * @ingroup hide
  */
 template <int I_location, typename T_functor>
 inline decltype(auto)
-hide(const T_functor& _A_func)
+hide(const T_functor& func)
 {
-  return hide_functor<I_location, T_functor>(_A_func);
+  return hide_functor<I_location, T_functor>(func);
 }
 
 /** Creates an adaptor of type sigc::hide_functor which adds a dummy parameter to the passed
  * functor.
  * This overload adds a dummy parameter at the back of the functor's parameter list.
  *
- * @param _A_func Functor that should be wrapped.
- * @return Adaptor that executes @e _A_func, ignoring the value of the last parameter.
+ * @param func Functor that should be wrapped.
+ * @return Adaptor that executes @e func, ignoring the value of the last parameter.
  *
  * @ingroup hide
  */
 template <typename T_functor>
 inline decltype(auto)
-hide(const T_functor& _A_func)
+hide(const T_functor& func)
 {
-  return hide_functor<-1, T_functor>(_A_func);
+  return hide_functor<-1, T_functor>(func);
 }
 
 } /* namespace sigc */

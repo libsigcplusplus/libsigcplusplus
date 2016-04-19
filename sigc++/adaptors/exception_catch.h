@@ -71,11 +71,11 @@ struct exception_catch_functor : public adapts<T_functor>
   }
 
   template <typename... T_arg>
-  decltype(auto) operator()(T_arg... _A_a)
+  decltype(auto) operator()(T_arg... a)
   {
     try
     {
-      return this->functor_.template operator()<type_trait_pass_t<T_arg>...>(_A_a...);
+      return this->functor_.template operator()<type_trait_pass_t<T_arg>...>(a...);
     }
     catch (...)
     {
@@ -83,8 +83,8 @@ struct exception_catch_functor : public adapts<T_functor>
     }
   }
 
-  exception_catch_functor(const T_functor& _A_func, const T_catcher& _A_catcher)
-  : adapts<T_functor>(_A_func), catcher_(_A_catcher)
+  exception_catch_functor(const T_functor& func, const T_catcher& catcher)
+  : adapts<T_functor>(func), catcher_(catcher)
   {
   }
 
@@ -97,20 +97,20 @@ template <typename T_functor, typename T_catcher>
 struct visitor<exception_catch_functor<T_functor, T_catcher>>
 {
   template <typename T_action>
-  static void do_visit_each(const T_action& _A_action,
-    const exception_catch_functor<T_functor, T_catcher>& _A_target)
+  static void do_visit_each(const T_action& action,
+    const exception_catch_functor<T_functor, T_catcher>& target)
   {
-    sigc::visit_each(_A_action, _A_target.functor_);
-    sigc::visit_each(_A_action, _A_target.catcher_);
+    sigc::visit_each(action, target.functor_);
+    sigc::visit_each(action, target.catcher_);
   }
 };
 #endif // DOXYGEN_SHOULD_SKIP_THIS
 
 template <typename T_functor, typename T_catcher>
 inline decltype(auto)
-exception_catch(const T_functor& _A_func, const T_catcher& _A_catcher)
+exception_catch(const T_functor& func, const T_catcher& catcher)
 {
-  return exception_catch_functor<T_functor, T_catcher>(_A_func, _A_catcher);
+  return exception_catch_functor<T_functor, T_catcher>(func, catcher);
 }
 
 } /* namespace sigc */

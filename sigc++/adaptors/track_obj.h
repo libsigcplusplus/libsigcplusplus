@@ -54,11 +54,11 @@ class track_obj_functor : public adapts<T_functor>
 public:
   /** Constructs a track_obj_functor object that wraps the passed functor and
    * stores a reference to the passed trackable objects.
-   * @param _A_func Functor.
-   * @param _A_obj Trackable objects.
+   * @param func Functor.
+   * @param obj Trackable objects.
    */
-  track_obj_functor(const T_functor& _A_func, const T_obj&... _A_obj)
-  : adapts<T_functor>(_A_func), obj_(_A_obj...)
+  track_obj_functor(const T_functor& func, const T_obj&... obj)
+  : adapts<T_functor>(func), obj_(obj...)
   {
   }
 
@@ -68,14 +68,14 @@ public:
   decltype(auto) operator()() { return this->functor_(); }
 
   /** Invokes the wrapped functor passing on the arguments.
-   * @param _A_arg... Arguments to be passed on to the functor.
+   * @param arg... Arguments to be passed on to the functor.
    * @return The return value of the functor invocation.
    */
   template <typename... T_arg>
-  decltype(auto) operator()(T_arg&&... _A_arg)
+  decltype(auto) operator()(T_arg&&... arg)
   {
     return this->functor_.template operator()<type_trait_pass_t<T_arg>...>(
-      std::forward<T_arg>(_A_arg)...);
+      std::forward<T_arg>(arg)...);
   }
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -102,21 +102,21 @@ struct visitor<track_obj_functor<T_functor, T_obj...>>
 {
   template <typename T_action>
   static void do_visit_each(
-    const T_action& _A_action, const track_obj_functor<T_functor, T_obj...>& _A_target)
+    const T_action& action, const track_obj_functor<T_functor, T_obj...>& target)
   {
-    sigc::visit_each(_A_action, _A_target.functor_);
+    sigc::visit_each(action, target.functor_);
 
-    // Call sigc::visit_each(_A_action, element) on each element in the
-    //_A_target.obj_ tuple:
-    sigc::internal::tuple_for_each<internal::TupleVisitorVisitEach>(_A_target.obj_, _A_action);
+    // Call sigc::visit_each(action, element) on each element in the
+    //target.obj_ tuple:
+    sigc::internal::tuple_for_each<internal::TupleVisitorVisitEach>(target.obj_, action);
   }
 };
 #endif // DOXYGEN_SHOULD_SKIP_THIS
 
 /** Creates an adaptor of type sigc::track_obj_functor which wraps a functor.
- * @param _A_func Functor that shall be wrapped.
- * @param _A_obj Trackable objects.
- * @return Adaptor that executes _A_func() on invocation.
+ * @param func Functor that shall be wrapped.
+ * @param obj Trackable objects.
+ * @return Adaptor that executes func() on invocation.
  *
  * @newin{2,4}
  *
@@ -124,9 +124,9 @@ struct visitor<track_obj_functor<T_functor, T_obj...>>
  */
 template <typename T_functor, typename... T_obj>
 inline decltype(auto)
-track_obj(const T_functor& _A_func, const T_obj&... _A_obj)
+track_obj(const T_functor& func, const T_obj&... obj)
 {
-  return track_obj_functor<T_functor, T_obj...>(_A_func, _A_obj...);
+  return track_obj_functor<T_functor, T_obj...>(func, obj...);
 }
 
 } /* namespace sigc */

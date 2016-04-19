@@ -91,36 +91,36 @@ struct MyAdaptor1 : public sigc::adapts<T_functor>
   }
 
   template <typename T_arg1>
-  decltype(auto) operator()(T_arg1 _A_arg1) const
+  decltype(auto) operator()(T_arg1 arg1) const
   {
-    result_stream << "MyAdaptor1()(_A_arg1) ";
-    return this->functor_(_A_arg1);
+    result_stream << "MyAdaptor1()(arg1) ";
+    return this->functor_(arg1);
   }
 
   template <typename T_arg1, typename T_arg2>
-  decltype(auto) operator()(T_arg1 _A_arg1, T_arg2 _A_arg2) const
+  decltype(auto) operator()(T_arg1 arg1, T_arg2 arg2) const
   {
-    result_stream << "MyAdaptor1()(_A_arg1, _A_arg2) ";
-    return this->functor_(_A_arg1, _A_arg2);
+    result_stream << "MyAdaptor1()(arg1, arg2) ";
+    return this->functor_(arg1, arg2);
   }
 
   // Constructs a MyAdaptor1 object that wraps the passed functor.
   // Initializes adapts<T_functor>::functor_, which is invoked from operator()().
-  explicit MyAdaptor1(const T_functor& _A_functor) : sigc::adapts<T_functor>(_A_functor) {}
+  explicit MyAdaptor1(const T_functor& functor) : sigc::adapts<T_functor>(functor) {}
 };
 
 template <typename T_action, typename T_functor>
 void
-visit_each(const T_action& _A_action, const MyAdaptor1<T_functor>& _A_target)
+visit_each(const T_action& action, const MyAdaptor1<T_functor>& target)
 {
-  visit_each(_A_action, _A_target.functor_);
+  visit_each(action, target.functor_);
 }
 
 template <typename T_functor>
 inline MyAdaptor1<T_functor>
-my_adaptor1(const T_functor& _A_func)
+my_adaptor1(const T_functor& func)
 {
-  return MyAdaptor1<T_functor>(_A_func);
+  return MyAdaptor1<T_functor>(func);
 }
 
 } // end namespace ns1
@@ -133,9 +133,9 @@ template <typename T_functor>
 struct visitor<ns1::MyAdaptor1<T_functor>>
 {
   template <typename T_action>
-  static void do_visit_each(const T_action& _A_action, const ns1::MyAdaptor1<T_functor>& _A_target)
+  static void do_visit_each(const T_action& action, const ns1::MyAdaptor1<T_functor>& target)
   {
-    sigc::visit_each(_A_action, _A_target.functor_);
+    sigc::visit_each(action, target.functor_);
   }
 };
 } // end namespace sigc
@@ -179,7 +179,7 @@ main(int argc, char* argv[])
     MyClass1 my_class3("a=");
     sl1 = ns1::my_adaptor1(sigc::mem_fun(my_class3, &MyClass1::execute));
     sl1(42);
-    util->check_result(result_stream, "MyAdaptor1()(_A_arg1) a=42");
+    util->check_result(result_stream, "MyAdaptor1()(arg1) a=42");
 
   } // auto-disconnect sl1
 

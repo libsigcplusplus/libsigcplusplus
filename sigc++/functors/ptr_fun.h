@@ -66,28 +66,28 @@ public:
   pointer_functor() = default;
 
   /** Constructs a pointer_functor2 object that wraps an existing function.
-   * @param _A_func Pointer to function that will be invoked from operator()().
+   * @param func Pointer to function that will be invoked from operator()().
    */
-  explicit pointer_functor(function_type _A_func) : func_ptr_(_A_func) {}
+  explicit pointer_functor(function_type func) : func_ptr_(func) {}
 
   /** Execute the wrapped function.
-   * @param _A_a1 Argument to be passed on to the function.
-   * @param _A_a2 Argument to be passed on to the function.
+   * @param a1 Argument to be passed on to the function.
+   * @param a2 Argument to be passed on to the function.
    * @return The return value of the function invocation.
    */
-  T_return operator()(type_trait_take_t<T_args>... _A_a) const { return func_ptr_(_A_a...); }
+  T_return operator()(type_trait_take_t<T_args>... a) const { return func_ptr_(a...); }
 };
 
 /** Creates a functor of type sigc::pointer_functor which wraps an existing non-member function.
- * @param _A_func Pointer to function that should be wrapped.
- * @return Functor that executes @e _A_func on invokation.
+ * @param func Pointer to function that should be wrapped.
+ * @return Functor that executes @e func on invokation.
  *
  * @ingroup ptr_fun
  */
 template <typename T_return, typename... T_args>
-inline decltype(auto) ptr_fun(T_return (*_A_func)(T_args...))
+inline decltype(auto) ptr_fun(T_return (*func)(T_args...))
 {
-  return pointer_functor<T_return(T_args...)>(_A_func);
+  return pointer_functor<T_return(T_args...)>(func);
 }
 
 } /* namespace sigc */

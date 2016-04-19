@@ -606,24 +606,24 @@ struct signal_emit
    * The parameters are stored in member variables. operator()() passes
    * the values on to some slot.
    */
-  signal_emit(type_trait_take_t<T_arg>... _A_a) : _A_a_(_A_a...) {}
+  signal_emit(type_trait_take_t<T_arg>... a) : a_(a...) {}
 
   /** Invokes a slot using the buffered parameter values.
-   * @param _A_slot Some slot to invoke.
+   * @param slot Some slot to invoke.
    * @return The slot's return value.
    */
-  T_return operator()(const slot_type& _A_slot) const
+  T_return operator()(const slot_type& slot) const
   {
-    const auto seq = std::make_index_sequence<std::tuple_size<decltype(_A_a_)>::value>();
-    return call_call_type_operator_parentheses_with_tuple(_A_slot, _A_a_, seq);
+    const auto seq = std::make_index_sequence<std::tuple_size<decltype(a_)>::value>();
+    return call_call_type_operator_parentheses_with_tuple(slot, a_, seq);
   }
 
   /** Executes a list of slots using an accumulator of type @e T_accumulator.
    * The arguments are buffered in a temporary instance of signal_emit.
-   * @param _A_a Arguments to be passed on to the slots.
+   * @param a Arguments to be passed on to the slots.
    * @return The accumulated return values of the slot invocations as processed by the accumulator.
    */
-  static decltype(auto) emit(signal_impl* impl, type_trait_take_t<T_arg>... _A_a)
+  static decltype(auto) emit(signal_impl* impl, type_trait_take_t<T_arg>... a)
   {
     T_accumulator accumulator;
 
@@ -633,17 +633,17 @@ struct signal_emit
     signal_exec exec(impl);
     temp_slot_list slots(impl->slots_);
 
-    self_type self(_A_a...);
+    self_type self(a...);
     return accumulator(
       slot_iterator_buf_type(slots.begin(), &self), slot_iterator_buf_type(slots.end(), &self));
   }
 
   /** Executes a list of slots using an accumulator of type @e T_accumulator in reverse order.   *
    * The arguments are buffered in a temporary instance of signal_emit.
-   * @param _A_a Arguments to be passed on to the slots.
+   * @param a Arguments to be passed on to the slots.
    * @return The accumulated return values of the slot invocations as processed by the accumulator.
    */
-  static decltype(auto) emit_reverse(signal_impl* impl, type_trait_take_t<T_arg>... _A_a)
+  static decltype(auto) emit_reverse(signal_impl* impl, type_trait_take_t<T_arg>... a)
   {
     T_accumulator accumulator;
 
@@ -653,21 +653,21 @@ struct signal_emit
     signal_exec exec(impl);
     temp_slot_list slots(impl->slots_);
 
-    self_type self(_A_a...);
+    self_type self(a...);
     return accumulator(slot_reverse_iterator_buf_type(slots.end(), &self),
       slot_reverse_iterator_buf_type(slots.begin(), &self));
   }
 
-  std::tuple<type_trait_take_t<T_arg>...> _A_a_;
+  std::tuple<type_trait_take_t<T_arg>...> a_;
 
 private:
   // TODO_variadic: Replace this with std::experimental::apply() if that becomes standard
   // C++, or add our own implementation, to avoid code duplication.
   template <std::size_t... Is>
   decltype(auto) call_call_type_operator_parentheses_with_tuple(
-    const slot_type& _A_slot, const std::tuple<T_arg...>& tuple, std::index_sequence<Is...>) const
+    const slot_type& slot, const std::tuple<T_arg...>& tuple, std::index_sequence<Is...>) const
   {
-    return (_A_slot)(std::get<Is>(tuple)...);
+    return (slot)(std::get<Is>(tuple)...);
   }
 };
 
@@ -688,11 +688,11 @@ public:
    * The arguments are passed directly on to the slots.
    * The return value of the last slot invoked is returned.
    * @param first An iterator pointing to the first slot in the list.
-   * @param last An iterator pointing to the last slot in the list.   * @param _A_a Arguments to be
+   * @param last An iterator pointing to the last slot in the list.   * @param a Arguments to be
    * passed on to the slots.
    * @return The return value of the last slot invoked.
    */
-  static decltype(auto) emit(signal_impl* impl, type_trait_take_t<T_arg>... _A_a)
+  static decltype(auto) emit(signal_impl* impl, type_trait_take_t<T_arg>... a)
   {
     if (!impl || impl->slots_.empty())
       return T_return();
@@ -718,12 +718,12 @@ public:
         return T_return();
       }
 
-      r_ = (reinterpret_cast<call_type>(it->rep_->call_))(it->rep_, _A_a...);
+      r_ = (reinterpret_cast<call_type>(it->rep_->call_))(it->rep_, a...);
       for (++it; it != slots.end(); ++it)
       {
         if (it->empty() || it->blocked())
           continue;
-        r_ = (reinterpret_cast<call_type>(it->rep_->call_))(it->rep_, _A_a...);
+        r_ = (reinterpret_cast<call_type>(it->rep_->call_))(it->rep_, a...);
       }
     }
 
@@ -732,10 +732,10 @@ public:
 
   /** Executes a list of slots using an accumulator of type @e T_accumulator in reverse order.
    * The arguments are passed directly on to the slots.
-   * @param _A_a%1 Argument to be passed on to the slots.
+   * @param a%1 Argument to be passed on to the slots.
    * @return The return value of the last slot invoked.
    */
-  static decltype(auto) emit_reverse(signal_impl* impl, type_trait_take_t<T_arg>... _A_a)
+  static decltype(auto) emit_reverse(signal_impl* impl, type_trait_take_t<T_arg>... a)
   {
     if (!impl || impl->slots_.empty())
       return T_return();
@@ -763,12 +763,12 @@ public:
         return T_return();
       }
 
-      r_ = (reinterpret_cast<call_type>(it->rep_->call_))(it->rep_, _A_a...);
+      r_ = (reinterpret_cast<call_type>(it->rep_->call_))(it->rep_, a...);
       for (++it; it != reverse_iterator_type(slots.begin()); ++it)
       {
         if (it->empty() || it->blocked())
           continue;
-        r_ = (reinterpret_cast<call_type>(it->rep_->call_))(it->rep_, _A_a...);
+        r_ = (reinterpret_cast<call_type>(it->rep_->call_))(it->rep_, a...);
       }
     }
 
@@ -792,9 +792,9 @@ public:
 
   /** Executes a list of slots using an accumulator of type @e T_accumulator.   * The arguments are
    * passed directly on to the slots.
-   * @param _A_a Arguments to be passed on to the slots.
+   * @param a Arguments to be passed on to the slots.
    */
-  static decltype(auto) emit(signal_impl* impl, type_trait_take_t<T_arg>... _A_a)
+  static decltype(auto) emit(signal_impl* impl, type_trait_take_t<T_arg>... a)
   {
     if (!impl || impl->slots_.empty())
       return;
@@ -806,17 +806,17 @@ public:
       if (slot.empty() || slot.blocked())
         continue;
 
-      (reinterpret_cast<call_type>(slot.rep_->call_))(slot.rep_, _A_a...);
+      (reinterpret_cast<call_type>(slot.rep_->call_))(slot.rep_, a...);
     }
   }
 
   /** Executes a list of slots using an accumulator of type @e T_accumulator in reverse order.   *
    * The arguments are passed directly on to the slots.
    * @param first An iterator pointing to the first slot in the list.
-   * @param last An iterator pointing to the last slot in the list.   * @param _A_a Arguments to be
+   * @param last An iterator pointing to the last slot in the list.   * @param a Arguments to be
    * passed on to the slots.
    */
-  static decltype(auto) emit_reverse(signal_impl* impl, type_trait_take_t<T_arg>... _A_a)
+  static decltype(auto) emit_reverse(signal_impl* impl, type_trait_take_t<T_arg>... a)
   {
     if (!impl || impl->slots_.empty())
       return;
@@ -830,7 +830,7 @@ public:
     {
       if (it->empty() || it->blocked())
         continue;
-      (reinterpret_cast<call_type>(it->rep_->call_))(it->rep_, _A_a...);
+      (reinterpret_cast<call_type>(it->rep_->call_))(it->rep_, a...);
     }
   }
 };
@@ -920,22 +920,22 @@ public:
    * If @e T_accumulated is not @p void, an accumulator of this type
    * is used to process the return values of the slot invocations.
    * Otherwise, the return value of the last slot invoked is returned.
-   * @param _A_a Arguments to be passed on to the slots.
+   * @param a Arguments to be passed on to the slots.
    * @return The accumulated return values of the slot invocations.
    */
-  decltype(auto) emit(type_trait_take_t<T_arg>... _A_a) const
+  decltype(auto) emit(type_trait_take_t<T_arg>... a) const
   {
-    return emitter_type::emit(impl_, _A_a...);
+    return emitter_type::emit(impl_, a...);
   }
 
   /** Triggers the emission of the signal in reverse order (see emit()). */
-  decltype(auto) emit_reverse(type_trait_take_t<T_arg>... _A_a) const
+  decltype(auto) emit_reverse(type_trait_take_t<T_arg>... a) const
   {
-    return emitter_type::emit_reverse(impl_, _A_a...);
+    return emitter_type::emit_reverse(impl_, a...);
   }
 
   /** Triggers the emission of the signal (see emit()). */
-  decltype(auto) operator()(type_trait_take_t<T_arg>... _A_a) const { return emit(_A_a...); }
+  decltype(auto) operator()(type_trait_take_t<T_arg>... a) const { return emit(a...); }
 
   /** Creates a functor that calls emit() on this signal.
    * @code

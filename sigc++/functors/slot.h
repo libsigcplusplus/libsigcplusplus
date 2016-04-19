@@ -102,7 +102,7 @@ struct slot_call
 {
   /** Invokes a functor of type @p T_functor.
    * @param rep slot_rep object that holds a functor of type @p T_functor.
-   * @param _A_a Arguments to be passed on to the functor.
+   * @param a Arguments to be passed on to the functor.
    * @return The return values of the functor invocation.
    */
   static T_return call_it(slot_rep* rep, type_trait_take_t<T_arg>... a_)
@@ -166,23 +166,23 @@ public:
 #endif
 
   /** Invoke the contained functor unless slot is in blocking state.
-   * @param _A_a Arguments to be passed on to the functor.
+   * @param a Arguments to be passed on to the functor.
    * @return The return value of the functor invocation.
    */
-  inline T_return operator()(type_trait_take_t<T_arg>... _A_a) const
+  inline T_return operator()(type_trait_take_t<T_arg>... a) const
   {
     if (!empty() && !blocked())
-      return (reinterpret_cast<call_type>(slot_base::rep_->call_))(slot_base::rep_, _A_a...);
+      return (reinterpret_cast<call_type>(slot_base::rep_->call_))(slot_base::rep_, a...);
     return T_return();
   }
 
   inline slot() = default;
 
   /** Constructs a slot from an arbitrary functor.
-   * @param _A_func The desired functor the new slot should be assigned to.
+   * @param func The desired functor the new slot should be assigned to.
    */
   template <typename T_functor>
-  slot(const T_functor& _A_func) : slot_base(new internal::typed_slot_rep<T_functor>(_A_func))
+  slot(const T_functor& func) : slot_base(new internal::typed_slot_rep<T_functor>(func))
   {
     // The slot_base:: is necessary to stop the HP-UX aCC compiler from being confused. murrayc.
     slot_base::rep_->call_ = internal::slot_call<T_functor, T_return, T_arg...>::address();
@@ -245,25 +245,25 @@ template <typename T_return, typename... T_arg>
 struct visitor<slot<T_return, T_arg...>>
 {
   static void do_visit_each(
-    const internal::limit_trackable_target<internal::slot_do_bind>& _A_action,
-    const slot<T_return, T_arg...>& _A_target)
+    const internal::limit_trackable_target<internal::slot_do_bind>& action,
+    const slot<T_return, T_arg...>& target)
   {
-    if (_A_target.rep_ && _A_target.rep_->parent_ == nullptr)
-      _A_target.rep_->set_parent(_A_action.action_.rep_, &internal::slot_rep::notify);
+    if (target.rep_ && target.rep_->parent_ == nullptr)
+      target.rep_->set_parent(action.action_.rep_, &internal::slot_rep::notify);
   }
 
   static void do_visit_each(
-    const internal::limit_trackable_target<internal::slot_do_unbind>& _A_action,
-    const slot<T_return, T_arg...>& _A_target)
+    const internal::limit_trackable_target<internal::slot_do_unbind>& action,
+    const slot<T_return, T_arg...>& target)
   {
-    if (_A_target.rep_ && _A_target.rep_->parent_ == _A_action.action_.rep_)
-      _A_target.rep_->set_parent(nullptr, nullptr);
+    if (target.rep_ && target.rep_->parent_ == action.action_.rep_)
+      target.rep_->set_parent(nullptr, nullptr);
   }
 
   template <typename T_action>
-  static void do_visit_each(const T_action& _A_action, const slot<T_return, T_arg...>& _A_target)
+  static void do_visit_each(const T_action& action, const slot<T_return, T_arg...>& target)
   {
-    _A_action(_A_target);
+    action(target);
   }
 };
 #endif // DOXYGEN_SHOULD_SKIP_THIS

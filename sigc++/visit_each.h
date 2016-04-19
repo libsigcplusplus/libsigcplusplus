@@ -40,15 +40,15 @@ template <typename T_action>
 struct limit_trackable_target
 {
   template <typename T_type>
-  void operator()(T_type&& _A_type) const
+  void operator()(T_type&& type) const
   {
     using T_self = limit_trackable_target<T_action>;
 
     //Only call action_() if T_Type derives from trackable.
-    with_type<T_type, T_self>::execute_(std::forward<T_type>(_A_type), *this);
+    with_type<T_type, T_self>::execute_(std::forward<T_type>(type), *this);
   }
 
-  explicit limit_trackable_target(const T_action& _A_action) : action_(_A_action) {}
+  explicit limit_trackable_target(const T_action& action) : action_(action) {}
 
   limit_trackable_target(const limit_trackable_target& src) = delete;
   limit_trackable_target& operator=(const limit_trackable_target& src) = delete;
@@ -72,9 +72,9 @@ private:
   template <typename T_type, typename T_limit>
   struct with_type<T_type, T_limit, true>
   {
-    static void execute_(const T_type& _A_type, const T_limit& _A_action)
+    static void execute_(const T_type& type, const T_limit& action)
     {
-      _A_action.action_(_A_type);
+      action.action_(type);
     }
   };
 };
@@ -91,7 +91,7 @@ private:
 
 /** sigc::visitor<T_functor>::do_visit_each() performs a functor on each of the targets of a
  * functor.
- * All unknown types just call @a _A_action on them.
+ * All unknown types just call @a action on them.
  * Add specializations that specialize the @a T_functor argument for your own
  * functor types, so that subobjects get visited. This is needed to enable
  * auto-disconnection support for your functor types.
@@ -114,11 +114,11 @@ private:
  *     struct visitor<some_ns::some_functor>
  *     {
  *       template <typename T_action>
- *       static void do_visit_each(const T_action& _A_action,
- *                                 const some_ns::some_functor& _A_target)
+ *       static void do_visit_each(const T_action& action,
+ *                                 const some_ns::some_functor& target)
  *       {
- *         sigc::visit_each(_A_action, _A_target.some_data_member);
- *         sigc::visit_each(_A_action, _A_target.some_other_functor);
+ *         sigc::visit_each(action, target.some_data_member);
+ *         sigc::visit_each(action, target.some_other_functor);
  *       }
  *     };
  *   }
@@ -130,9 +130,9 @@ template <typename T_functor>
 struct visitor
 {
   template <typename T_action>
-  static void do_visit_each(const T_action& _A_action, const T_functor& _A_functor)
+  static void do_visit_each(const T_action& action, const T_functor& functor)
   {
-    _A_action(_A_functor);
+    action(functor);
   }
 };
 
@@ -142,9 +142,9 @@ struct visitor
  */
 template <typename T_action, typename T_functor>
 void
-visit_each(const T_action& _A_action, const T_functor& _A_functor)
+visit_each(const T_action& action, const T_functor& functor)
 {
-  sigc::visitor<T_functor>::do_visit_each(_A_action, _A_functor);
+  sigc::visitor<T_functor>::do_visit_each(action, functor);
 }
 
 /** This function performs a functor on each of the targets
@@ -164,11 +164,11 @@ visit_each(const T_action& _A_action, const T_functor& _A_functor)
  */
 template <typename T_action, typename T_functor>
 void
-visit_each_trackable(const T_action& _A_action, const T_functor& _A_functor)
+visit_each_trackable(const T_action& action, const T_functor& functor)
 {
-  internal::limit_trackable_target<T_action> limited_action(_A_action);
+  internal::limit_trackable_target<T_action> limited_action(action);
 
-  sigc::visit_each(limited_action, _A_functor);
+  sigc::visit_each(limited_action, functor);
 }
 
 } /* namespace sigc */

@@ -51,9 +51,9 @@ class bound_argument
 {
 public:
   /** Constructor.
-   * @param _A_argument The argument to bind.
+   * @param arg The argument to bind.
    */
-  bound_argument(const T_type& _A_argument) : visited_(_A_argument) {}
+  bound_argument(const T_type& arg) : visited_(arg) {}
 
   /** Retrieve the entity to visit in visit_each().
    * @return The bound argument.
@@ -81,10 +81,10 @@ class bound_argument<std::reference_wrapper<T_wrapped>>
 {
 public:
   /** Constructor.
-   * @param _A_argument The argument to bind.
+   * @param arg The argument to bind.
    */
-  bound_argument(const std::reference_wrapper<T_wrapped>& _A_argument)
-  : visited_(unwrap(_A_argument))
+  bound_argument(const std::reference_wrapper<T_wrapped>& arg)
+  : visited_(unwrap(arg))
   {
   }
 
@@ -113,10 +113,10 @@ class bound_argument<std::reference_wrapper<const T_wrapped>>
 {
 public:
   /** Constructor.
-   * @param _A_argument The argument to bind.
+   * @param arg The argument to bind.
    */
-  bound_argument(const std::reference_wrapper<const T_wrapped>& _A_argument)
-  : visited_(unwrap(_A_argument))
+  bound_argument(const std::reference_wrapper<const T_wrapped>& arg)
+  : visited_(unwrap(arg))
   {
   }
 
@@ -142,16 +142,16 @@ private:
  * method.
  * @tparam T_type The type of bound_argument.
  * @tparam T_action The type of functor to invoke.
- * @param _A_action The functor to invoke.
- * @param _A_argument The visited instance.
+ * @param action The functor to invoke.
+ * @param arg The visited instance.
  */
 template <typename T_type>
 struct visitor<bound_argument<T_type>>
 {
   template <typename T_action>
-  static void do_visit_each(const T_action& _A_action, const bound_argument<T_type>& _A_argument)
+  static void do_visit_each(const T_action& action, const bound_argument<T_type>& arg)
   {
-    sigc::visit_each(_A_action, _A_argument.visit());
+    sigc::visit_each(action, arg.visit());
   }
 };
 #endif // DOXYGEN_SHOULD_SKIP_THIS
