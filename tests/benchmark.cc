@@ -3,11 +3,7 @@
 #include <sigc++/functors/mem_fun.h>
 #include <glibmm/timeval.h>
 
-using namespace std;
-using namespace sigc;
-using namespace sigc::functor;
-
-struct foo : public trackable
+struct foo : public sigc::trackable
 {
   int bar(int a);
   int c;
@@ -25,14 +21,14 @@ int main()
   Glib::TimeVal t1, t2;
 
   foo foobar1, foobar2, foobar3, foobar4, foobar5;
-  closure<int,int> slot;
-  signal<int,int> emitter;
-  signal<int,int>::iterator it;
+  sigc::slot<int,int> slot;
+  sigc::signal<int,int> emitter;
+  sigc::signal<int,int>::iterator it;
 
 
   // slot benchmark ...
 
-  slot = mem_fun(&foobar1, &foo::bar);
+  slot = sigc::mem_fun(&foobar1, &foo::bar);
 
   t1.assign_current_time();
 
@@ -42,7 +38,7 @@ int main()
   t2.assign_current_time();
   t2.subtract(t1);
 
-  cout << "elapsed time for calling a slot 5000 times: " << t2.tv_sec << "s " << t2.tv_usec << "us" << endl;
+  std::cout << "elapsed time for calling a slot 5000 times: " << t2.tv_sec << "s " << t2.tv_usec << "us" << std::endl;
 
 
   // emission benchmark (zero slots) ...
@@ -55,7 +51,7 @@ int main()
   t2.assign_current_time();
   t2.subtract(t1);
 
-  cout << "elapsed time for 1000 emissions (0 slots): " << t2.tv_sec << "s " << t2.tv_usec << "us" << endl;
+  std::cout << "elapsed time for 1000 emissions (0 slots): " << t2.tv_sec << "s " << t2.tv_usec << "us" << std::endl;
 
 
   // emission benchmark (one slot) ...
@@ -70,7 +66,7 @@ int main()
   t2.assign_current_time();
   t2.subtract(t1);
 
-  cout << "elapsed time for 1000 emissions (1 slot): " << t2.tv_sec << "s " << t2.tv_usec << "us" << endl;
+  std::cout << "elapsed time for 1000 emissions (1 slot): " << t2.tv_sec << "s " << t2.tv_usec << "us" << std::endl;
 
 
   // emission benchmark (five slot) ...
@@ -88,7 +84,7 @@ int main()
   t2.assign_current_time();
   t2.subtract(t1);
 
-  cout << "elapsed time for 1000 emissions (5 slots): " << t2.tv_sec << "s " << t2.tv_usec << "us" << endl;
+  std::cout << "elapsed time for 1000 emissions (5 slots): " << t2.tv_sec << "s " << t2.tv_usec << "us" << std::endl;
 
 
   // connection / disconnection benchmark ...
@@ -106,6 +102,6 @@ int main()
   t2.assign_current_time();
   t2.subtract(t1);
 
-  cout << "elapsed time for 1000 connections/disconnections: " << t2.tv_sec << "s " << t2.tv_usec << "us" << endl;
+  std::cout << "elapsed time for 1000 connections/disconnections: " << t2.tv_sec << "s " << t2.tv_usec << "us" << std::endl;
 
 }
