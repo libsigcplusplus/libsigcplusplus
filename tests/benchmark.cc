@@ -1,3 +1,7 @@
+/* Copyright 2003 - 2016, The libsigc++ Development Team
+ *  Assigned to public domain.  Use as you wish without restriction.
+ */
+
 #include <iostream>
 #include <sigc++/signal.h>
 #include <sigc++/functors/mem_fun.h>
