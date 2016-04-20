@@ -25,11 +25,11 @@ int foo::bar(int a)
 void test_slot_call()
 {
   foo foobar1;
-  sigc::signal<int,int>::iterator it;
+  sigc::signal<int(int)>::iterator it;
 
   // slot benchmark ...
 
-  sigc::slot<int,int> slot = sigc::mem_fun(&foobar1, &foo::bar);
+  sigc::slot<int(int)> slot = sigc::mem_fun(foobar1, &foo::bar);
 
   std::cout << "elapsed time for calling a slot " << COUNT << " times:" << std::endl;.
   boost::timer::auto_cpu_timer timer;
@@ -40,7 +40,7 @@ void test_slot_call()
 
 void test_signal_emit()
 {
-  sigc::signal<int,int> emitter;
+  sigc::signal<int(int)> emitter;
 
   Glib::TimeVal t1, t2;
   t1.assign_current_time();
@@ -57,8 +57,8 @@ void test_signal_emit()
 void test_connected_signal_emit()
 {
   foo foobar1;
-  sigc::signal<int,int> emitter;
-  emitter.connect(mem_fun(&foobar1, &foo::bar));
+  sigc::signal<int(int)> emitter;
+  emitter.connect(mem_fun(foobar1, &foo::bar));
 
   Glib::TimeVal t1, t2;
   t1.assign_current_time();
@@ -76,11 +76,11 @@ void test_connected_multiple_signal_emit()
 {
   foo foobar1, foobar2, foobar3, foobar4, foobar5;
 
-  sigc::signal<int,int> emitter;
-  emitter.connect(mem_fun(&foobar2, &foo::bar));
-  emitter.connect(mem_fun(&foobar3, &foo::bar));
-  emitter.connect(mem_fun(&foobar4, &foo::bar));
-  emitter.connect(mem_fun(&foobar5, &foo::bar));
+  sigc::signal<int(int)> emitter;
+  emitter.connect(mem_fun(foobar2, &foo::bar));
+  emitter.connect(mem_fun(foobar3, &foo::bar));
+  emitter.connect(mem_fun(foobar4, &foo::bar));
+  emitter.connect(mem_fun(foobar5, &foo::bar));
 
   Glib::TimeVal t1, t2;
   t1.assign_current_time();
@@ -97,15 +97,15 @@ void test_connected_multiple_signal_emit()
 void test_connect_disconnect()
 {
   foo foobar1;
-  sigc::signal<int, int> emitter;
-  sigc::signal<int, int>::iterator it;
+  sigc::signal<int(int)> emitter;
+  sigc::signal<int(int)>::iterator it;
 
   Glib::TimeVal t1, t2;
   t1.assign_current_time();
 
   for (int i=0; i < COUNT; ++i)
     {
-      it = emitter.connect(mem_fun(&foobar1, &foo::bar));
+      it = emitter.connect(mem_fun(foobar1, &foo::bar));
       it->disconnect();
     }
 
