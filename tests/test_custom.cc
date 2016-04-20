@@ -1,3 +1,7 @@
+/* Copyright 2005 - 2016, The libsigc++ Development Team
+ *  Assigned to public domain.  Use as you wish without restriction.
+ */
+
 // Write your custom tests here so you don't have to think about how to compile
 // and execute your test code against the exact same library that you are
 // currently hacking.

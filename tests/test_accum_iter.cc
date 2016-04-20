@@ -1,3 +1,7 @@
+/* Copyright 2007 - 2016, The libsigc++ Development Team
+ *  Assigned to public domain.  Use as you wish without restriction.
+ */
+
 #include "testutilities.h"
 #include <sigc++/sigc++.h>
 #include <sstream>
