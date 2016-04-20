@@ -1,4 +1,4 @@
-/* Copyright 2003, The libsigc++ Development Team
+/* Copyright 2003 - 2016, The libsigc++ Development Team
  *
  *  Assigned to the public domain.  Use as you wish without
  *  restriction.

@@ -1,4 +1,4 @@
-/* Copyright (C) 2014 The libsigc++ Development Team
+/* Copyright (C) 2014 - 2016, The libsigc++ Development Team
  *
  * This file is part of libsigc++.
  *

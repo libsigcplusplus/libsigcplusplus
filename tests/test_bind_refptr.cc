@@ -16,7 +16,7 @@
 #ifndef _GLIBMM_REFPTR_H
 #define _GLIBMM_REFPTR_H
 
-/* Copyright 2002 The gtkmm Development Team
+/* Copyright 2002 - 2016, The gtkmm Development Team
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
