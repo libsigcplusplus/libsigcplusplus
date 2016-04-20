@@ -56,6 +56,22 @@ MM_ARG_ENABLE_WARNINGS([SIGC_WXXFLAGS],
 # Offer the ability to omit some API from the library.
 MM_ARG_DISABLE_DEPRECATED_API([SIGCXX])
 
+AC_ARG_ENABLE(benchmark,
+  AS_HELP_STRING([--enable-benchmark=yes|no]),
+  [enable_benchmark=yes]
+)
+
+AM_CONDITIONAL([SIGC_BUILD_BENCHMARK], [test "x$enable_benchmark" = xyes])
+
+AS_IF([test "x$enable_benchmark" = xyes],[
+  #Use boost::timer for our benchmark, if it's available.
+  # See http://www.gnu.org/software/autoconf-archive/ax_boost_base.html
+  # Boost System is needed by Boost Timer
+  AX_BOOST_BASE
+  AX_BOOST_SYSTEM
+  AX_BOOST_TIMER
+])
+
 AC_CONFIG_FILES([Makefile
                  ${SIGCXX_MODULE_NAME}.pc:sigc++.pc.in
                  ${SIGCXX_MODULE_NAME}-uninstalled.pc:sigc++-uninstalled.pc.in
