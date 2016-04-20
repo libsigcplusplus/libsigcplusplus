@@ -29,7 +29,6 @@
 
 #define ACTIVATE_BUG 1
 
-// -*- c++ -*-
 #ifndef _GLIBMM_REFPTR_H
 #define _GLIBMM_REFPTR_H
 
