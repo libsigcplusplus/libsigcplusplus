@@ -17,7 +17,9 @@
 
 AM_CPPFLAGS = -I$(top_builddir) -I$(top_srcdir)
 AM_CXXFLAGS = $(SIGC_WXXFLAGS)
-LDADD       = $(top_builddir)/sigc++/libsigc-$(SIGCXX_API_VERSION).la
+
+sigc_libs = $(top_builddir)/sigc++/libsigc-$(SIGCXX_API_VERSION).la
+LDADD       = $(sigc_libs)
 
 check_PROGRAMS = \
   test_accum_iter \
@@ -89,3 +91,11 @@ test_trackable_SOURCES       = test_trackable.cc $(sigc_test_util)
 test_trackable_move_SOURCES  = test_trackable_move.cc $(sigc_test_util)
 test_track_obj_SOURCES       = test_track_obj.cc $(sigc_test_util)
 test_visit_each_SOURCES      = test_visit_each.cc $(sigc_test_util)
+
+if SIGC_BUILD_BENCHMARK
+check_PROGRAMS += benchmark
+benchmark_SOURCES = benchmark.cc $(sigc_test_util)
+benchmark_LDADD = $(sigc_libs) \
+	$(BOOST_SYSTEM_LIB) \
+	$(BOOST_TIMER_LIB)
+endif
