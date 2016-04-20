@@ -39,3 +39,5 @@
 /test_tuple_start
 /test_tuple_transform_each
 /test_visit_each
+/test_visit_each_trackable
+/benchmark
