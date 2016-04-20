@@ -7,6 +7,8 @@
 #include <sigc++/functors/mem_fun.h>
 #include <glibmm/timeval.h>
 
+const int COUNT = 1000;
+
 struct foo : public sigc::trackable
 {
   int bar(int a);
@@ -29,16 +31,11 @@ void test_slot_call()
 
   sigc::slot<int,int> slot = sigc::mem_fun(&foobar1, &foo::bar);
 
-  Glib::TimeVal t1, t2;
-  t1.assign_current_time();
+  std::cout << "elapsed time for calling a slot " << COUNT << " times:" << std::endl;.
+  boost::timer::auto_cpu_timer timer;
 
-  for (int i=0; i < 5000; ++i)
+  for (int i=0; i < COUNT; ++i)
     slot(i);
-
-  t2.assign_current_time();
-  t2.subtract(t1);
-
-  std::cout << "elapsed time for calling a slot 5000 times: " << t2.tv_sec << "s " << t2.tv_usec << "us" << std::endl;
 }
 
 void test_signal_emit()
@@ -48,13 +45,13 @@ void test_signal_emit()
   Glib::TimeVal t1, t2;
   t1.assign_current_time();
 
-  for (int i=0; i < 1000; ++i)
+  for (int i=0; i < COUNT; ++i)
     emitter(i);
 
   t2.assign_current_time();
   t2.subtract(t1);
 
-  std::cout << "elapsed time for 1000 emissions (0 slots): " << t2.tv_sec << "s " << t2.tv_usec << "us" << std::endl;
+  std::cout << "elapsed time for " << COUNT << " emissions (0 slots): " << t2.tv_sec << "s " << t2.tv_usec << "us" << std::endl;
 }
 
 void test_connected_signal_emit()
@@ -66,13 +63,13 @@ void test_connected_signal_emit()
   Glib::TimeVal t1, t2;
   t1.assign_current_time();
 
-  for (int i=0; i < 1000; ++i)
+  for (int i=0; i < COUNT; ++i)
     emitter(i);
 
   t2.assign_current_time();
   t2.subtract(t1);
 
-  std::cout << "elapsed time for 1000 emissions (1 slot): " << t2.tv_sec << "s " << t2.tv_usec << "us" << std::endl;
+  std::cout << "elapsed time for " << COUNT << " emissions (1 slot): " << t2.tv_sec << "s " << t2.tv_usec << "us" << std::endl;
 }
 
 void test_connected_multiple_signal_emit()
@@ -88,13 +85,13 @@ void test_connected_multiple_signal_emit()
   Glib::TimeVal t1, t2;
   t1.assign_current_time();
 
-  for (int i=0; i < 1000; ++i)
+  for (int i=0; i < COUNT; ++i)
     emitter(i);
 
   t2.assign_current_time();
   t2.subtract(t1);
 
-  std::cout << "elapsed time for 1000 emissions (5 slots): " << t2.tv_sec << "s " << t2.tv_usec << "us" << std::endl;
+  std::cout << "elapsed time for " << COUNT << " emissions (5 slots): " << t2.tv_sec << "s " << t2.tv_usec << "us" << std::endl;
 }
 
 void test_connect_disconnect()
@@ -106,7 +103,7 @@ void test_connect_disconnect()
   Glib::TimeVal t1, t2;
   t1.assign_current_time();
 
-  for (int i=0; i < 1000; ++i)
+  for (int i=0; i < COUNT; ++i)
     {
       it = emitter.connect(mem_fun(&foobar1, &foo::bar));
       it->disconnect();
@@ -115,7 +112,7 @@ void test_connect_disconnect()
   t2.assign_current_time();
   t2.subtract(t1);
 
-  std::cout << "elapsed time for 1000 connections/disconnections: " << t2.tv_sec << "s " << t2.tv_usec << "us" << std::endl;
+  std::cout << "elapsed time for " << COUNT << " connections/disconnections: " << t2.tv_sec << "s " << t2.tv_usec << "us" << std::endl;
 }
 
 int main()
