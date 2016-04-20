@@ -7,7 +7,7 @@
 #include <sigc++/functors/mem_fun.h>
 #include <glibmm/timeval.h>
 
-const int COUNT = 1000;
+const int COUNT = 10000000;
 
 struct foo : public sigc::trackable
 {
