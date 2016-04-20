@@ -271,7 +271,7 @@ struct visitor<bind_functor<-1, T_functor, T_type...>>
  * position of the argument to be fixed (@p -1 stands for the last argument).
  *
  * @param func Functor that should be wrapped.
- * @param b1 Argument to bind to @e func.
+ * @param b Arguments to bind to @e func.
  * @return Adaptor that executes @e func with the bound argument on invokation.
  *
  * @ingroup bind

@@ -108,7 +108,7 @@ public:
 
   /** Execute the wrapped method operating on the passed instance.
    * @param obj Reference to instance the method should operate on.
-   * @param a... Argument to be passed on to the method.
+   * @param a Arguments to be passed on to the method.
    * @return The return value of the method invocation.
    */
   decltype(auto) operator()(obj_type_with_modifier& obj, type_trait_take_t<T_arg>... a) const
@@ -147,7 +147,7 @@ public:
   }
 
   /** Execute the wrapped method operating on the stored instance.
-   * @param a... Argument to be passed on to the method.
+   * @param a Arguments to be passed on to the method.
    * @return The return value of the method invocation.
    */
   decltype(auto) operator()(type_trait_take_t<T_arg>... a) const

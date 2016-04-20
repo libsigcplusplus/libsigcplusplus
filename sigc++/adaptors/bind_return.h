@@ -43,7 +43,7 @@ struct bind_return_functor : public adapts<T_functor>
   typename unwrap_reference<T_return>::type operator()();
 
   /** Invokes the wrapped functor passing on the arguments.
-   * @param a... Arguments to be passed on to the functor.
+   * @param a Arguments to be passed on to the functor.
    * @return The fixed return value.
    */
   template <typename... T_arg>

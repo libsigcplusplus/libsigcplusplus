@@ -89,8 +89,7 @@ public:
   explicit pointer_functor(function_type func) : func_ptr_(func) {}
 
   /** Execute the wrapped function.
-   * @param a1 Argument to be passed on to the function.
-   * @param a2 Argument to be passed on to the function.
+   * @param a Arguments to be passed on to the function.
    * @return The return value of the function invocation.
    */
   T_return operator()(type_trait_take_t<T_args>... a) const { return func_ptr_(a...); }

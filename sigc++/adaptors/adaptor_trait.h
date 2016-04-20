@@ -90,7 +90,7 @@ struct adaptor_functor : public adaptor_base
   decltype(auto) operator()() const { return functor_(); }
 
   /** Invokes the wrapped functor passing on the arguments.
-   * @param arg... Arguments to be passed on to the functor.
+   * @param arg Arguments to be passed on to the functor.
    * @return The return value of the functor invocation.
    */
   template <typename... T_arg>
