@@ -31,3 +31,5 @@
 /test_trackable_move
 /test_track_obj
 /test_visit_each
+/test_visit_each_trackable
+/benchmark
