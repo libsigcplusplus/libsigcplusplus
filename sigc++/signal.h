@@ -732,7 +732,7 @@ public:
 
   /** Executes a list of slots using an accumulator of type @e T_accumulator in reverse order.
    * The arguments are passed directly on to the slots.
-   * @param a%1 Argument to be passed on to the slots.
+   * @param a Arguments to be passed on to the slots.
    * @return The return value of the last slot invoked.
    */
   static decltype(auto) emit_reverse(signal_impl* impl, type_trait_take_t<T_arg>... a)
