@@ -55,7 +55,7 @@ public:
    * The notification callback is registered using visit_each().
    * @param functor The functor contained by the new slot_rep object.
    */
-  inline typed_slot_rep(const T_functor& functor)
+  inline explicit typed_slot_rep(const T_functor& functor)
   : slot_rep(nullptr, &destroy, &dup), functor_(functor)
   {
     sigc::visit_each_trackable(slot_do_bind(this), functor_);
