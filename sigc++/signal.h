@@ -638,26 +638,6 @@ struct signal_emit
       slot_iterator_buf_type(slots.begin(), &self), slot_iterator_buf_type(slots.end(), &self));
   }
 
-  /** Executes a list of slots using an accumulator of type @e T_accumulator in reverse order.   *
-   * The arguments are buffered in a temporary instance of signal_emit.
-   * @param a Arguments to be passed on to the slots.
-   * @return The accumulated return values of the slot invocations as processed by the accumulator.
-   */
-  static decltype(auto) emit_reverse(signal_impl* impl, type_trait_take_t<T_arg>... a)
-  {
-    T_accumulator accumulator;
-
-    if (!impl)
-      return accumulator(slot_iterator_buf_type(), slot_iterator_buf_type());
-
-    signal_exec exec(impl);
-    temp_slot_list slots(impl->slots_);
-
-    self_type self(a...);
-    return accumulator(slot_reverse_iterator_buf_type(slots.end(), &self),
-      slot_reverse_iterator_buf_type(slots.begin(), &self));
-  }
-
   std::tuple<type_trait_take_t<T_arg>...> a_;
 
 private:
@@ -729,51 +709,6 @@ public:
 
     return r_;
   }
-
-  /** Executes a list of slots using an accumulator of type @e T_accumulator in reverse order.
-   * The arguments are passed directly on to the slots.
-   * @param a Arguments to be passed on to the slots.
-   * @return The return value of the last slot invoked.
-   */
-  static decltype(auto) emit_reverse(signal_impl* impl, type_trait_take_t<T_arg>... a)
-  {
-    if (!impl || impl->slots_.empty())
-      return T_return();
-
-    signal_exec exec(impl);
-    T_return r_ = T_return();
-
-    // Use this scope to make sure that "slots" is destroyed before "exec" is destroyed.
-    // This avoids a leak on MSVC++ - see http://bugzilla.gnome.org/show_bug.cgi?id=306249
-    {
-      using reverse_iterator_type = std::reverse_iterator<signal_impl::iterator_type>;
-
-      temp_slot_list slots(impl->slots_);
-      reverse_iterator_type it(slots.end());
-      for (; it != reverse_iterator_type(slots.begin()); ++it)
-      {
-        if (!it->empty() && !it->blocked())
-          break;
-      }
-
-      if (it == reverse_iterator_type(slots.begin()))
-      {
-        // note that 'T_return r_();' doesn't work => define 'r_' after this line
-        // and initialize as follows:
-        return T_return();
-      }
-
-      r_ = (reinterpret_cast<call_type>(it->rep_->call_))(it->rep_, a...);
-      for (++it; it != reverse_iterator_type(slots.begin()); ++it)
-      {
-        if (it->empty() || it->blocked())
-          continue;
-        r_ = (reinterpret_cast<call_type>(it->rep_->call_))(it->rep_, a...);
-      }
-    }
-
-    return r_;
-  }
 };
 
 /** Abstracts signal emission.
@@ -807,30 +742,6 @@ public:
         continue;
 
       (reinterpret_cast<call_type>(slot.rep_->call_))(slot.rep_, a...);
-    }
-  }
-
-  /** Executes a list of slots using an accumulator of type @e T_accumulator in reverse order.   *
-   * The arguments are passed directly on to the slots.
-   * @param first An iterator pointing to the first slot in the list.
-   * @param last An iterator pointing to the last slot in the list.   * @param a Arguments to be
-   * passed on to the slots.
-   */
-  static decltype(auto) emit_reverse(signal_impl* impl, type_trait_take_t<T_arg>... a)
-  {
-    if (!impl || impl->slots_.empty())
-      return;
-    signal_exec exec(impl);
-    temp_slot_list slots(impl->slots_);
-
-    using reverse_iterator_type = std::reverse_iterator<signal_impl::iterator_type>;
-
-    for (auto it = reverse_iterator_type(slots.end());
-         it != reverse_iterator_type(slots.begin()); ++it)
-    {
-      if (it->empty() || it->blocked())
-        continue;
-      (reinterpret_cast<call_type>(it->rep_->call_))(it->rep_, a...);
     }
   }
 };
@@ -926,12 +837,6 @@ public:
   decltype(auto) emit(type_trait_take_t<T_arg>... a) const
   {
     return emitter_type::emit(impl_, a...);
-  }
-
-  /** Triggers the emission of the signal in reverse order (see emit()). */
-  decltype(auto) emit_reverse(type_trait_take_t<T_arg>... a) const
-  {
-    return emitter_type::emit_reverse(impl_, a...);
   }
 
   /** Triggers the emission of the signal (see emit()). */
