@@ -205,7 +205,7 @@ struct temp_slot_list
   using iterator = signal_impl::iterator_type;
   using const_iterator = signal_impl::const_iterator_type;
 
-  temp_slot_list(slot_list& slots) : slots_(slots)
+  explicit temp_slot_list(slot_list& slots) : slots_(slots)
   {
     placeholder = slots_.insert(slots_.end(), slot_base());
   }
