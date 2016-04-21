@@ -143,7 +143,7 @@ void
 signal_impl::add_notification_to_iter(const signal_impl::iterator_type& iter)
 {
   auto si = new self_and_iter(this, iter);
-  iter->set_parent(si, &signal_impl::notify_self_and_iter_invalidated);
+  iter->set_parent(si, &signal_impl::notify_self_and_iter_of_invalidated_slot);
 }
 
 signal_impl::iterator_type
@@ -183,7 +183,7 @@ signal_impl::sweep()
 
 // static
 void
-signal_impl::notify_self_and_iter_invalidated(notifiable* d)
+signal_impl::notify_self_and_iter_of_invalidated_slot(notifiable* d)
 {
   std::unique_ptr<self_and_iter> si(static_cast<self_and_iter*>(d));
 

@@ -175,7 +175,7 @@ private:
    * erase() to sweep() when the signal is being emitted.
    * @param d A local structure, created in insert().
    */
-  static void notify_self_and_iter_invalidated(notifiable* d);
+  static void notify_self_and_iter_of_invalidated_slot(notifiable* d);
 
   void add_notification_to_iter(const signal_impl::iterator_type& iter);
 
