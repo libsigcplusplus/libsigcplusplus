@@ -175,7 +175,7 @@ private:
    * erase() to sweep() when the signal is being emitted.
    * @param d A local structure, created in insert().
    */
-  static void notify(notifiable* d);
+  static void notify_self_and_iter_invalidated(notifiable* d);
 
 public:
   /// The list of slots.

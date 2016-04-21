@@ -144,7 +144,7 @@ signal_impl::insert(signal_impl::iterator_type i, const slot_base& slot_)
 {
   auto iter = slots_.insert(i, slot_);
   auto si = new self_and_iter(this, iter);
-  iter->set_parent(si, &notify);
+  iter->set_parent(si, &notify_self_and_iter_invalidated);
   return iter;
 }
 
@@ -153,7 +153,7 @@ signal_impl::insert(signal_impl::iterator_type i, slot_base&& slot_)
 {
   auto iter = slots_.insert(i, std::move(slot_));
   auto si = new self_and_iter(this, iter);
-  iter->set_parent(si, &notify);
+  iter->set_parent(si, &notify_self_and_iter_invalidated);
   return iter;
 }
 
@@ -178,7 +178,7 @@ signal_impl::sweep()
 
 // static
 void
-signal_impl::notify(notifiable* d)
+signal_impl::notify_self_and_iter_invalidated(notifiable* d)
 {
   std::unique_ptr<self_and_iter> si(static_cast<self_and_iter*>(d));
 
