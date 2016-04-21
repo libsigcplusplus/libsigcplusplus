@@ -166,6 +166,7 @@ struct SIGC_API signal_impl : public notifiable
   /// Removes invalid slots from the list of slots.
   void sweep();
 
+private:
   /** Callback that is executed when some slot becomes invalid.
    * This callback is registered in every slot when inserted into
    * the list of slots. It is executed when a slot becomes invalid
