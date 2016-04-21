@@ -238,7 +238,7 @@ struct signal_emit
    * The parameters are stored in member variables. operator()() passes
    * the values on to some slot.
    */
-  signal_emit(type_trait_take_t<T_arg>... a) : a_(a...) {}
+  explicit signal_emit(type_trait_take_t<T_arg>... a) : a_(a...) {}
 
   /** Invokes a slot using the buffered parameter values.
    * @param slot Some slot to invoke.
