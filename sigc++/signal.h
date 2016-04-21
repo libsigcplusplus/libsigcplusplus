@@ -302,8 +302,8 @@ public:
    * The arguments are passed directly on to the slots.
    * The return value of the last slot invoked is returned.
    * @param first An iterator pointing to the first slot in the list.
-   * @param last An iterator pointing to the last slot in the list.   * @param a Arguments to be
-   * passed on to the slots.
+   * @param last An iterator pointing to the last slot in the list.
+   * @param a Arguments to be passed on to the slots.
    * @return The return value of the last slot invoked.
    */
   static decltype(auto) emit(signal_impl* impl, type_trait_take_t<T_arg>... a)
