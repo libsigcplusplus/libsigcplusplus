@@ -233,8 +233,6 @@ struct signal_emit
 {
   using self_type = signal_emit<T_return, T_accumulator, T_arg...>;
   using slot_type = slot<T_return(T_arg...)>;
-  using slot_iterator_buf_type = internal::slot_iterator_buf<self_type, T_return>;
-  using iterator_type = signal_impl::const_iterator_type;
 
   /** Instantiates the class.
    * The parameters are stored in member variables. operator()() passes
@@ -259,6 +257,8 @@ struct signal_emit
    */
   static decltype(auto) emit(signal_impl* impl, type_trait_take_t<T_arg>... a)
   {
+    using slot_iterator_buf_type = internal::slot_iterator_buf<self_type, T_return>;
+
     T_accumulator accumulator;
 
     if (!impl)
