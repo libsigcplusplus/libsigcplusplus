@@ -131,8 +131,9 @@ public:
    * referred object dying.
    * @param data The slot_rep object that is becoming invalid (@p this).
    */
-  static void notify(notifiable* data);
+  static void notify_slot_rep_invalidated(notifiable* data);
 
+public:
   /// Callback that invokes the contained functor.
   /* This can't be a virtual function since number of arguments
    * must be flexible. We use function pointers to slot_call::call_it()
@@ -179,7 +180,7 @@ struct SIGC_API slot_do_bind
    */
   inline void operator()(const trackable& t) const
   {
-    t.add_destroy_notify_callback(rep_, &slot_rep::notify);
+    t.add_destroy_notify_callback(rep_, &slot_rep::notify_slot_rep_invalidated);
   }
 };
 

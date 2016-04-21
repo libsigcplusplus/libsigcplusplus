@@ -267,7 +267,7 @@ struct visitor<slot<T_return, T_arg...>>
     const slot<T_return, T_arg...>& target)
   {
     if (target.rep_ && target.rep_->parent_ == nullptr)
-      target.rep_->set_parent(action.action_.rep_, &internal::slot_rep::notify);
+      target.rep_->set_parent(action.action_.rep_, &internal::slot_rep::notify_slot_rep_invalidated);
   }
 
   static void do_visit_each(

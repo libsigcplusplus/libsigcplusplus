@@ -77,7 +77,7 @@ slot_rep::disconnect()
 
 // static
 void
-slot_rep::notify(notifiable* data)
+slot_rep::notify_slot_rep_invalidated(notifiable* data)
 {
   auto self_ = static_cast<slot_rep*>(data);
 
