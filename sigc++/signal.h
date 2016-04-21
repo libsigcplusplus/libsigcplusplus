@@ -155,8 +155,7 @@ struct slot_const_iterator
 /** STL-style list interface for sigc::signal#.
  * slot_list can be used to iterate over the list of slots that
  * is managed by a signal. Slots can be added or removed from
- * the list while existing iterators stay valid. A slot_list
- * object can be retrieved from the signal's slots() function.
+ * the list while existing iterators stay valid.
  *
  * @ingroup signal
  */
@@ -762,10 +761,6 @@ public:
  * the signal's slots are not disconnected until both the signal
  * and its clone are destroyed, which is probably not what you want!
  *
- * An STL-style list interface for the signal's list of slots
- * can be retrieved with slots(). This interface supports
- * iteration, insertion and removal of slots.
- *
  * The following template arguments are used:
  * - @e T_return The desired return type for the emit() function (may be overridden by the
  * accumulator). * - @e T_arg Argument types used in the definition of emit().
@@ -781,12 +776,12 @@ class signal_with_accumulator : public signal_base
 public:
   using emitter_type = internal::signal_emit<T_return, T_accumulator, T_arg...>;
   using slot_type = slot<T_return(T_arg...)>;
+
+private:
   using slot_list_type = slot_list<slot_type>;
+
+public:
   using iterator = typename slot_list_type::iterator;
-  //TODO: Test these? These type aliases are currently unused in libsigc++ or its tests:
-  using const_iterator = typename slot_list_type::const_iterator;
-  using reverse_iterator = typename slot_list_type::reverse_iterator;
-  using const_reverse_iterator = typename slot_list_type::const_reverse_iterator;
 
   /** Add a slot to the list of slots.
    * Any functor or slot may be passed into connect().
@@ -858,21 +853,6 @@ public:
       type_trait_take_t<T_arg>...>(*this, &signal_with_accumulator::emit);
   }
 
-  /** Creates an STL-style interface for the signal's list of slots.
-   * This interface supports iteration, insertion and removal of slots.
-   * @return An STL-style interface for the signal's list of slots.
-   */
-  slot_list_type slots() { return slot_list_type(impl()); }
-
-  /** Creates an STL-style interface for the signal's list of slots.
-   * This interface supports iteration, insertion and removal of slots.
-   * @return An STL-style interface for the signal's list of slots.
-   */
-  const slot_list_type slots() const
-  {
-    return slot_list_type(const_cast<signal_with_accumulator*>(this)->impl());
-  }
-
   signal_with_accumulator() = default;
 
   signal_with_accumulator(const signal_with_accumulator& src) : signal_base(src) {}
@@ -904,10 +884,6 @@ public:
  * method of another: a shallow copy of the signal is made and
  * the signal's slots are not disconnected until both the signal
  * and its clone are destroyed, which is probably not what you want!
- *
- * An STL-style list interface for the signal's list of slots
- * can be retrieved with slots(). This interface supports
- * iteration, insertion and removal of slots.
  *
  * The template arguments determine the function signature of
  * the emit() function:
