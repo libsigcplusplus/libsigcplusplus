@@ -26,17 +26,19 @@ connection::connection() noexcept : slot_(nullptr)
 {
 }
 
+connection::connection(slot_base* slot)
+: slot_(slot)
+{
+  if (slot_)
+    slot_->add_destroy_notify_callback(this, &notify);
+}
+
+
 connection::connection(const connection& c) : slot_(c.slot_)
 {
   // Let the connection forget about the signal handler when the handler object dies:
   if (slot_)
     slot_->add_destroy_notify_callback(this, &notify);
-}
-
-connection::connection(slot_base& sl) : slot_(&sl)
-{
-  // Let the connection forget about the signal handler when the handler object dies:
-  slot_->add_destroy_notify_callback(this, &notify);
 }
 
 connection&

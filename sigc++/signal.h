@@ -33,66 +33,6 @@
 namespace sigc
 {
 
-/** STL-style iterator for slot_list.
- *
- * @ingroup signal
- */
-template <typename T_slot>
-struct slot_iterator
-{
-  using size_type = std::size_t;
-  using difference_type = std::ptrdiff_t;
-  using iterator_category = std::bidirectional_iterator_tag;
-
-  using slot_type = T_slot;
-
-  using value_type = T_slot;
-  using pointer = T_slot*;
-  using reference = T_slot&;
-
-  using iterator_type = typename internal::signal_impl::iterator_type;
-
-  slot_iterator() = default;
-
-  explicit slot_iterator(const iterator_type& i) : i_(i) {}
-
-  reference operator*() const { return static_cast<reference>(*i_); }
-
-  pointer operator->() const { return &(operator*()); }
-
-  slot_iterator& operator++()
-  {
-    ++i_;
-    return *this;
-  }
-
-  slot_iterator operator++(int)
-  {
-    slot_iterator tmp(*this);
-    ++i_;
-    return tmp;
-  }
-
-  slot_iterator& operator--()
-  {
-    --i_;
-    return *this;
-  }
-
-  slot_iterator operator--(int)
-  {
-    slot_iterator tmp(*this);
-    --i_;
-    return tmp;
-  }
-
-  bool operator==(const slot_iterator& other) const { return i_ == other.i_; }
-
-  bool operator!=(const slot_iterator& other) const { return i_ != other.i_; }
-
-  iterator_type i_;
-};
-
 namespace internal
 {
 
@@ -471,21 +411,12 @@ class signal_with_accumulator : public signal_base
 public:
   using slot_type = slot<T_return(T_arg...)>;
 
-private:
-  using iterator = slot_iterator<slot_type>;
-
-public:
-
-
   /** Add a slot to the list of slots.
    * Any functor or slot may be passed into connect().
    * It will be converted into a slot implicitly.
-   * The returned iterator may be stored for disconnection
+   * The returned connection may be stored for disconnection
    * of the slot at some later point. It stays valid until
-   * the slot is removed from the list of slots. The iterator
-   * can also be implicitly converted into a sigc::connection object
-   * that may be used safely beyond the life time of the slot.
-   *
+   * the slot is disconnected from the signal.
    * std::function<> and C++11 lambda expressions are functors.
    * These are examples of functors that can be connected to a signal.
    *
@@ -496,11 +427,13 @@ public:
    * to a std::function, you can connect the std::function to a signal.
    *
    * @param slot_ The slot to add to the list of slots.
-   * @return An iterator pointing to the new slot in the list.
+   * @return A connection.
    */
   connection connect(const slot_type& slot_)
   {
-    return connection(iterator(signal_base::connect(slot_)));
+    auto iter = signal_base::connect(slot_);
+    auto& slot_base = *iter;
+    return connection(&slot_base);
   }
 
   /** Add a slot to the list of slots.
@@ -510,7 +443,9 @@ public:
    */
   connection connect(slot_type&& slot_)
   {
-    return connection(iterator(signal_base::connect(std::move(slot_))));
+    auto iter = signal_base::connect(std::move(slot_));
+    auto& slot_base = *iter;
+    return connection(&slot_base);
   }
 
   /** Triggers the emission of the signal.
