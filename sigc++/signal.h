@@ -616,7 +616,6 @@ template <typename T_return, typename T_accumulator, typename... T_arg>
 class signal_with_accumulator : public signal_base
 {
 public:
-  using emitter_type = internal::signal_emit<T_return, T_accumulator, T_arg...>;
   using slot_type = slot<T_return(T_arg...)>;
   using connection = slot_iterator<slot_type>;
 
@@ -668,6 +667,7 @@ public:
    */
   decltype(auto) emit(type_trait_take_t<T_arg>... a) const
   {
+    using emitter_type = internal::signal_emit<T_return, T_accumulator, T_arg...>;
     return emitter_type::emit(impl_, a...);
   }
 
