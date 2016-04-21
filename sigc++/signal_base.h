@@ -177,6 +177,8 @@ private:
    */
   static void notify_self_and_iter_invalidated(notifiable* d);
 
+  void add_notification_to_iter(const signal_impl::iterator_type& iter);
+
 public:
   /// The list of slots.
   std::list<slot_base> slots_;

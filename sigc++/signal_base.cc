@@ -139,12 +139,18 @@ signal_impl::erase(iterator_type i)
   return slots_.erase(i);
 }
 
+void
+signal_impl::add_notification_to_iter(const signal_impl::iterator_type& iter)
+{
+  auto si = new self_and_iter(this, iter);
+  iter->set_parent(si, &signal_impl::notify_self_and_iter_invalidated);
+}
+
 signal_impl::iterator_type
 signal_impl::insert(signal_impl::iterator_type i, const slot_base& slot_)
 {
   auto iter = slots_.insert(i, slot_);
-  auto si = new self_and_iter(this, iter);
-  iter->set_parent(si, &notify_self_and_iter_invalidated);
+  add_notification_to_iter(iter);
   return iter;
 }
 
@@ -152,8 +158,7 @@ signal_impl::iterator_type
 signal_impl::insert(signal_impl::iterator_type i, slot_base&& slot_)
 {
   auto iter = slots_.insert(i, std::move(slot_));
-  auto si = new self_and_iter(this, iter);
-  iter->set_parent(si, &notify_self_and_iter_invalidated);
+  add_notification_to_iter(iter);
   return iter;
 }
 
