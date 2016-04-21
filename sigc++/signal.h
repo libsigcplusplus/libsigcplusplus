@@ -92,66 +92,6 @@ struct slot_iterator
   iterator_type i_;
 };
 
-/** STL-style const iterator for slot_list.
- *
- * @ingroup signal
- */
-template <typename T_slot>
-struct slot_const_iterator
-{
-  using size_type = std::size_t;
-  using difference_type = std::ptrdiff_t;
-  using iterator_category = std::bidirectional_iterator_tag;
-
-  using slot_type = T_slot;
-
-  using value_type = T_slot;
-  using pointer = const T_slot*;
-  using reference = const T_slot&;
-
-  using iterator_type = typename internal::signal_impl::const_iterator_type;
-
-  slot_const_iterator() = default;
-
-  explicit slot_const_iterator(const iterator_type& i) : i_(i) {}
-
-  reference operator*() const { return static_cast<reference>(*i_); }
-
-  pointer operator->() const { return &(operator*()); }
-
-  slot_const_iterator& operator++()
-  {
-    ++i_;
-    return *this;
-  }
-
-  slot_const_iterator operator++(int)
-  {
-    slot_const_iterator tmp(*this);
-    ++i_;
-    return tmp;
-  }
-
-  slot_const_iterator& operator--()
-  {
-    --i_;
-    return *this;
-  }
-
-  slot_const_iterator operator--(int)
-  {
-    slot_const_iterator tmp(*this);
-    --i_;
-    return tmp;
-  }
-
-  bool operator==(const slot_const_iterator& other) const { return i_ == other.i_; }
-
-  bool operator!=(const slot_const_iterator& other) const { return i_ != other.i_; }
-
-  iterator_type i_;
-};
-
 /** STL-style list interface for sigc::signal#.
  * slot_list can be used to iterate over the list of slots that
  * is managed by a signal. Slots can be added or removed from
@@ -168,10 +108,8 @@ struct slot_list
   using const_reference = const slot_type&;
 
   using iterator = slot_iterator<slot_type>;
-  using const_iterator = slot_const_iterator<slot_type>;
 
   using reverse_iterator = std::reverse_iterator<iterator>;
-  using const_reverse_iterator = std::reverse_iterator<const_iterator>;
 
   slot_list() : sig_impl_(nullptr) {}
 
@@ -179,19 +117,11 @@ struct slot_list
 
   iterator begin() { return iterator(sig_impl_->slots_.begin()); }
 
-  const_iterator begin() const { return const_iterator(sig_impl_->slots_.begin()); }
-
   iterator end() { return iterator(sig_impl_->slots_.end()); }
-
-  const_iterator end() const { return const_iterator(sig_impl_->slots_.end()); }
 
   reverse_iterator rbegin() { return reverse_iterator(end()); }
 
-  const_reverse_iterator rbegin() const { return const_reverse_iterator(end()); }
-
   reverse_iterator rend() { return reverse_iterator(begin()); }
-
-  const_reverse_iterator rend() const { return const_reverse_iterator(begin()); }
 
   reference front() { return *begin(); }
 
