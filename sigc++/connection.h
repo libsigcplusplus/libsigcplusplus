@@ -101,7 +101,7 @@ private:
   /** Callback that is executed when the referred slot is destroyed.
    * @param data The connection object notified (@p this).
    */
-  static void notify(notifiable* data);
+  static void notify_slot_invalidated(notifiable* data);
 
   /* Referred slot. Set to zero from notify().
    * A value of zero indicates an "empty" connection.

@@ -30,7 +30,7 @@ connection::connection(slot_base* slot)
 : slot_(slot)
 {
   if (slot_)
-    slot_->add_destroy_notify_callback(this, &notify);
+    slot_->add_destroy_notify_callback(this, &notify_slot_invalidated);
 }
 
 
@@ -38,7 +38,7 @@ connection::connection(const connection& c) : slot_(c.slot_)
 {
   // Let the connection forget about the signal handler when the handler object dies:
   if (slot_)
-    slot_->add_destroy_notify_callback(this, &notify);
+    slot_->add_destroy_notify_callback(this, &notify_slot_invalidated);
 }
 
 connection&
@@ -105,11 +105,11 @@ connection::set_slot(slot_base* sl)
   slot_ = sl;
 
   if (slot_)
-    slot_->add_destroy_notify_callback(this, &notify);
+    slot_->add_destroy_notify_callback(this, &notify_slot_invalidated);
 }
 
 void
-connection::notify(notifiable* data)
+connection::notify_slot_invalidated(notifiable* data)
 {
   auto self = static_cast<connection*>(data);
   self->slot_ = nullptr;
