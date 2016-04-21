@@ -618,12 +618,7 @@ class signal_with_accumulator : public signal_base
 public:
   using emitter_type = internal::signal_emit<T_return, T_accumulator, T_arg...>;
   using slot_type = slot<T_return(T_arg...)>;
-
-private:
-  using slot_list_type = slot_list<slot_type>;
-
-public:
-  using iterator = typename slot_list_type::iterator;
+  using connection = slot_iterator<slot_type>;
 
   /** Add a slot to the list of slots.
    * Any functor or slot may be passed into connect().
@@ -646,9 +641,9 @@ public:
    * @param slot_ The slot to add to the list of slots.
    * @return An iterator pointing to the new slot in the list.
    */
-  iterator connect(const slot_type& slot_)
+  connection connect(const slot_type& slot_)
   {
-    return iterator(signal_base::connect(slot_));
+    return connection(signal_base::connect(slot_));
   }
 
   /** Add a slot to the list of slots.
@@ -656,9 +651,9 @@ public:
    *
    * @newin{2,8}
    */
-  iterator connect(slot_type&& slot_)
+  connection connect(slot_type&& slot_)
   {
-    return iterator(signal_base::connect(std::move(slot_)));
+    return connection(signal_base::connect(std::move(slot_)));
   }
 
   /** Triggers the emission of the signal.

@@ -35,7 +35,7 @@ main(int argc, char* argv[])
     std::cout << "  trackable:               " << sizeof(sigc::trackable) << std::endl;
     std::cout << "  slot<void()>:              " << sizeof(sigc::slot<void()>) << std::endl;
     std::cout << "  signal<void()>:            " << sizeof(sigc::signal<void()>) << std::endl;
-    std::cout << "  signal<void()>::iterator:  " << sizeof(sigc::signal<void()>::iterator)
+    std::cout << "  signal<void()>::connection:  " << sizeof(sigc::signal<void()>::connection)
               << std::endl;
     std::cout << "  connection:              " << sizeof(sigc::connection) << std::endl;
 

@@ -25,7 +25,6 @@ int foo::bar(int a)
 void test_slot_call()
 {
   foo foobar1;
-  sigc::signal<int(int)>::iterator it;
 
   // slot benchmark ...
 
@@ -83,15 +82,15 @@ void test_connect_disconnect()
 {
   foo foobar1;
   sigc::signal<int(int)> emitter;
-  sigc::signal<int(int)>::iterator it;
+  sigc::signal<int(int)>::connection conn;
 
   std::cout << "elapsed time for " << COUNT << " connections/disconnections:" << std::endl;
   boost::timer::auto_cpu_timer timer;
 
   for (int i=0; i < COUNT; ++i)
     {
-      it = emitter.connect(mem_fun(foobar1, &foo::bar));
-      it->disconnect();
+      conn = emitter.connect(mem_fun(foobar1, &foo::bar));
+      conn->disconnect();
     }
 }
 
