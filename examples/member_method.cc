@@ -23,12 +23,12 @@ protected:
 
 Something::Something()
 {
-  auto iter = signal_print.connect(sigc::mem_fun(*this, &Something::on_print));
+  auto connection = signal_print.connect(sigc::mem_fun(*this, &Something::on_print));
 
   signal_print.emit(2);
 
   // This isn't necessary - it's just to demonstrate how to disconnect:
-  iter->disconnect();
+  connection.disconnect();
   signal_print.emit(3); // Prove that it is no longer connected.
 }
 

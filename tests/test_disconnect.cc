@@ -81,8 +81,8 @@ main(int argc, char* argv[])
     return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;
 
   sigc::signal<int(int)> sig;
-  sigc::signal<int(int)>::connection confoo;
-  sigc::signal<int(int)>::connection conbar;
+  sigc::connection confoo;
+  sigc::connection conbar;
   sigc::connection cona; // connection objects are safe to use beyond the life time of a signal.
 
   {
@@ -107,12 +107,12 @@ main(int argc, char* argv[])
   util->check_result(
     result_stream, "sig is connected to foo, A::foo, bar (size=3): foo(3) bar(3) A::foo(3) ");
 
-  conbar->disconnect(); // manual disconnection
+  conbar.disconnect(); // manual disconnection
   result_stream << "sig is connected to foo, A::foo (size=" << sig.size() << "): ";
   sig(4);
   util->check_result(result_stream, "sig is connected to foo, A::foo (size=2): foo(4) A::foo(4) ");
 
-  confoo->disconnect(); // manual disconnection
+  confoo.disconnect(); // manual disconnection
   result_stream << "sig is connected to A::foo (size=" << sig.size() << "): ";
   sig(5);
   util->check_result(result_stream, "sig is connected to A::foo (size=1): A::foo(5) ");

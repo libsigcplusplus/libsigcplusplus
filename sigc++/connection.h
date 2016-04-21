@@ -19,10 +19,13 @@
 #ifndef SIGC_CONNECTION_HPP
 #define SIGC_CONNECTION_HPP
 #include <sigc++config.h>
-#include <sigc++/signal.h>
+#include <sigc++/functors/slot_base.h>
 
 namespace sigc
 {
+
+template <typename T_slot>
+struct slot_iterator;
 
 /** Convinience class for safe disconnection.
  * Iterators must not be used beyond the lifetime of the list

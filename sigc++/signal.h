@@ -21,6 +21,7 @@
 #define SIGC_SIGNAL_H
 
 #include <list>
+#include <sigc++/connection.h>
 #include <sigc++/signal_base.h>
 #include <sigc++/type_traits.h>
 #include <sigc++/trackable.h>
@@ -469,7 +470,12 @@ class signal_with_accumulator : public signal_base
 {
 public:
   using slot_type = slot<T_return(T_arg...)>;
-  using connection = slot_iterator<slot_type>;
+
+private:
+  using iterator = slot_iterator<slot_type>;
+
+public:
+
 
   /** Add a slot to the list of slots.
    * Any functor or slot may be passed into connect().
@@ -494,7 +500,7 @@ public:
    */
   connection connect(const slot_type& slot_)
   {
-    return connection(signal_base::connect(slot_));
+    return connection(iterator(signal_base::connect(slot_)));
   }
 
   /** Add a slot to the list of slots.
@@ -504,7 +510,7 @@ public:
    */
   connection connect(slot_type&& slot_)
   {
-    return connection(signal_base::connect(std::move(slot_)));
+    return connection(iterator(signal_base::connect(std::move(slot_))));
   }
 
   /** Triggers the emission of the signal.

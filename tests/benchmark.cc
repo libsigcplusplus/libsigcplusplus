@@ -82,7 +82,7 @@ void test_connect_disconnect()
 {
   foo foobar1;
   sigc::signal<int(int)> emitter;
-  sigc::signal<int(int)>::connection conn;
+  sigc::connection conn;
 
   std::cout << "elapsed time for " << COUNT << " connections/disconnections:" << std::endl;
   boost::timer::auto_cpu_timer timer;
@@ -90,7 +90,7 @@ void test_connect_disconnect()
   for (int i=0; i < COUNT; ++i)
     {
       conn = emitter.connect(mem_fun(foobar1, &foo::bar));
-      conn->disconnect();
+      conn.disconnect();
     }
 }
 
