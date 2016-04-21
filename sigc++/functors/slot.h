@@ -275,7 +275,7 @@ struct visitor<slot<T_return, T_arg...>>
     const slot<T_return, T_arg...>& target)
   {
     if (target.rep_ && target.rep_->parent_ == action.action_.rep_)
-      target.rep_->set_parent(nullptr, nullptr);
+      target.rep_->unset_parent();
   }
 
   template <typename T_action>

@@ -112,6 +112,15 @@ public:
     cleanup_ = cleanup;
   }
 
+  /** See set_parent().
+   *
+   */
+  inline void unset_parent() noexcept
+  {
+    parent_ = nullptr;
+    cleanup_ = nullptr;
+  }
+
   /// Invalidates the slot and executes the parent's cleanup callback.
   void disconnect();
 
