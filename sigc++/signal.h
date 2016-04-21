@@ -272,9 +272,9 @@ struct signal_emit
       slot_iterator_buf_type(slots.begin(), &self), slot_iterator_buf_type(slots.end(), &self));
   }
 
+private:
   std::tuple<type_trait_take_t<T_arg>...> a_;
 
-private:
   // TODO_variadic: Replace this with std::experimental::apply() if that becomes standard
   // C++, or add our own implementation, to avoid code duplication.
   template <std::size_t... Is>
