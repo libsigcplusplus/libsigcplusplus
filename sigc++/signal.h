@@ -204,12 +204,12 @@ struct slot_list
 
   iterator insert(iterator i, const slot_type& slot_)
   {
-    return iterator(sig_impl_->insert(i.i_, static_cast<const slot_base&>(slot_)));
+    return iterator(sig_impl_->insert(i.i_, slot_));
   }
 
   iterator insert(iterator i, slot_type&& slot_)
   {
-    return iterator(sig_impl_->insert(i.i_, std::move(static_cast<slot_base&>(slot_))));
+    return iterator(sig_impl_->insert(i.i_, std::move(slot_)));
   }
 
   void push_front(const slot_type& c) { insert(begin(), c); }
@@ -900,7 +900,7 @@ public:
    */
   iterator connect(const slot_type& slot_)
   {
-    return iterator(signal_base::connect(static_cast<const slot_base&>(slot_)));
+    return iterator(signal_base::connect(slot_));
   }
 
   /** Add a slot to the list of slots.
@@ -910,7 +910,7 @@ public:
    */
   iterator connect(slot_type&& slot_)
   {
-    return iterator(signal_base::connect(std::move(static_cast<slot_base&>(slot_))));
+    return iterator(signal_base::connect(std::move(slot_)));
   }
 
   /** Triggers the emission of the signal.
