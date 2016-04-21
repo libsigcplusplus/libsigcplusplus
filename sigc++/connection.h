@@ -95,13 +95,13 @@ struct SIGC_API connection : public notifiable
    */
   explicit operator bool() const noexcept;
 
+private:
+  void set_slot(slot_base* sl);
+
   /** Callback that is executed when the referred slot is destroyed.
    * @param data The connection object notified (@p this).
    */
   static void notify(notifiable* data);
-
-private:
-  void set_slot(slot_base* sl);
 
   /* Referred slot. Set to zero from notify().
    * A value of zero indicates an "empty" connection.
