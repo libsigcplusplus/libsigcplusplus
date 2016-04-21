@@ -265,7 +265,7 @@ struct signal_emit
       return accumulator(slot_iterator_buf_type(), slot_iterator_buf_type());
 
     signal_exec exec(impl);
-    temp_slot_list slots(impl->slots_);
+    const temp_slot_list slots(impl->slots_);
 
     self_type self(a...);
     return accumulator(
@@ -317,7 +317,7 @@ public:
     // Use this scope to make sure that "slots" is destroyed before "exec" is destroyed.
     // This avoids a leak on MSVC++ - see http://bugzilla.gnome.org/show_bug.cgi?id=306249
     {
-      temp_slot_list slots(impl->slots_);
+      const temp_slot_list slots(impl->slots_);
       auto it = slots.begin();
       for (; it != slots.end(); ++it)
       {
@@ -368,7 +368,7 @@ public:
     if (!impl || impl->slots_.empty())
       return;
     signal_exec exec(impl);
-    temp_slot_list slots(impl->slots_);
+    const temp_slot_list slots(impl->slots_);
 
     for (const auto& slot : slots)
     {
