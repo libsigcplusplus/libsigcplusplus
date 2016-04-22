@@ -53,10 +53,18 @@ class limit_reference
 public:
   using reference_type = typename std::remove_volatile_t<T_type>;
 
+  limit_reference() = delete;
+
   /** Constructor.
    * @param target The reference to limit.
    */
   explicit limit_reference(reference_type& target) : visited(target) {}
+
+  limit_reference(const limit_reference& src) = default;
+  limit_reference& operator=(const limit_reference& src) = default;
+
+  limit_reference(limit_reference&& src) = default;
+  limit_reference& operator=(limit_reference&& src) = default;
 
   /** Retrieve the entity to visit for visit_each().
    * Depending on the template specialization, this is either a derived reference, or
