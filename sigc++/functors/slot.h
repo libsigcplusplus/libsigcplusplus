@@ -24,6 +24,8 @@
 #include <sigc++/adaptors/adaptor_trait.h>
 #include <sigc++/functors/slot_base.h>
 
+#include <memory>
+
 namespace sigc
 {
 
@@ -49,22 +51,22 @@ private:
 public:
 
   /** The functor contained by this slot_rep object. */
-  adaptor_type functor_;
+  std::unique_ptr<adaptor_type> functor_;
 
   /** Constructs an invalid typed slot_rep object.
    * The notification callback is registered using visit_each().
    * @param functor The functor contained by the new slot_rep object.
    */
   inline explicit typed_slot_rep(const T_functor& functor)
-  : slot_rep(nullptr, &destroy, &dup), functor_(functor)
+  : slot_rep(nullptr, &destroy, &dup), functor_(std::make_unique<adaptor_type>(functor))
   {
-    sigc::visit_each_trackable(slot_do_bind(this), functor_);
+    sigc::visit_each_trackable(slot_do_bind(this), *functor_);
   }
 
   inline typed_slot_rep(const typed_slot_rep& cl)
-  : slot_rep(cl.call_, &destroy, &dup), functor_(cl.functor_)
+    : slot_rep(cl.call_, &destroy, &dup), functor_(std::make_unique<adaptor_type>(*cl.functor_))
   {
-    sigc::visit_each_trackable(slot_do_bind(this), functor_);
+    sigc::visit_each_trackable(slot_do_bind(this), *functor_);
   }
 
   typed_slot_rep& operator=(const typed_slot_rep& src) = delete;
@@ -76,7 +78,7 @@ public:
   {
     call_ = nullptr;
     destroy_ = nullptr;
-    sigc::visit_each_trackable(slot_do_unbind(this), functor_);
+    sigc::visit_each_trackable(slot_do_unbind(this), *functor_);
   }
 
 private:
@@ -88,8 +90,8 @@ private:
     auto self_ = static_cast<self*>(data);
     self_->call_ = nullptr;
     self_->destroy_ = nullptr;
-    sigc::visit_each_trackable(slot_do_unbind(self_), self_->functor_);
-    self_->functor_.~adaptor_type();
+    sigc::visit_each_trackable(slot_do_unbind(self_), *self_->functor_);
+    self_->functor_.reset(nullptr);
     /* don't call disconnect() here: destroy() is either called
      * a) from the parent itself (in which case disconnect() leads to a segfault) or
      * b) from a parentless slot (in which case disconnect() does nothing)
@@ -126,7 +128,7 @@ struct slot_call
   static T_return call_it(slot_rep* rep, type_trait_take_t<T_arg>... a_)
   {
     auto typed_rep = static_cast<typed_slot_rep<T_functor>*>(rep);
-    return (typed_rep->functor_).template operator()<type_trait_take_t<T_arg>...>(a_...);
+    return (*typed_rep->functor_).template operator()<type_trait_take_t<T_arg>...>(a_...);
   }
 
   /** Forms a function pointer from call_it().
