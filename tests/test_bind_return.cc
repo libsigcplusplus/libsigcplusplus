@@ -27,7 +27,7 @@ struct foo
 
 struct bar : public sigc::trackable
 {
-  bar(int i = 0) : i_(i) {}
+  explicit bar(int i = 0) : i_(i) {}
   operator int() { return i_; }
   int i_;
 };

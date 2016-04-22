@@ -16,7 +16,7 @@ std::ostringstream result_stream;
 class Param : public sigc::trackable
 {
 public:
-  Param(const std::string& name) : name_(name) {}
+  explicit Param(const std::string& name) : name_(name) {}
 
   // non-copyable,
   // so it can only be used with sigc::bind() via sigc::ref()

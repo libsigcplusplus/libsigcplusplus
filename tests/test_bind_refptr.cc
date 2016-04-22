@@ -86,7 +86,7 @@ public:
    * Increments the reference count.
    */
   template <typename T_CastFrom>
-  inline RefPtr(const RefPtr<T_CastFrom>& src);
+  inline explicit RefPtr(const RefPtr<T_CastFrom>& src);
 
   /** Swap the contents of two RefPtr<>.
    * This method swaps the internal pointers to T_CppObject.  This can be

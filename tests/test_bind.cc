@@ -68,7 +68,7 @@ egon(std::string& str)
 
 struct book : public sigc::trackable
 {
-  book(const std::string& name) : name_(name) {}
+  explicit book(const std::string& name) : name_(name) {}
 
   // non-copyable:
   book(const book&) = delete;

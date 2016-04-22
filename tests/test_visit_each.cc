@@ -59,7 +59,7 @@ namespace
 class MyClass1 : public sigc::trackable
 {
 public:
-  MyClass1(const std::string& str) : s(str) {}
+  explicit MyClass1(const std::string& str) : s(str) {}
 
   void execute(int i) { result_stream << s << i; }
 private:
@@ -69,7 +69,7 @@ private:
 class MyClass2 : public ns_ext::NsExtClass, public sigc::trackable
 {
 public:
-  MyClass2(const std::string& str) : s(str) {}
+  explicit MyClass2(const std::string& str) : s(str) {}
 
   void execute(int i) { result_stream << s << i; }
 private:
