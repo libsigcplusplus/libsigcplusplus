@@ -433,7 +433,7 @@ public:
   {
     auto iter = signal_base::connect(slot_);
     auto& slot_base = *iter;
-    return connection(&slot_base);
+    return connection(slot_base);
   }
 
   /** Add a slot to the list of slots.
@@ -445,7 +445,7 @@ public:
   {
     auto iter = signal_base::connect(std::move(slot_));
     auto& slot_base = *iter;
-    return connection(&slot_base);
+    return connection(slot_base);
   }
 
   /** Triggers the emission of the signal.

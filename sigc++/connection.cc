@@ -26,8 +26,8 @@ connection::connection() noexcept : slot_(nullptr)
 {
 }
 
-connection::connection(slot_base* slot)
-: slot_(slot)
+connection::connection(slot_base& slot)
+: slot_(&slot)
 {
   if (slot_)
     slot_->add_destroy_notify_callback(this, &notify_slot_invalidated);

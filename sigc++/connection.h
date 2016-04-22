@@ -48,10 +48,10 @@ struct SIGC_API connection : public notifiable
    */
   connection(const connection& c);
 
-  /** Constructs a connection object from a slot list iterator.
-   * @param it The slot list iterator to take the slot from.
+  /** Constructs a connection object from a slot object.
+   * @param sl The slot to operate on.
    */
-  explicit connection(slot_base* slot);
+  explicit connection(slot_base& slot);
 
   /** Overrides this connection object copying another one.
    * @param c The connection object to make a copy from.
