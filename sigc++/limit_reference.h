@@ -56,7 +56,7 @@ public:
   /** Constructor.
    * @param target The reference to limit.
    */
-  limit_reference(reference_type& target) : visited(target) {}
+  explicit limit_reference(reference_type& target) : visited(target) {}
 
   /** Retrieve the entity to visit for visit_each().
    * Depending on the template specialization, this is either a derived reference, or
