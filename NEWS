@@ -1,3 +1,30 @@
+2.99.6 (unstable):
+
+* signal: Remove slots() and the container that it returns,
+  and the iterator for that container.
+  See https://mail.gnome.org/archives/libsigc-list/2016-April/msg00009.html
+* signal: connect(): Return a connection, instead of an iterator that
+  can be implicitly converted to a connection.
+* Use std::shared_ptr<> for signal_impl reference-counting.
+  Instead of manual reference-counting.
+  (Murray Cumming) Bug #764935
+* slot: Use unique_ptr<> to avoid direct call of destructor.
+  (Marcin Kolny) Bug #764935
+* Add optional benchmark code, using boost::timer.
+  (Murray Cumming)
+* Make some single-item constructors explicit.
+  (Murray Cumming)
+* Make some member variables and methods private.
+  (Murray Cumming)
+* Remove _ and __ prefixes on variables and parameters.
+  (Murray Cumming)
+* Header guards: Remove leading underscores (and trailing underscores).
+  (Murray Cumming)
+* limit_derived_target<T_Target>: Rename to limit_trackable_target<>
+  and visit_each_type<T_Type>() to visit_each_trackable() to make their purpose
+  more obvious.
+  (Murray Cumming)
+
 2.99.5 (unstable):
 
 * Functors (mem_functor, ptr_functor) no longer need to derive from a common
