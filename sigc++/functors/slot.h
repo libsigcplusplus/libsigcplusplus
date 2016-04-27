@@ -63,8 +63,8 @@ public:
     sigc::visit_each_trackable(slot_do_bind(this), *functor_);
   }
 
-  inline typed_slot_rep(const typed_slot_rep& cl)
-    : slot_rep(cl.call_, &destroy, &dup), functor_(std::make_unique<adaptor_type>(*cl.functor_))
+  inline typed_slot_rep(const typed_slot_rep& src)
+    : slot_rep(src.call_, &destroy, &dup), functor_(std::make_unique<adaptor_type>(*src.functor_))
   {
     sigc::visit_each_trackable(slot_do_bind(this), *functor_);
   }

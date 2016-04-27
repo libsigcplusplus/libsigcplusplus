@@ -56,7 +56,7 @@ struct SIGC_API connection : public notifiable
   /** Overrides this connection object copying another one.
    * @param c The connection object to make a copy from.
    */
-  connection& operator=(const connection& c);
+  connection& operator=(const connection& src);
 
   ~connection();
 

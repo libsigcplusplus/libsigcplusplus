@@ -42,9 +42,9 @@ connection::connection(const connection& c) : slot_(c.slot_)
 }
 
 connection&
-connection::operator=(const connection& c)
+connection::operator=(const connection& src)
 {
-  set_slot(c.slot_);
+  set_slot(src.slot_);
   return *this;
 }
 

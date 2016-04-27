@@ -105,15 +105,15 @@ struct slot_iterator_buf
     return tmp;
   }
 
-  bool operator==(const slot_iterator_buf& other) const
+  bool operator==(const slot_iterator_buf& src) const
   {
-    return (!c_ || (i_ == other.i_));
+    return (!c_ || (i_ == src.i_));
   } /* If '!c_' the iterators are empty.
      * Unfortunately, empty stl iterators are not equal.
      * We are forcing equality so that 'first==last'
      * in the accumulator's emit function yields true. */
 
-  bool operator!=(const slot_iterator_buf& other) const { return (c_ && (i_ != other.i_)); }
+  bool operator!=(const slot_iterator_buf& src) const { return (c_ && (i_ != src.i_)); }
 
 private:
   iterator_type i_;
@@ -181,9 +181,9 @@ struct slot_iterator_buf<T_emitter, void>
     return tmp;
   }
 
-  bool operator==(const slot_iterator_buf& other) const { return i_ == other.i_; }
+  bool operator==(const slot_iterator_buf& src) const { return i_ == src.i_; }
 
-  bool operator!=(const slot_iterator_buf& other) const { return i_ != other.i_; }
+  bool operator!=(const slot_iterator_buf& src) const { return i_ != src.i_; }
 
 private:
   iterator_type i_;
