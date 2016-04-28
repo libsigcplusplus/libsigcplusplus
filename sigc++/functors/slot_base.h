@@ -68,7 +68,9 @@ public:
 
   using hook_dup = slot_rep* (*)(slot_rep*);
 
-  inline slot_rep(hook call__, notifiable::func_destroy_notify destroy__, hook_dup dup__) noexcept
+  using func_slot_rep_destroy_notify = void (*)(slot_rep* data);
+
+  inline slot_rep(hook call__, func_slot_rep_destroy_notify destroy__, hook_dup dup__) noexcept
     : call_(call__),
       cleanup_(nullptr),
       parent_(nullptr),
@@ -142,17 +144,17 @@ public:
   hook call_;
 
   /** Callback of parent_. */
-  func_destroy_notify cleanup_;
+  notifiable::func_destroy_notify cleanup_;
 
   /** Parent object whose callback cleanup_ is executed on notification. */
   notifiable* parent_;
 
 protected:
   /// Callback that detaches the slot_rep object from referred trackables and destroys it.
-  /* This could be a replaced by a virtual dtor. However since this struct is
-   * crucual for the efficiency of the whole library we want to avoid this.
+  /* This could be a replaced by a virtual dtor. However, since this struct is
+   * crucial for the efficiency of the whole library, we want to avoid this.
    */
-  func_destroy_notify destroy_;
+  func_slot_rep_destroy_notify destroy_;
 
 private:
   /** Callback that makes a deep copy of the slot_rep object.

@@ -85,7 +85,7 @@ private:
   /** Detaches the stored functor from the other referred trackables and destroys it.
    * This does not destroy the base slot_rep object.
    */
-  static void destroy(notifiable* data)
+  static void destroy(slot_rep* data)
   {
     auto self_ = static_cast<self*>(data);
     self_->call_ = nullptr;
