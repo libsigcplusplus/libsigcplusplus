@@ -18,24 +18,7 @@
  */
 
 #include <sigc++/functors/slot_base.h>
-
-namespace
-{
-// Used by slot_rep::notify() and slot_base::operator=(). They must be
-// notified, if the slot_rep is deleted when they call disconnect().
-struct destroy_notify_struct : public sigc::notifiable
-{
-  destroy_notify_struct() noexcept : deleted_(false) {}
-
-  static void notify(notifiable* data) noexcept
-  {
-    auto self_ = static_cast<destroy_notify_struct*>(data);
-    self_->deleted_ = true;
-  }
-
-  bool deleted_;
-};
-} // anonymous namespace
+#include <sigc++/weak_raw_ptr.h>
 
 namespace sigc
 {
@@ -84,14 +67,11 @@ slot_rep::notify_slot_rep_invalidated(notifiable* data)
   self_->call_ = nullptr; // Invalidate the slot.
 
   // Make sure we are notified if disconnect() deletes self_, which is trackable.
-  destroy_notify_struct notifier;
-  self_->add_destroy_notify_callback(&notifier, destroy_notify_struct::notify);
+  sigc::internal::weak_raw_ptr<slot_rep> notifier(self_);
   self_->disconnect(); // Disconnect the slot (might lead to deletion of self_!).
-  // If self_ has been deleted, the destructor has called destroy().
-  if (!notifier.deleted_)
+  // If self_ has been deleted, then the weak_raw_ptr will have been invalidated.
+  if (notifier)
   {
-    self_->remove_destroy_notify_callback(&notifier);
-
     // Detach the stored functor from the other referred trackables and destroy it.
     // destroy() might lead to deletion of self_. Bug #564005.
     self_->destroy();
@@ -174,17 +154,15 @@ slot_base::delete_rep_with_check()
 
   // Make sure we are notified if disconnect() deletes rep_, which is trackable.
   // Compare slot_rep::notify().
-  destroy_notify_struct notifier;
-  rep_->add_destroy_notify_callback(&notifier, destroy_notify_struct::notify);
+  sigc::internal::weak_raw_ptr<rep_type> notifier(rep_);
   rep_->disconnect(); // Disconnect the slot (might lead to deletion of rep_!).
 
   // If rep_ has been deleted, don't try to delete it again.
   // If it has been deleted, this slot_base has probably also been deleted, so
   // don't clear the rep_ pointer. It's the responsibility of the code that
   // deletes rep_ to either clear the rep_ pointer or delete this slot_base.
-  if (!notifier.deleted_)
+  if (notifier)
   {
-    rep_->remove_destroy_notify_callback(&notifier);
     delete rep_; // Detach the stored functor from the other referred trackables and destroy it.
     rep_ = nullptr;
   }
