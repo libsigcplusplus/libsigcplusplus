@@ -44,8 +44,7 @@ namespace internal
  * invalid slots from the list.
  */
 struct SIGC_API signal_impl
- : public notifiable,
-   public std::enable_shared_from_this<signal_impl>
+ : public std::enable_shared_from_this<signal_impl>
 {
   using size_type = std::size_t;
   using slot_list = std::list<slot_base>;
