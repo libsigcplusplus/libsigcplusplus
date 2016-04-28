@@ -24,7 +24,6 @@
 #include <memory> //For std::shared_ptr<>
 #include <sigc++config.h>
 #include <sigc++/type_traits.h>
-#include <sigc++/trackable.h>
 #include <sigc++/functors/slot.h>
 #include <sigc++/functors/mem_fun.h>
 
