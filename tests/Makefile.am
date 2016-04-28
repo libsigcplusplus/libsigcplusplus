@@ -60,7 +60,8 @@ check_PROGRAMS = \
   test_tuple_start \
   test_tuple_transform_each \
   test_visit_each \
-  test_visit_each_trackable
+  test_visit_each_trackable \
+  test_weak_raw_ptr
 
 TESTS = $(check_PROGRAMS)
 
@@ -103,6 +104,7 @@ test_tuple_start_SOURCES     = test_tuple_start.cc $(sigc_test_util)
 test_tuple_transform_each_SOURCES = test_tuple_transform_each.cc $(sigc_test_util)
 test_visit_each_SOURCES      = test_visit_each.cc $(sigc_test_util)
 test_visit_each_trackable_SOURCES = test_visit_each_trackable.cc $(sigc_test_util)
+test_weak_raw_ptr_SOURCES = test_weak_raw_ptr.cc $(sigc_test_util)
 
 if SIGC_BUILD_BENCHMARK
 check_PROGRAMS += benchmark

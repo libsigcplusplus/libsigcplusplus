@@ -40,4 +40,5 @@
 /test_tuple_transform_each
 /test_visit_each
 /test_visit_each_trackable
+/test_weak_raw_ptr
 /benchmark

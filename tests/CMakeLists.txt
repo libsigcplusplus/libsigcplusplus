@@ -53,7 +53,8 @@ set (TEST_SOURCE_FILES
   test_tuple_start.cc
   test_tuple_transform_each.cc
   test_visit_each.cc
-  test_visit_each_trackable.cc)
+  test_visit_each_trackable.cc
+  test_weak_raw_ptr.cc)
 
 function (add_sigcpp_test TEST_SOURCE_FILE)
 	get_filename_component (test_name ${TEST_SOURCE_FILE} NAME_WE)
