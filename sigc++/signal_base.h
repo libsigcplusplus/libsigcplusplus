@@ -289,7 +289,7 @@ protected:
  *
  * @ingroup signal
  */
-struct SIGC_API signal_base : public trackable
+struct SIGC_API signal_base
 {
   using size_type = std::size_t;
 

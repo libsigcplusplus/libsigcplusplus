@@ -204,11 +204,11 @@ signal_base::signal_base() noexcept
 {
 }
 
-signal_base::signal_base(const signal_base& src) noexcept : trackable(), impl_(src.impl())
+signal_base::signal_base(const signal_base& src) noexcept : impl_(src.impl())
 {
 }
 
-signal_base::signal_base(signal_base&& src) : trackable(std::move(src)), impl_(std::move(src.impl_))
+signal_base::signal_base(signal_base&& src) : impl_(std::move(src.impl_))
 {
   src.impl_ = nullptr;
 }
@@ -296,7 +296,6 @@ signal_base::operator=(signal_base&& src)
   if (src.impl_ == impl_)
     return *this;
 
-  src.notify_callbacks();
   impl_ = src.impl_;
   src.impl_ = nullptr;
 
