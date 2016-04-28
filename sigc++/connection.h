@@ -20,6 +20,7 @@
 #define SIGC_CONNECTION_HPP
 #include <sigc++config.h>
 #include <sigc++/functors/slot_base.h>
+#include <sigc++/weak_raw_ptr.h>
 
 namespace sigc
 {
@@ -31,7 +32,7 @@ namespace sigc
  *
  * @ingroup signal
  */
-struct SIGC_API connection : public notifiable
+struct SIGC_API connection
 {
   /** Constructs an empty connection object. */
   connection() noexcept;
@@ -89,17 +90,12 @@ struct SIGC_API connection : public notifiable
   explicit operator bool() const noexcept;
 
 private:
-  void set_slot(slot_base* sl);
-
-  /** Callback that is executed when the referred slot is destroyed.
-   * @param data The connection object notified (@p this).
-   */
-  static void notify_slot_invalidated(notifiable* data);
+  void set_slot(const sigc::internal::weak_raw_ptr<slot_base>& sl);
 
   /* Referred slot. Set to zero from notify().
    * A value of zero indicates an "empty" connection.
    */
-  slot_base* slot_;
+  sigc::internal::weak_raw_ptr<slot_base> slot_;
 };
 
 } /* namespace sigc */

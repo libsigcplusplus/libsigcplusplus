@@ -29,16 +29,11 @@ connection::connection() noexcept : slot_(nullptr)
 connection::connection(slot_base& slot)
 : slot_(&slot)
 {
-  if (slot_)
-    slot_->add_destroy_notify_callback(this, &notify_slot_invalidated);
 }
 
 
 connection::connection(const connection& c) : slot_(c.slot_)
 {
-  // Let the connection forget about the signal handler when the handler object dies:
-  if (slot_)
-    slot_->add_destroy_notify_callback(this, &notify_slot_invalidated);
 }
 
 connection&
@@ -50,8 +45,6 @@ connection::operator=(const connection& src)
 
 connection::~connection()
 {
-  if (slot_)
-    slot_->remove_destroy_notify_callback(this);
 }
 
 bool
@@ -97,22 +90,10 @@ connection::operator bool() const noexcept
 }
 
 void
-connection::set_slot(slot_base* sl)
+connection::set_slot(const sigc::internal::weak_raw_ptr<slot_base>& sl)
 {
-  if (slot_)
-    slot_->remove_destroy_notify_callback(this);
-
   slot_ = sl;
-
-  if (slot_)
-    slot_->add_destroy_notify_callback(this, &notify_slot_invalidated);
 }
 
-void
-connection::notify_slot_invalidated(notifiable* data)
-{
-  auto self = static_cast<connection*>(data);
-  self->slot_ = nullptr;
-}
 
 } /* namespace sigc */
