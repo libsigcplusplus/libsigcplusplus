@@ -24,17 +24,10 @@
 namespace sigc
 {
 
-/** Convenience class for safe disconnection.
- * Iterators must not be used beyond the lifetime of the list
- * they work on. A connection object can be created from a
- * slot list iterator and may safely be used to disconnect
- * the referred slot at any time (disconnect()). If the slot
- * has already been destroyed, disconnect() does nothing. empty() or
+/** This may be used to disconnect the referred slot at any time (disconnect()).
+ * If the slot has already been destroyed, disconnect() does nothing. empty() or
  * operator bool() can be used to test whether the connection is
  * still active. The connection can be blocked (block(), unblock()).
- *
- * This is possible because the connection object gets notified
- * when the referred slot dies (notify()).
  *
  * @ingroup signal
  */
