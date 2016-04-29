@@ -190,7 +190,7 @@ signal_impl::notify_self_and_iter_of_invalidated_slot(notifiable* d)
   }
   else
   {
-    // This is occuring during signal emission or slot erasure.
+    // This is occurring during signal emission or slot erasure.
     // => sweep() will be called from ~signal_impl_holder() after signal emission.
     // This is safer because we don't have to care about our
     // iterators in emit(), clear(), and erase().

@@ -44,7 +44,7 @@
  * see that adaptors are implemented like they are because
  * there is no way to extract the return type and the argument
  * types from a functor type. Therefore, operator() is templated.
- * It's instatiated in slot_call#<>::operator() where the
+ * It's instantiated in slot_call#<>::operator() where the
  * argument types are known. The return type is finally determined
  * via the callof<> template - a tricky way to detect the return
  * type of a functor when the argument types are known. Martin.

@@ -336,7 +336,7 @@ public:
    */
   void set_parent(notifiable* parent, notifiable::func_destroy_notify cleanup) const noexcept;
 
-  /** Add a callback that is executed (notified) when the slot is detroyed.
+  /** Add a callback that is executed (notified) when the slot is destroyed.
    * This function is used internally by connection objects.
    * @param data Passed into func upon notification.
    * @param func Callback executed upon destruction of the object.

@@ -24,7 +24,7 @@
 namespace sigc
 {
 
-/** Convinience class for safe disconnection.
+/** Convenience class for safe disconnection.
  * Iterators must not be used beyond the lifetime of the list
  * they work on. A connection object can be created from a
  * slot list iterator and may safely be used to disconnect
