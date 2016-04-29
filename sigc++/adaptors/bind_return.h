@@ -101,7 +101,7 @@ struct visitor<bind_return_functor<T_return, T_functor>>
  *
  * @param functor Functor that should be wrapped.
  * @param ret_value Argument to fix the return value of @e functor to.
- * @return Adaptor that executes @e functor on invokation and returns @e ret_value.
+ * @return Adaptor that executes @e functor on invocation and returns @e ret_value.
  *
  * @ingroup bind
  */

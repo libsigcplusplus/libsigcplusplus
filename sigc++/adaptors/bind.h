@@ -272,7 +272,7 @@ struct visitor<bind_functor<-1, T_functor, T_type...>>
  *
  * @param func Functor that should be wrapped.
  * @param b Arguments to bind to @e func.
- * @return Adaptor that executes @e func with the bound argument on invokation.
+ * @return Adaptor that executes @e func with the bound argument on invocation.
  *
  * @ingroup bind
  */
@@ -289,7 +289,7 @@ bind(const T_functor& func, T_bound... b)
  *
  * @param func Functor that should be wrapped.
  * @param b Arguments to bind to @e func.
- * @return Adaptor that executes func with the bound argument on invokation.
+ * @return Adaptor that executes func with the bound argument on invocation.
  *
  * @ingroup bind
  */

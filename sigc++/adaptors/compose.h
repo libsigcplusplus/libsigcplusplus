@@ -25,7 +25,7 @@ namespace sigc
 
 /** @defgroup compose compose()
  * sigc::compose() combines two or three arbitrary functors.
- * On invokation, parameters are passed on to one or two getter functor(s).
+ * On invocation, parameters are passed on to one or two getter functor(s).
  * The return value(s) are then passed on to the setter function.
  *
  * @par Examples:
@@ -70,7 +70,7 @@ struct compose1_functor : public adapts<T_setter>
   }
 
   /** Constructs a compose1_functor object that combines the passed functors.
-   * @param setter Functor that receives the return values of the invokation of @e getter1 and
+   * @param setter Functor that receives the return values of the invocation of @e getter1 and
    * @e getter2.
    * @param getter Functor to invoke from operator()().
    */
@@ -104,7 +104,7 @@ struct compose2_functor : public adapts<T_setter>
   }
 
   /** Constructs a compose2_functor object that combines the passed functors.
-   * @param setter Functor that receives the return values of the invokation of @e getter1 and
+   * @param setter Functor that receives the return values of the invocation of @e getter1 and
    * @e getter2.
    * @param getter1 Functor to invoke from operator()().
    * @param getter2 Functor to invoke from operator()().
@@ -162,9 +162,9 @@ struct visitor<compose2_functor<T_setter, T_getter1, T_getter2>>
 
 /** Creates an adaptor of type sigc::compose1_functor which combines two functors.
  *
- * @param setter Functor that receives the return value of the invokation of @e getter.
+ * @param setter Functor that receives the return value of the invocation of @e getter.
  * @param getter Functor to invoke from operator()().
- * @return Adaptor that executes @e setter with the value returned from invokation of @e
+ * @return Adaptor that executes @e setter with the value returned from invocation of @e
  * getter.
  *
  * @ingroup compose
@@ -178,11 +178,11 @@ compose(const T_setter& setter, const T_getter& getter)
 
 /** Creates an adaptor of type sigc::compose2_functor which combines three functors.
  *
- * @param setter Functor that receives the return values of the invokation of @e getter1 and
+ * @param setter Functor that receives the return values of the invocation of @e getter1 and
  * @e getter2.
  * @param getter1 Functor to invoke from operator()().
  * @param getter2 Functor to invoke from operator()().
- * @return Adaptor that executes @e setter with the values return from invokation of @e
+ * @return Adaptor that executes @e setter with the values return from invocation of @e
  * getter1 and @e getter2.
  *
  * @ingroup compose

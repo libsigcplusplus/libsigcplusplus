@@ -183,7 +183,7 @@ struct visitor<bound_mem_functor<T_func, T_arg...>>
 
 /** Creates a functor of type sigc::mem_functor which wraps a  method.
  * @param func Pointer to method that should be wrapped.
- * @return Functor that executes func on invokation.
+ * @return Functor that executes func on invocation.
  *
  * @ingroup mem_fun
  */
@@ -196,7 +196,7 @@ mem_fun(T_return (T_obj::*func)(T_arg...))
 
 /** Creates a functor of type sigc::const_mem_functor which wraps a const method.
  * @param func Pointer to method that should be wrapped.
- * @return Functor that executes func on invokation.
+ * @return Functor that executes func on invocation.
  *
  * @ingroup mem_fun
  */
@@ -209,7 +209,7 @@ mem_fun(T_return (T_obj::*func)(T_arg...) const)
 
 /** Creates a functor of type sigc::volatile_mem_functor which wraps a volatile method.
  * @param func Pointer to method that should be wrapped.
- * @return Functor that executes func on invokation.
+ * @return Functor that executes func on invocation.
  *
  * @ingroup mem_fun
  */
@@ -222,7 +222,7 @@ mem_fun(T_return (T_obj::*func)(T_arg...) volatile)
 
 /** Creates a functor of type sigc::const_volatile_mem_functor which wraps a const volatile method.
  * @param func Pointer to method that should be wrapped.
- * @return Functor that executes func on invokation.
+ * @return Functor that executes func on invocation.
  *
  * @ingroup mem_fun
  */
@@ -237,7 +237,7 @@ mem_fun(T_return (T_obj::*func)(T_arg...) const volatile)
  * instance.
  * @param obj Reference to object instance the functor should operate on.
  * @param func Pointer to method that should be wrapped.
- * @return Functor that executes @e func on invokation.
+ * @return Functor that executes @e func on invocation.
  *
  * @ingroup mem_fun
  */
@@ -252,7 +252,7 @@ mem_fun(/**/ T_obj& obj, T_return (T_obj2::*func)(T_arg...))
  * object instance.
  * @param obj Reference to object instance the functor should operate on.
  * @param func Pointer to method that should be wrapped.
- * @return Functor that executes @e func on invokation.
+ * @return Functor that executes @e func on invocation.
  *
  * @ingroup mem_fun
  */
@@ -267,7 +267,7 @@ mem_fun(/*const*/ T_obj& obj, T_return (T_obj2::*func)(T_arg...) const)
  * object instance.
  * @param obj Reference to object instance the functor should operate on.
  * @param func Pointer to method that should be wrapped.
- * @return Functor that executes @e func on invokation.
+ * @return Functor that executes @e func on invocation.
  *
  * @ingroup mem_fun
  */
@@ -282,7 +282,7 @@ mem_fun(/**/ T_obj& obj, T_return (T_obj2::*func)(T_arg...) volatile)
  * an object instance.
  * @param obj Reference to object instance the functor should operate on.
  * @param func Pointer to method that should be wrapped.
- * @return Functor that executes @e func on invokation.
+ * @return Functor that executes @e func on invocation.
  *
  * @ingroup mem_fun
  */

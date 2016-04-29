@@ -97,7 +97,7 @@ public:
 
 /** Creates a functor of type sigc::pointer_functor which wraps an existing non-member function.
  * @param func Pointer to function that should be wrapped.
- * @return Functor that executes @e func on invokation.
+ * @return Functor that executes @e func on invocation.
  *
  * @ingroup ptr_fun
  */

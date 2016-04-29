@@ -552,7 +552,7 @@ public:
    *
    * An accumulator is a functor that uses a pair of special iterators
    * to step through a list of slots and calculate a return value
-   * from the results of the slot invokations. The iterators' operator*()
+   * from the results of the slot invocations. The iterators' operator*()
    * executes the slot. The return value is buffered, so that in an expression
    * like @code a = (*i) * (*i); @endcode the slot is executed only once.
    *
