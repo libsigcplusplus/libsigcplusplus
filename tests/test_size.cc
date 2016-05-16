@@ -35,7 +35,7 @@ main(int argc, char* argv[])
     //libsigc++ 2.10: 8
     //libsigc++ 3.0: 8
     std::cout << "  trackable:               " << sizeof(sigc::trackable) << std::endl;
-    
+
     //libsigc++ 2.10: 16
     //libsigc++ 3.0: 16
     std::cout << "  slot<void()>:              " << sizeof(sigc::slot<void()>) << std::endl;
