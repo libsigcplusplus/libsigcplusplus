@@ -475,7 +475,7 @@ struct slot_call
     {
       using typed_slot = typed_slot_rep<T_functor>;
       typed_slot *typed_rep = static_cast<typed_slot*>(rep);
-      return (typed_rep->functor_).template operator()<type_trait_take_t<T_arg>...>
+      return (typed_rep->functor_).SIGC_WORKAROUND_OPERATOR_PARENTHESES<type_trait_take_t<T_arg>...>
                (a_...);
     }
 
