@@ -125,11 +125,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\sigc++\connection.cc" />
-    <ClCompile Include="..\sigc++\signal.cc" />
     <ClCompile Include="..\sigc++\signal_base.cc" />
     <ClCompile Include="..\sigc++\trackable.cc" />
     <ClCompile Include="..\sigc++\adaptors\lambda\lambda.cc" />
-    <ClCompile Include="..\sigc++\functors\slot.cc" />
     <ClCompile Include="..\sigc++\functors\slot_base.cc" />
   </ItemGroup>
   <ItemGroup>
