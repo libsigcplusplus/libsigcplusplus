@@ -3,6 +3,7 @@
 /test_accumulated
 /test_accum_iter
 /test_bind
+/test_bind_as_slot
 /test_bind_ref
 /test_bind_refptr
 /test_bind_return
@@ -31,5 +32,4 @@
 /test_trackable_move
 /test_track_obj
 /test_visit_each
-/test_visit_each_trackable
 /benchmark
