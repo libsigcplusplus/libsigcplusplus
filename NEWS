@@ -1,3 +1,15 @@
+2.99.7: (unstable)
+
+* connection, slot_base: Use an internal::weak_raw_ptr<> to simplify
+  the code.
+  (Murray Cumming)
+* signal_base: Do not derive from trackable.
+  (Murray Cumming
+*  slot_rep: Pass a slot_rep*, not notifiable*, to destroy().
+  (Murray Cumming)
+* signal_impl: Do not derive from notifiable.
+  (Murray Cumming)
+
 2.99.6 (unstable):
 
 * signal: Remove slots() and the container that it returns,
