@@ -77,12 +77,15 @@ FOR(1, $1,[
                          slot_iterator_buf_type(slots.end(), &self));
     }
 
+_DEPRECATE_IFDEF_START
   /** Executes a list of slots using an accumulator of type @e T_accumulator in reverse order.dnl
 ifelse($1,0,,[
    * The arguments are buffered in a temporary instance of signal_emit$1.])
 FOR(1, $1,[
    * @param _A_a%1 Argument to be passed on to the slots.])
    * @return The accumulated return values of the slot invocations as processed by the accumulator.
+   *
+   * @deprecated This is apparently not useful, but please let us know if you need it.
    */
   static result_type emit_reverse(LIST(signal_impl* impl, LOOP(type_trait_take_t<T_arg%1> _A_a%1, $1)))
     {
@@ -98,6 +101,8 @@ FOR(1, $1,[
       return accumulator(slot_reverse_iterator_buf_type(slots.end(), &self),
                          slot_reverse_iterator_buf_type(slots.begin(), &self));
     }
+_DEPRECATE_IFDEF_END
+
 dnl
   FOR(1, $1,[
   type_trait_take_t<T_arg%1> _A_a%1_;])
@@ -157,6 +162,7 @@ FOR(1, $1,[
       return r_;
     }
 
+_DEPRECATE_IFDEF_START
   /** Executes a list of slots using an accumulator of type @e T_accumulator in reverse order.dnl
 ifelse($1,0,,[
    * The arguments are passed directly on to the slots.])
@@ -166,6 +172,8 @@ ifelse($1,0,,[
 FOR(1, $1,[
    * @param _A_a%1 Argument to be passed on to the slots.])
    * @return The return value of the last slot invoked.
+   *
+   * @deprecated This is apparently not useful, but please let us know if you need it.
    */
   static result_type emit_reverse(LIST(signal_impl* impl, LOOP(type_trait_take_t<T_arg%1> _A_a%1, $1)))
     {
@@ -204,6 +212,7 @@ FOR(1, $1,[
       
       return r_;
     }
+_DEPRECATE_IFDEF_END
 };
 
 /** Abstracts signal emission.
@@ -242,6 +251,7 @@ FOR(1, $1,[
         }
     }
 
+_DEPRECATE_IFDEF_START
   /** Executes a list of slots using an accumulator of type @e T_accumulator in reverse order.dnl
 ifelse($1,0,,[
    * The arguments are passed directly on to the slots.])
@@ -249,6 +259,8 @@ ifelse($1,0,,[
    * @param last An iterator pointing to the last slot in the list.dnl
 FOR(1, $1,[
    * @param _A_a%1 Argument to be passed on to the slots.])
+   *
+   * @deprecated This is apparently not useful, but please let us know if you need it.
    */
   static result_type emit_reverse(LIST(signal_impl* impl, LOOP(type_trait_take_t<T_arg%1> _A_a%1, $1)))
     {
@@ -269,6 +281,7 @@ FOR(1, $1,[
           (reinterpret_cast<call_type>(it->rep_->call_))(LIST(it->rep_, LOOP(_A_a%1, $1)));
         }
     }
+_DEPRECATE_IFDEF_END
 };
 
 ])
@@ -363,11 +376,19 @@ FOR(1, $1,[
   result_type emit(LOOP(type_trait_take_t<T_arg%1> _A_a%1, $1)) const
     { return emitter_type::emit(LIST(impl_, LOOP(_A_a%1, $1))); }
 
-  /** Triggers the emission of the signal in reverse order (see emit()). */
+_DEPRECATE_IFDEF_START
+  /** Triggers the emission of the signal in reverse order (see emit()).
+   *
+   * @deprecated This is apparently not useful, but please let us know if you need it.
+   */
   result_type emit_reverse(LOOP(type_trait_take_t<T_arg%1> _A_a%1, $1)) const
     { return emitter_type::emit_reverse(LIST(impl_, LOOP(_A_a%1, $1))); }
+_DEPRECATE_IFDEF_END
 
-  /** Triggers the emission of the signal (see emit()). */
+  /** Triggers the emission of the signal (see emit()).
+   *
+   * @deprecated This is apparently not useful, but let us know if you need it.
+   */
   result_type operator()(LOOP(type_trait_take_t<T_arg%1> _A_a%1, $1)) const
     { return emit(LOOP(_A_a%1, $1)); }
 
