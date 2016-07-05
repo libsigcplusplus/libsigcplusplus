@@ -298,11 +298,7 @@ define([SIGNAL_N],[dnl
  * Be careful if you directly pass one signal into the connect()
  * method of another: a shallow copy of the signal is made and
  * the signal's slots are not disconnected until both the signal
- * and its clone are destroyed, which is probably not what you want!
- *
- * An STL-style list interface for the signal's list of slots
- * can be retrieved with slots(). This interface supports
- * iteration, insertion and removal of slots.
+ * and its clone are destroyed, which is probably not what you want.
  *
  * The following template arguments are used:
  * - @e T_return The desired return type for the emit() function (may be overridden by the accumulator).dnl
@@ -402,9 +398,12 @@ _DEPRECATE_IFDEF_END
   bound_const_mem_functor$1<LIST(result_type, signal$1, LOOP(type_trait_take_t<T_arg%1>, $1))> make_slot() const
     { return bound_const_mem_functor$1<LIST(result_type, signal$1, LOOP(type_trait_take_t<T_arg%1>, $1))>(*this, &signal$1::emit); }
 
+_DEPRECATE_IFDEF_START
   /** Creates an STL-style interface for the signal's list of slots.
    * This interface supports iteration, insertion and removal of slots.
    * @return An STL-style interface for the signal's list of slots.
+   *
+   * @deprecated This is apparently not useful, but please let us know if you need it.
    */
   slot_list_type slots()
     { return slot_list_type(impl()); }
@@ -412,9 +411,12 @@ _DEPRECATE_IFDEF_END
   /** Creates an STL-style interface for the signal's list of slots.
    * This interface supports iteration, insertion and removal of slots.
    * @return An STL-style interface for the signal's list of slots.
+   *
+   * @deprecated This is apparently not useful, but please let us know if you need it.
    */
   const slot_list_type slots() const
     { return slot_list_type(const_cast<signal$1*>(this)->impl()); }
+_DEPRECATE_IFDEF_END
 
   signal$1() {}
 
@@ -453,10 +455,6 @@ ifelse($1, $2,[dnl
  * method of another: a shallow copy of the signal is made and
  * the signal's slots are not disconnected until both the signal
  * and its clone are destroyed, which is probably not what you want!
- *
- * An STL-style list interface for the signal's list of slots
- * can be retrieved with slots(). This interface supports
- * iteration, insertion and removal of slots.
  *
  * The template arguments determine the function signature of
  * the emit() function:
@@ -847,8 +845,7 @@ struct slot_const_iterator
 /** STL-style list interface for sigc::signal#.
  * slot_list can be used to iterate over the list of slots that
  * is managed by a signal. Slots can be added or removed from
- * the list while existing iterators stay valid. A slot_list
- * object can be retrieved from the signal's slots() function.
+ * the list while existing iterators stay valid.
  *
  * @ingroup signal
  */
