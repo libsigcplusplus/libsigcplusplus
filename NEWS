@@ -1,3 +1,21 @@
+2.9.3 (unstable):
+
+* signal:
+  Deprecate slots().
+  Please tell us if you really need this.
+  (Murray Cumming)
+  Deprecate emit_reverse().
+  Please tell us if you really need this.
+  (Murray Cumming)
+* Benchmark: Update it and use boost::timer, and actually build it,
+  but not built by default.
+  (Murray Cumming)
+
+Build:
+* Fix the build on MSVC++ 2013 and 2015.
+  (Chun-wei Fan) Bug #767777
+
+
 2.9.2 (unstable):
 
 * Minor documentation improvements.
