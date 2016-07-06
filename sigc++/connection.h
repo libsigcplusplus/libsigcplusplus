@@ -100,4 +100,4 @@ private:
 
 } /* namespace sigc */
 
-#endif /* SIGC_TRACKABLE_HPP */
+#endif /* SIGC_CONNECTION_HPP */
