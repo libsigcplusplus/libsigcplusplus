@@ -43,10 +43,10 @@ struct limit_trackable_target
   template <typename T_type>
   void operator()(T_type&& type) const
   {
-    using T_self = limit_trackable_target<T_action>;
-
     //Only call action_() if T_Type derives from trackable.
-    with_type<T_type, T_self>::execute_(std::forward<T_type>(type), *this);
+    if constexpr(is_base_of_or_same_v<sigc::trackable, T_type>) {
+        action_(type);
+    }
   }
 
   explicit limit_trackable_target(const T_action& action) : action_(action) {}
@@ -57,27 +57,6 @@ struct limit_trackable_target
   limit_trackable_target& operator=(limit_trackable_target&& src) = delete;
 
   T_action action_;
-
-private:
-  template <typename T_type, typename T_limit, bool I_derived = is_base_of_or_same_v<sigc::trackable, T_type>>
-  struct with_type;
-
-  // Specialization for I_derived = false
-  template <typename T_type, typename T_limit>
-  struct with_type<T_type, T_limit, false>
-  {
-    static void execute_(const T_type&, const T_limit&) {}
-  };
-
-  // Specialization for I_derived = true
-  template <typename T_type, typename T_limit>
-  struct with_type<T_type, T_limit, true>
-  {
-    static void execute_(const T_type& type, const T_limit& action)
-    {
-      action.action_(type);
-    }
-  };
 };
 
 } /* namespace internal */
