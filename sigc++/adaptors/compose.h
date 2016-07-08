@@ -19,6 +19,7 @@
 #ifndef SIGC_ADAPTORS_COMPOSE_H
 #define SIGC_ADAPTORS_COMPOSE_H
 #include <sigc++/adaptors/adapts.h>
+#include <functional>
 
 namespace sigc
 {
@@ -61,12 +62,14 @@ namespace sigc
 template <typename T_setter, typename T_getter>
 struct compose1_functor : public adapts<T_setter>
 {
-  decltype(auto) operator()() { return this->functor_(get_()); }
+  decltype(auto) operator()() {
+    return std::invoke(this->functor_, get_());
+  }
 
   template <typename... T_arg>
   decltype(auto) operator()(T_arg&&... a)
   {
-    return this->functor_(get_(std::forward<T_arg>(a)...));
+    return std::invoke(this->functor_, get_(std::forward<T_arg>(a)...));
   }
 
   /** Constructs a compose1_functor object that combines the passed functors.
@@ -95,12 +98,14 @@ struct compose1_functor : public adapts<T_setter>
 template <typename T_setter, typename T_getter1, typename T_getter2>
 struct compose2_functor : public adapts<T_setter>
 {
-  decltype(auto) operator()() { return this->functor_(get1_(), get2_()); }
+  decltype(auto) operator()() {
+    return std::invoke(this->functor_, get1_(), get2_());
+  }
 
   template <typename... T_arg>
   decltype(auto) operator()(T_arg... a)
   {
-    return this->functor_(get1_(a...), get2_(a...));
+    return std::invoke(this->functor_, get1_(a...), get2_(a...));
   }
 
   /** Constructs a compose2_functor object that combines the passed functors.

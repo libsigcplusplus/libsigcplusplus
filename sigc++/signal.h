@@ -281,7 +281,7 @@ private:
   decltype(auto) call_call_type_operator_parentheses_with_tuple(
     const slot_type& slot, const std::tuple<T_arg...>& tuple, std::index_sequence<Is...>) const
   {
-    return (slot)(std::get<Is>(tuple)...);
+    return std::invoke(slot, std::get<Is>(tuple)...);
   }
 };
 

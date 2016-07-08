@@ -41,6 +41,7 @@ struct retype_return_functor : public adapts<T_functor>
   template <typename... T_arg>
   inline T_return operator()(T_arg&&... a)
   {
+    //TODO: Use std::invoke() here?
     return T_return(this->functor_.template operator() < T_arg... > (std::forward<T_arg>(a)...));
   }
 
@@ -60,7 +61,7 @@ template <typename T_return, typename T_functor>
 T_return
 retype_return_functor<T_return, T_functor>::operator()()
 {
-  return T_return(this->functor_());
+  return T_return(std::invoke(this->functor_));
 }
 
 /** Adaptor that performs a C-style cast on the return value of a functor.
@@ -81,6 +82,7 @@ struct retype_return_functor<void, T_functor> : public adapts<T_functor>
   template <typename... T_arg>
   inline void operator()(T_arg... a)
   {
+    //TODO: Use std::invoke() here?
     this->functor_.template operator()<T_arg...>(a...);
   }
 
@@ -92,7 +94,7 @@ template <typename T_functor>
 void
 retype_return_functor<void, T_functor>::operator()()
 {
-  this->functor_();
+  std::invoke(this->functor_);
 }
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS

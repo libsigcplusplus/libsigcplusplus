@@ -25,6 +25,7 @@
 #include <sigc++/functors/ptr_fun.h>
 #include <sigc++/functors/mem_fun.h>
 #include <sigc++/adaptors/adaptor_base.h>
+#include <functional>
 
 /*
  * The idea here is simple.  To prevent the need to
@@ -87,7 +88,9 @@ struct adaptor_functor : public adaptor_base
   /** Invokes the wrapped functor passing on the arguments.
    * @return The return value of the functor invocation.
    */
-  decltype(auto) operator()() const { return functor_(); }
+  decltype(auto) operator()() const {
+    std::invoke(functor_);
+  }
 
   /** Invokes the wrapped functor passing on the arguments.
    * @param arg Arguments to be passed on to the functor.
@@ -96,7 +99,7 @@ struct adaptor_functor : public adaptor_base
   template <typename... T_arg>
   decltype(auto) operator()(T_arg&&... arg) const
   {
-    return functor_(std::forward<T_arg>(arg)...);
+    return std::invoke(functor_, std::forward<T_arg>(arg)...);
   }
 
   /// Constructs an invalid functor.

@@ -26,6 +26,7 @@
 #include <sigc++/tuple-utils/tuple_start.h>
 #include <sigc++/tuple-utils/tuple_end.h>
 #include <sigc++/tuple-utils/tuple_transform_each.h>
+#include <functional>
 
 
 namespace sigc
@@ -171,7 +172,7 @@ private:
   template <typename T, std::size_t... Is>
   decltype(auto) call_functor_operator_parentheses(T&& tuple, std::index_sequence<Is...>)
   {
-    return (this->functor_)(std::get<Is>(std::forward<T>(tuple))...);
+    return std::invoke(this->functor_, std::get<Is>(std::forward<T>(tuple))...);
   }
 };
 
@@ -219,7 +220,7 @@ private:
   template <typename T, std::size_t... Is>
   decltype(auto) call_functor_operator_parentheses(T&& tuple, std::index_sequence<Is...>)
   {
-    return (this->functor_)(std::get<Is>(std::forward<T>(tuple))...);
+    return std::invoke(this->functor_, std::get<Is>(std::forward<T>(tuple))...);
   }
 };
 

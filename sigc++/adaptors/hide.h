@@ -122,7 +122,7 @@ private:
   template <typename T_tuple, std::size_t... Is>
   decltype(auto) call_functor_operator_parentheses(T_tuple& tuple, std::index_sequence<Is...>)
   {
-    return this->functor_.template operator()(std::get<Is>(tuple)...);
+    return std::invoke(this->functor_, std::get<Is>(tuple)...);
   }
 };
 
