@@ -26,16 +26,18 @@ AC_CONFIG_MACRO_DIR([build])
 AC_CONFIG_HEADERS([config.h sigc++config.h])
 
 AM_INIT_AUTOMAKE([1.9 -Wno-portability check-news dist-bzip2 no-define nostdinc tar-ustar])
-m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES])
+# Support silent build rules.
+# Disable by either passing --disable-silent-rules to configure or passing V=1 to make.
+m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
 AM_MAINTAINER_MODE
 AC_ARG_VAR([ACLOCAL_FLAGS], [aclocal flags, e.g. -I <macro dir>])
 
-MM_PREREQ([0.9.8])
+MM_PREREQ([0.9.10])
 MM_INIT_MODULE([sigc++-2.0])
 MM_CONFIG_DOCTOOL_DIR([docs])
 
 AC_PROG_CXX
-MM_AX_CXX_COMPILE_STDCXX_11([noext],[mandatory])
+MM_AX_CXX_COMPILE_STDCXX([11], [noext], [mandatory])
 
 AC_DISABLE_STATIC
 LT_INIT([win32-dll])
