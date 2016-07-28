@@ -100,7 +100,7 @@ public:
    */
   inline slot_rep* dup() const
   {
-    return static_cast<slot_rep*>((*dup_)(const_cast<slot_rep*>(this)));
+    return (*dup_)(const_cast<slot_rep*>(this));
   }
 
   /** Set the parent with a callback.
