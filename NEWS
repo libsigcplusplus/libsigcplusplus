@@ -1,3 +1,8 @@
+2.10.0 (stable):
+
+* Build: Fix silent builds.
+  (Kjell Ahlstedt) Bug #768797
+
 2.9.3 (unstable):
 
 * signal:
