@@ -151,9 +151,7 @@ struct bind_functor : public adapts<T_functor>
     const auto t_end = internal::tuple_end<t_args_size - I_location>(t_args);
     const auto t_with_bound = std::tuple_cat(t_start, t_bound, t_end);
 
-    constexpr const auto seq =
-      std::make_index_sequence<std::tuple_size<decltype(t_with_bound)>::value>();
-    return call_functor_operator_parentheses(t_with_bound, seq);
+    return std::apply(this->functor_, t_with_bound);
   }
 
   /** Constructs a bind_functor object that binds an argument to the passed functor.
@@ -168,12 +166,6 @@ struct bind_functor : public adapts<T_functor>
 private:
   /// The arguments bound to the functor.
   std::tuple<bound_argument<T_bound>...> bound_;
-
-  template <typename T, std::size_t... Is>
-  decltype(auto) call_functor_operator_parentheses(T&& tuple, std::index_sequence<Is...>)
-  {
-    return std::invoke(this->functor_, std::get<Is>(std::forward<T>(tuple))...);
-  }
 };
 
 /** Adaptor that binds argument(s) to the wrapped functor.
@@ -200,8 +192,7 @@ public:
     const auto t_bound = internal::tuple_transform_each<internal::TransformEachInvoker>(bound_);
     const auto t_with_bound = std::tuple_cat(t_args, t_bound);
 
-    constexpr auto seq = std::make_index_sequence<std::tuple_size<decltype(t_with_bound)>::value>();
-    return call_functor_operator_parentheses(t_with_bound, seq);
+    return std::apply(this->functor, t_with_bound);
   }
 
   /** Constructs a bind_functor object that binds an argument to the passed functor.
@@ -215,13 +206,6 @@ public:
 
   /// The argument bound to the functor.
   std::tuple<bound_argument<T_type>...> bound_;
-
-private:
-  template <typename T, std::size_t... Is>
-  decltype(auto) call_functor_operator_parentheses(T&& tuple, std::index_sequence<Is...>)
-  {
-    return std::invoke(this->functor_, std::get<Is>(std::forward<T>(tuple))...);
-  }
 };
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
