@@ -59,8 +59,7 @@ MM_ARG_ENABLE_WARNINGS([SIGC_WXXFLAGS],
 MM_ARG_DISABLE_DEPRECATED_API([SIGCXX])
 
 AC_ARG_ENABLE(benchmark,
-  AS_HELP_STRING([--enable-benchmark=yes|no]),
-  [enable_benchmark=yes]
+  AS_HELP_STRING([--enable-benchmark=yes|no])
 )
 
 AM_CONDITIONAL([SIGC_BUILD_BENCHMARK], [test "x$enable_benchmark" = xyes])
