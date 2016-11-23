@@ -53,7 +53,7 @@ struct my_catch
     {
       throw;
     }
-    catch (std::range_error e) // catch what types we know
+    catch (const std::range_error& e) // catch what types we know
     {
       result_stream << "caught " << e.what();
     }
@@ -70,7 +70,7 @@ struct my_catch_void
     {
       throw;
     }
-    catch (std::range_error e) // catch what types we know
+    catch (const std::range_error& e) // catch what types we know
     {
       result_stream << "caught " << e.what();
     }
