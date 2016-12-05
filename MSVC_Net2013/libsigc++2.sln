@@ -1,5 +1,5 @@
-Microsoft Visual Studio Solution File, Format Version 13.00
-# Visual Studio 2013
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sigc", "libsigc++2.vcxproj", "{83997EF6-02D6-4CDB-8B3C-DBCA3018CC72}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_bind", "test_bind.vcxproj", "{7D0D2CF8-5B22-4F9E-BD38-63083A2CF662}"

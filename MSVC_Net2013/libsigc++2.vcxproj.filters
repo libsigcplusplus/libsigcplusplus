@@ -16,9 +16,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\sigc++\connection.cc"><Filter>Source Files</Filter></ClCompile>
-    <ClCompile Include="..\sigc++\signal.cc"><Filter>Source Files</Filter></ClCompile>
     <ClCompile Include="..\sigc++\signal_base.cc"><Filter>Source Files</Filter></ClCompile>
-    <ClCompile Include="..\sigc++\functors\slot.cc"><Filter>Source Files</Filter></ClCompile>
     <ClCompile Include="..\sigc++\functors\slot_base.cc"><Filter>Source Files</Filter></ClCompile>
     <ClCompile Include="..\sigc++\trackable.cc"><Filter>Source Files</Filter></ClCompile>
   </ItemGroup>
