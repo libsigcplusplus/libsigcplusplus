@@ -65,7 +65,7 @@ signal_impl::clear()
   // Don't let signal_impl::notify() erase the slots. It would invalidate the
   // iterator in the following loop.
   const bool saved_deferred = deferred_;
-  signal_impl_exec_holder(this);
+  signal_impl_exec_holder exec(this);
 
   // Disconnect all connected slots before they are deleted.
   // signal_impl::notify() will be called and delete the self_and_iter structs.
