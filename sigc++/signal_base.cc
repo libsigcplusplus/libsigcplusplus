@@ -28,10 +28,11 @@ namespace internal
 // when the slot is disconnected. Bug 167714.
 struct self_and_iter : public notifiable
 {
-  const std::shared_ptr<signal_impl> self_;
+  const std::weak_ptr<signal_impl> self_;
   const signal_impl::iterator_type iter_;
 
-  self_and_iter(const std::shared_ptr<signal_impl>& self, const signal_impl::iterator_type& iter) : self_(self), iter_(iter) {}
+  self_and_iter(const std::weak_ptr<signal_impl>& self, const signal_impl::iterator_type& iter)
+  : self_(self), iter_(iter) {}
 };
 
 signal_impl::signal_impl() : exec_count_(0), deferred_(false)
@@ -64,6 +65,9 @@ signal_impl::clear()
 {
   // Don't let signal_impl::notify() erase the slots. It would invalidate the
   // iterator in the following loop.
+  // Don't call shared_from_this() here. clear() is called from the destructor.
+  // When the destructor is executing, shared_ptr's use_count has reached 0,
+  // and it's no longer possible to get a shared_ptr to this.
   const bool saved_deferred = deferred_;
   signal_impl_exec_holder exec(this);
 
@@ -179,14 +183,22 @@ void
 signal_impl::notify_self_and_iter_of_invalidated_slot(notifiable* d)
 {
   std::unique_ptr<self_and_iter> si(static_cast<self_and_iter*>(d));
+  auto self = si->self_.lock();
+  if (!self)
+  {
+    // The signal_impl object is being deleted. The use_count has reached 0.
+    // Nothing to do here. exec_count_ > 0 and clear() will restore deferred_.
+    return;
+  }
 
-  if (si->self_->exec_count_ == 0)
+  if (self->exec_count_ == 0)
   {
     // The deletion of a slot may cause the deletion of a signal_base,
     // a decrementation of si->self_->ref_count_, and the deletion of si->self_.
     // In that case, the deletion of si->self_ is deferred to ~signal_impl_holder().
-    signal_impl_holder exec(si->self_);
-    si->self_->slots_.erase(si->iter_);
+    // https://bugzilla.gnome.org/show_bug.cgi?id=564005#c24
+    signal_impl_holder exec(self);
+    self->slots_.erase(si->iter_);
   }
   else
   {
@@ -194,7 +206,7 @@ signal_impl::notify_self_and_iter_of_invalidated_slot(notifiable* d)
     // => sweep() will be called from ~signal_impl_holder() after signal emission.
     // This is safer because we don't have to care about our
     // iterators in emit(), clear(), and erase().
-    si->self_->deferred_ = true;
+    self->deferred_ = true;
   }
 }
 
