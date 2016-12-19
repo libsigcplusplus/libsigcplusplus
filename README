@@ -46,7 +46,7 @@ Overview of the distribution:
    
    tests/                            programs testing and verifying proper behaviour
    
-   MSVC_Net2013/                     project files for building the library with MSVC++ 2013
+   MSVC_Net2017/                     project files for building the library with MSVC++ 2017
 
 
 Compatibility:
