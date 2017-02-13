@@ -41,13 +41,13 @@ using hook = void* (*)(void*);
  * The base class slot_rep serves the purpose to
  * - form a common pointer type (slot_rep*),
  * - offer the possibility to create duplicates (clone()),
- * - offer a notification callback (notify()),
+ * - offer a notification callback (notify_slot_rep_invalidated()),
  * - implement some of slot_base's interface that depends
  *   on the notification callback, i.e.
  *   -# the possibility to set a single parent with a callback
- *      (set_parent()) that is executed from notify(),
+ *      (set_parent()) that is executed from notify_slot_rep_invalidated(),
  *   -# a generic function pointer, call_, that is simply
- *      set to zero in notify() to invalidate the slot.
+ *      set to zero in notify_slot_rep_invalidated() to invalidate the slot.
  *
  * slot_rep inherits trackable so that connection objects can
  * refer to the slot and are notified when the slot is destroyed.
@@ -93,7 +93,7 @@ public:
   /** Set the parent with a callback.
    * slots have one parent exclusively.
    * @param parent The new parent.
-   * @param cleanup The callback to execute from notify().
+   * @param cleanup The callback to execute from notify_slot_rep_invalidated().
    */
   inline void set_parent(notifiable* parent, notifiable::func_destroy_notify cleanup) noexcept
   {
@@ -138,7 +138,7 @@ public:
 };
 
 /** Functor used to add a dependency to a trackable.
- * Consequently slot_rep::notify() gets executed when the
+ * Consequently slot_rep::notify_slot_rep_invalidated() gets executed when the
  * trackable is destroyed or overwritten.
  */
 struct SIGC_API slot_do_bind

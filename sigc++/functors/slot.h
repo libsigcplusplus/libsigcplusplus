@@ -250,7 +250,7 @@ public:
  * the outer slot as the parent of the inner slot. The second overload, called from
  * the destructor or destroy() of the outer slot, unsets the parent of the inner slot.
  * When an object referenced from the inner slot is deleted, the inner slot calls
- * its slot_rep::disconnect(), which calls the outer slot's slot_rep::notify().
+ * its slot_rep::disconnect(), which calls the outer slot's slot_rep::notify_slot_rep_invalidated().
  * The outer slot is informed just as if one of its directly referenced objects
  * had been deleted. Result: The outer slot is disconnected from its parent,
  * if any (for instance a sigc::signal).

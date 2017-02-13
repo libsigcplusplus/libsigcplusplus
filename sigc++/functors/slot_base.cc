@@ -153,7 +153,7 @@ slot_base::delete_rep_with_check()
     return;
 
   // Make sure we are notified if disconnect() deletes rep_, which is trackable.
-  // Compare slot_rep::notify().
+  // Compare slot_rep::notify_slot_rep_invalidated().
   sigc::internal::weak_raw_ptr<rep_type> notifier(rep_);
   rep_->disconnect(); // Disconnect the slot (might lead to deletion of rep_!).
 
