@@ -94,10 +94,10 @@ slot_base::slot_base(const slot_base& src) : rep_(nullptr), blocked_(src.blocked
   {
     // Check call_ so we can ignore invalidated slots.
     // Otherwise, destroyed bound reference parameters (whose destruction caused the slot's
-    // invalidation) may be used during dup().
-    // Note: I'd prefer to check somewhere during dup(). murrayc.
+    // invalidation) may be used during clone().
+    // Note: I'd prefer to check somewhere during clone(). murrayc.
     if (src.rep_->call_)
-      rep_ = src.rep_->dup();
+      rep_ = src.rep_->clone();
     else
     {
       *this = slot_base(); // Return the default invalid slot.
@@ -116,9 +116,9 @@ slot_base::slot_base(slot_base&& src) : rep_(nullptr), blocked_(src.blocked_)
 
       // Check call_ so we can ignore invalidated slots.
       // Otherwise, destroyed bound reference parameters (whose destruction
-      // caused the slot's invalidation) may be used during dup().
+      // caused the slot's invalidation) may be used during clone().
       if (src.rep_->call_)
-        rep_ = src.rep_->dup();
+        rep_ = src.rep_->clone();
       else
         blocked_ = false; // Return the default invalid slot.
     }
@@ -184,7 +184,7 @@ slot_base::operator=(const slot_base& src)
     return *this;
   }
 
-  auto new_rep_ = src.rep_->dup();
+  auto new_rep_ = src.rep_->clone();
 
   if (rep_) // Silently exchange the slot_rep.
   {
@@ -219,7 +219,7 @@ slot_base::operator=(slot_base&& src)
   {
     // src is connected to a parent, e.g. a sigc::signal.
     // Copy, don't move! See https://bugzilla.gnome.org/show_bug.cgi?id=756484
-    new_rep_ = src.rep_->dup();
+    new_rep_ = src.rep_->clone();
   }
   else
   {

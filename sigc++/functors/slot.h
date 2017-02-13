@@ -102,7 +102,7 @@ private:
    * slot_rep object is registered in the referred trackables.
    * @return A deep copy of the slot_rep object.
    */
-  slot_rep* dup() const override { return new typed_slot_rep(*this); }
+  slot_rep* clone() const override { return new typed_slot_rep(*this); }
 };
 
 /** Abstracts functor execution.

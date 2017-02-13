@@ -40,7 +40,7 @@ using hook = void* (*)(void*);
  *
  * The base class slot_rep serves the purpose to
  * - form a common pointer type (slot_rep*),
- * - offer the possibility to create duplicates (dup()),
+ * - offer the possibility to create duplicates (clone()),
  * - offer a notification callback (notify()),
  * - implement some of slot_base's interface that depends
  *   on the notification callback, i.e.
@@ -88,7 +88,7 @@ public:
   /** Makes a deep copy of the slot_rep object.
    * @return A deep copy of the slot_rep object.
    */
-  virtual slot_rep* dup() const = 0;
+  virtual slot_rep* clone() const = 0;
 
   /** Set the parent with a callback.
    * slots have one parent exclusively.
