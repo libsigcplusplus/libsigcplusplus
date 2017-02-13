@@ -43,8 +43,6 @@ template <typename T_functor>
 struct typed_slot_rep : public slot_rep
 {
 private:
-  using self = typed_slot_rep<T_functor>;
-
   /* Use an adaptor type so that arguments can be passed as const references
    * through explicit template instantiation from slot_call#::call_it() */
   using adaptor_type = typename adaptor_trait<T_functor>::adaptor_type;
@@ -58,13 +56,13 @@ public:
    * @param functor The functor contained by the new slot_rep object.
    */
   inline explicit typed_slot_rep(const T_functor& functor)
-  : slot_rep(nullptr, &destroy, &dup), functor_(std::make_unique<adaptor_type>(functor))
+  : slot_rep(nullptr), functor_(std::make_unique<adaptor_type>(functor))
   {
     sigc::visit_each_trackable(slot_do_bind(this), *functor_);
   }
 
   inline typed_slot_rep(const typed_slot_rep& src)
-    : slot_rep(src.call_, &destroy, &dup), functor_(std::make_unique<adaptor_type>(*src.functor_))
+  : slot_rep(src.call_), functor_(std::make_unique<adaptor_type>(*src.functor_))
   {
     sigc::visit_each_trackable(slot_do_bind(this), *functor_);
   }
@@ -74,24 +72,25 @@ public:
   typed_slot_rep(typed_slot_rep&& src) = delete;
   typed_slot_rep& operator=(typed_slot_rep&& src) = delete;
 
-  inline ~typed_slot_rep()
+  ~typed_slot_rep() override
   {
-    call_ = nullptr;
-    destroy_ = nullptr;
-    sigc::visit_each_trackable(slot_do_unbind(this), *functor_);
+    // Call destroy() non-virtually.
+    // It's unwise to make virtual calls in a constructor or destructor.
+    typed_slot_rep::destroy();
   }
 
 private:
   /** Detaches the stored functor from the other referred trackables and destroys it.
    * This does not destroy the base slot_rep object.
    */
-  static void destroy(slot_rep* data)
+  void destroy() override
   {
-    auto self_ = static_cast<self*>(data);
-    self_->call_ = nullptr;
-    self_->destroy_ = nullptr;
-    sigc::visit_each_trackable(slot_do_unbind(self_), *self_->functor_);
-    self_->functor_.reset(nullptr);
+    call_ = nullptr;
+    if (functor_)
+    {
+      sigc::visit_each_trackable(slot_do_unbind(this), *functor_);
+      functor_.reset(nullptr);
+    }
     /* don't call disconnect() here: destroy() is either called
      * a) from the parent itself (in which case disconnect() leads to a segfault) or
      * b) from a parentless slot (in which case disconnect() does nothing)
@@ -103,7 +102,7 @@ private:
    * slot_rep object is registered in the referred trackables.
    * @return A deep copy of the slot_rep object.
    */
-  static slot_rep* dup(slot_rep* a_rep) { return new self(*static_cast<self*>(a_rep)); }
+  slot_rep* dup() const override { return new typed_slot_rep(*this); }
 };
 
 /** Abstracts functor execution.

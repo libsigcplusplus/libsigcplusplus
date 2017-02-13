@@ -66,20 +66,14 @@ public:
    * down dereferencing of slot list iterators. Martin. */
   // TODO: Try this now? murrayc.
 
-  using hook_dup = slot_rep* (*)(slot_rep*);
-
-  using func_slot_rep_destroy_notify = void (*)(slot_rep* data);
-
-  inline slot_rep(hook call__, func_slot_rep_destroy_notify destroy__, hook_dup dup__) noexcept
+  inline slot_rep(hook call__) noexcept
     : call_(call__),
       cleanup_(nullptr),
-      parent_(nullptr),
-      destroy_(destroy__),
-      dup_(dup__)
+      parent_(nullptr)
   {
   }
 
-  inline ~slot_rep() { destroy(); }
+  virtual ~slot_rep() {}
 
 // only MSVC needs this to guarantee that all new/delete are executed from the DLL module
 #ifdef SIGC_NEW_DELETE_IN_LIBRARY_ONLY
@@ -89,19 +83,12 @@ public:
 
   /** Destroys the slot_rep object (but doesn't delete it).
    */
-  inline void destroy()
-  {
-    if (destroy_)
-      (*destroy_)(this);
-  }
+  virtual void destroy() = 0;
 
   /** Makes a deep copy of the slot_rep object.
    * @return A deep copy of the slot_rep object.
    */
-  inline slot_rep* dup() const
-  {
-    return (*dup_)(const_cast<slot_rep*>(this));
-  }
+  virtual slot_rep* dup() const = 0;
 
   /** Set the parent with a callback.
    * slots have one parent exclusively.
@@ -148,19 +135,6 @@ public:
 
   /** Parent object whose callback cleanup_ is executed on notification. */
   notifiable* parent_;
-
-protected:
-  /// Callback that detaches the slot_rep object from referred trackables and destroys it.
-  /* This could be a replaced by a virtual dtor. However, since this struct is
-   * crucial for the efficiency of the whole library, we want to avoid this.
-   */
-  func_slot_rep_destroy_notify destroy_;
-
-private:
-  /** Callback that makes a deep copy of the slot_rep object.
-   * @return A deep copy of the slot_rep object.
-   */
-  hook_dup dup_;
 };
 
 /** Functor used to add a dependency to a trackable.
