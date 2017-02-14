@@ -1,3 +1,25 @@
+2.99.8: (unstable)
+
+* signal_impl:
+  - Use std::weak_ptr<signal_impl> in connected slots,
+  to avoid a memory leak.
+  (Kjell Ahlstedt) Bug #775871
+  - clear(): Really avoid erasing the slots prematurely.
+  (Kjell Ahlstedt)
+* slot_rep: Make destructor, destroy, and clone() virtual,
+  instead of using function pointers that do the same thing.
+  (Kjell Ahlstedt) Bug #777618
+
+Build:
+* Visual Studio builds: Require Visual Studio 2017.
+  (Chun-wei Fan)
+* Add tests/memleakcheck.sh, to run the tests under valgrind.
+  (Kjell Ahlstedt) Bug #775871
+* Make --disable-benchmark work.
+  (Christophe Lermytte) Bug #774732
+* Make silent builds really silent.
+  (Kjell Ahlstedt) Bug #768797
+
 2.99.7: (unstable)
 
 * connection, slot_base: Use an internal::weak_raw_ptr<> to simplify
