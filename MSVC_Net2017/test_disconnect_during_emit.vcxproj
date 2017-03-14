@@ -153,7 +153,7 @@
     <ClCompile Include="..\tests\test_disconnect_during_emit.cc" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="libsigc++2.vcxproj">
+    <ProjectReference Include="libsigc++3.vcxproj">
       <Project>{83997ef6-02d6-4cdb-8b3c-dbca3018cc72}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
