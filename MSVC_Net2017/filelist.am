@@ -38,8 +38,6 @@ msvc_net2017_data =					\
 	test_disconnect_during_emit.vcxproj.filters	\
 	test_exception_catch.vcxproj			\
 	test_exception_catch.vcxproj.filters		\
-	test_functor_trait.vcxproj			\
-	test_functor_trait.vcxproj.filters		\
 	test_hide.vcxproj				\
 	test_hide.vcxproj.filters			\
 	test_limit_reference.vcxproj			\
