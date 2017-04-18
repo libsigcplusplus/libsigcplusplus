@@ -4,8 +4,6 @@
 
 #include "testutilities.h"
 #include <sigc++/adaptors/retype.h>
-#include <sstream>
-#include <cstdlib>
 
 namespace
 {

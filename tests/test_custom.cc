@@ -7,8 +7,6 @@
 // currently hacking.
 
 #include "testutilities.h"
-#include <sstream>
-#include <cstdlib>
 #include <sigc++/sigc++.h>
 
 namespace

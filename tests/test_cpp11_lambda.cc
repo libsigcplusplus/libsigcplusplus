@@ -43,11 +43,8 @@
 // If test_cpp11_lambda writes nothing and the return code is 0, the test has passed.
 
 #include "testutilities.h"
-#include <string>
 #include <iostream>
-#include <sstream>
 #include <functional>
-#include <cstdlib>
 #include <sigc++/functors/functors.h>
 #include <sigc++/bind.h>
 #include <sigc++/adaptors/track_obj.h>

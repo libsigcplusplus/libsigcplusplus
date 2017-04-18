@@ -4,13 +4,9 @@
 
 #include "testutilities.h"
 #include <sigc++/functors/slot.h>
-#include <sstream>
-#include <string>
-#include <cstdlib>
 
 // The Tru64 compiler seems to need this to avoid an unresolved symbol
 // See bug #161503
-#include <new>
 
 namespace
 {

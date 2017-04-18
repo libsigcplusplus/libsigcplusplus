@@ -5,16 +5,10 @@
 #include "testutilities.h"
 #include <sigc++/trackable.h>
 #include <sigc++/signal.h>
-#include <sigc++/connection.h>
 #include <sigc++/adaptors/compose.h>
-#include <sigc++/functors/ptr_fun.h>
-#include <sigc++/functors/mem_fun.h>
-#include <sstream>
-#include <cstdlib>
 
 // The Tru64 compiler seems to need this to avoid an unresolved symbol
 // See bug #161503
-#include <new>
 
 namespace
 {

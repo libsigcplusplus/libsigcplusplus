@@ -5,12 +5,8 @@
 #include "testutilities.h"
 #include <sigc++/trackable.h>
 #include <sigc++/signal.h>
-#include <sigc++/functors/ptr_fun.h>
-#include <sigc++/functors/mem_fun.h>
-#include <sstream>
 #include <iomanip>
 #include <vector>
-#include <cstdlib>
 
 namespace
 {

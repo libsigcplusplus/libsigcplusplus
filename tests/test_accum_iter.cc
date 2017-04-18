@@ -4,10 +4,7 @@
 
 #include "testutilities.h"
 #include <sigc++/sigc++.h>
-#include <sstream>
 #include <algorithm>
-#include <functional>
-#include <cstdlib>
 
 namespace
 {

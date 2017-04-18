@@ -4,9 +4,6 @@
 
 #include "testutilities.h"
 #include <sigc++/functors/slot.h>
-#include <sstream>
-#include <string>
-#include <cstdlib>
 
 namespace
 {

@@ -3,9 +3,7 @@
  */
 
 #include "testutilities.h"
-#include <sstream>
 #include <sigc++/sigc++.h>
-#include <cstdlib>
 
 // TODO: put something like #ifndef FORTE ... #else ... #endif around:
 #define ENABLE_TEST_OF_OVERLOADED_FUNCTIONS 0

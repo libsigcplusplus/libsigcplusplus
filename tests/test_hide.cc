@@ -4,8 +4,6 @@
 
 #include "testutilities.h"
 #include <sigc++/adaptors/hide.h>
-#include <sstream>
-#include <cstdlib>
 
 namespace
 {

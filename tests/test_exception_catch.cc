@@ -4,9 +4,6 @@
 
 #include "testutilities.h"
 #include <sigc++/adaptors/exception_catch.h>
-#include <sstream>
-#include <stdexcept>
-#include <cstdlib>
 
 namespace
 {

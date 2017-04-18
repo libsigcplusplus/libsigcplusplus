@@ -17,10 +17,7 @@
  */
 
 #include "testutilities.h"
-#include <string>
 #include <iostream>
-#include <sstream>
-#include <cstdlib>
 #include <sigc++/signal.h>
 #include <sigc++/adaptors/adapts.h>
 

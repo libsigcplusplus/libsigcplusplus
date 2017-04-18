@@ -3,12 +3,8 @@
  */
 
 #include "testutilities.h"
-#include <sstream>
-#include <cstdlib>
 #include <sigc++/sigc++.h>
-#include <stdlib.h>
 #include <string.h>
-#include <functional> //For std::ref().
 
 namespace
 {

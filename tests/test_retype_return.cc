@@ -5,8 +5,6 @@
 #include "testutilities.h"
 #include <sigc++/adaptors/retype_return.h>
 #include <sigc++/functors/slot.h>
-#include <sstream>
-#include <cstdlib>
 
 namespace
 {

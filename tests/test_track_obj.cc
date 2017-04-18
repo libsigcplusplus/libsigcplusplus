@@ -34,10 +34,7 @@
 // If test_track_obj writes nothing and the return code is 0, the test has passed.
 
 #include "testutilities.h"
-#include <string>
 #include <iostream>
-#include <sstream>
-#include <cstdlib>
 #include <sigc++/adaptors/track_obj.h>
 #include <sigc++/signal.h>
 

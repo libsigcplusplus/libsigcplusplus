@@ -24,8 +24,6 @@
 
 #include "testutilities.h"
 #include <sigc++/sigc++.h>
-#include <sstream>
-#include <cstdlib>
 
 #define ACTIVATE_BUG 1
 

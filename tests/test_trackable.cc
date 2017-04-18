@@ -3,11 +3,8 @@
  */
 
 #include "testutilities.h"
-#include <sstream>
-#include <cstdlib>
 #include <sigc++/trackable.h>
 #include <sigc++/functors/slot.h>
-#include <sigc++/functors/mem_fun.h>
 
 namespace
 {

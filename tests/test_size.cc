@@ -5,7 +5,6 @@
 #include "testutilities.h"
 #include <sigc++/sigc++.h>
 #include <iostream>
-#include <cstdlib>
 
 // The correct result of this test may be implementation-dependent.
 // No attempt is made to decide if the result is correct.

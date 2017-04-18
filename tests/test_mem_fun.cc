@@ -4,8 +4,6 @@
 
 #include "testutilities.h"
 #include <sigc++/sigc++.h>
-#include <sstream>
-#include <cstdlib>
 
 // TODO: put something like #ifndef FORTE (some older version, I think) or AIX xlC... #else ...
 // #endif around:

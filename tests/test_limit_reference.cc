@@ -4,9 +4,6 @@
 
 #include "testutilities.h"
 #include <sigc++/sigc++.h>
-#include <sstream>
-#include <functional> //For std::ref().
-#include <cstdlib>
 
 namespace
 {
