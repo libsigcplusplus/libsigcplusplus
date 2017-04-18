@@ -15,7 +15,7 @@ namespace
 {
 struct A
 {
-  void foo();
+  void foo() {}
 };
 } // end anonymous namespace
 
