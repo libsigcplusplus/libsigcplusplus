@@ -92,7 +92,7 @@ private:
    */
   static void notify_object_invalidated(notifiable* data)
   {
-    weak_raw_ptr* self = static_cast<weak_raw_ptr*>(data);
+    auto self = static_cast<weak_raw_ptr*>(data);
     if(!self)
       return;
 
