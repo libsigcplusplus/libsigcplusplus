@@ -38,7 +38,8 @@ trackable::trackable(const trackable& /*src*/) noexcept : callback_list_(nullptr
 //
 // If trackable's move constructor is modified, check if Glib::Object's
 // move constructor should be modified similarly.
-trackable::trackable(trackable&& src) : callback_list_(nullptr)
+trackable::trackable(trackable&& src) noexcept
+: callback_list_(nullptr)
 {
   src.notify_callbacks();
 }
@@ -53,7 +54,7 @@ trackable::operator=(const trackable& src)
 }
 
 trackable&
-trackable::operator=(trackable&& src)
+trackable::operator=(trackable&& src) noexcept
 {
   if (this != &src)
   {

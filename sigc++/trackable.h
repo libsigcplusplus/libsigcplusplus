@@ -125,11 +125,11 @@ struct SIGC_API trackable : public notifiable
 
   trackable(const trackable& src) noexcept;
 
-  trackable(trackable&& src);
+  trackable(trackable&& src) noexcept;
 
   trackable& operator=(const trackable& src);
 
-  trackable& operator=(trackable&& src);
+  trackable& operator=(trackable&& src) noexcept;
 
   ~trackable();
 

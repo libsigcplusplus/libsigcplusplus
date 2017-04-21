@@ -18,7 +18,10 @@ public:
   my_class(const my_class& src) = delete;
   my_class& operator=(const my_class& src) = delete;
 
-  my_class(my_class&& src) : sigc::trackable(std::move(src)), i(std::move(src.i)) { src.i = 0; }
+  my_class(my_class&& src) noexcept
+  : sigc::trackable(std::move(src)), i(std::move(src.i)) {
+    src.i = 0;
+  }
 
   my_class& operator=(my_class&& src)
   {
