@@ -4,7 +4,7 @@
 
 #include "testutilities.h"
 #include <sigc++/sigc++.h>
-#include <string.h>
+#include <cstring>
 
 namespace
 {
