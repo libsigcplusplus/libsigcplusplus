@@ -13,7 +13,7 @@ std::ostringstream result_stream;
 class my_class : public sigc::trackable
 {
 public:
-  int i;
+  int i = 0;
 
   void foo() { result_stream << i; }
 };
