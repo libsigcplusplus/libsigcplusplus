@@ -134,8 +134,8 @@ main(int argc, char* argv[])
   // Allocate on the heap. valgrind can then find erroneous memory accesses.
   // (There should be none, of course.)
   auto psl2 = new sigc::slot<std::string(int, std::string)>;
-  bar_group4* pbar4 = new bar_group4;
-  book* pbook4 = new book("A Book");
+  auto pbar4 = new bar_group4;
+  auto pbook4 = new book("A Book");
   *psl2 = sigc::track_obj(Functor2(*pbar4, *pbook4), *pbar4, *pbook4);
   result_stream << (*psl2)(0, "Book title: ");
   util->check_result(result_stream, "zero, Book title: A Book");
