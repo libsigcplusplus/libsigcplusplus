@@ -83,9 +83,7 @@ trackable::remove_destroy_notify_callback(notifiable* data) const
 void
 trackable::notify_callbacks()
 {
-  if (callback_list_)
-    delete callback_list_; // This invokes all of the callbacks.
-
+  delete callback_list_; // This invokes all of the callbacks.
   callback_list_ = nullptr;
 }
 
