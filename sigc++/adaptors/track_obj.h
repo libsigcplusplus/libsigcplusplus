@@ -75,7 +75,7 @@ public:
    * @param func Functor.
    * @param obj Trackable objects.
    */
-  track_obj_functor(const T_functor& func, const T_obj&... obj)
+  explicit track_obj_functor(const T_functor& func, const T_obj&... obj)
   : adapts<T_functor>(func), obj_(obj...)
   {
   }
