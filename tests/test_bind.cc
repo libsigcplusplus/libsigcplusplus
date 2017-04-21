@@ -18,7 +18,7 @@ struct foo
   int operator()(int i)
   {
     result_stream << "foo(int " << i << ") ";
-    return i > 0;
+    return static_cast<int>(i > 0);
   }
 
   int operator()(int i, int j)

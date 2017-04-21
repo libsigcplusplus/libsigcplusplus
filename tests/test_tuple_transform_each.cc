@@ -253,7 +253,7 @@ template <>
 class transform_as_constexpr_to_something<int>
 {
 public:
-  constexpr static char transform(int from) { return 'a' + from; }
+  constexpr static char transform(int from) { return 'a' + static_cast<char>(from); }
 };
 
 // A double will be converted to an int:

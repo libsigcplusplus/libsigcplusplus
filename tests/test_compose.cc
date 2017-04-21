@@ -61,7 +61,7 @@ struct get
   double operator()()
   {
     result_stream << "get() ";
-    return true;
+    return static_cast<double>(true);
   }
 
   double operator()(int i)
