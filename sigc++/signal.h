@@ -359,8 +359,8 @@ private:
 
 public:
 
-  /** Executes a list of slots using an accumulator of type @e T_accumulator.   * The arguments are
-   * passed directly on to the slots.
+  /** Executes a list of slots using an accumulator of type @e T_accumulator.
+   * The arguments are passed directly on to the slots.
    * @param a Arguments to be passed on to the slots.
    */
   static decltype(auto) emit(const std::shared_ptr<internal::signal_impl>& impl, type_trait_take_t<T_arg>... a)
@@ -398,7 +398,8 @@ public:
  *
  * The following template arguments are used:
  * - @e T_return The desired return type for the emit() function (may be overridden by the
- * accumulator). * - @e T_arg Argument types used in the definition of emit().
+ * accumulator).
+ * - @e T_arg Argument types used in the definition of emit().
  * - @e T_accumulator The accumulator type used for emission. The default
  * @p void means that no accumulator should be used, for example if signal
  * emission returns the return value of the last slot invoked.
