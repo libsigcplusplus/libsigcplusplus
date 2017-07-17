@@ -24,7 +24,8 @@ namespace internal
 {
 
 // Data sent from signal_impl::insert() to slot_rep::set_parent() when a slot is
-// connected, and then sent from slot_rep::disconnect() to signal_impl::notify()
+// connected, and then sent from slot_rep::disconnect() to
+// signal_impl::notify_self_and_iter_of_invalidated_slot()
 // when the slot is disconnected. Bug 167714.
 struct self_and_iter : public notifiable
 {
@@ -63,8 +64,8 @@ signal_impl::operator delete(void* p)
 void
 signal_impl::clear()
 {
-  // Don't let signal_impl::notify() erase the slots. It would invalidate the
-  // iterator in the following loop.
+  // Don't let signal_impl::notify_self_and_iter_of_invalidated_slot() erase the slots.
+  // It would invalidate the iterator in the following loop.
   // Don't call shared_from_this() here. clear() is called from the destructor.
   // When the destructor is executing, shared_ptr's use_count has reached 0,
   // and it's no longer possible to get a shared_ptr to this.
@@ -73,7 +74,8 @@ signal_impl::clear()
   signal_impl_exec_holder exec(this);
 
   // Disconnect all connected slots before they are deleted.
-  // signal_impl::notify() will be called and delete the self_and_iter structs.
+  // signal_impl::notify_self_and_iter_of_invalidated_slot() will be called and
+  // delete the self_and_iter structs.
   for (auto& slot : slots_)
     slot.disconnect();
 

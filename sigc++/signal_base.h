@@ -36,11 +36,11 @@ namespace internal
 {
 
 /** Implementation of the signal interface.
- * signal_impl manages a list of slots. When a slot becomes
- * invalid (because some referred object dies), notify() is executed.
- * notify() either calls slots_.erase() directly or defers the execution of
- * erase() to sweep() when the signal is being emitted. sweep() removes all
- * invalid slots from the list.
+ * signal_impl manages a list of slots. When a slot becomes invalid (because some
+ * referred object dies), notify_self_and_iter_of_invalidated_slot() is executed.
+ * notify_self_and_iter_of_invalidated_slot() either calls slots_.erase() directly
+ * or defers the execution of erase() to sweep() when the signal is being emitted.
+ * sweep() removes all invalid slots from the list.
  */
 struct SIGC_API signal_impl
  : public std::enable_shared_from_this<signal_impl>

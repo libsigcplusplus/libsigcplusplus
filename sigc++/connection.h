@@ -43,12 +43,12 @@ struct SIGC_API connection
   connection(const connection& c);
 
   /** Constructs a connection object from a slot object.
-   * @param sl The slot to operate on.
+   * @param slot The slot to operate on.
    */
   explicit connection(slot_base& slot);
 
   /** Overrides this connection object copying another one.
-   * @param c The connection object to make a copy from.
+   * @param src The connection object to make a copy from.
    */
   connection& operator=(const connection& src);
 
@@ -92,8 +92,8 @@ struct SIGC_API connection
 private:
   void set_slot(const sigc::internal::weak_raw_ptr<slot_base>& sl);
 
-  /* Referred slot. Set to zero from notify().
-   * A value of zero indicates an "empty" connection.
+  /* Referred slot. Set to nullptr when the referred slot is deleted.
+   * A value of nullptr indicates an "empty" connection.
    */
   sigc::internal::weak_raw_ptr<slot_base> slot_;
 };
