@@ -68,6 +68,7 @@ signal_impl::clear()
   // Don't call shared_from_this() here. clear() is called from the destructor.
   // When the destructor is executing, shared_ptr's use_count has reached 0,
   // and it's no longer possible to get a shared_ptr to this.
+  const bool during_signal_emission = exec_count_ > 0;
   const bool saved_deferred = deferred_;
   signal_impl_exec_holder exec(this);
 
@@ -76,9 +77,15 @@ signal_impl::clear()
   for (auto& slot : slots_)
     slot.disconnect();
 
-  deferred_ = saved_deferred;
-
-  slots_.clear();
+  // Don't clear slots_ during signal emission. Provided deferred_ is true,
+  // sweep() will be called from ~signal_impl_holder() after signal emission,
+  // and it will erase all disconnected slots.
+  // https://bugzilla.gnome.org/show_bug.cgi?id=784550
+  if (!during_signal_emission)
+  {
+    deferred_ = saved_deferred;
+    slots_.clear();
+  }
 }
 
 signal_impl::size_type
