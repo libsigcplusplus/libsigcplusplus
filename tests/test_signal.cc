@@ -112,6 +112,35 @@ test_make_slot()
   util->check_result(result_stream, "foo(int 3) bar(float 3) foo(int 3) ");
 }
 
+void
+test_clear_called_in_signal_handler()
+{
+  sigc::signal<void()> sig;
+  sig.connect([]() { result_stream << ", slot 1, "; });
+  sig.connect([&sig]() { sig.clear(); result_stream << "slot 2, "; });
+  sig.connect([]() { result_stream << "slot 3, "; });
+  result_stream << sig.size();
+  sig.emit();
+  result_stream << sig.size();
+  sig.emit();
+  util->check_result(result_stream, "3, slot 1, slot 2, 0");
+}
+
+void
+test_clear_called_outside_signal_handler()
+{
+  sigc::signal<void()> sig;
+  sig.connect([]() { result_stream << ", slot 1, "; });
+  sig.connect([]() { result_stream << "slot 2, "; });
+  sig.connect([]() { result_stream << "slot 3, "; });
+  result_stream << sig.size();
+  sig.emit();
+  sig.clear();
+  result_stream << sig.size();
+  sig.emit();
+  util->check_result(result_stream, "3, slot 1, slot 2, slot 3, 0");
+}
+
 } // end anonymous namespace
 
 int
@@ -127,6 +156,8 @@ main(int argc, char* argv[])
   test_auto_disconnection();
   test_reference();
   test_make_slot();
+  test_clear_called_in_signal_handler();
+  test_clear_called_outside_signal_handler();
 
   return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;
 }
