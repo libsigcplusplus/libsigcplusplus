@@ -126,23 +126,6 @@ signal_impl::connect(slot_base&& slot_)
   return insert(slots_.end(), std::move(slot_));
 }
 
-signal_impl::iterator_type
-signal_impl::erase(iterator_type i)
-{
-  // Don't let signal_impl::notify() erase the slot. It would be more
-  // difficult to get the correct return value from signal_impl::erase().
-  const bool saved_deferred = deferred_;
-  signal_impl_holder exec(shared_from_this());
-
-  // Disconnect the slot before it is deleted.
-  // signal_impl::notify() will be called and delete the self_and_iter struct.
-  i->disconnect();
-
-  deferred_ = saved_deferred;
-
-  return slots_.erase(i);
-}
-
 void
 signal_impl::add_notification_to_iter(const signal_impl::iterator_type& iter)
 {
@@ -212,7 +195,7 @@ signal_impl::notify_self_and_iter_of_invalidated_slot(notifiable* d)
     // This is occurring during signal emission or slot erasure.
     // => sweep() will be called from ~signal_impl_holder() after signal emission.
     // This is safer because we don't have to care about our
-    // iterators in emit(), clear(), and erase().
+    // iterators in emit() and clear().
     self->deferred_ = true;
   }
 }
@@ -291,12 +274,6 @@ signal_base::iterator_type
 signal_base::insert(iterator_type i, slot_base&& slot_)
 {
   return impl()->insert(i, std::move(slot_));
-}
-
-signal_base::iterator_type
-signal_base::erase(iterator_type i)
-{
-  return impl()->erase(i);
 }
 
 signal_base&

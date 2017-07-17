@@ -143,12 +143,6 @@ struct SIGC_API signal_impl
    */
   iterator_type insert(iterator_type i, slot_base&& slot_);
 
-  /** Removes the slot at the given position from the list of slots.
-   * @param i An iterator pointing to the slot to be removed.
-   * @return An iterator pointing to the slot in the list after the one removed.
-   */
-  iterator_type erase(iterator_type i);
-
   /// Removes invalid slots from the list of slots.
   void sweep();
 
@@ -381,13 +375,6 @@ protected:
    * @newin{2,8}
    */
   iterator_type insert(iterator_type i, slot_base&& slot_);
-
-  /** Removes the slot at the given position from the list of slots.
-   * Note that this function does not work during signal emission!
-   * @param i An iterator pointing to the slot to be removed.
-   * @return An iterator pointing to the slot in the list after the one removed.
-   */
-  iterator_type erase(iterator_type i);
 
   /** Returns the signal_impl object encapsulating the list of slots.
    * @return The signal_impl object encapsulating the list of slots.
