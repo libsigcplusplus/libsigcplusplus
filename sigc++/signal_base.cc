@@ -54,6 +54,7 @@ void signal_impl::clear()
 {
   // Don't let signal_impl::notify() erase the slots. It would invalidate the
   // iterator in the following loop.
+  const bool during_signal_emission = exec_count_ > 0;
   const bool saved_deferred = deferred_;
   signal_exec exec(this);
 
@@ -62,9 +63,15 @@ void signal_impl::clear()
   for (auto& slot : slots_)
     slot.disconnect();
 
-  deferred_ = saved_deferred;
-
-  slots_.clear();
+  // Don't clear slots_ during signal emission. Provided deferred_ is true,
+  // sweep() will be called from ~signal_exec() after signal emission,
+  // and it will erase all disconnected slots.
+  // https://bugzilla.gnome.org/show_bug.cgi?id=784550
+  if (!during_signal_emission)
+  {
+    deferred_ = saved_deferred;
+    slots_.clear();
+  }
 }
 
 signal_impl::size_type signal_impl::size() const noexcept
