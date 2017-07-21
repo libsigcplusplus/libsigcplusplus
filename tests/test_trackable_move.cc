@@ -23,11 +23,11 @@ public:
     src.i = 0;
   }
 
-  my_class& operator=(my_class&& src)
+  my_class& operator=(my_class&& src) noexcept
   {
     sigc::trackable::operator=(std::move(src));
     i = std::move(src.i);
-    src.i = 0;
+    src.i = 0; // Make the moved-from object zeroed. Undefined behaviour would be acceptable too.
     return *this;
   }
 

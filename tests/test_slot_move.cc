@@ -43,14 +43,14 @@ main(int argc, char* argv[])
 
   // test move constructor:
   sigc::slot<void(int)> s2(std::move(s1));
-  s1(-2);
+  s1(-2); // Test that the moved-from slot does nothing.
   s2(2);
   util->check_result(result_stream, "foo(int 2)");
 
   // test move assignment:
   sigc::slot<void(int)> s3;
   s3 = std::move(s2);
-  s2(-3);
+  s2(-3); // Test that the moved-from slot does nothing.
   s3(3);
   util->check_result(result_stream, "foo(int 3)");
 

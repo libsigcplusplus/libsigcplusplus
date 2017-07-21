@@ -35,14 +35,14 @@ main(int argc, char* argv[])
 
   // Test the move constructor:
   sigc::signal<int(int)> sig2(std::move(sig));
-  sig(-2);
+  sig(-2); // Test that the moved-from slot does nothing.
   sig2(2);
   util->check_result(result_stream, "foo(int 2)");
 
   // Test the move assignment operator:
   sigc::signal<int(int)> sig3;
   sig3 = std::move(sig2);
-  sig2(-3);
+  sig2(-3); // Test that the moved-from slot does nothing.
   sig3(3);
   util->check_result(result_stream, "foo(int 3)");
 
