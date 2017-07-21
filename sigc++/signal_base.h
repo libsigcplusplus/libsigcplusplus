@@ -178,7 +178,7 @@ struct SIGC_API signal_impl_exec_holder
   /** Increments the execution counter of the parent sigc::signal_impl object.
    * @param sig The parent sigc::signal_impl object.
    */
-  inline signal_impl_exec_holder(signal_impl* sig) noexcept
+  inline explicit signal_impl_exec_holder(signal_impl* sig) noexcept
   : sig_(sig)
   {
     sig_->reference_exec();
