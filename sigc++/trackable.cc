@@ -119,7 +119,7 @@ trackable_callback_list::add_callback(notifiable* data, func_destroy_notify func
   // I'd consider this a serious application bug, since the app is likely to segfault.
   // But then, how should we handle it? Throw an exception? Martin.
   if (!clearing_)
-    callbacks_.push_back(trackable_callback(data, func));
+    callbacks_.emplace_back(trackable_callback(data, func));
 }
 
 void
