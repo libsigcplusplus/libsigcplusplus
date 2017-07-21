@@ -137,8 +137,7 @@ slot_base::slot_base(slot_base&& src) : rep_(nullptr), blocked_(src.blocked_)
 
 slot_base::~slot_base()
 {
-  if (rep_)
-    delete rep_;
+  delete rep_;
 }
 
 slot_base::operator bool() const noexcept
