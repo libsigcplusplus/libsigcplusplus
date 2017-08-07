@@ -1,3 +1,15 @@
+2.99.9: (unstable)
+
+* signal_impl::clear(): Don't clear the slot list during signal emission,
+  to prevent a segfault. And add a test for this.
+  (Kjell Ahlstedt) Bug #784550 (Andrejs Hanins)
+* Remove signal_base::erase() and signal_impl::erase().
+  (Kjell Ahlstedt) Bug #784550
+* Various minor code cleanups.
+  (Murray Cumming)
+* Windows: Update the MS Visual Studio build.
+  (Chu-wei Fan)
+
 2.99.8: (unstable)
 
 * signal_impl:
