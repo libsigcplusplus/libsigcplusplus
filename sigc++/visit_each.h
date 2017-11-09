@@ -20,6 +20,7 @@
 
 #include <sigc++/type_traits.h>
 #include <type_traits>
+#include <utility> // std::forward
 
 namespace sigc
 {
