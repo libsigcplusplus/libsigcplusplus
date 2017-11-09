@@ -36,6 +36,14 @@ struct destroy_notify_struct
 
   bool deleted_;
 };
+
+// Used by slot_base::set_parent() when a slot_base without a rep_ is assigned a parent.
+class dummy_slot_rep : public sigc::internal::slot_rep
+{
+public:
+  dummy_slot_rep() : slot_rep(nullptr, nullptr, &clone) {}
+  static void* clone(void*) { return new dummy_slot_rep(); }
+};
 } // anonymous namespace
 
 namespace sigc
@@ -263,8 +271,9 @@ slot_base& slot_base::operator=(slot_base&& src)
 
 void slot_base::set_parent(void* parent, void* (*cleanup)(void*)) const noexcept
 {
-  if (rep_)
-    rep_->set_parent(parent, cleanup);
+  if (!rep_)
+    rep_ = new dummy_slot_rep();
+  rep_->set_parent(parent, cleanup);
 }
 
 void slot_base::add_destroy_notify_callback(void* data, func_destroy_notify func) const
