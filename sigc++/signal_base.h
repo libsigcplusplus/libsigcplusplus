@@ -297,6 +297,16 @@ private:
  * incremented. Both sigc::signal# objects then refer to the same
  * sigc::internal::signal_impl object.
  *
+ * Deleting the signal during emission, e.g. from one of its slots, may result
+ * in memory leaks. This drawback is fixed in version 3 of libsigc++.
+ * A workaround is to make a copy of the signal during the emission:
+ * @code
+ * sigc::signal<...> sig2(*p_sig);
+ * p_sig->emit();
+ * @endcode
+ * This is not very costly. A sigc::signal<> is not much more than a pointer to
+ * a sigc::internal::signal_impl instance, which is not copied.
+ *
  * @ingroup signal
  */
 struct SIGC_API signal_base : public trackable
