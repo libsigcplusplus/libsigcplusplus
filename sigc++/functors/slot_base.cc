@@ -20,6 +20,18 @@
 #include <sigc++/functors/slot_base.h>
 #include <sigc++/weak_raw_ptr.h>
 
+namespace
+{
+// Used by slot_base::set_parent() when a slot_base without a rep_ is assigned a parent.
+class dummy_slot_rep : public sigc::internal::slot_rep
+{
+public:
+  dummy_slot_rep() : slot_rep(nullptr) {}
+  sigc::internal::slot_rep* clone() const override { return new dummy_slot_rep(); }
+  void destroy() override {}
+};
+} // anonymous namespace
+
 namespace sigc
 {
 namespace internal
@@ -243,8 +255,9 @@ slot_base::operator=(slot_base&& src)
 void
 slot_base::set_parent(notifiable* parent, notifiable::func_destroy_notify cleanup) const noexcept
 {
-  if (rep_)
-    rep_->set_parent(parent, cleanup);
+  if (!rep_)
+    rep_ = new dummy_slot_rep();
+  rep_->set_parent(parent, cleanup);
 }
 
 void
