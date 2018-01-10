@@ -1,3 +1,10 @@
+2.99.10: (unstable)
+
+* slot_base::set_parent(): Create a dummy slot_rep if necessary
+  (Kjell Ahlstedt) Bug #167714 (Gerald Britton)
+* visit_each.h: Add an #include.
+  (Kjell Ahlstedt)
+
 2.99.9: (unstable)
 
 * signal_impl::clear(): Don't clear the slot list during signal emission,
