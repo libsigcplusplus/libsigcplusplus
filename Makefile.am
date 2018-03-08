@@ -18,7 +18,7 @@
 ACLOCAL_AMFLAGS = -I build ${ACLOCAL_FLAGS}
 
 if ENABLE_DOCUMENTATION
-doc_subdirs = docs
+doc_subdirs = docs/docs
 else
 doc_subdirs =
 endif

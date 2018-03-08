@@ -34,7 +34,7 @@ AC_ARG_VAR([ACLOCAL_FLAGS], [aclocal flags, e.g. -I <macro dir>])
 
 MM_PREREQ([0.9.10])
 MM_INIT_MODULE([sigc++-3.0])
-MM_CONFIG_DOCTOOL_DIR([docs])
+MM_CONFIG_DOCTOOL_DIR([docs/docs])
 
 AC_PROG_CXX
 MM_AX_CXX_COMPILE_STDCXX([14],[noext],[mandatory])
@@ -80,8 +80,8 @@ AC_CONFIG_FILES([Makefile
                  sigc++/Makefile
                  examples/Makefile
                  tests/Makefile
-                 docs/Makefile
-                 docs/reference/Doxyfile
+                 docs/docs/Makefile
+                 docs/docs/reference/Doxyfile
                  MSVC_Net2017/sigc.rc])
 
 # Copy the generated configuration headers into the MSVC project directories.
