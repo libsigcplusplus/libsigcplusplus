@@ -1,4 +1,7 @@
-# Download
+---
+layout: default
+title: Download
+---
 
 ## Source Packages
 

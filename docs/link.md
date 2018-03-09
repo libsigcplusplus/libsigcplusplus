@@ -1,3 +1,7 @@
+---
+layout: default
+title: Links
+---
 ## GNOME Links
 
 Libsigc++ is part of the greater GNOME code base. 

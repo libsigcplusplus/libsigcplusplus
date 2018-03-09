@@ -1,3 +1,8 @@
+---
+layout: default
+title: License
+---
+
 Libsigc++ is licensed under the [GNU Library General Public License](https://www.gnu.org/licenses/lgpl-3.0-standalone.html)
 for all platforms.  Our intent in licensing it in this way is to
 provide it for use through shared libraries in all projects both 

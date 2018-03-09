@@ -1,4 +1,7 @@
-## Glossary of Terms
+---
+layout: default
+title: Glossary of Terms
+---
 
 **adaptor** *(noun)* - A function which alters a slot&#8217;s
 signature.  

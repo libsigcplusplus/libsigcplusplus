@@ -1,5 +1,7 @@
-# libigc++
-
+---
+layout: default
+title: libsigc++
+---
 ## About
 
 libsigc++ implements a typesafe callback system for standard C++. It

@@ -1,5 +1,7 @@
-# Development
-
+---
+layout: default
+title: Development
+---
 ## Mailing List
 
 There is a mailing list,
