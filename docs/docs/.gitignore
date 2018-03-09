@@ -1,0 +1,11 @@
+/doc-install.pl
+/doc-postprocess.pl
+/doxygen.css
+/doxygen-extra.css
+/tagfile-to-devhelp2.xsl
+/manual/html/
+/reference/html/
+/reference/Doxyfile
+/reference/doxygen.log
+/reference/libsigc++-*.tag
+/reference/libsigc++-*.devhelp2
