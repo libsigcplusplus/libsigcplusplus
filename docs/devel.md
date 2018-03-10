@@ -4,24 +4,19 @@ title: Development
 ---
 ## Mailing List
 
-There is a mailing list,
-[libsigc-list@gnome.org](http://mail.gnome.org/mailman/listinfo/libsigc-list) for libsigc++, to serve as
-a design discussion area as well as a place to report bugs.  To subscribe, use the web
-[page](http://mail.gnome.org/mailman/listinfo/libsigc-list).
+There is a mailing list, [libsigc-list@gnome.org](http://mail.gnome.org/mailman/listinfo/libsigc-list) for libsigc++.
+To subscribe, use the web [page](http://mail.gnome.org/mailman/listinfo/libsigc-list).
+
 Members can post directly, but all other traffic is moderated.
-There is an archive of messages, 
+There is an archive of messages,
 [here](http://mail.gnome.org/archives/libsigc-list/).
 
-## Patches
+## Contributing
 
-Patches should be added to bugzilla bugs.
+Please report bugs as GitHub [issues](https://github.com/libsigcplusplus/libsigcplusplus/issues), or provide improvements as GitHub [pull requests](https://github.com/libsigcplusplus/libsigcplusplus/pulls).
 
-See the list of [open libsigc++ bugs](http://bugzilla.gnome.org/buglist.cgi?product=libsigc%2B%2B&bug_status=UNCONFIRMED&bug_status=NEW&bug_status=ASSIGNED&bug_status=REOPENED&bug_status=NEEDINFO") ,or  [submit a new libsigc++ bug]("http://bugzilla.gnome.org/enter_bug.cgi?product=libsigc%2B%2B).
+See also the [list of older open libsigc++ bugs in the old bugilla](http://bugzilla.gnome.org/buglist.cgi?product=libsigc%2B%2B&bug_status=UNCONFIRMED&bug_status=NEW&bug_status=ASSIGNED&bug_status=REOPENED&bug_status=NEEDINFO").
 
-We also accept pull requests via the [libsigc++ mirror on GitHub](https://github.com/GNOME/libsigcplusplus).
+## Git
 
-## Version Control
-
-libsigc++ is in the [libsigcplusplus](http://git.gnome.org/browse/libsigcplusplus/) module in GNOME's git repository.
-
-There is also a [libsigc++ mirror on GitHub](https://github.com/GNOME/libsigcplusplus).
+The libsigc++ source code is in the [libsigcplusplus](https://github.com/libsigcplusplus/libsigcplusplus) repository on GitHub.

@@ -28,7 +28,7 @@ the GNU Library General Public License, [LGPL](http://www.gnu.org/copyleft/lgpl.
 
 ## News
 
-See the [NEWS](https://git.gnome.org/browse/libsigcplusplus/tree/NEWS) file in git.
+See the [NEWS](https://github.com/libsigcplusplus/libsigcplusplus/blob/master/NEWS) file in git.
 
 ## Developers
 
