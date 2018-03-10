@@ -7,13 +7,9 @@ body {
     float: right;
     margin-top: 50px;
     width: 180px;
-}
-
-#coloredbox {
     background-color: #6299cd;
     padding: 5px;
     border: 2px solid black;
-
 }
 
 a.menu { text-decoration: underline; color: white; }
