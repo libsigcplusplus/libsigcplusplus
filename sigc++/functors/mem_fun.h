@@ -21,6 +21,7 @@
 #include <sigc++/type_traits.h>
 #include <sigc++/limit_reference.h>
 #include <sigc++/member_method_trait.h>
+#include <functional>
 
 // implementation notes:
 //  - we do not use bind here, because it would introduce
@@ -113,7 +114,7 @@ public:
    */
   decltype(auto) operator()(obj_type_with_modifier& obj, type_trait_take_t<T_arg>... a) const
   {
-    return (obj.*func_ptr_)(a...);
+    return std::invoke(func_ptr_, obj, a...);
   }
 
 protected:
@@ -152,7 +153,7 @@ public:
    */
   decltype(auto) operator()(type_trait_take_t<T_arg>... a) const
   {
-    return (obj_.invoke().*(this->func_ptr_))(a...);
+    return std::invoke(this->func_ptr_, obj_.invoke(), a...);
   }
 
   // protected:

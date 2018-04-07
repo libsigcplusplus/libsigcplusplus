@@ -23,6 +23,7 @@
 #include <sigc++/visit_each.h>
 #include <sigc++/adaptors/adaptor_trait.h>
 #include <sigc++/functors/slot_base.h>
+#include <functional>
 
 #include <memory>
 
@@ -190,8 +191,10 @@ public:
    */
   inline T_return operator()(type_trait_take_t<T_arg>... a) const
   {
-    if (!empty() && !blocked())
-      return (reinterpret_cast<call_type>(slot_base::rep_->call_))(slot_base::rep_, a...);
+    if (!empty() && !blocked()) {
+      return std::invoke(reinterpret_cast<call_type>(slot_base::rep_->call_), slot_base::rep_, a...);
+    }
+
     return T_return();
   }
 

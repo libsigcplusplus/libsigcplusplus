@@ -26,6 +26,7 @@
 #include <sigc++/tuple-utils/tuple_start.h>
 #include <sigc++/tuple-utils/tuple_end.h>
 #include <sigc++/tuple-utils/tuple_transform_each.h>
+#include <functional>
 
 
 namespace sigc

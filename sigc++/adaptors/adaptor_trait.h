@@ -25,6 +25,7 @@
 #include <sigc++/functors/ptr_fun.h>
 #include <sigc++/functors/mem_fun.h>
 #include <sigc++/adaptors/adaptor_base.h>
+#include <functional>
 
 /*
  * The idea here is simple.  To prevent the need to
@@ -96,7 +97,7 @@ struct adaptor_functor : public adaptor_base
   template <typename... T_arg>
   decltype(auto) operator()(T_arg&&... arg) const
   {
-    return functor_(std::forward<T_arg>(arg)...);
+    return std::invoke(functor_, std::forward<T_arg>(arg)...);
   }
 
   /// Constructs an invalid functor.
