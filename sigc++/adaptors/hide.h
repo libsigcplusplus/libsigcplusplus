@@ -102,28 +102,13 @@ struct hide_functor : public adapts<T_functor>
     const auto t_end = internal::tuple_end<size - index_ignore - 1>(t);
     const auto t_used = std::tuple_cat(t_start, t_end);
 
-    constexpr auto size_used = size - 1;
-
-    // TODO: Remove these? They are just here as a sanity check.
-    static_assert(std::tuple_size<decltype(t_used)>::value == size_used, "Unexpected t_used size.");
-
-    const auto seq = std::make_index_sequence<size_used>();
-    return call_functor_operator_parentheses(t_used, seq);
+    return std::apply(this->functor_, t_used);
   }
 
   /** Constructs a hide_functor object that adds a dummy parameter to the passed functor.
    * @param func Functor to invoke from operator()().
    */
   explicit hide_functor(const T_functor& func) : adapts<T_functor>(func) {}
-
-private:
-  // TODO_variadic: Replace this with std::experimental::apply() if that becomes standard
-  // C++, or add our own implementation, to avoid code duplication.
-  template <typename T_tuple, std::size_t... Is>
-  decltype(auto) call_functor_operator_parentheses(T_tuple& tuple, std::index_sequence<Is...>)
-  {
-    return this->functor_.template operator()(std::get<Is>(tuple)...);
-  }
 };
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS

@@ -246,8 +246,7 @@ struct signal_emit
    */
   T_return operator()(const slot_type& slot) const
   {
-    const auto seq = std::make_index_sequence<std::tuple_size<decltype(a_)>::value>();
-    return call_call_type_operator_parentheses_with_tuple(slot, a_, seq);
+    return std::apply(slot, a_);
   }
 
   /** Executes a list of slots using an accumulator of type @e T_accumulator.
@@ -274,15 +273,6 @@ struct signal_emit
 
 private:
   std::tuple<type_trait_take_t<T_arg>...> a_;
-
-  // TODO_variadic: Replace this with std::experimental::apply() if that becomes standard
-  // C++, or add our own implementation, to avoid code duplication.
-  template <std::size_t... Is>
-  decltype(auto) call_call_type_operator_parentheses_with_tuple(
-    const slot_type& slot, const std::tuple<T_arg...>& tuple, std::index_sequence<Is...>) const
-  {
-    return (slot)(std::get<Is>(tuple)...);
-  }
 };
 
 /** Abstracts signal emission.
