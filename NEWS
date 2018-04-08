@@ -1,3 +1,13 @@
+2.99.11: (unstable)
+
+libsigc++-3.0 now requires C++17. Use of C++17:
+* Use std::apply to simplify implementation.
+* Use std::invoke to make implementation more generic.
+* Use constexpr if to simplify implementation.
+
+Build:
+* Require mm-common 0.9.12
+
 2.99.10: (unstable)
 
 * slot_base::set_parent(): Create a dummy slot_rep if necessary
