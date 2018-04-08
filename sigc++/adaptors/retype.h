@@ -82,9 +82,7 @@ struct retype_functor : public adapts<T_functor>
   template <typename... T_arg>
   decltype(auto) operator()(T_arg... a)
   {
-    //TODO: Use std::invoke() here?
-    return this->functor_.template operator()<type_trait_take_t<T_type>...>(
-      static_cast<T_type>(a)...);
+    return std::invoke(this->functor_, static_cast<T_type>(a)...);
   }
 
   /** Constructs a retype_functor object that performs C-style casts on the parameters passed on to

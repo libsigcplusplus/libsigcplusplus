@@ -41,8 +41,7 @@ struct retype_return_functor : public adapts<T_functor>
   template <typename... T_arg>
   inline T_return operator()(T_arg&&... a)
   {
-    //TODO: Use std::invoke() here?
-    return T_return(this->functor_.template operator() < T_arg... > (std::forward<T_arg>(a)...));
+    return T_return(std::invoke(this->functor_, std::forward<T_arg>(a)...));
   }
 
   retype_return_functor() = default;
@@ -82,8 +81,7 @@ struct retype_return_functor<void, T_functor> : public adapts<T_functor>
   template <typename... T_arg>
   inline void operator()(T_arg... a)
   {
-    //TODO: Use std::invoke() here?
-    this->functor_.template operator()<T_arg...>(a...);
+    std::invoke(this->functor_, a...);
   }
 
   retype_return_functor() = default;

@@ -49,8 +49,7 @@ struct bind_return_functor : public adapts<T_functor>
   template <typename... T_arg>
   inline typename unwrap_reference<T_return>::type operator()(T_arg... a)
   {
-    //TODO: Use std::invoke() here?
-    this->functor_.template operator()<type_trait_pass_t<T_arg>...>(a...);
+    std::invoke(this->functor_, a...);
     return ret_value_.invoke();
   }
 

@@ -94,9 +94,7 @@ public:
   template <typename... T_arg>
   decltype(auto) operator()(T_arg&&... arg)
   {
-    //TODO: Use std::invoke() here?
-    return this->functor_.template operator()<type_trait_pass_t<T_arg>...>(
-      std::forward<T_arg>(arg)...);
+    return std::invoke(this->functor_, std::forward<T_arg>(arg)...);
   }
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
