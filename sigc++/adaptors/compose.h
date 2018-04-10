@@ -62,10 +62,6 @@ namespace sigc
 template <typename T_setter, typename T_getter>
 struct compose1_functor : public adapts<T_setter>
 {
-  decltype(auto) operator()() {
-    return std::invoke(this->functor_, get_());
-  }
-
   template <typename... T_arg>
   decltype(auto) operator()(T_arg&&... a)
   {
@@ -98,10 +94,6 @@ struct compose1_functor : public adapts<T_setter>
 template <typename T_setter, typename T_getter1, typename T_getter2>
 struct compose2_functor : public adapts<T_setter>
 {
-  decltype(auto) operator()() {
-    return std::invoke(this->functor_, get1_(), get2_());
-  }
-
   template <typename... T_arg>
   decltype(auto) operator()(T_arg... a)
   {
