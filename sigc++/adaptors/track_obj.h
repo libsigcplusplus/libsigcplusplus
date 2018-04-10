@@ -80,13 +80,6 @@ public:
   {
   }
 
-  /** Invokes the wrapped functor.
-   * @return The return value of the functor invocation.
-   */
-  decltype(auto) operator()() {
-    return std::invoke(this->functor_);
-  }
-
   /** Invokes the wrapped functor passing on the arguments.
    * @param arg Arguments to be passed on to the functor.
    * @return The return value of the functor invocation.
