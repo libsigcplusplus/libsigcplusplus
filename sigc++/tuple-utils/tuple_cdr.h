@@ -22,11 +22,7 @@
 #include <type_traits>
 #include <utility>
 
-namespace sigc
-{
-
-namespace internal
-{
+namespace sigc::internal {
 
 /**
  * Get the type of a tuple without the first item.
@@ -41,11 +37,11 @@ struct tuple_type_cdr<std::tuple<H, T...>>
   using type = std::tuple<T...>;
 };
 
-namespace detail
-{
+namespace detail {
 
 template <typename T, std::size_t... I>
-constexpr decltype(auto)
+constexpr
+decltype(auto)
 tuple_cdr_impl(T&& t, std::index_sequence<0, I...>)
 {
   using cdr = typename tuple_type_cdr<std::decay_t<T>>::type;
@@ -59,10 +55,10 @@ tuple_cdr_impl(T&& t, std::index_sequence<0, I...>)
  * This is analogous to std::tuple_cat().
  */
 template <typename T>
-constexpr decltype(auto)
-tuple_cdr(T&& t)
-{
-  // We use std::decay_t<> because tuple_size is not defined for references.
+constexpr
+decltype(auto)
+tuple_cdr(T&& t) {
+  //We use std::decay_t<> because tuple_size is not defined for references.
   constexpr auto size = std::tuple_size<std::decay_t<T>>::value;
 
   static_assert(size != 0, "tuple size must be non-zero");
@@ -70,8 +66,6 @@ tuple_cdr(T&& t)
   return detail::tuple_cdr_impl(std::forward<T>(t), seq{});
 }
 
-} // namespace internal
+} // namespace sigc::internal
 
-} // namespace sigc
-
-#endif // SIGC_TUPLE_UTILS_TUPLE_CDR_H
+#endif //SIGC_TUPLE_UTILS_TUPLE_CDR_H
