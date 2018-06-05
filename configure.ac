@@ -17,7 +17,7 @@
 
 AC_INIT([libsigc++], [2.99.11],
         [http://bugzilla.gnome.org/enter_bug.cgi?product=libsigc%2B%2B],
-        [libsigc++], [http://libsigc.sourceforge.net/])
+        [libsigc++], [https://libsigcplusplus.github.io/libsigcplusplus/])
 AC_PREREQ([2.59])
 
 AC_CONFIG_SRCDIR([sigc++/sigc++.h])
