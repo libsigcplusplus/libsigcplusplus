@@ -134,7 +134,18 @@ struct slot_call
   /** Forms a function pointer from call_it().
    * @return A function pointer formed from call_it().
    */
-  static hook address() { return reinterpret_cast<hook>(&call_it); }
+  static hook address()
+  {
+    // Conversion between different types of function pointers with
+    // reinterpret_cast can make gcc8 print a warning.
+    // https://github.com/libsigcplusplus/libsigcplusplus/issues/1
+    union {
+      hook ph;
+      decltype(&call_it) pc;
+    } u;
+    u.pc = &call_it;
+    return u.ph;
+  }
 };
 
 } /* namespace internal */
@@ -191,8 +202,17 @@ public:
    */
   inline T_return operator()(type_trait_take_t<T_arg>... a) const
   {
-    if (!empty() && !blocked()) {
-      return std::invoke(reinterpret_cast<call_type>(slot_base::rep_->call_), slot_base::rep_, a...);
+    if (!empty() && !blocked())
+    {
+      // Conversion between different types of function pointers with
+      // reinterpret_cast can make gcc8 print a warning.
+      // https://github.com/libsigcplusplus/libsigcplusplus/issues/1
+      union {
+        internal::hook ph;
+        call_type pc;
+      } u;
+      u.ph = slot_base::rep_->call_;
+      return std::invoke(u.pc, slot_base::rep_, a...);
     }
 
     return T_return();
