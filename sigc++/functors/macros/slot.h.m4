@@ -63,7 +63,17 @@ FOR(1, $1,[
   inline T_return operator()(LOOP(arg%1_type_ _A_a%1, $1)) const
     {
       if (!empty() && !blocked())
-        return (reinterpret_cast<call_type>(slot_base::rep_->call_))(LIST(slot_base::rep_, LOOP(_A_a%1, $1)));
+      {
+        // Conversion between different types of function pointers with
+        // reinterpret_cast can make gcc8 print a warning.
+        // https://github.com/libsigcplusplus/libsigcplusplus/issues/1
+        union {
+          internal::hook ph;
+          call_type pc;
+        } u;
+        u.ph = slot_base::rep_->call_;
+        return (u.pc)(LIST(slot_base::rep_, LOOP(_A_a%1, $1)));
+      }
       return T_return();
     }
 
@@ -355,7 +365,14 @@ ifelse($1,0,[
    * @return A function pointer formed from call_it().
    */
   static hook address()
-    { return reinterpret_cast<hook>(&call_it); }
+  {
+    union {
+      hook ph;
+      decltype(&call_it) pc;
+    } u;
+    u.pc = &call_it;
+    return u.ph;
+  }
 };
 
 ])
@@ -483,7 +500,14 @@ struct slot_call
    * @return A function pointer formed from call_it().
    */
   static hook address()
-    { return reinterpret_cast<hook>(&call_it); }
+  {
+    union {
+      hook ph;
+      decltype(&call_it) pc;
+    } u;
+    u.pc = &call_it;
+    return u.ph;
+  }
 };
 
 /** Abstracts functor execution.
@@ -515,7 +539,14 @@ struct slot_call<T_functor, T_return>
    * @return A function pointer formed from call_it().
    */
   static hook address()
-    { return reinterpret_cast<hook>(&call_it); }
+  {
+    union {
+      hook ph;
+      decltype(&call_it) pc;
+    } u;
+    u.pc = &call_it;
+    return u.ph;
+  }
 };
 
 } /* namespace internal */
@@ -575,7 +606,14 @@ public:
   inline T_return operator()(type_trait_take_t<T_arg>... _A_a) const
     {
       if (!empty() && !blocked())
-        return (reinterpret_cast<call_type>(slot_base::rep_->call_))(slot_base::rep_, _A_a...);
+      {
+        union {
+          internal::hook ph;
+          call_type pc;
+        } u;
+        u.ph = slot_base::rep_->call_;
+        return (u.pc)(slot_base::rep_, _A_a...);
+      }
       return T_return();
     }
 

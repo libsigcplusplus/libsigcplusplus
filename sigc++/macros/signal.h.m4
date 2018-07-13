@@ -51,7 +51,17 @@ ifelse($1,0,[dnl
    * @return The slot's return value.
    */
   T_return operator()(const slot_type& _A_slot) const
-    { return (reinterpret_cast<typename slot_type::call_type>(_A_slot.rep_->call_))(LIST(_A_slot.rep_, LOOP(_A_a%1_, $1))); }
+  {
+    // Conversion between different types of function pointers with
+    // reinterpret_cast can make gcc8 print a warning.
+    // https://github.com/libsigcplusplus/libsigcplusplus/issues/1
+    union {
+      internal::hook ph;
+      typename slot_type::call_type pc;
+    } u;
+    u.ph = _A_slot.rep_->call_;
+    return (u.pc)(LIST(_A_slot.rep_, LOOP(_A_a%1_, $1)));
+  }
 dnl  T_return operator()(const slot_type& _A_slot) const
 dnl    { return _A_slot(LOOP(_A_a%1_, $1)); }
 
@@ -150,13 +160,19 @@ FOR(1, $1,[
         if (it == slots.end())
           return T_return(); // note that 'T_return r_();' doesn't work => define 'r_' after this line and initialize as follows:
   
-        r_ = (reinterpret_cast<call_type>(it->rep_->call_))(LIST(it->rep_, LOOP(_A_a%1, $1)));
+        union {
+          internal::hook ph;
+          call_type pc;
+        } u;
+        u.ph = it->rep_->call_;
+        r_ = (u.pc)(LIST(it->rep_, LOOP(_A_a%1, $1)));
         for (++it; it != slots.end(); ++it)
-          {
-            if (it->empty() || it->blocked())
-              continue;
-            r_ = (reinterpret_cast<call_type>(it->rep_->call_))(LIST(it->rep_, LOOP(_A_a%1, $1)));
-          }
+        {
+          if (it->empty() || it->blocked())
+            continue;
+          u.ph = it->rep_->call_;
+          r_ = (u.pc)(LIST(it->rep_, LOOP(_A_a%1, $1)));
+        }
       }
       
       return r_;
@@ -201,13 +217,19 @@ FOR(1, $1,[
         if (it == reverse_iterator_type(slots.begin()))
           return T_return(); // note that 'T_return r_();' doesn't work => define 'r_' after this line and initialize as follows:
   
-        r_ = (reinterpret_cast<call_type>(it->rep_->call_))(LIST(it->rep_, LOOP(_A_a%1, $1)));
+        union {
+          internal::hook ph;
+          call_type pc;
+        } u;
+        u.ph = it->rep_->call_;
+        r_ = (u.pc)(LIST(it->rep_, LOOP(_A_a%1, $1)));
         for (++it; it != reverse_iterator_type(slots.begin()); ++it)
-          {
-            if (it->empty() || it->blocked())
-              continue;
-            r_ = (reinterpret_cast<call_type>(it->rep_->call_))(LIST(it->rep_, LOOP(_A_a%1, $1)));
-          }
+        {
+          if (it->empty() || it->blocked())
+            continue;
+          u.ph = it->rep_->call_;
+          r_ = (u.pc)(LIST(it->rep_, LOOP(_A_a%1, $1)));
+        }
       }
       
       return r_;
@@ -243,12 +265,17 @@ FOR(1, $1,[
       signal_exec exec(impl);
       temp_slot_list slots(impl->slots_);
 
+      union {
+        internal::hook ph;
+        call_type pc;
+      } u;
       for (const auto& slot : slots)
-        {
-          if (slot.empty() || slot.blocked())
-            continue;
-          (reinterpret_cast<call_type>(slot.rep_->call_))(LIST(slot.rep_, LOOP(_A_a%1, $1)));
-        }
+      {
+        if (slot.empty() || slot.blocked())
+          continue;
+        u.ph = slot.rep_->call_;
+        (u.pc)(LIST(slot.rep_, LOOP(_A_a%1, $1)));
+      }
     }
 
 _DEPRECATE_IFDEF_START
@@ -274,12 +301,17 @@ FOR(1, $1,[
       typedef std::reverse_iterator<signal_impl::iterator_type, std::random_access_iterator_tag,
                                      slot_base, slot_base&, slot_base*, std::ptrdiff_t> reverse_iterator_type;
 #endif
+      union {
+        internal::hook ph;
+        call_type pc;
+      } u;
       for (auto it = reverse_iterator_type(slots.end()); it != reverse_iterator_type(slots.begin()); ++it)
-        {
-          if (it->empty() || it->blocked())
-            continue;
-          (reinterpret_cast<call_type>(it->rep_->call_))(LIST(it->rep_, LOOP(_A_a%1, $1)));
-        }
+      {
+        if (it->empty() || it->blocked())
+          continue;
+        u.ph = it->rep_->call_;
+        (u.pc)(LIST(it->rep_, LOOP(_A_a%1, $1)));
+      }
     }
 _DEPRECATE_IFDEF_END
 };
