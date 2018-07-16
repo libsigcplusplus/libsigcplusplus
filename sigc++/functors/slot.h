@@ -33,6 +33,25 @@ namespace sigc
 namespace internal
 {
 
+// Conversion between different types of function pointers with
+// reinterpret_cast can make gcc8 print a warning.
+// https://github.com/libsigcplusplus/libsigcplusplus/issues/1
+/** Returns the supplied bit pattern, interpreted as another type.
+ *
+ * When reinterpret_cast causes a compiler warning or error, this function
+ * may work. Intended mainly for conversion between different types of pointers.
+ */
+template <typename out_type, typename in_type>
+inline out_type bitwise_equivalent_cast(in_type in)
+{
+  union {
+    in_type in;
+    out_type out;
+  } u;
+  u.in = in;
+  return u.out;
+}
+
 /** A typed slot_rep.
  * A typed slot_rep holds a functor that can be invoked from
  * slot::operator()(). visit_each() is used to visit the functor's
@@ -134,7 +153,7 @@ struct slot_call
   /** Forms a function pointer from call_it().
    * @return A function pointer formed from call_it().
    */
-  static hook address() { return reinterpret_cast<hook>(&call_it); }
+  static hook address() { return bitwise_equivalent_cast<hook>(&call_it); }
 };
 
 } /* namespace internal */
@@ -192,7 +211,7 @@ public:
   inline T_return operator()(type_trait_take_t<T_arg>... a) const
   {
     if (!empty() && !blocked()) {
-      return std::invoke(reinterpret_cast<call_type>(slot_base::rep_->call_), slot_base::rep_, a...);
+      return std::invoke(internal::bitwise_equivalent_cast<call_type>(slot_base::rep_->call_), slot_base::rep_, a...);
     }
 
     return T_return();
