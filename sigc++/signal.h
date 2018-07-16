@@ -322,21 +322,12 @@ public:
         return T_return();
       }
 
-      // Conversion between different types of function pointers with
-      // reinterpret_cast can make gcc8 print a warning.
-      // https://github.com/libsigcplusplus/libsigcplusplus/issues/1
-      union {
-        internal::hook ph;
-        call_type pc;
-      } u;
-      u.ph = it->rep_->call_;
-      r_ = (u.pc)(it->rep_, a...);
+      r_ = (reinterpret_cast<call_type>(it->rep_->call_))(it->rep_, a...);
       for (++it; it != slots.end(); ++it)
       {
         if (it->empty() || it->blocked())
           continue;
-        u.ph = it->rep_->call_;
-        r_ = (u.pc)(it->rep_, a...);
+        r_ = (reinterpret_cast<call_type>(it->rep_->call_))(it->rep_, a...);
       }
     }
 
@@ -369,20 +360,12 @@ public:
     signal_impl_holder exec(impl);
     const temp_slot_list slots(impl->slots_);
 
-    // Conversion between different types of function pointers with
-    // reinterpret_cast can make gcc8 print a warning.
-    // https://github.com/libsigcplusplus/libsigcplusplus/issues/1
-    union {
-      internal::hook ph;
-      call_type pc;
-    } u;
     for (const auto& slot : slots)
     {
       if (slot.empty() || slot.blocked())
         continue;
 
-      u.ph = slot.rep_->call_;
-      (u.pc)(slot.rep_, a...);
+      (reinterpret_cast<call_type>(slot.rep_->call_))(slot.rep_, a...);
     }
   }
 };
