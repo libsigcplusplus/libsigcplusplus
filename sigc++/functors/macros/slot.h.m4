@@ -63,7 +63,7 @@ FOR(1, $1,[
   inline T_return operator()(LOOP(arg%1_type_ _A_a%1, $1)) const
     {
       if (!empty() && !blocked())
-        return (reinterpret_cast<call_type>(slot_base::rep_->call_))(LIST(slot_base::rep_, LOOP(_A_a%1, $1)));
+        return (internal::bitwise_equivalent_cast<call_type>(slot_base::rep_->call_))(LIST(slot_base::rep_, LOOP(_A_a%1, $1)));
       return T_return();
     }
 
@@ -355,7 +355,7 @@ ifelse($1,0,[
    * @return A function pointer formed from call_it().
    */
   static hook address()
-    { return reinterpret_cast<hook>(&call_it); }
+  { return bitwise_equivalent_cast<hook>(&call_it); }
 };
 
 ])
@@ -377,6 +377,25 @@ _FIREWALL([FUNCTORS_SLOT])
 namespace sigc {
 
 namespace internal {
+
+// Conversion between different types of function pointers with
+// reinterpret_cast can make gcc8 print a warning.
+// https://github.com/libsigcplusplus/libsigcplusplus/issues/1
+/** Returns the supplied bit pattern, interpreted as another type.
+ *
+ * When reinterpret_cast causes a compiler warning or error, this function
+ * may work. Intended mainly for conversion between different types of pointers.
+ */
+template <typename out_type, typename in_type>
+inline out_type bitwise_equivalent_cast(in_type in)
+{
+  union {
+    in_type in;
+    out_type out;
+  } u;
+  u.in = in;
+  return u.out;
+}
 
 /** A typed slot_rep.
  * A typed slot_rep holds a functor that can be invoked from
@@ -483,7 +502,7 @@ struct slot_call
    * @return A function pointer formed from call_it().
    */
   static hook address()
-    { return reinterpret_cast<hook>(&call_it); }
+  { return bitwise_equivalent_cast<hook>(&call_it); }
 };
 
 /** Abstracts functor execution.
@@ -515,7 +534,7 @@ struct slot_call<T_functor, T_return>
    * @return A function pointer formed from call_it().
    */
   static hook address()
-    { return reinterpret_cast<hook>(&call_it); }
+  { return bitwise_equivalent_cast<hook>(&call_it); }
 };
 
 } /* namespace internal */
@@ -575,7 +594,7 @@ public:
   inline T_return operator()(type_trait_take_t<T_arg>... _A_a) const
     {
       if (!empty() && !blocked())
-        return (reinterpret_cast<call_type>(slot_base::rep_->call_))(slot_base::rep_, _A_a...);
+        return (internal::bitwise_equivalent_cast<call_type>(slot_base::rep_->call_))(slot_base::rep_, _A_a...);
       return T_return();
     }
 
