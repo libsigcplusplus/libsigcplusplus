@@ -40,6 +40,11 @@ namespace internal
  *
  * When reinterpret_cast causes a compiler warning or error, this function
  * may work. Intended mainly for conversion between different types of pointers.
+ *
+ * Qualify calls with namespace names: sigc::internal::bitwise_equivalent_cast<>().
+ * If you don't, indirect calls from another library that also contains a
+ * bitwise_equivalent_cast<>() (perhaps glibmm), can be ambiguous due to ADL
+ * (argument-dependent lookup).
  */
 template <typename out_type, typename in_type>
 inline out_type bitwise_equivalent_cast(in_type in)
@@ -153,7 +158,7 @@ struct slot_call
   /** Forms a function pointer from call_it().
    * @return A function pointer formed from call_it().
    */
-  static hook address() { return bitwise_equivalent_cast<hook>(&call_it); }
+  static hook address() { return sigc::internal::bitwise_equivalent_cast<hook>(&call_it); }
 };
 
 } /* namespace internal */
@@ -211,7 +216,7 @@ public:
   inline T_return operator()(type_trait_take_t<T_arg>... a) const
   {
     if (!empty() && !blocked()) {
-      return std::invoke(internal::bitwise_equivalent_cast<call_type>(slot_base::rep_->call_), slot_base::rep_, a...);
+      return std::invoke(sigc::internal::bitwise_equivalent_cast<call_type>(slot_base::rep_->call_), slot_base::rep_, a...);
     }
 
     return T_return();
