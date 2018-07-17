@@ -63,7 +63,7 @@ FOR(1, $1,[
   inline T_return operator()(LOOP(arg%1_type_ _A_a%1, $1)) const
     {
       if (!empty() && !blocked())
-        return (internal::bitwise_equivalent_cast<call_type>(slot_base::rep_->call_))(LIST(slot_base::rep_, LOOP(_A_a%1, $1)));
+        return (sigc::internal::bitwise_equivalent_cast<call_type>(slot_base::rep_->call_))(LIST(slot_base::rep_, LOOP(_A_a%1, $1)));
       return T_return();
     }
 
@@ -355,7 +355,7 @@ ifelse($1,0,[
    * @return A function pointer formed from call_it().
    */
   static hook address()
-  { return bitwise_equivalent_cast<hook>(&call_it); }
+  { return sigc::internal::bitwise_equivalent_cast<hook>(&call_it); }
 };
 
 ])
@@ -385,6 +385,11 @@ namespace internal {
  *
  * When reinterpret_cast causes a compiler warning or error, this function
  * may work. Intended mainly for conversion between different types of pointers.
+ *
+ * Qualify calls with namespace names: sigc::internal::bitwise_equivalent_cast<>().
+ * If you don't, indirect calls from another library that also contains a
+ * bitwise_equivalent_cast<>() (perhaps glibmm), can be ambiguous due to ADL
+ * (argument-dependent lookup).
  */
 template <typename out_type, typename in_type>
 inline out_type bitwise_equivalent_cast(in_type in)
@@ -502,7 +507,7 @@ struct slot_call
    * @return A function pointer formed from call_it().
    */
   static hook address()
-  { return bitwise_equivalent_cast<hook>(&call_it); }
+  { return sigc::internal::bitwise_equivalent_cast<hook>(&call_it); }
 };
 
 /** Abstracts functor execution.
@@ -534,7 +539,7 @@ struct slot_call<T_functor, T_return>
    * @return A function pointer formed from call_it().
    */
   static hook address()
-  { return bitwise_equivalent_cast<hook>(&call_it); }
+  { return sigc::internal::bitwise_equivalent_cast<hook>(&call_it); }
 };
 
 } /* namespace internal */
@@ -594,7 +599,7 @@ public:
   inline T_return operator()(type_trait_take_t<T_arg>... _A_a) const
     {
       if (!empty() && !blocked())
-        return (internal::bitwise_equivalent_cast<call_type>(slot_base::rep_->call_))(slot_base::rep_, _A_a...);
+        return (sigc::internal::bitwise_equivalent_cast<call_type>(slot_base::rep_->call_))(slot_base::rep_, _A_a...);
       return T_return();
     }
 
