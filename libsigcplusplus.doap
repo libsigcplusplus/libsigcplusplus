@@ -12,8 +12,8 @@ callback function, either global or a member function, regardless of
 whether it is static or virtual.
 
 libsigc++ is also used by glibmm and gtkmm to wrap Glib and GTK+ signals.</description>
-  <homepage rdf:resource="http://libsigc.sourceforge.net/" />
-  <bug-database rdf:resource="http://bugzilla.gnome.org/browse.cgi?product=libsigc%2B%2B" />
+  <homepage rdf:resource="https://libsigcplusplus.github.io/libsigcplusplus/" />
+  <bug-database rdf:resource="https://github.com/libsigcplusplus/libsigcplusplus/issues/" />
   <mailing-list rdf:resource="mailto:libsigc-list@gnome.org" />
   <category rdf:resource="http://api.gnome.org/doap-extensions#core" />
   <programming-language>C++</programming-language>
@@ -29,7 +29,7 @@ libsigc++ is also used by glibmm and gtkmm to wrap Glib and GTK+ signals.</descr
   <maintainer>
     <foaf:Person>
       <foaf:name>Kjell Ahlstedt</foaf:name>
-      <foaf:mbox rdf:resource="mailto:kjell.ahlstedt@bredband.net" />
+      <foaf:mbox rdf:resource="mailto:kjellahlstedt@gmail.com" />
       <gnome:userid>kjellahl</gnome:userid>
     </foaf:Person>
   </maintainer>
