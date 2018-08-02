@@ -16,8 +16,8 @@
 ## along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 AC_INIT([libsigc++], [2.10.0],
-        [http://bugzilla.gnome.org/enter_bug.cgi?product=libsigc%2B%2B],
-        [libsigc++], [http://libsigc.sourceforge.net/])
+        [https://github.com/libsigcplusplus/libsigcplusplus/issues/],
+        [libsigc++], [https://libsigcplusplus.github.io/libsigcplusplus/])
 AC_PREREQ([2.59])
 
 AC_CONFIG_SRCDIR([sigc++/sigc++.h])
