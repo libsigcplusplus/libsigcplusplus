@@ -12,7 +12,7 @@ General information:
    depend on GTK+ or gtkmm.
 
    Further information is available on the libsigc++ project home page:
-   http://libsigc.sourceforge.net/
+   https://libsigcplusplus.github.io/libsigcplusplus/
 
 
 License information:
@@ -24,11 +24,12 @@ License information:
 Contact information:
    Maintainer: mailto: murrayc@murrayc.com
    Maillist: mailto: libsigc-list@gnome.org
-   Homepage: http://libsigc.sourceforge.net
+   Homepage: https://libsigcplusplus.github.io/libsigcplusplus/
    Online reference documentation: https://developer.gnome.org/libsigc++/unstable/
    Download: http://ftp.gnome.org/pub/GNOME/sources/libsigc++/
              https://download.gnome.org/sources/libsigc++/
-   Git: https://git.gnome.org/browse/libsigcplusplus/
+   Git: https://github.com/libsigcplusplus/libsigcplusplus
+   Bug reports: https://github.com/libsigcplusplus/libsigcplusplus/issues
 
 
 Overview of the distribution:
@@ -51,4 +52,5 @@ Overview of the distribution:
 
 Compatibility:
 
-   Compatible compilers must support C++14, such as the decltype(auto) specifier.
+   Compatible compilers must support C++17, such as the decltype(auto) specifier
+   (from C++14) and std::invoke().
