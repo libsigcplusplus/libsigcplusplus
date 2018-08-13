@@ -19,6 +19,7 @@
 #include <sigc++/tuple-utils/tuple_transform_each.h>
 #include <utility>
 #include <functional>
+#include <string>
 
 template <typename T_element_from>
 class transform_to_string

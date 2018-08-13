@@ -19,6 +19,7 @@
 #include <sigc++/tuple-utils/tuple_for_each.h>
 #include <iostream>
 #include <functional>
+#include <string>
 
 template <typename T_element_from>
 class for_each_simple
