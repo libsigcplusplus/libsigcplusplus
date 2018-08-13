@@ -84,7 +84,7 @@ AC_CONFIG_FILES([Makefile
                  docs/docs/reference/Doxyfile
                  MSVC_NMake/sigc.rc])
 
-# Copy the generated configuration headers into the MSVC project directories.
+# Copy the generated configuration headers into the MSVC NMake directory.
 AC_CONFIG_COMMANDS([MSVC_NMake/sigc++config.h],
                    [cp -f sigc++config.h MSVC_NMake/sigc++config.h])
 AC_OUTPUT

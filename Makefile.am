@@ -35,7 +35,7 @@ dist_noinst_SCRIPTS = autogen.sh
 
 include $(srcdir)/MSVC_NMake/filelist.am
 
-dist_noinst_DATA = $(addprefix MSVC_NMake/,$(msvc_net2017_data)) CMakeLists.txt sigc++config.h.cmake cmake_uninstall.cmake.in
+dist_noinst_DATA = $(addprefix MSVC_NMake/,$(msvc_nmake_data)) CMakeLists.txt sigc++config.h.cmake cmake_uninstall.cmake.in
 
 DISTCLEANFILES = MSVC_NMake/sigc++config.h
 

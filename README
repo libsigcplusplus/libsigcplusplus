@@ -47,7 +47,7 @@ Overview of the distribution:
    
    tests/                            programs testing and verifying proper behaviour
    
-   MSVC_NMake/                       project files for building the library with MSVC++ 2017
+   MSVC_NMake/                       NMake Makefiles for building the library with MSVC++ 2017 and later
 
 
 Compatibility:
