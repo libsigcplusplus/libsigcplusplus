@@ -4,5 +4,5 @@
 # one is maintaining the NMake build files.
 
 # Create the build directories
-$(CFG)\$(PLAT)\libsigcpp:
+$(CFG)\$(PLAT)\libsigcpp $(CFG)\$(PLAT)\libsigcpp-ex $(CFG)\$(PLAT)\libsigcpp-tests:
 	@-mkdir $@
