@@ -28,8 +28,13 @@ help:
 	@echo A 'clean' target is supported to remove all generated files, intermediate
 	@echo object files and binaries for the specified configuration.
 	@echo.
-	@echo An 'install' target is supported to copy the build (DLLs, utility programs,
-	@echo LIBs, along with the introspection files if applicable) to appropriate
-	@echo locations under ^$(PREFIX).
+	@echo An 'install' target is supported to copy the build (DLLs, LIBs, along with
+	@echo the header files) to appropriate locations under ^$(PREFIX).
+	@echo.
+	@echo A 'tests' target is supported to build the test programs, and a 'benchmark'
+	@echo target is supported to build the benchmarking program.  Note that the
+	@echo benchmarking program requires the Boost C++ libraries to build, and you need
+	@echo to pass in BOOST_DLL=1 to the NMake command line if your Boost libraries are
+	@echo built as DLLs.
 	@echo ======
 	@echo.

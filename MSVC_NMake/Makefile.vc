@@ -34,13 +34,15 @@ VALID_MSC = TRUE
 # into the lists we need for compilation and introspection
 !include create-lists-msvc.mak
 
-all: $(LIBSIGC_LIB) all-build-info
+all: $(LIBSIGC_LIB) $(libsigc_ex) all-build-info
 
-tests: all
+tests: $(libsigc_tests) all-build-info
+
+benchmark: all $(libsigc_bench) all-build-info
 
 # Include the build rules for sources, DLLs and executables
-!include build-rules-msvc.mak
 !include generate-msvc.mak
+!include build-rules-msvc.mak
 
 !include install.mak
 
