@@ -33,11 +33,11 @@ noinst_DATA = $(SIGCXX_MODULE_NAME)-uninstalled.pc
 
 dist_noinst_SCRIPTS = autogen.sh
 
-include $(srcdir)/MSVC_Net2017/filelist.am
+include $(srcdir)/MSVC_NMake/filelist.am
 
-dist_noinst_DATA = $(addprefix MSVC_Net2017/,$(msvc_net2017_data)) CMakeLists.txt sigc++config.h.cmake cmake_uninstall.cmake.in
+dist_noinst_DATA = $(addprefix MSVC_NMake/,$(msvc_net2017_data)) CMakeLists.txt sigc++config.h.cmake cmake_uninstall.cmake.in
 
-DISTCLEANFILES = MSVC_Net2017/sigc++config.h
+DISTCLEANFILES = MSVC_NMake/sigc++config.h
 
 # Optional: auto-generate the ChangeLog file from the git log on make dist
 include $(top_srcdir)/build/dist-changelog.am
