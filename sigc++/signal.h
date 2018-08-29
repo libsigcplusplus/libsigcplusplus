@@ -322,12 +322,12 @@ public:
         return T_return();
       }
 
-      r_ = (sigc::internal::bitwise_equivalent_cast<call_type>(it->rep_->call_))(it->rep_, a...);
+      r_ = (sigc::internal::function_pointer_cast<call_type>(it->rep_->call_))(it->rep_, a...);
       for (++it; it != slots.end(); ++it)
       {
         if (it->empty() || it->blocked())
           continue;
-        r_ = (sigc::internal::bitwise_equivalent_cast<call_type>(it->rep_->call_))(it->rep_, a...);
+        r_ = (sigc::internal::function_pointer_cast<call_type>(it->rep_->call_))(it->rep_, a...);
       }
     }
 
@@ -365,7 +365,7 @@ public:
       if (slot.empty() || slot.blocked())
         continue;
 
-      (sigc::internal::bitwise_equivalent_cast<call_type>(slot.rep_->call_))(slot.rep_, a...);
+      (sigc::internal::function_pointer_cast<call_type>(slot.rep_->call_))(slot.rep_, a...);
     }
   }
 };
