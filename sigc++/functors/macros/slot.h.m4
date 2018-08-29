@@ -63,7 +63,7 @@ FOR(1, $1,[
   inline T_return operator()(LOOP(arg%1_type_ _A_a%1, $1)) const
     {
       if (!empty() && !blocked())
-        return (sigc::internal::bitwise_equivalent_cast<call_type>(slot_base::rep_->call_))(LIST(slot_base::rep_, LOOP(_A_a%1, $1)));
+        return (sigc::internal::function_pointer_cast<call_type>(slot_base::rep_->call_))(LIST(slot_base::rep_, LOOP(_A_a%1, $1)));
       return T_return();
     }
 
@@ -355,7 +355,7 @@ ifelse($1,0,[
    * @return A function pointer formed from call_it().
    */
   static hook address()
-  { return sigc::internal::bitwise_equivalent_cast<hook>(&call_it); }
+  { return sigc::internal::function_pointer_cast<hook>(&call_it); }
 };
 
 ])
@@ -381,25 +381,23 @@ namespace internal {
 // Conversion between different types of function pointers with
 // reinterpret_cast can make gcc8 print a warning.
 // https://github.com/libsigcplusplus/libsigcplusplus/issues/1
-/** Returns the supplied bit pattern, interpreted as another type.
+// https://github.com/libsigcplusplus/libsigcplusplus/issues/8
+/** Returns the supplied function pointer, cast to a pointer to another function type.
  *
- * When reinterpret_cast causes a compiler warning or error, this function
- * may work. Intended mainly for conversion between different types of pointers.
+ * When a single reinterpret_cast between function pointer types causes a
+ * compiler warning or error, this function may work.
  *
- * Qualify calls with namespace names: sigc::internal::bitwise_equivalent_cast<>().
+ * Qualify calls with namespace names: sigc::internal::function_pointer_cast<>().
  * If you don't, indirect calls from another library that also contains a
- * bitwise_equivalent_cast<>() (perhaps glibmm), can be ambiguous due to ADL
+ * function_pointer_cast<>() (perhaps glibmm), can be ambiguous due to ADL
  * (argument-dependent lookup).
  */
-template <typename out_type, typename in_type>
-inline out_type bitwise_equivalent_cast(in_type in)
+template <typename T_out, typename T_in>
+inline T_out function_pointer_cast(T_in in)
 {
-  union {
-    in_type in;
-    out_type out;
-  } u;
-  u.in = in;
-  return u.out;
+  // The double reinterpret_cast suppresses a warning from gcc8 with the
+  // -Wcast-function-type option.
+  return reinterpret_cast<T_out>(reinterpret_cast<void (*)()>(in));
 }
 
 /** A typed slot_rep.
@@ -507,7 +505,7 @@ struct slot_call
    * @return A function pointer formed from call_it().
    */
   static hook address()
-  { return sigc::internal::bitwise_equivalent_cast<hook>(&call_it); }
+  { return sigc::internal::function_pointer_cast<hook>(&call_it); }
 };
 
 /** Abstracts functor execution.
@@ -539,7 +537,7 @@ struct slot_call<T_functor, T_return>
    * @return A function pointer formed from call_it().
    */
   static hook address()
-  { return sigc::internal::bitwise_equivalent_cast<hook>(&call_it); }
+  { return sigc::internal::function_pointer_cast<hook>(&call_it); }
 };
 
 } /* namespace internal */
@@ -599,7 +597,7 @@ public:
   inline T_return operator()(type_trait_take_t<T_arg>... _A_a) const
     {
       if (!empty() && !blocked())
-        return (sigc::internal::bitwise_equivalent_cast<call_type>(slot_base::rep_->call_))(slot_base::rep_, _A_a...);
+        return (sigc::internal::function_pointer_cast<call_type>(slot_base::rep_->call_))(slot_base::rep_, _A_a...);
       return T_return();
     }
 

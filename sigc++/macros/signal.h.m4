@@ -51,7 +51,7 @@ ifelse($1,0,[dnl
    * @return The slot's return value.
    */
   T_return operator()(const slot_type& _A_slot) const
-    { return (sigc::internal::bitwise_equivalent_cast<typename slot_type::call_type>(_A_slot.rep_->call_))(LIST(_A_slot.rep_, LOOP(_A_a%1_, $1))); }
+    { return (sigc::internal::function_pointer_cast<typename slot_type::call_type>(_A_slot.rep_->call_))(LIST(_A_slot.rep_, LOOP(_A_a%1_, $1))); }
 dnl  T_return operator()(const slot_type& _A_slot) const
 dnl    { return _A_slot(LOOP(_A_a%1_, $1)); }
 
@@ -150,12 +150,12 @@ FOR(1, $1,[
         if (it == slots.end())
           return T_return(); // note that 'T_return r_();' doesn't work => define 'r_' after this line and initialize as follows:
   
-        r_ = (sigc::internal::bitwise_equivalent_cast<call_type>(it->rep_->call_))(LIST(it->rep_, LOOP(_A_a%1, $1)));
+        r_ = (sigc::internal::function_pointer_cast<call_type>(it->rep_->call_))(LIST(it->rep_, LOOP(_A_a%1, $1)));
         for (++it; it != slots.end(); ++it)
           {
             if (it->empty() || it->blocked())
               continue;
-            r_ = (sigc::internal::bitwise_equivalent_cast<call_type>(it->rep_->call_))(LIST(it->rep_, LOOP(_A_a%1, $1)));
+            r_ = (sigc::internal::function_pointer_cast<call_type>(it->rep_->call_))(LIST(it->rep_, LOOP(_A_a%1, $1)));
           }
       }
       
@@ -201,12 +201,12 @@ FOR(1, $1,[
         if (it == reverse_iterator_type(slots.begin()))
           return T_return(); // note that 'T_return r_();' doesn't work => define 'r_' after this line and initialize as follows:
   
-        r_ = (sigc::internal::bitwise_equivalent_cast<call_type>(it->rep_->call_))(LIST(it->rep_, LOOP(_A_a%1, $1)));
+        r_ = (sigc::internal::function_pointer_cast<call_type>(it->rep_->call_))(LIST(it->rep_, LOOP(_A_a%1, $1)));
         for (++it; it != reverse_iterator_type(slots.begin()); ++it)
           {
             if (it->empty() || it->blocked())
               continue;
-            r_ = (sigc::internal::bitwise_equivalent_cast<call_type>(it->rep_->call_))(LIST(it->rep_, LOOP(_A_a%1, $1)));
+            r_ = (sigc::internal::function_pointer_cast<call_type>(it->rep_->call_))(LIST(it->rep_, LOOP(_A_a%1, $1)));
           }
       }
       
@@ -247,7 +247,7 @@ FOR(1, $1,[
         {
           if (slot.empty() || slot.blocked())
             continue;
-          (sigc::internal::bitwise_equivalent_cast<call_type>(slot.rep_->call_))(LIST(slot.rep_, LOOP(_A_a%1, $1)));
+          (sigc::internal::function_pointer_cast<call_type>(slot.rep_->call_))(LIST(slot.rep_, LOOP(_A_a%1, $1)));
         }
     }
 
@@ -278,7 +278,7 @@ FOR(1, $1,[
         {
           if (it->empty() || it->blocked())
             continue;
-          (sigc::internal::bitwise_equivalent_cast<call_type>(it->rep_->call_))(LIST(it->rep_, LOOP(_A_a%1, $1)));
+          (sigc::internal::function_pointer_cast<call_type>(it->rep_->call_))(LIST(it->rep_, LOOP(_A_a%1, $1)));
         }
     }
 _DEPRECATE_IFDEF_END
