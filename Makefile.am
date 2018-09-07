@@ -33,11 +33,11 @@ noinst_DATA = $(SIGCXX_MODULE_NAME)-uninstalled.pc
 
 dist_noinst_SCRIPTS = autogen.sh
 
-include $(srcdir)/MSVC_Net2013/filelist.am
+include $(srcdir)/MSVC_NMake/filelist.am
 
-dist_noinst_DATA = $(addprefix MSVC_Net2013/,$(msvc_net2013_data))
+dist_noinst_DATA = $(addprefix MSVC_NMake/,$(msvc_net2013_data))
 
-DISTCLEANFILES = MSVC_Net2013/sigc++config.h
+DISTCLEANFILES = MSVC_NMake/sigc++config.h
 
 # Optional: auto-generate the ChangeLog file from the git log on make dist
 include $(top_srcdir)/build/dist-changelog.am
