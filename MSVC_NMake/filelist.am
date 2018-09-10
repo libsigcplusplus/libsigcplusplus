@@ -10,5 +10,6 @@ msvc_nmake_data =		\
 	info-msvc.mak		\
 	install.mak	\
 	Makefile.vc		\
+	README.txt		\
 	sigc++config.h		\
 	sigc.rc
