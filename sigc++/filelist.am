@@ -68,3 +68,10 @@ sigc_public_h =				\
 	adaptors/bound_argument.h	\
 	functors/functors.h		\
 	functors/slot_base.h
+
+sigc_sources_cc =	\
+	signal_base.cc				\
+	trackable.cc				\
+	connection.cc				\
+	functors/slot_base.cc			\
+	adaptors/lambda/lambda.cc
