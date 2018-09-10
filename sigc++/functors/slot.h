@@ -190,8 +190,10 @@ struct slot_call
  *
  * @ingroup slot
  */
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 template <typename T_return, typename... T_arg>
 class slot;
+#endif // DOXYGEN_SHOULD_SKIP_THIS
 
 template <typename T_return, typename... T_arg>
 class slot<T_return(T_arg...)> : public slot_base

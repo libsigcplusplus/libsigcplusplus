@@ -529,8 +529,10 @@ public:
  *
  * @ingroup signal
  */
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 template <typename T_return, typename... T_arg>
 class signal;
+#endif // DOXYGEN_SHOULD_SKIP_THIS
 
 template <typename T_return, typename... T_arg>
 class signal<T_return(T_arg...)> : public signal_with_accumulator<T_return, void, T_arg...>
