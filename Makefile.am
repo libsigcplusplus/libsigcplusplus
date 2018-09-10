@@ -35,7 +35,7 @@ dist_noinst_SCRIPTS = autogen.sh
 
 include $(srcdir)/MSVC_NMake/filelist.am
 
-dist_noinst_DATA = $(addprefix MSVC_NMake/,$(msvc_net2013_data))
+dist_noinst_DATA = $(addprefix MSVC_NMake/,$(msvc_nmake_data))
 
 DISTCLEANFILES = MSVC_NMake/sigc++config.h
 
