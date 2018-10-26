@@ -19,6 +19,8 @@
 #ifndef SIGC_REFERENCE_WRAPPER_H
 #define SIGC_REFERENCE_WRAPPER_H
 
+#include <functional>
+
 namespace sigc
 {
 

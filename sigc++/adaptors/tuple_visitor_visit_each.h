@@ -20,6 +20,7 @@
 #define SIGC_TUPLE_VISITOR_VISIT_EACH_H
 
 #include <tuple>
+#include <sigc++/visit_each.h>
 
 namespace sigc
 {
