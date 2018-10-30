@@ -1,3 +1,27 @@
+2.10.1: (stable)
+
+* signal_impl::clear(): Don't clear the slot list during signal emission,
+  to prevent a segfault. And add a test for this.
+  (Kjell Ahlstedt) Bug #784550 (Andrejs Hanins)
+* slot_base::set_parent(): Create a dummy slot_rep if necessary
+  (Kjell Ahlstedt) Bug #167714 (Gerald Britton)
+* Avoid compiler warnings from function pointer conversions
+  (Kjell Ahlstedt) Issue #1 (sharkcz)
+  (Kjell Ahlstedt) Issue #8 (db0451)
+
+Build:
+* Make --disable-benchmark work.
+  (Christophe Lermytte) Bug #774732
+* Replace the Visual Studio project files with MSVC NMake project files
+  Add MSVC_NMake/README.txt for Visual Studio builds
+  (Chun-wei Fan) Pull request #11
+
+Documentation:
+* signal_base: Warn against deletion during emission
+  (Kjell Ahlstedt) Bug #167714 (Gerald Britton)
+* Update links in README, configure.ac, libsigcplusplus.doap
+  (Kjell Ahlstedt)
+
 2.10.0 (stable):
 
 * Build: Fix silent builds.
