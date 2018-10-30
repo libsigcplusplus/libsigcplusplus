@@ -1,4 +1,3 @@
-// -*- c++ -*-
 /* Copyright 2002, The libsigc++ Development Team
  *  Assigned to public domain.  Use as you wish without restriction.
  */
@@ -54,7 +53,7 @@ struct my_catch
     {
       throw;
     }
-    catch (std::range_error e) // catch what types we know
+    catch (const std::range_error& e) // catch what types we know
     {
       result_stream << "caught " << e.what();
     }
