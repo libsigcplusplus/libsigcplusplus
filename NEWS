@@ -1,3 +1,23 @@
+2.99.12: (unstable)
+
+* Avoid compiler warnings from function pointer conversions
+  (Kjell Ahlstedt) Issue #1 (sharkcz)
+  (Kjell Ahlstedt) Issue #8 (db0451)
+
+Build:
+* Replace the Visual Studio project files with MSVC NMake project files
+  Add MSVC_NMake/README.txt for Visual Studio builds
+  (Chun-wei Fan) Pull request #7
+* cmake: Require C++17 support
+  (Kjell Ahlstedt) Issue #9 (telkamp)
+
+Documentation:
+* Update links in README, configure.ac, libsigcplusplus.doap
+  (Seirra) Pull request #4
+  (Kjell Ahlstedt)
+* README: Update compiler requirement
+  (Kjell Ahlstedt) Issue #6 (Petr Ohlidal)
+
 2.99.11: (unstable)
 
 libsigc++-3.0 now requires C++17. Use of C++17:
