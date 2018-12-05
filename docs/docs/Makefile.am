@@ -31,10 +31,6 @@ doc_input = $(if $(srcdir:.=),$(vp_search),$(addprefix $(top_builddir)/sigc++/,$
 
 include $(top_srcdir)/build/doc-reference.am
 
-doc_imagesdir = $(libdocdir)/images
-dist_libdoc_DATA = index.html
-dist_doc_images_DATA = images/libsigc_logo.gif images/top.gif
-
 dist_noinst_DATA += doc-install.pl doc-postprocess.pl doxygen.css tagfile-to-devhelp2.xsl
 
 include $(srcdir)/doc-manual.am
