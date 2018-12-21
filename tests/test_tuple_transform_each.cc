@@ -49,7 +49,7 @@ test_tuple_transform_each_same_types()
   }
 
   {
-    auto t_original = std::make_tuple(1, (double)2.1f, 3);
+    auto t_original = std::make_tuple(1, static_cast<double>(2.1f), 3);
     auto t_transformed = sigc::internal::tuple_transform_each<transform_to_string>(t_original);
     auto t_expected = std::make_tuple(std::string("1"), std::string("2"), std::string("3"));
 
@@ -99,7 +99,7 @@ public:
 void
 test_tuple_transform_each_multiple_types()
 {
-  auto t_original = std::make_tuple(1, (double)2.1f, std::string("3"));
+  auto t_original = std::make_tuple(1, static_cast<double>(2.1f), std::string("3"));
   auto t_transformed = sigc::internal::tuple_transform_each<transform_to_something>(t_original);
   auto t_expected = std::make_tuple(std::string("1"), '2', 3);
 
@@ -269,7 +269,7 @@ public:
 constexpr
 void
 test_tuple_transform_each_constexpr() {
-  constexpr auto t_original = std::make_tuple(1, (double)2.1f);
+  constexpr auto t_original = std::make_tuple(1, static_cast<double>(2.1f));
   constexpr auto t_transformed =
     sigc::internal::tuple_transform_each<transform_as_constexpr_to_something>(t_original);
   constexpr auto t_expected = std::make_tuple('b', 2);
