@@ -24,3 +24,6 @@ Makefile.in
 /sigc++config.h
 /sigc++-*.pc
 /stamp-h?
+/.vs
+/MSVC_NMake/release/x64
+/MSVC_NMake/vc140.pdb
