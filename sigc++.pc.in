@@ -1,0 +1,18 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+datarootdir=@datarootdir@
+datadir=@datadir@
+includedir=@includedir@
+
+docdir=${datarootdir}/doc/libsigc++-@SIGCXX_API_VERSION@
+doxytagfile=${docdir}/reference/libsigc++-@SIGCXX_API_VERSION@.tag
+htmlrefdir=${docdir}/reference/html
+htmlrefpub=http://library.gnome.org/devel/libsigc++/unstable/
+
+Name: libsigc++
+Description: Typesafe signal and callback system for C++
+Version: @PACKAGE_VERSION@
+URL: http://libsigc.sourceforge.net/
+Libs: -L${libdir} -lsigc-@SIGCXX_API_VERSION@
+Cflags: -I${includedir}/sigc++-@SIGCXX_API_VERSION@ -I${libdir}/sigc++-@SIGCXX_API_VERSION@/include
