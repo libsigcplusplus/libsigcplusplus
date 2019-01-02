@@ -16,6 +16,7 @@
 
 #include <cassert>
 #include <cstdlib>
+#include <string>
 #include <sigc++/tuple-utils/tuple_end.h>
 #include <functional>
 
