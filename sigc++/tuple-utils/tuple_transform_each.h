@@ -45,8 +45,8 @@ struct tuple_transform_each_impl {
       static_assert(index >= 0, "unexpected index.");
 
       using from_element_type = typename std::tuple_element<index, std::decay_t<T_original>>::type;
-      using to_element_type = typename std::result_of<decltype (
-        &T_transformer<from_element_type>::transform)(from_element_type&)>::type;
+      using to_element_type = typename std::invoke_result<decltype (
+        &T_transformer<from_element_type>::transform), from_element_type&>::type;
       const auto t_element =
         std::tuple<to_element_type>(T_transformer<from_element_type>::transform(std::get<index>(t_original)));
 
