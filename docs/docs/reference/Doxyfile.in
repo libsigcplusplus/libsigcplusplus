@@ -283,12 +283,8 @@ INCLUDE_FILE_PATTERNS  = *.h
 PREDEFINED             = __cplusplus \
                          DOXYGEN_SHOULD_SKIP_THIS \
                          "SIGC_API=" \
-                         SIGC_CONFIGURE \
-                         SIGC_GCC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD \
-                         SIGC_MSVC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD \
-                         SIGC_TEMPLATE_SPECIALIZATION_OPERATOR_OVERLOAD
-EXPAND_AS_DEFINED      = SIGC_WORKAROUND_OPERATOR_PARENTHESES \
-                         SIGCXX_MAJOR_VERSION \
+                         SIGC_CONFIGURE
+EXPAND_AS_DEFINED      = SIGCXX_MAJOR_VERSION \
                          SIGCXX_MINOR_VERSION \
                          SIGCXX_MICRO_VERSION
 SKIP_FUNCTION_MACROS   = YES
