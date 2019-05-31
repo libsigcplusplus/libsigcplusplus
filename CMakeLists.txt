@@ -28,7 +28,7 @@ option (SIGCXX_DISABLE_DEPRECATED "Disable deprecated" OFF)
 
 project (sigc++)
 
-set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
+set( CMAKE_CXX_STANDARD 17 )
 
 set (PROJECT_SOURCE_DIR "${sigc++_SOURCE_DIR}/sigc++")
 
