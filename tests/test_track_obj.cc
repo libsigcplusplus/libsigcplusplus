@@ -21,8 +21,8 @@
 // - Show that a slot with a C++11 lambda expression can be automatically
 //   disconnected when an object derived from sigc::trackable is deleted,
 //   provided sigc::track_obj() is used.
-//   It's shown here as a preparation for deprecating and eventually
-//   deleting the libsigc++ lambda expressions.
+//   It shows that C++11 lambda expressions can replace the libsigc++ lambda
+//   expressions, which have been removed.
 //   See https://bugzilla.gnome.org/show_bug.cgi?id=672555
 // - Test the code example in the documentation in sigc++/adaptors/track_obj.h.
 //
@@ -63,7 +63,8 @@ public:
 
   std::string operator()(int i) { return (i < 0) ? "negative" : ((i > 0) ? "positive" : "zero"); }
 
-private:
+protected:
+  // Don't make it private. clang++ does not like unused private data.
   const bar_group4& bar_;
 };
 
@@ -82,8 +83,10 @@ public:
     return result;
   }
 
-private:
+protected:
+  // Don't make it private. clang++ does not like unused private data.
   const bar_group4& bar_;
+private:
   const book& aBook_;
 };
 
