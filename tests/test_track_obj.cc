@@ -26,11 +26,6 @@
 //   See https://bugzilla.gnome.org/show_bug.cgi?id=672555
 // - Test the code example in the documentation in sigc++/adaptors/track_obj.h.
 //
-// To test the C++11 lambda expressions with gcc 4.6.3 (and probably some later
-// versions of gcc; gcc 4.7.x also understands -std=c++11):
-//   make CXXFLAGS='-g -O2 -std=c++0x' test_track_obj
-//   ./test_track_obj
-//   echo $?
 // If test_track_obj writes nothing and the return code is 0, the test has passed.
 
 #include "testutilities.h"
@@ -191,18 +186,16 @@ main(int argc, char* argv[])
   sl20();
   util->check_result(result_stream, "");
 
-  // Code example in the documentation sigc++/adaptors/macros/track_obj.h.m4
-  // -----------------------------------------------------------------------
+  // Code example in the documentation sigc++/adaptors/track_obj.h.
+  // --------------------------------------------------------------
   {
     // struct bar : public sigc::trackable {} some_bar;
     sigc::signal<void()> some_signal;
     {
       bar_group4 some_bar;
-      // some_signal.connect(sigc::group(&foo, std::ref(some_bar)));
-      // disconnected automatically if some_bar goes out of scope
       // some_signal.connect([&some_bar](){ foo_group4(some_bar); }); // no auto-disconnect
-      // some_signal.connect(sigc::bind(&foo_group4, std::ref(some_bar))); // auto-disconnects, but
-      // we prefer C++11 lambda
+      // some_signal.connect(sigc::bind(&foo_group4, std::ref(some_bar))); // auto-disconnects,
+      //   but we prefer C++11 lambda
       some_signal.connect(sigc::track_obj([&some_bar]() { foo_group4(some_bar); }, some_bar));
       some_signal.emit();
       util->check_result(result_stream, "foo_group4(bar_group4&)");
