@@ -28,13 +28,11 @@
 #include <sigc++/tuple-utils/tuple_transform_each.h>
 #include <functional>
 
-
 namespace sigc
 {
 
 /** @defgroup bind bind(), bind_return()
  * sigc::bind() alters an arbitrary functor by fixing arguments to certain values.
- * Up to 7 arguments can be bound at a time.
  * For single argument binding, overloads of sigc::bind() are provided that let you
  * specify the zero-based position of the argument to fix with the first template parameter.
  * (A value of @p -1 fixes the last argument so sigc::bind<-1>() gives the same result as

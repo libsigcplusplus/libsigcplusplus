@@ -35,7 +35,6 @@ namespace sigc
  *
  * The functor returned by sigc::track_obj() is formally an adaptor, but it does
  * not alter the signature, return type or behaviour of the supplied functor.
- * Up to 7 objects can be tracked. operator()() can have up to 7 arguments.
  *
  * @par Example:
  * @code
