@@ -72,7 +72,7 @@ void test_connected_multiple_signal_emit()
   emitter.connect(mem_fun(foobar5, &foo::bar));
 
   std::cout << "elapsed time for " << COUNT << " emissions (5 slots):" << std::endl;
-  boost::timer::auto_cpu_timer timer;;
+  boost::timer::auto_cpu_timer timer;
 
   for (int i=0; i < COUNT; ++i)
     emitter(i);
