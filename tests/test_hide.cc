@@ -42,7 +42,7 @@ main(int argc, char* argv[])
   auto util = TestUtilities::get_instance();
 
   if (!util->check_command_args(argc, argv))
-    return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;
+    return TestUtilities::get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;
 
   result_stream << sigc::hide<0>(foo())(1, 2);
   util->check_result(result_stream, "foo(int 2) 3");
@@ -59,5 +59,5 @@ main(int argc, char* argv[])
   sigc::hide(foo_void())(1); // void test
   util->check_result(result_stream, "foo_void()");
 
-  return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;
+  return TestUtilities::get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;
 }
