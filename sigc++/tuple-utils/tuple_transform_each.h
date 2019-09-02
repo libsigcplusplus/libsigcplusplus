@@ -18,7 +18,6 @@
 #ifndef SIGC_TUPLE_UTILS_TUPLE_TRANSFORM_EACH_H
 #define SIGC_TUPLE_UTILS_TUPLE_TRANSFORM_EACH_H
 
-// #include <sigc++/tuple-utils/tuple_cat.h>
 #include <sigc++/tuple-utils/tuple_cdr.h>
 #include <sigc++/tuple-utils/tuple_end.h>
 #include <sigc++/tuple-utils/tuple_start.h>
@@ -47,14 +46,18 @@ struct tuple_transform_each_impl {
       using from_element_type = typename std::tuple_element<index, std::decay_t<T_original>>::type;
       using to_element_type = typename std::invoke_result<decltype (
         &T_transformer<from_element_type>::transform), from_element_type&>::type;
-      const auto t_element =
+      // Tuples which are input data to std::tuple_cat() should not be declared const.
+      // Some versions of libc++ has a bug in std::tuple_cat(): All output elements
+      // coming from a const tuple become const.
+      // https://github.com/libsigcplusplus/libsigcplusplus/issues/25
+      auto t_element =
         std::tuple<to_element_type>(T_transformer<from_element_type>::transform(std::get<index>(t_original)));
 
       if constexpr(size_from_index == 1) {
-        const auto tuple_rest = tuple_start<size - 1>(std::forward<T_current>(t));
+        auto tuple_rest = tuple_start<size - 1>(std::forward<T_current>(t));
         return std::tuple_cat(tuple_rest, t_element);
       } else {
-        const auto t_start = tuple_start<index>(std::forward<T_current>(t));
+        auto t_start = tuple_start<index>(std::forward<T_current>(t));
 
         // t_end's elements will be copies of the elements in t, so this method's
         // caller won't see the changes made in the subsequent call of
@@ -62,7 +65,7 @@ struct tuple_transform_each_impl {
         // through too, so we can modify that directly.
         // the const version (tuple_transform_each_const()) doesn't have to worry
         // about this, though avoiding copying would be more efficient.
-        const auto t_end = tuple_end<size - index - 1>(t);
+        auto t_end = tuple_end<size - index - 1>(t);
 
         auto t_with_transformed_element = std::tuple_cat(t_start, t_element, t_end);
         return tuple_transform_each_impl<T_transformer,
