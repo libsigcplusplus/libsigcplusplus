@@ -34,5 +34,4 @@ You can run the tests like so:
 
 ## Microsoft Visual C++
 
-We provide MSVC++ projects. They might work.
-Pleaes report specific bugs if they don't.
+See MSVC_NMake/README.txt.
