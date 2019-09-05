@@ -1,3 +1,23 @@
+3.0.0 (stable)
+
+This is the first stable release of sigc++-3.0, installable in
+parallel with sigc++-2.0.
+Changes compared to the latest unstable release:
+
+* Fix tuple_transform_each() for libc++
+  (Kjell Ahlstedt) Issue #25 (Jeff Trull)
+
+Documentation:
+* Remove some obsolete documentation
+  (Kjell Ahlstedt)
+
+Tests:
+* Make test_track_obj.cc compile with clang++
+  (Kjell Ahlstedt)
+* Don't call static method via instance
+  (Murray Cumming)
+
+
 2.99.13: (unstable)
 
 * Replace the deprecated std::result_of with std::invoke_result
