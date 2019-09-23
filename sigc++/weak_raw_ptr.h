@@ -41,8 +41,10 @@ struct weak_raw_ptr : public sigc::notifiable
   inline weak_raw_ptr(T* p) noexcept
   : p_(p)
   {
-    if (p_)
-      p_->add_destroy_notify_callback(this, &notify_object_invalidated);
+    if(!p)
+      return;
+
+    p->add_destroy_notify_callback(this, &notify_object_invalidated);
   }
 
   inline weak_raw_ptr(const weak_raw_ptr& src) noexcept
@@ -54,10 +56,12 @@ struct weak_raw_ptr : public sigc::notifiable
 
   inline weak_raw_ptr& operator=(const weak_raw_ptr& src) noexcept
   {
-    if (p_)
+    if(p_) {
       p_->remove_destroy_notify_callback(this);
+    }
 
     p_ = src.p_;
+    
     if (p_)
       p_->add_destroy_notify_callback(this, &notify_object_invalidated);
 
@@ -70,8 +74,9 @@ struct weak_raw_ptr : public sigc::notifiable
 
   inline ~weak_raw_ptr() noexcept
   {
-    if (p_)
+    if (p_) {
       p_->remove_destroy_notify_callback(this);
+    }
   }
 
   inline explicit operator bool() const noexcept
@@ -85,14 +90,16 @@ struct weak_raw_ptr : public sigc::notifiable
   }
 
 private:
-  /** Callback that is executed when the object is destroyed.
+  /** Callback that is executed when the objet is destroyed.
    * @param data The object notified (@p this).
    */
   static void notify_object_invalidated(notifiable* data)
   {
     auto self = static_cast<weak_raw_ptr*>(data);
-    if (self)
-      self->p_ = nullptr;
+    if(!self)
+      return;
+
+    self->p_ = nullptr;
   }
 
   T* p_;
