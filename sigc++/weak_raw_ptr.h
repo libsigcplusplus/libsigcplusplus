@@ -50,7 +50,8 @@ struct weak_raw_ptr : public sigc::notifiable
   inline weak_raw_ptr(const weak_raw_ptr& src) noexcept
   : p_(src.p_)
   {
-    p_->add_destroy_notify_callback(this, &notify_object_invalidated);
+    if (p_)
+      p_->add_destroy_notify_callback(this, &notify_object_invalidated);
   }
 
   inline weak_raw_ptr& operator=(const weak_raw_ptr& src) noexcept
@@ -60,7 +61,9 @@ struct weak_raw_ptr : public sigc::notifiable
     }
 
     p_ = src.p_;
-    p_->add_destroy_notify_callback(this, &notify_object_invalidated);
+    
+    if (p_)
+      p_->add_destroy_notify_callback(this, &notify_object_invalidated);
 
     return *this;
   }
