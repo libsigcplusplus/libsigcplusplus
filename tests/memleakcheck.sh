@@ -5,7 +5,7 @@
 #  valgrind --leak-check=full .libs/lt-test_*
 
 for testprog in  test_accum_iter test_accumulated test_bind test_bind_as_slot \
-  test_bind_ref test_bind_refptr test_bind_return test_compose \
+  test_bind_ref test_bind_refptr test_bind_return test_compose test_connection \
   test_copy_invalid_slot test_cpp11_lambda test_custom test_disconnect \
   test_disconnect_during_emit test_exception_catch test_hide \
   test_limit_reference test_member_method_trait test_mem_fun test_ptr_fun \

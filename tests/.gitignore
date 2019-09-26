@@ -8,6 +8,7 @@
 /test_bind_refptr
 /test_bind_return
 /test_compose
+/test_connection
 /test_copy_invalid_slot
 /test_cpp11_lambda
 /test_custom

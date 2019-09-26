@@ -32,6 +32,7 @@ check_PROGRAMS = \
   test_bind_refptr \
   test_bind_return \
   test_compose \
+  test_connection \
   test_copy_invalid_slot \
   test_cpp11_lambda \
   test_custom \
@@ -75,6 +76,7 @@ test_bind_ref_SOURCES        = test_bind_ref.cc $(sigc_test_util)
 test_bind_refptr_SOURCES     = test_bind_refptr.cc $(sigc_test_util)
 test_bind_return_SOURCES     = test_bind_return.cc $(sigc_test_util)
 test_compose_SOURCES         = test_compose.cc $(sigc_test_util)
+test_connection_SOURCES      = test_connection.cc $(sigc_test_util)
 test_copy_invalid_slot_SOURCES = test_copy_invalid_slot.cc $(sigc_test_util)
 test_cpp11_lambda_SOURCES    = test_cpp11_lambda.cc $(sigc_test_util)
 test_custom_SOURCES          = test_custom.cc $(sigc_test_util)
