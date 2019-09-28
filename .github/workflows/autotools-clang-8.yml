@@ -1,0 +1,24 @@
+name: "CI: autotools: clang 8"
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - uses: docker://ubuntu:19.10
+    - name: Build
+      run: |
+        sudo apt update
+        sudo apt install mm-common clang-8
+        export CXX=clang++-8
+        ./autogen.sh
+        ./configure
+        make
+    - name: Test
+      run: make check
+    - name: Distcheck
+      run: make distcheck
