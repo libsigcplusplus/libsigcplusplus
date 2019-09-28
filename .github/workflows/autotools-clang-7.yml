@@ -1,0 +1,23 @@
+name: "CI: autotools: clang 7"
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-18.04
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Build
+      run: |
+        sudo apt update
+        sudo apt install mm-common clang-7
+        export CXX=clang++-7
+        ./autogen.sh
+        ./configure
+        make
+    - name: Test
+      run: make check
+    - name: Distcheck
+      run: make distcheck
