@@ -28,6 +28,13 @@ option (SIGCXX_DISABLE_DEPRECATED "Disable deprecated" OFF)
 
 project (sigc++)
 
+# On Windows/MVSC++, we need the shared library (DLL) and tests to be built in
+# the same directory.
+# (MSVC is a standard CMake variable.)
+if(MSVC)
+    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+endif()
+
 set( CMAKE_CXX_STANDARD 17 )
 
 set (PROJECT_SOURCE_DIR "${sigc++_SOURCE_DIR}/sigc++")
