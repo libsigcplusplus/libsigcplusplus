@@ -61,7 +61,9 @@ function (add_sigcpp_test TEST_SOURCE_FILE)
 	get_filename_component (test_name ${TEST_SOURCE_FILE} NAME_WE)
 	add_executable (${test_name} ${TEST_SOURCE_FILE} testutilities.cc)
 	target_link_libraries (${test_name} sigc-${SIGCXX_API_VERSION})
-	add_test (${test_name} ${CMAKE_CURRENT_BINARY_DIR}/${test_name})
+        add_test (NAME ${test_name}
+          # Help MSVC to find the library that the tests should link against.
+          COMMAND ${CMAKE_COMMAND} -E env "PATH=$<TARGET_FILE_DIR:sigc-${SIGCXX_API_VERSION}>;$ENV{PATH}" $<TARGET_FILE:${test_name}>)
 endfunction (add_sigcpp_test)
 
 foreach (test_file ${TEST_SOURCE_FILES})
