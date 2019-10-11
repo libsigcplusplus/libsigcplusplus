@@ -14,7 +14,7 @@ jobs:
         sudo apt update
         sudo apt install mm-common clang-5.0
         export CXX=clang++-5.0
-        ./autogen.sh
+        ./autogen.sh --enable-warnings=fatal
         ./configure
         make
     - name: Test
