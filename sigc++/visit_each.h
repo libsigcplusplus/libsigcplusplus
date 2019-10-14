@@ -47,6 +47,8 @@ struct limit_trackable_target
     //Only call action_() if T_Type derives from trackable.
     if constexpr(is_base_of_or_same_v<sigc::trackable, T_type>) {
         std::invoke(action_, type);
+    } else {
+      static_cast<void>(type);
     }
   }
 
