@@ -56,6 +56,7 @@ tuple_end(T&& t) {
   static_assert(len <= size, "The tuple size must be less than or equal to the length.");
 
   if constexpr(len == 0) {
+    static_cast<void>(t);
     // Recursive calls to tuple_cdr() would result in this eventually,
     // but this avoids the extra work:
     return std::tuple<>();

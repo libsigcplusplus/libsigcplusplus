@@ -35,6 +35,7 @@ struct tuple_transform_each_impl {
   static decltype(auto)
   tuple_transform_each(T_current&& t, T_original& t_original) {
     if constexpr(size_from_index == 0) {
+      static_cast<void>(t_original);
       //Do nothing because the tuple has no elements.
       return std::forward<T_current>(t);
     } else { //TODO: Should this compile without using else to contain the alternative code?
