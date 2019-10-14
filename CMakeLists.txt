@@ -30,6 +30,23 @@ project (sigc++)
 
 set( CMAKE_CXX_STANDARD 17 )
 
+# Turn on warnings for MSVC
+if (MSVC)
+    # Remove the CMake default of /W3 because when you add /W4, MSVC will complain
+    # about two warning level flags
+    string(REGEX REPLACE "(^|[ \t])/W[0-9]($|[ \t])" "\\1\\2" CMAKE_C_FLAGS "${CMAKE_C_FLAGS}")
+    string(REGEX REPLACE "(^|[ \t])/W[0-9]($|[ \t])" "\\1\\2" CMAKE_CXX_FLAGS
+    "${CMAKE_CXX_FLAGS}")
+elseif(CXX_COMPILER_ID)
+endif()
+
+# Add compiler warning flags & turn warnings into errors
+add_compile_options(
+    "$<$<OR:$<CXX_COMPILER_ID:MSVC>,$<C_COMPILER_ID:MSVC>>:/W4;/WX>"
+    "$<$<OR:$<CXX_COMPILER_ID:GNU>,$<C_COMPILER_ID:GNU>>:-pedantic;-Wall;-Wextra;-Wsuggest-override;-Wshadow;-Wzero-as-null-pointer-constant;-Wformat-security>"
+    "$<$<OR:$<CXX_COMPILER_ID:Clang>,$<C_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>,$<C_COMPILER_ID:AppleClang>>:-pedantic;-Wall;-Wextra;-Wshadow;-Wzero-as-null-pointer-constant;-Wformat-security>"
+)
+
 set (PROJECT_SOURCE_DIR "${sigc++_SOURCE_DIR}/sigc++")
 
 include_directories (${sigc++_SOURCE_DIR})
