@@ -64,6 +64,10 @@ function (add_sigcpp_test TEST_SOURCE_FILE)
         add_test (NAME ${test_name}
           # Help MSVC to find the library that the tests should link against.
           COMMAND ${CMAKE_COMMAND} -E env "PATH=$<TARGET_FILE_DIR:sigc-${SIGCXX_API_VERSION}>;$ENV{PATH}" $<TARGET_FILE:${test_name}>)
+
+  if (MSVC AND test_name MATCHES "^(test_retype_return|test_signal)$")
+    target_compile_options(${test_name} PRIVATE "/wd4244")
+  endif()
 endfunction (add_sigcpp_test)
 
 foreach (test_file ${TEST_SOURCE_FILES})
