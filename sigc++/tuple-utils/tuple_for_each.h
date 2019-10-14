@@ -99,13 +99,11 @@ tuple_for_each(T&& t, T_extras&&... extras)
   // We use std::decay_t<> because tuple_size is not defined for references.
   constexpr auto size = std::tuple_size<std::decay_t<T>>::value;
 
-  if (size == 0)
+  if constexpr (size != 0)
   {
-    return;
+    detail::tuple_for_each_impl<T_visitor, size, T_extras...>::tuple_for_each(
+      std::forward<T>(t), std::forward<T_extras>(extras)...);
   }
-
-  detail::tuple_for_each_impl<T_visitor, size, T_extras...>::tuple_for_each(
-    std::forward<T>(t), std::forward<T_extras>(extras)...);
 }
 
 } // namespace internal
