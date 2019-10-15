@@ -24,3 +24,4 @@ Makefile.in
 /sigc++config.h
 /sigc++-*.pc
 /stamp-h?
+*.pro.user
