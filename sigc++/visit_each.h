@@ -48,6 +48,7 @@ struct limit_trackable_target
     if constexpr(is_base_of_or_same_v<sigc::trackable, T_type>) {
         std::invoke(action_, type);
     } else {
+    // Prevent 'unreferenced formal parameter' warning from MSVC by 'using' type
       static_cast<void>(type);
     }
   }
