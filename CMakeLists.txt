@@ -30,14 +30,15 @@ project (sigc++)
 
 set( CMAKE_CXX_STANDARD 17 )
 
-# Turn on warnings for MSVC
-if (MSVC)
-    # Remove the CMake default of /W3 because when you add /W4, MSVC will complain
-    # about two warning level flags
+# Turn on warnings for MSVC. Remove the CMake default of /W3 because when you
+# add /W4, MSVC will complain about two warning level flags. This default
+# changed at CMake 3.15 (see 
+# https://cmake.org/cmake/help/v3.15/policy/CMP0092.html#policy:CMP0092 for
+# more details)
+ if (MSVC AND CMAKE_VERSION VERSION_LESS "13.15")
     string(REGEX REPLACE "(^|[ \t])/W[0-9]($|[ \t])" "\\1\\2" CMAKE_C_FLAGS "${CMAKE_C_FLAGS}")
     string(REGEX REPLACE "(^|[ \t])/W[0-9]($|[ \t])" "\\1\\2" CMAKE_CXX_FLAGS
     "${CMAKE_CXX_FLAGS}")
-elseif(CXX_COMPILER_ID)
 endif()
 
 # Add compiler warning flags & turn warnings into errors
