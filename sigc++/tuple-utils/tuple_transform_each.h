@@ -35,6 +35,8 @@ struct tuple_transform_each_impl {
   static decltype(auto)
   tuple_transform_each(T_current&& t, T_original& t_original) {
     if constexpr(size_from_index == 0) {
+    // Prevent 'unreferenced formal parameter' warning from MSVC by 'using'
+    // t_original
       static_cast<void>(t_original);
       //Do nothing because the tuple has no elements.
       return std::forward<T_current>(t);
