@@ -20,4 +20,7 @@ jobs:
     - name: Test
       run: make check
     - name: Distcheck
-      run: make distcheck
+      run: |
+        # distcheck runs configure again so we need to specify CXX again.
+        export CXX=clang++-6.0
+        make distcheck
