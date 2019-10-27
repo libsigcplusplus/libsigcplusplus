@@ -5,9 +5,6 @@
 #include "testutilities.h"
 #include <sigc++/sigc++.h>
 
-// TODO: put something like #ifndef FORTE ... #else ... #endif around:
-#define ENABLE_TEST_OF_OVERLOADED_FUNCTIONS 0
-
 namespace
 {
 std::ostringstream result_stream;
@@ -28,22 +25,19 @@ foo(int i1)
   result_stream << "foo(int " << i1 << ")";
 }
 
-#if ENABLE_TEST_OF_OVERLOADED_FUNCTIONS
 void
 bar(char i1)
 {
   result_stream << "bar(char " << (int)i1 << ")";
 }
-#endif
 
-// TODO: This works with clang++ (when we specify the return type, such as
-// int or void, but doesn't work with g++.
-/*
+// Note: This doesn't work with some older versions of g++,
+// even when we specify the return type.
+// Hopefully those g++ versions are old enough now.
 void bar(float i1)
 {
   result_stream << "bar(float " << i1 << ")";
 }
-*/
 
 double
 bar(int i1, int i2)
@@ -77,19 +71,16 @@ main(int argc, char* argv[])
   sigc::ptr_fun<void> (&foo)(1);
   util->check_result(result_stream, "foo(int 1)");
 
-// Test use of overloaded functions that differ by parameter type:
-#if ENABLE_TEST_OF_OVERLOADED_FUNCTIONS
+  // Test use of overloaded functions that differ by parameter type:
   sigc::ptr_fun<void, char> (&bar)(2);
   util->check_result(result_stream, "bar(char 2)");
 
   sigc::ptr_fun<void, float> (&bar)(2.0f);
   util->check_result(result_stream, "bar(float 2)");
-#else
-// TODO: This works with clang++ (when we specify the return type, such as
-// int or void, but doesn't work with g++.
-// sigc::ptr_fun<void>(&bar)(2.0f);
-// util->check_result(result_stream, "bar(float 2)");
-#endif
+
+  // int or void, but doesn't work with g++.
+  // sigc::ptr_fun<void>(&bar)(2.0f);
+  // util->check_result(result_stream, "bar(float 2)");
 
   sigc::ptr_fun<double> (&bar)(3, 5);
   util->check_result(result_stream, "bar(int 3, int 5)");
