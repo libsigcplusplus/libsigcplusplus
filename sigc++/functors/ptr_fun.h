@@ -82,18 +82,18 @@ protected:
 public:
 
   /// Constructs an invalid functor.
-  pointer_functor() = default;
+  constexpr pointer_functor() = default;
 
   /** Constructs a pointer_functor2 object that wraps an existing function.
    * @param func Pointer to function that will be invoked from operator()().
    */
-  explicit pointer_functor(function_type func) : func_ptr_(func) {}
+  constexpr explicit pointer_functor(function_type func) : func_ptr_(func) {}
 
   /** Execute the wrapped function.
    * @param a Arguments to be passed on to the function.
    * @return The return value of the function invocation.
    */
-  T_return operator()(type_trait_take_t<T_args>... a) const {
+  constexpr T_return operator()(type_trait_take_t<T_args>... a) const {
     return std::invoke(func_ptr_, a...);
   }
 };
@@ -105,7 +105,7 @@ public:
  * @ingroup ptr_fun
  */
 template <typename T_return, typename... T_args>
-inline decltype(auto) ptr_fun(T_return (*func)(T_args...))
+inline constexpr decltype(auto) ptr_fun(T_return (*func)(T_args...))
 {
   return pointer_functor<T_return(T_args...)>(func);
 }

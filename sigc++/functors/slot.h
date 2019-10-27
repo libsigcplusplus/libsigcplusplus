@@ -48,7 +48,7 @@ namespace internal
  * (argument-dependent lookup).
  */
 template <typename T_out, typename T_in>
-inline T_out function_pointer_cast(T_in in)
+inline constexpr T_out function_pointer_cast(T_in in)
 {
   // The double reinterpret_cast suppresses a warning from gcc8 with the
   // -Wcast-function-type option.
@@ -78,13 +78,13 @@ public:
    * The notification callback is registered using visit_each().
    * @param functor The functor contained by the new slot_rep object.
    */
-  inline explicit typed_slot_rep(const T_functor& functor)
+  inline constexpr explicit typed_slot_rep(const T_functor& functor)
   : slot_rep(nullptr), functor_(std::make_unique<adaptor_type>(functor))
   {
     sigc::visit_each_trackable(slot_do_bind(this), *functor_);
   }
 
-  inline typed_slot_rep(const typed_slot_rep& src)
+  inline constexpr typed_slot_rep(const typed_slot_rep& src)
   : slot_rep(src.call_), functor_(std::make_unique<adaptor_type>(*src.functor_))
   {
     sigc::visit_each_trackable(slot_do_bind(this), *functor_);

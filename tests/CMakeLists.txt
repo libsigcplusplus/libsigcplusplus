@@ -26,6 +26,7 @@ set (TEST_SOURCE_FILES
   test_bind_return.cc
   test_compose.cc
   test_connection.cc
+  test_constexpr.cc
   test_copy_invalid_slot.cc
   test_cpp11_lambda.cc
   test_custom.cc
