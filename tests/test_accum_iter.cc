@@ -19,8 +19,6 @@ ident(int i)
 template<typename T>
 struct min_accum
 {
-  using result_type = T;
-
   template<typename I>
   decltype(auto) operator()(I i1, I i2)
   {

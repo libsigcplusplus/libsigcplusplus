@@ -12,8 +12,6 @@ std::ostringstream result_stream;
 
 struct foo
 {
-  using result_type = float;
-
   float operator()(int i)
   {
     result_stream << "foo(int " << i << ") ";
@@ -29,8 +27,6 @@ struct foo
 
 struct bar : public sigc::trackable
 {
-  using result_type = int;
-
   int operator()(int i)
   {
     result_stream << "bar(int " << i << ")";

@@ -11,8 +11,6 @@ std::ostringstream result_stream;
 
 struct f
 {
-  using result_type = int;
-
   int operator()(int i)
   {
     result_stream << "f(int " << i << ") ";
@@ -22,8 +20,6 @@ struct f
 
 struct g
 {
-  using result_type = int;
-
   int operator()()
   {
     result_stream << "g() ";
@@ -33,8 +29,6 @@ struct g
 
 struct g_void
 {
-  using result_type = void;
-
   void operator()()
   {
     result_stream << "g_void() ";

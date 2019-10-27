@@ -11,9 +11,6 @@ std::ostringstream result_stream;
 
 struct set
 {
-  // choose a type that can hold all return values
-  using result_type = double;
-
   double operator()(int i)
   {
     result_stream << "set(int " << i << ") ";
@@ -29,8 +26,6 @@ struct set
 
 struct set_void
 {
-  using result_type = void;
-
   void operator()(double i) { result_stream << "set_void(double " << i << ")"; }
 };
 
@@ -55,9 +50,6 @@ struct get
     return double(i) / double(j);
   }
 #else
-  // choose a type that can hold all return values
-  using result_type = double;
-
   double operator()()
   {
     result_stream << "get() ";
