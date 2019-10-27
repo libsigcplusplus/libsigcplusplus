@@ -41,7 +41,7 @@ namespace internal
  * the slot. The return value is buffered, so that in an expression
  * like @code a = (*i) * (*i); @endcode the slot is executed only once.
  */
-template<typename T_emitter, typename T_result = typename T_emitter::result_type>
+template<typename T_emitter, typename T_result>
 struct slot_iterator_buf
 {
   using size_type = std::size_t;
