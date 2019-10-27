@@ -11,6 +11,11 @@ std::ostringstream result_stream;
 
 class Base : virtual public sigc::trackable
 {
+public:
+  Base() {}
+
+  Base(Base&& src) = delete;
+  Base& operator=(Base&& src) = delete;
 };
 
 class Base2
