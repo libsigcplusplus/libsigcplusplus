@@ -52,8 +52,6 @@ struct bar_group4 : public sigc::trackable
 class Functor1
 {
 public:
-  using result_type = std::string;
-
   explicit Functor1(const bar_group4& bar) : bar_(bar) {}
 
   std::string operator()(int i) { return (i < 0) ? "negative" : ((i > 0) ? "positive" : "zero"); }
@@ -66,8 +64,6 @@ protected:
 class Functor2
 {
 public:
-  using result_type = std::string;
-
   Functor2(const bar_group4& bar, const book& aBook) : bar_(bar), aBook_(aBook) {}
 
   std::string operator()(int i, const std::string& str) const

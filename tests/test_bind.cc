@@ -12,9 +12,6 @@ std::ostringstream result_stream;
 
 struct foo
 {
-  // choose a type that can hold all return values
-  using result_type = int;
-
   int operator()(int i)
   {
     result_stream << "foo(int " << i << ") ";
@@ -36,8 +33,6 @@ struct foo
 
 struct foo_void
 {
-  using result_type = void;
-
   void operator()(int i) { result_stream << "foo_void(int " << i << ")"; }
 };
 
