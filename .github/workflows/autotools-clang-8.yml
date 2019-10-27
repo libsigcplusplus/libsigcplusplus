@@ -9,7 +9,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - uses: docker://ubuntu:19.10
     - name: Build
       run: |
         sudo apt update
