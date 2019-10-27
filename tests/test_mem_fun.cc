@@ -5,10 +5,6 @@
 #include "testutilities.h"
 #include <sigc++/sigc++.h>
 
-// TODO: put something like #ifndef FORTE (some older version, I think) or AIX xlC... #else ...
-// #endif around:
-#define ENABLE_TEST_OF_OVERLOADED_FUNCTIONS 0
-
 namespace
 {
 
@@ -33,12 +29,10 @@ struct test
 
   void foo_overloaded(char i1) { result_stream << "test::foo_overloaded(char " << int(i1) << ')'; }
 
-#if ENABLE_TEST_OF_OVERLOADED_FUNCTIONS
   void foo_overloaded(short i1)
   {
     result_stream << "test::foo_overloaded(short " << (int)i1 << ')';
   }
-#endif
 
   double foo_overloaded(int i1, int i2)
   {
@@ -97,24 +91,22 @@ test_const_volatile_with_const_object()
   util->check_result(result_stream, "test::foo_const_volatile(double 6)");
 }
 
-#if ENABLE_TEST_OF_OVERLOADED_FUNCTIONS
 void
 test_overloaded()
 {
   test t;
-  sigc::mem_fun<char> (&test::foo_overloaded)(t, 7);
+
+  // We need to specify the types when using overloaded functions.
+
+  sigc::mem_fun<void, test, char> (&test::foo_overloaded)(t, 7);
   util->check_result(result_stream, "test::foo_overloaded(char 7)");
 
-  sigc::mem_fun<short> (&test::foo_overloaded)(t, 7);
+  sigc::mem_fun<void, test, short> (&test::foo_overloaded)(t, 7);
   util->check_result(result_stream, "test::foo_overloaded(short 7)");
 
-  // sigc::mem_fun(&test::foo_overloaded)(t, 7);
-  // util->check_result(result_stream, "test::foo_overloaded(short 7)");
-
-  sigc::mem_fun (&test::foo_overloaded)(t, 7, 8);
+  sigc::mem_fun<double, test, int, int> (&test::foo_overloaded)(t, 7, 8);
   util->check_result(result_stream, "test::foo_overloaded(int 7, int 8)");
 }
-#endif
 
 void
 test_bound()
@@ -138,13 +130,8 @@ test_bound()
   sigc::mem_fun(t, &test::foo_volatile)(9);
   util->check_result(result_stream, "test::foo_volatile(float 9)");
 
-#if ENABLE_TEST_OF_OVERLOADED_FUNCTIONS
-  sigc::mem_fun(t, &test::foo_overloaded)(9, 10);
+  sigc::mem_fun<double, test, test, int, int>(t, &test::foo_overloaded)(9, 10);
   util->check_result(result_stream, "test::foo_overloaded(int 9, int 10)");
-
-  sigc::mem_fun(t, &test::foo_overloaded)(9, 10);
-  util->check_result(result_stream, "test::foo_overloaded(int 9, int 10)");
-#endif
 }
 
 class TestAutoDisconnect : public sigc::trackable
@@ -188,9 +175,7 @@ main(int argc, char* argv[])
   test_const_volatile();
   test_const_volatile_with_const_object();
 
-#if ENABLE_TEST_OF_OVERLOADED_FUNCTIONS
-  test_overload();
-#endif
+  test_overloaded();
 
   test_bound();
 

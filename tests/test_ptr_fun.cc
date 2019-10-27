@@ -34,7 +34,8 @@ bar(char i1)
 // Note: This doesn't work with some older versions of g++,
 // even when we specify the return type.
 // Hopefully those g++ versions are old enough now.
-void bar(float i1)
+void
+bar(float i1)
 {
   result_stream << "bar(float " << i1 << ")";
 }
