@@ -146,11 +146,19 @@ main(int argc, char* argv[])
 
   sigc::slot<void()> sl;
   {
+    // Test without a positional template argument to std::bind().
     book guest_book("karl");
     sl = sigc::bind(&egon, std::ref(guest_book));
     sl();
     result_stream << " " << static_cast<std::string&>(guest_book);
     util->check_result(result_stream, "egon(string 'karl') egon was here");
+
+    // Test with a positional template argument to std::bind<>().
+    guest_book.get_name() = "ove";
+    sl = sigc::bind<0>(&egon, std::ref(guest_book));
+    sl();
+    result_stream << " " << static_cast<std::string&>(guest_book);
+    util->check_result(result_stream, "egon(string 'ove') egon was here");
   } // auto-disconnect
 
   sl();

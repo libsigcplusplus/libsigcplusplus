@@ -161,7 +161,7 @@ struct bind_functor : public adapts<T_functor>
   {
   }
 
-private:
+  // public to avoid template friend declarations (used by visitor::do_visit_each())
   /// The arguments bound to the functor.
   std::tuple<bound_argument<T_bound>...> bound_;
 };
@@ -202,6 +202,7 @@ public:
   {
   }
 
+  // public to avoid template friend declarations (used by visitor::do_visit_each())
   /// The argument bound to the functor.
   std::tuple<bound_argument<T_type>...> bound_;
 };
