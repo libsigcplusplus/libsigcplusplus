@@ -1,0 +1,24 @@
+name: "CI: autotools: clang 9"
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    container: ubuntu:19.10
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Build
+      run: |
+        apt update
+        apt install mm-common clang-9 --yes
+        export CXX=clang++-9
+        ./autogen.sh --enable-warnings=fatal
+        ./configure
+        make
+    - name: Test
+      run: make check
+    - name: Distcheck
+      run: make distcheck
