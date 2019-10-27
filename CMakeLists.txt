@@ -44,7 +44,7 @@ endif()
 # Add compiler warning flags & turn warnings into errors
 add_compile_options(
     "$<$<OR:$<CXX_COMPILER_ID:MSVC>,$<C_COMPILER_ID:MSVC>>:/W4;/WX>"
-    "$<$<OR:$<CXX_COMPILER_ID:GNU>,$<C_COMPILER_ID:GNU>>:-pedantic;-Wall;-Wextra;-Wsuggest-override;-Wshadow;-Wzero-as-null-pointer-constant;-Wformat-security>"
+    "$<$<OR:$<CXX_COMPILER_ID:GNU>,$<C_COMPILER_ID:GNU>>:-pedantic;-Wall;-Wextra;-Wsuggest-override;-Wshadow;-Wzero-as-null-pointer-constant;-Wformat-security -fsanitize=undefined>"
     "$<$<OR:$<CXX_COMPILER_ID:Clang>,$<C_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>,$<C_COMPILER_ID:AppleClang>>:-pedantic;-Wall;-Wextra;-Wshadow;-Wzero-as-null-pointer-constant;-Wformat-security>"
 )
 
