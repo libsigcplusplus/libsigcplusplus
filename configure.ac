@@ -53,7 +53,7 @@ AS_IF([test "x$config_error" = xyes],
 # Evaluate the --enable-warnings=level option.
 MM_ARG_ENABLE_WARNINGS([SIGC_WXXFLAGS],
                        [-Wall],
-                       [-pedantic -Wall -Wextra -Wsuggest-override -Wshadow -Wzero-as-null-pointer-constant -Wformat-security])
+                       [-pedantic -Wall -Wextra -Wsuggest-override -Wshadow -Wzero-as-null-pointer-constant -Wformat-security -fsanitize=address])
 
 # Offer the ability to omit some API from the library.
 MM_ARG_DISABLE_DEPRECATED_API([SIGCXX])
