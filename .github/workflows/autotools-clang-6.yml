@@ -15,7 +15,6 @@ jobs:
         sudo apt install mm-common clang-6.0
         export CXX=clang++-6.0
         ./autogen.sh --enable-warnings=fatal
-        ./configure
         make
     - name: Test
       run: make check

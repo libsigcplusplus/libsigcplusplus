@@ -16,7 +16,6 @@ jobs:
         apt install mm-common clang-9 --yes
         export CXX=clang++-9
         ./autogen.sh --enable-warnings=fatal
-        ./configure
         make
     - name: Test
       run: make check
