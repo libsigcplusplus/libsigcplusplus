@@ -41,7 +41,7 @@ namespace internal
  * the slot. The return value is buffered, so that in an expression
  * like @code a = (*i) * (*i); @endcode the slot is executed only once.
  */
-template <typename T_emitter, typename T_result = typename T_emitter::result_type>
+template<typename T_emitter, typename T_result = typename T_emitter::result_type>
 struct slot_iterator_buf
 {
   using size_type = std::size_t;
@@ -124,7 +124,7 @@ private:
 
 /** Template specialization of slot_iterator_buf for void return signals.
  */
-template <typename T_emitter>
+template<typename T_emitter>
 struct slot_iterator_buf<T_emitter, void>
 {
   using size_type = std::size_t;
@@ -228,7 +228,7 @@ private:
  * emission when no accumulator is used, for example when the template
  * argument @e T_accumulator is @p void.
  */
-template <typename T_return, typename T_accumulator, typename... T_arg>
+template<typename T_return, typename T_accumulator, typename... T_arg>
 struct signal_emit
 {
   using self_type = signal_emit<T_return, T_accumulator, T_arg...>;
@@ -244,17 +244,15 @@ struct signal_emit
    * @param slot Some slot to invoke.
    * @return The slot's return value.
    */
-  T_return operator()(const slot_type& slot) const
-  {
-    return std::apply(slot, a_);
-  }
+  T_return operator()(const slot_type& slot) const { return std::apply(slot, a_); }
 
   /** Executes a list of slots using an accumulator of type @e T_accumulator.
    * The arguments are buffered in a temporary instance of signal_emit.
    * @param a Arguments to be passed on to the slots.
    * @return The accumulated return values of the slot invocations as processed by the accumulator.
    */
-  static decltype(auto) emit(const std::shared_ptr<internal::signal_impl>& impl, type_trait_take_t<T_arg>... a)
+  static decltype(auto) emit(const std::shared_ptr<internal::signal_impl>& impl,
+    type_trait_take_t<T_arg>... a)
   {
     using slot_iterator_buf_type = internal::slot_iterator_buf<self_type, T_return>;
 
@@ -279,7 +277,7 @@ private:
  * This template specialization implements an optimized emit()
  * function for the case that no accumulator is used.
  */
-template <typename T_return, typename... T_arg>
+template<typename T_return, typename... T_arg>
 struct signal_emit<T_return, void, T_arg...>
 {
 private:
@@ -287,7 +285,6 @@ private:
   using call_type = typename slot_type::call_type;
 
 public:
-
   /** Executes a list of slots.
    * The arguments are passed directly on to the slots.
    * The return value of the last slot invoked is returned.
@@ -296,7 +293,8 @@ public:
    * @param a Arguments to be passed on to the slots.
    * @return The return value of the last slot invoked.
    */
-  static decltype(auto) emit(const std::shared_ptr<internal::signal_impl>& impl, type_trait_take_t<T_arg>... a)
+  static decltype(auto) emit(const std::shared_ptr<internal::signal_impl>& impl,
+    type_trait_take_t<T_arg>... a)
   {
     if (!impl || impl->slots_.empty())
       return T_return();
@@ -340,7 +338,7 @@ public:
  * function for the case that no accumulator is used and the
  * return type is @p void.
  */
-template <typename... T_arg>
+template<typename... T_arg>
 struct signal_emit<void, void, T_arg...>
 {
 private:
@@ -348,12 +346,12 @@ private:
   using call_type = typename slot_type::call_type;
 
 public:
-
   /** Executes a list of slots using an accumulator of type @e T_accumulator.
    * The arguments are passed directly on to the slots.
    * @param a Arguments to be passed on to the slots.
    */
-  static decltype(auto) emit(const std::shared_ptr<internal::signal_impl>& impl, type_trait_take_t<T_arg>... a)
+  static decltype(auto) emit(const std::shared_ptr<internal::signal_impl>& impl,
+    type_trait_take_t<T_arg>... a)
   {
     if (!impl || impl->slots_.empty())
       return;
@@ -396,7 +394,7 @@ public:
  *
  * @ingroup signal
  */
-template <typename T_return, typename T_accumulator, typename... T_arg>
+template<typename T_return, typename T_accumulator, typename... T_arg>
 class signal_with_accumulator : public signal_base
 {
 public:
@@ -467,8 +465,9 @@ public:
    */
   decltype(auto) make_slot() const
   {
-    //TODO: Instead use std::result_of<> on the static emitter_type::emit()
-    using result_type = typename internal::member_method_result<decltype(&signal_with_accumulator::emit)>::type;
+    // TODO: Instead use std::result_of<> on the static emitter_type::emit()
+    using result_type =
+      typename internal::member_method_result<decltype(&signal_with_accumulator::emit)>::type;
     return bound_mem_functor<result_type (signal_with_accumulator::*)(type_trait_take_t<T_arg>...)
                                const,
       type_trait_take_t<T_arg>...>(*this, &signal_with_accumulator::emit);
@@ -530,11 +529,11 @@ public:
  * @ingroup signal
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-template <typename T_return, typename... T_arg>
+template<typename T_return, typename... T_arg>
 class signal;
 #endif // DOXYGEN_SHOULD_SKIP_THIS
 
-template <typename T_return, typename... T_arg>
+template<typename T_return, typename... T_arg>
 class signal<T_return(T_arg...)> : public signal_with_accumulator<T_return, void, T_arg...>
 {
 public:
@@ -583,7 +582,7 @@ public:
    *
    * @ingroup signal
    */
-  template <typename T_accumulator>
+  template<typename T_accumulator>
   class accumulated : public signal_with_accumulator<T_return, T_accumulator, T_arg...>
   {
   public:

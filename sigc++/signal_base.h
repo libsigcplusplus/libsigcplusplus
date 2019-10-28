@@ -42,8 +42,7 @@ namespace internal
  * or defers the execution of erase() to sweep() when the signal is being emitted.
  * sweep() removes all invalid slots from the list.
  */
-struct SIGC_API signal_impl
- : public std::enable_shared_from_this<signal_impl>
+struct SIGC_API signal_impl : public std::enable_shared_from_this<signal_impl>
 {
   using size_type = std::size_t;
   using slot_list = std::list<slot_base>;
@@ -66,10 +65,7 @@ struct SIGC_API signal_impl
 #endif
 
   /// Increments the reference and execution counter.
-  inline void reference_exec() noexcept
-  {
-    ++exec_count_;
-  }
+  inline void reference_exec() noexcept { ++exec_count_; }
 
   /** Decrements the reference and execution counter.
    * Invokes sweep() if the execution counter reaches zero and the
@@ -178,8 +174,7 @@ struct SIGC_API signal_impl_exec_holder
   /** Increments the execution counter of the parent sigc::signal_impl object.
    * @param sig The parent sigc::signal_impl object.
    */
-  inline explicit signal_impl_exec_holder(signal_impl* sig) noexcept
-  : sig_(sig)
+  inline explicit signal_impl_exec_holder(signal_impl* sig) noexcept : sig_(sig)
   {
     sig_->reference_exec();
   }

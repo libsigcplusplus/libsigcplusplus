@@ -42,7 +42,7 @@ class NsExtClass
 {
 };
 
-template <typename T_action, typename T_functor>
+template<typename T_action, typename T_functor>
 void
 visit_each(T_action&, const T_functor&)
 {
@@ -59,16 +59,20 @@ public:
   explicit MyClass1(const std::string& str) : s(str) {}
 
   void execute(int i) { result_stream << s << i; }
+
 private:
   std::string s;
 };
 
-class MyClass2 : public ns_ext::NsExtClass, public sigc::trackable
+class MyClass2
+: public ns_ext::NsExtClass
+, public sigc::trackable
 {
 public:
   explicit MyClass2(const std::string& str) : s(str) {}
 
   void execute(int i) { result_stream << s << i; }
+
 private:
   std::string s;
 };
@@ -78,7 +82,7 @@ private:
 namespace ns1
 {
 // User-defined adaptor, as decribed in adaptor_trait.h.
-template <typename T_functor>
+template<typename T_functor>
 struct MyAdaptor1 : public sigc::adapts<T_functor>
 {
   decltype(auto) operator()() const
@@ -87,14 +91,14 @@ struct MyAdaptor1 : public sigc::adapts<T_functor>
     return this->functor_();
   }
 
-  template <typename T_arg1>
+  template<typename T_arg1>
   decltype(auto) operator()(T_arg1 arg1) const
   {
     result_stream << "MyAdaptor1()(arg1) ";
     return this->functor_(arg1);
   }
 
-  template <typename T_arg1, typename T_arg2>
+  template<typename T_arg1, typename T_arg2>
   decltype(auto) operator()(T_arg1 arg1, T_arg2 arg2) const
   {
     result_stream << "MyAdaptor1()(arg1, arg2) ";
@@ -106,14 +110,14 @@ struct MyAdaptor1 : public sigc::adapts<T_functor>
   explicit MyAdaptor1(const T_functor& functor) : sigc::adapts<T_functor>(functor) {}
 };
 
-template <typename T_action, typename T_functor>
+template<typename T_action, typename T_functor>
 void
 visit_each(const T_action& action, const MyAdaptor1<T_functor>& target)
 {
   visit_each(action, target.functor_);
 }
 
-template <typename T_functor>
+template<typename T_functor>
 inline MyAdaptor1<T_functor>
 my_adaptor1(const T_functor& func)
 {
@@ -126,10 +130,10 @@ my_adaptor1(const T_functor& func)
 // Specialization of sigc::visitor for MyAdaptor1.
 namespace sigc
 {
-template <typename T_functor>
+template<typename T_functor>
 struct visitor<ns1::MyAdaptor1<T_functor>>
 {
-  template <typename T_action>
+  template<typename T_action>
   static void do_visit_each(const T_action& action, const ns1::MyAdaptor1<T_functor>& target)
   {
     sigc::visit_each(action, target.functor_);

@@ -92,13 +92,9 @@ slot_rep::notify_slot_rep_invalidated(notifiable* data)
 
 } // namespace internal
 
-slot_base::slot_base() noexcept : rep_(nullptr), blocked_(false)
-{
-}
+slot_base::slot_base() noexcept : rep_(nullptr), blocked_(false) {}
 
-slot_base::slot_base(rep_type* rep) noexcept : rep_(rep), blocked_(false)
-{
-}
+slot_base::slot_base(rep_type* rep) noexcept : rep_(rep), blocked_(false) {}
 
 slot_base::slot_base(const slot_base& src) : rep_(nullptr), blocked_(src.blocked_)
 {

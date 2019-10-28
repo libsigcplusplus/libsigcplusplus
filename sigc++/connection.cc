@@ -22,19 +22,11 @@
 namespace sigc
 {
 
-connection::connection() noexcept : slot_(nullptr)
-{
-}
+connection::connection() noexcept : slot_(nullptr) {}
 
-connection::connection(slot_base& slot)
-: slot_(&slot)
-{
-}
+connection::connection(slot_base& slot) : slot_(&slot) {}
 
-
-connection::connection(const connection& c) : slot_(c.slot_)
-{
-}
+connection::connection(const connection& c) : slot_(c.slot_) {}
 
 connection&
 connection::operator=(const connection& src)
@@ -43,9 +35,7 @@ connection::operator=(const connection& src)
   return *this;
 }
 
-connection::~connection()
-{
-}
+connection::~connection() {}
 
 bool
 connection::empty() const noexcept
@@ -94,6 +84,5 @@ connection::set_slot(const sigc::internal::weak_raw_ptr<slot_base>& sl)
 {
   slot_ = sl;
 }
-
 
 } /* namespace sigc */

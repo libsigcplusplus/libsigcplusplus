@@ -185,7 +185,7 @@ main(int argc, char* argv[])
   //  std::cout << "((++_1)*2)(ref(a)): " << ((++_1)*2)(std::ref(a));
   //  std::cout << "; a: "                << a                    << std::endl;
   result_stream << ([](std::reference_wrapper<int> x) -> int { return ++x * 2; }(
-                      std::ref(a_outer)));
+                                                        std::ref(a_outer)));
   result_stream << " " << a_outer;
   util->check_result(result_stream, "4 2");
   result_stream << ([](int& x) -> int { return ++x * 2; }(a_outer));
@@ -201,7 +201,7 @@ main(int argc, char* argv[])
   //  std::cout << "((--(*(&_1)))*2)(ref(a)): " << ((--(*(&_1)))*2)(std::ref(a));
   //  std::cout << "; a: "                << a                    << std::endl;
   result_stream << ([](std::reference_wrapper<int> x) -> int { return --(*(&x)) * 2; }(
-                      std::ref(a_outer)));
+                                                        std::ref(a_outer)));
   result_stream << " " << a_outer;
   util->check_result(result_stream, "6 3");
   result_stream << ([](int& x) -> int { return --(*(&x)) * 2; }(a_outer));
@@ -301,8 +301,9 @@ main(int argc, char* argv[])
   // std::endl;
   // std::ref(the_bar) is not necessary. It can make the call ambiguous.
   // Even without std::ref() the_bar is not copied.
-  result_stream << std::bind(std::mem_fn(&bar::test), std::placeholders::_1, std::placeholders::_2,
-    std::placeholders::_3)(the_bar, 1, 2);
+  result_stream << std::bind(
+    std::mem_fn(&bar::test), std::placeholders::_1, std::placeholders::_2, std::placeholders::_3)(
+    the_bar, 1, 2);
   util->check_result(result_stream, "bar::test(int 1, int 2) 6");
 
   // same functionality as bind
@@ -370,12 +371,13 @@ main(int argc, char* argv[])
   util->check_result(result_stream, "foo(int 1, int 2) 6");
 
   //(sigc::group(sigc::ptr_fun(&foo_void), _2)) (1, 2);
-  std::bind (&foo_void, std::placeholders::_2)(1, 2);
+  std::bind(&foo_void, std::placeholders::_2)(1, 2);
   util->check_result(result_stream, "foo_void(int 2)");
 
   // same functionality as compose
   // std::cout << (sigc::group(&foo, sigc::group(&foo, _1, _2), _3)) (1,2,3) << std::endl;
-  result_stream << std::bind(&foo, std::bind(&foo, std::placeholders::_1, std::placeholders::_2),
+  result_stream << std::bind(&foo,
+    std::bind(&foo, std::placeholders::_1, std::placeholders::_2),
     std::placeholders::_3)(1, 2, 3);
   util->check_result(result_stream, "foo(int 1, int 2) foo(int 6, int 3) 27");
 
@@ -438,26 +440,26 @@ main(int argc, char* argv[])
 
   // argument binding ...
   // sigc::group(&foo,10,sigc::_1)(20); //fixes the first argument and calls foo(10,20)
-  std::bind (&foo_group1, 10, std::placeholders::_1)(20);
+  std::bind(&foo_group1, 10, std::placeholders::_1)(20);
   util->check_result(result_stream, "foo_group1(int 10, int 20)");
 
   // sigc::group(&foo,sigc::_1,30)(40); //fixes the second argument and calls foo(40,30)
-  std::bind (&foo_group1, std::placeholders::_1, 30)(40);
+  std::bind(&foo_group1, std::placeholders::_1, 30)(40);
   util->check_result(result_stream, "foo_group1(int 40, int 30)");
 
   // argument reordering ...
   // sigc::group(&foo,sigc::_2,sigc::_1)(1,2); //calls foo(2,1)
-  std::bind (&foo_group1, std::placeholders::_2, std::placeholders::_1)(1, 2);
+  std::bind(&foo_group1, std::placeholders::_2, std::placeholders::_1)(1, 2);
   util->check_result(result_stream, "foo_group1(int 2, int 1)");
 
   // argument hiding ...
   // sigc::group(&foo,sigc::_1,sigc::_2)(1,2,3); //calls foo(1,2)
-  std::bind (&foo_group1, std::placeholders::_1, std::placeholders::_2)(1, 2, 3);
+  std::bind(&foo_group1, std::placeholders::_1, std::placeholders::_2)(1, 2, 3);
   util->check_result(result_stream, "foo_group1(int 1, int 2)");
 
   // functor composition ...
   // sigc::group(&foo,sigc::_1,sigc::group(&bar,sigc::_2))(1,2); //calls foo(1,bar(2))
-  std::bind (&foo_group1, std::placeholders::_1, std::bind(&bar_group1, std::placeholders::_2))(
+  std::bind(&foo_group1, std::placeholders::_1, std::bind(&bar_group1, std::placeholders::_2))(
     1, 2);
   util->check_result(result_stream, "bar_group1(int 2) foo_group1(int 1, int 4)");
 

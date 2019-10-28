@@ -46,7 +46,7 @@ namespace sigc
  *
  * - @e T_type The type of the reference.
  */
-template <typename T_type,
+template<typename T_type,
   bool I_derives_trackable = std::is_base_of<trackable, std::decay_t<T_type>>::value>
 class limit_reference
 {
@@ -88,7 +88,7 @@ private:
 /** limit_reference object for a class that derives from trackable.
  * - @e T_type The type of the reference.
  */
-template <typename T_type>
+template<typename T_type>
 class limit_reference<T_type, true>
 {
 public:
@@ -134,10 +134,10 @@ private:
  * @param action The functor to invoke.
  * @param target The visited instance.
  */
-template <typename T_type>
+template<typename T_type>
 struct visitor<limit_reference<T_type>>
 {
-  template <typename T_action>
+  template<typename T_action>
   static void do_visit_each(const T_action& action, const limit_reference<T_type>& target)
   {
     sigc::visit_each(action, target.visit());

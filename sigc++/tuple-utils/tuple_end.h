@@ -20,18 +20,22 @@
 
 #include <sigc++/tuple-utils/tuple_cdr.h>
 
-namespace sigc::internal {
+namespace sigc::internal
+{
 
-namespace detail {
+namespace detail
+{
 
-template <typename T, std::size_t remove_from_start>
-struct tuple_type_end_impl {
+template<typename T, std::size_t remove_from_start>
+struct tuple_type_end_impl
+{
   using type = typename tuple_type_end_impl<typename tuple_type_cdr<std::decay_t<T>>::type,
     remove_from_start - 1>::type;
 };
 
-template <typename T>
-struct tuple_type_end_impl<T, 0> {
+template<typename T>
+struct tuple_type_end_impl<T, 0>
+{
   using type = T;
 };
 
@@ -40,37 +44,44 @@ struct tuple_type_end_impl<T, 0> {
 /**
  * Get the type of a tuple with the last @a len types of the original.
  */
-template <typename T, std::size_t len>
-struct tuple_type_end
-  : detail::tuple_type_end_impl<T, std::tuple_size<T>::value - len> {};
+template<typename T, std::size_t len>
+struct tuple_type_end : detail::tuple_type_end_impl<T, std::tuple_size<T>::value - len>
+{
+};
 
 /**
  * Get the tuple with the last @a len items of the original.
  */
-template <std::size_t len, typename T>
-constexpr
-decltype(auto) // typename tuple_type_end<T, len>::type
-tuple_end(T&& t) {
-  //We use std::decay_t<> because tuple_size is not defined for references.
+template<std::size_t len, typename T>
+constexpr decltype(auto) // typename tuple_type_end<T, len>::type
+tuple_end(T&& t)
+{
+  // We use std::decay_t<> because tuple_size is not defined for references.
   constexpr auto size = std::tuple_size<std::decay_t<T>>::value;
   static_assert(len <= size, "The tuple size must be less than or equal to the length.");
 
-  if constexpr(len == 0) {
+  if constexpr (len == 0)
+  {
     // Prevent 'unreferenced formal parameter' warning from MSVC by 'using' t
     static_cast<void>(t);
     // Recursive calls to tuple_cdr() would result in this eventually,
     // but this avoids the extra work:
     return std::tuple<>();
-  } else if constexpr(size - len == 0) {
+  }
+  else if constexpr (size - len == 0)
+  {
     return std::forward<T>(t);
-  } else if constexpr(size - len == 1) {
+  }
+  else if constexpr (size - len == 1)
+  {
     return tuple_cdr(std::forward<T>(t));
-  } else {
-    return tuple_end<len>(
-        tuple_cdr(std::forward<T>(t)));
+  }
+  else
+  {
+    return tuple_end<len>(tuple_cdr(std::forward<T>(t)));
   }
 }
 
 } // namespace sigc::internal;
 
-#endif //SIGC_TUPLE_UTILS_TUPLE_END_H
+#endif // SIGC_TUPLE_UTILS_TUPLE_END_H

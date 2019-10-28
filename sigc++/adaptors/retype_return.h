@@ -33,10 +33,10 @@ namespace sigc
  *
  * @ingroup retype
  */
-template <typename T_return, typename T_functor>
+template<typename T_return, typename T_functor>
 struct retype_return_functor : public adapts<T_functor>
 {
-  template <typename... T_arg>
+  template<typename... T_arg>
   inline T_return operator()(T_arg&&... a)
   {
     return T_return(std::invoke(this->functor_, std::forward<T_arg>(a)...));
@@ -48,8 +48,7 @@ struct retype_return_functor : public adapts<T_functor>
    * the passed functor.
    * @param functor Functor to invoke from operator()().
    */
-  explicit retype_return_functor(type_trait_take_t<T_functor> functor)
-  : adapts<T_functor>(functor)
+  explicit retype_return_functor(type_trait_take_t<T_functor> functor) : adapts<T_functor>(functor)
   {
   }
 };
@@ -64,10 +63,10 @@ struct retype_return_functor : public adapts<T_functor>
  */
 /* The void specialization is needed because of explicit cast to T_return.
  */
-template <typename T_functor>
+template<typename T_functor>
 struct retype_return_functor<void, T_functor> : public adapts<T_functor>
 {
-  template <typename... T_arg>
+  template<typename... T_arg>
   inline void operator()(T_arg... a)
   {
     std::invoke(this->functor_, a...);
@@ -85,12 +84,12 @@ struct retype_return_functor<void, T_functor> : public adapts<T_functor>
  *
  * @ingroup retype
  */
-template <typename T_return, typename T_functor>
+template<typename T_return, typename T_functor>
 struct visitor<retype_return_functor<T_return, T_functor>>
 {
-  template <typename T_action>
-  static void do_visit_each(
-    const T_action& action, const retype_return_functor<T_return, T_functor>& target)
+  template<typename T_action>
+  static void do_visit_each(const T_action& action,
+    const retype_return_functor<T_return, T_functor>& target)
   {
     sigc::visit_each(action, target.functor_);
   }
@@ -106,7 +105,7 @@ struct visitor<retype_return_functor<T_return, T_functor>>
  *
  * @ingroup retype
  */
-template <typename T_return, typename T_functor>
+template<typename T_return, typename T_functor>
 inline retype_return_functor<T_return, T_functor>
 retype_return(const T_functor& functor)
 {
@@ -121,7 +120,7 @@ retype_return(const T_functor& functor)
  *
  * @ingroup hide
  */
-template <typename T_functor>
+template<typename T_functor>
 inline retype_return_functor<void, T_functor>
 hide_return(const T_functor& functor)
 {

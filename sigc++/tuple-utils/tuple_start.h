@@ -21,15 +21,18 @@
 #include <tuple>
 #include <utility>
 
-namespace sigc::internal {
+namespace sigc::internal
+{
 
-namespace detail {
+namespace detail
+{
 
-template <typename T, typename Seq>
+template<typename T, typename Seq>
 struct tuple_type_start_impl;
 
-template <typename T, std::size_t... I>
-struct tuple_type_start_impl<T, std::index_sequence<I...>> {
+template<typename T, std::size_t... I>
+struct tuple_type_start_impl<T, std::index_sequence<I...>>
+{
   using type = std::tuple<typename std::tuple_element<I, T>::type...>;
 };
 
@@ -38,21 +41,22 @@ struct tuple_type_start_impl<T, std::index_sequence<I...>> {
 /**
  * Get the type of a tuple with just the first @len items.
  */
-template <typename T, std::size_t len>
-struct tuple_type_start
-  : detail::tuple_type_start_impl<T, std::make_index_sequence<len>> {};
+template<typename T, std::size_t len>
+struct tuple_type_start : detail::tuple_type_start_impl<T, std::make_index_sequence<len>>
+{
+};
 
-namespace detail {
+namespace detail
+{
 
-template <typename T, typename Seq>
+template<typename T, typename Seq>
 struct tuple_start_impl;
 
-template <typename T, std::size_t... I>
-struct tuple_start_impl<T, std::index_sequence<I...>> {
-  static
-  constexpr
-  decltype(auto)
-  tuple_start(T&& t) {
+template<typename T, std::size_t... I>
+struct tuple_start_impl<T, std::index_sequence<I...>>
+{
+  static constexpr decltype(auto) tuple_start(T&& t)
+  {
     constexpr auto size = std::tuple_size<std::decay_t<T>>::value;
     constexpr auto len = sizeof...(I);
     static_assert(len <= size, "The tuple size must be less than or equal to the length.");
@@ -67,11 +71,11 @@ struct tuple_start_impl<T, std::index_sequence<I...>> {
 /**
  * Get the tuple with the last @a len items of the original.
  */
-template <std::size_t len, typename T>
-constexpr
-decltype(auto) // typename tuple_type_end<T, len>::type
-tuple_start(T&& t) {
-  //We use std::decay_t<> because tuple_size is not defined for references.
+template<std::size_t len, typename T>
+constexpr decltype(auto) // typename tuple_type_end<T, len>::type
+tuple_start(T&& t)
+{
+  // We use std::decay_t<> because tuple_size is not defined for references.
   constexpr auto size = std::tuple_size<std::decay_t<T>>::value;
   static_assert(len <= size, "The tuple size must be less than or equal to the length.");
 
@@ -81,4 +85,4 @@ tuple_start(T&& t) {
 
 } // namespace sigc::internal;
 
-#endif //SIGC_TUPLE_UTILS_TUPLE_START_H
+#endif // SIGC_TUPLE_UTILS_TUPLE_START_H

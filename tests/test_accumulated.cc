@@ -17,7 +17,7 @@ std::ostringstream result_stream;
 struct arithmetic_mean_accumulator
 {
   using result_type = double;
-  template <typename T_iterator>
+  template<typename T_iterator>
   double operator()(T_iterator first, T_iterator last) const
   {
     double value_ = 0;
@@ -28,11 +28,11 @@ struct arithmetic_mean_accumulator
   }
 };
 
-template <typename Ret>
+template<typename Ret>
 struct vector_accumulator
 {
   using result_type = std::vector<Ret>;
-  template <typename T_iterator>
+  template<typename T_iterator>
   result_type operator()(T_iterator first, T_iterator last) const
   {
     result_type vec;

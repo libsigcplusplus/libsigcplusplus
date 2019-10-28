@@ -19,7 +19,9 @@ public:
   virtual ~Base2() {}
 };
 
-class Derived : virtual public Base, public Base2
+class Derived
+: virtual public Base
+, public Base2
 {
 public:
   void method() { result_stream << "method()"; }

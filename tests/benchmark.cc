@@ -15,14 +15,16 @@ struct foo : public sigc::trackable
   int c;
 };
 
-int foo::bar(int a)
+int
+foo::bar(int a)
 {
   int b = c;
   c = a;
   return b;
 }
 
-void test_slot_call()
+void
+test_slot_call()
 {
   foo foobar1;
 
@@ -33,22 +35,24 @@ void test_slot_call()
   std::cout << "elapsed time for calling a slot " << COUNT << " times:" << std::endl;
   boost::timer::auto_cpu_timer timer;
 
-  for (int i=0; i < COUNT; ++i)
+  for (int i = 0; i < COUNT; ++i)
     slot(i);
 }
 
-void test_signal_emit()
+void
+test_signal_emit()
 {
   sigc::signal<int(int)> emitter;
 
   std::cout << "elapsed time for " << COUNT << " emissions (0 slots):" << std::endl;
   boost::timer::auto_cpu_timer timer;
 
-  for (int i=0; i < COUNT; ++i)
+  for (int i = 0; i < COUNT; ++i)
     emitter(i);
 }
 
-void test_connected_signal_emit()
+void
+test_connected_signal_emit()
 {
   foo foobar1;
   sigc::signal<int(int)> emitter;
@@ -57,11 +61,12 @@ void test_connected_signal_emit()
   std::cout << "elapsed time for " << COUNT << " emissions (1 slot):" << std::endl;
   boost::timer::auto_cpu_timer timer;
 
-  for (int i=0; i < COUNT; ++i)
+  for (int i = 0; i < COUNT; ++i)
     emitter(i);
 }
 
-void test_connected_multiple_signal_emit()
+void
+test_connected_multiple_signal_emit()
 {
   foo foobar1, foobar2, foobar3, foobar4, foobar5;
 
@@ -74,11 +79,12 @@ void test_connected_multiple_signal_emit()
   std::cout << "elapsed time for " << COUNT << " emissions (5 slots):" << std::endl;
   boost::timer::auto_cpu_timer timer;
 
-  for (int i=0; i < COUNT; ++i)
+  for (int i = 0; i < COUNT; ++i)
     emitter(i);
 }
 
-void test_connect_disconnect()
+void
+test_connect_disconnect()
 {
   foo foobar1;
   sigc::signal<int(int)> emitter;
@@ -87,14 +93,15 @@ void test_connect_disconnect()
   std::cout << "elapsed time for " << COUNT << " connections/disconnections:" << std::endl;
   boost::timer::auto_cpu_timer timer;
 
-  for (int i=0; i < COUNT; ++i)
-    {
-      conn = emitter.connect(mem_fun(foobar1, &foo::bar));
-      conn.disconnect();
-    }
+  for (int i = 0; i < COUNT; ++i)
+  {
+    conn = emitter.connect(mem_fun(foobar1, &foo::bar));
+    conn.disconnect();
+  }
 }
 
-int main()
+int
+main()
 {
   // slot benchmark ...
   test_slot_call();
