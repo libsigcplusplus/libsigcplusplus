@@ -84,14 +84,14 @@ namespace sigc
  *
  * @ingroup hide
  */
-template <int I_location, typename T_functor>
+template<int I_location, typename T_functor>
 struct hide_functor : public adapts<T_functor>
 {
   /** Invokes the wrapped functor, ignoring the argument at index @e I_location (0-indexed).
    * @param a Arguments to be passed on to the functor, apart from the ignored argument.
    * @return The return value of the functor invocation.
    */
-  template <typename... T_arg>
+  template<typename... T_arg>
   decltype(auto) operator()(T_arg&&... a)
   {
     constexpr auto size = sizeof...(T_arg);
@@ -119,12 +119,12 @@ struct hide_functor : public adapts<T_functor>
  *
  * @ingroup hide
  */
-template <int I_location, typename T_functor>
+template<int I_location, typename T_functor>
 struct visitor<hide_functor<I_location, T_functor>>
 {
-  template <typename T_action>
-  static void do_visit_each(
-    const T_action& action, const hide_functor<I_location, T_functor>& target)
+  template<typename T_action>
+  static void do_visit_each(const T_action& action,
+    const hide_functor<I_location, T_functor>& target)
   {
     sigc::visit_each(action, target.functor_);
   }
@@ -141,7 +141,7 @@ struct visitor<hide_functor<I_location, T_functor>>
  *
  * @ingroup hide
  */
-template <int I_location, typename T_functor>
+template<int I_location, typename T_functor>
 inline decltype(auto)
 hide(const T_functor& func)
 {
@@ -157,7 +157,7 @@ hide(const T_functor& func)
  *
  * @ingroup hide
  */
-template <typename T_functor>
+template<typename T_functor>
 inline decltype(auto)
 hide(const T_functor& func)
 {

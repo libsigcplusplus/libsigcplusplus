@@ -46,7 +46,7 @@ namespace sigc
  * The general template implementation is used for parameters that are passed by value.
  * @e T_type The type of the bound argument.
  */
-template <typename T_type>
+template<typename T_type>
 class bound_argument
 {
 public:
@@ -76,17 +76,14 @@ private:
  * returned by bind_return() by reference, specialized for std::reference_wrapper<> types.
  * @e T_wrapped The type of the bound argument.
  */
-template <typename T_wrapped>
+template<typename T_wrapped>
 class bound_argument<std::reference_wrapper<T_wrapped>>
 {
 public:
   /** Constructor.
    * @param arg The argument to bind.
    */
-  bound_argument(const std::reference_wrapper<T_wrapped>& arg)
-  : visited_(unwrap(arg))
-  {
-  }
+  bound_argument(const std::reference_wrapper<T_wrapped>& arg) : visited_(unwrap(arg)) {}
 
   /** Retrieve the entity to visit in visit_each().
    * @return The limited_reference to the bound argument.
@@ -108,17 +105,14 @@ private:
  * returned by bind_return() by const reference, specialized for const reference_wrapper<> types.
  * - @e T_wrapped The type of the bound argument.
  */
-template <typename T_wrapped>
+template<typename T_wrapped>
 class bound_argument<std::reference_wrapper<const T_wrapped>>
 {
 public:
   /** Constructor.
    * @param arg The argument to bind.
    */
-  bound_argument(const std::reference_wrapper<const T_wrapped>& arg)
-  : visited_(unwrap(arg))
-  {
-  }
+  bound_argument(const std::reference_wrapper<const T_wrapped>& arg) : visited_(unwrap(arg)) {}
 
   /** Retrieve the entity to visit in visit_each().
    * @return The const_limited_reference to the bound argument.
@@ -145,10 +139,10 @@ private:
  * @param action The functor to invoke.
  * @param arg The visited instance.
  */
-template <typename T_type>
+template<typename T_type>
 struct visitor<bound_argument<T_type>>
 {
-  template <typename T_action>
+  template<typename T_action>
   static void do_visit_each(const T_action& action, const bound_argument<T_type>& arg)
   {
     sigc::visit_each(action, arg.visit());

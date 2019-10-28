@@ -65,7 +65,7 @@ namespace sigc
  *
  * @ingroup track_obj
  */
-template <typename T_functor, typename... T_obj>
+template<typename T_functor, typename... T_obj>
 class track_obj_functor : public adapts<T_functor>
 {
 public:
@@ -83,7 +83,7 @@ public:
    * @param arg Arguments to be passed on to the functor.
    * @return The return value of the functor invocation.
    */
-  template <typename... T_arg>
+  template<typename... T_arg>
   decltype(auto) operator()(T_arg&&... arg)
   {
     return std::invoke(this->functor_, std::forward<T_arg>(arg)...);
@@ -108,17 +108,17 @@ public:
  *
  * @ingroup track_obj
  */
-template <typename T_functor, typename... T_obj>
+template<typename T_functor, typename... T_obj>
 struct visitor<track_obj_functor<T_functor, T_obj...>>
 {
-  template <typename T_action>
-  static void do_visit_each(
-    const T_action& action, const track_obj_functor<T_functor, T_obj...>& target)
+  template<typename T_action>
+  static void do_visit_each(const T_action& action,
+    const track_obj_functor<T_functor, T_obj...>& target)
   {
     sigc::visit_each(action, target.functor_);
 
     // Call sigc::visit_each(action, element) on each element in the
-    //target.obj_ tuple:
+    // target.obj_ tuple:
     sigc::internal::tuple_for_each<internal::TupleVisitorVisitEach>(target.obj_, action);
   }
 };
@@ -133,7 +133,7 @@ struct visitor<track_obj_functor<T_functor, T_obj...>>
  *
  * @ingroup track_obj
  */
-template <typename T_functor, typename... T_obj>
+template<typename T_functor, typename... T_obj>
 inline decltype(auto)
 track_obj(const T_functor& func, const T_obj&... obj)
 {

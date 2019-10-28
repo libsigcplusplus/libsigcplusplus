@@ -49,42 +49,48 @@ struct test
 
 } // end anonymous namespace
 
-void test_non_const()
+void
+test_non_const()
 {
   test t;
   sigc::mem_fun (&test::foo)(t, 1);
   util->check_result(result_stream, "test::foo(short 1)");
 }
 
-void test_const()
+void
+test_const()
 {
   test t;
   sigc::mem_fun (&test::foo_const)(t, 2);
   util->check_result(result_stream, "test::foo_const(int 2)");
 }
 
-void test_const_with_const_object()
+void
+test_const_with_const_object()
 {
   const auto t = test();
   sigc::mem_fun (&test::foo_const)(t, 3);
   util->check_result(result_stream, "test::foo_const(int 3)");
 }
 
-void test_non_const_volatile()
+void
+test_non_const_volatile()
 {
   test t;
   sigc::mem_fun (&test::foo_volatile)(t, 4);
   util->check_result(result_stream, "test::foo_volatile(float 4)");
 }
 
-void test_const_volatile()
+void
+test_const_volatile()
 {
   test t;
   sigc::mem_fun (&test::foo_const_volatile)(t, 5);
   util->check_result(result_stream, "test::foo_const_volatile(double 5)");
 }
 
-void test_const_volatile_with_const_object()
+void
+test_const_volatile_with_const_object()
 {
   const auto t = test();
   sigc::mem_fun (&test::foo_const_volatile)(t, 6);
@@ -92,7 +98,8 @@ void test_const_volatile_with_const_object()
 }
 
 #if ENABLE_TEST_OF_OVERLOADED_FUNCTIONS
-void test_overloaded()
+void
+test_overloaded()
 {
   test t;
   sigc::mem_fun<char> (&test::foo_overloaded)(t, 7);
@@ -109,7 +116,8 @@ void test_overloaded()
 }
 #endif
 
-void test_bound()
+void
+test_bound()
 {
   test t;
   sigc::mem_fun(t, &test::foo)(9);
@@ -142,27 +150,25 @@ void test_bound()
 class TestAutoDisconnect : public sigc::trackable
 {
 public:
-  void foo()
-  {
-    result_stream << "TestAutoDisconnect::foo() called.";
-  }
+  void foo() { result_stream << "TestAutoDisconnect::foo() called."; }
 };
 
-void test_auto_disconnect()
+void
+test_auto_disconnect()
 {
-  //Check that slot doesn't try to call a method on a destroyed instance,
-  //when the instance's class derives from trackable.
+  // Check that slot doesn't try to call a method on a destroyed instance,
+  // when the instance's class derives from trackable.
   sigc::slot<void()> slot_of_member_method;
   {
     TestAutoDisconnect t;
     slot_of_member_method = sigc::mem_fun(t, &TestAutoDisconnect::foo);
 
-    //The method should be called:
+    // The method should be called:
     slot_of_member_method();
     util->check_result(result_stream, "TestAutoDisconnect::foo() called.");
   }
 
-  //The method should not be called:
+  // The method should not be called:
   slot_of_member_method();
   util->check_result(result_stream, "");
 }

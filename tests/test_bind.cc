@@ -121,7 +121,7 @@ main(int argc, char* argv[])
   util->check_result(result_stream, "foo_void(int 12)");
 
   // function pointer instead of functor
-  sigc::bind (&bar, 13, 14)();
+  sigc::bind(&bar, 13, 14)();
   util->check_result(result_stream, "bar(int 13, int 14) ");
 
   // method pointer instead of functor
@@ -138,7 +138,7 @@ main(int argc, char* argv[])
 
   // test references
   std::string str("guest book");
-  sigc::bind (&egon, std::ref(str))(); // Tell bind that it shall store a reference.
+  sigc::bind(&egon, std::ref(str))(); // Tell bind that it shall store a reference.
   result_stream
     << " "
     << str; // (This cannot be the default behaviour: just think about what happens if str dies!)

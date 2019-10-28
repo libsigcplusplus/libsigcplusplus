@@ -91,7 +91,7 @@ namespace sigc
  *
  * @ingroup adaptors
  */
-template <typename T_functor>
+template<typename T_functor>
 struct adapts : public adaptor_base
 {
 private:

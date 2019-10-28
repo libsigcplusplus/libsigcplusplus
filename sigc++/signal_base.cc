@@ -33,12 +33,12 @@ struct self_and_iter : public notifiable
   const signal_impl::iterator_type iter_;
 
   self_and_iter(const std::weak_ptr<signal_impl>& self, const signal_impl::iterator_type& iter)
-  : self_(self), iter_(iter) {}
+  : self_(self), iter_(iter)
+  {
+  }
 };
 
-signal_impl::signal_impl() : exec_count_(0), deferred_(false)
-{
-}
+signal_impl::signal_impl() : exec_count_(0), deferred_(false) {}
 
 signal_impl::~signal_impl()
 {
@@ -204,22 +204,16 @@ signal_impl::notify_self_and_iter_of_invalidated_slot(notifiable* d)
 
 } /* namespace internal */
 
-signal_base::signal_base() noexcept
-{
-}
+signal_base::signal_base() noexcept {}
 
-signal_base::signal_base(const signal_base& src) noexcept : impl_(src.impl())
-{
-}
+signal_base::signal_base(const signal_base& src) noexcept : impl_(src.impl()) {}
 
 signal_base::signal_base(signal_base&& src) : impl_(std::move(src.impl_))
 {
   src.impl_ = nullptr;
 }
 
-signal_base::~signal_base()
-{
-}
+signal_base::~signal_base() {}
 
 void
 signal_base::clear()

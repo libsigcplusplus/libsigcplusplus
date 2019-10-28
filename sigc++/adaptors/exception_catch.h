@@ -73,7 +73,7 @@ namespace sigc
  * @ingroup adaptors
  */
 
-template <typename T_functor, typename T_catcher>
+template<typename T_functor, typename T_catcher>
 struct exception_catch_functor : public adapts<T_functor>
 {
   decltype(auto) operator()()
@@ -88,7 +88,7 @@ struct exception_catch_functor : public adapts<T_functor>
     }
   }
 
-  template <typename... T_arg>
+  template<typename... T_arg>
   decltype(auto) operator()(T_arg... a)
   {
     try
@@ -111,10 +111,10 @@ struct exception_catch_functor : public adapts<T_functor>
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 // template specialization of visitor<>::do_visit_each<>(action, functor):
-template <typename T_functor, typename T_catcher>
+template<typename T_functor, typename T_catcher>
 struct visitor<exception_catch_functor<T_functor, T_catcher>>
 {
-  template <typename T_action>
+  template<typename T_action>
   static void do_visit_each(const T_action& action,
     const exception_catch_functor<T_functor, T_catcher>& target)
   {
@@ -124,7 +124,7 @@ struct visitor<exception_catch_functor<T_functor, T_catcher>>
 };
 #endif // DOXYGEN_SHOULD_SKIP_THIS
 
-template <typename T_functor, typename T_catcher>
+template<typename T_functor, typename T_catcher>
 inline decltype(auto)
 exception_catch(const T_functor& func, const T_catcher& catcher)
 {

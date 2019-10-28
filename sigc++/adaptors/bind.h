@@ -102,7 +102,7 @@ namespace sigc
 namespace internal
 {
 
-template <typename T_element>
+template<typename T_element>
 struct TransformEachInvoker
 {
   // We take T_element as non-const because invoke() is not const.
@@ -122,7 +122,7 @@ struct TransformEachInvoker
  *
  * @ingroup bind
  */
-template <int I_location, typename T_functor, typename... T_bound>
+template<int I_location, typename T_functor, typename... T_bound>
 struct bind_functor : public adapts<T_functor>
 {
   /** Invokes the wrapped functor passing on the arguments.
@@ -130,7 +130,7 @@ struct bind_functor : public adapts<T_functor>
    * @param arg Arguments to be passed on to the functor.
    * @return The return value of the functor invocation.
    */
-  template <typename... T_arg>
+  template<typename... T_arg>
   decltype(auto) operator()(T_arg&&... arg)
   {
     // For instance, if I_location is 1, and arg has 4 arguments,
@@ -171,7 +171,7 @@ struct bind_functor : public adapts<T_functor>
  *
  * @ingroup bind
  */
-template <typename T_functor, typename... T_type>
+template<typename T_functor, typename... T_type>
 struct bind_functor<-1, T_functor, T_type...> : public adapts<T_functor>
 {
 public:
@@ -180,7 +180,7 @@ public:
    * @param arg Arguments to be passed on to the functor.
    * @return The return value of the functor invocation.
    */
-  template <typename... T_arg>
+  template<typename... T_arg>
   decltype(auto) operator()(T_arg&&... arg)
   {
     // For instance, if arg has 4 arguments,
@@ -215,12 +215,12 @@ public:
  *
  * @ingroup bind
  */
-template <int T_loc, typename T_functor, typename... T_bound>
+template<int T_loc, typename T_functor, typename... T_bound>
 struct visitor<bind_functor<T_loc, T_functor, T_bound...>>
 {
-  template <typename T_action>
-  static void do_visit_each(
-    const T_action& action, const bind_functor<T_loc, T_functor, T_bound...>& target)
+  template<typename T_action>
+  static void do_visit_each(const T_action& action,
+    const bind_functor<T_loc, T_functor, T_bound...>& target)
   {
     sigc::visit_each(action, target.functor_);
     sigc::visit_each(action, std::get<0>(target.bound_));
@@ -234,12 +234,12 @@ struct visitor<bind_functor<T_loc, T_functor, T_bound...>>
  *
  * @ingroup bind
  */
-template <typename T_functor, typename... T_type>
+template<typename T_functor, typename... T_type>
 struct visitor<bind_functor<-1, T_functor, T_type...>>
 {
-  template <typename T_action>
-  static void do_visit_each(
-    const T_action& action, const bind_functor<-1, T_functor, T_type...>& target)
+  template<typename T_action>
+  static void do_visit_each(const T_action& action,
+    const bind_functor<-1, T_functor, T_type...>& target)
   {
     sigc::visit_each(action, target.functor_);
 
@@ -260,7 +260,7 @@ struct visitor<bind_functor<-1, T_functor, T_type...>>
  *
  * @ingroup bind
  */
-template <int I_location, typename T_functor, typename... T_bound>
+template<int I_location, typename T_functor, typename... T_bound>
 inline decltype(auto)
 bind(const T_functor& func, T_bound... b)
 {
@@ -277,7 +277,7 @@ bind(const T_functor& func, T_bound... b)
  *
  * @ingroup bind
  */
-template <typename T_functor, typename... T_type>
+template<typename T_functor, typename... T_type>
 inline decltype(auto)
 bind(const T_functor& func, T_type... b)
 {

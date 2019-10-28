@@ -81,6 +81,7 @@ public:
 protected:
   // Don't make it private. clang++ does not like unused private data.
   const bar_group4& bar_;
+
 private:
   const book& aBook_;
 };

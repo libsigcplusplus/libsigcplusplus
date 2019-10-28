@@ -23,43 +23,52 @@
 #include <sigc++/tuple-utils/tuple_start.h>
 #include <type_traits>
 
-namespace sigc::internal {
+namespace sigc::internal
+{
 
-namespace detail {
+namespace detail
+{
 
-template <template <typename> class T_transformer, std::size_t size_from_index>
-struct tuple_transform_each_impl {
+template<template<typename> class T_transformer, std::size_t size_from_index>
+struct tuple_transform_each_impl
+{
   // TODO: Avoid the need to pass t_original all the way into the recursion?
-  template <typename T_current, typename T_original>
-  constexpr
-  static decltype(auto)
-  tuple_transform_each(T_current&& t, T_original& t_original) {
-    if constexpr(size_from_index == 0) {
-    // Prevent 'unreferenced formal parameter' warning from MSVC by 'using'
-    // t_original
+  template<typename T_current, typename T_original>
+  constexpr static decltype(auto) tuple_transform_each(T_current&& t, T_original& t_original)
+  {
+    if constexpr (size_from_index == 0)
+    {
+      // Prevent 'unreferenced formal parameter' warning from MSVC by 'using'
+      // t_original
       static_cast<void>(t_original);
-      //Do nothing because the tuple has no elements.
+      // Do nothing because the tuple has no elements.
       return std::forward<T_current>(t);
-    } else { //TODO: Should this compile without using else to contain the alternative code?
-      //We use std::decay_t<> because tuple_size is not defined for references.
+    }
+    else
+    { // TODO: Should this compile without using else to contain the alternative code?
+      // We use std::decay_t<> because tuple_size is not defined for references.
       constexpr auto size = std::tuple_size<std::decay_t<T_current>>::value;
       constexpr auto index = size - size_from_index;
       static_assert(index >= 0, "unexpected index.");
 
       using from_element_type = typename std::tuple_element<index, std::decay_t<T_original>>::type;
-      using to_element_type = typename std::invoke_result<decltype (
-        &T_transformer<from_element_type>::transform), from_element_type&>::type;
+      using to_element_type =
+        typename std::invoke_result<decltype(&T_transformer<from_element_type>::transform),
+          from_element_type&>::type;
       // Tuples which are input data to std::tuple_cat() should not be declared const.
       // Some versions of libc++ has a bug in std::tuple_cat(): All output elements
       // coming from a const tuple become const.
       // https://github.com/libsigcplusplus/libsigcplusplus/issues/25
-      auto t_element =
-        std::tuple<to_element_type>(T_transformer<from_element_type>::transform(std::get<index>(t_original)));
+      auto t_element = std::tuple<to_element_type>(
+        T_transformer<from_element_type>::transform(std::get<index>(t_original)));
 
-      if constexpr(size_from_index == 1) {
+      if constexpr (size_from_index == 1)
+      {
         auto tuple_rest = tuple_start<size - 1>(std::forward<T_current>(t));
         return std::tuple_cat(tuple_rest, t_element);
-      } else {
+      }
+      else
+      {
         auto t_start = tuple_start<index>(std::forward<T_current>(t));
 
         // t_end's elements will be copies of the elements in t, so this method's
@@ -71,8 +80,8 @@ struct tuple_transform_each_impl {
         auto t_end = tuple_end<size - index - 1>(t);
 
         auto t_with_transformed_element = std::tuple_cat(t_start, t_element, t_end);
-        return tuple_transform_each_impl<T_transformer,
-          size_from_index - 1>::tuple_transform_each(t_with_transformed_element, t_original);
+        return tuple_transform_each_impl<T_transformer, size_from_index - 1>::tuple_transform_each(
+          t_with_transformed_element, t_original);
       }
     }
   }
@@ -84,17 +93,17 @@ struct tuple_transform_each_impl {
  * Get a tuple with each element having the transformed value of the element
  * in the original tuple.
  */
-template <template <typename> class T_transformer, typename T>
-constexpr
-decltype(auto)
-tuple_transform_each(T&& t) {
-  //We use std::decay_t<> because tuple_size is not defined for references.
+template<template<typename> class T_transformer, typename T>
+constexpr decltype(auto)
+tuple_transform_each(T&& t)
+{
+  // We use std::decay_t<> because tuple_size is not defined for references.
   constexpr auto size = std::tuple_size<std::decay_t<T>>::value;
 
-  return detail::tuple_transform_each_impl<T_transformer,
-    size>::tuple_transform_each(std::forward<T>(t), t);
+  return detail::tuple_transform_each_impl<T_transformer, size>::tuple_transform_each(
+    std::forward<T>(t), t);
 }
 
 } // namespace sigc::internal
 
-#endif //SIGC_TUPLE_UTILS_TUPLE_TRANSFORM_EACH_H
+#endif // SIGC_TUPLE_UTILS_TUPLE_TRANSFORM_EACH_H

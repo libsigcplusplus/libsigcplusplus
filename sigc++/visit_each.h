@@ -32,23 +32,26 @@ struct trackable;
 namespace internal
 {
 
-template <typename Base, typename Derived>
+template<typename Base, typename Derived>
 constexpr bool is_base_of_or_same_v =
   std::is_base_of<std::decay_t<Base>, std::decay_t<Derived>>::value ||
-    std::is_same<std::decay_t<Base>, std::decay_t<Derived>>::value;
+  std::is_same<std::decay_t<Base>, std::decay_t<Derived>>::value;
 
 /// Helper struct for visit_each_trackable().
-template <typename T_action>
+template<typename T_action>
 struct limit_trackable_target
 {
-  template <typename T_type>
+  template<typename T_type>
   void operator()(T_type&& type) const
   {
-    //Only call action_() if T_Type derives from trackable.
-    if constexpr(is_base_of_or_same_v<sigc::trackable, T_type>) {
-        std::invoke(action_, type);
-    } else {
-    // Prevent 'unreferenced formal parameter' warning from MSVC by 'using' type
+    // Only call action_() if T_Type derives from trackable.
+    if constexpr (is_base_of_or_same_v<sigc::trackable, T_type>)
+    {
+      std::invoke(action_, type);
+    }
+    else
+    {
+      // Prevent 'unreferenced formal parameter' warning from MSVC by 'using' type
       static_cast<void>(type);
     }
   }
@@ -110,10 +113,10 @@ struct limit_trackable_target
  *
  * @ingroup sigcfunctors
  */
-template <typename T_functor>
+template<typename T_functor>
 struct visitor
 {
-  template <typename T_action>
+  template<typename T_action>
   static void do_visit_each(const T_action& action, const T_functor& functor)
   {
     action(functor);
@@ -124,7 +127,7 @@ struct visitor
  *
  * @ingroup sigcfunctors
  */
-template <typename T_action, typename T_functor>
+template<typename T_action, typename T_functor>
 void
 visit_each(const T_action& action, const T_functor& functor)
 {
@@ -146,7 +149,7 @@ visit_each(const T_action& action, const T_functor& functor)
  *
  * @ingroup sigcfunctors
  */
-template <typename T_action, typename T_functor>
+template<typename T_action, typename T_functor>
 void
 visit_each_trackable(const T_action& action, const T_functor& functor)
 {

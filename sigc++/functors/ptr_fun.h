@@ -68,10 +68,10 @@ namespace sigc
  *
  * @ingroup ptr_fun
  */
-template <typename T_return, typename... T_args>
+template<typename T_return, typename... T_args>
 class pointer_functor;
 
-template <typename T_return, typename... T_args>
+template<typename T_return, typename... T_args>
 class pointer_functor<T_return(T_args...)>
 {
   using function_type = T_return (*)(T_args...);
@@ -80,7 +80,6 @@ protected:
   function_type func_ptr_;
 
 public:
-
   /// Constructs an invalid functor.
   pointer_functor() = default;
 
@@ -93,9 +92,7 @@ public:
    * @param a Arguments to be passed on to the function.
    * @return The return value of the function invocation.
    */
-  T_return operator()(type_trait_take_t<T_args>... a) const {
-    return std::invoke(func_ptr_, a...);
-  }
+  T_return operator()(type_trait_take_t<T_args>... a) const { return std::invoke(func_ptr_, a...); }
 };
 
 /** Creates a functor of type sigc::pointer_functor which wraps an existing non-member function.
@@ -104,7 +101,7 @@ public:
  *
  * @ingroup ptr_fun
  */
-template <typename T_return, typename... T_args>
+template<typename T_return, typename... T_args>
 inline decltype(auto) ptr_fun(T_return (*func)(T_args...))
 {
   return pointer_functor<T_return(T_args...)>(func);

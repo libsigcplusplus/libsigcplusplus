@@ -16,14 +16,13 @@ ident(int i)
   return i;
 }
 
-template <typename T>
+template<typename T>
 struct min_accum
 {
   using result_type = T;
 
-  template <typename I>
-  decltype(auto)
-  operator()(I i1, I i2)
+  template<typename I>
+  decltype(auto) operator()(I i1, I i2)
   {
     return *std::min_element(i1, i2);
   }

@@ -21,7 +21,7 @@
 #include <functional>
 #include <string>
 
-template <typename T_element_from>
+template<typename T_element_from>
 class transform_to_string
 {
 public:
@@ -68,11 +68,11 @@ test_tuple_transform_each_same_types()
 // The general template declaration.
 // We then provide specializations for each type,
 // so we can test having a different return value for each T_element_from type.
-template <typename T_element_from>
+template<typename T_element_from>
 class transform_to_something;
 
 // An int will be converted to a std::string:
-template <>
+template<>
 class transform_to_something<int>
 {
 public:
@@ -80,7 +80,7 @@ public:
 };
 
 // A double will be converted to a char:
-template <>
+template<>
 class transform_to_something<double>
 {
 public:
@@ -88,7 +88,7 @@ public:
 };
 
 // A std::string will be converted to an int:
-template <>
+template<>
 class transform_to_something<std::string>
 {
 public:
@@ -114,7 +114,7 @@ test_tuple_transform_each_multiple_types()
     "unexpected transform_each()ed tuple type");
 }
 
-template <typename T_element_from>
+template<typename T_element_from>
 class transform_each_nonconst
 {
 public:
@@ -184,7 +184,7 @@ private:
   int m_val;
 };
 
-template <typename T_element_from>
+template<typename T_element_from>
 class transform_noncopyable_to_string
 {
 public:
@@ -215,7 +215,7 @@ test_tuple_transform_each_stdref_non_copyable()
 
 static std::string correct_sequence_output;
 
-template <typename T_element_from>
+template<typename T_element_from>
 class transform_each_correct_sequence
 {
 public:
@@ -246,11 +246,11 @@ test_tuple_transform_each_empty_tuple()
 // The general template declaration.
 // We then provide specializations for each type,
 // so we can test having a different return value for each T_element_from type.
-template <typename T_element_from>
+template<typename T_element_from>
 class transform_as_constexpr_to_something;
 
 // An int will be converted to a char:
-template <>
+template<>
 class transform_as_constexpr_to_something<int>
 {
 public:
@@ -258,7 +258,7 @@ public:
 };
 
 // A double will be converted to an int:
-template <>
+template<>
 class transform_as_constexpr_to_something<const double>
 {
 public:

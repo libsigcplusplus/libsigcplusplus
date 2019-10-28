@@ -159,7 +159,7 @@ main(int argc, char* argv[])
   util->check_result(result_stream, "sig is empty (size=0): ");
 
   result_stream << "deleting a signal during emission... ";
-  auto b = new B; //This is deleted by B::destroy().
+  auto b = new B; // This is deleted by B::destroy().
   b->emit();
   util->check_result(result_stream, "deleting a signal during emission... Good bye world!");
 

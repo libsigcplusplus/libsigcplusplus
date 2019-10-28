@@ -76,10 +76,10 @@ namespace sigc
  *
  * @ingroup retype
  */
-template <typename T_functor, typename... T_type>
+template<typename T_functor, typename... T_type>
 struct retype_functor : public adapts<T_functor>
 {
-  template <typename... T_arg>
+  template<typename... T_arg>
   decltype(auto) operator()(T_arg... a)
   {
     return std::invoke(this->functor_, static_cast<T_type>(a)...);
@@ -89,9 +89,7 @@ struct retype_functor : public adapts<T_functor>
    * the functor.
    * @param functor Functor to invoke from operator()().
    */
-  explicit retype_functor(type_trait_take_t<T_functor> functor) : adapts<T_functor>(functor)
-  {
-  }
+  explicit retype_functor(type_trait_take_t<T_functor> functor) : adapts<T_functor>(functor) {}
 };
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -102,12 +100,12 @@ struct retype_functor : public adapts<T_functor>
  *
  * @ingroup retype
  */
-template <typename T_functor, typename... T_type>
+template<typename T_functor, typename... T_type>
 struct visitor<retype_functor<T_functor, T_type...>>
 {
-  template <typename T_action>
-  static void do_visit_each(
-    const T_action& action, const retype_functor<T_functor, T_type...>& target)
+  template<typename T_action>
+  static void do_visit_each(const T_action& action,
+    const retype_functor<T_functor, T_type...>& target)
   {
     sigc::visit_each(action, target.functor_);
   }
@@ -123,7 +121,9 @@ struct visitor<retype_functor<T_functor, T_type...>>
  *
  * @ingroup retype
  */
-template <template <typename T_func, typename... T_arg> class T_functor, typename T_func, typename... T_arg>
+template<template<typename T_func, typename... T_arg> class T_functor,
+  typename T_func,
+  typename... T_arg>
 inline decltype(auto)
 retype(const T_functor<T_func, T_arg...>& functor)
 {
@@ -139,7 +139,9 @@ retype(const T_functor<T_func, T_arg...>& functor)
  *
  * @ingroup retype
  */
-template <template <typename T_return, typename... T_arg> class T_functor, typename T_return, typename... T_arg>
+template<template<typename T_return, typename... T_arg> class T_functor,
+  typename T_return,
+  typename... T_arg>
 inline decltype(auto)
 retype(const T_functor<T_return(T_arg...)>& functor)
 {

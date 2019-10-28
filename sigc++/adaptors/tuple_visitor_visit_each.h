@@ -29,10 +29,10 @@ namespace internal
 {
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-template <typename T_element>
+template<typename T_element>
 struct TupleVisitorVisitEach
 {
-  template <typename T_action>
+  template<typename T_action>
   constexpr static void visit(const T_element& element, T_action&& action)
   {
     sigc::visit_each(std::forward<T_action>(action), element);

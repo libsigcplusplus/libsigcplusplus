@@ -66,12 +66,7 @@ public:
    * down dereferencing of slot list iterators. Martin. */
   // TODO: Try this now? murrayc.
 
-  inline slot_rep(hook call__) noexcept
-    : call_(call__),
-      cleanup_(nullptr),
-      parent_(nullptr)
-  {
-  }
+  inline slot_rep(hook call__) noexcept : call_(call__), cleanup_(nullptr), parent_(nullptr) {}
 
   virtual ~slot_rep() {}
 
@@ -383,4 +378,4 @@ private:
 
 } // namespace sigc
 
-#endif //SIGC_SLOT_BASE_HPP
+#endif // SIGC_SLOT_BASE_HPP

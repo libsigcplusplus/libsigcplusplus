@@ -47,8 +47,9 @@ namespace internal
  * function_pointer_cast<>() (perhaps glibmm), can be ambiguous due to ADL
  * (argument-dependent lookup).
  */
-template <typename T_out, typename T_in>
-inline T_out function_pointer_cast(T_in in)
+template<typename T_out, typename T_in>
+inline T_out
+function_pointer_cast(T_in in)
 {
   // The double reinterpret_cast suppresses a warning from gcc8 with the
   // -Wcast-function-type option.
@@ -62,15 +63,15 @@ inline T_out function_pointer_cast(T_in in)
  * notification callback. Consequently the slot_rep object will be
  * notified when some referred object is destroyed or overwritten.
  */
-template <typename T_functor>
+template<typename T_functor>
 struct typed_slot_rep : public slot_rep
 {
 private:
   /* Use an adaptor type so that arguments can be passed as const references
    * through explicit template instantiation from slot_call#::call_it() */
   using adaptor_type = typename adaptor_trait<T_functor>::adaptor_type;
-public:
 
+public:
   /** The functor contained by this slot_rep object. */
   std::unique_ptr<adaptor_type> functor_;
 
@@ -139,7 +140,7 @@ private:
  * - @e T_arg Argument types used in the definition of call_it().
  *
  */
-template <typename T_functor, typename T_return, typename... T_arg>
+template<typename T_functor, typename T_return, typename... T_arg>
 struct slot_call
 {
   /** Invokes a functor of type @p T_functor.
@@ -191,15 +192,15 @@ struct slot_call
  * @ingroup slot
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-template <typename T_return, typename... T_arg>
+template<typename T_return, typename... T_arg>
 class slot;
 #endif // DOXYGEN_SHOULD_SKIP_THIS
 
-template <typename T_return, typename... T_arg>
+template<typename T_return, typename... T_arg>
 class slot<T_return(T_arg...)> : public slot_base
 {
 public:
-// TODO: using arg_type_ = type_trait_take_t<T_arg>;
+  // TODO: using arg_type_ = type_trait_take_t<T_arg>;
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 private:
@@ -215,8 +216,11 @@ public:
    */
   inline T_return operator()(type_trait_take_t<T_arg>... a) const
   {
-    if (!empty() && !blocked()) {
-      return std::invoke(sigc::internal::function_pointer_cast<call_type>(slot_base::rep_->call_), slot_base::rep_, a...);
+    if (!empty() && !blocked())
+    {
+      return std::invoke(sigc::internal::function_pointer_cast<call_type>(slot_base::rep_->call_),
+        slot_base::rep_,
+        a...);
     }
 
     return T_return();
@@ -227,7 +231,7 @@ public:
   /** Constructs a slot from an arbitrary functor.
    * @param func The desired functor the new slot should be assigned to.
    */
-  template <typename T_functor>
+  template<typename T_functor>
   slot(const T_functor& func) : slot_base(new internal::typed_slot_rep<T_functor>(func))
   {
     // The slot_base:: is necessary to stop the HP-UX aCC compiler from being confused. murrayc.
@@ -249,8 +253,7 @@ public:
    * @param src The slot from which to make a copy.
    * @return @p this.
    */
-  slot& operator=(const slot& src)
-  = default;
+  slot& operator=(const slot& src) = default;
 
   /** Overrides this slot, making a move from another slot.
    * If @p src is connected to a parent (e.g. a signal), it is copied, not moved.
@@ -287,15 +290,15 @@ public:
  *
  * @ingroup slot
  */
-template <typename T_return, typename... T_arg>
+template<typename T_return, typename... T_arg>
 struct visitor<slot<T_return, T_arg...>>
 {
-  static void do_visit_each(
-    const internal::limit_trackable_target<internal::slot_do_bind>& action,
+  static void do_visit_each(const internal::limit_trackable_target<internal::slot_do_bind>& action,
     const slot<T_return, T_arg...>& target)
   {
     if (target.rep_ && target.rep_->parent_ == nullptr)
-      target.rep_->set_parent(action.action_.rep_, &internal::slot_rep::notify_slot_rep_invalidated);
+      target.rep_->set_parent(
+        action.action_.rep_, &internal::slot_rep::notify_slot_rep_invalidated);
   }
 
   static void do_visit_each(
@@ -306,7 +309,7 @@ struct visitor<slot<T_return, T_arg...>>
       target.rep_->unset_parent();
   }
 
-  template <typename T_action>
+  template<typename T_action>
   static void do_visit_each(const T_action& action, const slot<T_return, T_arg...>& target)
   {
     action(target);

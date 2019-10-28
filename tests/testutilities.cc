@@ -23,9 +23,7 @@
 
 TestUtilities* TestUtilities::instance_ = nullptr;
 
-TestUtilities::TestUtilities() : verbose_(false), result_ok_(true), test_number_(0)
-{
-}
+TestUtilities::TestUtilities() : verbose_(false), result_ok_(true), test_number_(0) {}
 
 // static
 TestUtilities*

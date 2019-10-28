@@ -22,15 +22,11 @@
 namespace sigc
 {
 
-trackable::trackable() noexcept : callback_list_(nullptr)
-{
-}
+trackable::trackable() noexcept : callback_list_(nullptr) {}
 
 /* Don't copy the notification list.
    The objects watching src don't need to be notified when the new object dies. */
-trackable::trackable(const trackable& /*src*/) noexcept : callback_list_(nullptr)
-{
-}
+trackable::trackable(const trackable& /*src*/) noexcept : callback_list_(nullptr) {}
 
 // Don't move the notification list.
 // The objects watching src don't need to be notified when the new object dies.
@@ -38,8 +34,7 @@ trackable::trackable(const trackable& /*src*/) noexcept : callback_list_(nullptr
 //
 // If trackable's move constructor is modified, check if Glib::Object's
 // move constructor should be modified similarly.
-trackable::trackable(trackable&& src) noexcept
-: callback_list_(nullptr)
+trackable::trackable(trackable&& src) noexcept : callback_list_(nullptr)
 {
   src.notify_callbacks();
 }

@@ -59,10 +59,10 @@ namespace sigc
  *
  * @ingroup compose
  */
-template <typename T_setter, typename T_getter>
+template<typename T_setter, typename T_getter>
 struct compose1_functor : public adapts<T_setter>
 {
-  template <typename... T_arg>
+  template<typename... T_arg>
   decltype(auto) operator()(T_arg&&... a)
   {
     return std::invoke(this->functor_, get_(std::forward<T_arg>(a)...));
@@ -91,10 +91,10 @@ struct compose1_functor : public adapts<T_setter>
  *
  * @ingroup compose
  */
-template <typename T_setter, typename T_getter1, typename T_getter2>
+template<typename T_setter, typename T_getter1, typename T_getter2>
 struct compose2_functor : public adapts<T_setter>
 {
-  template <typename... T_arg>
+  template<typename... T_arg>
   decltype(auto) operator()(T_arg... a)
   {
     return std::invoke(this->functor_, get1_(a...), get2_(a...));
@@ -106,8 +106,7 @@ struct compose2_functor : public adapts<T_setter>
    * @param getter1 Functor to invoke from operator()().
    * @param getter2 Functor to invoke from operator()().
    */
-  compose2_functor(
-    const T_setter& setter, const T_getter1& getter1, const T_getter2& getter2)
+  compose2_functor(const T_setter& setter, const T_getter1& getter1, const T_getter2& getter2)
   : adapts<T_setter>(setter), get1_(getter1), get2_(getter2)
   {
   }
@@ -124,12 +123,12 @@ struct compose2_functor : public adapts<T_setter>
  *
  * @ingroup compose
  */
-template <typename T_setter, typename T_getter>
+template<typename T_setter, typename T_getter>
 struct visitor<compose1_functor<T_setter, T_getter>>
 {
-  template <typename T_action>
-  static void do_visit_each(
-    const T_action& action, const compose1_functor<T_setter, T_getter>& target)
+  template<typename T_action>
+  static void do_visit_each(const T_action& action,
+    const compose1_functor<T_setter, T_getter>& target)
   {
     sigc::visit_each(action, target.functor_);
     sigc::visit_each(action, target.get_);
@@ -143,12 +142,12 @@ struct visitor<compose1_functor<T_setter, T_getter>>
  *
  * @ingroup compose
  */
-template <typename T_setter, typename T_getter1, typename T_getter2>
+template<typename T_setter, typename T_getter1, typename T_getter2>
 struct visitor<compose2_functor<T_setter, T_getter1, T_getter2>>
 {
-  template <typename T_action>
-  static void do_visit_each(
-    const T_action& action, const compose2_functor<T_setter, T_getter1, T_getter2>& target)
+  template<typename T_action>
+  static void do_visit_each(const T_action& action,
+    const compose2_functor<T_setter, T_getter1, T_getter2>& target)
   {
     sigc::visit_each(action, target.functor_);
     sigc::visit_each(action, target.get1_);
@@ -166,7 +165,7 @@ struct visitor<compose2_functor<T_setter, T_getter1, T_getter2>>
  *
  * @ingroup compose
  */
-template <typename T_setter, typename T_getter>
+template<typename T_setter, typename T_getter>
 inline compose1_functor<T_setter, T_getter>
 compose(const T_setter& setter, const T_getter& getter)
 {
@@ -184,7 +183,7 @@ compose(const T_setter& setter, const T_getter& getter)
  *
  * @ingroup compose
  */
-template <typename T_setter, typename T_getter1, typename T_getter2>
+template<typename T_setter, typename T_getter1, typename T_getter2>
 inline compose2_functor<T_setter, T_getter1, T_getter2>
 compose(const T_setter& setter, const T_getter1& getter1, const T_getter2& getter2)
 {
