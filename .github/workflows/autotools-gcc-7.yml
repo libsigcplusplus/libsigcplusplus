@@ -15,7 +15,6 @@ jobs:
         sudo apt install mm-common g++-7
         export CXX=g++-7
         ./autogen.sh --enable-warnings=fatal
-        ./configure
         make
     - name: Test
       run: make check

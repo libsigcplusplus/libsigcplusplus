@@ -15,7 +15,6 @@ jobs:
         sudo apt install mm-common clang-7
         export CXX=clang++-7
         ./autogen.sh --enable-warnings=fatal
-        ./configure
         make
     - name: Test
       run: make check
