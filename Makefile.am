@@ -46,3 +46,9 @@ DISTCLEANFILES = MSVC_NMake/sigc++config.h
 
 # Optional: auto-generate the ChangeLog file from the git log on make dist
 include $(top_srcdir)/build/dist-changelog.am
+
+# Run clang-format over all the files, to reformat them.
+# (We don't use xargs here because that wouldn't let us specify different
+# clang-format versions via a bash alias.)
+format:
+	clang-format -i `find . -name "*.h" -or -name "*.cc"`
