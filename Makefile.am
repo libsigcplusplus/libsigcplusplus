@@ -67,3 +67,9 @@ include $(top_srcdir)/build/dist-changelog.am
 # clang-format versions via a bash alias.)
 format:
 	clang-format -i `find . -name "*.h" -or -name "*.cc"`
+
+# Run clang-format over all files, and fail if they are not formatted correctly.
+# (This requires clang-format 10, which has the --dry-run and --Werror
+# command-line arguments.)
+check-format:
+	clang-format --dry-run --Werror `find . -name "*.h" -or -name "*.cc"`
