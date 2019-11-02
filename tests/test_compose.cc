@@ -31,25 +31,6 @@ struct set_void
 
 struct get
 {
-#ifdef SIGC_CXX_TYPEOF
-  bool operator()()
-  {
-    result_stream << "get() ";
-    return true;
-  }
-
-  int operator()(int i)
-  {
-    result_stream << "get(" << i << ") ";
-    return i * 2;
-  }
-
-  double operator()(int i, int j)
-  {
-    result_stream << "get(" << i << ", " << j << ") ";
-    return double(i) / double(j);
-  }
-#else
   double operator()()
   {
     result_stream << "get() ";
@@ -67,7 +48,6 @@ struct get
     result_stream << "get(" << i << ", " << j << ") ";
     return double(i) / double(j);
   }
-#endif
 };
 
 } // end anonymous namespace
