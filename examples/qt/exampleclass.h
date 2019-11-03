@@ -28,9 +28,9 @@ public Q_SLOTS:
     void example_slot();
 
 private:
-    sigc::slot<void()> m_slot;
+    sigc::slot<void()> m_sigc_slot;
+    sigc::signal<void()> m_sigc_signal;
     QTimer m_timer;
-    int m_times;
 };
 
 #endif // EXAMPLECLASS_H
