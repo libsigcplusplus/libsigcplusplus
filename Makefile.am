@@ -39,5 +39,25 @@ dist_noinst_DATA = $(addprefix MSVC_NMake/,$(msvc_nmake_data))
 
 DISTCLEANFILES = MSVC_NMake/sigc++config.h
 
+# Distribute files needed when building libsigc++ with meson.
+EXTRA_DIST = \
+  meson.build \
+  meson_options.txt \
+  sigc++config.h.meson \
+  MSVC_NMake/meson.build \
+  docs/manual/meson.build \
+  docs/reference/meson.build \
+  examples/meson.build \
+  sigc++/meson.build \
+  tests/meson.build \
+  tools/dist-cmd.py \
+  tools/handle-built-files.py \
+  tools/tutorial-custom-cmd.py \
+  tools/gcc_template_specialization_operator_overload.cc \
+  tools/have_sun_reverse_iterator.cc \
+  tools/msvc_template_specialization_operator_overload.cc \
+  tools/pragma_push_pop_macro.cc \
+  untracked/README
+
 # Optional: auto-generate the ChangeLog file from the git log on make dist
 include $(top_srcdir)/build/dist-changelog.am

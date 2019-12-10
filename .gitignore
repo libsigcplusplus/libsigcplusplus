@@ -23,3 +23,6 @@ Makefile.in
 /sigc++config.h
 /sigc++-*.pc
 /stamp-h?
+untracked/build_scripts/
+untracked/docs/
+untracked/sigc++/
