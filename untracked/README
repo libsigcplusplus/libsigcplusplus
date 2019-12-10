@@ -1,0 +1,33 @@
+untracked/README
+
+This directory contains files not tracked by a source code control program,
+such as git. (This README file is the exception.)
+
+The files can have one of two origins.
+
+1. Copied by the mm-common-get command.
+2. Generated when libsigc++ is built.
+
+Files of type 2 exist here only if libsigc++ is built with maintainer-mode=false,
+or the directory comes from a tarball.
+Files of both types exist here only if libsigc++ is built with Meson,
+or the tarball is created with Meson.
+
+1. Files copied by mm-common-get
+--------------------------------
+untracked/docs/docs/doc-install.pl
+                    doc-postprocess.pl
+                    doxygen-extra.css
+                    tagfile-to-devhelp2.xsl
+untracked/build_scripts/dist-build-scripts.py
+                        dist-changelog.py
+                        doc-reference.py
+
+mm-common-get may copy more files, but they are not used by libsigc++.
+
+2. Generated files
+------------------
+untracked/docs/docs/reference/libsigc++-3.0.devhelp2
+                              libsigc++-3.0.tag
+                              html/*
+untracked/docs/docs/manual/html/*

@@ -1,0 +1,16 @@
+option('maintainer-mode', type: 'combo', choices: ['false', 'if-git-build', 'true'],
+  value: 'if-git-build', description: 'Generate source code from .hg and .ccg files')
+option('warnings', type: 'combo', choices: ['no', 'min', 'max', 'fatal'],
+  value: 'fatal', description: 'Compiler warning level')
+option('build-deprecated-api', type: 'boolean', value: true,
+  description: 'Build deprecated API and include it in the library')
+option('build-documentation', type: 'combo', choices: ['false', 'if-maintainer-mode', 'true'],
+  value: 'if-maintainer-mode', description: 'Build and install the documentation')
+option('validation', type: 'boolean', value: true,
+  description: 'Validate the tutorial XML file')
+option('build-pdf', type: 'boolean', value: false,
+  description: 'Build tutorial PDF file')
+option('build-examples', type: 'boolean', value: true,
+  description: 'Build example programs')
+option('benchmark', type: 'boolean', value: false,
+  description: 'Build and test benchmark program')
