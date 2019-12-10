@@ -54,10 +54,10 @@ register_click_handler(okbutton, clicked, somedata);
 	<para>libsigc++ provides the concept of a slot, which holds a reference to one of
 	the things that can be used as a callback:
 	<itemizedlist>
-	    <listitem>A free-standing function as in the example</listitem>
-	    <listitem>A functor objects that defines operator()</listitem>
-	    <listitem>A pointer-to-a-member-function and an instance of an object on which to invoke it (the
-	        object should inherit from <literal remap="tt">sigc::trackable</literal>)</listitem>
+	    <listitem><para>A free-standing function as in the example</para></listitem>
+	    <listitem><para>A functor objects that defines operator()</para></listitem>
+	    <listitem><para>A pointer-to-a-member-function and an instance of an object on which to invoke it (the
+	        object should inherit from <literal remap="tt">sigc::trackable</literal>)</para></listitem>
 	</itemizedlist></para>
 
 	<para>All of which can take different numbers and types of arguments.</para>
