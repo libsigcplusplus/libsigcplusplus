@@ -97,7 +97,13 @@ endif
 
 # Some dependencies are required only in maintainer mode and/or
 # if documentation shall be built.
-mm_common_get = find_program('mm-common-get', required: maintainer_mode)
+mm_common_get = find_program('mm-common-get', required: false)
+
+if maintainer_mode and not mm_common_get.found()
+  error('Maintainer mode requires the \'mm-common-get\' command.\n' +
+        'Use \'-Dmaintainer-mode=false\' or install the \'mm-common\' package, version 1.0.0 or higher')
+endif
+
 perl = find_program('perl', required: build_documentation)
 doxygen = find_program('doxygen', required: build_documentation)
 dot = find_program('dot', required: build_documentation) # Used by Doxygen
