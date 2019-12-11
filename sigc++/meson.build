@@ -68,11 +68,19 @@ install_headers(adaptors_h_files, subdir: sigcxx_pcname / 'sigc++' / 'adaptors')
 install_headers(functors_h_files, subdir: sigcxx_pcname / 'sigc++' / 'functors')
 install_headers(tuple_utils_h_files, subdir: sigcxx_pcname / 'sigc++' / 'tuple-utils')
 
+extra_sigc_cppflags = []
+
+# Make sure we are exporting the symbols from the DLL
+if is_msvc
+  extra_sigc_cppflags += ['-DSIGC_BUILD', '-D_WINDLL']
+endif
+
 extra_include_dirs = ['..']
 sigcxx_library = library(sigcxx_pcname,
   source_cc_files,
   version: sigcxx_libversion,
   include_directories: extra_include_dirs,
+  cpp_args: extra_sigc_cppflags,
   dependencies: sigcxx_build_dep,
   install: true,
 )
