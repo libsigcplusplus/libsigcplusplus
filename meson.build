@@ -151,7 +151,7 @@ add_project_arguments(warning_flags, language: 'cpp')
 # MSVC: Ignore warnings that aren't really harmful, but make those
 #       that should not be overlooked stand out.
 if is_msvc
-  foreach wd : ['/FImsvc_recommended_pragmas.h', '/wd4267', '/wd4530']
+  foreach wd : ['/FImsvc_recommended_pragmas.h', '/wd4267', '/wd4530', '/utf-8']
     disabled_warning = cpp_compiler.get_supported_arguments(wd)
     add_project_arguments(disabled_warning, language: 'cpp')
   endforeach
