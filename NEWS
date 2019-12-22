@@ -1,3 +1,27 @@
+3.0.1 (stable)
+
+* Build:
+  - Add meson build, alongside the existing autotools and CMake builds.
+  (Kjell Ahlstedt, Chun-Wei Fan)
+  - CMake: Fix the MSVC build, enable warnings, and disable unnecessary
+  warnings, with MVSC.
+  (Stuart Dootson)
+* connection: Allow copying of empty connections.
+  (Aigrind)
+* sigc++/adaptors/bind.h: Make bind_functor::bound_ public.
+  (Used by sigc::visitor::do_visit_each().
+  (Kjell Ahlstedt) Bug #26
+* test_limit_reference: Avoid virtual-move-assign warning
+  (seen with g++ 9.2)
+  (Murray Cumming)
+* signal: slot_iterator_buf: Remove unused T_result default type
+  (Murray Cumming)
+* tests: Slight cleanups
+  (Murray Cumming)
+* Remove unused #ifdefed code.
+  (Murray Cumming)
+
+
 3.0.0 (stable)
 
 This is the first stable release of sigc++-3.0, installable in
