@@ -92,6 +92,13 @@ src_untracked_sigcxx = project_source_root / untracked_sigcxx
 
 handle_built_files = project_source_root / 'tools' / 'handle-built-files.py'
 
+extra_sigc_cppflags = []
+
+# Make sure we are exporting the symbols from the DLL
+if is_msvc
+  extra_sigc_cppflags += ['-DSIGC_BUILD', '-D_WINDLL']
+endif
+
 if maintainer_mode
 
   # Maintainer mode. Generate .h and .cc files from .m4 files in macros/ directories.
@@ -152,6 +159,7 @@ if maintainer_mode
   sigcxx_library = library(sigcxx_pcname,
     source_cc_files, built_cc_file_targets, built_h_file_targets,
     version: sigcxx_libversion,
+    cpp_args: extra_sigc_cppflags,
     include_directories: extra_include_dirs,
     dependencies: sigcxx_build_dep,
     install: true,
@@ -193,6 +201,7 @@ else # not maintainer_mode
   sigcxx_library = library(sigcxx_pcname,
     source_cc_files, untracked_built_cc_files,
     version: sigcxx_libversion,
+    cpp_args: extra_sigc_cppflags,
     include_directories: extra_include_dirs,
     dependencies: sigcxx_build_dep,
     install: true,
