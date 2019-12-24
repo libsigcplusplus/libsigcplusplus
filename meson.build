@@ -92,11 +92,9 @@ benchmark_dep = dependency('boost', modules: ['system', 'timer'],
                            version: '>=1.20.0', required: do_benchmark)
 can_benchmark = benchmark_dep.found()
 
-if is_msvc
-  # We must have Visual Studio 2017 15.7 or later...
-  assert(cpp_compiler.version().split('.')[0].to_int() >= 19 and \
-         cpp_compiler.version().split('.')[1].to_int() >= 15,
-         'Visual Studio 2017 15.7 or later is required')
+# We must have Visual Studio 2015 or later...
+if is_msvc and cpp_compiler.version().version_compare('<19')
+  error('Visual Studio 2015 or later is required')
 endif
 
 # Some dependencies are required only in maintainer mode and/or
