@@ -59,10 +59,6 @@ is_git_build = run_command(python3, '-c', cmd_py).returncode() == 0
 # is_git_build = run_command('test', '-d', project_source_root / '.git').returncode() == 0
 # Python code can be used in all operating sytems where Meson can run.
 
-# Unfortunately due to m4 requirements, we cannot support MSVC builds
-# directly from GIT checkouts
-assert(not is_msvc or not is_git_build, 'Direct builds from GIT is not supported for MSVC builds')
-
 # Options.
 maintainer_mode_opt = get_option('maintainer-mode')
 maintainer_mode = maintainer_mode_opt == 'true' or \
