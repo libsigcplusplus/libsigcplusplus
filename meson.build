@@ -39,7 +39,7 @@ project_build_root = meson.current_build_dir()
 
 cpp_compiler = meson.get_compiler('cpp')
 is_msvc = cpp_compiler.get_id() == 'msvc'
-python3 = import('python').find_installation('python3')
+python3 = import('python').find_installation()
 
 python_version = python3.language_version()
 python_version_req = '>= 3.5'
