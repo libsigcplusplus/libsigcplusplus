@@ -13,5 +13,5 @@ configure_file(
 cmd_py = '''
 import shutil
 shutil.copy2("@0@", "@1@")
-'''.format(project_build_root / 'sigc++config.h', meson.current_build_dir())
+'''.format(project_build_root / 'sigc++config.h', project_build_root / 'MSVC_NMake')
 meson.add_postconf_script(python3.path(), '-c', cmd_py)
