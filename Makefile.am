@@ -56,6 +56,7 @@ EXTRA_DIST = \
   sigc++/meson.build \
   tests/meson.build \
   tools/dist-cmd.py \
+  tools/handle-built-files.py \
   tools/tutorial-custom-cmd.py \
   untracked/README
 
