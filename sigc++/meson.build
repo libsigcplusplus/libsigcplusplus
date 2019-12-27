@@ -90,8 +90,6 @@ install_headers(functors_h_files, subdir: sigcxx_pcname / 'sigc++' / 'functors')
 untracked_sigcxx = 'untracked' / 'sigc++'
 src_untracked_sigcxx = project_source_root / untracked_sigcxx
 
-handle_built_files = project_source_root / 'tools' / 'handle-built-files.py'
-
 extra_sigc_cppflags = []
 extra_sigc_objects = []
 

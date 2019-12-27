@@ -28,12 +28,20 @@ $<
 $<
 <<
 
+{..\untracked\sigc++\adaptors\lambda\}.cc{$(CFG)\$(PLAT)\libsigcpp\}.obj::
+	$(CXX) $(LIBSIGCPP_CFLAGS) /Fo$(CFG)\$(PLAT)\libsigcpp\ /c @<<
+$<
+<<
+
 $(CFG)\$(PLAT)\libsigcpp-tests\testutilities.obj: $(CFG)\$(PLAT)\libsigcpp-tests ..\tests\testutilities.cc
 	$(CXX) $(SIGCPP_CFLAGS) /Fo$@ /c ..\tests\testutilities.cc
 # Rules for building .lib files
 $(LIBSIGC_LIB): $(LIBSIGC_DLL)
 
 {.}.rc{$(CFG)\$(PLAT)\libsigcpp\}.res:
+	rc /fo$@ $<
+
+{..\untracked\MSVC_NMake\}.rc{$(CFG)\$(PLAT)\libsigcpp\}.res:
 	rc /fo$@ $<
 
 # Rules for linking DLLs
