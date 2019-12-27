@@ -93,10 +93,18 @@ src_untracked_sigcxx = project_source_root / untracked_sigcxx
 handle_built_files = project_source_root / 'tools' / 'handle-built-files.py'
 
 extra_sigc_cppflags = []
+extra_sigc_objects = []
 
 # Make sure we are exporting the symbols from the DLL
 if is_msvc
   extra_sigc_cppflags += ['-DSIGC_BUILD', '-D_WINDLL']
+endif
+
+# Build the .rc file for Windows builds and link to it
+if host_machine.system() == 'windows'
+  windows = import('windows')
+  sigc_res = windows.compile_resources(sigc_rc)
+  extra_sigc_objects += sigc_res
 endif
 
 if maintainer_mode
@@ -158,6 +166,7 @@ if maintainer_mode
   extra_include_dirs = ['..']
   sigcxx_library = library(sigcxx_pcname,
     source_cc_files, built_cc_file_targets, built_h_file_targets,
+    extra_sigc_objects,
     version: sigcxx_libversion,
     cpp_args: extra_sigc_cppflags,
     include_directories: extra_include_dirs,
@@ -200,6 +209,7 @@ else # not maintainer_mode
   extra_include_dirs = [ '..', '..' / 'untracked' ]
   sigcxx_library = library(sigcxx_pcname,
     source_cc_files, untracked_built_cc_files,
+    extra_sigc_objects,
     version: sigcxx_libversion,
     cpp_args: extra_sigc_cppflags,
     include_directories: extra_include_dirs,

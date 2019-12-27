@@ -3,7 +3,7 @@
 # Input: pkg_conf_data, project_build_root, python3
 # Output: -
 
-configure_file(
+sigc_rc = configure_file(
   input: 'sigc.rc.in',
   output: '@BASENAME@',
   configuration: pkg_conf_data,
