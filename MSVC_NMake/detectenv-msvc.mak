@@ -121,6 +121,9 @@ CFLAGS_ADD = /MD /O2 /GL /MP
 !if "$(VSVER)" != "9"
 CFLAGS_ADD = $(CFLAGS_ADD) /d2Zi+
 !endif
+!if $(VSVER) >= 14
+CFLAGS_ADD = $(CFLAGS_ADD) /utf-8
+!endif
 !else
 CFLAGS_ADD = /MDd /Od
 !endif
