@@ -69,15 +69,24 @@ install_headers(functors_h_files, subdir: sigcxx_pcname / 'sigc++' / 'functors')
 install_headers(tuple_utils_h_files, subdir: sigcxx_pcname / 'sigc++' / 'tuple-utils')
 
 extra_sigc_cppflags = []
+extra_sigc_objects = []
 
 # Make sure we are exporting the symbols from the DLL
 if is_msvc
   extra_sigc_cppflags += ['-DSIGC_BUILD', '-D_WINDLL']
 endif
 
+# Build the .rc file for Windows builds and link to it
+if host_machine.system() == 'windows'
+  windows = import('windows')
+  sigc_res = windows.compile_resources(sigc_rc)
+  extra_sigc_objects += sigc_res
+endif
+
 extra_include_dirs = ['..']
 sigcxx_library = library(sigcxx_pcname,
   source_cc_files,
+  extra_sigc_objects,
   version: sigcxx_libversion,
   include_directories: extra_include_dirs,
   cpp_args: extra_sigc_cppflags,
