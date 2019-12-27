@@ -38,10 +38,10 @@ NULL=
 !if [call create-lists.bat header libsigcpp.mak libsigcpp_dll_OBJS]
 !endif
 
-!if [for %c in ($(sigc_sources_cc)) do @if "%~xc" == ".cc" @call create-lists.bat file libsigcpp.mak ^$(CFG)\^$(PLAT)\libsigcpp\%~nc.obj]
+!if [for %c in ($(sigc_sources_cc)) do @if "%~xc" == ".cc" @call create-lists.bat file libsigcpp.mak vs^$(VSVER)\^$(CFG)\^$(PLAT)\libsigcpp\%~nc.obj]
 !endif
 
-!if [@call create-lists.bat file libsigcpp.mak ^$(CFG)\^$(PLAT)\libsigcpp\sigc.res]
+!if [@call create-lists.bat file libsigcpp.mak vs^$(VSVER)\^$(CFG)\^$(PLAT)\libsigcpp\sigc.res]
 !endif
 
 !if [call create-lists.bat footer libsigcpp.mak]
@@ -50,7 +50,7 @@ NULL=
 !if [call create-lists.bat header libsigcpp.mak libsigc_ex]
 !endif
 
-!if [for %s in (..\examples\*.cc) do @call create-lists.bat file libsigcpp.mak ^$(CFG)\^$(PLAT)\%~ns.exe]
+!if [for %s in (..\examples\*.cc) do @call create-lists.bat file libsigcpp.mak vs^$(VSVER)\^$(CFG)\^$(PLAT)\%~ns.exe]
 !endif
 
 !if [call create-lists.bat footer libsigcpp.mak]
@@ -61,7 +61,7 @@ NULL=
 
 # Skipping testutilities.cc: Not to be built as a .exe, but is a common dependency for the tests
 #          benchmark: Not built on default; requires Boost
-!if [for %s in (..\tests\*.cc) do @if not "%~ns" == "testutilities" if not "%~ns" == "benchmark" @call create-lists.bat file libsigcpp.mak ^$(CFG)\^$(PLAT)\%~ns.exe]
+!if [for %s in (..\tests\*.cc) do @if not "%~ns" == "testutilities" if not "%~ns" == "benchmark" @call create-lists.bat file libsigcpp.mak vs^$(VSVER)\^$(CFG)\^$(PLAT)\%~ns.exe]
 !endif
 
 !if [call create-lists.bat footer libsigcpp.mak]
