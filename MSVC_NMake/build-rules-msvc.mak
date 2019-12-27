@@ -13,35 +13,35 @@
 # 	$(CC)|$(CXX) $(cflags) /Fo$(destdir) /c @<<
 # $<
 # <<
-{..\sigc++\}.cc{$(CFG)\$(PLAT)\libsigcpp\}.obj::
-	$(CXX) $(LIBSIGCPP_CFLAGS) /Fo$(CFG)\$(PLAT)\libsigcpp\ /c @<<
+{..\sigc++\}.cc{vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp\}.obj:
+	$(CXX) $(LIBSIGCPP_CFLAGS) /Fo$(@D)\ /Fd$(@D)\ /c @<<
 $<
 <<
 
-{..\sigc++\adaptors\lambda\}.cc{$(CFG)\$(PLAT)\libsigcpp\}.obj::
-	$(CXX) $(LIBSIGCPP_CFLAGS) /Fo$(CFG)\$(PLAT)\libsigcpp\ /c @<<
+{..\sigc++\adaptors\lambda\}.cc{vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp\}.obj:
+	$(CXX) $(LIBSIGCPP_CFLAGS) /Fo$(@D)\ /Fd$(@D)\ /c @<<
 $<
 <<
 
-{..\sigc++\functors\}.cc{$(CFG)\$(PLAT)\libsigcpp\}.obj::
-	$(CXX) $(LIBSIGCPP_CFLAGS) /Fo$(CFG)\$(PLAT)\libsigcpp\ /c @<<
+{..\sigc++\functors\}.cc{vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp\}.obj:
+	$(CXX) $(LIBSIGCPP_CFLAGS) /Fo$(@D)\ /Fd$(@D)\ /c @<<
 $<
 <<
 
-{..\untracked\sigc++\adaptors\lambda\}.cc{$(CFG)\$(PLAT)\libsigcpp\}.obj::
-	$(CXX) $(LIBSIGCPP_CFLAGS) /Fo$(CFG)\$(PLAT)\libsigcpp\ /c @<<
+{..\untracked\sigc++\adaptors\lambda\}.cc{vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp\}.obj:
+	$(CXX) $(LIBSIGCPP_CFLAGS) /Fo$(@D)\ /Fd$(@D)\ /c @<<
 $<
 <<
 
-$(CFG)\$(PLAT)\libsigcpp-tests\testutilities.obj: $(CFG)\$(PLAT)\libsigcpp-tests ..\tests\testutilities.cc
-	$(CXX) $(SIGCPP_CFLAGS) /Fo$@ /c ..\tests\testutilities.cc
+vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp-tests\testutilities.obj: vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp-tests ..\tests\testutilities.cc
+	$(CXX) $(SIGCPP_CFLAGS) /Fo$@ /Fd$(@D)\ /c ..\tests\testutilities.cc
 # Rules for building .lib files
 $(LIBSIGC_LIB): $(LIBSIGC_DLL)
 
-{.}.rc{$(CFG)\$(PLAT)\libsigcpp\}.res:
+{.}.rc{vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp\}.res:
 	rc /fo$@ $<
 
-{..\untracked\MSVC_NMake\}.rc{$(CFG)\$(PLAT)\libsigcpp\}.res:
+{..\untracked\MSVC_NMake\}.rc{vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp\}.res:
 	rc /fo$@ $<
 
 # Rules for linking DLLs
@@ -51,7 +51,7 @@ $(LIBSIGC_LIB): $(LIBSIGC_DLL)
 # $(dependent_objects)
 # <<
 # 	@-if exist $@.manifest mt /manifest $@.manifest /outputresource:$@;2
-$(LIBSIGC_DLL): $(CFG)\$(PLAT)\libsigcpp $(libsigcpp_dll_OBJS)
+$(LIBSIGC_DLL): vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp $(libsigcpp_dll_OBJS)
 	link /DLL $(LDFLAGS) /implib:$(LIBSIGC_LIB) -out:$@ @<<
 $(libsigcpp_dll_OBJS)
 <<
@@ -65,36 +65,38 @@ $(libsigcpp_dll_OBJS)
 # <<
 # 	@-if exist $@.manifest mt /manifest $@.manifest /outputresource:$@;1
 
-{..\examples\}.cc{$(CFG)\$(PLAT)\}.exe:
-	@if not exist $(CFG)\$(PLAT)\libsigcpp-ex $(MAKE) -f Makefile.vc CFG=$(CFG) $(CFG)\$(PLAT)\libsigcpp-ex
+{..\examples\}.cc{vs$(VSVER)\$(CFG)\$(PLAT)\}.exe:
+	@if not exist vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp-ex $(MAKE) -f Makefile.vc CFG=$(CFG) vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp-ex
 	@if not exist $(LIBSIGC_LIB) $(MAKE) -f Makefile.vc CFG=$(CFG) $(LIBSIGC_LIB)
-	$(CXX) $(SIGCPP_CFLAGS) /Fo$(CFG)\$(PLAT)\libsigcpp-ex\ $< /Fe$@ /link $(LDFLAGS) $(LIBSIGC_LIB)
+	$(CXX) $(SIGCPP_CFLAGS) /Fo$(@D)\libsigcpp-ex\ /Fd$(@D)\libsigcpp-ex\ $< /Fe$@ /link $(LDFLAGS) $(LIBSIGC_LIB)
 	@-if exist $@.manifest mt /manifest $@.manifest /outputresource:$@;1
 
-{..\tests\}.cc{$(CFG)\$(PLAT)\}.exe:
+{..\tests\}.cc{vs$(VSVER)\$(CFG)\$(PLAT)\}.exe:
 	@if not exist $(LIBSIGC_LIB) $(MAKE) -f Makefile.vc CFG=$(CFG) $(LIBSIGC_LIB)
-	@if not exist $(CFG)\$(PLAT)\libsigcpp-tests\testutilities.obj $(MAKE) -f Makefile.vc CFG=$(CFG) $(CFG)\$(PLAT)\libsigcpp-tests\testutilities.obj
-	$(CXX) $(SIGCPP_CFLAGS) /Fo$(CFG)\$(PLAT)\libsigcpp-tests\ $< /Fe$@ /link $(LDFLAGS) $(LIBSIGC_LIB) $(CFG)\$(PLAT)\libsigcpp-tests\testutilities.obj
+	@if not exist vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp-tests\testutilities.obj $(MAKE) -f Makefile.vc CFG=$(CFG) vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp-tests\testutilities.obj
+	$(CXX) $(SIGCPP_CFLAGS) /Fo$(@D)\libsigcpp-tests\ /Fd$(@D)\libsigcpp-tests\ $< /Fe$@ /link $(LDFLAGS) $(LIBSIGC_LIB) vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp-tests\testutilities.obj
 	@-if exist $@.manifest mt /manifest $@.manifest /outputresource:$@;1
 
-$(CFG)\$(PLAT)\libsigc++-benchmark.exe: ..\tests\benchmark.cc
+vs$(VSVER)\$(CFG)\$(PLAT)\libsigc++-benchmark.exe: ..\tests\benchmark.cc
 	@if not exist $(LIBSIGC_LIB) $(MAKE) -f Makefile.vc CFG=$(CFG) $(LIBSIGC_LIB)
-	@if not exist $(CFG)\$(PLAT)\libsigcpp-tests\testutilities.obj $(MAKE) -f Makefile.vc CFG=$(CFG) $(CFG)\$(PLAT)\libsigcpp-tests\testutilities.obj
-	$(CXX) $(SIGCPP_BENCHMARK_CFLAGS) /Fo$(CFG)\$(PLAT)\libsigcpp-tests\ ..\tests\benchmark.cc /Fe$@ /link $(LDFLAGS) $(LIBSIGC_LIB) $(CFG)\$(PLAT)\libsigcpp-tests\testutilities.obj
+	@if not exist vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp-tests\testutilities.obj $(MAKE) -f Makefile.vc CFG=$(CFG) vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp-tests\testutilities.obj
+	$(CXX) $(SIGCPP_BENCHMARK_CFLAGS) /Fo$(@D)\libsigcpp-tests\ /Fd$(@D)\libsigcpp-tests\ ..\tests\benchmark.cc /Fe$@ /link $(LDFLAGS) $(LIBSIGC_LIB) vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp-tests\testutilities.obj
 	@-if exist $@.manifest mt /manifest $@.manifest /outputresource:$@;1
 
 clean:
-	@-del /f /q $(CFG)\$(PLAT)\*.exe
-	@-del /f /q $(CFG)\$(PLAT)\*.dll
-	@-del /f /q $(CFG)\$(PLAT)\*.pdb
-	@-del /f /q $(CFG)\$(PLAT)\*.ilk
-	@-del /f /q $(CFG)\$(PLAT)\*.exp
-	@-del /f /q $(CFG)\$(PLAT)\*.lib
-	@-if exist $(CFG)\$(PLAT)\libsigcpp-tests del /f /q $(CFG)\$(PLAT)\libsigcpp-tests\*.obj
-	@-del /f /q $(CFG)\$(PLAT)\libsigcpp-ex\*.obj
-	@-del /f /q $(CFG)\$(PLAT)\libsigcpp\*.res
-	@-del /f /q $(CFG)\$(PLAT)\libsigcpp\*.obj
-	@-if exist $(CFG)\$(PLAT)\libsigcpp-tests rd $(CFG)\$(PLAT)\libsigcpp-tests
-	@-rd $(CFG)\$(PLAT)\libsigcpp-ex
-	@-rd $(CFG)\$(PLAT)\libsigcpp
-	@-del /f /q vc$(PDBVER)0.pdb
+	@-del /f /q vs$(VSVER)\$(CFG)\$(PLAT)\*.exe
+	@-del /f /q vs$(VSVER)\$(CFG)\$(PLAT)\*.dll
+	@-del /f /q vs$(VSVER)\$(CFG)\$(PLAT)\*.pdb
+	@-del /f /q vs$(VSVER)\$(CFG)\$(PLAT)\*.ilk
+	@-del /f /q vs$(VSVER)\$(CFG)\$(PLAT)\*.exp
+	@-del /f /q vs$(VSVER)\$(CFG)\$(PLAT)\*.lib
+	@-if exist vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp-tests del /f /q vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp-tests\*.obj
+	@-if exist vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp-tests del /f /q vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp-tests\*.pdb
+	@-del /f /q vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp-ex\*.obj
+	@-del /f /q vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp-ex\*.pdb
+	@-del /f /q vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp\*.res
+	@-del /f /q vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp\*.obj
+	@-del /f /q vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp\*.pdb
+	@-if exist vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp-tests rd vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp-tests
+	@-rd vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp-ex
+	@-rd vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp
