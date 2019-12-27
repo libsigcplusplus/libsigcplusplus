@@ -73,7 +73,7 @@ def install_built_h_files():
   return 0
 
 # Invoked from meson.add_dist_script().
-def dist_built_files():
+def dist_built_files(is_msvc_files=False):
   #     argv[2]        argv[3]     argv[4:]
   # <built_h_cc_dir> <dist_dir> <built_files>...
 
@@ -81,10 +81,12 @@ def dist_built_files():
   # <dist_dir> is a distribution directory, relative to MESON_DIST_ROOT.
   built_h_cc_dir = sys.argv[2]
   dist_dir_root = os.path.join(os.getenv('MESON_DIST_ROOT'), sys.argv[3])
+  dist_dir = dist_dir_root
 
-  # Distribute .h and .cc files built from .m4 files.
+  # Distribute .h and .cc files built from .m4 files, or generated MSVC files.
   for file in sys.argv[4:]:
-    dist_dir = os.path.join(dist_dir_root, os.path.dirname(file))
+    if not is_msvc_files:
+      dist_dir = os.path.join(dist_dir_root, os.path.dirname(file))
 
     # Create the distribution directory, if it does not exist.
     os.makedirs(dist_dir, exist_ok=True)
@@ -129,5 +131,7 @@ if subcommand == 'dist_built_files':
   sys.exit(dist_built_files())
 if subcommand == 'copy_built_files':
   sys.exit(copy_built_files())
+if subcommand == 'dist_gen_msvc_files':
+  sys.exit(dist_built_files(True))
 print(sys.argv[0], ': illegal subcommand,', subcommand)
 sys.exit(1)

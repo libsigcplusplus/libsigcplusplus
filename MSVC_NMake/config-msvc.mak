@@ -1,6 +1,6 @@
 # NMake Makefile portion for enabling features for Windows builds
 
-# These are the base minimum libraries required for building gjs.
+# These are the base minimum libraries required for building libsigc++.
 BASE_INCLUDES =	/I$(PREFIX)\include
 
 # Please do not change anything beneath this line unless maintaining the NMake Makefiles
@@ -16,7 +16,7 @@ LIBSIGC_DEBUG_SUFFIX =
 
 LIBSIGCPP_DEFINES = /DSIGC_BUILD /D_WINDLL
 
-SIGCPP_BASE_CFLAGS = /I.. /I. /wd4530 $(CFLAGS)
+SIGCPP_BASE_CFLAGS = /I.. /I. /I..\untracked /I..\MSVC_NMake /wd4530 /EHsc $(CFLAGS)
 
 LIBSIGC_INT_SOURCES = $(sigc_sources_cc:/=\)
 LIBSIGC_INT_HDRS = $(sigc_public_h:/=\)
