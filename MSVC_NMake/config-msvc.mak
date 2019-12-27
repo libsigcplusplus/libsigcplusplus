@@ -16,7 +16,7 @@ LIBSIGC_DEBUG_SUFFIX =
 
 LIBSIGCPP_DEFINES = /DSIGC_BUILD /D_WINDLL
 
-SIGCPP_BASE_CFLAGS = /I.. /I. /wd4530 /std:c++17 $(CFLAGS)
+SIGCPP_BASE_CFLAGS = /I.. /I. /I..\untracked\MSVC_NMake /wd4530 /std:c++17 /EHsc $(CFLAGS)
 
 LIBSIGC_INT_SOURCES = $(sigc_sources_cc:/=\)
 LIBSIGC_INT_HDRS = $(sigc_public_h:/=\)

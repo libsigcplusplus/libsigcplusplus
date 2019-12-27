@@ -11,4 +11,5 @@ install: all
 	@copy /b $(CFG)\$(PLAT)\$(LIBSIGC_LIBNAME).pdb $(PREFIX)\bin
 	@copy /b $(CFG)\$(PLAT)\$(LIBSIGC_LIBNAME).lib $(PREFIX)\lib
 	@for %h in ($(LIBSIGC_INT_HDRS)) do @copy "..\sigc++\%h" "$(PREFIX)\include\sigc++-$(LIBSIGC_MAJOR_VERSION).$(LIBSIGC_MINOR_VERSION)\sigc++\%h"
-	@copy "sigc++config.h" "$(PREFIX)\lib\sigc++-$(LIBSIGC_MAJOR_VERSION).$(LIBSIGC_MINOR_VERSION)\include\"
+	@if exist sigc++config.h copy "sigc++config.h" "$(PREFIX)\lib\sigc++-$(LIBSIGC_MAJOR_VERSION).$(LIBSIGC_MINOR_VERSION)\include\"
+	@if exist ..\untracked\MSVC_NMake\sigc++config.h copy "..\untracked\MSVC_NMake\sigc++config.h" "$(PREFIX)\lib\sigc++-$(LIBSIGC_MAJOR_VERSION).$(LIBSIGC_MINOR_VERSION)\include\"

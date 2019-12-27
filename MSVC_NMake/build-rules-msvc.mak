@@ -31,6 +31,9 @@ $(LIBSIGC_LIB): $(LIBSIGC_DLL)
 {.}.rc{$(CFG)\$(PLAT)\libsigcpp\}.res:
 	rc /fo$@ $<
 
+{..\untracked\MSVC_NMake\}.rc{$(CFG)\$(PLAT)\libsigcpp\}.res:
+	rc /fo$@ $<
+
 # Rules for linking DLLs
 # Format is as follows (the mt command is needed for MSVC 2005/2008 builds):
 # $(dll_name_with_path): $(dependent_libs_files_objects_and_items)
