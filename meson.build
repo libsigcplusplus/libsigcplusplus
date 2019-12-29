@@ -48,16 +48,13 @@ if not python_version.version_compare(python_version_req)
 endif
 
 # Do we build from a git repository?
-# Suppose we do if and only if a .git directory exists.
+# Suppose we do if and only if a '.git' directory or file exists.
 cmd_py = '''
 import os
 import sys
-sys.exit(0 if os.path.isdir("@0@") else 1)
+sys.exit(os.path.isdir("@0@") or os.path.isfile("@0@"))
 '''.format(project_source_root / '.git')
-is_git_build = run_command(python3, '-c', cmd_py).returncode() == 0
-# In Unix-like system, an alternative is
-# is_git_build = run_command('test', '-d', project_source_root / '.git').returncode() == 0
-# Python code can be used in all operating sytems where Meson can run.
+is_git_build = run_command(python3, '-c', cmd_py).returncode() != 0
 
 # Options.
 maintainer_mode_opt = get_option('maintainer-mode')
