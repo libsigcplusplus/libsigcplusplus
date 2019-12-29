@@ -1,7 +1,7 @@
 # sigc++
 
-# Input: sigcxx_build_dep, sigcxx_pcname, sigcxx_libversion, install_includedir,
-#        project_source_root
+# Input: sigcxx_build_dep, sigcxx_pcname, sigcxx_libversion, sigcxx_api_version,
+#        install_includedir, project_source_root, sigc_res
 # Output: source_h_files, built_h_files, sigcxx_dep, built_files_root,
 #         built_h_file_targets
 
@@ -162,7 +162,7 @@ if maintainer_mode
   endforeach
 
   extra_include_dirs = ['..']
-  sigcxx_library = library(sigcxx_pcname,
+  sigcxx_library = library('sigc-' + sigcxx_api_version,
     source_cc_files, built_cc_file_targets, built_h_file_targets,
     extra_sigc_objects,
     version: sigcxx_libversion,
@@ -205,7 +205,7 @@ else # not maintainer_mode
   endforeach
 
   extra_include_dirs = [ '..', '..' / 'untracked' ]
-  sigcxx_library = library(sigcxx_pcname,
+  sigcxx_library = library('sigc-' + sigcxx_api_version,
     source_cc_files, untracked_built_cc_files,
     extra_sigc_objects,
     version: sigcxx_libversion,
