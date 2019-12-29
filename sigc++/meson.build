@@ -1,6 +1,7 @@
 # sigc++
 
-# Input: sigcxx_build_dep, sigcxx_pcname, sigcxx_libversion, install_includedir
+# Input: sigcxx_build_dep, sigcxx_pcname, sigcxx_libversion, sigcxx_api_version,
+#        install_includedir, sig_rc
 # Output: source_h_files, sigcxx_dep
 
 # There are no built source files in libsigc++-3.0.
@@ -84,7 +85,7 @@ if host_machine.system() == 'windows'
 endif
 
 extra_include_dirs = ['..']
-sigcxx_library = library(sigcxx_pcname,
+sigcxx_library = library('sigc-' + sigcxx_api_version,
   source_cc_files,
   extra_sigc_objects,
   version: sigcxx_libversion,
