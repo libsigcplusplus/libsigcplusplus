@@ -30,7 +30,10 @@ mm-common-get may copy more files, but they are not used by libsigc++.
 untracked/docs/reference/libsigc++-2.0.devhelp2
                          libsigc++-2.0.tag
                          html/*
-untracked/docs/manual/html/*
+untracked/docs/manual/libsigc_manual.pdf (only if build-pdf=true)
+                      html/*
+untracked/MSVC_NMake/sigc.rc
+                     sigc++config.h
 untracked/sigc++/*.h
                  adaptors/*.h
                  adaptors/lambda/*.h
