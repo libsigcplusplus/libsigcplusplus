@@ -1,6 +1,6 @@
 # This file is part of libsigc++.
 
-project('sigc++', 'cpp',
+project('libsigc++', 'cpp',
   version: '2.10.2',
   license: 'LGPLv2.1+',
   default_options: [
@@ -11,7 +11,7 @@ project('sigc++', 'cpp',
 )
 
 sigcxx_api_version = '2.0'
-sigcxx_pcname = meson.project_name() + '-' + sigcxx_api_version
+sigcxx_pcname = 'sigc++-' + sigcxx_api_version
 
 sigcxx_version_array = meson.project_version().split('.')
 sigcxx_major_version = sigcxx_version_array[0].to_int()
