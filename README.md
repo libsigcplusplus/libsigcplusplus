@@ -33,6 +33,18 @@ packages.
 
 Building from the [libsigc++ release tarball](https://github.com/libsigcplusplus/libsigcplusplus/releases) is easier than building from git.
 
+### Building from a tarball with Meson
+
+For instance:
+```sh
+$ meson --prefix /usr/local --libdir lib yourbuilddir .
+$ cd yourbuilddir
+$ ninja
+$ ninja install
+```
+
+### Building from a tarball with autotools
+
 For instance:
 ```sh
 $ ./configure --prefix=/usr/local
@@ -45,8 +57,21 @@ $ make install
 Building from git can be difficult so you should prefer building from a release
 tarball unless you need to work on the libsigc++ code itself.
 
-To build from git you may use either the autotools build (used by most
-developers) or CMake (should work too).
+To build from git you may use either the meson build (added in December 2019),
+the autotools build (used by most developers in the past) or CMake (should work too).
+
+### Building from git with Meson
+
+You must have meson properly installed (meson, ninja, etc) and you
+will also need [mm-common](https://gitlab.gnome.org/GNOME/mm-common/)
+version 1.0.0 or higher.
+
+```sh
+$ meson --prefix /usr/local --libdir lib yourbuilddir .
+$ cd yourbuilddir
+$ ninja
+$ ninja test
+```
 
 ### Building from git with autotools
 
@@ -73,3 +98,6 @@ $ cmake path/to/libsigcplusplus
 $ make
 ```
 
+## Building with Microsoft Visual C++
+
+See MSVC_NMake/README.txt.

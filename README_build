@@ -3,9 +3,25 @@
 On Linux, you would ideally get libsigc++ from your distro's official package.
 However, this is about building from source.
 
+## Meson
+
+libsigc++ uses Meson as one of its main build systems,
+so you can build or install with the regular meson/ninja steps.
+For instance:
+  meson --prefix /opt/something --libdir lib yourbuilddir .
+then
+  cd yourbuilddir
+  ninja
+  ninja install
+You can run the tests like so:
+  ninja test
+We create the tarball release like so:
+  ninja dist
+
+
 ## autotools
 
-libsigc++ uses autotools as its main build system,
+libsigc++ uses autotools as one of its main build systems,
 so you can build or install with the regular configure/make steps.
 For instance:
   ./configure --prefix=/opt/something
