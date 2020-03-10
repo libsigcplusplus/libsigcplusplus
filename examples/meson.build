@@ -20,6 +20,7 @@ foreach ex : examples
   endforeach
 
   exe_file = executable(ex_name, ex_sources,
+    cpp_args: '-DSIGCXX_DISABLE_DEPRECATED',
     dependencies: sigcxx_dep,
     gui_app: false,
     build_by_default: build_examples
