@@ -33,23 +33,48 @@ packages.
 
 Building from the [libsigc++ release tarball](https://github.com/libsigcplusplus/libsigcplusplus/releases) is easier than building from git.
 
+It's easiest to build with Meson, if the tarball was made with Meson,
+and to build with Autotools, if the tarball was made with Autotools.
+Then you don't have to use maintainer-mode.
+
+How do you know how the tarball was made? If it was made with Meson,
+it contains files in untracked/build_scripts/, untracked/docs/ and possibly
+other subdirectories of untracked/.
+
 ### Building from a tarball with Meson
 
+Don't call the builddir 'build'. There is a directory called 'build' with
+files used by Autotools.
+
 For instance:
 ```sh
-$ meson --prefix /usr/local --libdir lib yourbuilddir .
-$ cd yourbuilddir
+# If the tarball was made with Autotools, you must enable maintainer-mode:
+$ meson --prefix=/usr/local --libdir=lib -Dmaintainer-mode=true your_builddir .
+# If the tarball was made with Meson:
+$ meson --prefix=/usr/local --libdir=lib your_builddir .
+
+# then
+$ cd your_builddir
 $ ninja
 $ ninja install
+# You can run the tests like so:
+$ ninja test
 ```
 
-### Building from a tarball with autotools
+### Building from a tarball with Autotools
 
 For instance:
 ```sh
+# If the tarball was made with Autotools:
 $ ./configure --prefix=/usr/local
+# If the tarball was made with Meson, you must enable maintainer-mode:
+$ ./autogen.sh --prefix=/usr/local
+
+# then
 $ make
 $ make install
+# You can build the examples and tests, and run the tests, like so:
+$ make check
 ```
 
 ## Building from git
@@ -57,31 +82,46 @@ $ make install
 Building from git can be difficult so you should prefer building from a release
 tarball unless you need to work on the libsigc++ code itself.
 
-To build from git you may use either the meson build (added in December 2019),
-the autotools build (used by most developers in the past) or CMake (should work too).
+jhbuild can be a good help. See the [jhbuild repo](https://gitlab.gnome.org/GNOME/jhbuild)
+and the [jhbuild wiki](https://wiki.gnome.org/Projects/Jhbuild).
 
 ### Building from git with Meson
 
-You must have meson properly installed (meson, ninja, etc) and you
+You must have Meson properly installed (meson, ninja, etc) and you
 will also need [mm-common](https://gitlab.gnome.org/GNOME/mm-common/)
 version 1.0.0 or higher.
 
+Maintainer-mode is enabled by default when you build from a git clone.
+
+Don't call the builddir 'build'. There is a directory called 'build' with
+files used by Autotools.
+
 ```sh
-$ meson --prefix /usr/local --libdir lib yourbuilddir .
-$ cd yourbuilddir
+$ meson --prefix=/usr/local --libdir=lib your_builddir .
+$ cd your_builddir
 $ ninja
+$ ninja install
+# You can run the tests like so:
 $ ninja test
+# You can create a tarball like so:
+$ ninja dist
 ```
 
-### Building from git with autotools
+### Building from git with Autotools
 
-You must have autotools properly installed (autoconf, automake, etc) and you
+You must have Autotools properly installed (autoconf, automake, etc) and you
 will also need [mm-common](https://gitlab.gnome.org/GNOME/mm-common/).
 
 ```sh
 $ ./autogen.sh --prefix=/usr/local
 $ make
+$ make install
+# You can build the examples and tests, and run the tests, like so:
 $ make check
+# You can create a tarball like so:
+$ make distcheck
+# or
+$ make dist
 ```
 
 ### Building from git with CMake
