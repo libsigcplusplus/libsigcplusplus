@@ -1,3 +1,22 @@
+2.10.3 (stable)
+
+Build:
+* Add Meson build, alongside the existing Autotools build.
+  (Kjell Ahlstedt, Chun-Wei Fan) Pull request #47, #50
+* Improve MSVC builds on Windows
+  (Chun-Wei Fan) Pull request #50
+* meson.build: Check if .git is a directory or file
+  (Kjell Ahlstedt) Merge request pangomm!8 (Ting-Wei Lan)
+* docs/reference/meson.build: Check if perl is found
+  (Kjell Ahlstedt) Issue #53 (Rasmus Thomsen)
+* README: Describe building with Meson and Autotools
+  (Kjell Ahlstedt)
+
+Tests:
+* Make test_track_obj.cc compile with clang++
+  (Kjell Ahlstedt)
+
+
 2.10.2: (stable)
 
 This release is identical to 2.10.1, except for:
