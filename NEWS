@@ -1,3 +1,20 @@
+3.0.3 (stable)
+
+Build:
+* docs/docs/reference/meson.build: Check if perl is found
+  (Kjell Ahlstedt) Issue #53 (Rasmus Thomsen)
+* README.md: Describe building with Meson
+  (Kjell Ahlstedt)
+
+Examples:
+* Add example of using libsigc++ with Qt
+  (Robert Middleton) Pull request #35
+
+Tests:
+* Replace C-style casts with static_cast<>
+  (Lennard Berger)
+
+
 3.0.2 (stable)
 
 * Build: Meson build improvements.
