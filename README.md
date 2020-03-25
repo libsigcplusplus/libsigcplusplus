@@ -48,12 +48,14 @@ files used by Autotools.
 
 For instance:
 ```sh
-# If the tarball was made with Autotools, you must enable maintainer-mode:
+# If the tarball was made with Autotools, and you want to rebuild the reference
+# documentation, you must enable maintainer-mode:
 $ meson --prefix=/usr/local --libdir=lib -Dmaintainer-mode=true your_builddir .
-# If the tarball was made with Meson:
+
+# If the tarball was made with Meson, or you don't want to rebuild the docs:
 $ meson --prefix=/usr/local --libdir=lib your_builddir .
 
-# then
+# then:
 $ cd your_builddir
 $ ninja
 $ ninja install
@@ -67,10 +69,11 @@ For instance:
 ```sh
 # If the tarball was made with Autotools:
 $ ./configure --prefix=/usr/local
+
 # If the tarball was made with Meson, you must enable maintainer-mode:
 $ ./autogen.sh --prefix=/usr/local
 
-# then
+# then:
 $ make
 $ make install
 # You can build the examples and tests, and run the tests, like so:
