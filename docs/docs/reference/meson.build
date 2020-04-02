@@ -2,7 +2,7 @@
 
 # Input: project_build_root, project_source_root, sigcxx_pcname,
 #        sigcxx_api_version, perl, build_documentation, source_h_files,
-#        hg_ccg_basenames, install_datadir, dist_cmd, python3
+#        hg_ccg_basenames, install_datadir, python3, doc_reference
 # Output: install_docdir, install_devhelpdir, book_name
 
 # There are no built source files in libsigc++-3.0.
@@ -115,7 +115,6 @@ if not meson.is_subproject()
   # Distribute built files and files copied by mm-common-get.
   # (add_dist_script() is not allowed in a subproject)
   meson.add_dist_script(
-    python3.path(), dist_cmd,
     python3.path(), doc_reference, 'dist_doc',
     doctool_dir,
     doctool_dist_dir,
