@@ -1,7 +1,7 @@
 # docs/manual
 
 # input: install_datadir, sigcxx_pcname, tutorial_custom_cmd, python3,
-#        build_documentation, dist_cmd, install_docdir
+#        build_documentation, install_docdir
 # output: can_parse_and_validate, build_pdf_by_default, can_build_pdf,
 #         install_tutorialdir
 
@@ -86,7 +86,6 @@ if not meson.is_subproject()
   # Distribute built files.
   # (add_dist_script() is not allowed in a subproject)
   meson.add_dist_script(
-    python3.path(), dist_cmd,
     python3.path(), tutorial_custom_cmd, 'dist_doc',
     doc_dist_dir,
     meson.current_build_dir(),

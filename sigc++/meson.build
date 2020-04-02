@@ -231,7 +231,6 @@ if not meson.is_subproject()
   # Distribute built files.
   # (add_dist_script() is not allowed in a subproject)
   meson.add_dist_script(
-    python3.path(), dist_cmd,
     python3.path(), handle_built_files, 'dist_built_files',
     built_h_cc_dir,
     untracked_sigcxx,

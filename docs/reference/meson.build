@@ -2,7 +2,7 @@
 
 # Input: built_files_root, project_source_root, sigcxx_pcname,
 #        sigcxx_api_version, perl, build_documentation, source_h_files,
-#        built_h_files, install_datadir, dist_cmd, python3,
+#        built_h_files, install_datadir, python3, doc_reference,
 #        built_h_file_targets
 # Output: install_docdir, install_devhelpdir
 
@@ -141,7 +141,6 @@ if not meson.is_subproject()
   # Distribute built files and files copied by mm-common-get.
   # (add_dist_script() is not allowed in a subproject)
   meson.add_dist_script(
-    python3.path(), dist_cmd,
     python3.path(), doc_reference, 'dist_doc',
     doctool_dir,
     doctool_dist_dir,

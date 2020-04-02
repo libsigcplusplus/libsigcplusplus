@@ -56,11 +56,22 @@ sys.exit(os.path.isdir("@0@") or os.path.isfile("@0@"))
 '''.format(project_source_root / '.git')
 is_git_build = run_command(python3, '-c', cmd_py).returncode() != 0
 
+# Are we testing a dist tarball while it's being built?
+# There ought to be a better way. https://github.com/mesonbuild/meson/issues/6866
+is_dist_check = project_source_root.contains('dist-unpack') and \
+                project_build_root.contains('dist-build')
+
 # Options.
 maintainer_mode_opt = get_option('maintainer-mode')
 maintainer_mode = maintainer_mode_opt == 'true' or \
                  (maintainer_mode_opt == 'if-git-build' and is_git_build)
-warning_level = get_option('warnings')
+if is_dist_check
+  message('Looks like a tarball is being tested. ' + \
+          'Option "dist-warnings" is used instead of "warnings".')
+  warning_level = get_option('dist-warnings')
+else
+  warning_level = get_option('warnings')
+endif
 build_deprecated_api = get_option('build-deprecated-api')
 build_documentation_opt = get_option('build-documentation')
 build_documentation = build_documentation_opt == 'true' or \
@@ -92,7 +103,10 @@ endif
 
 # Some dependencies are required only in maintainer mode and/or
 # if documentation shall be built.
-mm_common_get = find_program('mm-common-get', required: maintainer_mode)
+mm_common_get = find_program('mm-common-get', required: false)
+if maintainer_mode and not mm_common_get.found()
+  error('mm-common-get not found. mm-common >= 1.0.0 is required.')
+endif
 m4 = find_program('m4', required: maintainer_mode) # For building C++ code
 perl = find_program('perl', required: build_documentation)
 doxygen = find_program('doxygen', required: build_documentation)
@@ -103,13 +117,22 @@ script_dir = project_source_root / 'untracked' / 'build_scripts'
 doc_reference = script_dir / 'doc-reference.py'
 dist_changelog = script_dir / 'dist-changelog.py'
 dist_build_scripts = script_dir / 'dist-build-scripts.py'
-dist_cmd = project_source_root / 'tools' / 'dist-cmd.py' # Must be committed to git.
 tutorial_custom_cmd = project_source_root / 'tools' / 'tutorial-custom-cmd.py'
 
-if maintainer_mode and mm_common_get.found()
+if maintainer_mode
   # Copy files to untracked/build_scripts and untracked/docs.
   run_command(mm_common_get, '--force', script_dir,
     project_source_root / 'untracked' / 'docs')
+else
+  cmd_py = '''
+import os
+import sys
+sys.exit(os.path.isfile("@0@"))
+'''.format(doc_reference)
+  file_exists = run_command(python3, '-c', cmd_py).returncode() != 0
+  if not file_exists
+    warning('Missing files in untracked/. You may have to enable maintainer-mode.')
+  endif
 endif
 
 # Set compiler warnings.
@@ -188,7 +211,7 @@ configure_file(
 )
 
 install_includeconfigdir = install_libdir / sigcxx_pcname / 'include'
-configure_file(
+sigcxxconfig_h = configure_file(
   input: 'sigc++config.h.meson',
   output: 'sigc++config.h',
   configuration: pkg_conf_data,
@@ -206,14 +229,12 @@ if not meson.is_subproject()
   # Add a ChangeLog file to the distribution directory.
   # (add_dist_script() is not allowed in a subproject)
   meson.add_dist_script(
-    python3.path(), dist_cmd,
     python3.path(), dist_changelog,
     project_source_root,
   )
   # Add build scripts to the distribution directory, and delete .gitignore
   # files and an empty $MESON_DIST_ROOT/build/ directory.
   meson.add_dist_script(
-    python3.path(), dist_cmd,
     python3.path(), dist_build_scripts,
     project_source_root,
     'untracked' / 'build_scripts',
