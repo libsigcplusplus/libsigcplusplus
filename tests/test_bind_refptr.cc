@@ -197,7 +197,8 @@ private:
 // If it would come after them it wouldn't be inlined.
 
 template<typename T_CppObject>
-inline T_CppObject* RefPtr<T_CppObject>::operator->() const
+inline T_CppObject*
+RefPtr<T_CppObject>::operator->() const
 {
   return pCppObject_;
 }

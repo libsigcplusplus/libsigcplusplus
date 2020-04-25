@@ -40,8 +40,8 @@ std::ostringstream result_stream;
 struct book : public sigc::trackable
 {
   explicit book(const std::string& name) : name_(name) {}
-  operator std::string&() { return name_; }
-  operator const std::string&() const { return name_; }
+  operator std::string &() { return name_; }
+  operator const std::string &() const { return name_; }
   std::string name_;
 };
 

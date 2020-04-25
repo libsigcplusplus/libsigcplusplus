@@ -88,7 +88,7 @@ egon(std::string& str)
 struct book : public sigc::trackable
 {
   explicit book(const std::string& name) : name_(name) {}
-  operator std::string&() { return name_; }
+  operator std::string &() { return name_; }
   std::string name_;
 };
 
