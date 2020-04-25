@@ -36,7 +36,8 @@
  * See also the
  * <a href="https://developer.gnome.org/libsigc++-tutorial/stable/">libsigc++ tutorial</a>,
  * the <a href="https://libsigcplusplus.github.io/libsigcplusplus/">libsigc++ website</a>, and
- * the <a href="https://developer.gnome.org/gtkmm-tutorial/unstable/chapter-signals.html">Signals appendix of the Programming with gtkmm book</a>.
+ * the <a href="https://developer.gnome.org/gtkmm-tutorial/unstable/chapter-signals.html">Signals
+ * appendix of the Programming with gtkmm book</a>.
  *
  * @section features Features
  *
