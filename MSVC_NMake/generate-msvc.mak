@@ -7,4 +7,4 @@
 vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp	\
 vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp-ex	\
 vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp-tests:
-	@-mkdir $@
+	@-md $@
