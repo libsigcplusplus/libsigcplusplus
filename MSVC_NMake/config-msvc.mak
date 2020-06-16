@@ -32,9 +32,6 @@ LIBSIGC_LIBNAME = sigc-vc$(VSVER)0$(LIBSIGC_DEBUG_SUFFIX)-$(LIBSIGC_MAJOR_VERSIO
 LIBSIGC_DLL = vs$(VSVER)\$(CFG)\$(PLAT)\$(LIBSIGC_LIBNAME).dll
 LIBSIGC_LIB = vs$(VSVER)\$(CFG)\$(PLAT)\$(LIBSIGC_LIBNAME).lib
 
-# Note that building the benchmark requires Boost!
-libsigc_bench = vs$(VSVER)\$(CFG)\$(PLAT)\libsigc++-benchmark.exe
-
 # If your Boost libraries are built as DLLs, use BOOST_DLL=1 in your NMake command line
 !ifdef BOOST_DLL
 SIGCPP_BENCHMARK_CFLAGS = $(SIGCPP_BASE_CFLAGS) /DBOOST_ALL_DYN_LINK
