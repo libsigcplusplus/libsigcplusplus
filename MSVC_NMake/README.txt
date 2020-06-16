@@ -14,8 +14,15 @@ The following describes what items are built with the following
 targets:
 
 -all (or no target specified): The libsigc++ DLL and the example programs.
--test: The libsigc++ DLL and the test programs.
+-examples: The libsigc++ DLL and the example programs.
+-tests: The libsigc++ DLL and the test programs.
 -benchmark: The libsigc++ DLL and the benchmark program.
+
+Building directly from a GIT checkout is now supported, provided that a PERL
+installation is present (pass the PERL interpreter executable in your NMake
+command line by using 'PERL=<path_to_PERL_interpreter_executable>' by using
+the 'prep-git-build' target.  Note that in this case, the 'prep-git-build'
+target needs to be run before building any of the other targets.
 
 The following are instructions for performing such a build.  A 'clean' target is
 provided-it is recommended that one cleans the build and redo the build if any
@@ -44,5 +51,5 @@ Explanation of options, set by <option>=1:
 BOOST_DLL: When building the benchmark, link to a DLL build of the Boost
            libraries.  Required if your installation of the Boost libraries
            are built as DLLs.  Note that debug builds must link to debug
-           builds of Boost and release builds must link to releease builds
+           builds of Boost and release builds must link to release builds
            of Boost.
