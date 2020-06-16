@@ -30,18 +30,23 @@ VALID_MSC = TRUE
 
 !if "$(VALID_MSC)" == "TRUE"
 
+!ifdef GENERATE_VERSIONED_FILES
+!include pkg-ver.mak
+!endif
+
+all: $(LIBSIGC_LIB) examples all-build-info
+
 # Include the Makefile portion to convert the source and header lists
 # into the lists we need for compilation and introspection
 !include create-lists-msvc.mak
+!include generate-msvc.mak
 
-all: $(LIBSIGC_LIB) $(libsigc_ex) all-build-info
-
+examples: $(libsigc_examples)
 tests: $(libsigc_tests) all-build-info
 
-benchmark: all $(libsigc_bench) all-build-info
+benchmark: all $(libsigc_benchmark) all-build-info
 
 # Include the build rules for sources, DLLs and executables
-!include generate-msvc.mak
 !include build-rules-msvc.mak
 
 !include install.mak
