@@ -46,6 +46,11 @@ PREFIX: Optional.  Base directory of where the third-party headers, libraries
         $(X) is the short version of the Visual Studio used, as follows:
         2017: 15
 
+USE_COMPAT_LIBS: Build the sigc++ DLL and .lib with the filename
+                 'sigc-vc150(d)-3_0' for all builds.  This is for
+                 compatibility reasons, if re-building dependent code is not
+                 convenient, for instance
+
 Explanation of options, set by <option>=1:
 ------------------------------------------
 BOOST_DLL: When building the benchmark, link to a DLL build of the Boost
