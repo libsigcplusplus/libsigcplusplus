@@ -13,44 +13,41 @@
 # 	$(CC)|$(CXX) $(cflags) /Fo$(destdir) /c @<<
 # $<
 # <<
-{..\sigc++\}.cc{vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp\}.obj:
+{..\sigc++\}.cc{vs$(VSVER)\$(CFG)\$(PLAT)\sigc\}.obj:
 	@if not exist $(@D)\ md $(@D)
 	$(CXX) $(LIBSIGCPP_CFLAGS) /Fo$(@D)\ /Fd$(@D)\ /c @<<
 $<
 <<
 
-{..\sigc++\adaptors\lambda\}.cc{vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp\}.obj:
+{..\sigc++\adaptors\lambda\}.cc{vs$(VSVER)\$(CFG)\$(PLAT)\sigc\}.obj:
 	@if not exist $(@D)\ md $(@D)
 	$(CXX) $(LIBSIGCPP_CFLAGS) /Fo$(@D)\ /Fd$(@D)\ /c @<<
 $<
 <<
 
-{..\sigc++\functors\}.cc{vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp\}.obj:
+{..\sigc++\functors\}.cc{vs$(VSVER)\$(CFG)\$(PLAT)\sigc\}.obj:
 	@if not exist $(@D)\ md $(@D)
 	$(CXX) $(LIBSIGCPP_CFLAGS) /Fo$(@D)\ /Fd$(@D)\ /c @<<
 $<
 <<
 
-{..\untracked\sigc++\adaptors\lambda\}.cc{vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp\}.obj:
+{..\untracked\sigc++\adaptors\lambda\}.cc{vs$(VSVER)\$(CFG)\$(PLAT)\sigc\}.obj:
 	@if not exist $(@D)\ md $(@D)
 	$(CXX) $(LIBSIGCPP_CFLAGS) /Fo$(@D)\ /Fd$(@D)\ /c @<<
 $<
 <<
 
-{vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp\sigc++\adaptors\lambda\}.cc{vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp\}.obj:
+{vs$(VSVER)\$(CFG)\$(PLAT)\sigc\sigc++\adaptors\lambda\}.cc{vs$(VSVER)\$(CFG)\$(PLAT)\sigc\}.obj:
 	$(CXX) $(LIBSIGCPP_CFLAGS) /Fo$(@D)\ /Fd$(@D)\ /c @<<
 $<
 <<
-
-vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp-tests\testutilities.obj: vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp-tests ..\tests\testutilities.cc
-	$(CXX) $(SIGCPP_CFLAGS) /Fo$@ /Fd$(@D)\ /c ..\tests\testutilities.cc
 # Rules for building .lib files
 $(LIBSIGC_LIB): $(LIBSIGC_DLL)
 
-{.}.rc{vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp\}.res:
+{.}.rc{vs$(VSVER)\$(CFG)\$(PLAT)\sigc\}.res:
 	rc /fo$@ $<
 
-{..\untracked\MSVC_NMake\}.rc{vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp\}.res:
+{..\untracked\MSVC_NMake\}.rc{vs$(VSVER)\$(CFG)\$(PLAT)\sigc\}.res:
 	rc /fo$@ $<
 
 # Rules for linking DLLs
@@ -60,9 +57,9 @@ $(LIBSIGC_LIB): $(LIBSIGC_DLL)
 # $(dependent_objects)
 # <<
 # 	@-if exist $@.manifest mt /manifest $@.manifest /outputresource:$@;2
-$(LIBSIGC_DLL): $(libsigcpp_dll_OBJS)
+$(LIBSIGC_DLL): $(sigc_dll_OBJS)
 	link /DLL $(LDFLAGS) /implib:$(LIBSIGC_LIB) -out:$@ @<<
-$(libsigcpp_dll_OBJS)
+$(sigc_dll_OBJS)
 <<
 	@-if exist $@.manifest mt /manifest $@.manifest /outputresource:$@;2
 
@@ -74,24 +71,6 @@ $(libsigcpp_dll_OBJS)
 # <<
 # 	@-if exist $@.manifest mt /manifest $@.manifest /outputresource:$@;1
 
-{..\examples\}.cc{vs$(VSVER)\$(CFG)\$(PLAT)\}.exe:
-	@if not exist vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp-ex $(MAKE) -f Makefile.vc CFG=$(CFG) vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp-ex
-	@if not exist $(LIBSIGC_LIB) $(MAKE) -f Makefile.vc CFG=$(CFG) $(LIBSIGC_LIB)
-	$(CXX) $(SIGCPP_CFLAGS) /Fo$(@D)\libsigcpp-ex\ /Fd$(@D)\libsigcpp-ex\ $< /Fe$@ /link $(LDFLAGS) $(LIBSIGC_LIB)
-	@-if exist $@.manifest mt /manifest $@.manifest /outputresource:$@;1
-
-{..\tests\}.cc{vs$(VSVER)\$(CFG)\$(PLAT)\}.exe:
-	@if not exist $(LIBSIGC_LIB) $(MAKE) -f Makefile.vc CFG=$(CFG) $(LIBSIGC_LIB)
-	@if not exist vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp-tests\testutilities.obj $(MAKE) -f Makefile.vc CFG=$(CFG) vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp-tests\testutilities.obj
-	$(CXX) $(SIGCPP_CFLAGS) /Fo$(@D)\libsigcpp-tests\ /Fd$(@D)\libsigcpp-tests\ $< /Fe$@ /link $(LDFLAGS) $(LIBSIGC_LIB) vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp-tests\testutilities.obj
-	@-if exist $@.manifest mt /manifest $@.manifest /outputresource:$@;1
-
-vs$(VSVER)\$(CFG)\$(PLAT)\libsigc++-benchmark.exe: ..\tests\benchmark.cc
-	@if not exist $(LIBSIGC_LIB) $(MAKE) -f Makefile.vc CFG=$(CFG) $(LIBSIGC_LIB)
-	@if not exist vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp-tests\testutilities.obj $(MAKE) -f Makefile.vc CFG=$(CFG) vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp-tests\testutilities.obj
-	$(CXX) $(SIGCPP_BENCHMARK_CFLAGS) /Fo$(@D)\libsigcpp-tests\ /Fd$(@D)\libsigcpp-tests\ ..\tests\benchmark.cc /Fe$@ /link $(LDFLAGS) $(LIBSIGC_LIB) vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp-tests\testutilities.obj
-	@-if exist $@.manifest mt /manifest $@.manifest /outputresource:$@;1
-
 clean:
 	@-del /f /q vs$(VSVER)\$(CFG)\$(PLAT)\*.exe
 	@-del /f /q vs$(VSVER)\$(CFG)\$(PLAT)\*.dll
@@ -99,20 +78,20 @@ clean:
 	@-del /f /q vs$(VSVER)\$(CFG)\$(PLAT)\*.ilk
 	@-del /f /q vs$(VSVER)\$(CFG)\$(PLAT)\*.exp
 	@-del /f /q vs$(VSVER)\$(CFG)\$(PLAT)\*.lib
-	@-if exist vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp-tests del /f /q vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp-tests\*.obj
-	@-if exist vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp-tests del /f /q vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp-tests\*.pdb
-	@-del /f /q vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp-ex\*.obj
-	@-del /f /q vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp-ex\*.pdb
-	@-del /f /q vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp\*.res
-	@-del /f /q vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp\*.obj
-	@-del /f /q vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp\*.pdb
-	@-if exist vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp-tests rd vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp-tests
-	@-rd vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp-ex
-	@-for %d in ($(sigc_m4_srcdirs)) do @for %x in (cc h) do @if exist vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp\sigc++\%d\ del /f /q vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp\sigc++\%d\*.%x
-	@-for %x in (cc h) do @if exist vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp\sigc++\ del /f /q vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp\sigc++\*.%x
-	@-for %d in ($(sigc_m4_srcdirs)) do @rd vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp\sigc++\%d
-	@-rd vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp\sigc++
-	@-rd vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp
+	@-if exist vs$(VSVER)\$(CFG)\$(PLAT)\sigc-tests del /f /q vs$(VSVER)\$(CFG)\$(PLAT)\sigc-tests\*.obj
+	@-if exist vs$(VSVER)\$(CFG)\$(PLAT)\sigc-tests del /f /q vs$(VSVER)\$(CFG)\$(PLAT)\sigc-tests\*.pdb
+	@-del /f /q vs$(VSVER)\$(CFG)\$(PLAT)\sigc-ex\*.obj
+	@-del /f /q vs$(VSVER)\$(CFG)\$(PLAT)\sigc-ex\*.pdb
+	@-del /f /q vs$(VSVER)\$(CFG)\$(PLAT)\sigc\*.res
+	@-del /f /q vs$(VSVER)\$(CFG)\$(PLAT)\sigc\*.obj
+	@-del /f /q vs$(VSVER)\$(CFG)\$(PLAT)\sigc\*.pdb
+	@-if exist vs$(VSVER)\$(CFG)\$(PLAT)\sigc-tests rd vs$(VSVER)\$(CFG)\$(PLAT)\sigc-tests
+	@-rd vs$(VSVER)\$(CFG)\$(PLAT)\sigc-ex
+	@-for %d in ($(sigc_m4_srcdirs)) do @for %x in (cc h) do @if exist vs$(VSVER)\$(CFG)\$(PLAT)\sigc\sigc++\%d\ del /f /q vs$(VSVER)\$(CFG)\$(PLAT)\sigc\sigc++\%d\*.%x
+	@-for %x in (cc h) do @if exist vs$(VSVER)\$(CFG)\$(PLAT)\sigc\sigc++\ del /f /q vs$(VSVER)\$(CFG)\$(PLAT)\sigc\sigc++\*.%x
+	@-for %d in ($(sigc_m4_srcdirs)) do @rd vs$(VSVER)\$(CFG)\$(PLAT)\sigc\sigc++\%d
+	@-rd vs$(VSVER)\$(CFG)\$(PLAT)\sigc\sigc++
+	@-rd vs$(VSVER)\$(CFG)\$(PLAT)\sigc
 
 forceclean: clean
 	@-for %d in (. adaptors\lambda adaptors functors) do @for %t in (.. ..\untracked) do @for %x in (cc h) do @for %f in (..\sigc++\%d\macros\*.%x.m4) do @del %t\sigc++\%d\%~nf

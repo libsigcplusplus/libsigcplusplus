@@ -21,7 +21,7 @@ M4 = m4
 LIBSIGCPP_DEFINES = /DSIGC_BUILD /D_WINDLL
 
 SIGCPP_BASE_CFLAGS =	\
-	/Ivs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp	\
+	/Ivs$(VSVER)\$(CFG)\$(PLAT)\sigc	\
 	/I..\untracked /I.. /I.	\
 	/wd4530 /EHsc $(CFLAGS)
 
