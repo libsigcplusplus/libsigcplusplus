@@ -30,6 +30,10 @@ VALID_MSC = TRUE
 # into the lists we need for compilation and introspection
 !include create-lists-msvc.mak
 
+!ifdef GENERATE_VERSIONED_FILES
+!include pkg-ver.mak
+!endif
+
 all: $(LIBSIGC_LIB) $(libsigc_ex) all-build-info
 
 tests: $(libsigc_tests) all-build-info
