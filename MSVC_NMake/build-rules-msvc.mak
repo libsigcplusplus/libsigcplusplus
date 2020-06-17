@@ -14,21 +14,30 @@
 # $<
 # <<
 {..\sigc++\}.cc{vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp\}.obj:
+	@if not exist $(@D)\ md $(@D)
 	$(CXX) $(LIBSIGCPP_CFLAGS) /Fo$(@D)\ /Fd$(@D)\ /c @<<
 $<
 <<
 
 {..\sigc++\adaptors\lambda\}.cc{vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp\}.obj:
+	@if not exist $(@D)\ md $(@D)
 	$(CXX) $(LIBSIGCPP_CFLAGS) /Fo$(@D)\ /Fd$(@D)\ /c @<<
 $<
 <<
 
 {..\sigc++\functors\}.cc{vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp\}.obj:
+	@if not exist $(@D)\ md $(@D)
 	$(CXX) $(LIBSIGCPP_CFLAGS) /Fo$(@D)\ /Fd$(@D)\ /c @<<
 $<
 <<
 
 {..\untracked\sigc++\adaptors\lambda\}.cc{vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp\}.obj:
+	@if not exist $(@D)\ md $(@D)
+	$(CXX) $(LIBSIGCPP_CFLAGS) /Fo$(@D)\ /Fd$(@D)\ /c @<<
+$<
+<<
+
+{vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp\sigc++\adaptors\lambda\}.cc{vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp\}.obj:
 	$(CXX) $(LIBSIGCPP_CFLAGS) /Fo$(@D)\ /Fd$(@D)\ /c @<<
 $<
 <<
@@ -51,7 +60,7 @@ $(LIBSIGC_LIB): $(LIBSIGC_DLL)
 # $(dependent_objects)
 # <<
 # 	@-if exist $@.manifest mt /manifest $@.manifest /outputresource:$@;2
-$(LIBSIGC_DLL): vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp $(libsigcpp_dll_OBJS)
+$(LIBSIGC_DLL): $(libsigcpp_dll_OBJS)
 	link /DLL $(LDFLAGS) /implib:$(LIBSIGC_LIB) -out:$@ @<<
 $(libsigcpp_dll_OBJS)
 <<
@@ -99,4 +108,11 @@ clean:
 	@-del /f /q vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp\*.pdb
 	@-if exist vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp-tests rd vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp-tests
 	@-rd vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp-ex
+	@-for %d in ($(sigc_m4_srcdirs)) do @for %x in (cc h) do @if exist vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp\sigc++\%d\ del /f /q vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp\sigc++\%d\*.%x
+	@-for %x in (cc h) do @if exist vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp\sigc++\ del /f /q vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp\sigc++\*.%x
+	@-for %d in ($(sigc_m4_srcdirs)) do @rd vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp\sigc++\%d
+	@-rd vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp\sigc++
 	@-rd vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp
+
+forceclean: clean
+	@-for %d in (. adaptors\lambda adaptors functors) do @for %t in (.. ..\untracked) do @for %x in (cc h) do @for %f in (..\sigc++\%d\macros\*.%x.m4) do @del %t\sigc++\%d\%~nf

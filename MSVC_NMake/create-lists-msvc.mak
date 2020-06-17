@@ -47,6 +47,15 @@ NULL=
 !if [call create-lists.bat footer libsigcpp.mak]
 !endif
 
+!if [call create-lists.bat header libsigcpp.mak sigc_m4_srcdirs]
+!endif
+
+!if [for %d in (adaptors\lambda adaptors functors) do @call create-lists.bat file libsigcpp.mak %d]
+!endif
+
+!if [call create-lists.bat footer libsigcpp.mak]
+!endif
+
 !if [call create-lists.bat header libsigcpp.mak libsigc_ex]
 !endif
 
@@ -56,11 +65,10 @@ NULL=
 !if [call create-lists.bat footer libsigcpp.mak]
 !endif
 
-!if [call create-lists.bat header libsigcpp.mak libsigc_tests]
-!endif
-
 # Skipping testutilities.cc: Not to be built as a .exe, but is a common dependency for the tests
 #          benchmark: Not built on default; requires Boost
+!if [call create-lists.bat header libsigcpp.mak libsigc_tests]
+!endif
 !if [for %s in (..\tests\*.cc) do @if not "%~ns" == "testutilities" if not "%~ns" == "benchmark" @call create-lists.bat file libsigcpp.mak vs^$(VSVER)\^$(CFG)\^$(PLAT)\%~ns.exe]
 !endif
 

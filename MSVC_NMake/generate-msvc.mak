@@ -11,7 +11,7 @@ vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp-tests:
 
 # Create the versioned files
 
-prep-git-build: pkg-ver.mak
+prep-git-build: pkg-ver.mak generate-sources
 
 sigc.rc: pkg-ver.mak sigc.rc.in
 	@echo Generating $@...
@@ -46,3 +46,10 @@ pkg-ver.mak: ..\configure.ac
 	@pkg-ver.bat
 	@del ver.txt pkg-ver.bat
 	$(MAKE) /f Makefile.vc CFG=$(CFG) GENERATE_VERSIONED_FILES=1 sigc.rc sigc++config.h
+
+generate-sources:
+	@for %f in ($(base_built_cc) $(base_built_h)) do @if not exist ..\sigc++\%f if not exist ..\untracked\sigc++\%f if not exist vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp\sigc++\ md vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp\sigc++
+	@for %d in ($(sigc_m4_srcdirs)) do @for %x in (cc h) do @for %f in (..\sigc++\%d\macros\*.%x.m4) do @if not exist ..\sigc++\%d\%~nf if not exist ..\untracked\sigc++\%d\%~nf if not exist vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp\sigc++\%d\ md vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp\sigc++\%d
+	@for %f in ($(base_built_cc) $(base_built_h)) do @if not exist ..\sigc++\%f if not exist ..\untracked\sigc++\%f if not exist vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp\sigc++\%f @echo Generating vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp\sigc++\%f... & $(M4) -I ../sigc++/macros ../sigc++/macros/%f.m4 >vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp\sigc++\%f
+	@for %d in ($(sigc_m4_srcdirs:adaptors\lambda=)) do @for %x in (cc h) do @for %f in (..\sigc++\%d\macros\*.%x.m4) do @if not exist ..\sigc++\%d\%~nf if not exist ..\untracked\sigc++\%d\%~nf if not exist vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp\sigc++\%d\%~nf @echo Generating vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp\sigc++\%d\%~nf... & $(M4) -I ../sigc++/%d/macros -I ../sigc++/macros ../sigc++/%d/macros/%~nxf >vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp\sigc++\%d\%~nf
+	@for %x in (cc h) do @for %f in (..\sigc++\adaptors\lambda\macros\*.%x.m4) do @if not exist ..\sigc++\adaptors\lambda\%~nf if not exist ..\untracked\sigc++\adaptors\lambda\%~nf if not exist vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp\sigc++\adaptors\lambda\%~nf @echo Generating vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp\sigc++\adaptors\lambda\%~nf... & $(M4) -I ../sigc++/adaptors/lambda/macros -I ../sigc++/macros ../sigc++/adaptors/lambda/macros/%~nxf >vs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp\sigc++\adaptors\lambda\%~nf
