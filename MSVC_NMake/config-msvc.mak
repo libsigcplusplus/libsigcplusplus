@@ -14,9 +14,16 @@ LIBSIGC_DEBUG_SUFFIX = -d
 LIBSIGC_DEBUG_SUFFIX =
 !endif
 
+!ifndef M4
+M4 = m4
+!endif
+
 LIBSIGCPP_DEFINES = /DSIGC_BUILD /D_WINDLL
 
-SIGCPP_BASE_CFLAGS = /I.. /I. /I..\untracked /I..\MSVC_NMake /wd4530 /EHsc $(CFLAGS)
+SIGCPP_BASE_CFLAGS =	\
+	/Ivs$(VSVER)\$(CFG)\$(PLAT)\libsigcpp	\
+	/I..\untracked /I.. /I.	\
+	/wd4530 /EHsc $(CFLAGS)
 
 LIBSIGC_INT_SOURCES = $(sigc_sources_cc:/=\)
 LIBSIGC_INT_HDRS = $(sigc_public_h:/=\)
