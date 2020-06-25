@@ -29,24 +29,24 @@
 	application using that toolkit should handle the user clicking on it.</para>
 
 	<para>In C the callbacks are generally handled by the application calling a
-	'register' function and passing a pointer to a function and a <literal remap="tt">void *</literal>
+	'register' function and passing a pointer to a function and a <literal remap="tt">void*</literal>
 	argument, eg.</para>
 
 <programlisting>
-void clicked(void *data);
+void clicked(void* data);
 
-button * okbutton = create_button("ok");
+button* okbutton = create_button("ok");
 static char somedata[] = "This is some data I want the clicked() function to have";
 
 register_click_handler(okbutton, clicked, somedata);
 </programlisting>
 
 	<para>When clicked, the toolkit will call <literal remap="tt">clicked()</literal> with the data pointer passed
-	to the <literal remap="tt">register_click_handler</literal> function.</para>
+	to the <literal remap="tt">register_click_handler()</literal> function.</para>
 
 	<para>This works in C, but is not typesafe. There is no compile-time way of
 	ensuring that <literal remap="tt">clicked()</literal> isn't expecting a struct of some sort instead of a
-	<literal remap="tt">char *</literal>.</para>
+	<literal remap="tt">char*</literal>.</para>
 
 	<para>As C++ programmers, we want type safety. We also want to be able to use
 	things other than free-standing functions as callbacks.</para>
@@ -55,7 +55,8 @@ register_click_handler(okbutton, clicked, somedata);
 	the things that can be used as a callback:
 	<itemizedlist>
 	    <listitem><para>A free-standing function as in the example</para></listitem>
-	    <listitem><para>A functor objects that defines operator()</para></listitem>
+	    <listitem><para>A functor object that defines operator() (a lambda expression
+	        is such an object)</para></listitem>
 	    <listitem><para>A pointer-to-a-member-function and an instance of an object on which to invoke it (the
 	        object should inherit from <literal remap="tt">sigc::trackable</literal>)</para></listitem>
 	</itemizedlist></para>
@@ -96,7 +97,7 @@ public:
 
     void run();
 
-    sigc::signal&lt;void&gt; signal_detected;
+    sigc::signal&lt;void()&gt; signal_detected;
 };
 </programlisting>
 
@@ -119,6 +120,11 @@ int main()
 
     return 0;
 }
+</programlisting>
+
+  <para>You can use a lambda expression instead of sigc::ptr_fun().</para>
+<programlisting>
+    mydetector.signal_detected.connect( [](){ warn_people(); } );
 </programlisting>
 
 	<para>Pretty simple really - you call the <literal remap="tt">connect()</literal> method on the signal to
@@ -175,6 +181,12 @@ int main()
 
 	<para>This code is in example2.cc, which can be compiled in the same way as
 	example1.cc</para>
+
+	<para>It's possible to use a lambda expression instead of sigc::mem_fun(),
+	but it's not recommended, if the class derives from <literal remap="tt">sigc::trackable</literal>.
+	With a lambda expression you would loose the automatic disconnection that the
+	combination of <literal remap="tt">sigc::trackable</literal> and sigc::mem_fun()
+	offers.</para>
 </sect1>
 
 <sect1>
@@ -198,7 +210,7 @@ public:
 
     void run();
 
-    sigc::signal&lt;void, std::string&gt; signal_detected;	// changed
+    sigc::signal&lt;void(std::string)&gt; signal_detected;	// changed
 };
 </programlisting>
 
@@ -206,14 +218,17 @@ public:
 	my code to supply the argument when I emit the signal too, but that's not shown
 	here).</para>
 
-	<para>The name of the type is '<literal remap="tt">sigc::signal</literal>'. The template parameters are the return type, then the argument types.</para>
+	<para>The name of the type is '<literal remap="tt">sigc::signal</literal>'.
+ The template parameters are the return type, then the argument types in parentheses.
+ (The parentheses are necessary in libsigc++3. If you use libsigc++2, the syntax
+ is different, with a comma between return type and parameter types.)</para>
 
 	<para>The types in the function signature are in the same order as the template
 	parameters, eg:</para>
 
 <programlisting>
-sigc::signal&lt;void,         std::string&gt;
-              void function(std::string foo);
+sigc::signal&lt;void(std::string)&gt;
+    void function(std::string foo);
 </programlisting>
 
 		<para>So now you can update your alerter (for simplicity, lets go back to the
@@ -269,7 +284,7 @@ int main()
 	<para>A signal is an instance of a template, named <literal remap="tt">sigc::signal</literal>.
         The template arguments are the types,
 	in the order they appear in the function signature that can be connected to that
-	signal; that is the return type, then the argument types.</para>
+	signal; that is the return type, then the argument types in parentheses.</para>
 
 	<para>To provide a signal for people to connect to, you must make available an
 	instance of that <literal remap="tt">sigc::signal</literal>. In <literal remap="tt">AlienDetector</literal> this was done
@@ -297,7 +312,7 @@ void AlienDetector::run()
 {
     sleep(3);                // wait for aliens
     signal_detected("the carpark"); // this is the std::string version, looks like
-       	                     // they landed in the carpark afterall.
+                             // they landed in the carpark after all.
 }
 </programlisting>
 </sect1>
@@ -308,7 +323,7 @@ void AlienDetector::run()
 	about the return value of the last registered one, it's quite straightforward:</para>
 
 <programlisting>
-sigc::signal&lt;int&gt; somesignal;
+sigc::signal&lt;int()&gt; somesignal;
 int a_return_value;
 
 a_return_value = somesignal.emit();
@@ -400,9 +415,9 @@ void dostuff(double foo)
 {
 }
 
-sigc::signal&lt;void,int&gt; asignal;
+sigc::signal&lt;void(int)&gt; asignal;
 
-asignal.connect(  sigc::retype&lt;void, int&gt;( slot(&amp;dostuff) )  );
+asignal.connect( sigc::retype&lt;void(int)&gt;( sigc::ptr_fun(&amp;dostuff) ) );
 </programlisting>
 
 	<para>If you only want to change the return type, you can use <literal remap="tt">sigc::retype_return</literal>.
