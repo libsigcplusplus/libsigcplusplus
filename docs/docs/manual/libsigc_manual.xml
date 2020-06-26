@@ -108,7 +108,7 @@ public:
 <programlisting>
 void warn_people()
 {
-    cout &lt;&lt; "There are aliens in the carpark!" &lt;&lt; endl;
+    std::cout &lt;&lt; "There are aliens in the carpark!" &lt;&lt; std::endl;
 }
 
 int main()
@@ -184,7 +184,7 @@ int main()
 
 	<para>It's possible to use a lambda expression instead of sigc::mem_fun(),
 	but it's not recommended, if the class derives from <literal remap="tt">sigc::trackable</literal>.
-	With a lambda expression you would loose the automatic disconnection that the
+	With a lambda expression you would lose the automatic disconnection that the
 	combination of <literal remap="tt">sigc::trackable</literal> and sigc::mem_fun()
 	offers.</para>
 </sect1>
@@ -219,9 +219,10 @@ public:
 	here).</para>
 
 	<para>The name of the type is '<literal remap="tt">sigc::signal</literal>'.
- The template parameters are the return type, then the argument types in parentheses.
- (The parentheses are necessary in libsigc++3. If you use libsigc++2, the syntax
- is different, with a comma between return type and parameter types.)</para>
+	The template parameters are the return type, then the argument types in parentheses.
+	(The parentheses are necessary in libsigc++3. libsigc++2 also accepts a different
+	syntax, with a comma between the return type and the parameter types. That syntax is
+	deprecated, though.)</para>
 
 	<para>The types in the function signature are in the same order as the template
 	parameters, eg:</para>
@@ -237,7 +238,7 @@ sigc::signal&lt;void(std::string)&gt;
 <programlisting>
 void warn_people(std::string where)
 {
-    cout &lt;&lt; "There are aliens in " &lt;&lt; where &lt;&lt; "!" &lt;&lt; endl;
+    std::cout &lt;&lt; "There are aliens in " &lt;&lt; where &lt;&lt; "!" &lt;&lt; std::endl;
 }
 
 int main()
