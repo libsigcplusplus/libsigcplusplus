@@ -406,10 +406,8 @@ myaliendetector.signal_detected.connect( sigc::hide&lt;std::string&gt;( sigc::pt
 	<para>A similar topic is retyping. Perhaps you have a signal that takes an <literal remap="tt">int</literal>, but
 	you want to connect a function that takes a <literal remap="tt">double</literal>.</para>
 
-	<para>This can be achieved with the <literal remap="tt">sigc::retype</literal> template. <literal remap="tt">retype</literal> has template arguments
-	just like <literal remap="tt">sigc::signal</literal> - return value, signal types.</para>
-
-	<para>It's a function template that takes a <literal remap="tt">sigc::slot</literal>, and returns a <literal remap="tt">sigc::slot</literal>. eg.</para>
+	<para>This can be achieved with the <literal remap="tt">sigc::retype()</literal> template.
+	It takes a <literal remap="tt">sigc::slot</literal>, and returns a <literal remap="tt">sigc::slot</literal>. eg.</para>
 
 <programlisting>
 void dostuff(double foo)
@@ -418,11 +416,11 @@ void dostuff(double foo)
 
 sigc::signal&lt;void(int)&gt; asignal;
 
-asignal.connect( sigc::retype&lt;void(int)&gt;( sigc::ptr_fun(&amp;dostuff) ) );
+asignal.connect( sigc::retype( sigc::ptr_fun(&amp;dostuff) ) );
 </programlisting>
 
-	<para>If you only want to change the return type, you can use <literal remap="tt">sigc::retype_return</literal>.
-	<literal remap="tt">retype_return</literal> needs only one template argument.</para>
+	<para>If you only want to change the return type, you can use <literal remap="tt">sigc::retype_return()</literal>.
+	<literal remap="tt">retype_return()</literal> needs one template argument, the new return type.</para>
 </sect1>
 </chapter>
 
