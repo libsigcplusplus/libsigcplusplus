@@ -1,7 +1,7 @@
 # docs/docs/reference
 
 # Input: project_build_root, project_source_root, sigcxx_pcname,
-#        sigcxx_api_version, perl, build_documentation, source_h_files,
+#        sigcxx_api_version, build_documentation, source_h_files,
 #        hg_ccg_basenames, install_datadir, python3, doc_reference
 # Output: install_docdir, install_devhelpdir, book_name
 
@@ -24,10 +24,13 @@ foreach module : tag_file_modules
       htmlrefdir = htmlrefpub
     endif
     doxygen_tagfiles += ' "' + doxytagfile + '=' + htmlrefpub + '"'
-    if not htmlrefdir.endswith('/')
-      htmlrefdir += '/'
-    endif
+
+    # Doxygen <= 1.8.15
     docinstall_flags += ['-l', doxytagfile.split('/')[-1] + '@' + htmlrefdir]
+    if htmlrefpub != htmlrefdir
+      # Doxygen >= 1.8.16
+      docinstall_flags += ['-l', 's@' + htmlrefpub + '@' + htmlrefdir]
+    endif
   endif
 endforeach
 
@@ -44,7 +47,6 @@ doc_conf_data.set('abs_top_builddir', project_build_root)
 doc_conf_data.set('abs_top_srcdir', project_source_root)
 doc_conf_data.set('SIGCXX_API_VERSION', sigcxx_api_version)
 doc_conf_data.set('DOXYGEN_TAGFILES', doxygen_tagfiles)
-doc_conf_data.set('PERL', perl.found() ? perl.path() : '')
 
 configure_file(
   input: 'Doxyfile.in',
