@@ -300,12 +300,10 @@ GENERATE_TAGFILE       = "reference/libsigc++-@SIGCXX_API_VERSION@.tag"
 ALLEXTERNALS           = NO
 EXTERNAL_GROUPS        = NO
 EXTERNAL_PAGES         = YES
-PERL_PATH              = @PERL@
 #---------------------------------------------------------------------------
 # Configuration options related to the dot tool
 #---------------------------------------------------------------------------
 CLASS_DIAGRAMS         = YES
-MSCGEN_PATH            =
 DIA_PATH               =
 HIDE_UNDOC_RELATIONS   = NO
 HAVE_DOT               = YES
