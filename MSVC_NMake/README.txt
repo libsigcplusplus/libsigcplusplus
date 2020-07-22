@@ -15,12 +15,7 @@ targets:
 -all (or no target specified): The libsigc++ DLL and the example programs.
 -test: The libsigc++ DLL and the test programs.
 -benchmark: The libsigc++ DLL and the benchmark program.
--prep-git-build: Prepare to build directly from a GIT checkout.  You must
-                 run this target before any other targets at least once if you
-                 are building from a GIT checkout or from a Meson-generated
-                 tarball.  If you are building from a GIT checkout, you must
-                 run this before any other targets whenever you change
-                 configuration, target architecture or toolset version.  You
+-prep-git-build: Prepare to build directly from a GIT checkout.  You
                  will at least need PERL for this, and m4 if building from a
                  GIT checkout or when building after running the 'forceclean'
                  target.
@@ -33,10 +28,6 @@ built items in their appropriate locations under $(PREFIX), which is described b
 A 'forceclean' target is also provided to cover the actions under the target 'clean',
 but also to remove any traces of the headers and sources that were generated.  This
 may be useful if one wants to re-generate the sources and headers from the m4 templates.
-
-If you do get errors during the build such as U1073 when building lambda.obj, or
-if you have header conflicts or missing headers, ensure that you run the 'prep-git-build'
-target first.
 
 Invoke the build by issuing the command:
 nmake /f Makefile.vc CFG=[release|debug] [PREFIX=...] <option1=1 option2=1 ...>

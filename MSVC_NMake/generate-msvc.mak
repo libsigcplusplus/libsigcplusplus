@@ -7,25 +7,29 @@
 
 prep-git-build: pkg-ver.mak generate-sources
 
-sigc.rc: pkg-ver.mak sigc.rc.in
-	@echo Generating $@...
-	@copy $@.in $@
-	@$(PERL) -pi.bak -e "s/\@SIGCXX_MAJOR_VERSION\@/$(PKG_MAJOR_VERSION)/g" $@
-	@$(PERL) -pi.bak -e "s/\@SIGCXX_MINOR_VERSION\@/$(PKG_MINOR_VERSION)/g" $@
-	@$(PERL) -pi.bak -e "s/\@SIGCXX_MICRO_VERSION\@/$(PKG_MICRO_VERSION)/g" $@
-	@$(PERL) -pi.bak -e "s/\@PACKAGE_VERSION\@/$(PKG_MAJOR_VERSION).$(PKG_MINOR_VERSION).$(PKG_MICRO_VERSION)/g" $@
-	@$(PERL) -pi.bak -e "s/\@SIGCXX_API_VERSION\@/$(LIBSIGC_MAJOR_VERSION).$(LIBSIGC_MINOR_VERSION)/g" $@
-	@del $@.bak
+sigc.rc: ..\configure.ac sigc.rc.in
+	@if not "$(DO_REAL_GEN)" == "1" if exist pkg-ver.mak del pkg-ver.mak
+	@if not exist pkg-ver.mak $(MAKE) /f Makefile.vc CFG=$(CFG) pkg-ver.mak
+	@if "$(DO_REAL_GEN)" == "1" echo Generating $@...
+	@if "$(DO_REAL_GEN)" == "1" copy $@.in $@
+	@if "$(DO_REAL_GEN)" == "1" $(PERL) -pi.bak -e "s/\@SIGCXX_MAJOR_VERSION\@/$(PKG_MAJOR_VERSION)/g" $@
+	@if "$(DO_REAL_GEN)" == "1" $(PERL) -pi.bak -e "s/\@SIGCXX_MINOR_VERSION\@/$(PKG_MINOR_VERSION)/g" $@
+	@if "$(DO_REAL_GEN)" == "1" $(PERL) -pi.bak -e "s/\@SIGCXX_MICRO_VERSION\@/$(PKG_MICRO_VERSION)/g" $@
+	@if "$(DO_REAL_GEN)" == "1" $(PERL) -pi.bak -e "s/\@PACKAGE_VERSION\@/$(PKG_MAJOR_VERSION).$(PKG_MINOR_VERSION).$(PKG_MICRO_VERSION)/g" $@
+	@if "$(DO_REAL_GEN)" == "1" $(PERL) -pi.bak -e "s/\@SIGCXX_API_VERSION\@/$(LIBSIGC_MAJOR_VERSION).$(LIBSIGC_MINOR_VERSION)/g" $@
+	@if "$(DO_REAL_GEN)" == "1" del $@.bak
 
 # You may change SIGCXX_DISABLE_DEPRECATED if you know what you are doing
-sigc++config.h: pkg-ver.mak ..\sigc++config.h.in
-	@echo Generating $@...
-	@copy "..\$(@F).in" "$@"
-	@$(PERL) -pi.bak -e "s/\#undef SIGCXX_DISABLE_DEPRECATED/\/\* \#undef SIGCXX_DISABLE_DEPRECATED \*\//g" $@
-	@$(PERL) -pi.bak -e "s/\#undef SIGCXX_MAJOR_VERSION/\#define SIGCXX_MAJOR_VERSION $(PKG_MAJOR_VERSION)/g" $@
-	@$(PERL) -pi.bak -e "s/\#undef SIGCXX_MINOR_VERSION/\#define SIGCXX_MINOR_VERSION $(PKG_MINOR_VERSION)/g" $@
-	@$(PERL) -pi.bak -e "s/\#undef SIGCXX_MICRO_VERSION/\#define SIGCXX_MICRO_VERSION $(PKG_MICRO_VERSION)/g" $@
-	@del $@.bak
+sigc++config.h: ..\configure.ac ..\sigc++config.h.in
+	@if not "$(DO_REAL_GEN)" == "1" if exist pkg-ver.mak del pkg-ver.mak
+	@if not exist pkg-ver.mak $(MAKE) /f Makefile.vc CFG=$(CFG) pkg-ver.mak
+	@if "$(DO_REAL_GEN)" == "1" echo Generating $@...
+	@if "$(DO_REAL_GEN)" == "1" copy "..\$(@F).in" "$@"
+	@if "$(DO_REAL_GEN)" == "1" $(PERL) -pi.bak -e "s/\#undef SIGCXX_DISABLE_DEPRECATED/\/\* \#undef SIGCXX_DISABLE_DEPRECATED \*\//g" $@
+	@if "$(DO_REAL_GEN)" == "1" $(PERL) -pi.bak -e "s/\#undef SIGCXX_MAJOR_VERSION/\#define SIGCXX_MAJOR_VERSION $(PKG_MAJOR_VERSION)/g" $@
+	@if "$(DO_REAL_GEN)" == "1" $(PERL) -pi.bak -e "s/\#undef SIGCXX_MINOR_VERSION/\#define SIGCXX_MINOR_VERSION $(PKG_MINOR_VERSION)/g" $@
+	@if "$(DO_REAL_GEN)" == "1" $(PERL) -pi.bak -e "s/\#undef SIGCXX_MICRO_VERSION/\#define SIGCXX_MICRO_VERSION $(PKG_MICRO_VERSION)/g" $@
+	@if "$(DO_REAL_GEN)" == "1" del $@.bak
 
 pkg-ver.mak: ..\configure.ac
 	@echo Generating version info Makefile Snippet...
