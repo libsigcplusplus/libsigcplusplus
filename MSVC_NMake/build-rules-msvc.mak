@@ -14,12 +14,14 @@
 # $<
 # <<
 {..\sigc++\}.cc{vs$(VSVER)\$(CFG)\$(PLAT)\sigc\}.obj:
+	@if not exist .\sigc++config.h if not exist ..\untracked\MSVC_NMake\sigc++config.h $(MAKE) /f Makefile.vc CFG=$(CFG) sigc++config.h
 	@if not exist $(@D)\ md $(@D)
 	$(CXX) $(LIBSIGCPP_CFLAGS) /Fo$(@D)\ /Fd$(@D)\ /c @<<
 $<
 <<
 
 {..\sigc++\functors\}.cc{vs$(VSVER)\$(CFG)\$(PLAT)\sigc\}.obj:
+	@if not exist .\sigc++config.h if not exist ..\untracked\MSVC_NMake\sigc++config.h $(MAKE) /f Makefile.vc CFG=$(CFG) sigc++config.h
 	@if not exist $(@D)\ md $(@D)
 	$(CXX) $(LIBSIGCPP_CFLAGS) /Fo$(@D)\ /Fd$(@D)\  /c @<<
 $<

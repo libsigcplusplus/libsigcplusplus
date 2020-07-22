@@ -32,6 +32,7 @@ VALID_MSC = TRUE
 
 !ifdef GENERATE_VERSIONED_FILES
 !include pkg-ver.mak
+DO_REAL_GEN=1
 !endif
 
 all: $(LIBSIGC_LIB) examples all-build-info

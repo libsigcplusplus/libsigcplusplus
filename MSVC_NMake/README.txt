@@ -21,8 +21,7 @@ targets:
 Building directly from a GIT checkout is now supported, provided that a PERL
 installation is present (pass the PERL interpreter executable in your NMake
 command line by using 'PERL=<path_to_PERL_interpreter_executable>' by using
-the 'prep-git-build' target.  Note that in this case, the 'prep-git-build'
-target needs to be run before building any of the other targets.
+the 'prep-git-build' target.
 
 The following are instructions for performing such a build.  A 'clean' target is
 provided-it is recommended that one cleans the build and redo the build if any
