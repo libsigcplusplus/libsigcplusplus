@@ -1,3 +1,22 @@
+2.10.4 (stable)
+
+Build:
+* Meson build: Set default value of the 'warnings' option to 'min'
+  (Kjell Ahlstedt)
+* NMake Makefiles: Several improvements
+  (Chun-Wei Fan) Pull request #58
+* docs/reference/: Update for Doxygen >= 1.8.16
+  (Kjell Ahlstedt)
+
+Documentation:
+* docs/manual/libsigc_manual.xml: Update signal and slot syntax
+  (Kjell Ahlstedt) Issue #59 (Denis Washington)
+
+The tarball for 2.10.4 has been created with 'meson dist'.
+If you build with Autotools from the tarball, please read the relevant
+part of README.
+
+
 2.10.3 (stable)
 
 Build:

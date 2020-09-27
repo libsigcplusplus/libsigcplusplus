@@ -1,7 +1,7 @@
 # This file is part of libsigc++.
 
 project('libsigc++', 'cpp',
-  version: '2.10.3',
+  version: '2.10.4',
   license: 'LGPLv2.1+',
   default_options: [
     'cpp_std=c++11',
