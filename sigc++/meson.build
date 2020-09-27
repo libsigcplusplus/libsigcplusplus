@@ -169,6 +169,7 @@ if maintainer_mode
     cpp_args: extra_sigc_cppflags,
     include_directories: extra_include_dirs,
     dependencies: sigcxx_build_dep,
+    darwin_versions: darwin_versions,
     install: true,
   )
 
@@ -212,6 +213,7 @@ else # not maintainer_mode
     cpp_args: extra_sigc_cppflags,
     include_directories: extra_include_dirs,
     dependencies: sigcxx_build_dep,
+    darwin_versions: darwin_versions,
     install: true,
   )
 
