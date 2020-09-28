@@ -1,7 +1,7 @@
 # sigc++
 
 # Input: sigcxx_build_dep, sigcxx_pcname, sigcxx_libversion, sigcxx_api_version,
-#        install_includedir, sig_rc
+#        darwin_versions, install_includedir, sig_rc
 # Output: source_h_files, sigcxx_dep
 
 # There are no built source files in libsigc++-3.0.
@@ -89,6 +89,7 @@ sigcxx_library = library('sigc-' + sigcxx_api_version,
   source_cc_files,
   extra_sigc_objects,
   version: sigcxx_libversion,
+  darwin_versions: darwin_versions,
   include_directories: extra_include_dirs,
   cpp_args: extra_sigc_cppflags,
   dependencies: sigcxx_build_dep,
