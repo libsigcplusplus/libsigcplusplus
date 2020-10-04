@@ -20,17 +20,16 @@ There is an archive of messages,
 <a name="patches"><h3>Patches</h3></a>
 
 <p>
-Patches should be added to bugzilla bugs.</p>
+Patches should be added to GitHub's issue tracker.</p>
 
 <p>
-Open <a href="http://bugzilla.gnome.org/buglist.cgi?product=libsigc%2B%2B&bug_status=UNCONFIRMED&bug_status=NEW&bug_status=ASSIGNED&bug_status=REOPENED&bug_status=NEEDINFO">libsigc++ bugs</a><br/>
-Submit a new libsigc++ bug <a href="http://bugzilla.gnome.org/enter_bug.cgi?product=libsigc%2B%2B">here</a>
+Open <a href="https://github.com/libsigcplusplus/libsigcplusplus/issues">libsigc++ issues</a>.
 </p>
 
 <a name="git"><h3>Version Control</h3></a>
 
 <p>
-libsigc++ is in the <a href="http://git.gnome.org/browse/libsigcplusplus/">libsigcplusplus</a> module in GNOME's git repository.
+libsigc++ is in the <a href="https://github.com/libsigcplusplus/libsigcplusplus">libsigcplusplus</a> module in GitHub's git repository.
 </p>
 
 <!-- SSI fragments/footer.html_fragment begin -->
