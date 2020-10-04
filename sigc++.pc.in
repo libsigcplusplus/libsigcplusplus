@@ -13,6 +13,6 @@ htmlrefpub=http://library.gnome.org/devel/libsigc++/unstable/
 Name: libsigc++
 Description: Typesafe signal and callback system for C++
 Version: @PACKAGE_VERSION@
-URL: http://libsigc.sourceforge.net/
+URL: https://libsigcplusplus.github.io/libsigcplusplus/
 Libs: -L${libdir} -lsigc-@SIGCXX_API_VERSION@
 Cflags: -I${includedir}/sigc++-@SIGCXX_API_VERSION@ -I${libdir}/sigc++-@SIGCXX_API_VERSION@/include
