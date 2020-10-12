@@ -64,7 +64,7 @@
  * @code
  * g++ program.cc -o program `pkg-config --cflags --libs sigc++-2.0`
  * @endcode
- * If your version of g++ is not C++11-compliant be default,
+ * If your version of g++ is not C++11-compliant by default,
  * add the @c -std=c++11 option.
  *
  * @subsection meson Using Meson
