@@ -64,6 +64,25 @@
  * @code
  * g++ program.cc -o program `pkg-config --cflags --libs sigc++-3.0`
  * @endcode
+ * If your version of g++ is not C++17-compliant be default,
+ * add the @c -std=c++17 option.
+ *
+ * @subsection meson Using Meson
+ *
+ * If using <a href="https://mesonbuild.com/">Meson</a>, include the following
+ * in @c meson.build:
+ * @code
+ * sigc_dep = dependency('sigc++-3.0')
+ * program_name = 'program'
+ * cpp_sources = [ 'program.cc' ]
+ * executable(program_name,
+ *   cpp_sources,
+ *   dependencies: sigc_dep
+ * )
+ * @endcode
+ *
+ * Your @c dependencies: keyword argument should also mention any other libraries
+ * that you need to use.
  *
  * @subsection autotools Using Autotools
  *
