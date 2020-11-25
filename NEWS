@@ -1,3 +1,17 @@
+2.10.6 (stable)
+
+Build:
+* Meson build: Fix versioning on macOS
+  (Tom Schoonjans) Pull request #65
+
+Documentation:
+* sigc++/sigc++.h: Describe how to use libsigc++ with Meson
+  (Kjell Ahlstedt)
+* Update links to the web page, now at
+  libsigcplusplus.github.io/libsigcplusplus
+  (Kjell Ahlstedt)
+
+
 2.10.4 (stable)
 
 Build:
