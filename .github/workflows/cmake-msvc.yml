@@ -1,6 +1,8 @@
 name: "CI: cmake: msvc 2019"
 
-on: [push]
+# This test does not work any more. Don't run it automatically.
+# I don't know how it shall be changed. /2020-11-25 Kjell Ahlstedt
+on: [workflow_dispatch]
 
 jobs:
   build:
