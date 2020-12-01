@@ -1,8 +1,6 @@
 name: "CI: cmake: msvc 2019"
 
-# This test does not work any more. Don't run it automatically.
-# I don't know how it shall be changed. /2020-11-25 Kjell Ahlstedt
-on: [workflow_dispatch]
+on: [push]
 
 jobs:
   build:
@@ -11,7 +9,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - uses: warrenbuckley/Setup-MSBuild@v1
+    - uses: microsoft/setup-msbuild@v1
     - name: Build
       run: |
         cmake .
