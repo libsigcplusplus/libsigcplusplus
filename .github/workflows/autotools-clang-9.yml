@@ -6,21 +6,23 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-    container: ubuntu:19.10
+    container: ubuntu:20.04
 
     steps:
     - uses: actions/checkout@v1
     - name: Build
       run: |
+        # Prevent blocking apt install on a question during configuring of tzdata.
+        export ENV DEBIAN_FRONTEND=noninteractive
         apt update
-        apt install mm-common clang-9 --yes
-        export CXX=clang++-9
+        apt install mm-common clang-9 make --yes
+        export CC=clang-9 CXX=clang++-9
         ./autogen.sh --enable-warnings=fatal
         make
     - name: Test
       run: make check
     - name: Distcheck
       run: |
-        # distcheck runs configure again so we need to specify CXX again.
-        export CXX=clang++-9
+        # distcheck runs configure again so we need to specify CC and CXX again.
+        export CC=clang-9 CXX=clang++-9
         make distcheck
