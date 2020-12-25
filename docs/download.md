@@ -19,3 +19,5 @@ For instance, Ubuntu Linux, Debian Linux and Fedora Linux have official libsigc+
 libsigc++ is built and tested for a standards-compliant C++ compiler. Luckily, the recent versions of all major C++ compilers are now sufficiently standards-compliant.
 
 libsigc++ version 2.5.1 and later require a C++11-compliant compiler.
+
+libsigc++ version 3.0.0 and later require a C++17-compliant compiler.

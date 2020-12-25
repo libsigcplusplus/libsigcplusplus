@@ -24,7 +24,10 @@ the GNU Library General Public License, [LGPL](http://www.gnu.org/copyleft/lgpl.
 * Extensions do not require alteration of basic components
 * User definable accumulators
 * A variety of adaptors to change the callback signature: bind, hide, retype, compose
-* Most C++ compilers can be used. libsigc++ version 2.5.1 and later require a compiler with C++11 support
+* Most C++ compilers can be used. libsigc++ version 2.5.1 and later require a compiler with C++11 support.
+libsigc++ version 3.0.0 and later require a compiler with C++17 support
+
+sigc++-2.0 and sigc++-3.0 are different parallel-installable ABIs.
 
 ## News
 
@@ -41,5 +44,5 @@ The 1.2 phase was maintained by Murray Cumming after Karl provided the initial 1
 A long 1.9 phase led to the major release 2.0, previously maintained by Martin Schulze,
 and then maintained by Murray Cumming and Kjell Ahlstedt.
 
-Then libsigc++ was rewritten for C++14 using variadic templates, for major release 3.0,
+Then libsigc++ was rewritten for C++17 using variadic templates, for major release 3.0,
 currently maintained by Murray Cumming and Kjell Ahlstedt.
