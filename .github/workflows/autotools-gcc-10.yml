@@ -1,0 +1,25 @@
+name: "CI: autotools: gcc 10"
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-20.04
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Build
+      run: |
+        sudo apt update
+        sudo apt install mm-common g++-10
+        export CXX=g++-10
+        ./autogen.sh --enable-warnings=fatal
+        make
+    - name: Test
+      run: make check
+    - name: Distcheck
+      run: |
+        # distcheck runs configure again so we need to specify CXX again.
+        export CXX=g++-10
+        make distcheck
