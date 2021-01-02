@@ -5,8 +5,7 @@ on: [push]
 jobs:
   build:
 
-    runs-on: ubuntu-latest
-    container: ubuntu:20.04
+    runs-on: ubuntu-20.04
 
     steps:
     - uses: actions/checkout@v1
@@ -14,8 +13,8 @@ jobs:
       run: |
         # Prevent blocking apt install on a question during configuring of tzdata.
         export ENV DEBIAN_FRONTEND=noninteractive
-        apt update
-        apt install mm-common clang-9 make --yes
+        sudo apt update
+        sudo apt install mm-common clang-9 make --yes
         export CC=clang-9 CXX=clang++-9
         ./autogen.sh --enable-warnings=fatal
         make

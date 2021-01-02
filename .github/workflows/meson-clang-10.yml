@@ -5,8 +5,7 @@ on: [push]
 jobs:
   build:
 
-    runs-on: ubuntu-latest
-    container: ubuntu:20.04
+    runs-on: ubuntu-20.04
 
     steps:
     - uses: actions/checkout@v1
@@ -14,8 +13,8 @@ jobs:
       run: |
         # Prevent blocking apt install on a question during configuring of tzdata.
         export ENV DEBIAN_FRONTEND=noninteractive
-        apt update
-        apt install mm-common clang-10 meson ninja-build python3-setuptools --yes
+        sudo apt update
+        sudo apt install mm-common clang-10 meson ninja-build python3-setuptools --yes
         export CXX=clang++-10
         meson -Dwarnings=fatal _build
         cd _build
@@ -28,7 +27,7 @@ jobs:
         meson test
     - name: Dist
       run: |
-        apt install git --yes
+        sudo apt install git --yes
         # dist runs setup again so we need to specify CXX again.
         export CXX=clang++-10
         cd _build
