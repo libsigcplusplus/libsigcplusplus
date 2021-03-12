@@ -54,6 +54,7 @@ EXTRA_DIST = \
   docs/docs/reference/meson.build \
   examples/meson.build \
   sigc++/meson.build \
+  subprojects/mm-common.wrap \
   tests/meson.build \
   tools/handle-built-files.py \
   tools/tutorial-custom-cmd.py \

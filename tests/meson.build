@@ -1,6 +1,6 @@
 # tests
 
-# input: sigcxx_dep, do_benchmark, can_benchmark, benchmark_dep
+# input: sigcxx_own_dep, do_benchmark, can_benchmark, benchmark_dep
 
 benchmark_timeout = 100
 
@@ -64,7 +64,7 @@ foreach ex : test_programs
   endforeach
 
   exe_file = executable(ex_name, ex_sources,
-    dependencies: sigcxx_dep,
+    dependencies: sigcxx_own_dep,
     gui_app: false,
     build_by_default: true
   )
@@ -85,7 +85,7 @@ if can_benchmark
     endforeach
 
     exe_file = executable(ex_name, ex_sources,
-      dependencies: [sigcxx_dep, benchmark_dep],
+      dependencies: [sigcxx_own_dep, benchmark_dep],
       gui_app: false,
       build_by_default: do_benchmark
     )

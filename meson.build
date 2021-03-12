@@ -7,7 +7,7 @@ project('libsigc++', 'cpp',
     'cpp_std=c++17',
     'warning_level=0',
   ],
-  meson_version: '>= 0.50.0', # required for python3.path()
+  meson_version: '>= 0.54.0', # required for dep.get_variable(internal:)
 )
 
 sigcxx_api_version = '3.0'
@@ -238,6 +238,19 @@ if not meson.is_subproject()
     project_source_root,
     'untracked' / 'build_scripts',
   )
+else
+  # This is a subproject.
+  sigcxx_dep = declare_dependency(
+    dependencies: sigcxx_own_dep,
+    variables: {
+      'doxytagfile': tag_file.full_path(),
+      'htmlrefdir': install_prefix / install_docdir / 'reference' / 'html',
+      'htmlrefpub': 'http://library.gnome.org/devel/libsigc++/unstable/'
+    }
+  )
+
+  # A main project that looks for sigcxx_pcname.pc shall find sigcxx_dep.
+  meson.override_dependency(sigcxx_pcname, sigcxx_dep)
 endif
 
 # Print a summary.

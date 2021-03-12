@@ -3,7 +3,7 @@
 # Input: project_build_root, project_source_root, sigcxx_pcname,
 #        sigcxx_api_version, build_documentation, source_h_files,
 #        hg_ccg_basenames, install_datadir, python3, doc_reference
-# Output: install_docdir, install_devhelpdir, book_name
+# Output: install_docdir, install_devhelpdir, book_name, tag_file
 
 # There are no built source files in libsigc++-3.0.
 
@@ -15,9 +15,9 @@ docinstall_flags = []
 foreach module : tag_file_modules
   depmod = dependency(module, required: false)
   if depmod.found()
-    doxytagfile = depmod.get_pkgconfig_variable('doxytagfile')
-    htmlrefpub = depmod.get_pkgconfig_variable('htmlrefpub', default: '')
-    htmlrefdir = depmod.get_pkgconfig_variable('htmlrefdir', default: '')
+    doxytagfile = depmod.get_variable(pkgconfig: 'doxytagfile', internal: 'doxytagfile')
+    htmlrefpub = depmod.get_variable(pkgconfig: 'htmlrefpub', internal: 'htmlrefpub', default_value: '')
+    htmlrefdir = depmod.get_variable(pkgconfig: 'htmlrefdir', internal: 'htmlrefdir', default_value: '')
     if htmlrefpub == ''
       htmlrefpub = htmlrefdir
     elif htmlrefdir == ''

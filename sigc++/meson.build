@@ -2,7 +2,7 @@
 
 # Input: sigcxx_build_dep, sigcxx_pcname, sigcxx_libversion, sigcxx_api_version,
 #        darwin_versions, install_includedir, sig_rc
-# Output: source_h_files, sigcxx_dep
+# Output: source_h_files, sigcxx_own_dep
 
 # There are no built source files in libsigc++-3.0.
 
@@ -96,9 +96,9 @@ sigcxx_library = library('sigc-' + sigcxx_api_version,
   install: true,
 )
 
-# This is useful in the main project when libsigc++ is used as a subproject.
-# It's also used when building example programs and test programs.
-sigcxx_dep = declare_dependency(
+# This is used when building example programs and test programs.
+# It's also a part of sigcxx_dep, when libsigc++ is a subproject.
+sigcxx_own_dep = declare_dependency(
   link_with: sigcxx_library,
   include_directories: extra_include_dirs,
   dependencies: sigcxx_build_dep
