@@ -15,9 +15,17 @@ docinstall_flags = []
 foreach module : tag_file_modules
   depmod = dependency(module, required: false)
   if depmod.found()
-    doxytagfile = depmod.get_variable(pkgconfig: 'doxytagfile', internal: 'doxytagfile')
-    htmlrefpub = depmod.get_variable(pkgconfig: 'htmlrefpub', internal: 'htmlrefpub', default_value: '')
-    htmlrefdir = depmod.get_variable(pkgconfig: 'htmlrefdir', internal: 'htmlrefdir', default_value: '')
+    if meson.version().version_compare('>=0.54.0')
+      doxytagfile = depmod.get_variable(pkgconfig: 'doxytagfile', internal: 'doxytagfile')
+      htmlrefpub = depmod.get_variable(pkgconfig: 'htmlrefpub', internal: 'htmlrefpub', default_value: '')
+      htmlrefdir = depmod.get_variable(pkgconfig: 'htmlrefdir', internal: 'htmlrefdir', default_value: '')
+    else
+      # TODO: Remove the possibility to build with meson.version() < 0.54.0
+      # when >= 0.54.0 is available in GitHub's CI (continuous integration).
+      doxytagfile = depmod.get_variable(pkgconfig: 'doxytagfile')
+      htmlrefpub = depmod.get_variable(pkgconfig: 'htmlrefpub', default_value: '')
+      htmlrefdir = depmod.get_variable(pkgconfig: 'htmlrefdir', default_value: '')
+    endif
     if htmlrefpub == ''
       htmlrefpub = htmlrefdir
     elif htmlrefdir == ''

@@ -7,8 +7,12 @@ project('libsigc++', 'cpp',
     'cpp_std=c++17',
     'warning_level=0',
   ],
-  meson_version: '>= 0.54.0', # required for dep.get_variable(internal:)
+  meson_version: '>= 0.51.0', # required for dep.get_variable()
 )
+#TODO: Require meson_version: '>= 0.54.0' when it's available
+# in GitHub's CI (continuous integration).
+# meson_version() >= 0.54.0 is necessary if sigc++ is a subproject,
+# or if mm-common is a subproject of sigc++.
 
 sigcxx_api_version = '3.0'
 sigcxx_pcname = 'sigc++-' + sigcxx_api_version
