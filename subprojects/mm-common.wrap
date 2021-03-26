@@ -1,0 +1,9 @@
+[wrap-git]
+directory=mm-common
+url=https://gitlab.gnome.org/GNOME/mm-common.git
+revision=master
+depth=1
+
+[provide]
+dependency_names = mm-common-libstdc++
+program_names = mm-common-get

@@ -2,7 +2,7 @@
 
 # Input: sigcxx_build_dep, sigcxx_pcname, sigcxx_libversion, sigcxx_api_version,
 #        install_includedir, project_source_root, sigc_res
-# Output: source_h_files, built_h_files, sigcxx_dep, built_files_root,
+# Output: source_h_files, built_h_files, sigcxx_own_dep, built_files_root,
 #         built_h_file_targets
 
 source_cc_files = [
@@ -166,10 +166,11 @@ if maintainer_mode
     source_cc_files, built_cc_file_targets, built_h_file_targets,
     extra_sigc_objects,
     version: sigcxx_libversion,
+    darwin_versions: darwin_versions,
     cpp_args: extra_sigc_cppflags,
+    implicit_include_directories: false,
     include_directories: extra_include_dirs,
     dependencies: sigcxx_build_dep,
-    darwin_versions: darwin_versions,
     install: true,
   )
 
@@ -210,10 +211,11 @@ else # not maintainer_mode
     source_cc_files, untracked_built_cc_files,
     extra_sigc_objects,
     version: sigcxx_libversion,
+    darwin_versions: darwin_versions,
     cpp_args: extra_sigc_cppflags,
+    implicit_include_directories: false,
     include_directories: extra_include_dirs,
     dependencies: sigcxx_build_dep,
-    darwin_versions: darwin_versions,
     install: true,
   )
 
@@ -240,9 +242,9 @@ if not meson.is_subproject()
   )
 endif
 
-# This is useful in the main project when libsigc++ is used as a subproject.
-# It's also used when building example programs and test programs.
-sigcxx_dep = declare_dependency(
+# This is used when building example programs and test programs.
+# It's also a part of sigcxx_dep, when libsigc++ is a subproject.
+sigcxx_own_dep = declare_dependency(
   sources: built_h_file_targets,
   link_with: sigcxx_library,
   include_directories: extra_include_dirs,

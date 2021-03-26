@@ -1,6 +1,6 @@
 # examples
 
-# input: sigcxx_dep, build_examples
+# input: sigcxx_own_dep, build_examples
 
 examples = [
 # [[dir-name], exe-name, [sources]]
@@ -21,7 +21,7 @@ foreach ex : examples
 
   exe_file = executable(ex_name, ex_sources,
     cpp_args: '-DSIGCXX_DISABLE_DEPRECATED',
-    dependencies: sigcxx_dep,
+    dependencies: sigcxx_own_dep,
     gui_app: false,
     build_by_default: build_examples
   )
