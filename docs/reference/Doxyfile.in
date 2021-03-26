@@ -32,7 +32,6 @@ SEPARATE_MEMBER_PAGES  = NO
 TAB_SIZE               = 8
 ALIASES                = "newin{2}=\xrefitem since_\1_\2 \"Since @PACKAGE_NAME@ \1.\2\" \"New API in @PACKAGE_NAME@ \1.\2\"" \
                          "newin{3}=\xrefitem since_\1_\2_\3 \"Since @PACKAGE_NAME@ \1.\2.\3\" \"New API in @PACKAGE_NAME@ \1.\2.\3\""
-TCL_SUBST              =
 OPTIMIZE_OUTPUT_FOR_C  = NO
 OPTIMIZE_OUTPUT_JAVA   = NO
 OPTIMIZE_FOR_FORTRAN   = NO
@@ -216,7 +215,7 @@ LATEX_OUTPUT           = latex
 LATEX_CMD_NAME         = latex
 MAKEINDEX_CMD_NAME     = makeindex
 COMPACT_LATEX          = NO
-PAPER_TYPE             = a4wide
+PAPER_TYPE             = a4
 EXTRA_PACKAGES         =
 LATEX_HEADER           =
 LATEX_FOOTER           =
