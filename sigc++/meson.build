@@ -1,7 +1,8 @@
 # sigc++
 
 # Input: sigcxx_build_dep, sigcxx_pcname, sigcxx_libversion, sigcxx_api_version,
-#        install_includedir, project_source_root, sigc_res
+#        install_includedir, project_source_root, sigc_res, python3,
+#        handle_built_files
 # Output: source_h_files, built_h_files, sigcxx_own_dep, built_files_root,
 #         built_h_file_targets
 
@@ -33,54 +34,28 @@ functors_h_files = [
   'functors' / 'slot_base.h',
 ]
 
-# .m4 files to build .h and .cc files from.
-adaptors_lambda_cc_m4_files = [
-  'lambda.cc',
-]
+# .m4 files to build .h files from.
 sigc_h_m4_files = [
   'limit_reference.h',
   'signal.h',
 ]
-adaptors_h_m4_files = [
-  'adaptor_trait.h',
-  'bind.h',
-  'bind_return.h',
-  'compose.h',
-  'deduce_result_type.h',
-  'exception_catch.h',
-  'hide.h',
-  'retype.h',
-  'retype_return.h',
-  'track_obj.h',
-]
-adaptors_lambda_h_m4_files = [
-  'base.h',
-  'select.h',
-]
-functors_h_m4_files = [
-  'functor_trait.h',
-  'mem_fun.h',
-  'ptr_fun.h',
-  'slot.h',
-]
+
+m4_template = files('macros' / 'template.macros.m4')
+m4_include_dir = meson.current_source_dir() / 'macros'
 
 source_h_files = sigc_h_files + adaptors_h_files + functors_h_files
 
 built_h_files = sigc_h_m4_files
-foreach file : adaptors_h_m4_files
-  built_h_files += 'adaptors' / file
-endforeach
-foreach file : adaptors_lambda_h_m4_files
-  built_h_files += 'adaptors' / 'lambda' / file
-endforeach
-foreach file : functors_h_m4_files
-  built_h_files += 'functors' / file
-endforeach
-
 built_cc_files = []
-foreach file : adaptors_lambda_cc_m4_files
-  built_cc_files += 'adaptors' / 'lambda' / file
-endforeach
+
+# Force meson+ninja to generate source files before anything is compiled.
+# Compilation must depend on these targets.
+built_cc_file_targets = []
+built_h_file_targets = []
+
+subdir('adaptors')
+subdir('adaptors/lambda')
+subdir('functors')
 
 install_headers('sigc++.h', subdir: sigcxx_pcname / 'sigc++')
 install_headers(sigc_h_files, subdir: sigcxx_pcname / 'sigc++')
@@ -107,58 +82,26 @@ endif
 
 if maintainer_mode
 
-  # Maintainer mode. Generate .h and .cc files from .m4 files in macros/ directories.
+  # Maintainer mode. Generate .h and .cc files from .m4 files in macros/ directory.
+  # .h and .cc files are also generated in subdirectories.
 
   # docs/reference/meson.build needs this.
   built_files_root = project_build_root
 
-  m4_and_built_files = []
-  foreach file : adaptors_lambda_cc_m4_files + adaptors_lambda_h_m4_files
-    m4_and_built_files += [['adaptors' / 'lambda' / 'macros' / file + '.m4',
-                            'adaptors' / 'lambda' / file]]
-  endforeach
   foreach file : sigc_h_m4_files
-    m4_and_built_files += [['macros' / file + '.m4', file]]
-  endforeach
-  foreach file : adaptors_h_m4_files
-    m4_and_built_files += [['adaptors' / 'macros' / file + '.m4', 'adaptors' / file]]
-  endforeach
-  foreach file : functors_h_m4_files
-    m4_and_built_files += [['functors' / 'macros' / file + '.m4', 'functors' / file]]
-  endforeach
-
-  # Force meson+ninja to generate source files before anything is compiled.
-  # Compilation must depend on these targets.
-  built_cc_file_targets = []
-  built_h_file_targets = []
-
-  foreach m4_and_built_file : m4_and_built_files
-    input_file = m4_and_built_file[0]
-    output_file = m4_and_built_file[1]
-    if output_file.endswith('.cc')
-      stamp_file = output_file.underscorify() + '.cc'
-    else
-      stamp_file = output_file.underscorify() + '.stamp'
-    endif
-    built_file_target = custom_target(output_file.underscorify(),
-      input: input_file,
-      output: stamp_file,
+    built_h_file_targets += custom_target(file,
+      input: 'macros' / file + '.m4',
+      output: file,
       command: [
         python3, handle_built_files, 'build_from_m4',
-        meson.current_source_dir() / 'macros',
+        m4_include_dir,
         '@INPUT@',
-        meson.current_build_dir() / output_file,
         '@OUTPUT@',
       ],
-      depend_files: 'macros' / 'template.macros.m4',
+      depend_files: m4_template,
       build_by_default: maintainer_mode,
       install: false,
     )
-    if output_file.endswith('.cc')
-      built_cc_file_targets += built_file_target
-    else
-      built_h_file_targets += built_file_target
-    endif
   endforeach
 
   extra_include_dirs = ['..']
@@ -181,8 +124,7 @@ else # not maintainer_mode
   # Not maintainer mode. Compile built source code files in
   # project_source_root/untracked/sigc++.
 
-  # docs/reference/meson.build needs these.
-  built_h_file_targets = []
+  # docs/reference/meson.build needs this.
   built_files_root = project_source_root / 'untracked'
 
   # Two cases:

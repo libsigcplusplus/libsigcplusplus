@@ -16,13 +16,12 @@ subcommand = sys.argv[1]
 
 # Invoked from custom_target() in meson.build.
 def build_from_m4():
-  #     argv[2]      argv[3]      argv[4]      argv[5]
-  # <include_dir> <input_file> <output_file> <stamp_file>
+  #     argv[2]      argv[3]      argv[4]
+  # <include_dir> <input_file> <output_file>
 
   include_dir = sys.argv[2]
   input_file = sys.argv[3]
   output_file = sys.argv[4]
-  stamp_file = sys.argv[5]
 
   # Create the destination directory, if it does not exist.
   output_dir = os.path.dirname(output_file)
@@ -33,18 +32,8 @@ def build_from_m4():
     '-I', include_dir,
     input_file,
   ]
-  output_file_obj = open(output_file, mode='w')
-  result = subprocess.run(cmd, stdout=output_file_obj)
-  output_file_obj.close()
-
-  if result.returncode:
-    return result.returncode
-
-  if stamp_file.endswith('.cc'):
-    shutil.copy(output_file, stamp_file)
-  else:
-    Path(stamp_file).touch(exist_ok=True)
-  return 0
+  with open(output_file, mode='w') as output_file_obj:
+    return subprocess.run(cmd, stdout=output_file_obj).returncode
 
 # Invoked from meson.add_install_script().
 def install_built_h_files():
