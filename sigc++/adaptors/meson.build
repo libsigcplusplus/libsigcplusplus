@@ -1,7 +1,6 @@
 # sigc++/adaptors
 
-# Input: python3, handle_built_files, m4_template, m4_include_dir
-# Output:
+# Input: maintainer_mode, python3, handle_built_files, m4_template, m4_include_dir
 # Input and output: built_h_files, built_h_file_targets
 
 # .m4 files to build .h files from.

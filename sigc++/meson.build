@@ -2,7 +2,7 @@
 
 # Input: sigcxx_build_dep, sigcxx_pcname, sigcxx_libversion, sigcxx_api_version,
 #        install_includedir, project_source_root, sigc_res, python3,
-#        handle_built_files
+#        handle_built_files, maintainer_mode
 # Output: source_h_files, built_h_files, sigcxx_own_dep, built_files_root,
 #         built_h_file_targets
 
