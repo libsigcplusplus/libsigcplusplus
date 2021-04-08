@@ -22,6 +22,7 @@ foreach ex : examples
   exe_file = executable(ex_name, ex_sources,
     cpp_args: '-DSIGCXX_DISABLE_DEPRECATED',
     dependencies: sigcxx_own_dep,
+    implicit_include_directories: false,
     gui_app: false,
     build_by_default: build_examples
   )
