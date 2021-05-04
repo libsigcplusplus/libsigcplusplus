@@ -45,6 +45,7 @@ def install_built_h_files():
   built_h_dir = sys.argv[2]
   install_dir_root = os.path.join(os.getenv('MESON_INSTALL_DESTDIR_PREFIX'), sys.argv[3])
 
+  quiet = bool(os.getenv('MESON_INSTALL_QUIET'))
   for file in sys.argv[4:]:
     path_h = os.path.join(built_h_dir, file)
     rel_dir = os.path.dirname(file)
@@ -52,7 +53,8 @@ def install_built_h_files():
       install_dir = os.path.join(install_dir_root, rel_dir)
     else:
       install_dir = install_dir_root
-    print('Installing ', path_h, ' to ', install_dir)
+    if not quiet:
+      print('Installing ', path_h, ' to ', install_dir)
 
     # Create the installation directory, if it does not exist.
     os.makedirs(install_dir, exist_ok=True)
