@@ -132,11 +132,14 @@ def dist_doc():
   #    argv[2]        argv[3]        argv[4]    argv[5]
   # <doc_dist_dir> <doc_build_dir> <xml_file> <pdf_file>
 
-  # <doc_dist_dir> is a distribution directory, relative to MESON_DIST_ROOT.
+  # <doc_dist_dir> is a distribution directory, relative to MESON_PROJECT_DIST_ROOT.
   # <doc_build_dir> is a relative or absolute path in the build directory.
   # <xml_file> is a relative or absolute path in the source directory.
   # <pdf_file> is a relative or absolute path in the build directory.
-  doc_dist_dir = os.path.join(os.getenv('MESON_DIST_ROOT'), sys.argv[2])
+
+  # MESON_PROJECT_DIST_ROOT is set only if meson.version() >= 0.58.0.
+  project_dist_root = os.getenv('MESON_PROJECT_DIST_ROOT', os.getenv('MESON_DIST_ROOT'))
+  doc_dist_dir = os.path.join(project_dist_root, sys.argv[2])
   doc_build_dir = sys.argv[3]
   xml_file = sys.argv[4]
   pdf_file = sys.argv[5]

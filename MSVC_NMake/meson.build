@@ -1,6 +1,7 @@
 # MSVC_NMake
 
-# Input: pkg_conf_data, sigcxxconfig_h, project_build_root, python3
+# Input: pkg_conf_data, sigcxxconfig_h, project_build_root, python3,
+#        can_add_dist_script
 # Output: sigc_rc
 
 sigc_rc = configure_file(
@@ -19,10 +20,8 @@ configure_file(
 untracked_msvc_nmake = 'untracked' / 'MSVC_NMake'
 handle_built_files = project_source_root / 'tools' / 'handle-built-files.py'
 
-if not meson.is_subproject()
+if can_add_dist_script
   # Distribute built files.
-  # (add_dist_script() is not allowed in a subproject)
-
   meson.add_dist_script(
     python3.path(), handle_built_files, 'dist_gen_msvc_files',
     meson.current_build_dir(),
