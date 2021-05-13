@@ -4,7 +4,8 @@
 #        sigcxx_api_version, build_documentation, source_h_files,
 #        hg_ccg_basenames, install_datadir, python3, doc_reference,
 #        can_add_dist_script
-# Output: install_docdir, install_devhelpdir, book_name, tag_file
+# Output: install_docdir, install_devhelpdir, book_name,
+#         if build_documentation: tag_file
 
 # There are no built source files in libsigc++-3.0.
 
@@ -17,28 +18,30 @@ foreach module : tag_file_modules
   depmod = dependency(module, required: false)
   if depmod.found()
     if meson.version().version_compare('>=0.54.0')
-      doxytagfile = depmod.get_variable(pkgconfig: 'doxytagfile', internal: 'doxytagfile')
+      doxytagfile = depmod.get_variable(pkgconfig: 'doxytagfile', internal: 'doxytagfile', default_value: '')
       htmlrefpub = depmod.get_variable(pkgconfig: 'htmlrefpub', internal: 'htmlrefpub', default_value: '')
       htmlrefdir = depmod.get_variable(pkgconfig: 'htmlrefdir', internal: 'htmlrefdir', default_value: '')
     else
       # TODO: Remove the possibility to build with meson.version() < 0.54.0
       # when >= 0.54.0 is available in GitHub's CI (continuous integration).
-      doxytagfile = depmod.get_variable(pkgconfig: 'doxytagfile')
+      doxytagfile = depmod.get_variable(pkgconfig: 'doxytagfile', default_value: '')
       htmlrefpub = depmod.get_variable(pkgconfig: 'htmlrefpub', default_value: '')
       htmlrefdir = depmod.get_variable(pkgconfig: 'htmlrefdir', default_value: '')
     endif
-    if htmlrefpub == ''
-      htmlrefpub = htmlrefdir
-    elif htmlrefdir == ''
-      htmlrefdir = htmlrefpub
-    endif
-    doxygen_tagfiles += ' "' + doxytagfile + '=' + htmlrefpub + '"'
+    if doxytagfile != ''
+      if htmlrefpub == ''
+        htmlrefpub = htmlrefdir
+      elif htmlrefdir == ''
+        htmlrefdir = htmlrefpub
+      endif
+      doxygen_tagfiles += ' "' + doxytagfile + '=' + htmlrefpub + '"'
 
-    # Doxygen <= 1.8.15
-    docinstall_flags += ['-l', doxytagfile.split('/')[-1] + '@' + htmlrefdir]
-    if htmlrefpub != htmlrefdir
-      # Doxygen >= 1.8.16
-      docinstall_flags += ['-l', 's@' + htmlrefpub + '@' + htmlrefdir]
+      # Doxygen <= 1.8.15
+      docinstall_flags += ['-l', doxytagfile.split('/')[-1] + '@' + htmlrefdir]
+      if htmlrefpub != htmlrefdir
+        # Doxygen >= 1.8.16
+        docinstall_flags += ['-l', 's@' + htmlrefpub + '@' + htmlrefdir]
+      endif
     endif
   endif
 endforeach
