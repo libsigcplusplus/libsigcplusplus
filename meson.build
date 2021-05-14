@@ -107,7 +107,11 @@ endif
 # if documentation shall be built.
 mm_common_get = find_program('mm-common-get', required: false)
 if maintainer_mode and not mm_common_get.found()
-  error('mm-common-get not found. mm-common >= 1.0.0 is required.')
+  message('Maintainer mode requires the \'mm-common-get\' command. If it is not found,\n' +
+          'install the \'mm-common\' package, version 1.0.0 or higher.')
+  # If meson --wrap-mode != forcefallback, Meson falls back to the mm-common
+  # subproject only if mm-common-get is required.
+  mm_common_get = find_program('mm-common-get', required: true)
 endif
 m4 = find_program('m4', required: maintainer_mode) # For building C++ code
 perl = find_program('perl', required: build_documentation)
@@ -246,13 +250,16 @@ if can_add_dist_script
 endif
 
 if meson.is_subproject()
+  pkgconfig_vars = {
+    'htmlrefdir': install_prefix / install_docdir / 'reference' / 'html',
+    'htmlrefpub': 'http://library.gnome.org/devel/libsigc++/unstable/'
+  }
+  if build_documentation
+    pkgconfig_vars += {'doxytagfile': tag_file.full_path()}
+  endif
   sigcxx_dep = declare_dependency(
     dependencies: sigcxx_own_dep,
-    variables: {
-      'doxytagfile': tag_file.full_path(),
-      'htmlrefdir': install_prefix / install_docdir / 'reference' / 'html',
-      'htmlrefpub': 'http://library.gnome.org/devel/libsigc++/unstable/'
-    }
+    variables: pkgconfig_vars,
   )
 
   # A main project that looks for sigcxx_pcname.pc shall find sigcxx_dep.

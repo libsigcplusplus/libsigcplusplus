@@ -5,6 +5,7 @@
 #        built_h_files, install_datadir, python3, doc_reference,
 #        built_h_file_targets, can_add_dist_script
 # Output: install_docdir, install_devhelpdir, tag_file
+# Output: install_docdir, install_devhelpdir, if build_documentation: tag_file
 
 tag_file_modules = [
   'mm-common-libstdc++',
@@ -14,21 +15,23 @@ docinstall_flags = []
 foreach module : tag_file_modules
   depmod = dependency(module, required: false)
   if depmod.found()
-    doxytagfile = depmod.get_variable(pkgconfig: 'doxytagfile', internal: 'doxytagfile')
-    htmlrefpub = depmod.get_variable(pkgconfig: 'htmlrefpub', internal: 'htmlrefpub', default_value: '')
-    htmlrefdir = depmod.get_variable(pkgconfig: 'htmlrefdir', internal: 'htmlrefdir', default_value: '')
-    if htmlrefpub == ''
-      htmlrefpub = htmlrefdir
-    elif htmlrefdir == ''
-      htmlrefdir = htmlrefpub
-    endif
-    doxygen_tagfiles += ' "' + doxytagfile + '=' + htmlrefpub + '"'
+    doxytagfile = depmod.get_variable(pkgconfig: 'doxytagfile', internal: 'doxytagfile', default_value: '')
+    if doxytagfile != ''
+      htmlrefpub = depmod.get_variable(pkgconfig: 'htmlrefpub', internal: 'htmlrefpub', default_value: '')
+      htmlrefdir = depmod.get_variable(pkgconfig: 'htmlrefdir', internal: 'htmlrefdir', default_value: '')
+      if htmlrefpub == ''
+        htmlrefpub = htmlrefdir
+      elif htmlrefdir == ''
+        htmlrefdir = htmlrefpub
+      endif
+      doxygen_tagfiles += ' "' + doxytagfile + '=' + htmlrefpub + '"'
 
-    # Doxygen <= 1.8.15
-    docinstall_flags += ['-l', doxytagfile.split('/')[-1] + '@' + htmlrefdir]
-    if htmlrefpub != htmlrefdir
-      # Doxygen >= 1.8.16
-      docinstall_flags += ['-l', 's@' + htmlrefpub + '@' + htmlrefdir]
+      # Doxygen <= 1.8.15
+      docinstall_flags += ['-l', doxytagfile.split('/')[-1] + '@' + htmlrefdir]
+      if htmlrefpub != htmlrefdir
+        # Doxygen >= 1.8.16
+        docinstall_flags += ['-l', 's@' + htmlrefpub + '@' + htmlrefdir]
+      endif
     endif
   endif
 endforeach
