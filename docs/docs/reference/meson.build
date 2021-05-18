@@ -13,6 +13,7 @@ tag_file_modules = [
   'mm-common-libstdc++',
 ]
 doxygen_tagfiles = ''
+doxygen_tag_targets = []
 docinstall_flags = []
 foreach module : tag_file_modules
   depmod = dependency(module, required: false)
@@ -29,6 +30,14 @@ foreach module : tag_file_modules
       htmlrefdir = depmod.get_variable(pkgconfig: 'htmlrefdir', default_value: '')
     endif
     if doxytagfile != ''
+      if depmod.type_name() == 'internal'
+        # Subprojects must build their tag files before doxygen is called.
+        if module.startswith('mm-common')
+          doxygen_tag_targets += subproject('mm-common').get_variable('global_tag_file_target')
+        else
+          doxygen_tag_targets += subproject(module).get_variable('global_tag_file_target')
+        endif
+      endif
       if htmlrefpub == ''
         htmlrefpub = htmlrefdir
       elif htmlrefdir == ''
@@ -60,7 +69,7 @@ doc_conf_data.set('abs_top_srcdir', project_source_root)
 doc_conf_data.set('SIGCXX_API_VERSION', sigcxx_api_version)
 doc_conf_data.set('DOXYGEN_TAGFILES', doxygen_tagfiles)
 
-configure_file(
+doxyfile = configure_file(
   input: 'Doxyfile.in',
   output: '@BASENAME@',
   configuration: doc_conf_data,
@@ -96,6 +105,8 @@ tag_file = custom_target('html_and_tag',
     '@OUTPUT@',
     '@INPUT@',
   ],
+  depend_files: doxyfile,
+  depends: doxygen_tag_targets,
   build_by_default: build_documentation,
   install: true,
   install_dir: install_reference_docdir,
