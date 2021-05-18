@@ -23,7 +23,7 @@ LIBSIGCPP_DEFINES = /DSIGC_BUILD /D_WINDLL
 SIGCPP_BASE_CFLAGS =	\
 	/Ivs$(VSVER)\$(CFG)\$(PLAT)\sigc	\
 	/I..\untracked /I.. /I..\untracked\MSVC_NMake /I.	\
-	/wd4530 /EHsc $(CFLAGS)
+	/EHsc $(CFLAGS)
 
 LIBSIGC_INT_SOURCES = $(sigc_sources_cc:/=\)
 LIBSIGC_INT_HDRS = $(sigc_public_h:/=\)
