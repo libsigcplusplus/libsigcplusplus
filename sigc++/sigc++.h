@@ -34,9 +34,9 @@
  * @ref slot "Slots" and @ref adaptors "Adaptors".
  *
  * See also the 
- * <a href="https://developer.gnome.org/libsigc++-tutorial/stable/">libsigc++ tutorial</a>,
+ * <a href="https://developer.gnome.org/libsigc++-tutorial/2.10/">libsigc++ tutorial</a>,
  * the <a href="https://libsigcplusplus.github.io/libsigcplusplus/">libsigc++ website</a>, and
- * the <a href="https://developer.gnome.org/gtkmm-tutorial/unstable/chapter-signals.html">Signals appendix of the Programming with gtkmm book</a>.
+ * the <a href="https://developer.gnome.org/gtkmm-tutorial/3.24/chapter-signals.html">Signals appendix of the Programming with gtkmm book</a>.
  *
  * @section features Features
  *
