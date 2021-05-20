@@ -1,3 +1,23 @@
+2.10.7 (stable)
+
+Meson build:
+* Make it possible to use sigc++ as a subproject
+  (Kjell Ahlstedt)
+* Fix dependency on files generated from .h.m4 files
+  (Kjell Ahlstedt)
+* No implicit_include_directories
+  (Kjell Ahlstedt)
+* Make quiet installations possible
+  (Kjell Ahlstedt)
+* Fix build as subproject without building documentation
+  (Kjell Ahlstedt) Issue #71 (Xavier Claessens)
+
+Documentation:
+* Links to *.gnome.org refer to sigc++-2.0 and gtkmm-3.0 versions
+  instead of latest versions
+  (Kjell Ahlstedt)
+
+
 2.10.6 (stable)
 
 Build:
