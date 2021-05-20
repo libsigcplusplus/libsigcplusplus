@@ -1,3 +1,14 @@
+3.0.7 (stable)
+
+Meson build:
+* Make it possible to use sigc++ as a subproject
+  (Kjell Ahlstedt)
+* No implicit_include_directories
+  (Kjell Ahlstedt)
+* Fix build as subproject without building documentation
+  (Kjell Ahlstedt) Issue #71 (Xavier Claessens)
+
+
 3.0.6 (stable)
 
 Build:
