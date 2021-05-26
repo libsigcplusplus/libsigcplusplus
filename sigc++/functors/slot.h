@@ -151,7 +151,8 @@ struct slot_call
   static T_return call_it(slot_rep* rep, type_trait_take_t<T_arg>... a_)
   {
     auto typed_rep = static_cast<typed_slot_rep<T_functor>*>(rep);
-    return (*typed_rep->functor_).template operator()<type_trait_take_t<T_arg>...>(a_...);
+    return (*typed_rep->functor_).template operator()<type_trait_take_t<T_arg>...>(
+      std::forward<type_trait_take_t<T_arg>>(a_)...);
   }
 
   /** Forms a function pointer from call_it().
@@ -220,7 +221,7 @@ public:
     {
       return std::invoke(sigc::internal::function_pointer_cast<call_type>(slot_base::rep_->call_),
         slot_base::rep_,
-        a...);
+        std::forward<type_trait_take_t<T_arg>>(a)...);
     }
 
     return T_return();

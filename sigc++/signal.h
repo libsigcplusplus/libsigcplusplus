@@ -363,7 +363,9 @@ public:
       if (slot.empty() || slot.blocked())
         continue;
 
-      (sigc::internal::function_pointer_cast<call_type>(slot.rep_->call_))(slot.rep_, a...);
+      (sigc::internal::function_pointer_cast<call_type>(slot.rep_->call_))(
+        slot.rep_,
+        std::forward<type_trait_take_t<T_arg>>(a)...);
     }
   }
 };
@@ -450,11 +452,13 @@ public:
   decltype(auto) emit(type_trait_take_t<T_arg>... a) const
   {
     using emitter_type = internal::signal_emit<T_return, T_accumulator, T_arg...>;
-    return emitter_type::emit(impl_, a...);
+    return emitter_type::emit(impl_, std::forward<type_trait_take_t<T_arg>>(a)...);
   }
 
   /** Triggers the emission of the signal (see emit()). */
-  decltype(auto) operator()(type_trait_take_t<T_arg>... a) const { return emit(a...); }
+  decltype(auto) operator()(type_trait_take_t<T_arg>... a) const {
+    return emit(std::forward<type_trait_take_t<T_arg>>(a)...);
+  }
 
   /** Creates a functor that calls emit() on this signal.
    * @code

@@ -52,6 +52,13 @@ struct type_trait<const T_type&>
   using take = const T_type&;
 };
 
+template<typename T_type>
+struct type_trait<T_type&&>
+{
+  using pass = T_type&&;
+  using take = T_type&&;
+};
+
 template<>
 struct type_trait<void>
 {
