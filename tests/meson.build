@@ -28,6 +28,7 @@ test_programs = [
   [[], 'test_ptr_fun', ['test_ptr_fun.cc', 'testutilities.cc']],
   [[], 'test_retype', ['test_retype.cc', 'testutilities.cc']],
   [[], 'test_retype_return', ['test_retype_return.cc', 'testutilities.cc']],
+  [[], 'test_rvalue_ref', ['test_rvalue_ref.cc', 'testutilities.cc']],
   [[], 'test_signal', ['test_signal.cc', 'testutilities.cc']],
   [[], 'test_signal_move', ['test_signal_move.cc', 'testutilities.cc']],
   [[], 'test_size', ['test_size.cc', 'testutilities.cc']],
