@@ -364,7 +364,8 @@ public:
         continue;
 
       (sigc::internal::function_pointer_cast<call_type>(slot.rep_->call_))(
-        slot.rep_, std::forward<type_trait_take_t<T_arg>>(a)...);
+        slot.rep_,
+        std::forward<type_trait_take_t<T_arg>>(a)...);
     }
   }
 };
@@ -455,8 +456,7 @@ public:
   }
 
   /** Triggers the emission of the signal (see emit()). */
-  decltype(auto) operator()(type_trait_take_t<T_arg>... a) const
-  {
+  decltype(auto) operator()(type_trait_take_t<T_arg>... a) const {
     return emit(std::forward<type_trait_take_t<T_arg>>(a)...);
   }
 

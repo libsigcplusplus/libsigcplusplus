@@ -24,7 +24,6 @@
 /test_ptr_fun
 /test_retype
 /test_retype_return
-/test_rvalue_ref
 /test_signal
 /test_signal_move
 /test_size

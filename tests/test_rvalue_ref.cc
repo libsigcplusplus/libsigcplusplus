@@ -2,9 +2,7 @@
 #include <iostream>
 #include <sigc++/signal.h>
 
-struct MoveableStruct
-{
-};
+struct MoveableStruct {};
 
 namespace
 {
@@ -13,7 +11,10 @@ std::ostringstream result_stream;
 
 struct foo
 {
-  void operator()(MoveableStruct&& /* x */) { result_stream << "foo(MoveableStruct&&)"; }
+  void operator()(MoveableStruct &&x)
+  {
+    result_stream << "foo(MoveableStruct&&)";
+  }
 };
 
 } // end anonymous namespace
@@ -21,7 +22,7 @@ struct foo
 void
 test_signal()
 {
-  sigc::signal<void(MoveableStruct &&)> signal;
+  sigc::signal<void (MoveableStruct &&)> signal;
   foo f;
   signal.connect(f);
   MoveableStruct x;
@@ -32,7 +33,7 @@ test_signal()
 void
 test_slot()
 {
-  sigc::slot<void(MoveableStruct &&)> slot;
+  sigc::slot<void (MoveableStruct &&)> slot;
   foo f;
   slot = f;
   MoveableStruct x;

@@ -117,12 +117,10 @@ test_clear_called_in_signal_handler()
 {
   sigc::signal<void()> sig;
   sig.connect([]() { result_stream << ", slot 1, "; });
-  sig.connect(
-    [&sig]()
-    {
-      sig.clear();
-      result_stream << "slot 2, ";
-    });
+  sig.connect([&sig]() {
+    sig.clear();
+    result_stream << "slot 2, ";
+  });
   sig.connect([]() { result_stream << "slot 3, "; });
   result_stream << sig.size();
   sig.emit();
