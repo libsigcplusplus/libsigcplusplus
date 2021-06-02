@@ -39,6 +39,7 @@ set (TEST_SOURCE_FILES
   test_ptr_fun.cc
   test_retype.cc
   test_retype_return.cc
+  test_rvalue_ref.cc
   test_signal.cc
   test_signal_move.cc
   test_size.cc

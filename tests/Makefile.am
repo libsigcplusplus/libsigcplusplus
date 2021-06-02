@@ -46,6 +46,7 @@ check_PROGRAMS = \
   test_ptr_fun \
   test_retype \
   test_retype_return \
+  test_rvalue_ref \
   test_signal \
   test_signal_move \
   test_size \
@@ -90,6 +91,7 @@ test_mem_fun_SOURCES         = test_mem_fun.cc $(sigc_test_util)
 test_ptr_fun_SOURCES         = test_ptr_fun.cc $(sigc_test_util)
 test_retype_SOURCES          = test_retype.cc $(sigc_test_util)
 test_retype_return_SOURCES   = test_retype_return.cc $(sigc_test_util)
+test_rvalue_ref_SOURCES      = test_rvalue_ref.cc $(sigc_test_util)
 test_signal_SOURCES          = test_signal.cc $(sigc_test_util)
 test_signal_move_SOURCES     = test_signal_move.cc $(sigc_test_util)
 test_size_SOURCES            = test_size.cc $(sigc_test_util)
