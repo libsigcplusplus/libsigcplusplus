@@ -20,10 +20,21 @@ DOCBOOK_STYLESHEET ?= http://docbook.sourceforge.net/release/xsl/current/html/ch
 html_tutorialdir = $(libdocdir)/tutorial/html
 dist_html_tutorial_DATA = $(sort manual/html/index.html $(call vpath_listall,manual/html/*.html))
 
-dist_noinst_DATA += manual/README manual/libsigc_manual.xml
+dist_noinst_DATA += manual/libsigc_manual.xml
 
 DISTCLEANFILES += $(addprefix manual/libsigc_manual.,dvi pdf ps)
 MAINTAINERCLEANFILES += manual/html/*
+
+# Set the use.id.as.filename param so that we don't use the chapter / section
+# number as the filename, otherwise the url will change every time anything is
+# re-ordered or inserted in the documentation
+xslt_params = $(strip						\
+	--param       toc.section.depth		1		\
+	--stringparam chunker.output.indent	'yes'		\
+	--stringparam chunker.output.encoding	'UTF-8'		\
+	--stringparam toc.list.type		'ul'		\
+	--stringparam use.id.as.filename	'1'		\
+	)
 
 manual_srcfile = $(srcdir)/manual/libsigc_manual.xml
 
@@ -34,7 +45,7 @@ reference/html/%: | manual/html/index.html
 manual/html/index.html: $(manual_srcfile)
 	-$(AM_V_at)rm -f manual/html/*
 	$(AM_V_at)$(MKDIR_P) manual/html
-	$(AM_V_GEN)xsltproc -o manual/html/ --catalogs '$(DOCBOOK_STYLESHEET)' $(manual_srcfile)
+	$(AM_V_GEN)xsltproc $(xslt_params) -o manual/html/ --catalogs '$(DOCBOOK_STYLESHEET)' $(manual_srcfile)
 
 manual/libsigc_manual.dvi: $(manual_srcfile)
 	$(AM_V_GEN)db2dvi -o manual $(manual_srcfile)
