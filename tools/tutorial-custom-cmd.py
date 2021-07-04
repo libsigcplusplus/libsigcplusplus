@@ -20,8 +20,17 @@ def html():
   input_xml_file = sys.argv[2]
   output_html_dir = sys.argv[3]
 
+  # Set the use.id.as.filename param so that we don't use the chapter / section
+  # number as the filename, otherwise the url will change every time anything is
+  # re-ordered or inserted in the documentation.
   # For a list of available parameters, see http://docbook.sourceforge.net/release/xsl/current/doc/html/
-  xslt_params = []
+  xslt_params = [
+    '--param', 'toc.section.depth', '1',
+    '--stringparam', 'chunker.output.indent', 'yes',
+    '--stringparam', 'chunker.output.encoding', 'UTF-8',
+    '--stringparam', 'toc.list.type', 'ul',
+    '--stringparam', 'use.id.as.filename', '1',
+  ]
 
   xslt_stylesheet = 'http://docbook.sourceforge.net/release/xsl/current/html/chunk.xsl'
 
