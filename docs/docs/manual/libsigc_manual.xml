@@ -16,10 +16,10 @@
         </abstract>
 </bookinfo>
 
-<chapter id="sec-introduction">
+<chapter id="chapter-introduction">
 <title>Introduction</title>
 
-<sect1>
+<sect1 id="sect-motivation">
 <title>Motivation</title>
 
 	<para>There are many situations in which it is desirable to decouple code that
@@ -72,10 +72,10 @@ register_click_handler(okbutton, clicked, somedata);
 </sect1>
 </chapter>
 
-<chapter id="sec-connecting">
+<chapter id="chapter-connecting">
 <title>Connecting your code to signals</title>
 
-<sect1>
+<sect1 id="sect-simple-ex">
 <title>A simple example</title>
 	<para>So to get some experience, lets look at a simple example...</para>
 
@@ -140,7 +140,7 @@ int main()
 
 </sect1>
 
-<sect1>
+<sect1 id="sect-using-mem-func">
 <title>Using a member function</title>
 
 	<para>Suppose you found a more sophisticated alien alerter class on the web,
@@ -189,7 +189,7 @@ int main()
 	offers.</para>
 </sect1>
 
-<sect1>
+<sect1 id="sect-signals-with-pars">
 <title>Signals with parameters</title>
 
 	<para>Functions taking no parameters and returning void are quite useful,
@@ -255,7 +255,7 @@ int main()
 	<para>Easy.</para>
 </sect1>
 
-<sect1>
+<sect1 id="sect-disconnecting">
 <title>Disconnecting</title>
 
 	<para>If you decide you no longer want your code to be called whenever a signal is
@@ -267,10 +267,10 @@ int main()
 </sect1>
 </chapter>
 
-<chapter id="sec-writing">
+<chapter id="chapter-writing">
 <title>Writing your own signals</title>
 
-<sect1>
+<sect1 id="sect-quick-recap">
 <title>Quick recap</title>
 	<para>If all you want to do is use gtkmm, and connect your functionality to its
 	signals, you can probably stop reading here.</para>
@@ -318,7 +318,7 @@ void AlienDetector::run()
 </programlisting>
 </sect1>
 
-<sect1>
+<sect1 id="sect-return-values">
 <title>What about return values?</title>
 	<para>If you only ever have one slot connected to a signal, or if you only care
 	about the return value of the last registered one, it's quite straightforward:</para>
@@ -332,10 +332,10 @@ a_return_value = somesignal.emit();
 </sect1>
 </chapter>
 
-<chapter id="sec-advanced">
+<chapter id="chapter-advanced">
 <title>Advanced topics</title>
 
-<sect1>
+<sect1 id="sect-rebinding">
 <title>Rebinding</title>
 	<para>Suppose you already have a function that you want to be called when a
 	signal is emitted, but it takes the wrong argument types. For example, lets try
@@ -401,7 +401,7 @@ myaliendetector.signal_detected.connect( sigc::hide&lt;std::string&gt;( sigc::pt
 	<para><literal remap="tt">sigc::hide_return</literal> effectively makes the return type void.</para>
 </sect1>
 
-<sect1>
+<sect1 id="sect-retyping">
 <title>Retyping</title>
 	<para>A similar topic is retyping. Perhaps you have a signal that takes an <literal remap="tt">int</literal>, but
 	you want to connect a function that takes a <literal remap="tt">double</literal>.</para>
@@ -424,7 +424,7 @@ asignal.connect( sigc::retype( sigc::ptr_fun(&amp;dostuff) ) );
 </sect1>
 </chapter>
 
-<chapter id="sec-reference">
+<chapter id="chapter-reference">
 <title>Reference</title>
 	<para>See the reference documentation <ulink url="http://library.gnome.org/devel/libsigc++/unstable/">online</ulink></para>
 </chapter>
