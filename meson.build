@@ -120,7 +120,6 @@ if maintainer_mode and not mm_common_get.found()
   mm_common_get = find_program('mm-common-get', required: true)
 endif
 
-perl = find_program('perl', required: build_documentation)
 doxygen = find_program('doxygen', required: build_documentation)
 dot = find_program('dot', required: build_documentation) # Used by Doxygen
 xsltproc = find_program('xsltproc', required: build_documentation)
@@ -146,6 +145,17 @@ sys.exit(os.path.isfile("@0@"))
     warning('Missing files in untracked/. ' + \
     'Enable maintainer-mode if you want to build documentation or create a dist tarball.')
   endif
+endif
+
+# Check if perl is required and available.
+# Done now, when the doc_reference script is available.
+doc_perl_prop = run_command(
+  python3, doc_reference, 'get_script_property',
+  '', # MMDOCTOOLDIR is not used
+  'requires_perl')
+if not (doc_perl_prop.returncode() == 0 and doc_perl_prop.stdout() == 'false')
+  # Perl is required, if documentation shall be built.
+  perl = find_program('perl', required: build_documentation)
 endif
 
 # Set compiler warnings.
