@@ -7,12 +7,9 @@ project('libsigc++', 'cpp',
     'cpp_std=c++17',
     'warning_level=0',
   ],
-  meson_version: '>= 0.51.0', # required for dep.get_variable()
+  meson_version: '>= 0.54.0', # required for meson.override_dependency()
+                              # and dep.get_variable(internal:)
 )
-#TODO: Require meson_version: '>= 0.54.0' when it's available
-# in GitHub's CI (continuous integration).
-# meson_version() >= 0.54.0 is necessary if sigc++ is a subproject,
-# or if mm-common is a subproject of sigc++.
 
 sigcxx_api_version = '3.0'
 sigcxx_pcname = 'sigc++-' + sigcxx_api_version
@@ -148,7 +145,6 @@ sys.exit(os.path.isfile("@0@"))
 endif
 
 # Check if perl is required and available.
-# Done now, when the doc_reference script is available.
 doc_perl_prop = run_command(
   python3, doc_reference, 'get_script_property',
   '', # MMDOCTOOLDIR is not used

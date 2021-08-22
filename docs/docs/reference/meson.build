@@ -18,17 +18,7 @@ docinstall_flags = []
 foreach module : tag_file_modules
   depmod = dependency(module, required: false)
   if depmod.found()
-    if meson.version().version_compare('>=0.54.0')
-      doxytagfile = depmod.get_variable(pkgconfig: 'doxytagfile', internal: 'doxytagfile', default_value: '')
-      htmlrefpub = depmod.get_variable(pkgconfig: 'htmlrefpub', internal: 'htmlrefpub', default_value: '')
-      htmlrefdir = depmod.get_variable(pkgconfig: 'htmlrefdir', internal: 'htmlrefdir', default_value: '')
-    else
-      # TODO: Remove the possibility to build with meson.version() < 0.54.0
-      # when >= 0.54.0 is available in GitHub's CI (continuous integration).
-      doxytagfile = depmod.get_variable(pkgconfig: 'doxytagfile', default_value: '')
-      htmlrefpub = depmod.get_variable(pkgconfig: 'htmlrefpub', default_value: '')
-      htmlrefdir = depmod.get_variable(pkgconfig: 'htmlrefdir', default_value: '')
-    endif
+    doxytagfile = depmod.get_variable(pkgconfig: 'doxytagfile', internal: 'doxytagfile', default_value: '')
     if doxytagfile != ''
       if depmod.type_name() == 'internal'
         # Subprojects must build their tag files before doxygen is called.
@@ -38,6 +28,8 @@ foreach module : tag_file_modules
           doxygen_tag_targets += subproject(module).get_variable('global_tag_file_target')
         endif
       endif
+      htmlrefpub = depmod.get_variable(pkgconfig: 'htmlrefpub', internal: 'htmlrefpub', default_value: '')
+      htmlrefdir = depmod.get_variable(pkgconfig: 'htmlrefdir', internal: 'htmlrefdir', default_value: '')
       if htmlrefpub == ''
         htmlrefpub = htmlrefdir
       elif htmlrefdir == ''
