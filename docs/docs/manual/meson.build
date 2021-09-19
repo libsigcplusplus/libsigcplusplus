@@ -1,21 +1,18 @@
 # docs/docs/manual
 
 # input: install_datadir, sigcxx_pcname, tutorial_custom_cmd, python3,
-#        build_documentation, book_name, can_add_dist_script
+#        build_documentation, book_name, can_add_dist_script, xsltproc
 # output: can_parse_and_validate, build_pdf_by_default, can_build_pdf,
 #         install_tutorialdir
 
-# xsltproc is required by tutorial_custom_cmd html.
-xsltproc = find_program('xsltproc', required: build_documentation)
 xmllint = find_program('xmllint', required: false)
-
 can_parse_and_validate = xmllint.found()
 
 validate = get_option('validation') ? 'true' : 'false'
 
 dblatex = find_program('dblatex', required: false)
-can_build_pdf = dblatex.found() or (xmllint.found() and \
-                find_program('docbook2pdf', required: false).found())
+can_build_pdf = dblatex.found() or (xsltproc.found() and \
+                find_program('fop', required: false).found())
 build_pdf_by_default = get_option('build-pdf')
 
 # Installation directories are relative to {prefix}.
@@ -63,13 +60,13 @@ endif
 
 if can_build_pdf
   # Create a PDF file of the DocBook.
-  # Prefer dblatex, if both dblatex and docbook2pdf are available.
+  # Prefer dblatex, if both dblatex and fop are available.
   custom_target('manual_pdf',
     input: sigc_manual_xml,
     output: sigc_manual_pdf,
     command: [
       python3, tutorial_custom_cmd,
-      dblatex.found() ? 'dblatex' : 'docbook2pdf',
+      dblatex.found() ? 'dblatex' : 'fop',
       '@INPUT@',
       '@OUTPUT@'
     ],

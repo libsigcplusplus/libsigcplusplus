@@ -8,7 +8,6 @@
 import os
 import sys
 import subprocess
-from pathlib import Path
 import shutil
 
 subcommand = sys.argv[1]
@@ -29,7 +28,7 @@ def html():
     '--stringparam', 'chunker.output.indent', 'yes',
     '--stringparam', 'chunker.output.encoding', 'UTF-8',
     '--stringparam', 'toc.list.type', 'ul',
-    '--stringparam', 'use.id.as.filename', '1',
+    '--param', 'use.id.as.filename', '1',
   ]
 
   xslt_stylesheet = 'http://docbook.sourceforge.net/release/xsl/current/html/chunk.xsl'
@@ -56,12 +55,16 @@ def html():
   return result.returncode
 
 def xmllint():
+  from pathlib import Path
+
   #  argv[2]       argv[3]          argv[4]
   # <validate> <input_xml_file> <stamp_file_path>
 
   validate = sys.argv[2]
   input_xml_file = sys.argv[3]
   stamp_file_path = sys.argv[4]
+
+  relax_ng_schema = 'http://docbook.org/xml/5.0/rng/docbook.rng'
 
   cmd = [
     'xmllint',
@@ -70,7 +73,7 @@ def xmllint():
     '--xinclude',
   ]
   if validate == 'true':
-    cmd += ['--postvalid']
+    cmd += ['--relaxng', relax_ng_schema]
   cmd += [input_xml_file]
   result = subprocess.run(cmd)
   if result.returncode:
@@ -79,6 +82,9 @@ def xmllint():
   Path(stamp_file_path).touch(exist_ok=True)
   return 0
 
+# dblatex and xsltproc+fop generate a PDF file.
+# docbook2pdf can generate PDF files from DocBook4 files, but not from DocBook5 files.
+# xsltproc+xmlroff (version 0.6.3) does not seem to work acceptably.
 def dblatex():
   #      argv[2]         argv[3]
   # <input_xml_file> <output_pdf_file>
@@ -89,40 +95,51 @@ def dblatex():
 
   # For a list of available parameters, see http://dblatex.sourceforge.net/doc/manual/
   dblatex_params = [
-    '-P', 'toc.section.depth=2',
+    '-P', 'toc.section.depth=1',
     '-P', 'paper.type=a4paper',
+    '-P', 'doc.collab.show=1',
+    '-P', 'latex.output.revhistory=0',
   ]
 
   cmd = [
     'dblatex',
   ] + dblatex_params + [
     '-o', output_pdf_file,
-    '--pdf', input_xml_file,
+    '--pdf',
+    input_xml_file,
   ]
   return subprocess.run(cmd).returncode
 
-def docbook2pdf():
+def fop():
   #      argv[2]         argv[3]
   # <input_xml_file> <output_pdf_file>
-  # Create a PDF file, using docbook2pdf.
+  # Create a PDF file, using fop.
 
   input_xml_file = sys.argv[2]
   output_pdf_file = sys.argv[3]
 
-  output_dir = os.path.dirname(output_pdf_file)
-  if not output_dir:
-    output_dir = '.'
-  output_basename = os.path.basename(output_pdf_file)
-  if output_basename.endswith('.pdf'):
-    output_basename = output_basename[:-4]
-  xml_file = os.path.join(output_dir, output_basename + '.xml')
+  fo_file = os.path.splitext(output_pdf_file)[0] + '.fo'
 
-  # We need to produce an XML file with all of the XIncludes done.
+  # For a list of available parameters, see http://docbook.sourceforge.net/release/xsl/current/doc/fo/
+  # For a list of available paper types, see the description of the page.width.portrait parameter.
+  xslt_params = [
+    '--param', 'toc.section.depth', '1',
+    '--stringparam', 'fop1.extensions', '1',
+    '--stringparam', 'page.orientation', 'portrait',
+    '--stringparam', 'paper.type', 'A4',
+  ]
+
+  xslt_stylesheet = 'http://docbook.sourceforge.net/release/xsl/current/fo/docbook.xsl'
+
+  # Generate a .fo (formatting object) file.
+  # fop can take an xslt stylesheet parameter, but it can only read local files.
+  # xsltproc is necessary if you want to read the stylesheet from the internet.
   cmd = [
-    'xmllint',
+    'xsltproc',
+  ] + xslt_params + [
+    '-o', fo_file,
     '--xinclude',
-    '--postvalid',
-    '--output', xml_file,
+    xslt_stylesheet,
     input_xml_file,
   ]
   result = subprocess.run(cmd)
@@ -130,9 +147,9 @@ def docbook2pdf():
     return result.returncode
 
   cmd = [
-    'docbook2pdf',
-    '--output', output_dir,
-    xml_file,
+    'fop',
+    '-fo', fo_file,
+    '-pdf', output_pdf_file,
   ]
   return subprocess.run(cmd).returncode
 
@@ -177,8 +194,8 @@ if subcommand == 'xmllint':
   sys.exit(xmllint())
 if subcommand == 'dblatex':
   sys.exit(dblatex())
-if subcommand == 'docbook2pdf':
-  sys.exit(docbook2pdf())
+if subcommand == 'fop':
+  sys.exit(fop())
 if subcommand == 'dist_doc':
   sys.exit(dist_doc())
 print(sys.argv[0], ': illegal subcommand,', subcommand)

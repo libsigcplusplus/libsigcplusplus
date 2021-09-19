@@ -294,10 +294,8 @@ endif
 build_pdf = build_pdf_by_default and can_build_pdf
 explain_pdf = ''
 if build_pdf_by_default and not build_pdf
-  explain_pdf = ' (requires dblatex or (xmllint and docbook2pdf))'
+  explain_pdf = ' (requires dblatex or (xsltproc and fop))'
 endif
-
-
 
 summary = [
   '',

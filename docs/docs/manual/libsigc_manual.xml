@@ -1,26 +1,26 @@
-<?xml version="1.0"?>
-<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" >
-<book id="index" lang="en">
+<?xml version="1.0" encoding="utf-8"?>
+<book xmlns="http://docbook.org/ns/docbook"
+      xmlns:xlink="http://www.w3.org/1999/xlink"
+      version="5.0" xml:id="index" xml:lang="en">
 
-<bookinfo>
-	<title>libsigc++</title>
-        <author>
-          <firstname>Ainsley</firstname>
-          <surname>Pereira</surname>
-        </author>
-
+<info>
+  <title>libsigc++</title>
+  <author><personname>
+    <firstname>Ainsley</firstname>
+    <surname>Pereira</surname>
+  </personname></author>
+	<date>September 2002</date>
 	<pubdate>September 2002. Updated January 2004 and March 2016 by Murray Cumming</pubdate>
+  <abstract>
+    <para>libsigc++ is a C++ template library implementing typesafe callbacks. This is an intro to libsigc++.</para>
+  </abstract>
+</info>
 
-        <abstract>
-          <para>libsigc++ is a C++ template library implementing typesafe callbacks. This is an intro to libsigc++.</para>
-        </abstract>
-</bookinfo>
+<chapter xml:id="chapter-introduction">
+<info><title>Introduction</title></info>
 
-<chapter id="chapter-introduction">
-<title>Introduction</title>
-
-<sect1 id="sect-motivation">
-<title>Motivation</title>
+<section xml:id="sect-motivation">
+<info><title>Motivation</title></info>
 
 	<para>There are many situations in which it is desirable to decouple code that
 	detects an event, and the code that deals with it. This is especially common in
@@ -69,14 +69,15 @@ register_click_handler(okbutton, clicked, somedata);
 	<para>For the other side of the fence, libsigc++ provides <literal remap="tt">signal</literal>s, to which the
 	client can attach <literal remap="tt">slot</literal>s. When the <literal remap="tt">signal</literal> is emitted, all the connected
 	<literal remap="tt">slot</literal>s are called.</para>
-</sect1>
+</section>
 </chapter>
 
-<chapter id="chapter-connecting">
-<title>Connecting your code to signals</title>
+<chapter xml:id="chapter-connecting">
+<info><title>Connecting your code to signals</title></info>
 
-<sect1 id="sect-simple-ex">
-<title>A simple example</title>
+<section xml:id="sect-simple-ex">
+<info><title>A simple example</title></info>
+
 	<para>So to get some experience, lets look at a simple example...</para>
 
 	<para>Lets say you and I are writing an application which informs the user when
@@ -138,10 +139,10 @@ int main()
 	<programlisting>./example1</programlisting>
 	<para>(Try not to panic when the aliens land!)</para>
 
-</sect1>
+</section>
 
-<sect1 id="sect-using-mem-func">
-<title>Using a member function</title>
+<section xml:id="sect-using-mem-func">
+<info><title>Using a member function</title></info>
 
 	<para>Suppose you found a more sophisticated alien alerter class on the web,
 	such as this:</para>
@@ -187,10 +188,10 @@ int main()
 	With a lambda expression you would lose the automatic disconnection that the
 	combination of <literal remap="tt">sigc::trackable</literal> and sigc::mem_fun()
 	offers.</para>
-</sect1>
+</section>
 
-<sect1 id="sect-signals-with-pars">
-<title>Signals with parameters</title>
+<section xml:id="sect-signals-with-pars">
+<info><title>Signals with parameters</title></info>
 
 	<para>Functions taking no parameters and returning void are quite useful,
 	especially when they're members of classes that can store unlimited amounts of
@@ -253,10 +254,10 @@ int main()
 </programlisting>
 
 	<para>Easy.</para>
-</sect1>
+</section>
 
-<sect1 id="sect-disconnecting">
-<title>Disconnecting</title>
+<section xml:id="sect-disconnecting">
+<info><title>Disconnecting</title></info>
 
 	<para>If you decide you no longer want your code to be called whenever a signal is
 	emitted, you must remember the return value of <literal remap="tt">connect()</literal>, which we've been
@@ -264,14 +265,15 @@ int main()
 
 	<para><literal remap="tt">connect()</literal> returns a <literal remap="tt">sigc::connection</literal> object, which has a <literal remap="tt">disconnect()</literal> member method. This does just what you think it does.</para>
 
-</sect1>
+</section>
 </chapter>
 
-<chapter id="chapter-writing">
-<title>Writing your own signals</title>
+<chapter xml:id="chapter-writing">
+<info><title>Writing your own signals</title></info>
 
-<sect1 id="sect-quick-recap">
-<title>Quick recap</title>
+<section xml:id="sect-quick-recap">
+<info><title>Quick recap</title></info>
+
 	<para>If all you want to do is use gtkmm, and connect your functionality to its
 	signals, you can probably stop reading here.</para>
 
@@ -316,10 +318,11 @@ void AlienDetector::run()
                              // they landed in the carpark after all.
 }
 </programlisting>
-</sect1>
+</section>
 
-<sect1 id="sect-return-values">
-<title>What about return values?</title>
+<section xml:id="sect-return-values">
+<info><title>What about return values?</title></info>
+
 	<para>If you only ever have one slot connected to a signal, or if you only care
 	about the return value of the last registered one, it's quite straightforward:</para>
 
@@ -329,14 +332,15 @@ int a_return_value;
 
 a_return_value = somesignal.emit();
 </programlisting>
-</sect1>
+</section>
 </chapter>
 
-<chapter id="chapter-advanced">
-<title>Advanced topics</title>
+<chapter xml:id="chapter-advanced">
+<info><title>Advanced topics</title></info>
 
-<sect1 id="sect-rebinding">
-<title>Rebinding</title>
+<section xml:id="sect-rebinding">
+<info><title>Rebinding</title></info>
+
 	<para>Suppose you already have a function that you want to be called when a
 	signal is emitted, but it takes the wrong argument types. For example, lets try
 	to attach the <literal remap="tt">warn_people(std::string)</literal> function to the detected signal
@@ -399,10 +403,11 @@ myaliendetector.signal_detected.connect( sigc::hide&lt;std::string&gt;( sigc::pt
 	hide the first argument of 3, for example, only the last).</para>
 
 	<para><literal remap="tt">sigc::hide_return</literal> effectively makes the return type void.</para>
-</sect1>
+</section>
 
-<sect1 id="sect-retyping">
-<title>Retyping</title>
+<section xml:id="sect-retyping">
+<info><title>Retyping</title></info>
+
 	<para>A similar topic is retyping. Perhaps you have a signal that takes an <literal remap="tt">int</literal>, but
 	you want to connect a function that takes a <literal remap="tt">double</literal>.</para>
 
@@ -421,11 +426,12 @@ asignal.connect( sigc::retype( sigc::ptr_fun(&amp;dostuff) ) );
 
 	<para>If you only want to change the return type, you can use <literal remap="tt">sigc::retype_return()</literal>.
 	<literal remap="tt">retype_return()</literal> needs one template argument, the new return type.</para>
-</sect1>
+</section>
 </chapter>
 
-<chapter id="chapter-reference">
-<title>Reference</title>
-	<para>See the reference documentation <ulink url="http://library.gnome.org/devel/libsigc++/unstable/">online</ulink></para>
+<chapter xml:id="chapter-reference">
+<info><title>Reference</title></info>
+
+	<para>See the reference documentation <link xlink:href="http://library.gnome.org/devel/libsigc++/unstable/">online</link></para>
 </chapter>
 </book>
