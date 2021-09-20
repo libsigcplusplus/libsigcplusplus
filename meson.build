@@ -141,7 +141,6 @@ sys.exit(os.path.isfile("@0@"))
 endif
 
 # Check if perl is required and available.
-# Done now, when the doc_reference script is available.
 doc_perl_prop = run_command(
   python3, doc_reference, 'get_script_property',
   '', # MMDOCTOOLDIR is not used
@@ -298,10 +297,8 @@ endif
 build_pdf = build_pdf_by_default and can_build_pdf
 explain_pdf = ''
 if build_pdf_by_default and not build_pdf
-  explain_pdf = ' (requires dblatex or (xmllint and docbook2pdf))'
+  explain_pdf = ' (requires dblatex or (xsltproc and fop))'
 endif
-
-
 
 summary = [
   '',
