@@ -24,6 +24,24 @@ if not build_documentation
   subdir_done()
 endif
 
+# Check if xmllint can be used.
+if xmllint.found()
+  can_parse_and_validate = run_command(
+    python3, tutorial_custom_cmd, 'xmllint',
+    validate,
+    meson.current_source_dir() / 'can_use_xmllint.xml',
+    meson.current_build_dir() / 'can_use_xmllint.stamp',
+  ).returncode() == 0
+  if not can_parse_and_validate
+    # The DocBook V5.0 package is called docbook5-xml in Ubuntu,
+    # docbook5-schemas in Fedora. It may have other names in other distros.
+    warning('Can\'t validate XML file.\n' +
+      'xmllint does not support Relax NG schemas and DocBook V5.0.\n' +
+      'DocBook V5.0 support may require docbook5-xml, docbook5-schemas or a similar package.'
+    )
+  endif
+endif
+
 doc_dist_dir = 'untracked' / 'docs' / 'docs' / 'manual' # Relative to MESON_DIST_ROOT
 
 sigc_manual_xml = 'libsigc_manual.xml'

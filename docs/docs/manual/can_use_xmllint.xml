@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<book xmlns="http://docbook.org/ns/docbook"
+      version="5.0" xml:id="index" xml:lang="en">
+
+<title>xmllint test</title>
+
+<chapter xml:id="chapter-introduction">
+<title>Introduction</title>
+  <para>
+  This is a short DocBook V5.0 document. It can be used for testing if the installed
+  version of xmllint or a similar program can validate a DocBook V5.0 document.
+  </para>
+</chapter>
+
+</book>

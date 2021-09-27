@@ -288,7 +288,7 @@ endif
 validate = get_option('validation') and can_parse_and_validate
 explain_val = ''
 if get_option('validation') and not validate
-  explain_val = ' (requires xmllint)'
+  explain_val = ' (requires xmllint with Relax NG and DocBook V5.0 support)'
 endif
 
 build_pdf = build_pdf_by_default and can_build_pdf

@@ -50,6 +50,7 @@ EXTRA_DIST = \
   meson_options.txt \
   sigc++config.h.meson \
   MSVC_NMake/meson.build \
+  docs/docs/manual/can_use_xmllint.xml \
   docs/docs/manual/meson.build \
   docs/docs/reference/meson.build \
   examples/meson.build \
