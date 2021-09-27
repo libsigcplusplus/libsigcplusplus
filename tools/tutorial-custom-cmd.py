@@ -65,6 +65,13 @@ def xmllint():
   stamp_file_path = sys.argv[4]
 
   relax_ng_schema = 'http://docbook.org/xml/5.0/rng/docbook.rng'
+  # schematron_schema = 'http://docbook.org/xml/5.0/sch/docbook.sch'
+
+  # Validation against the Schematron schema does not work on Ubuntu 21.04:
+  # file:///usr/share/xml/docbook/schema/schematron/5.0/docbook.sch:6: element rule:
+  #   Schemas parser error : Failed to compile context expression db:firstterm[@linkend]
+  # .....
+  # Schematron schema http://docbook.org/xml/5.0/sch/docbook.sch failed to compile
 
   cmd = [
     'xmllint',
@@ -73,7 +80,10 @@ def xmllint():
     '--xinclude',
   ]
   if validate == 'true':
-    cmd += ['--relaxng', relax_ng_schema]
+    cmd += [
+      '--relaxng', relax_ng_schema,
+      #'--schematron', schematron_schema,
+    ]
   cmd += [input_xml_file]
   result = subprocess.run(cmd)
   if result.returncode:
