@@ -14,7 +14,6 @@
  *  You should have received a copy of the GNU Lesser General Public
  *  License along with this library; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
- *
  */
 
 #ifndef SIGCXX_SIGCXX_H
@@ -98,19 +97,6 @@
  * @endcode
  *
  * Your @c PKG_CHECK_MODULES() call should also mention any other libraries that
- * you need to use via pkg-config.
- *
- * @subsection cmake Using CMake
- *
- * If using CMake, use the following in @c CMakeList.txt:
- * @code
- * include(FindPkgConfig)
- * pkg_check_modules(DEPS REQUIRED sigc++-2.0)
- * include_directories(${DEPS_INCLUDE_DIRS})
- * target_link_libraries(yourprogram ${DEPS_LIBRARIES})
- * @endcode
- *
- * Your @c pkg_check_modules() call should also mention any other libraries that
  * you need to use via pkg-config.
  *
  * @section scope Scope of Documentation
