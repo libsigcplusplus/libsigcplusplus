@@ -16,6 +16,12 @@ struct foo
   void operator()(MoveableStruct&& /* x */) { result_stream << "foo(MoveableStruct&&)"; }
 };
 
+struct A
+{
+  void foo(MoveableStruct &&) { result_stream << "A::foo(MoveableStruct&&)"; }
+};
+
+
 } // end anonymous namespace
 
 void
@@ -40,6 +46,17 @@ test_slot()
   util->check_result(result_stream, "foo(MoveableStruct&&)");
 }
 
+void
+test_mem_fun()
+{
+  sigc::slot<void(MoveableStruct &&)> slot;
+  A a;
+  slot = sigc::mem_fun(a, &A::foo);
+  MoveableStruct x;
+  slot(std::move(x));
+  util->check_result(result_stream, "A::foo(MoveableStruct&&)");
+}
+
 int
 main(int argc, char* argv[])
 {
@@ -49,6 +66,7 @@ main(int argc, char* argv[])
 
   test_signal();
   test_slot();
+  test_mem_fun();
 
   return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;
 } // end main()
