@@ -18,10 +18,12 @@ struct foo
 
 struct A
 {
-  void foo(MoveableStruct &&) { result_stream << "A::foo(MoveableStruct&&)"; }
+  void foo(MoveableStruct&&) { result_stream << "A::foo(MoveableStruct&&)"; }
 };
 
-void boo(MoveableStruct &&) {
+void
+boo(MoveableStruct&&)
+{
   result_stream << "boo(MoveableStruct&&)";
 }
 
@@ -52,7 +54,7 @@ test_slot()
 void
 test_mem_fun()
 {
-  sigc::slot<void(A &, MoveableStruct &&)> slot;
+  sigc::slot<void(A&, MoveableStruct &&)> slot;
   A a;
   slot = sigc::mem_fun(&A::foo);
   MoveableStruct x;

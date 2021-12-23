@@ -20,6 +20,7 @@
 #define SIGC_FUNCTORS_PTR_FUN_H
 #include <sigc++/type_traits.h>
 #include <functional>
+#include <utility>
 
 namespace sigc
 {
@@ -92,7 +93,8 @@ public:
    * @param a Arguments to be passed on to the function.
    * @return The return value of the function invocation.
    */
-  T_return operator()(type_trait_take_t<T_args>... a) const {
+  T_return operator()(type_trait_take_t<T_args>... a) const
+  {
     return std::invoke(func_ptr_, std::forward<type_trait_take_t<T_args>>(a)...);
   }
 };
@@ -104,7 +106,8 @@ public:
  * @ingroup ptr_fun
  */
 template<typename T_return, typename... T_args>
-inline decltype(auto) ptr_fun(T_return (*func)(T_args...))
+inline decltype(auto)
+ptr_fun(T_return (*func)(T_args...))
 {
   return pointer_functor<T_return(T_args...)>(func);
 }
