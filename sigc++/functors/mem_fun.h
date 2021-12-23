@@ -113,7 +113,7 @@ public:
    */
   decltype(auto) operator()(obj_type_with_modifier& obj, type_trait_take_t<T_arg>... a) const
   {
-    return std::invoke(func_ptr_, obj, a...);
+    return std::invoke(func_ptr_, obj, std::forward<type_trait_take_t<T_arg>>(a)...);
   }
 
 protected:
