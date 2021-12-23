@@ -187,8 +187,7 @@ struct visitor<bound_mem_functor<T_func, T_arg...>>
  * @ingroup mem_fun
  */
 template<typename T_return, typename T_obj, typename... T_arg>
-inline decltype(auto)
-mem_fun(T_return (T_obj::*func)(T_arg...))
+inline decltype(auto) mem_fun(T_return (T_obj::*func)(T_arg...))
 {
   return mem_functor<T_return (T_obj::*)(T_arg...), T_arg...>(func);
 }
@@ -213,8 +212,7 @@ mem_fun(T_return (T_obj::*func)(T_arg...) const)
  * @ingroup mem_fun
  */
 template<typename T_return, typename T_obj, typename... T_arg>
-inline decltype(auto)
-mem_fun(T_return (T_obj::*func)(T_arg...) volatile)
+inline decltype(auto) mem_fun(T_return (T_obj::*func)(T_arg...) volatile)
 {
   return mem_functor<T_return (T_obj::*)(T_arg...) volatile, T_arg...>(func);
 }

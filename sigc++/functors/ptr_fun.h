@@ -106,8 +106,7 @@ public:
  * @ingroup ptr_fun
  */
 template<typename T_return, typename... T_args>
-inline decltype(auto)
-ptr_fun(T_return (*func)(T_args...))
+inline decltype(auto) ptr_fun(T_return (*func)(T_args...))
 {
   return pointer_functor<T_return(T_args...)>(func);
 }
