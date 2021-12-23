@@ -92,7 +92,9 @@ public:
    * @param a Arguments to be passed on to the function.
    * @return The return value of the function invocation.
    */
-  T_return operator()(type_trait_take_t<T_args>... a) const { return std::invoke(func_ptr_, a...); }
+  T_return operator()(type_trait_take_t<T_args>... a) const {
+    return std::invoke(func_ptr_, std::forward<type_trait_take_t<T_args>>(a)...);
+  }
 };
 
 /** Creates a functor of type sigc::pointer_functor which wraps an existing non-member function.
