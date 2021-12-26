@@ -14,7 +14,5 @@ jobs:
         # Prevent blocking the install on a question during configuring of tzdata.
         export ENV DEBIAN_FRONTEND=noninteractive
         sudo apt update
-        sudo apt install build-essential mm-common clang-format-10 --yes
-        sudo ln -sf /usr/bin/clang-format-10 /usr/bin/clang-format
-        ./autogen.sh --enable-warnings=fatal
-        make check-format
+        sudo apt install clang-format-12 --yes
+        clang-format-12 --dry-run --Werror `find . -name "*.h" -or -name "*.cc"`
