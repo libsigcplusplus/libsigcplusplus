@@ -33,19 +33,15 @@ namespace sigc
 {
 
 /** @defgroup mem_fun mem_fun()
- * mem_fun() Creates a functor from a pointer to a method.
+ * %mem_fun() creates a functor from a pointer to a method.
  *
- * Optionally, a reference or pointer to an object can be bound to the functor.
+ * Optionally, a reference to an object can be bound to the functor.
  *
  * @note If the object type inherits from sigc::trackable, and the
- * functor returned from mem_fun() is assigned to a sigc::slot, the functor
+ * functor returned from %mem_fun() is assigned to a sigc::slot, the functor
  * will be automatically cleared when the object goes out of scope. Invoking
  * that slot will then have no effect and will not try to use the destroyed
  * instance.
- *
- * If the member function pointer is to an overloaded type, you must specify
- * the types using template arguments starting with the first argument.
- * It is not necessary to supply the return type.
  *
  * @par Example:
  * @code
@@ -59,7 +55,7 @@ namespace sigc
  * auto f = sigc::mem_fun(my_foo, &foo::bar); // Usually not what you want.
  * @endcode
  *
- * For const methods mem_fun() takes a const reference or pointer to an object.
+ * For const methods %mem_fun() takes a const reference or pointer to an object.
  *
  * @par Example:
  * @code
@@ -71,18 +67,19 @@ namespace sigc
  * sigc::slot<void(int)> sl = sigc::mem_fun(my_foo, &foo::bar);
  * @endcode
  *
- * Use mem_fun#() if there is an ambiguity as to the number of arguments.
+ * If the member function pointer is to an overloaded type, you must specify
+ * the types using template arguments.
  *
  * @par Example:
  * @code
  * struct foo : public sigc::trackable
  * {
- *   void bar(int) {}
+ *   void bar(int) {} // choose this one
  *   void bar(float) {}
  *   void bar(int, int) {}
  * };
  * foo my_foo;
- * sigc::slot<void(int)> sl = sigc::mem_fun1<int>(my_foo, &foo::bar);
+ * sigc::slot<void(int)> sl = sigc::mem_fun1<void, foo, foo, int>(my_foo, &foo::bar);
  * @endcode
  *
  * @ingroup sigcfunctors

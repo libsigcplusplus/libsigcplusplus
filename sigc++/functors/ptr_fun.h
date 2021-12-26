@@ -26,16 +26,16 @@ namespace sigc
 {
 
 /** @defgroup ptr_fun ptr_fun()
- * ptr_fun() creates a functor from a pointer to a function.
- * If the function pointer is to an overloaded type, you must specify
- * the types using template arguments starting with the first argument.
- * It is not necessary to supply the return type.
+ * %ptr_fun() creates a functor from a pointer to a function.
  *
  * @par Example:
  * @code
  * void foo(int) {}
  * sigc::slot<void(int)> sl = sigc::ptr_fun(&foo);
  * @endcode
+ *
+ * If the function pointer is to an overloaded type, you must specify
+ * the types using template arguments.
  *
  * @par Example:
  * @code
@@ -45,7 +45,7 @@ namespace sigc
  * sigc::slot<void(long)> sl = sigc::ptr_fun<void, int>(&foo);
  * @endcode
  *
- * ptr_fun() can also be used to convert a pointer to a static member
+ * %ptr_fun() can also be used to convert a pointer to a static member
  * function to a functor, like so:
  *
  * @par Example:
