@@ -60,8 +60,8 @@ test_member_method_is_volatile()
     sigc::internal::member_method_is_volatile<decltype(&Something::some_volatile_func)>::value,
     "member_method_is_const failed to identify a volatile member method.");
 
-  static_assert(sigc::internal::member_method_is_volatile<decltype(
-                  &Something::some_const_volatile_func)>::value,
+  static_assert(sigc::internal::member_method_is_volatile<
+                  decltype(&Something::some_const_volatile_func)>::value,
     "member_method_is_const failed to identify a volatile member method.");
 }
 

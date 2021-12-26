@@ -70,7 +70,7 @@ struct book : public sigc::trackable
   book& operator=(book&&) = delete;
 
   std::string& get_name() { return name_; }
-  operator std::string &() { return get_name(); }
+  operator std::string&() { return get_name(); }
 
 private:
   std::string name_;

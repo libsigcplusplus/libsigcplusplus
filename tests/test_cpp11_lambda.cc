@@ -88,7 +88,7 @@ egon(std::string& str)
 struct book : public sigc::trackable
 {
   explicit book(const std::string& name) : name_(name) {}
-  operator std::string &() { return name_; }
+  operator std::string&() { return name_; }
   std::string name_;
 };
 
@@ -184,8 +184,8 @@ main(int argc, char* argv[])
   // See https://bugzilla.gnome.org/show_bug.cgi?id=669128
   //  std::cout << "((++_1)*2)(ref(a)): " << ((++_1)*2)(std::ref(a));
   //  std::cout << "; a: "                << a                    << std::endl;
-  result_stream << ([](std::reference_wrapper<int> x) -> int { return ++x * 2; }(
-                                                        std::ref(a_outer)));
+  result_stream << ([](std::reference_wrapper<int> x) -> int
+    { return ++x * 2; }(std::ref(a_outer)));
   result_stream << " " << a_outer;
   util->check_result(result_stream, "4 2");
   result_stream << ([](int& x) -> int { return ++x * 2; }(a_outer));
@@ -200,8 +200,8 @@ main(int argc, char* argv[])
 
   //  std::cout << "((--(*(&_1)))*2)(ref(a)): " << ((--(*(&_1)))*2)(std::ref(a));
   //  std::cout << "; a: "                << a                    << std::endl;
-  result_stream << ([](std::reference_wrapper<int> x) -> int { return --(*(&x)) * 2; }(
-                                                        std::ref(a_outer)));
+  result_stream << ([](std::reference_wrapper<int> x) -> int
+    { return --(*(&x)) * 2; }(std::ref(a_outer)));
   result_stream << " " << a_outer;
   util->check_result(result_stream, "6 3");
   result_stream << ([](int& x) -> int { return --(*(&x)) * 2; }(a_outer));
@@ -234,8 +234,8 @@ main(int argc, char* argv[])
   // std::cout << "(var(c) = (var(a) = _1, var(b) = _2))(2,3): "
   //          << (sigc::var(c) = (sigc::var(a) = _1, sigc::var(b) = _2))(2,3);
   // std::cout << "; a: " << a << "; b: " << b << "; c: " << c << std::endl;
-  result_stream << ([&a_outer, &b_outer, &c_outer](
-                      int x, int y) -> int { return c_outer = (a_outer = x, b_outer = y); }(2, 3));
+  result_stream << ([&a_outer, &b_outer, &c_outer](int x, int y) -> int
+    { return c_outer = (a_outer = x, b_outer = y); }(2, 3));
   result_stream << " " << a_outer << " " << b_outer << " " << c_outer;
   util->check_result(result_stream, "3 2 3 3");
 
