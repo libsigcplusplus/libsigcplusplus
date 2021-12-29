@@ -219,8 +219,8 @@ protected:
 } /* namespace internal */
 
 /** @defgroup signal Signals
- * Use sigc::signal::connect() with sigc::mem_fun() and sigc::ptr_fun() to connect a method or
- * function with a signal.
+ * Use @ref sigc::signal_with_accumulator::connect() "sigc::signal::connect()"
+ * with sigc::mem_fun() and sigc::ptr_fun() to connect a method or function with a signal.
  *
  * @code
  * signal_clicked.connect( sigc::mem_fun(*this, &MyWindow::on_clicked) );
@@ -232,8 +232,9 @@ protected:
  * If the type of your object inherits from sigc::trackable the method is disconnected
  * automatically when your object is destroyed.
  *
- * When signals are copied they share the underlying information,
- * so you can have a protected/private sigc::signal member and a public accessor method.
+ * When signals are copied they share the underlying information, so you can have
+ * a protected/private @ref sigc::signal<T_return(T_arg...)> "sigc::signal"
+ * member and a public accessor method.
  * A sigc::signal is a kind of reference-counting pointer. It's similar to
  * std::shared_ptr<>, although sigc::signal is restricted to holding a pointer to
  * a sigc::internal::signal_impl object that contains the implementation of the signal.
@@ -259,21 +260,25 @@ protected:
  * if the given functor or closure cannot be invoked with the
  * parameter list of the signal to connect to.
  *
- * Almost any functor with the correct signature can be converted to a sigc::slot
- * and connected to a signal. See @ref slot "Slots" and sigc::signal::connect().
+ * Almost any functor with the correct signature can be converted to
+ * a @ref sigc::slot<T_return(T_arg...)> "sigc::slot"
+ * and connected to a signal. See @ref slot "Slots" and
+ * @ref sigc::signal_with_accumulator::connect() "sigc::signal::connect()".
  */
 
-/** Base class for the sigc::signal# templates.
- * signal_base integrates most of the interface of the derived sigc::signal#
- * templates. The implementation, however, resides in sigc::internal::signal_impl.
- * A sigc::internal::signal_impl object is dynamically allocated from signal_base
+/** Base class for the @ref sigc::signal<T_return(T_arg...)> "sigc::signal" template.
+ * %signal_base integrates most of the interface of the derived
+ * @ref sigc::signal<T_return(T_arg...)> "sigc::signal" template.
+ * The implementation, however, resides in sigc::internal::signal_impl.
+ * A sigc::internal::signal_impl object is dynamically allocated from %signal_base
  * when first connecting a slot to the signal. This ensures that empty signals
  * don't waste memory.
  *
- * sigc::internal::signal_impl is reference-counted. When a sigc::signal# object
+ * sigc::internal::signal_impl is reference-counted.
+ * When a @ref sigc::signal<T_return(T_arg...)> "sigc::signal" object
  * is copied, the reference count of its sigc::internal::signal_impl object is
- * incremented. Both sigc::signal# objects then refer to the same
- * sigc::internal::signal_impl object.
+ * incremented. Both @ref sigc::signal<T_return(T_arg...)> "sigc::signal" objects
+ * then refer to the same sigc::internal::signal_impl object.
  *
  * @ingroup signal
  */

@@ -181,7 +181,8 @@ struct SIGC_API slot_do_unbind
  *
  * @section slots-creating Creating Slots
  *
- * Use the sigc::mem_fun() or sigc::ptr_fun() template functions to get a sigc::slot, like so:
+ * Use the sigc::mem_fun() or sigc::ptr_fun() template functions to get
+ * a @ref sigc::slot<T_return(T_arg...)> "sigc::slot", like so:
  * @code
  * sigc::slot<void(int)> sl = sigc::mem_fun(someobj, &SomeClass::somemethod);
  * @endcode
@@ -215,9 +216,9 @@ struct SIGC_API slot_do_unbind
  * auto sl = sigc::mem_fun(someobj, &SomeClass::somemethod); // Not a slot!
  * @endcode
  *
- * If you don't explicitly use a sigc::slot then the slot could call a method
- * on an instance after it has been destroyed even if the method is in a class
- * that derives from sigc::trackable.
+ * If you don't explicitly use a @ref sigc::slot<T_return(T_arg...)> "sigc::slot"
+ * then the slot could call a method on an instance after it has been destroyed
+ * even if the method is in a class that derives from sigc::trackable.
  *
  * @section slots-with-lambdas C++ Lambdas
  *
@@ -241,14 +242,14 @@ struct SIGC_API slot_do_unbind
  */
 
 /** Base type for slots.
- * slot_base integrates most of the interface of the derived
- * sigc::slot templates. slots
+ * %slot_base integrates most of the interface of the derived
+ * @ref sigc::slot<T_return(T_arg...)> "sigc::slot" template. Slots
  * can be connected to signals, be disconnected at some later point
  * (disconnect()) and temporarily be blocked (block(), unblock()).
  * The validity of a slot can be tested with empty().
  *
  * The internal representation of a sigc::internal::slot_rep derived
- * type is built from slot_base's derivations. set_parent() is used to
+ * type is built from %slot_base's derivations. set_parent() is used to
  * register a notification callback that is executed when the slot gets
  * invalid. add_destroy_notify_callback() is used by connection objects
  * to add a notification callback that is executed on destruction.

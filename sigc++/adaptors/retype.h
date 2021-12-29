@@ -28,7 +28,8 @@ namespace sigc
 {
 
 /** @defgroup retype retype(), retype_return()
- * sigc::retype() alters a sigc::pointer_functor, a sigc::mem_functor or a sigc::slot
+ * sigc::retype() alters a sigc::pointer_functor, a sigc::mem_functor or
+ * a @ref sigc::slot<T_return(T_arg...)> "sigc::slot"
  * in that it makes C-style casts to the functor's parameter types
  * of all parameters passed through operator()().
  *
@@ -40,7 +41,7 @@ namespace sigc
  * @endcode
  *
  * The functor that sigc::retype() returns can be passed directly into
- * sigc::signal::connect().
+ * @ref sigc::signal_with_accumulator::connect() "sigc::signal::connect()".
  *
  * @par Example:
  * @code
@@ -49,8 +50,9 @@ namespace sigc
  * some_signal.connect(sigc::retype(sigc::ptr_fun(&foo)));
  * @endcode
  *
- * This adaptor builds an exception in that it only works on sig::pointer_functor,
- * sigc::mem_functor and sigc::slot because it needs sophisticated information about
+ * This adaptor builds an exception in that it only works on sigc::pointer_functor,
+ * sigc::mem_functor and @ref sigc::slot<T_return(T_arg...)> "sigc::slot"
+ * because it needs sophisticated information about
  * the parameter types that cannot be deduced from arbitrary functor types.
  *
  * sigc::retype_return() alters the return type of an arbitrary functor.

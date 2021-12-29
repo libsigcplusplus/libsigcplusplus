@@ -543,8 +543,8 @@ class signal<T_return(T_arg...)> : public signal_with_accumulator<T_return, void
 public:
   using accumulator_type = void;
 
-  /** Like sigc::signal but the additional template parameter @e T_accumulator
-   * defines the accumulator type that should be used.
+  /** Like @ref sigc::signal<T_return(T_arg...)> "sigc::signal" but the additional
+   * template parameter @e T_accumulator defines the accumulator type that should be used.
    *
    * An accumulator is a functor that uses a pair of special iterators
    * to step through a list of slots and calculate a return value

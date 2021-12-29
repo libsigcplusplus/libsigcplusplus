@@ -54,7 +54,7 @@ namespace sigc
  * @endcode
  *
  * The functor sigc::bind() returns can be passed into
- * sigc::signal::connect() directly.
+ * @ref sigc::signal_with_accumulator::connect() "sigc::signal::connect()" directly.
  *
  * @par Example:
  * @code

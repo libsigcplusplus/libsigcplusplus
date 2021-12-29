@@ -38,7 +38,8 @@ namespace sigc
  * Optionally, a reference to an object can be bound to the functor.
  *
  * @note If the object type inherits from sigc::trackable, and the
- * functor returned from %mem_fun() is assigned to a sigc::slot, the functor
+ * functor returned from %mem_fun() is assigned to
+ * a @ref sigc::slot<T_return(T_arg...)> "sigc::slot", the functor
  * will be automatically cleared when the object goes out of scope. Invoking
  * that slot will then have no effect and will not try to use the destroyed
  * instance.
