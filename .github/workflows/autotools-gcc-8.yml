@@ -12,7 +12,7 @@ jobs:
     - name: Build
       run: |
         sudo apt update
-        sudo apt install mm-common g++-8
+        sudo apt install mm-common g++-8 docbook-xsl
         export CXX=g++-8
         ./autogen.sh --enable-warnings=fatal
         make

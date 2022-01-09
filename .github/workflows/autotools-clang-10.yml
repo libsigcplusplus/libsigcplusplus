@@ -14,7 +14,7 @@ jobs:
         # Prevent blocking apt install on a question during configuring of tzdata.
         export ENV DEBIAN_FRONTEND=noninteractive
         sudo apt update
-        sudo apt install mm-common clang-10 make --yes
+        sudo apt install mm-common clang-10 make docbook-xsl --yes
         export CC=clang-10 CXX=clang++-10
         ./autogen.sh --enable-warnings=fatal
         make
