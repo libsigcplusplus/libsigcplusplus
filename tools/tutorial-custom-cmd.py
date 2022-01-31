@@ -31,6 +31,9 @@ def html():
     '--param', 'use.id.as.filename', '1',
   ]
 
+  # The recommended stylesheet for DocBook V5.0 is .../xsl-ns/...
+  # It's not used here because the docbook-xsl-ns package is not available
+  # when building with gnome-build-meta.
   xslt_stylesheet = 'http://docbook.sourceforge.net/release/xsl/current/html/chunk.xsl'
 
   # Remove old files and create the destination directory.
