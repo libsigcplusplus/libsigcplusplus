@@ -59,7 +59,6 @@ foreach ex : test_programs
   exe_file = executable(ex_name, ex_sources,
     dependencies: sigcxx_own_dep,
     implicit_include_directories: false,
-    gui_app: false,
     build_by_default: true
   )
 
@@ -81,7 +80,6 @@ if can_benchmark
     exe_file = executable(ex_name, ex_sources,
       dependencies: [sigcxx_own_dep, benchmark_dep],
       implicit_include_directories: false,
-      gui_app: false,
       build_by_default: do_benchmark
     )
 

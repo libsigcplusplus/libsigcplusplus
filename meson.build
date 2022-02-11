@@ -7,8 +7,8 @@ project('libsigc++', 'cpp',
     'cpp_std=c++11',
     'warning_level=0',
   ],
-  meson_version: '>= 0.54.0', # required for meson.override_dependency()
-                              # and dep.get_variable(internal:)
+  meson_version: '>= 0.55.0', # required for meson.add_dist_script(python3, ...)
+                              # and meson.add_install_script(python3, ...)
 )
 
 sigcxx_api_version = '2.0'
@@ -56,7 +56,7 @@ import os
 import sys
 sys.exit(os.path.isdir("@0@") or os.path.isfile("@0@"))
 '''.format(project_source_root / '.git')
-is_git_build = run_command(python3, '-c', cmd_py).returncode() != 0
+is_git_build = run_command(python3, '-c', cmd_py, check: false).returncode() != 0
 
 # Are we testing a dist tarball while it's being built?
 # There ought to be a better way. https://github.com/mesonbuild/meson/issues/6866
@@ -127,14 +127,16 @@ tutorial_custom_cmd = project_source_root / 'tools' / 'tutorial-custom-cmd.py'
 if maintainer_mode
   # Copy files to untracked/build_scripts and untracked/docs.
   run_command(mm_common_get, '--force', script_dir,
-    project_source_root / 'untracked' / 'docs')
+    project_source_root / 'untracked' / 'docs',
+    check: true,
+  )
 else
   cmd_py = '''
 import os
 import sys
 sys.exit(os.path.isfile("@0@"))
 '''.format(doc_reference)
-  file_exists = run_command(python3, '-c', cmd_py).returncode() != 0
+  file_exists = run_command(python3, '-c', cmd_py, check: false).returncode() != 0
   if not file_exists
     warning('Missing files in untracked/. You may have to enable maintainer-mode.')
   endif
@@ -144,7 +146,9 @@ endif
 doc_perl_prop = run_command(
   python3, doc_reference, 'get_script_property',
   '', # MMDOCTOOLDIR is not used
-  'requires_perl')
+  'requires_perl',
+  check: false,
+)
 if not (doc_perl_prop.returncode() == 0 and doc_perl_prop.stdout() == 'false')
   # Perl is required, if documentation shall be built.
   perl = find_program('perl', required: build_documentation)
@@ -246,13 +250,13 @@ subdir('docs/manual')
 if can_add_dist_script
   # Add a ChangeLog file to the distribution directory.
   meson.add_dist_script(
-    python3.path(), dist_changelog,
+    python3, dist_changelog,
     project_source_root,
   )
   # Add build scripts to the distribution directory, and delete .gitignore
   # files and an empty $MESON_PROJECT_DIST_ROOT/build/ directory.
   meson.add_dist_script(
-    python3.path(), dist_build_scripts,
+    python3, dist_build_scripts,
     project_source_root,
     'untracked' / 'build_scripts',
   )

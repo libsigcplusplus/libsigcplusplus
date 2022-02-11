@@ -141,6 +141,7 @@ else # not maintainer_mode
     meson.current_build_dir(),
     src_untracked_sigcxx,
     built_h_files + built_cc_files,
+    check: true,
   )
 
   untracked_built_cc_files = []
@@ -167,7 +168,7 @@ endif
 
 # Install built .h files.
 meson.add_install_script(
-  python3.path(), handle_built_files, 'install_built_h_files',
+  python3, handle_built_files, 'install_built_h_files',
   built_h_cc_dir,
   install_includedir / sigcxx_pcname / 'sigc++', # subdir below {prefix}
   built_h_files,
@@ -176,7 +177,7 @@ meson.add_install_script(
 if can_add_dist_script
   # Distribute built files.
   meson.add_dist_script(
-    python3.path(), handle_built_files, 'dist_built_files',
+    python3, handle_built_files, 'dist_built_files',
     built_h_cc_dir,
     untracked_sigcxx,
     built_h_files + built_cc_files,

@@ -145,7 +145,7 @@ devhelp_file = custom_target('devhelp',
 
 # Install Devhelp file and html files.
 meson.add_install_script(
-  python3.path(), doc_reference, 'install_doc',
+  python3, doc_reference, 'install_doc',
   doctool_dir,
   devhelp_file.full_path(),
   install_devhelpdir,
@@ -156,7 +156,7 @@ meson.add_install_script(
 if can_add_dist_script
   # Distribute built files and files copied by mm-common-get.
   meson.add_dist_script(
-    python3.path(), doc_reference, 'dist_doc',
+    python3, doc_reference, 'dist_doc',
     doctool_dir,
     doctool_dist_dir,
     meson.current_build_dir(),
