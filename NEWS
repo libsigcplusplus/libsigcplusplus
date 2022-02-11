@@ -1,3 +1,23 @@
+3.2.0 (stable)
+
+* Allow slots with rvalue reference parameters
+  (Slava Andrejev) Pull requests #74, #77
+
+Build:
+* Meson build: Perl is not required by new versions of mm-common
+  (Kjell Ahlstedt)
+* NMake Makefiles: Support building with VS2022
+  (Chun-wei Fan)
+
+Documentation:
+* Upgrade the manual from DocBook 4.1 to DocBook 5.0
+  (Kjell Ahlstedt)
+* ptr_fun(), mem_fun() docs: Remove left-overs from sigc++-2.0
+  (Kjell Ahlstedt)
+* Fix links to sigc::slot and sigc::signal
+  (Kjell Ahlstedt)
+
+
 3.0.7 (stable)
 
 Meson build:
