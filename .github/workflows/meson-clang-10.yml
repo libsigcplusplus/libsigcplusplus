@@ -15,9 +15,9 @@ jobs:
         export ENV DEBIAN_FRONTEND=noninteractive
         sudo apt update
         sudo apt install libxml2-utils docbook5-xml docbook-xsl mm-common clang-10 ninja-build python3-setuptools python3-pip --yes
-        # Ubuntu 20.04 contains meson 0.53.2, but libsigc++ requires meson >= 0.54.0.
+        # Ubuntu 20.04 contains meson 0.53.2, but libsigc++ requires meson >= 0.55.0.
         # Install it with pip3 instead of apt.
-        sudo pip3 install "meson>=0.54.0"
+        sudo pip3 install "meson>=0.55.0"
         export CXX=clang++-10
         meson -Dwarnings=fatal _build
         cd _build

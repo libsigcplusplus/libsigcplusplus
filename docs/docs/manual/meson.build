@@ -31,6 +31,7 @@ if xmllint.found()
     validate,
     meson.current_source_dir() / 'can_use_xmllint.xml',
     meson.current_build_dir() / 'can_use_xmllint.stamp',
+    check: false,
   ).returncode() == 0
   if not can_parse_and_validate
     # The DocBook V5.0 package is called docbook5-xml in Ubuntu,
@@ -95,7 +96,7 @@ endif
 if can_add_dist_script
   # Distribute built files.
   meson.add_dist_script(
-    python3.path(), tutorial_custom_cmd, 'dist_doc',
+    python3, tutorial_custom_cmd, 'dist_doc',
     doc_dist_dir,
     meson.current_build_dir(),
     meson.current_source_dir() / sigc_manual_xml,
