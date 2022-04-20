@@ -162,8 +162,8 @@ template<typename T_functor, typename T_obj1, typename... T_objs>
 inline decltype(auto)
 track_object(const T_functor& func, const T_obj1& obj1, const T_objs&... objs)
 {
-  static_assert(std::min<bool>({std::is_base_of<sigc::trackable, T_obj1>::value,
-    std::is_base_of<sigc::trackable, T_objs>::value...}),
+  static_assert(std::min<bool>({ std::is_base_of<sigc::trackable, T_obj1>::value,
+                  std::is_base_of<sigc::trackable, T_objs>::value... }),
     "Each trackable object must be derived from sigc::trackable.");
 
   return track_obj_functor<T_functor, T_obj1, T_objs...>(func, obj1, objs...);
