@@ -50,7 +50,7 @@ FOR(1, $1,[
 dnl track_obj_functor[2..CALL_SIZE]. $1 is assumed to be >= 2.
 define([TRACK_OBJECT_FUNCTOR],[dnl
 /** track_obj_functor$1 wraps a functor and stores $1 references to trackable objects.
- * Use the convenience function track_obj() to create an instance of track_obj_functor$1.
+ * Use the convenience function track_object() to create an instance of track_obj_functor$1.
  *
  * @tparam T_functor The type of functor to wrap.dnl
 FOR(1,$1,[
@@ -111,6 +111,7 @@ FOR(1,$1,[
 ])dnl end TRACK_OBJECT_VISIT_EACH
 
 define([TRACK_OBJECT],[dnl
+_DEPRECATE_IFDEF_START
 /** Creates an adaptor of type sigc::track_obj_functor$1 which wraps a functor.
  * @param _A_func Functor that shall be wrapped.dnl
 FOR(1,$1,[
@@ -118,6 +119,7 @@ FOR(1,$1,[
  * @return Adaptor that executes _A_func() on invocation.
  *
  * @newin{2,4}
+ * @deprecated Use sigc::track_object() instead.
  *
  * @ingroup track_obj
  */
@@ -128,25 +130,53 @@ track_obj(const T_functor& _A_func, LOOP(const T_obj%1& _A_obj%1, $1))
   return track_obj_functor$1<T_functor, LOOP(T_obj%1, $1)>
     (_A_func, LOOP(_A_obj%1, $1));
 }
+_DEPRECATE_IFDEF_END
 
 ])dnl end TRACK_OBJECT
+
+define([TRACK_OBJECT2],[dnl
+/** Creates an adaptor of type sigc::track_obj_functor$1 which wraps a functor.
+ * @param _A_func Functor that shall be wrapped.dnl
+FOR(1,$1,[[
+ * @param _A_obj%1 Trackable object, derived directly or indirectly from sigc::trackable.]])
+ * @return Adaptor that executes _A_func() on invocation.
+ *
+ * @newin{2,12}
+ *
+ * @ingroup track_obj
+ */
+template <typename T_functor, LOOP(typename T_obj%1, $1)>
+inline track_obj_functor$1<T_functor, LOOP(T_obj%1, $1)>
+track_object(const T_functor& _A_func, LOOP(const T_obj%1& _A_obj%1, $1))
+{
+  static_assert(LOOP([[std::is_base_of<sigc::trackable, T_obj%1>::value]], $1, [ && ]),
+    "Each trackable object must be derived from sigc::trackable.");
+
+  return track_obj_functor$1<T_functor, LOOP(T_obj%1, $1)>
+    (_A_func, LOOP(_A_obj%1, $1));
+}
+
+])dnl end TRACK_OBJECT2
 
 divert(0)dnl
 _FIREWALL([ADAPTORS_TRACK_OBJ])
 #include <sigc++/adaptors/adaptor_trait.h>
 #include <sigc++/limit_reference.h>
+#include <type_traits>
 
 namespace sigc {
 
-/** @defgroup track_obj track_obj()
- * sigc::track_obj() tracks trackable objects, referenced from a functor.
+/** @defgroup track_obj track_obj(), track_object()
+ * sigc::track_object() tracks trackable objects, referenced from a functor.
  * It can be useful when you assign a C++11 lambda expression or a std::function<>
  * to a slot, or connect it to a signal, and the lambda expression or std::function<>
  * contains references to sigc::trackable derived objects.
  *
- * The functor returned by sigc::track_obj() is formally an adaptor, but it does
+ * The functor returned by sigc::track_object() is formally an adaptor, but it does
  * not alter the signature, return type or behaviour of the supplied functor.
  * Up to CALL_SIZE objects can be tracked. operator()() can have up to CALL_SIZE arguments.
+ *
+ * track_obj() is a deprecated alternative to track_object().
  *
  * @par Example:
  * @code
@@ -157,18 +187,16 @@ namespace sigc {
  *   bar some_bar;
  *   some_signal.connect([[&some_bar]](){ foo(some_bar); });
  *     // NOT disconnected automatically when some_bar goes out of scope
- *   some_signal.connect(sigc::track_obj([[&some_bar]](){ foo(some_bar); }, some_bar);
+ *   some_signal.connect(sigc::track_object([[&some_bar]](){ foo(some_bar); }, some_bar);
  *     // disconnected automatically when some_bar goes out of scope
  * }
  * @endcode
- *
- * @newin{2,4}
  *
  * @ingroup adaptors
  */
 
 /** track_obj_functor1 wraps a functor and stores a reference to a trackable object.
- * Use the convenience function track_obj() to create an instance of track_obj_functor1.
+ * Use the convenience function track_object() to create an instance of track_obj_functor1.
  *
  * @tparam T_functor The type of functor to wrap.
  * @tparam T_obj1 The type of a trackable object.
@@ -221,5 +249,6 @@ FOR(1,CALL_SIZE,[[TRACK_OBJECT_VISIT_EACH(%1)]])dnl
 #endif // DOXYGEN_SHOULD_SKIP_THIS
 
 FOR(1,CALL_SIZE,[[TRACK_OBJECT(%1)]])dnl
+FOR(1,CALL_SIZE,[[TRACK_OBJECT2(%1)]])dnl
 
 } /* namespace sigc */
