@@ -23,18 +23,23 @@
 #include <sigc++/adaptors/tuple_visitor_visit_each.h>
 #include <sigc++/limit_reference.h>
 #include <sigc++/tuple-utils/tuple_for_each.h>
+#include <sigc++/trackable.h>
+#include <type_traits>
+#include <algorithm>
 
 namespace sigc
 {
 
-/** @defgroup track_obj track_obj()
- * sigc::track_obj() tracks trackable objects, referenced from a functor.
+/** @defgroup track_obj track_obj(), track_object()
+ * sigc::track_object() tracks trackable objects, referenced from a functor.
  * It can be useful when you assign a C++11 lambda expression or a std::function<>
  * to a slot, or connect it to a signal, and the lambda expression or std::function<>
  * contains references to sigc::trackable derived objects.
  *
- * The functor returned by sigc::track_obj() is formally an adaptor, but it does
+ * The functor returned by sigc::track_object() is formally an adaptor, but it does
  * not alter the signature, return type or behaviour of the supplied functor.
+ *
+ * track_obj() is a deprecated alternative to track_object().
  *
  * @par Example:
  * @code
@@ -45,18 +50,18 @@ namespace sigc
  *   bar some_bar;
  *   some_signal.connect([&some_bar](){ foo(some_bar); });
  *     // NOT disconnected automatically when some_bar goes out of scope
- *   some_signal.connect(sigc::track_obj([&some_bar](){ foo(some_bar); }, some_bar);
+ *   some_signal.connect(sigc::track_object([&some_bar](){ foo(some_bar); }, some_bar);
  *     // disconnected automatically when some_bar goes out of scope
  * }
  * @endcode
  *
- * @newin{2,4}
- *
  * @ingroup adaptors
  */
 
-/** track_obj_functor wraps a functor and stores a reference to a trackable object.
- * Use the convenience function track_obj() to create an instance of track_obj_functor.
+/** %track_obj_functor wraps a functor and stores a reference to a trackable object.
+ * Use the convenience function track_object() to create an instance of %track_obj_functor.
+ *
+ * track_obj() is a deprecated alternative to track_object().
  *
  * @tparam T_functor The type of functor to wrap.
  * @tparam T_obj The types of the trackable objects.
@@ -124,12 +129,14 @@ struct visitor<track_obj_functor<T_functor, T_obj...>>
 };
 #endif // DOXYGEN_SHOULD_SKIP_THIS
 
+#ifndef SIGCXX_DISABLE_DEPRECATED
 /** Creates an adaptor of type sigc::track_obj_functor which wraps a functor.
  * @param func Functor that shall be wrapped.
  * @param obj Trackable objects.
  * @return Adaptor that executes func() on invocation.
  *
  * @newin{2,4}
+ * @deprecated Use sigc::track_object() instead.
  *
  * @ingroup track_obj
  */
@@ -138,6 +145,28 @@ inline decltype(auto)
 track_obj(const T_functor& func, const T_obj&... obj)
 {
   return track_obj_functor<T_functor, T_obj...>(func, obj...);
+}
+#endif // SIGCXX_DISABLE_DEPRECATED
+
+/** Creates an adaptor of type sigc::track_obj_functor which wraps a functor.
+ * @param func Functor that shall be wrapped.
+ * @param obj1 Trackable object, derived directly or indirectly from sigc::trackable.
+ * @param objs Zero or more trackable objects, derived directly or indirectly from sigc::trackable.
+ * @return Adaptor that executes func() on invocation.
+ *
+ * @newin{3,4}
+ *
+ * @ingroup track_obj
+ */
+template<typename T_functor, typename T_obj1, typename... T_objs>
+inline decltype(auto)
+track_object(const T_functor& func, const T_obj1& obj1, const T_objs&... objs)
+{
+  static_assert(std::min<bool>({std::is_base_of<sigc::trackable, T_obj1>::value,
+    std::is_base_of<sigc::trackable, T_objs>::value...}),
+    "Each trackable object must be derived from sigc::trackable.");
+
+  return track_obj_functor<T_functor, T_obj1, T_objs...>(func, obj1, objs...);
 }
 
 } /* namespace sigc */

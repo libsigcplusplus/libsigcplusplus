@@ -17,10 +17,10 @@
  */
 
 // The purpose of this test case is threefold.
-// - Test sigc::track_obj().
+// - Test sigc::track_obj() and sigc::track_object().
 // - Show that a slot with a C++11 lambda expression can be automatically
 //   disconnected when an object derived from sigc::trackable is deleted,
-//   provided sigc::track_obj() is used.
+//   provided sigc::track_obj() or sigc::track_object() is used.
 //   It shows that C++11 lambda expressions can replace the libsigc++ lambda
 //   expressions, which have been removed.
 //   See https://bugzilla.gnome.org/show_bug.cgi?id=672555
@@ -115,32 +115,38 @@ main(int argc, char* argv[])
     return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;
 
   sigc::slot<std::string(int)> sl1;
+  sigc::slot<std::string(int)> sl2;
   {
     bar_group4 bar4;
     sl1 = sigc::track_obj(Functor1(bar4), bar4);
-    result_stream << sl1(-2);
-    util->check_result(result_stream, "negative");
+    sl2 = sigc::track_object(Functor1(bar4), bar4);
+    result_stream << sl1(-2) << ", " << sl2(2);
+    util->check_result(result_stream, "negative, positive");
 
-  } // auto-disconnect sl1
+  } // auto-disconnect sl1 and sl2
 
-  result_stream << sl1(-2);
-  util->check_result(result_stream, "");
+  result_stream << sl1(-2) << ", " << sl2(2);
+  util->check_result(result_stream, ", ");
 
   // Allocate on the heap. valgrind can then find erroneous memory accesses.
   // (There should be none, of course.)
-  auto psl2 = new sigc::slot<std::string(int, std::string)>;
+  auto psl3 = new sigc::slot<std::string(int, std::string)>;
+  auto psl4 = new sigc::slot<std::string(int, std::string)>;
   auto pbar4 = new bar_group4;
   auto pbook4 = new book("A Book");
-  *psl2 = sigc::track_obj(Functor2(*pbar4, *pbook4), *pbar4, *pbook4);
-  result_stream << (*psl2)(0, "Book title: ");
-  util->check_result(result_stream, "zero, Book title: A Book");
+  *psl3 = sigc::track_obj(Functor2(*pbar4, *pbook4), *pbar4, *pbook4);
+  *psl4 = sigc::track_object(Functor2(*pbar4, *pbook4), *pbar4, *pbook4);
+  result_stream << (*psl3)(0, "Book title: ") << ", " << (*psl4)(1, "Title: ");
+  util->check_result(result_stream, "zero, Book title: A Book, positive, Title: A Book");
 
-  delete pbook4; // auto-disconnect *psl2
+  delete pbook4; // auto-disconnect *psl3 and *psl4
   pbook4 = nullptr;
-  result_stream << (*psl2)(0, "Book title: ");
-  util->check_result(result_stream, "");
-  delete psl2;
-  psl2 = nullptr;
+  result_stream << (*psl3)(0, "Book title: ") << ", " << (*psl4)(1, "Title: ");
+  util->check_result(result_stream, ", ");
+  delete psl3;
+  psl3 = nullptr;
+  delete psl4;
+  psl4 = nullptr;
   delete pbar4;
   pbar4 = nullptr;
 
@@ -149,38 +155,47 @@ main(int argc, char* argv[])
   // auto-disconnect
   // If you want to auto-disconnect a slot with a C++11 lambda expression
   // that contains references to sigc::trackable-derived objects, you must use
-  // sigc::track_obj().
-  sigc::slot<void(std::ostringstream&)> sl10;
+  // sigc::track_obj() or sigc::track_object().
+  sigc::slot<void(std::ostringstream&)> sl11;
+  sigc::slot<void(std::ostringstream&)> sl12;
   {
     book guest_book("karl");
-    // sl1 = [&guest_book](std::ostringstream& stream){ stream << guest_book << "\n"; }; // no
-    // auto-disconnect
-    sl10 = sigc::track_obj(
+    // no auto-disconnect
+    // sl1 = [&guest_book](std::ostringstream& stream){ stream << guest_book << "\n"; };
+    sl11 = sigc::track_obj(
       [&guest_book](std::ostringstream& stream) { stream << guest_book; }, guest_book);
-    sl10(result_stream);
-    util->check_result(result_stream, "karl");
+    sl12 = sigc::track_object(
+      [&guest_book](std::ostringstream& stream) { stream << guest_book; }, guest_book);
+    sl11(result_stream);
+    sl12(result_stream);
+    util->check_result(result_stream, "karlkarl");
 
-  } // auto-disconnect sl10
+  } // auto-disconnect sl11 and sl12
 
-  sl10(result_stream);
+  sl11(result_stream);
+  sl12(result_stream);
   util->check_result(result_stream, "");
 
   // auto-disconnect
-  sigc::slot<void()> sl20;
+  sigc::slot<void()> sl21;
+  sigc::slot<void()> sl22;
   {
     book guest_book("karl");
     // sl2 = [&guest_book] () { egon(guest_book); }; // no auto-disconnect
     // sl2 = std::bind(&egon, std::ref(guest_book)); // does not compile (gcc 4.6.3)
-    sl20 = sigc::track_obj([&guest_book]() { egon(guest_book); }, guest_book);
-    sl20();
-    util->check_result(result_stream, "egon(string 'karl')");
+    sl21 = sigc::track_obj([&guest_book]() { egon(guest_book); }, guest_book);
+    sl22 = sigc::track_obj([&guest_book]() { egon(guest_book); }, guest_book);
+    sl21();
+    sl22();
+    util->check_result(result_stream, "egon(string 'karl')egon(string 'egon was here')");
 
     result_stream << static_cast<const std::string&>(guest_book);
     util->check_result(result_stream, "egon was here");
 
-  } // auto-disconnect sl20
+  } // auto-disconnect sl21 and sl22
 
-  sl20();
+  sl21();
+  sl22();
   util->check_result(result_stream, "");
 
   // Code example in the documentation sigc++/adaptors/track_obj.h.
@@ -194,8 +209,9 @@ main(int argc, char* argv[])
       // some_signal.connect(sigc::bind(&foo_group4, std::ref(some_bar))); // auto-disconnects,
       //   but we prefer C++11 lambda
       some_signal.connect(sigc::track_obj([&some_bar]() { foo_group4(some_bar); }, some_bar));
+      some_signal.connect(sigc::track_object([&some_bar]() { foo_group4(some_bar); }, some_bar));
       some_signal.emit();
-      util->check_result(result_stream, "foo_group4(bar_group4&)");
+      util->check_result(result_stream, "foo_group4(bar_group4&)foo_group4(bar_group4&)");
 
     } // auto-disconnect the lambda expression
 
