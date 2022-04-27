@@ -16,7 +16,7 @@ public:
 
 protected:
 
-  virtual void on_print(int a);
+  void on_print(int a);
   
   typedef sigc::signal<void, int> type_signal_print;
   type_signal_print signal_print;
@@ -36,7 +36,7 @@ Something::Something()
 
 void Something::on_print(int a)
 {
-  std::cout << "on_print recieved: " << a << std::endl;
+  std::cout << "on_print received: " << a << std::endl;
 }
 
 int main()
