@@ -58,7 +58,7 @@ tuple_end(T&& t)
 {
   // We use std::decay_t<> because tuple_size is not defined for references.
   constexpr auto size = std::tuple_size<std::decay_t<T>>::value;
-  static_assert(len <= size, "The tuple size must be less than or equal to the length.");
+  static_assert(len <= size, "The tuple size must be greater than or equal to the length.");
 
   if constexpr (len == 0)
   {

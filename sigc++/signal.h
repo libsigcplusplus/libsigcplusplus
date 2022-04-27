@@ -469,7 +469,7 @@ public:
    */
   decltype(auto) make_slot() const
   {
-    // TODO: Instead use std::result_of<> on the static emitter_type::emit()
+    // TODO: Instead use std::invoke_result<> on the static emitter_type::emit()
     using result_type =
       typename internal::member_method_result<decltype(&signal_with_accumulator::emit)>::type;
     return bound_mem_functor<result_type (signal_with_accumulator::*)(type_trait_take_t<T_arg>...)

@@ -24,7 +24,6 @@
 #include <sigc++/adaptors/adaptor_trait.h>
 #include <sigc++/functors/slot_base.h>
 #include <functional>
-
 #include <memory>
 
 namespace sigc
@@ -229,6 +228,12 @@ public:
   }
 
   inline slot() = default;
+
+  // If you're tempted to add
+  //   template<typename T_functor,
+  //     std::enable_if_t<std::is_invocable_r_v<T_return, T_functor, T_arg...>, int> = 0>
+  // to the constructor, see https://github.com/libsigcplusplus/libsigcplusplus/issues/79
+  // It doesn't work well when sigc::slot is combined with sigc::hide().
 
   /** Constructs a slot from an arbitrary functor.
    * @param func The desired functor the new slot should be assigned to.

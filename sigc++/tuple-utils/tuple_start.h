@@ -59,7 +59,7 @@ struct tuple_start_impl<T, std::index_sequence<I...>>
   {
     constexpr auto size = std::tuple_size<std::decay_t<T>>::value;
     constexpr auto len = sizeof...(I);
-    static_assert(len <= size, "The tuple size must be less than or equal to the length.");
+    static_assert(len <= size, "The tuple size must be greater than or equal to the length.");
 
     using start = typename tuple_type_start<std::decay_t<T>, len>::type;
     return start(std::get<I>(std::forward<T>(t))...);
@@ -77,7 +77,7 @@ tuple_start(T&& t)
 {
   // We use std::decay_t<> because tuple_size is not defined for references.
   constexpr auto size = std::tuple_size<std::decay_t<T>>::value;
-  static_assert(len <= size, "The tuple size must be less than or equal to the length.");
+  static_assert(len <= size, "The tuple size must be greater than or equal to the length.");
 
   return detail::tuple_start_impl<T, std::make_index_sequence<len>>::tuple_start(
     std::forward<T>(t));

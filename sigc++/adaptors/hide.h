@@ -64,8 +64,8 @@ namespace sigc
  * @par Example:
  * @code
  * // multiple argument hiding ...
- * sigc::hide(sigc::hide(&foo))(1,2,3,4); // adds two dummy parameters at the back and calls
- foo(1,2)
+ * // adds two dummy parameters at the back and calls foo(1,2)
+ * sigc::hide(sigc::hide(&foo))(1,2,3,4);
  * @endcode
 
  * sigc::hide_return() alters an arbitrary functor by
@@ -79,7 +79,6 @@ namespace sigc
  *
  * The following template arguments are used:
  * - @e I_location Zero-based position of the dummy parameter (@p -1 for the last parameter).
- * - @e T_type Type of the dummy parameter.
  * - @e T_functor Type of the functor to wrap.
  *
  * @ingroup hide
