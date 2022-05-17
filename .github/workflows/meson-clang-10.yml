@@ -1,4 +1,4 @@
-name: "CI: meson: clang 10"
+name: "meson: clang 10"
 
 on: [push]
 
@@ -19,7 +19,7 @@ jobs:
         # Install it with pip3 instead of apt.
         sudo pip3 install "meson>=0.55.0"
         export CXX=clang++-10
-        meson -Dwarnings=fatal _build
+        meson -Dwarnings=fatal -Dwarning_level=3 -Dwerror=true _build
         cd _build
         meson compile
     - name: Test
