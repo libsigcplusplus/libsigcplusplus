@@ -5,7 +5,7 @@ project('libsigc++', 'cpp',
   license: 'LGPLv2.1+',
   default_options: [
     'cpp_std=c++17',
-    'warning_level=0',
+    'warning_level=1',
   ],
   meson_version: '>= 0.55.0', # required for meson.add_dist_script(python3, ...)
                               # and meson.add_install_script(python3, ...)
@@ -70,10 +70,12 @@ maintainer_mode = maintainer_mode_opt == 'true' or \
 if is_dist_check
   message('Looks like a tarball is being tested. ' + \
           'Option "dist-warnings" is used instead of "warnings".')
-  warning_level = get_option('dist-warnings')
+  cpp_warnings = get_option('dist-warnings')
 else
-  warning_level = get_option('warnings')
+  cpp_warnings = get_option('warnings')
 endif
+warning_level = get_option('warning_level').to_int()
+werror = get_option('werror')
 build_deprecated_api = get_option('build-deprecated-api')
 build_documentation_opt = get_option('build-documentation')
 build_documentation = build_documentation_opt == 'true' or \
@@ -159,25 +161,24 @@ if not (doc_perl_prop.returncode() == 0 and doc_perl_prop.stdout() == 'false')
 endif
 
 # Set compiler warnings.
+# Meson warns if any of the /W1, /W2, /W3, /W4, /Wall, -Wall, -Wextra, -Werror
+# compiler options are added with add_project_arguments().
+# Avoid such warnings, when possible.
+# See _warn_about_builtin_args() in meson/mesonbuild/interpreter/interpreter.py.
 warning_flags = []
-if warning_level == 'min'
-  if is_msvc
-    warning_flags = ['/W3']
-  else
-    warning_flags = ['-Wall']
+if cpp_warnings == 'min'
+  if warning_level == 0
+    warning_flags = is_msvc ? ['/W2'] : ['-Wall']
+   endif
+elif cpp_warnings == 'max' or cpp_warnings == 'fatal'
+  if warning_level < 3
+    warning_flags = is_msvc ? ['/W4'] : ['-pedantic', '-Wall', '-Wextra']
   endif
-elif warning_level == 'max' or warning_level == 'fatal'
-  if is_msvc
-    warning_flags = ['/W4']
-  else
-    warning_flags = '-pedantic -Wall -Wextra -Wsuggest-override -Wshadow -Wzero-as-null-pointer-constant -Wformat-security'.split()
+  if not is_msvc
+    warning_flags += '-Wsuggest-override -Wshadow -Wzero-as-null-pointer-constant -Wformat-security'.split()
   endif
-  if warning_level == 'fatal'
-    if is_msvc
-      warning_flags += ['/WX']
-    else
-      warning_flags += ['-Werror']
-    endif
+  if cpp_warnings == 'fatal' and not werror
+      warning_flags += is_msvc ? ['/WX'] : ['-Werror']
   endif
 endif
 
@@ -307,7 +308,8 @@ summary = [
   meson.project_name() + ' ' + meson.project_version(),
   '',
   '         Maintainer mode: @0@@1@'.format(maintainer_mode_opt, real_maintainer_mode),
-  '       Compiler warnings: @0@'.format(warning_level),
+  '       Compiler warnings: @0@ (warning_level: @1@, werror: @2@)'. \
+                             format(cpp_warnings, warning_level, werror),
   '    Build deprecated API: @0@'.format(build_deprecated_api),
   'Build HTML documentation: @0@@1@'.format(build_documentation_opt, real_build_documentation),
   '          XML validation: @0@@1@'.format(validate, explain_val),
