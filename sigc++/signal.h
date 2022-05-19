@@ -461,6 +461,12 @@ public:
   }
 
   /** Creates a functor that calls emit() on this signal.
+   *
+   * @note %sigc::signal does not derive from sigc::trackable in sigc++3.
+   * If you connect the returned functor (calling %emit() on signal1) to
+   * another signal (signal2) and then delete signal1, you must manually
+   * disconnect signal1 from signal2 before you delete signal1.
+   *
    * @code
    * sigc::mem_fun(mysignal, &sigc::signal_with_accumulator::emit)
    * @endcode

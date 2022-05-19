@@ -266,6 +266,11 @@ protected:
  * @ref sigc::signal_with_accumulator::connect() "sigc::signal::connect()".
  */
 
+//TODO: When we can break ABI, let signal_base derive from trackable again.
+// It does in sigc++2. Otherwise the slot returned from signal::make_slot()
+// is not automatically disconnected when the signal is deleted.
+// https://github.com/libsigcplusplus/libsigcplusplus/issues/80
+
 /** Base class for the @ref sigc::signal<T_return(T_arg...)> "sigc::signal" template.
  * %signal_base integrates most of the interface of the derived
  * @ref sigc::signal<T_return(T_arg...)> "sigc::signal" template.
