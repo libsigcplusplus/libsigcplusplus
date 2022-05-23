@@ -184,19 +184,28 @@ add_project_arguments(warning_flags, language: 'cpp')
 # MSVC: Ignore warnings that aren't really harmful, but make those
 #       that should not be overlooked stand out.
 if is_msvc
+  disable_warnings_list = [
+    '/EHsc',  # avoid warnings caused by exception handling model used
+  ]
+
   # Turn off harmless warnings but make potentially dangerous ones glaring,
   # distributed with GLib, if available
   use_recommended_pragmas =  cpp_compiler.get_supported_arguments('/FImsvc_recommended_pragmas.h')
   if use_recommended_pragmas.length() > 0
     add_project_arguments(use_recommended_pragmas, language: 'cpp')
   else
-    disabled_warning = cpp_compiler.get_supported_arguments(['/wd4244'])
-    add_project_arguments(disabled_warning, language: 'cpp')
+    disable_warnings_list += '/wd4244' # 'conversion' conversion from
+                                       # 'type1' to 'type2', possible loss of data
   endif
-  foreach wd : ['/EHsc', '/wd4267']
-    disabled_warning = cpp_compiler.get_supported_arguments(wd)
-    add_project_arguments(disabled_warning, language: 'cpp')
-  endforeach
+
+  if host_machine.cpu_family() == 'x86_64' or host_machine.cpu_family() == 'aarch64'
+    # 'var' : conversion from 'size_t' to 'type', possible loss of data (applies on 64-bit builds)
+    disable_warnings_list += '/wd4267'
+  endif
+  add_project_arguments(
+    cpp_compiler.get_supported_arguments(disable_warnings_list),
+    language: 'cpp'
+  )
 endif
 
 # Configure files
