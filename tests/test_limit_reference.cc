@@ -44,12 +44,12 @@ int main(int argc, char* argv[])
   handler();
   util->check_result(result_stream, "method()");
 
-  auto param =
+  sigc::slot<void> param =
     sigc::bind(sigc::slot<void, Derived&>(), std::ref(*instance));
   param();
   util->check_result(result_stream, "");
 
-  auto ret =
+  sigc::slot<Derived> ret =
     sigc::bind_return(sigc::slot<void>(), std::ref(*instance));
   ret();
   util->check_result(result_stream, "");
