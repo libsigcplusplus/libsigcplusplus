@@ -371,8 +371,14 @@ public:
 
 } /* namespace internal */
 
+// TODO: When we can break ABI, let signal_base instead of signal_with_accumulator
+// derive from trackable, as in sigc++2. One of them must derive from trackable.
+// Otherwise the slot returned from signal_with_accumulator::make_slot() is not
+// automatically disconnected when the signal is deleted.
+// https://github.com/libsigcplusplus/libsigcplusplus/issues/80
+
 /** Signal declaration.
- * signal_with_accumulator can be used to connect() slots that are invoked
+ * %signal_with_accumulator can be used to connect() slots that are invoked
  * during subsequent calls to emit(). Any functor or slot
  * can be passed into connect(). It is converted into a slot
  * implicitly.
@@ -396,7 +402,9 @@ public:
  * @ingroup signal
  */
 template<typename T_return, typename T_accumulator, typename... T_arg>
-class signal_with_accumulator : public signal_base
+class signal_with_accumulator
+: public signal_base
+, public trackable
 {
 public:
   using slot_type = slot<T_return(T_arg...)>;
@@ -462,11 +470,6 @@ public:
 
   /** Creates a functor that calls emit() on this signal.
    *
-   * @note %sigc::signal does not derive from sigc::trackable in sigc++3.
-   * If you connect the returned functor (calling %emit() on signal1) to
-   * another signal (signal2) and then delete signal1, you must manually
-   * disconnect signal1 from signal2 before you delete signal1.
-   *
    * @code
    * sigc::mem_fun(mysignal, &sigc::signal_with_accumulator::emit)
    * @endcode
@@ -485,19 +488,28 @@ public:
 
   signal_with_accumulator() = default;
 
-  signal_with_accumulator(const signal_with_accumulator& src) : signal_base(src) {}
+  signal_with_accumulator(const signal_with_accumulator& src) : signal_base(src), trackable(src) {}
 
-  signal_with_accumulator(signal_with_accumulator&& src) : signal_base(std::move(src)) {}
+  signal_with_accumulator(signal_with_accumulator&& src)
+  : signal_base(std::move(src)), trackable(std::move(src))
+  {
+  }
 
   signal_with_accumulator& operator=(const signal_with_accumulator& src)
   {
     signal_base::operator=(src);
+    // Don't call trackable::operator=(src).
+    // It calls notify_callbacks(). This signal is not destroyed.
     return *this;
   }
 
   signal_with_accumulator& operator=(signal_with_accumulator&& src)
   {
     signal_base::operator=(std::move(src));
+    if (src.impl_ != impl_)
+      src.notify_callbacks();
+    // Don't call trackable::operator=(std::move(src)).
+    // It calls notify_callbacks(). This signal is not destroyed.
     return *this;
   }
 };
@@ -531,7 +543,7 @@ public:
  * @par Example:
  * @code
  * void foo(int) {}
- * sigc::signal<void, long> sig;
+ * sigc::signal<void(long)> sig;
  * sig.connect(sigc::ptr_fun(&foo));
  * sig.emit(19);
  * @endcode

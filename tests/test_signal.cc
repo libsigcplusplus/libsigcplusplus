@@ -5,6 +5,7 @@
 #include "testutilities.h"
 #include <sigc++/trackable.h>
 #include <sigc++/signal.h>
+#include <memory>
 
 namespace
 {
@@ -110,6 +111,17 @@ test_make_slot()
   sig2.connect(sig.make_slot());
   sig2(3);
   util->check_result(result_stream, "foo(int 3) bar(float 3) foo(int 3) ");
+
+  // Delete a signal that has been connected to sig2.
+  sig2.clear();
+  sig2.connect(sigc::ptr_fun(&bar));
+  auto sig3 = std::make_unique<sigc::signal<int(int)>>();
+  sig3->connect(sigc::ptr_fun(&foo));
+  sig2.connect(sig3->make_slot());
+  sig2(2);
+  sig3.reset();
+  sig2(42);
+  util->check_result(result_stream, "bar(float 2) foo(int 2) bar(float 42) ");
 }
 
 void
