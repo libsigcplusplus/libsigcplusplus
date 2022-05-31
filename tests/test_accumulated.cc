@@ -79,10 +79,11 @@ test_empty_signal()
   util->check_result(result_stream, "Vector result (empty slot list): empty");
 }
 
+template<typename T_signal>
 void
 test_mean()
 {
-  sigc::signal<int(int)>::accumulated<arithmetic_mean_accumulator> sig;
+  typename T_signal::accumulated<arithmetic_mean_accumulator> sig;
 
   A a;
   sig.connect(sigc::ptr_fun(&foo));
@@ -137,7 +138,8 @@ main(int argc, char* argv[])
     return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;
 
   test_empty_signal();
-  test_mean();
+  test_mean<sigc::signal<int(int)>>();
+  test_mean<sigc::trackable_signal<int(int)>>();
   test_vector_accumulator();
 
   return util->get_result_and_delete_instance() ? EXIT_SUCCESS : EXIT_FAILURE;

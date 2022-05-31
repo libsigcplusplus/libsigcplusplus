@@ -372,7 +372,7 @@ public:
 } /* namespace internal */
 
 /** Signal declaration.
- * signal_with_accumulator can be used to connect() slots that are invoked
+ * %signal_with_accumulator can be used to connect() slots that are invoked
  * during subsequent calls to emit(). Any functor or slot
  * can be passed into connect(). It is converted into a slot
  * implicitly.
@@ -462,10 +462,11 @@ public:
 
   /** Creates a functor that calls emit() on this signal.
    *
-   * @note %sigc::signal does not derive from sigc::trackable in sigc++3.
-   * If you connect the returned functor (calling %emit() on signal1) to
-   * another signal (signal2) and then delete signal1, you must manually
+   * @note %sigc::signal does not derive from sigc::trackable.
+   * If you connect the returned functor that calls %emit() on signal1,
+   * to another signal (signal2) and then delete signal1, you must manually
    * disconnect signal1 from signal2 before you delete signal1.
+   * Alternatively, make a slot of a sigc::trackable_signal.
    *
    * @code
    * sigc::mem_fun(mysignal, &sigc::signal_with_accumulator::emit)
@@ -517,7 +518,8 @@ public:
  *
  * The template arguments determine the function signature of
  * the emit() function:
- * - @e T_return The desired return type of the emit() function. * - @e T_arg Argument types used in
+ * - @e T_return The desired return type of the emit() function.
+ * - @e T_arg Argument types used in
  * the definition of emit().
  *
  * For instance, to declare a signal whose connected slot returns void and takes
@@ -531,7 +533,7 @@ public:
  * @par Example:
  * @code
  * void foo(int) {}
- * sigc::signal<void, long> sig;
+ * sigc::signal<void(long)> sig;
  * sig.connect(sigc::ptr_fun(&foo));
  * sig.emit(19);
  * @endcode
@@ -621,6 +623,283 @@ public:
   signal& operator=(signal&& src)
   {
     signal_with_accumulator<T_return, accumulator_type, T_arg...>::operator=(std::move(src));
+    return *this;
+  }
+};
+
+// TODO: When we can break ABI, let signal_base derive from trackable, as in sigc++2,
+// and delete trackable_signal_with_accumulator and trackable_signal.
+// https://github.com/libsigcplusplus/libsigcplusplus/issues/80
+
+/** Signal declaration.
+ * %trackable_signal_with_accumulator can be used to connect() slots that are invoked
+ * during subsequent calls to emit(). Any functor or slot
+ * can be passed into connect(). It is converted into a slot implicitly.
+ *
+ * If you want to connect one signal to another, use make_slot()
+ * to retrieve a functor that emits the signal when invoked.
+ *
+ * Be careful if you directly pass one signal into the connect()
+ * method of another: a shallow copy of the signal is made and
+ * the signal's slots are not disconnected until both the signal
+ * and its clone are destroyed, which is probably not what you want!
+ *
+ * The following template arguments are used:
+ * - @e T_return The desired return type for the emit() function (may be overridden by the
+ * accumulator).
+ * - @e T_arg Argument types used in the definition of emit().
+ * - @e T_accumulator The accumulator type used for emission. The default
+ * @p void means that no accumulator should be used, for example if signal
+ * emission returns the return value of the last slot invoked.
+ *
+ * @newin{3,4}
+ *
+ * @ingroup signal
+ */
+template<typename T_return, typename T_accumulator, typename... T_arg>
+class trackable_signal_with_accumulator
+: public signal_base
+, public trackable
+{
+public:
+  using slot_type = slot<T_return(T_arg...)>;
+
+  /** Add a slot to the list of slots.
+   * Any functor or slot may be passed into connect().
+   * It will be converted into a slot implicitly.
+   * The returned connection may be stored for disconnection
+   * of the slot at some later point. It stays valid until
+   * the slot is disconnected from the signal.
+   * std::function<> and C++11 lambda expressions are functors.
+   * These are examples of functors that can be connected to a signal.
+   *
+   * %std::bind() creates a functor, but this functor typically has an
+   * %operator()() which is a variadic template.
+   * Our functor_trait can't deduce the result type
+   * of such a functor. If you first assign the return value of %std::bind()
+   * to a std::function, you can connect the std::function to a signal.
+   *
+   * @param slot_ The slot to add to the list of slots.
+   * @return A connection.
+   */
+  connection connect(const slot_type& slot_)
+  {
+    auto iter = signal_base::connect(slot_);
+    auto& slot_base = *iter;
+    return connection(slot_base);
+  }
+
+  /** Add a slot to the list of slots.
+   * @see connect(const slot_type& slot_).
+   */
+  connection connect(slot_type&& slot_)
+  {
+    auto iter = signal_base::connect(std::move(slot_));
+    auto& slot_base = *iter;
+    return connection(slot_base);
+  }
+
+  /** Triggers the emission of the signal.
+   * During signal emission all slots that have been connected
+   * to the signal are invoked unless they are manually set into
+   * a blocking state. The parameters are passed on to the slots.
+   * If @e T_accumulated is not @p void, an accumulator of this type
+   * is used to process the return values of the slot invocations.
+   * Otherwise, the return value of the last slot invoked is returned.
+   * @param a Arguments to be passed on to the slots.
+   * @return The accumulated return values of the slot invocations.
+   */
+  decltype(auto) emit(type_trait_take_t<T_arg>... a) const
+  {
+    using emitter_type = internal::signal_emit<T_return, T_accumulator, T_arg...>;
+    return emitter_type::emit(impl_, std::forward<type_trait_take_t<T_arg>>(a)...);
+  }
+
+  /** Triggers the emission of the signal (see emit()). */
+  decltype(auto) operator()(type_trait_take_t<T_arg>... a) const
+  {
+    return emit(std::forward<type_trait_take_t<T_arg>>(a)...);
+  }
+
+  /** Creates a functor that calls emit() on this signal.
+   *
+   * @code
+   * sigc::mem_fun(mysignal, &sigc::trackable_signal_with_accumulator::emit)
+   * @endcode
+   * yields the same result.
+   * @return A functor that calls emit() on this signal.
+   */
+  decltype(auto) make_slot() const
+  {
+    // TODO: Instead use std::invoke_result<> on the static emitter_type::emit()
+    using result_type = typename internal::member_method_result<
+      decltype(&trackable_signal_with_accumulator::emit)>::type;
+    return bound_mem_functor<result_type (trackable_signal_with_accumulator::*)(
+                               type_trait_take_t<T_arg>...) const,
+      type_trait_take_t<T_arg>...>(*this, &trackable_signal_with_accumulator::emit);
+  }
+
+  trackable_signal_with_accumulator() = default;
+
+  trackable_signal_with_accumulator(const trackable_signal_with_accumulator& src)
+  : signal_base(src), trackable(src)
+  {
+  }
+
+  trackable_signal_with_accumulator(trackable_signal_with_accumulator&& src)
+  : signal_base(std::move(src)), trackable(std::move(src))
+  {
+  }
+
+  trackable_signal_with_accumulator& operator=(const trackable_signal_with_accumulator& src)
+  {
+    signal_base::operator=(src);
+    // Don't call trackable::operator=(src).
+    // It calls notify_callbacks(). This signal is not destroyed.
+    return *this;
+  }
+
+  trackable_signal_with_accumulator& operator=(trackable_signal_with_accumulator&& src)
+  {
+    signal_base::operator=(std::move(src));
+    if (src.impl_ != impl_)
+      src.notify_callbacks();
+    // Don't call trackable::operator=(std::move(src)).
+    // It calls notify_callbacks(). This signal is not destroyed.
+    return *this;
+  }
+};
+
+/** %trackable_signal can be used to connect() slots that are invoked
+ * during subsequent calls to emit(). Any functor or slot
+ * can be passed into connect(). It is converted into a slot
+ * implicitly.
+ *
+ * If you want to connect one signal to another, use make_slot()
+ * to retrieve a functor that emits the signal when invoked.
+ *
+ * Be careful if you directly pass one signal into the connect()
+ * method of another: a shallow copy of the signal is made and
+ * the signal's slots are not disconnected until both the signal
+ * and its clone are destroyed, which is probably not what you want!
+ *
+ * The template arguments determine the function signature of
+ * the emit() function:
+ * - @e T_return The desired return type of the emit() function.
+ * - @e T_arg Argument types used in
+ * the definition of emit().
+ *
+ * For instance, to declare a %trackable_signal whose connected slot returns void and takes
+ * two parameters of bool and int:
+ * @code
+ * sigc::trackable_signal<void(bool, int)> some_signal;
+ * @endcode
+ *
+ * To specify an accumulator type the nested class trackable_signal::accumulated can be used.
+ *
+ * @par Example:
+ * @code
+ * void foo(int) {}
+ * sigc::trackable_signal<void(long)> sig;
+ * sig.connect(sigc::ptr_fun(&foo));
+ * sig.emit(19);
+ * @endcode
+ *
+ * @newin{3,4}
+ *
+ * @ingroup signal
+ */
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+template<typename T_return, typename... T_arg>
+class trackable_signal;
+#endif // DOXYGEN_SHOULD_SKIP_THIS
+
+template<typename T_return, typename... T_arg>
+class trackable_signal<T_return(T_arg...)>
+: public trackable_signal_with_accumulator<T_return, void, T_arg...>
+{
+public:
+  using accumulator_type = void;
+
+  /** Like @ref sigc::trackable_signal<T_return(T_arg...)> "sigc::trackable_signal"
+   * but the additional template parameter @e T_accumulator defines the accumulator
+   * type that should be used.
+   *
+   * An accumulator is a functor that uses a pair of special iterators
+   * to step through a list of slots and calculate a return value
+   * from the results of the slot invocations. The iterators' operator*()
+   * executes the slot. The return value is buffered, so that in an expression
+   * like @code a = (*i) * (*i); @endcode the slot is executed only once.
+   *
+   * @par Example 1:
+   * This accumulator calculates the arithmetic mean value:
+   * @code
+   * struct arithmetic_mean_accumulator
+   * {
+   *   template<typename T_iterator>
+   *   double operator()(T_iterator first, T_iterator last) const
+   *   {
+   *     double value_ = 0;
+   *     int n_ = 0;
+   *     for (; first != last; ++first, ++n_)
+   *       value_ += *first;
+   *     return value_ / n_;
+   *   }
+   * };
+   * @endcode
+   *
+   * @par Example 2:
+   * This accumulator stops signal emission when a slot returns zero:
+   * @code
+   * struct interruptable_accumulator
+   * {
+   *   template<typename T_iterator>
+   *   bool operator()(T_iterator first, T_iterator last) const
+   *   {
+   *     for (; first != last; ++first, ++n_)
+   *       if (!*first) return false;
+   *     return true;
+   *   }
+   * };
+   * @endcode
+   *
+   * @newin{3,4}
+   *
+   * @ingroup signal
+   */
+  template<typename T_accumulator>
+  class accumulated : public trackable_signal_with_accumulator<T_return, T_accumulator, T_arg...>
+  {
+  public:
+    accumulated() = default;
+    accumulated(const accumulated& src)
+    : trackable_signal_with_accumulator<T_return, T_accumulator, T_arg...>(src)
+    {
+    }
+  };
+
+  trackable_signal() = default;
+
+  trackable_signal(const trackable_signal& src)
+  : trackable_signal_with_accumulator<T_return, accumulator_type, T_arg...>(src)
+  {
+  }
+
+  trackable_signal(trackable_signal&& src)
+  : trackable_signal_with_accumulator<T_return, accumulator_type, T_arg...>(std::move(src))
+  {
+  }
+
+  trackable_signal& operator=(const trackable_signal& src)
+  {
+    trackable_signal_with_accumulator<T_return, accumulator_type, T_arg...>::operator=(src);
+    return *this;
+  }
+
+  trackable_signal& operator=(trackable_signal&& src)
+  {
+    trackable_signal_with_accumulator<T_return, accumulator_type, T_arg...>::operator=(
+      std::move(src));
     return *this;
   }
 };

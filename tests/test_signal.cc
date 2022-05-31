@@ -5,6 +5,7 @@
 #include "testutilities.h"
 #include <sigc++/trackable.h>
 #include <sigc++/signal.h>
+#include <memory>
 
 namespace
 {
@@ -62,11 +63,12 @@ bar(float i)
   return 1;
 }
 
+template<typename T_signal>
 void
 test_auto_disconnection()
 {
   // signal
-  sigc::signal<int(int)> sig;
+  T_signal sig;
 
   // connect some slots before emitting & test auto-disconnection
   {
@@ -110,6 +112,17 @@ test_make_slot()
   sig2.connect(sig.make_slot());
   sig2(3);
   util->check_result(result_stream, "foo(int 3) bar(float 3) foo(int 3) ");
+
+  // Delete a trackable_signal that has been connected to sig2.
+  sig2.clear();
+  sig2.connect(sigc::ptr_fun(&bar));
+  auto sig3 = std::make_unique<sigc::trackable_signal<int(int)>>();
+  sig3->connect(sigc::ptr_fun(&foo));
+  sig2.connect(sig3->make_slot());
+  sig2(2);
+  sig3.reset();
+  sig2(42);
+  util->check_result(result_stream, "bar(float 2) foo(int 2) bar(float 42) ");
 }
 
 void
@@ -158,7 +171,8 @@ main(int argc, char* argv[])
 
   test_empty_signal();
   test_simple();
-  test_auto_disconnection();
+  test_auto_disconnection<sigc::signal<int(int)>>();
+  test_auto_disconnection<sigc::trackable_signal<int(int)>>();
   test_reference();
   test_make_slot();
   test_clear_called_in_signal_handler();
