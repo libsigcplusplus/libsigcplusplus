@@ -83,7 +83,7 @@ template<typename T_signal>
 void
 test_mean()
 {
-  typename T_signal::accumulated<arithmetic_mean_accumulator> sig;
+  typename T_signal::template accumulated<arithmetic_mean_accumulator> sig;
 
   A a;
   sig.connect(sigc::ptr_fun(&foo));
