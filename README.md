@@ -7,8 +7,11 @@ allows you to define signals and to connect those signals to any
 callback function, either global or a member function, regardless of
 whether it is static or virtual.
 
-libsigc++ is used by gtkmm to wrap the GTK+ signal system. It does not
-depend on GTK+ or gtkmm.
+libsigc++ is used by gtkmm to wrap the GTK signal system. It does not
+depend on GTK or gtkmm.
+
+sigc++-2.0 and sigc++-3.0 are different parallel-installable ABIs.
+This file describes sigc++-3.0.
 
 See the [libsigc++ web site](https://libsigcplusplus.github.io/libsigcplusplus/)
 
@@ -31,7 +34,8 @@ packages.
 
 ## Building from a release tarball
 
-Building from the [libsigc++ release tarball](https://github.com/libsigcplusplus/libsigcplusplus/releases) is easier than building from git.
+Building from the [libsigc++ release tarball](https://github.com/libsigcplusplus/libsigcplusplus/releases)
+is easier than building from git.
 
 It's easiest to build with Meson, if the tarball was made with Meson,
 and to build with Autotools, if the tarball was made with Autotools.
@@ -50,10 +54,10 @@ For instance:
 ```sh
 # If the tarball was made with Autotools, and you want to rebuild the reference
 # documentation, you must enable maintainer-mode:
-$ meson --prefix=/usr/local --libdir=lib -Dmaintainer-mode=true your_builddir .
+$ meson --prefix=/some_directory --libdir=lib -Dmaintainer-mode=true your_builddir .
 
 # If the tarball was made with Meson, or you don't want to rebuild the docs:
-$ meson --prefix=/usr/local --libdir=lib your_builddir .
+$ meson --prefix=/some_directory --libdir=lib your_builddir .
 
 # then:
 $ cd your_builddir
@@ -68,10 +72,10 @@ $ ninja test
 For instance:
 ```sh
 # If the tarball was made with Autotools:
-$ ./configure --prefix=/usr/local
+$ ./configure --prefix=/some_directory
 
 # If the tarball was made with Meson, you must enable maintainer-mode:
-$ ./autogen.sh --prefix=/usr/local
+$ ./autogen.sh --prefix=/some_directory
 
 # then:
 $ make
@@ -85,8 +89,9 @@ $ make check
 Building from git can be difficult so you should prefer building from a release
 tarball unless you need to work on the libsigc++ code itself.
 
-jhbuild can be a good help. See the [jhbuild repo](https://gitlab.gnome.org/GNOME/jhbuild)
-and the [jhbuild wiki](https://wiki.gnome.org/Projects/Jhbuild).
+jhbuild can be a good help. See the [jhbuild repo](https://gitlab.gnome.org/GNOME/jhbuild),
+the [jhbuild wiki](https://wiki.gnome.org/Projects/Jhbuild) and
+the [jhbuild manual](https://gnome.pages.gitlab.gnome.org/jhbuild).
 
 ### Building from git with Meson
 
@@ -100,7 +105,7 @@ Don't call the builddir 'build'. There is a directory called 'build' with
 files used by Autotools.
 
 ```sh
-$ meson --prefix=/usr/local --libdir=lib your_builddir .
+$ meson --prefix=/some_directory --libdir=lib your_builddir .
 $ cd your_builddir
 $ ninja
 $ ninja install
@@ -116,7 +121,7 @@ You must have Autotools properly installed (autoconf, automake, etc) and you
 will also need [mm-common](https://gitlab.gnome.org/GNOME/mm-common/).
 
 ```sh
-$ ./autogen.sh --prefix=/usr/local
+$ ./autogen.sh --prefix=/some_directory
 $ make
 $ make install
 # You can build the examples and tests, and run the tests, like so:
