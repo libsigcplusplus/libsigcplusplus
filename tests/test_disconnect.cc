@@ -2,6 +2,12 @@
  *  Assigned to public domain.  Use as you wish without restriction.
  */
 
+// sigc::signal<>.slots() is deprecated, but let's keep the test if possible.
+// If libsigc++ is configured with -Dbuild-deprecated-api=false
+// (--disable-deprecated-api), SIGCXX_DISABLE_DEPRECATED is defined in
+// sigc++config.h. An undef at the start of this file has no effect.
+#undef SIGCXX_DISABLE_DEPRECATED
+
 #include "testutilities.h"
 #include <sigc++/trackable.h>
 #include <sigc++/signal.h>
@@ -103,11 +109,20 @@ int main(int argc, char* argv[])
   util->check_result(result_stream, "sig is connected to foo, bar (size=2): foo(2) bar(2) ");
 
   A a;                  // iterators stay valid after further connections.
+#ifndef SIGCXX_DISABLE_DEPRECATED
   cona = sig.slots().insert(conbar, sigc::mem_fun1(a, &A::foo));
+#else
+  cona = sig.connect(sigc::mem_fun1(a, &A::foo));
+#endif
   result_stream << "sig is connected to foo, A::foo, bar (size=" << sig.size() << "): ";
   sig(3);
+#ifndef SIGCXX_DISABLE_DEPRECATED
   util->check_result(result_stream,
     "sig is connected to foo, A::foo, bar (size=3): foo(3) A::foo(3) bar(3) ");
+#else
+  util->check_result(result_stream,
+    "sig is connected to foo, A::foo, bar (size=3): foo(3) bar(3) A::foo(3) ");
+#endif
 
   conbar->disconnect(); // manual disconnection
   result_stream << "sig is connected to foo, A::foo (size=" << sig.size() << "): ";
