@@ -221,7 +221,7 @@ pkg_conf_data.set('PACKAGE_VERSION', meson.project_version())
 pkg_conf_data.set('SIGCXX_API_VERSION', sigcxx_api_version)
 
 if not build_deprecated_api
-  pkg_conf_data.set('SIGCXX_DISABLE_DEPRECATED', true)
+  pkg_conf_data.set('SIGCXX_DISABLE_DEPRECATED', 1)
 endif
 pkg_conf_data.set('SIGCXX_MAJOR_VERSION', sigcxx_major_version)
 pkg_conf_data.set('SIGCXX_MINOR_VERSION', sigcxx_minor_version)

@@ -28,6 +28,12 @@
 //
 // If test_track_obj writes nothing and the return code is 0, the test has passed.
 
+// sigc::track_obj() is deprecated, but let's keep the test if possible.
+// If libsigc++ is configured with -Dbuild-deprecated-api=false
+// (--disable-deprecated-api), SIGCXX_DISABLE_DEPRECATED is defined in
+// sigc++config.h. An undef at the start of this file has no effect.
+#undef SIGCXX_DISABLE_DEPRECATED
+
 #include "testutilities.h"
 #include <string>
 #include <iostream>
@@ -35,7 +41,6 @@
 #include <cstdlib>
 #include <sigc++/adaptors/track_obj.h>
 #include <sigc++/signal.h>
-
 
 namespace
 {
@@ -127,7 +132,11 @@ int main(int argc, char* argv[])
   sigc::slot<std::string, int> sl2;
   {
     bar_group4 bar4;
+#ifndef SIGCXX_DISABLE_DEPRECATED
     sl1 = sigc::track_obj(Functor1(bar4), bar4);
+#else
+    sl1 = sigc::track_object(Functor1(bar4), bar4);
+#endif
     sl2 = sigc::track_object(Functor1(bar4), bar4);
     result_stream << sl1(-2) << ", " << sl2(2);
     util->check_result(result_stream, "negative, positive");
@@ -143,7 +152,11 @@ int main(int argc, char* argv[])
   auto psl4 = new sigc::slot<std::string, int, std::string>;
   bar_group4* pbar4 = new bar_group4;
   book* pbook4 = new book("A Book");
+#ifndef SIGCXX_DISABLE_DEPRECATED
   *psl3 = sigc::track_obj(Functor2(*pbar4, *pbook4), *pbar4, *pbook4);
+#else
+  *psl3 = sigc::track_object(Functor2(*pbar4, *pbook4), *pbar4, *pbook4);
+#endif
   *psl4 = sigc::track_object(Functor2(*pbar4, *pbook4), *pbar4, *pbook4);
   result_stream << (*psl3)(0, "Book title: ") << ", " << (*psl4)(1, "Title: ");
   util->check_result(result_stream, "zero, Book title: A Book, positive, Title: A Book");
@@ -170,8 +183,13 @@ int main(int argc, char* argv[])
   {
     book guest_book("karl");
     // sl1 = [&guest_book](std::ostringstream& stream){ stream << guest_book << "\n"; }; // no auto-disconnect
+#ifndef SIGCXX_DISABLE_DEPRECATED
     sl11 = sigc::track_obj(
       [&guest_book](std::ostringstream& stream) { stream << guest_book; }, guest_book);
+#else
+    sl11 = sigc::track_object(
+      [&guest_book](std::ostringstream& stream) { stream << guest_book; }, guest_book);
+#endif
     sl12 = sigc::track_object(
       [&guest_book](std::ostringstream& stream) { stream << guest_book; }, guest_book);
     sl11(result_stream);
@@ -191,8 +209,12 @@ int main(int argc, char* argv[])
     book guest_book("karl");
     // sl2 = [&guest_book] () { egon(guest_book); }; // no auto-disconnect
     // sl2 = std::bind(&egon, std::ref(guest_book)); // does not compile (gcc 4.6.3)
+#ifndef SIGCXX_DISABLE_DEPRECATED
     sl21 = sigc::track_obj([&guest_book]() { egon(guest_book); }, guest_book);
-    sl22 = sigc::track_obj([&guest_book]() { egon(guest_book); }, guest_book);
+#else
+    sl21 = sigc::track_object([&guest_book]() { egon(guest_book); }, guest_book);
+#endif
+    sl22 = sigc::track_object([&guest_book]() { egon(guest_book); }, guest_book);
     sl21();
     sl22();
     util->check_result(result_stream, "egon(string 'karl')egon(string 'egon was here')");
@@ -217,7 +239,11 @@ int main(int argc, char* argv[])
       // disconnected automatically if some_bar goes out of scope
       //some_signal.connect([&some_bar](){ foo_group4(some_bar); }); // no auto-disconnect
       //some_signal.connect(sigc::bind(&foo_group4, std::ref(some_bar))); // auto-disconnects, but we prefer C++11 lambda
+#ifndef SIGCXX_DISABLE_DEPRECATED
       some_signal.connect(sigc::track_obj([&some_bar](){ foo_group4(some_bar); }, some_bar));
+#else
+      some_signal.connect(sigc::track_object([&some_bar](){ foo_group4(some_bar); }, some_bar));
+#endif
       some_signal.connect(sigc::track_object([&some_bar](){ foo_group4(some_bar); }, some_bar));
       some_signal.emit();
       util->check_result(result_stream, "foo_group4(bar_group4&)foo_group4(bar_group4&)");

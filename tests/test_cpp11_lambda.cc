@@ -32,7 +32,7 @@
 // The only real disadvantage of the C++11 lambda expressions is that a slot that
 // contains an object derived from sigc::trackable is not automatically disconnected
 // when the object is deleted, if a reference to the object is stored in a C++11
-// lambda expression, connected to the slot. But if you use sigc::track_obj(),
+// lambda expression, connected to the slot. But if you use sigc::track_object(),
 // the slot is automatically disconnected. Thus, the disadvantage is insignificant.
 //
 // To test the C++11 lambda expressions with gcc 4.6.3 (and probably some later
@@ -265,13 +265,13 @@ int main(int argc, char* argv[])
   // Here's an area where the libsigc++ lambda expressions are advantageous.
   // If you want to auto-disconnect a slot with a C++11 lambda expression
   // that contains references to sigc::trackable-derived objects, you must use
-  // sigc::track_obj().
+  // sigc::track_object().
   sigc::slot<void, std::ostringstream&> sl1;
   {
     book guest_book("karl");
     //sl1 = (sigc::var(std::cout) << std::ref(guest_book) << sigc::var("\n"));
     // sl1 = [&guest_book](std::ostringstream& stream){ stream << guest_book << "\n"; }; // no auto-disconnect
-    sl1 = sigc::track_obj([&guest_book](std::ostringstream& stream){ stream << guest_book << "\n"; }, guest_book);
+    sl1 = sigc::track_object([&guest_book](std::ostringstream& stream){ stream << guest_book << "\n"; }, guest_book);
     sl1(result_stream);
     util->check_result(result_stream, "karl\n");
 
@@ -323,7 +323,7 @@ int main(int argc, char* argv[])
     //sl2 = sigc::group(&egon, std::ref(guest_book));
     // sl2 = [&guest_book] () { egon(guest_book); }; // no auto-disconnect
     // sl2 = std::bind(&egon, std::ref(guest_book)); // does not compile (gcc 4.6.3)
-    sl2 = sigc::track_obj([&guest_book] () { egon(guest_book); }, guest_book);
+    sl2 = sigc::track_object([&guest_book] () { egon(guest_book); }, guest_book);
     sl2();
     util->check_result(result_stream, "egon(string 'karl')");
 
@@ -343,7 +343,7 @@ int main(int argc, char* argv[])
     // sl2 = std::bind(&egon, std::ref(guest_book)); // does not compile (gcc 4.6.3)
     auto fn2 = std::bind(&egon, std::ref(guest_book));
     //sl2 = fn2; // no auto-disconnect
-    sl2 = sigc::track_obj(fn2, guest_book);
+    sl2 = sigc::track_object(fn2, guest_book);
     sl2();
     util->check_result(result_stream, "egon(string 'charlie')");
 
@@ -487,7 +487,7 @@ int main(int argc, char* argv[])
       // disconnected automatically if some_bar goes out of scope
       //some_signal.connect([&some_bar](){ foo_group4(some_bar); }); // no auto-disconnect
       //some_signal.connect(sigc::bind(&foo_group4, std::ref(some_bar))); // auto-disconnects, but we prefer C++11 lambda
-      some_signal.connect(sigc::track_obj([&some_bar](){ foo_group4(some_bar); }, some_bar));
+      some_signal.connect(sigc::track_object([&some_bar](){ foo_group4(some_bar); }, some_bar));
       some_signal.emit();
       util->check_result(result_stream, "foo_group4(bar_group4&)");
     }
