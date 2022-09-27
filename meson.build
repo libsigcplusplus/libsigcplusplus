@@ -50,13 +50,15 @@ if not python_version.version_compare(python_version_req)
 endif
 
 # Do we build from a git repository?
-# Suppose we do if and only if a '.git' directory or file exists.
+# Suppose we do if and only if the meson.build file is tracked by git.
 cmd_py = '''
-import os
-import sys
-sys.exit(os.path.isdir("@0@") or os.path.isfile("@0@"))
-'''.format(project_source_root / '.git')
-is_git_build = run_command(python3, '-c', cmd_py, check: false).returncode() != 0
+import shutil, subprocess, sys
+if not shutil.which('git'):
+  sys.exit(1)
+cmd = [ 'git', 'ls-files', '--error-unmatch', 'meson.build' ]
+sys.exit(subprocess.run(cmd, cwd="@0@", stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL).returncode)
+'''.format(project_source_root)
+is_git_build = run_command(python3, '-c', cmd_py, check: false).returncode() == 0
 
 # Are we testing a dist tarball while it's being built?
 # There ought to be a better way. https://github.com/mesonbuild/meson/issues/6866
