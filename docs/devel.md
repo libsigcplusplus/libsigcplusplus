@@ -2,18 +2,20 @@
 layout: default
 title: Development
 ---
-## Mailing List
+## Discussion
 
-There is a mailing list, [libsigc-list@gnome.org](http://mail.gnome.org/mailman/listinfo/libsigc-list) for libsigc++.
-To subscribe, use the web [page](http://mail.gnome.org/mailman/listinfo/libsigc-list).
+You can discuss libsigc++ questions on GNOME's [Discourse](https://discourse.gnome.org)
+instance, under the [Platform/Language bindings](https://discourse.gnome.org/c/platform/language-bindings)
+category with a _cplusplus_ tag.
 
-Members can post directly, but all other traffic is moderated.
-There is an archive of messages,
-[here](http://mail.gnome.org/archives/libsigc-list/).
+There is an old mailing list, which is now closed for new posts.
+There is an archive of messages [here](http://mail.gnome.org/archives/libsigc-list/).
+Please do not email the developers directly.
 
 ## Contributing
 
-Please report bugs as GitHub [issues](https://github.com/libsigcplusplus/libsigcplusplus/issues), or provide improvements as GitHub [pull requests](https://github.com/libsigcplusplus/libsigcplusplus/pulls).
+Please report bugs as GitHub [issues](https://github.com/libsigcplusplus/libsigcplusplus/issues),
+or provide improvements as GitHub [pull requests](https://github.com/libsigcplusplus/libsigcplusplus/pulls).
 
 ## Git
 
