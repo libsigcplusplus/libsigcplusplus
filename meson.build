@@ -83,6 +83,7 @@ build_documentation_opt = get_option('build-documentation')
 build_documentation = build_documentation_opt == 'true' or \
                      (build_documentation_opt == 'if-maintainer-mode' and maintainer_mode)
 build_examples = get_option('build-examples')
+build_tests = get_option('build-tests')
 do_benchmark = get_option('benchmark')
 
 # Installation directories are relative to {prefix}.
@@ -261,7 +262,9 @@ can_add_dist_script = not meson.is_subproject() or meson.version().version_compa
 subdir('MSVC_NMake')
 subdir('sigc++')
 subdir('examples')
-subdir('tests')
+if build_tests
+  subdir('tests')
+endif
 subdir('docs/docs/reference')
 subdir('docs/docs/manual')
 
@@ -335,6 +338,7 @@ summary = [
   '          XML validation: @0@@1@'.format(validate, explain_val),
   '               Build PDF: @0@@1@'.format(build_pdf, explain_pdf),
   '  Build example programs: @0@'.format(build_examples),
+  '     Build test programs: @0@'.format(build_tests),
   '               Benchmark: @0@'.format(do_benchmark),
   'Directories:',
   '                  prefix: @0@'.format(install_prefix),
