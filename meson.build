@@ -259,9 +259,7 @@ can_add_dist_script = not meson.is_subproject() or meson.version().version_compa
 subdir('MSVC_NMake')
 subdir('sigc++')
 subdir('examples')
-if build_tests
-  subdir('tests')
-endif
+subdir('tests')
 subdir('docs/reference')
 subdir('docs/manual')
 

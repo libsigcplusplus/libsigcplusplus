@@ -1,6 +1,6 @@
 # tests
 
-# input: sigcxx_own_dep, do_benchmark, can_benchmark, benchmark_dep
+# input: sigcxx_own_dep, build_tests, do_benchmark, can_benchmark, benchmark_dep
 
 benchmark_timeout = 100
 
@@ -59,10 +59,13 @@ foreach ex : test_programs
   exe_file = executable(ex_name, ex_sources,
     dependencies: sigcxx_own_dep,
     implicit_include_directories: false,
-    build_by_default: true
+    build_by_default: build_tests,
   )
 
-  test(ex_name, exe_file)
+  # If exe_file is a test program, it is built by default unconditionally.
+  if build_tests
+    test(ex_name, exe_file)
+  endif
 endforeach
 
 if can_benchmark
