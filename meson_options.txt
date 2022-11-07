@@ -14,5 +14,7 @@ option('build-pdf', type: 'boolean', value: false,
   description: 'Build tutorial PDF file')
 option('build-examples', type: 'boolean', value: true,
   description: 'Build example programs')
+option('build-tests', type: 'boolean', value: true,
+  description: 'Build test programs')
 option('benchmark', type: 'boolean', value: false,
   description: 'Build and test benchmark program')
