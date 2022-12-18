@@ -1,0 +1,76 @@
+# Sample workflow for building and deploying a Jekyll site to GitHub Pages
+
+# Copied from https://github.com/libsigcplusplus/libsigcplusplus/actions/new
+# and changed. Actions -> New workflow -> Pages -> GitHub Pages Jekyll
+
+name: Deploy Jekyll with GitHub Pages dependencies preinstalled
+
+# 2022-12-17: ubuntu-latest = ubuntu-22.04
+on:
+  # Runs on pushes targeting the default branch
+  push:
+    branches: ["master"]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow one concurrent deployment
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  # Build job
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Build
+        run: |
+          # Prevent blocking apt install on a question during configuring of tzdata.
+          export ENV DEBIAN_FRONTEND=noninteractive
+          sudo apt update
+          sudo apt install libxml2-utils docbook5-xml docbook-xsl mm-common g++ meson ninja-build python3-setuptools python3-pip --yes
+          meson -Dbuild-documentation=true -Dbuild-examples=false -Dbuild-tests=false _build
+          meson compile -C _build
+      - name: Collect Documentation
+        # Collect all documentation to be published.
+        run: |
+          mkdir _publish _publish/_layouts _publish/pix _publish/manual _publish/reference
+          # Copy files from the git repository.
+          cp docs/_config.yml docs/*.md docs/style.css _publish
+          cp docs/_layouts/*.html _publish/_layouts
+          cp docs/pix/logo.gif _publish/pix
+          # Move generated documentation.
+          mv _build/docs/docs/manual/html _publish/manual
+          mv _build/docs/docs/reference/html _publish/reference
+      - name: Setup Pages
+        uses: actions/configure-pages@v2
+      - name: Build with Jekyll
+        uses: actions/jekyll-build-pages@v1
+        with:
+          source: ./_publish
+          destination: ./_site
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
+
+  # Deployment job
+  # Publish documentation at https://libsigcplusplus.github.io/libsigcplusplus/
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1
+
