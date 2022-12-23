@@ -1,3 +1,29 @@
+2.12.0 (stable)
+
+* Add track_object(), deprecate track_obj()
+  (Kjell Ahlstedt) Issue #78 (LordVolumeForm)
+
+Examples, tests:
+* examples/member_method: Make on_print() non-virtual
+  (Kjell Ahlstedt)
+* test_limit_reference.cc: Don't use auto where a slot is required
+  (Kjell Ahlstedt) Issue #44 (Murray Cumming)
+
+Build:
+* Meson: Avoid configuration warnings
+  (Kjell Ahlstedt)
+* Meson, MSVC: Compensate for the lack of msvc_recommended_pragmas.h
+  (Chun-wei Fan)
+* Fix build with -Dbuild-deprecated-api=false
+  (Kjell Ahlstedt) Issue #82 (bbhtt)
+* Meson: Detect if we build from a git subtree
+  (William Roy) Merge request gtkmm!72
+* Meson: Simplify lookup of python command
+  (wael444) Pull request #83
+* Meson: Add build_tests option
+  (Fabrice Fontaine) Pull request #84
+
+
 2.10.8 (stable)
 
 Build:
