@@ -241,9 +241,10 @@ configure_file(
   configuration: pkg_conf_data,
 )
 
+sigcxxconfig_h_meson = files('sigc++config.h.meson')
 install_includeconfigdir = install_libdir / sigcxx_pcname / 'include'
-sigcxxconfig_h = configure_file(
-  input: 'sigc++config.h.meson',
+configure_file(
+  input: sigcxxconfig_h_meson,
   output: 'sigc++config.h',
   configuration: pkg_conf_data,
   install_dir: install_includeconfigdir,
