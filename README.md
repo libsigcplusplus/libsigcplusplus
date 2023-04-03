@@ -52,10 +52,10 @@ files used by Autotools.
 For instance:
 ```sh
 # If the tarball was made with Autotools, you must enable maintainer-mode:
-$ meson --prefix=/some_directory --libdir=lib -Dmaintainer-mode=true your_builddir .
+$ meson setup --prefix=/some_directory --libdir=lib -Dmaintainer-mode=true your_builddir .
 
 # If the tarball was made with Meson:
-$ meson --prefix=/some_directory --libdir=lib your_builddir .
+$ meson setup --prefix=/some_directory --libdir=lib your_builddir .
 
 # then:
 $ cd your_builddir
@@ -103,7 +103,7 @@ Don't call the builddir 'build'. There is a directory called 'build' with
 files used by Autotools.
 
 ```sh
-$ meson --prefix=/some_directory --libdir=lib your_builddir .
+$ meson setup --prefix=/some_directory --libdir=lib your_builddir .
 $ cd your_builddir
 $ ninja
 $ ninja install
