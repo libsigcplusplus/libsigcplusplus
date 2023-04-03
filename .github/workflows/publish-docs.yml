@@ -38,7 +38,7 @@ jobs:
           export ENV DEBIAN_FRONTEND=noninteractive
           sudo apt update
           sudo apt install libxml2-utils docbook5-xml docbook-xsl mm-common g++ meson ninja-build python3-setuptools python3-pip --yes
-          meson -Dbuild-documentation=true -Dbuild-examples=false -Dbuild-tests=false _build
+          meson setup -Dbuild-documentation=true -Dbuild-examples=false -Dbuild-tests=false _build
           meson compile -C _build
       - name: Collect Documentation
         # Collect all documentation to be published.

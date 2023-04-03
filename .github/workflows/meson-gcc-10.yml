@@ -19,7 +19,7 @@ jobs:
         # Install it with pip3 instead of apt.
         sudo pip3 install "meson>=0.55.0"
         export CXX=g++-10
-        meson -Dwarnings=fatal -Dwarning_level=3 -Dwerror=true _build
+        meson setup -Dwarnings=fatal -Dwarning_level=3 -Dwerror=true _build
         cd _build
         meson compile
     - name: Test
