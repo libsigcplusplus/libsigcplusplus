@@ -264,7 +264,7 @@ private:
  * class MyClass
  * {
  * public:
- *   typedef sigc::signal<void> MySignalType;
+ *   using MySignalType = sigc::signal<void()>;
  *   MySignalType get_my_signal() { return m_my_signal; }
  * private:
  *   MySignalType m_my_signal;

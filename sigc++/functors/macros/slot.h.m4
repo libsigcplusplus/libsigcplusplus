@@ -37,6 +37,11 @@ FOR(1,$1,[
  *
  * You should use the more convenient unnumbered sigc::slot template.
  *
+ * @deprecated Please use the syntax similar to that used by std::function<>:
+ * @code
+ * sigc::slot<void(bool, int)> some_slot;
+ * @endcode
+ *
  * @ingroup slot
  */
 template <LIST(class T_return, LOOP(class T_arg%1, $1))>
@@ -561,7 +566,7 @@ FOR(0,eval(CALL_SIZE-1),[[SLOT(%1,CALL_SIZE)]])
  * sigc::slot<void(bool, int)> some_slot;
  * @endcode
  *
- * Alternatively, you may use this syntax:
+ * Alternatively, you may use this deprecated syntax:
  * @code
  * sigc::slot<void, bool, int> some_slot;
  * @endcode

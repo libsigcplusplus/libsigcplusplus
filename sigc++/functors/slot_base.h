@@ -186,15 +186,19 @@ struct SIGC_API slot_do_unbind
  *
  * Use the sigc::mem_fun() or sigc::ptr_fun() template functions to get a sigc::slot, like so:
  * @code
- * sigc::slot<void, int> sl = sigc::mem_fun(someobj, &SomeClass::somemethod);
+ * sigc::slot<void(int)> sl = sigc::mem_fun(someobj, &SomeClass::somemethod);
  * @endcode
  * or
  * @code
- * sigc::slot<void, int> sl = sigc::ptr_fun(&somefunction);
+ * sigc::slot<void(int)> sl = sigc::ptr_fun(&somefunction);
  * @endcode
  * or, in gtkmm,
  * @code
  * m_Button.signal_clicked().connect( sigc::mem_fun(*this, &MyWindow::on_button_clicked) );
+ * @endcode
+ * Alternatively, you may use this deprecated syntax:
+ * @code
+ * sigc::slot<void, int> sl = sigc::mem_fun(someobj, &SomeClass::somemethod);
  * @endcode
  *
  * The compiler will complain if SomeClass::somemethod, etc. have the wrong signature.
@@ -211,7 +215,7 @@ struct SIGC_API slot_do_unbind
  * sigc::mem_fun() and sigc::ptr_fun() return functors, but those functors are
  * not slots.
  * @code
- * sigc::slot<void, int> sl = sigc::mem_fun(someobj, &SomeClass::somemethod);
+ * sigc::slot<void(int)> sl = sigc::mem_fun(someobj, &SomeClass::somemethod);
  * @endcode
  * is not equivalent to
  * @code
@@ -237,10 +241,11 @@ struct SIGC_API slot_do_unbind
  *
  * If you connect a C++11 lambda expression or a std::function<> instance to
  * a signal or assign it to a slot,
- * - With libsigc++ versions before 2.6, if the return type is not void,
+ * - with libsigc++ versions before 2.6, if the return type is not void,
      you must use the #SIGC_FUNCTORS_DEDUCE_RESULT_TYPE_WITH_DECLTYPE macro,
  * - if your functor contains references to sigc::trackable derived objects,
- *   those objects will not be tracked, unless you also use sigc::track_obj().
+ *   those objects will not be tracked, unless you also use sigc::track_object()
+ *   or sigc::track_obj().
  *
  * @ingroup sigcfunctors
  */

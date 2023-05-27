@@ -310,6 +310,11 @@ FOR(1,$1,[
  *
  * You should use the more convenient unnumbered sigc::signal template.
  *
+ * @deprecated Please use the syntax similar to that used by std::function<>:
+ * @code
+ * sigc::signal<void(bool, int)> some_signal;
+ * @endcode
+ *
  * @ingroup signal
  */
 template <LIST(class T_return, LOOP(class T_arg%1, $1), class T_accumulator=nil)>
@@ -474,7 +479,7 @@ FOR(1,$1,[
  *
  * @deprecated Please use the syntax similar to that used by std::function<>:
  * @code
- * sigc::slot<void(bool, int)> some_slot;
+ * sigc::signal<void(bool, int)> some_signal;
  * @endcode
  *
  * @ingroup signal
@@ -489,7 +494,7 @@ class signal],[dnl
  *
  * @deprecated Please use the syntax similar to that used by std::function<>:
  * @code
- * sigc::slot<void(bool, int)> some_slot;
+ * sigc::signal<void(bool, int)> some_signal;
  * @endcode
 ifelse($1, $2,[dnl
  *
@@ -586,7 +591,9 @@ ifelse($1, $2,[dnl
 };
 
 /**
- * This specialization allow use of the  sigc::signal<R(Args...)> syntax,
+ * This specialization allows use of the sigc::signal<R(Args...)> syntax.
+ *
+ * @ingroup signal
  */
 template <LIST(class T_return, LOOP(class T_arg%1, $1))>
 class signal<T_return(LIST(LOOP(T_arg%1, $1)))>
