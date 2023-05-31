@@ -25,7 +25,14 @@
 namespace sigc
 {
 
-/** This may be used to disconnect the referred slot at any time (disconnect()).
+/** Convenience class for safe disconnection.
+ *
+ * This may be used to disconnect the referred slot at any time (disconnect()).
+ * @ref sigc::signal_with_accumulator::connect() "sigc::signal::connect()"
+ * returns a %sigc::connection.
+ * @code
+ * sigc::connection conn = sig.connect(sigc::mem_fun(a, &A::foo));
+ * @endcode
  * If the slot has already been destroyed, disconnect() does nothing. empty() or
  * operator bool() can be used to test whether the connection is
  * still active. The connection can be blocked (block(), unblock()).
