@@ -13,25 +13,25 @@
 # 	$(CC)|$(CXX) $(cflags) /Fo$(destdir) /c @<<
 # $<
 # <<
-{..\sigc++\}.cc{vs$(VSVER)\$(CFG)\$(PLAT)\sigc\}.obj:
+{..\sigc++\}.cc{vs$(VSVER)\$(CFG)\$(PLAT)\$(LIBSIGC_INTDIR)\}.obj:
 	@if not exist .\sigc++config.h if not exist ..\untracked\MSVC_NMake\sigc++config.h $(MAKE) /f Makefile.vc CFG=$(CFG) sigc++config.h
 	@if not exist $(@D)\ md $(@D)
 	$(CXX) $(LIBSIGCPP_CFLAGS) /Fo$(@D)\ /Fd$(@D)\ /c @<<
 $<
 <<
 
-{..\sigc++\functors\}.cc{vs$(VSVER)\$(CFG)\$(PLAT)\sigc\}.obj:
+{..\sigc++\functors\}.cc{vs$(VSVER)\$(CFG)\$(PLAT)\$(LIBSIGC_INTDIR)\}.obj:
 	@if not exist .\sigc++config.h if not exist ..\untracked\MSVC_NMake\sigc++config.h $(MAKE) /f Makefile.vc CFG=$(CFG) sigc++config.h
 	@if not exist $(@D)\ md $(@D)
 	$(CXX) $(LIBSIGCPP_CFLAGS) /Fo$(@D)\ /Fd$(@D)\  /c @<<
 $<
 <<
 
-{.}.rc{vs$(VSVER)\$(CFG)\$(PLAT)\sigc\}.res:
+{.}.rc{vs$(VSVER)\$(CFG)\$(PLAT)\$(LIBSIGC_INTDIR)\}.res:
 	@if not exist $(@D)\ md $(@D)
 	rc /fo$@ $<
 
-{..\untracked\MSVC_NMake\}.rc{vs$(VSVER)\$(CFG)\$(PLAT)\sigc\}.res:
+{..\untracked\MSVC_NMake\}.rc{vs$(VSVER)\$(CFG)\$(PLAT)\$(LIBSIGC_INTDIR)\}.res:
 	@if not exist $(@D)\ md $(@D)
 	rc /fo$@ $<
 
@@ -42,13 +42,20 @@ $<
 # $(dependent_objects)
 # <<
 # 	@-if exist $@.manifest mt /manifest $@.manifest /outputresource:$@;2
+!ifdef STATIC
+$(LIBSIGC_LIB): $(libsigc_OBJS)
+	lib $(ARFLAGS) -out:$@ @<<
+$(libsigc_OBJS)
+<<
+!else
 $(LIBSIGC_LIB): $(LIBSIGC_DLL)
 
-$(LIBSIGC_DLL): $(sigc_dll_OBJS)
+$(LIBSIGC_DLL): $(libsigc_OBJS)
 	link /DLL $(LDFLAGS) /implib:$(LIBSIGC_LIB) -out:$@ @<<
-$(sigc_dll_OBJS)
+$(libsigc_OBJS)
 <<
 	@-if exist $@.manifest mt /manifest $@.manifest /outputresource:$@;2
+!endif
 
 # Rules for linking Executables
 # Format is as follows (the mt command is needed for MSVC 2005/2008 builds):
@@ -65,13 +72,13 @@ clean:
 	@-del /f /q vs$(VSVER)\$(CFG)\$(PLAT)\*.ilk
 	@-del /f /q vs$(VSVER)\$(CFG)\$(PLAT)\*.exp
 	@-del /f /q vs$(VSVER)\$(CFG)\$(PLAT)\*.lib
-	@-if exist vs$(VSVER)\$(CFG)\$(PLAT)\sigc-tests del /f /q vs$(VSVER)\$(CFG)\$(PLAT)\sigc-tests\*.obj
-	@-if exist vs$(VSVER)\$(CFG)\$(PLAT)\sigc-tests del /f /q vs$(VSVER)\$(CFG)\$(PLAT)\sigc-tests\*.pdb
-	@-del /f /q vs$(VSVER)\$(CFG)\$(PLAT)\sigc-examples\*.obj
-	@-del /f /q vs$(VSVER)\$(CFG)\$(PLAT)\sigc-examples\*.pdb
-	@-del /f /q vs$(VSVER)\$(CFG)\$(PLAT)\sigc\*.res
-	@-del /f /q vs$(VSVER)\$(CFG)\$(PLAT)\sigc\*.obj
-	@-del /f /q vs$(VSVER)\$(CFG)\$(PLAT)\sigc\*.pdb
-	@-if exist vs$(VSVER)\$(CFG)\$(PLAT)\sigc-tests rd vs$(VSVER)\$(CFG)\$(PLAT)\sigc-tests
-	@-rd vs$(VSVER)\$(CFG)\$(PLAT)\sigc-examples
-	@-rd vs$(VSVER)\$(CFG)\$(PLAT)\sigc
+	@-if exist vs$(VSVER)\$(CFG)\$(PLAT)\$(SIGC_TESTS_INTDIR) del /f /q vs$(VSVER)\$(CFG)\$(PLAT)\$(SIGC_TESTS_INTDIR)\*.obj
+	@-if exist vs$(VSVER)\$(CFG)\$(PLAT)\$(SIGC_TESTS_INTDIR) del /f /q vs$(VSVER)\$(CFG)\$(PLAT)\$(SIGC_TESTS_INTDIR)\*.pdb
+	@-del /f /q vs$(VSVER)\$(CFG)\$(PLAT)\$(SIGC_EX_INTDIR)\*.obj
+	@-del /f /q vs$(VSVER)\$(CFG)\$(PLAT)\$(SIGC_EX_INTDIR)\*.pdb
+	@-del /f /q vs$(VSVER)\$(CFG)\$(PLAT)\$(LIBSIGC_INTDIR)\*.res
+	@-del /f /q vs$(VSVER)\$(CFG)\$(PLAT)\$(LIBSIGC_INTDIR)\*.obj
+	@-del /f /q vs$(VSVER)\$(CFG)\$(PLAT)\$(LIBSIGC_INTDIR)\*.pdb
+	@-if exist vs$(VSVER)\$(CFG)\$(PLAT)\$(SIGC_TESTS_INTDIR) rd vs$(VSVER)\$(CFG)\$(PLAT)\$(SIGC_TESTS_INTDIR)
+	@-rd vs$(VSVER)\$(CFG)\$(PLAT)\$(SIGC_EX_INTDIR)
+	@-rd vs$(VSVER)\$(CFG)\$(PLAT)\$(LIBSIGC_INTDIR)
