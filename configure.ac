@@ -73,6 +73,8 @@ AS_IF([test "x$enable_benchmark" = xyes],[
   AX_BOOST_TIMER
 ])
 
+AC_SUBST(MSVC_STATIC_CXXFLAG, '')
+
 AC_CONFIG_FILES([Makefile
                  ${SIGCXX_MODULE_NAME}.pc:sigc++.pc.in
                  ${SIGCXX_MODULE_NAME}-uninstalled.pc:sigc++-uninstalled.pc.in
