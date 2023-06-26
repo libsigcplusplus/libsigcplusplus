@@ -7,9 +7,9 @@ install: all
 	@if not exist $(PREFIX)\include\sigc++-$(LIBSIGC_MAJOR_VERSION).$(LIBSIGC_MINOR_VERSION)\sigc++\adaptors\lambda\ @md $(PREFIX)\include\sigc++-$(LIBSIGC_MAJOR_VERSION).$(LIBSIGC_MINOR_VERSION)\sigc++\adaptors\lambda
 	@if not exist $(PREFIX)\include\sigc++-$(LIBSIGC_MAJOR_VERSION).$(LIBSIGC_MINOR_VERSION)\sigc++\functors\ @md $(PREFIX)\include\sigc++-$(LIBSIGC_MAJOR_VERSION).$(LIBSIGC_MINOR_VERSION)\sigc++\functors
 	@if not exist $(PREFIX)\include\sigc++-$(LIBSIGC_MAJOR_VERSION).$(LIBSIGC_MINOR_VERSION)\sigc++\tuple-utils\ @md $(PREFIX)\include\sigc++-$(LIBSIGC_MAJOR_VERSION).$(LIBSIGC_MINOR_VERSION)\sigc++\tuple-utils
-	@copy /b vs$(VSVER)\$(CFG)\$(PLAT)\$(LIBSIGC_LIBNAME).dll "$(PREFIX)\bin"
-	@copy /b vs$(VSVER)\$(CFG)\$(PLAT)\$(LIBSIGC_LIBNAME).pdb "$(PREFIX)\bin"
-	@copy /b vs$(VSVER)\$(CFG)\$(PLAT)\$(LIBSIGC_LIBNAME).lib "$(PREFIX)\lib"
+	@if "$(STATIC)" == "" copy /b $(LIBSIGC_DLL) $(PREFIX)\bin
+	@if "$(STATIC)" == "" copy /b $(LIBSIGC_DLL:.dll=.pdb) $(PREFIX)\bin
+	@copy /b $(LIBSIGC_LIB) $(PREFIX)\lib
 	@copy "..\sigc++\sigc++.h" "$(PREFIX)\include\sigc++-$(LIBSIGC_MAJOR_VERSION).$(LIBSIGC_MINOR_VERSION)\sigc++\"
 	@for %h in ($(LIBSIGC_INT_HDRS)) do @copy "..\sigc++\%h" "$(PREFIX)\include\sigc++-$(LIBSIGC_MAJOR_VERSION).$(LIBSIGC_MINOR_VERSION)\sigc++\%h"
 	@for %d in (..\sigc++ ..\untracked\sigc++ vs$(VSVER)\$(CFG)\$(PLAT)\sigc\sigc++) do @(for %h in ($(base_built_h)) do @if exist %d\%h copy "%d\%h" "$(PREFIX)\include\sigc++-$(LIBSIGC_MAJOR_VERSION).$(LIBSIGC_MINOR_VERSION)\sigc++\%h")
