@@ -43,6 +43,18 @@ cpp_compiler = meson.get_compiler('cpp')
 is_msvc = cpp_compiler.get_id() == 'msvc'
 python3 = find_program('python3', version: '>=3.5')
 
+# MSVC: We currently do not support shared and static builds at the,
+#       same time, since we need different defines/cflags for proper
+#       linking.
+if is_msvc
+  if get_option('default_library') == 'both'
+    error('-Ddefault_library=both is currently not supported for Visual Studio')
+  endif
+  is_msvc_static = get_option('default_library') == 'static'
+else
+  is_msvc_static = false
+endif
+
 # Do we build from a git repository?
 # Suppose we do if and only if the meson.build file is tracked by git.
 cmd_py = '''
