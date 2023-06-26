@@ -8,6 +8,16 @@ BASE_INCLUDES =	/I$(PREFIX)\include
 LIBSIGC_MAJOR_VERSION = 3
 LIBSIGC_MINOR_VERSION = 0
 
+!ifdef STATIC
+LIBSIGC_INTDIR = sigc-static
+SIGC_EX_INTDIR = sigc-examples-static
+SIGC_TESTS_INTDIR = sigc-tests-static
+!else
+LIBSIGC_INTDIR = sigc
+SIGC_EX_INTDIR = sigc-examples
+SIGC_TESTS_INTDIR = sigc-tests
+!endif
+
 !if "$(CFG)" == "debug" || "$(CFG)" == "Debug"
 DEBUG_SUFFIX = -d
 !else
@@ -17,6 +27,11 @@ DEBUG_SUFFIX =
 LIBSIGCPP_DEFINES = /DSIGC_BUILD
 
 SIGCPP_BASE_CFLAGS = /I.. /I. /I..\untracked\MSVC_NMake /std:c++17 /EHsc $(CFLAGS)
+
+# Define LIBSIGCXX_STATIC everywhere for static builds
+!ifdef STATIC
+SIGCPP_BASE_CFLAGS = $(SIGCPP_BASE_CFLAGS) /DLIBSIGCXX_STATIC
+!endif
 
 LIBSIGC_INT_SOURCES = $(sigc_sources_cc:/=\)
 LIBSIGC_INT_HDRS = $(sigc_public_h:/=\)
@@ -35,8 +50,12 @@ LIBSIGC_LIBNAME = sigc-vc$(VSVER_LIB)$(DEBUG_SUFFIX)-$(LIBSIGC_MAJOR_VERSION)_$(
 LIBSIGC_DLLNAME = $(LIBSIGC_LIBNAME)
 !endif
 
+!ifdef STATIC
+LIBSIGC_LIB = vs$(VSVER)\$(CFG)\$(PLAT)\$(LIBSIGC_LIBNAME)-static.lib
+!else
 LIBSIGC_DLL = vs$(VSVER)\$(CFG)\$(PLAT)\$(LIBSIGC_DLLNAME).dll
 LIBSIGC_LIB = vs$(VSVER)\$(CFG)\$(PLAT)\$(LIBSIGC_LIBNAME).lib
+!endif
 
 # If your Boost libraries are built as DLLs, use BOOST_DLL=1 in your NMake command line
 !ifdef BOOST_DLL

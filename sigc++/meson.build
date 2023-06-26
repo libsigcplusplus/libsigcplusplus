@@ -80,8 +80,10 @@ endif
 # Build the .rc file for Windows builds and link to it
 if host_machine.system() == 'windows'
   windows = import('windows')
-  sigc_res = windows.compile_resources(sigc_rc)
-  extra_sigc_objects += sigc_res
+  if get_option('default_library') == 'shared'
+    sigc_res = windows.compile_resources(sigc_rc)
+    extra_sigc_objects += sigc_res
+  endif
 endif
 
 extra_include_dirs = ['..']
