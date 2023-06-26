@@ -45,6 +45,10 @@ PREFIX: Optional.  Base directory of where the third-party headers, libraries
         $(X) is the short version of the Visual Studio used, as follows:
         2017: 15
 
+STATIC: Optional.  Set if building libsigc++ as a static library. Note that
+        for building items that use this static build, /DLIBSIGCXX_STATIC
+        must be passed into the compiler flags.
+
 Explanation of options, set by <option>=1:
 ------------------------------------------
 BOOST_DLL: When building the benchmark, link to a DLL build of the Boost
