@@ -189,6 +189,7 @@ add_project_arguments(warning_flags, language: 'cpp')
 
 # MSVC: Ignore warnings that aren't really harmful, but make those
 #       that should not be overlooked stand out.
+static_cxxflag = '-DLIBSIGCXX_STATIC'
 if is_msvc
   disable_warnings_list = [
     '/EHsc',  # avoid warnings caused by exception handling model used
@@ -213,7 +214,7 @@ if is_msvc
     language: 'cpp'
   )
   if is_msvc_static
-    add_project_arguments(['-DLIBSIGCXX_STATIC'], language: 'cpp')
+    add_project_arguments(static_cxxflag, language: 'cpp')
   endif
 endif
 
@@ -243,6 +244,7 @@ foreach conf_test : ['gcc_template_specialization_operator_overload',
     pkg_conf_data.set('SIGC_' + conf_test.to_upper(), true)
   endif
 endforeach
+pkg_conf_data.set('MSVC_STATIC_CXXFLAG', is_msvc_static ? static_cxxflag : '')
 
 configure_file(
   input: 'sigc++.pc.in',
