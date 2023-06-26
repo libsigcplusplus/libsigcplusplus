@@ -16,7 +16,9 @@
 #if defined(_MSC_VER)
 #define SIGC_MSC 1
 #define SIGC_WIN32 1
+#ifndef LIBSIGCXX_STATIC
 #define SIGC_DLL 1
+#endif
 #elif defined(__CYGWIN__)
 #define SIGC_CONFIGURE 1
 #elif defined(__MINGW32__)
@@ -54,7 +56,7 @@
 #endif /* !SIGC_MSC */
 
 #ifdef SIGC_DLL
-#if defined(SIGC_BUILD) && defined(_WINDLL)
+#ifdef SIGC_BUILD
 #define SIGC_API __declspec(dllexport)
 #elif !defined(SIGC_BUILD)
 #define SIGC_API __declspec(dllimport)

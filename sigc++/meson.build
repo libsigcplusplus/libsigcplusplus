@@ -74,7 +74,7 @@ extra_sigc_objects = []
 
 # Make sure we are exporting the symbols from the DLL
 if is_msvc
-  extra_sigc_cppflags += ['-DSIGC_BUILD', '-D_WINDLL']
+  extra_sigc_cppflags += ['-DSIGC_BUILD']
 endif
 
 # Build the .rc file for Windows builds and link to it
