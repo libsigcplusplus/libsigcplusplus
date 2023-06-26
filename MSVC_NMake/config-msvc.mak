@@ -8,6 +8,16 @@ BASE_INCLUDES =	/I$(PREFIX)\include
 LIBSIGC_MAJOR_VERSION = 2
 LIBSIGC_MINOR_VERSION = 0
 
+!ifdef STATIC
+LIBSIGC_INTDIR = sigc-static
+SIGC_EX_INTDIR = sigc-examples-static
+SIGC_TESTS_INTDIR = sigc-tests-static
+!else
+LIBSIGC_INTDIR = sigc
+SIGC_EX_INTDIR = sigc-examples
+SIGC_TESTS_INTDIR = sigc-tests
+!endif
+
 !if "$(CFG)" == "debug" || "$(CFG)" == "Debug"
 DEBUG_SUFFIX = -d
 !else
@@ -21,9 +31,14 @@ M4 = m4
 LIBSIGCPP_DEFINES = /DSIGC_BUILD
 
 SIGCPP_BASE_CFLAGS =	\
-	/Ivs$(VSVER)\$(CFG)\$(PLAT)\sigc	\
+	/Ivs$(VSVER)\$(CFG)\$(PLAT)\$(LIBSIGC_INTDIR)	\
 	/I..\untracked /I.. /I..\untracked\MSVC_NMake /I.	\
 	/EHsc $(CFLAGS)
+
+# Define LIBSIGCXX_STATIC everywhere for static builds
+!ifdef STATIC
+SIGCPP_BASE_CFLAGS = $(SIGCPP_BASE_CFLAGS) /DLIBSIGCXX_STATIC
+!endif
 
 LIBSIGC_INT_SOURCES = $(sigc_sources_cc:/=\)
 LIBSIGC_INT_HDRS = $(sigc_public_h:/=\)
@@ -42,8 +57,12 @@ LIBSIGC_LIBNAME = sigc-vc$(PDBVER)0$(DEBUG_SUFFIX)-$(LIBSIGC_MAJOR_VERSION)_$(LI
 LIBSIGC_DLLNAME = $(LIBSIGC_LIBNAME)
 !endif
 
+!ifdef STATIC
+LIBSIGC_LIB = vs$(VSVER)\$(CFG)\$(PLAT)\$(LIBSIGC_LIBNAME)-static.lib
+!else
 LIBSIGC_DLL = vs$(VSVER)\$(CFG)\$(PLAT)\$(LIBSIGC_DLLNAME).dll
 LIBSIGC_LIB = vs$(VSVER)\$(CFG)\$(PLAT)\$(LIBSIGC_LIBNAME).lib
+!endif
 
 # Note that building the benchmark requires Boost!
 libsigc_bench = vs$(VSVER)\$(CFG)\$(PLAT)\libsigc++-benchmark.exe

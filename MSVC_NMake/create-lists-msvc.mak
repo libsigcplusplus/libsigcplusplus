@@ -35,13 +35,16 @@ NULL=
 
 # For libsigc++
 
-!if [call create-lists.bat header sigc.mak sigc_dll_OBJS]
+!if [call create-lists.bat header sigc.mak libsigc_OBJS]
 !endif
 
-!if [for %c in ($(sigc_sources_cc)) do @if "%~xc" == ".cc" @call create-lists.bat file sigc.mak vs^$(VSVER)\^$(CFG)\^$(PLAT)\sigc\%~nc.obj]
+!if [for %c in ($(sigc_sources_cc)) do @if "%~xc" == ".cc" @call create-lists.bat file sigc.mak vs^$(VSVER)\^$(CFG)\^$(PLAT)\$(LIBSIGC_INTDIR)\%~nc.obj]
 !endif
 
-!if [@call create-lists.bat file sigc.mak vs^$(VSVER)\^$(CFG)\^$(PLAT)\sigc\sigc.res]
+# No point linking in version resource for static builds
+!ifndef STATIC
+!if [@call create-lists.bat file sigc.mak vs^$(VSVER)\^$(CFG)\^$(PLAT)\$(LIBSIGC_INTDIR)\sigc.res]
+!endif
 !endif
 
 !if [call create-lists.bat footer sigc.mak]
@@ -56,6 +59,25 @@ NULL=
 !if [call create-lists.bat footer sigc.mak]
 !endif
 
+!ifdef STATIC
+# start of static executables
+!if [for %d in (examples tests) do @call create-lists.bat header sigc.mak libsigc_%d & @(for %s in (..\%d\*.cc) do @if not "%~ns" == "testutilities" if not "%~ns" == "benchmark" call create-lists.bat file sigc.mak vs$(VSVER)\$(CFG)\$(PLAT)\%~ns-static.exe) & @call create-lists.bat footer sigc.mak]
+!endif
+
+!if [call create-lists.bat header sigc.mak libsigc_benchmark & @for %s in (..\tests\benchmark.cc) do @(call create-lists.bat file sigc.mak vs$(VSVER)\$(CFG)\$(PLAT)\%~ns-static.exe) & @call create-lists.bat footer sigc.mak]
+!endif
+
+!if [for %d in (examples tests) do @for %s in (..\%d\*.cc) do @if not "%~ns" == "benchmark" echo vs^$(VSVER)\^$(CFG)\^$(PLAT)\sigc-%d-static\%~ns.obj: %s>>sigc.mak & @echo. @if not exist ^$(@D)\ md ^$(@D)>>sigc.mak & @echo. ^$(CXX) ^$(SIGCPP_CFLAGS) /Fo^$(@D)\ /Fd^$(@D)\ ^$** /c>>sigc.mak & @echo.>>sigc.mak]
+!endif
+
+!if [for %s in (..\examples\*.cc) do @echo vs^$(VSVER)\^$(CFG)\^$(PLAT)\%~ns-static.exe: ^$(LIBSIGC_LIB) vs^$(VSVER)\^$(CFG)\^$(PLAT)\$(SIGC_EX_INTDIR)\%~ns.obj>>sigc.mak & @echo. link ^$(LDFLAGS) ^$** /out:^$@>>sigc.mak & @echo.>>sigc.mak]
+!endif
+
+!if [for %s in (..\tests\*.cc) do @if not "%~ns" == "testutilities" echo vs^$(VSVER)\^$(CFG)\^$(PLAT)\%~ns-static.exe: ^$(LIBSIGC_LIB) vs^$(VSVER)\^$(CFG)\^$(PLAT)\$(SIGC_TESTS_INTDIR)\%~ns.obj vs^$(VSVER)\^$(CFG)\^$(PLAT)\$(SIGC_TESTS_INTDIR)\testutilities.obj>>sigc.mak & @echo. link ^$(LDFLAGS) ^$** /out:^$@>>sigc.mak & @echo.>>sigc.mak]
+!endif
+# end of static executables
+!else
+# start of shared executables
 !if [for %d in (examples tests) do @call create-lists.bat header sigc.mak libsigc_%d & @(for %s in (..\%d\*.cc) do @if not "%~ns" == "testutilities" if not "%~ns" == "benchmark" call create-lists.bat file sigc.mak vs$(VSVER)\$(CFG)\$(PLAT)\%~ns.exe) & @call create-lists.bat footer sigc.mak]
 !endif
 
@@ -65,13 +87,16 @@ NULL=
 !if [for %d in (examples tests) do @for %s in (..\%d\*.cc) do @if not "%~ns" == "benchmark" echo vs^$(VSVER)\^$(CFG)\^$(PLAT)\sigc-%d\%~ns.obj: %s>>sigc.mak & @echo. @if not exist ^$(@D)\ md ^$(@D)>>sigc.mak & @echo. ^$(CXX) ^$(SIGCPP_CFLAGS) /Fo^$(@D)\ /Fd^$(@D)\ ^$** /c>>sigc.mak & @echo.>>sigc.mak]
 !endif
 
-!if [for %s in (..\tests\benchmark.cc) do @echo vs^$(VSVER)\^$(CFG)\^$(PLAT)\sigc-tests\%~ns.obj: %s>>sigc.mak & @echo. @if not exist ^$(@D)\ md ^$(@D)>>sigc.mak & @echo. ^$(CXX) ^$(SIGCPP_BENCHMARK_CFLAGS) /Fo^$(@D)\ /Fd^$(@D)\ ^$** /c>>sigc.mak & @echo.>>sigc.mak]
+!if [for %s in (..\examples\*.cc) do @echo vs^$(VSVER)\^$(CFG)\^$(PLAT)\%~ns.exe: ^$(LIBSIGC_LIB) vs^$(VSVER)\^$(CFG)\^$(PLAT)\$(SIGC_EX_INTDIR)\%~ns.obj>>sigc.mak & @echo. link ^$(LDFLAGS) ^$** /out:^$@>>sigc.mak & @echo.>>sigc.mak]
 !endif
 
-!if [for %s in (..\examples\*.cc) do @echo vs^$(VSVER)\^$(CFG)\^$(PLAT)\%~ns.exe: ^$(LIBSIGC_LIB) vs^$(VSVER)\^$(CFG)\^$(PLAT)\sigc-examples\%~ns.obj>>sigc.mak & @echo. link ^$(LDFLAGS) ^$** /out:^$@>>sigc.mak & @echo.>>sigc.mak]
+!if [for %s in (..\tests\*.cc) do @if not "%~ns" == "testutilities" echo vs^$(VSVER)\^$(CFG)\^$(PLAT)\%~ns.exe: ^$(LIBSIGC_LIB) vs^$(VSVER)\^$(CFG)\^$(PLAT)\$(SIGC_TESTS_INTDIR)\%~ns.obj vs^$(VSVER)\^$(CFG)\^$(PLAT)\$(SIGC_TESTS_INTDIR)\testutilities.obj>>sigc.mak & @echo. link ^$(LDFLAGS) ^$** /out:^$@>>sigc.mak & @echo.>>sigc.mak]
 !endif
 
-!if [for %s in (..\tests\*.cc) do @if not "%~ns" == "testutilities" echo vs^$(VSVER)\^$(CFG)\^$(PLAT)\%~ns.exe: ^$(LIBSIGC_LIB) vs^$(VSVER)\^$(CFG)\^$(PLAT)\sigc-tests\%~ns.obj vs^$(VSVER)\^$(CFG)\^$(PLAT)\sigc-tests\testutilities.obj>>sigc.mak & @echo. link ^$(LDFLAGS) ^$** /out:^$@>>sigc.mak & @echo.>>sigc.mak]
+# end of shared executables
+!endif
+
+!if [for %s in (..\tests\benchmark.cc) do @echo vs^$(VSVER)\^$(CFG)\^$(PLAT)\$(SIGC_TESTS_INTDIR)\%~ns.obj: %s>>sigc.mak & @echo. @if not exist ^$(@D)\ md ^$(@D)>>sigc.mak & @echo. ^$(CXX) ^$(SIGCPP_BENCHMARK_CFLAGS) /Fo^$(@D)\ /Fd^$(@D)\ ^$** /c>>sigc.mak & @echo.>>sigc.mak]
 !endif
 
 !include sigc.mak
