@@ -45,6 +45,10 @@ PREFIX: Optional.  Base directory of where the third-party headers, libraries
         $(X) is the short version of the Visual Studio used, as follows:
         2017: 15
 
+STATIC: Optional.  Set if building libsigc++ as a static library. Note that
+        for building items that use this static build, /DLIBSIGCXX_STATIC
+        must be passed into the compiler flags.
+
 USE_COMPAT_LIBS: Build the sigc++ DLL and .lib with the filename
                  'sigc-vc150(d)-3_0' for all builds.  This is for
                  compatibility reasons, if re-building dependent code is not
