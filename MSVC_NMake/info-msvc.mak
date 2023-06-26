@@ -6,13 +6,15 @@ all-build-info:
 	@echo Build info
 	@echo ---------
 	@echo Build Type: $(CFG)
+	@if not "$(STATIC)" == "" echo Library Build Type: static
+	@if "$(STATIC)" == "" echo Library Build Type: DLL
 
 help:
 	@echo.
 	@echo ==============================
 	@echo Building libsigc++ Using NMake
 	@echo ==============================
-	@echo nmake /f Makefile.vc CFG=[release^|debug] ^<PREFIX=PATH^>
+	@echo nmake /f Makefile.vc CFG=[release^|debug] ^<PREFIX=PATH^> ^<STATIC=1^>
 	@echo.
 	@echo Where:
 	@echo ------
@@ -23,6 +25,10 @@ help:
 	@echo found, default is ^$(srcrootdir)\..\vs^$(short_vs_ver)\^$(platform),
 	@echo where ^$(short_vs_ver) is 12 for VS 2013 and 14 for VS 2015 and so on;
 	@echo and ^$(platform) is Win32 for 32-bit builds and x64 for x64 builds.
+	@echo.
+	@echo STATIC: Optional, enable to build static libsigc++.  Define
+	@echo LIBSIGCXX_STATIC in the compiler flags to use the static build of
+	@echo libsigc++.
 	@echo.
 	@echo ======
 	@echo A 'clean' target is supported to remove all generated files, intermediate

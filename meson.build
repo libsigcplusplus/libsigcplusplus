@@ -212,6 +212,9 @@ if is_msvc
     cpp_compiler.get_supported_arguments(disable_warnings_list),
     language: 'cpp'
   )
+  if is_msvc_static
+    add_project_arguments(['-DLIBSIGCXX_STATIC'], language: 'cpp')
+  endif
 endif
 
 # Configure files
