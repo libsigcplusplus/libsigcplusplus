@@ -132,4 +132,4 @@ $ make dist
 
 ## Building with Microsoft Visual C++
 
-See MSVC_NMake/README.txt.
+See MSVC_NMake/MSVC-Builds.md.
