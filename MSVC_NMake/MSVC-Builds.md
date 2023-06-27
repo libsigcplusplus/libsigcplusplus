@@ -12,8 +12,8 @@ libsigc++ itself has no external dependencies, but building the
 benchmark test program will require an installation of the Boost
 C++ libraries.
 
-Building with NMake
--
+## Building with NMake
+
 The following describes what items are built with the following
 targets:
 
@@ -68,3 +68,17 @@ link to release builds of Boost.
   *  `STATIC`: Optional.  Set if building libsigc++ as a static library. Note that
 for building items that use this static build, `/DLIBSIGCXX_STATIC`
 must be passed into the compiler flags.
+
+## Building using Meson or CMake
+
+Please also see the items in `$(srcroot)/README.md` for further info.
+
+For Meson builds, if building with `maintainer-mode` (such as explicitly requested or
+building from a GIT checkout), you will need to also install Doxygen, LLVM (likely needed by
+Doxygen) and GraphViz unless you pass in `-Dbuild-documentation=false` in your Meson
+configure command line.  You will still need to have `mm-common` installed with its `bin`
+directory in your `%PATH%`, in addition to the PERL interpreter and `m4`
+executable as noted in the [NMake builds](#Building-with-NMake) section.
+
+If building without enabling `maintainer-mode` from a release tarball, it is sufficient to
+build with Visual Studio 2017 or later, just as in the NMake builds.
