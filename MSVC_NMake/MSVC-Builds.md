@@ -3,7 +3,7 @@ Instructions for building libsigc++ on Visual Studio
 
 Building libsigc++ on Windows is now supported using Visual Studio
 versions 2017 or later in both 32-bit and 64-bit (x64 and ARM64) flavors,
-via NMake Makefiles.  Due to `C++17` usage, Visual Studio 2015 or
+via NMake Makefiles, Meson or CMake.  Due to `C++17` usage, Visual Studio 2015 or
 earlier is not supported, and any use of the headers installed with
 this package will require the use of the `/std:c++17` compiler flag.
 
@@ -63,3 +63,16 @@ link to release builds of Boost.
   *  `STATIC`: Optional.  Set if building libsigc++ as a static library. Note that
 for building items that use this static build, `/DLIBSIGCXX_STATIC`
 must be passed into the compiler flags.
+
+## Building using Meson or CMake
+
+Please also see the items in `$(srcroot)/README.md` for further info.
+
+For Meson builds, if building with `maintainer-mode` (such as explicitly requested or
+building from a GIT checkout), you will need to also install Doxygen, LLVM (likely needed by
+Doxygen) and GraphViz unless you pass in `-Dbuild-documentation=false` in your Meson
+configure command line.  You will still need to have `mm-common` installed with its `bin`
+directory in your `%PATH%`.
+
+If building without enabling `maintainer-mode` from a release tarball, it is sufficient to
+build with Visual Studio 2017 or later, just as in the NMake builds.
