@@ -46,11 +46,6 @@
  */
 #pragma warning(disable : 4251)
 
-#if (_MSC_VER < 1900) && !defined(noexcept)
-#define _ALLOW_KEYWORD_MACROS 1
-#define noexcept _NOEXCEPT
-#endif
-
 #else /* SIGC_MSC */
 
 #endif /* !SIGC_MSC */
