@@ -36,7 +36,7 @@
 
 #ifdef SIGC_MSC
 /*
- * MS VC7 Warning 4251 says that the classes to any member objects in an
+ * Visual C++ Warning C4251 says that the classes to any member objects in an
  * exported class must also be exported.  Some of the libsigc++
  * template classes contain std::list members.  MS KB article 168958 says
  * that it's not possible to export a std::list instantiation due to some
