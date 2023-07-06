@@ -1,10 +1,11 @@
-# libsigc++ : The Typesafe Callback Framework for C++
+# libsigc++
+Typesafe Callback Framework for C++
 
-## Introduction
+# Introduction
 
-libsigc++ implements a typesafe callback system for standard C++. It
-allows you to define signals and to connect those signals to any
-callback function, either global or a member function, regardless of
+libsigc++ (a.k.a. libsigcplusplus) implements a typesafe callback system for
+standard C++. It allows you to define signals and to connect those signals
+to any callback function, either global or a member function, regardless of
 whether it is static or virtual.
 
 libsigc++ is used by gtkmm to wrap the GTK signal system. It does not
@@ -12,8 +13,6 @@ depend on GTK or gtkmm.
 
 sigc++-2.0 and sigc++-3.0 are different parallel-installable ABIs.
 This file describes sigc++-2.0.
-
-See the [libsigc++ web site](https://libsigcplusplus.github.io/libsigcplusplus/)
 
 ## License
 
@@ -24,7 +23,36 @@ file COPYING. Examples and tests are Public Domain.
 
 Compatible compilers must support C++11, such as the decltype() specifier.
 
-## Build
+# General information
+
+Web site
+ - https://libsigcplusplus.github.io/libsigcplusplus/
+
+Download location
+ - https://download.gnome.org/sources/libsigc++/
+ - https://github.com/libsigcplusplus/libsigcplusplus/releases/
+
+Reference documentation
+ - https://developer-old.gnome.org/libsigc++/2.10/
+
+This reference documentation does not document the latest release. If you want
+newer documentation, download a tarball. Tarballs contain reference documentation.
+In tarballs generated with Meson, see the untracked/docs/reference/html directory.
+
+Discussion on GNOME's discourse forum
+ - https://discourse.gnome.org/tag/cplusplus
+ - https://discourse.gnome.org/c/platform
+
+Git repository
+ - https://github.com/libsigcplusplus/libsigcplusplus
+
+Bugs can be reported to
+ - https://github.com/libsigcplusplus/libsigcplusplus/issues
+
+Patches can be submitted to
+ - https://github.com/libsigcplusplus/libsigcplusplus/pulls
+
+# Building
 
 Whenever possible, you should use the official binary packages approved by the
 supplier of your operating system, such as your Linux distribution. For
@@ -33,8 +61,7 @@ packages.
 
 ## Building from a release tarball
 
-Building from the [libsigc++ release tarball](https://github.com/libsigcplusplus/libsigcplusplus/releases)
-is easier than building from git.
+Building from a release tarball is easier than building from git.
 
 It's easiest to build with Meson, if the tarball was made with Meson,
 and to build with Autotools, if the tarball was made with Autotools.
@@ -132,4 +159,4 @@ $ make dist
 
 ## Building with Microsoft Visual C++
 
-See MSVC_NMake/MSVC-Builds.md.
+See [MSVC-Builds.md](MSVC_NMake/MSVC-Builds.md)

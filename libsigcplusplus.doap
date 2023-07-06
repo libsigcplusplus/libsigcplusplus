@@ -1,23 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <Project xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
          xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
          xmlns:foaf="http://xmlns.com/foaf/0.1/"
          xmlns:gnome="http://api.gnome.org/doap-extensions#"
          xmlns="http://usefulinc.com/ns/doap#">
 
+  <!-- A .doap file (Description of a Project) is not necessary on GitHub.
+       It's retained in case libsigc++ is ever moved back to gnome.org.
+  -->
   <name xml:lang="en">libsigc++</name>
   <shortdesc xml:lang="en">Typesafe callback framework for C++</shortdesc>
-  <description>libsigc++ implements a typesafe callback system for standard C++.
+  <description xml:lang="en">
+libsigc++ implements a typesafe callback system for standard C++.
 It allows you to define signals and to connect those signals to any
 callback function, either global or a member function, regardless of
 whether it is static or virtual.
 
-libsigc++ is also used by glibmm and gtkmm to wrap Glib and GTK+ signals.</description>
+libsigc++ is also used by glibmm and gtkmm to wrap GLib and GTK signals.
+  </description>
   <homepage rdf:resource="https://libsigcplusplus.github.io/libsigcplusplus/" />
+  <developer-forum rdf:resource="https://discourse.gnome.org/tag/cplusplus/" />
+  <download-page rdf:resource="https://download.gnome.org/sources/libsigc++/" />
+  <download-page rdf:resource="https://github.com/libsigcplusplus/libsigcplusplus/releases/" />
   <bug-database rdf:resource="https://github.com/libsigcplusplus/libsigcplusplus/issues/" />
-  <mailing-list rdf:resource="mailto:libsigc-list@gnome.org" />
   <category rdf:resource="http://api.gnome.org/doap-extensions#core" />
   <programming-language>C++</programming-language>
-  <download-page rdf:resource="http://download.gnome.org/sources/libsigc++/" />
 
   <maintainer>
     <foaf:Person>
