@@ -24,6 +24,8 @@ Makefile.in
 /sigc++config.h
 /sigc++-*.pc
 /stamp-h?
+zig-cache/
+zig-out/
 untracked/build_scripts/
 untracked/docs/
 *.pro.user

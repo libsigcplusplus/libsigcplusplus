@@ -1,0 +1,5 @@
+.{
+    .name = "sigc++",
+    .version = "2.3.1",
+    .license = "LGPLv3",
+}
