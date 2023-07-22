@@ -24,6 +24,7 @@ sigc_public_h =				\
 	member_method_trait.h \
 	reference_wrapper.h		\
 	retype_return.h			\
+        scoped_connection.h             \
 	signal.h \
 	signal_base.h			\
 	slot.h			\
