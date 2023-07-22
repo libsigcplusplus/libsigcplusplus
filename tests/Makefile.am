@@ -47,6 +47,7 @@ check_PROGRAMS = \
   test_retype \
   test_retype_return \
   test_rvalue_ref \
+  test_scoped_connection \
   test_signal \
   test_signal_move \
   test_size \

@@ -8,6 +8,7 @@
 
 source_cc_files = [
   'connection.cc',
+  'scoped_connection.cc',
   'signal_base.cc',
   'trackable.cc',
   'functors' / 'slot_base.cc',
@@ -21,6 +22,7 @@ sigc_h_files = [
   'member_method_trait.h',
   'reference_wrapper.h',
   'retype_return.h',
+  'scoped_connection.h',
   'signal.h',
   'signal_base.h',
   'slot.h',

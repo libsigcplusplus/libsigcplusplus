@@ -16,8 +16,10 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 #ifndef SIGC_CONNECTION_HPP
 #define SIGC_CONNECTION_HPP
+
 #include <sigc++config.h>
 #include <sigc++/functors/slot_base.h>
 #include <sigc++/weak_raw_ptr.h>
@@ -30,12 +32,19 @@ namespace sigc
  * This may be used to disconnect the referred slot at any time (disconnect()).
  * @ref sigc::signal_with_accumulator::connect() "sigc::signal::connect()"
  * returns a %sigc::connection.
+ *
  * @code
  * sigc::connection conn = sig.connect(sigc::mem_fun(a, &A::foo));
  * @endcode
+ *
  * If the slot has already been destroyed, disconnect() does nothing. empty() or
  * operator bool() can be used to test whether the connection is
  * still active. The connection can be blocked (block(), unblock()).
+ *
+ * sigc::connection doesnʼt disconnect the slot automatically upon destruction.
+ * You do not need to keep the sigc::connection object to retain the connection
+ * of the slot to the signal. See also @ref sigc::scoped_connection, which does
+ * diconnect automatically when the connection object is destroyed or replaced.
  *
  * @ingroup signal
  */
