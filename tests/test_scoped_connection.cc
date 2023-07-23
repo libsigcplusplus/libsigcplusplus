@@ -10,17 +10,17 @@
 #include <sigc++/trackable.h>
 
 // Test the expected special members and conversions, esp. NOT copyable BUT movable.
-static_assert(    std::is_nothrow_default_constructible_v<sigc::scoped_connection>);
-static_assert(not std::is_copy_constructible_v           <sigc::scoped_connection>);
-static_assert(not std::is_copy_assignable_v              <sigc::scoped_connection>);
-static_assert(    std::is_nothrow_move_constructible_v   <sigc::scoped_connection>);
-static_assert(    std::is_move_assignable_v              <sigc::scoped_connection>);
-static_assert(    std::is_nothrow_swappable_v            <sigc::scoped_connection>);
+static_assert( std::is_nothrow_default_constructible_v<sigc::scoped_connection>);
+static_assert(!std::is_copy_constructible_v           <sigc::scoped_connection>);
+static_assert(!std::is_copy_assignable_v              <sigc::scoped_connection>);
+static_assert( std::is_nothrow_move_constructible_v   <sigc::scoped_connection>);
+static_assert( std::is_move_assignable_v              <sigc::scoped_connection>);
+static_assert( std::is_nothrow_swappable_v            <sigc::scoped_connection>);
 // TODO: C++20: Test the stronger std::is_nothrow_convertible_v; it should pass.
-static_assert(    std::is_convertible_v<sigc::connection, sigc::scoped_connection>);
-static_assert(not std::is_convertible_v<sigc::scoped_connection, sigc::connection>);
-static_assert(    std::is_assignable_v <sigc::scoped_connection, sigc::connection>);
-static_assert(not std::is_assignable_v <sigc::connection, sigc::scoped_connection>);
+static_assert( std::is_convertible_v<sigc::connection, sigc::scoped_connection>);
+static_assert(!std::is_convertible_v<sigc::scoped_connection, sigc::connection>);
+static_assert( std::is_assignable_v <sigc::scoped_connection, sigc::connection>);
+static_assert(!std::is_assignable_v <sigc::connection, sigc::scoped_connection>);
 
 namespace
 {
