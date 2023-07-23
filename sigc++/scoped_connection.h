@@ -168,6 +168,7 @@ private:
   sigc::connection conn_;
 };
 
+SIGC_API
 void swap(scoped_connection& sca, scoped_connection& scb) noexcept;
 
 } /* namespace sigc */
