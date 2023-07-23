@@ -24,7 +24,7 @@ sigc_public_h =				\
 	member_method_trait.h \
 	reference_wrapper.h		\
 	retype_return.h			\
-        scoped_connection.h             \
+	scoped_connection.h \
 	signal.h \
 	signal_base.h			\
 	slot.h			\
@@ -59,6 +59,7 @@ sigc_public_h =				\
 	functors/slot_base.h
 
 sigc_sources_cc =			\
+	scoped_connection.cc \
 	signal_base.cc			\
 	trackable.cc			\
 	connection.cc			\

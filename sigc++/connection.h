@@ -44,7 +44,7 @@ namespace sigc
  * sigc::connection doesnʼt disconnect the slot automatically upon destruction.
  * You do not need to keep the sigc::connection object to retain the connection
  * of the slot to the signal. See also @ref sigc::scoped_connection, which does
- * diconnect automatically when the connection object is destroyed or replaced.
+ * disconnect automatically when the connection object is destroyed or replaced.
  *
  * @ingroup signal
  */

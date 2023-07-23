@@ -40,6 +40,7 @@ set (TEST_SOURCE_FILES
   test_retype.cc
   test_retype_return.cc
   test_rvalue_ref.cc
+  test_scoped_connection.cc
   test_signal.cc
   test_signal_move.cc
   test_size.cc

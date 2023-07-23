@@ -16,6 +16,7 @@
 
 set (SOURCE_FILES
 	connection.cc
+	scoped_connection.cc
 	signal_base.cc
 	trackable.cc
 	functors/slot_base.cc

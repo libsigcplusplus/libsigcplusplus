@@ -118,7 +118,7 @@ struct SIGC_API scoped_connection final
   scoped_connection& operator=(scoped_connection&& sc);
 
   /// Swap two scoped connections.
-  friend void swap(scoped_connection &sca, scoped_connection &scb) noexcept;
+  friend void swap(scoped_connection& sca, scoped_connection& scb) noexcept;
 
   /// scoped_connection disconnects the referred slot, if any, upon destruction.
   ~scoped_connection();
@@ -168,7 +168,7 @@ private:
   sigc::connection conn_;
 };
 
-void swap(scoped_connection &sca, scoped_connection &scb) noexcept;
+void swap(scoped_connection& sca, scoped_connection& scb) noexcept;
 
 } /* namespace sigc */
 

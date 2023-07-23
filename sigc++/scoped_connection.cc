@@ -102,7 +102,7 @@ scoped_connection::operator bool() const noexcept
 // Swapping can be noexcept, as it does not need to disconnect either connection
 // because they will still stay alive, just in opposite instances post-swapping.
 void
-swap(scoped_connection &sca, scoped_connection &scb) noexcept
+swap(scoped_connection& sca, scoped_connection& scb) noexcept
 {
   using std::swap;
   swap(sca.conn_, scb.conn_);
