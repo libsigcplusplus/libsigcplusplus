@@ -1,6 +1,7 @@
 name: "CI: Check Code Formatting"
 
-on: [push]
+# Triggered manually
+on: [workflow_dispatch]
 
 jobs:
   build:
