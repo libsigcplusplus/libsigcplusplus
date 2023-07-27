@@ -74,6 +74,8 @@ AS_IF([test "x$enable_benchmark" = xyes],[
 ])
 
 AC_SUBST(MSVC_STATIC_CXXFLAG, '')
+AC_SUBST(DOXYGEN_HAVE_DOT, [YES])
+AM_SUBST_NOTMAKE(DOXYGEN_HAVE_DOT)
 
 AC_CONFIG_FILES([Makefile
                  ${SIGCXX_MODULE_NAME}.pc:sigc++.pc.in

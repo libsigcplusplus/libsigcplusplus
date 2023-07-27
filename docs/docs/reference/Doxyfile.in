@@ -296,7 +296,7 @@ EXTERNAL_PAGES         = YES
 #---------------------------------------------------------------------------
 DIA_PATH               =
 HIDE_UNDOC_RELATIONS   = NO
-HAVE_DOT               = YES
+HAVE_DOT               = @DOXYGEN_HAVE_DOT@
 DOT_NUM_THREADS        = 0
 DOT_FONTNAME           = Sans
 DOT_FONTSIZE           = 10

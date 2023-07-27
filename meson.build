@@ -134,8 +134,13 @@ if maintainer_mode and not mm_common_get.found()
 endif
 
 doxygen = find_program('doxygen', required: build_documentation)
-dot = find_program('dot', required: build_documentation) # Used by Doxygen
+dot = find_program('dot', required: false) # Used by Doxygen, if found
 xsltproc = find_program('xsltproc', required: build_documentation)
+
+if build_documentation and not dot.found()
+  message('The \'dot\' command is not found.\n  ' + \
+          'This will affect the look of the inheritance diagrams in the documentation.')
+endif
 
 script_dir = project_source_root / 'untracked' / 'build_scripts'
 doc_reference = script_dir / 'doc-reference.py'
