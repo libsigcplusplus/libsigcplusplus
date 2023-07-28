@@ -1,0 +1,35 @@
+name: "Meson: MSVC"
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+      - run: pip install meson ninja
+
+      - name: Prepare MSVC
+        uses: bus1/cabuild/action/msdevshell@v1
+        with:
+          architecture: x64
+
+      - name: Configure
+        # Don't use warning_level or werror. They are applied also to subprojects.
+        # 2023-07-28: Why is the documentation not built?
+        # With the latest fixes in mm-common and libsigc++ it's possible
+        # to build the reference documentation, but it's error-prone to build
+        # the manual. AFAIK there are no easily installable docbook5-xml and
+        # docbook-xsl packages for Windows.
+        run: meson setup -Dwarnings=fatal -Dmaintainer-mode=false -Dbuild-documentation=false _build
+
+      - name: Compile
+        run: meson compile -C _build
+
+      - name: Test
+        run: meson test -C _build
