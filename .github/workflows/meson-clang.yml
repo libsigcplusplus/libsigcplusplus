@@ -1,11 +1,11 @@
-name: "meson: gcc 10"
+name: "Meson: clang"
 
 on: [push]
 
 jobs:
   build:
 
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v1
@@ -14,11 +14,8 @@ jobs:
         # Prevent blocking apt install on a question during configuring of tzdata.
         export ENV DEBIAN_FRONTEND=noninteractive
         sudo apt update
-        sudo apt install libxml2-utils docbook5-xml docbook-xsl mm-common g++-10 ninja-build python3-setuptools python3-pip --yes
-        # Ubuntu 20.04 contains meson 0.53.2, but libsigc++ requires meson >= 0.55.0.
-        # Install it with pip3 instead of apt.
-        sudo pip3 install "meson>=0.55.0"
-        export CXX=g++-10
+        sudo apt install libxml2-utils docbook5-xml docbook-xsl mm-common clang meson ninja-build python3-setuptools --yes
+        export CXX=clang++
         meson setup -Dwarnings=fatal -Dwarning_level=3 -Dwerror=true _build
         cd _build
         meson compile
@@ -30,6 +27,6 @@ jobs:
       run: |
         sudo apt install git --yes
         # dist runs setup again so we need to specify CXX again.
-        export CXX=g++-10
+        export CXX=clang++
         cd _build
         meson dist

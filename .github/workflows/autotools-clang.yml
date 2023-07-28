@@ -1,11 +1,11 @@
-name: "CI: autotools: clang 10"
+name: "Autotools: clang"
 
 on: [push]
 
 jobs:
   build:
 
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v1
@@ -14,8 +14,8 @@ jobs:
         # Prevent blocking apt install on a question during configuring of tzdata.
         export ENV DEBIAN_FRONTEND=noninteractive
         sudo apt update
-        sudo apt install mm-common clang-10 make docbook-xsl --yes
-        export CC=clang-10 CXX=clang++-10
+        sudo apt install mm-common clang make docbook-xsl --yes
+        export CC=clang CXX=clang++
         ./autogen.sh --enable-warnings=fatal
         make
     - name: Test
@@ -23,5 +23,5 @@ jobs:
     - name: Distcheck
       run: |
         # distcheck runs configure again so we need to specify CC and CXX again.
-        export CC=clang-10 CXX=clang++-10
+        export CC=clang CXX=clang++
         make distcheck

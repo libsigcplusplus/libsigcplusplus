@@ -3,9 +3,9 @@
 # Copied from https://github.com/libsigcplusplus/libsigcplusplus/actions/new
 # and changed. Actions -> New workflow -> Pages -> GitHub Pages Jekyll
 
-name: Deploy Jekyll with GitHub Pages dependencies preinstalled
+name: Publish docs
 
-# 2022-12-17: ubuntu-latest = ubuntu-22.04
+# 2023-07-28: ubuntu-latest = ubuntu-22.04
 on:
   # Runs on pushes targeting the default branch
   push:

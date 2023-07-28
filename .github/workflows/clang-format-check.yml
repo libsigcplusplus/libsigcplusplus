@@ -1,4 +1,4 @@
-name: "CI: Check Code Formatting"
+name: "Check Code Formatting"
 
 # Triggered manually
 on: [workflow_dispatch]
@@ -15,5 +15,5 @@ jobs:
         # Prevent blocking the install on a question during configuring of tzdata.
         export ENV DEBIAN_FRONTEND=noninteractive
         sudo apt update
-        sudo apt install clang-format-12 --yes
-        clang-format-12 --dry-run --Werror `find . -name "*.h" -or -name "*.cc"`
+        sudo apt install clang-format --yes
+        clang-format --dry-run --Werror `find . -name "*.h" -or -name "*.cc"`

@@ -1,19 +1,21 @@
-name: "CI: autotools: gcc 10"
+name: "Autotools: gcc"
 
 on: [push]
 
 jobs:
   build:
 
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v1
     - name: Build
       run: |
+        # Prevent blocking apt install on a question during configuring of tzdata.
+        export ENV DEBIAN_FRONTEND=noninteractive
         sudo apt update
-        sudo apt install mm-common g++-10 docbook-xsl
-        export CXX=g++-10
+        sudo apt install mm-common g++ make docbook-xsl --yes
+        export CXX=g++
         ./autogen.sh --enable-warnings=fatal
         make
     - name: Test
@@ -21,5 +23,5 @@ jobs:
     - name: Distcheck
       run: |
         # distcheck runs configure again so we need to specify CXX again.
-        export CXX=g++-10
+        export CXX=g++
         make distcheck
