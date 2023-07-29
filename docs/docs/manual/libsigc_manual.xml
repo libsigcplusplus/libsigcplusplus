@@ -432,6 +432,6 @@ asignal.connect( sigc::retype( sigc::ptr_fun(&amp;dostuff) ) );
 <chapter xml:id="chapter-reference">
 <info><title>Reference</title></info>
 
-	<para>See the reference documentation <link xlink:href="http://library.gnome.org/devel/libsigc++/unstable/">online</link></para>
+	<para>See the reference documentation <link xlink:href="https://libsigcplusplus.github.io/libsigcplusplus/reference/html/">online</link></para>
 </chapter>
 </book>
