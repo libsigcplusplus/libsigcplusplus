@@ -258,13 +258,19 @@ int main()
 
 <section xml:id="sect-disconnecting">
 <info><title>Disconnecting</title></info>
-
 	<para>If you decide you no longer want your code to be called whenever a signal is
 	emitted, you must remember the return value of <literal remap="tt">connect()</literal>, which we've been
 	ignoring until now.</para>
 
 	<para><literal remap="tt">connect()</literal> returns a <literal remap="tt">sigc::connection</literal> object, which has a <literal remap="tt">disconnect()</literal> member method. This does just what you think it does.</para>
 
+	<para>Also, sigc++ 3.6 adds <literal remap="tt">sigc::scoped_connection</literal>.
+	A scoped connection can be constructed or assigned from a normal/unscoped <literal remap="tt">sigc::connection</literal>,
+	whereupon it effectively takes ownership of the connection, and will automatically <literal remap="tt">disconnect()</literal>
+	it when the <literal remap="tt">sigc::scoped_connection</literal> is destroyed (goes out of scope) or reassigned.
+	This lets you tie whether a slot is called to the lifetime of a scoped connection object, e.g. as a class member,
+	instead of having to manually disconnect. Scoped connections can be put in containers, or made ref-counted via <literal remap="tt">std::shared_ptr</literal>.
+	See the <literal remap="tt">sigc::scoped_connection</literal> class documentation for examples.</para>
 </section>
 </chapter>
 
@@ -431,7 +437,6 @@ asignal.connect( sigc::retype( sigc::ptr_fun(&amp;dostuff) ) );
 
 <chapter xml:id="chapter-reference">
 <info><title>Reference</title></info>
-
 	<para>See the reference documentation <link xlink:href="https://libsigcplusplus.github.io/libsigcplusplus/reference/html/">online</link></para>
 </chapter>
 </book>
