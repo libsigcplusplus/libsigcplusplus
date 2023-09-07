@@ -67,12 +67,12 @@ main(int argc, char* argv[])
   {
     A a;
     sig.connect(sigc::mem_fun(a, &A::foo));
-    confoo = sig.connect(&foo);
     conbar = sig.connect(&bar);
+    confoo = sig.connect_first(&foo);
     result_stream << "sig is connected to (size=" << sig.size() << "): ";
     sig(1);
     util->check_result(
-      result_stream, "sig is connected to (size=3): A::foo(1) foo(1) bar(1) ");
+      result_stream, "sig is connected to (size=3): foo(1) A::foo(1) bar(1) ");
   }
   // normal connections are still connected. mem_fun disconnected via trackable.
   result_stream << "sig is connected to (size=" << sig.size() << "): ";
@@ -83,11 +83,11 @@ main(int argc, char* argv[])
     A a;
     sig.connect(sigc::mem_fun(a, &A::foo));
     sigc::scoped_connection sconfoo = sig.connect(&foo);
-    sigc::scoped_connection sconbar = sig.connect(&bar);
+    sigc::scoped_connection sconbar = sig.connect_first(&bar);
     result_stream << "sig is connected to (size=" << sig.size() << "): ";
     sig(3);
     util->check_result(
-      result_stream, "sig is connected to (size=5): foo(3) bar(3) A::foo(3) foo(3) bar(3) ");
+      result_stream, "sig is connected to (size=5): bar(3) foo(3) bar(3) A::foo(3) foo(3) ");
   }
   // scoped connections are now disconnected.
   result_stream << "sig is connected to (size=" << sig.size() << "): ";

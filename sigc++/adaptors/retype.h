@@ -41,7 +41,8 @@ namespace sigc
  * @endcode
  *
  * The functor that sigc::retype() returns can be passed directly into
- * @ref sigc::signal_with_accumulator::connect() "sigc::signal::connect()".
+ * @ref sigc::signal_with_accumulator::connect() "sigc::signal::connect()" or
+ * @ref sigc::signal_with_accumulator::connect_first() "sigc::signal::connect_first()".
  *
  * @par Example:
  * @code

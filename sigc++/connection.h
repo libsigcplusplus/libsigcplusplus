@@ -30,8 +30,9 @@ namespace sigc
 /** Convenience class for safe disconnection.
  *
  * This may be used to disconnect the referred slot at any time (disconnect()).
- * @ref sigc::signal_with_accumulator::connect() "sigc::signal::connect()"
- * returns a %sigc::connection.
+ * @ref sigc::signal_with_accumulator::connect() "sigc::signal::connect()" and
+ * @ref sigc::signal_with_accumulator::connect_first() "sigc::signal::connect_first()"
+ * return a %sigc::connection.
  *
  * @code
  * sigc::connection conn = sig.connect(sigc::mem_fun(a, &A::foo));

@@ -374,14 +374,14 @@ public:
 /** Signal declaration.
  * %signal_with_accumulator can be used to connect() slots that are invoked
  * during subsequent calls to emit(). Any functor or slot
- * can be passed into connect(). It is converted into a slot
+ * can be passed into connect() or connect_first(). It is converted into a slot
  * implicitly.
  *
  * If you want to connect one signal to another, use make_slot()
  * to retrieve a functor that emits the signal when invoked.
  *
- * Be careful if you directly pass one signal into the connect()
- * method of another: a shallow copy of the signal is made and
+ * Be careful if you directly pass one signal into the connect() or
+ * connect_first() method of another: a shallow copy of the signal is made and
  * the signal's slots are not disconnected until both the signal
  * and its clone are destroyed, which is probably not what you want!
  *
@@ -401,8 +401,8 @@ class signal_with_accumulator : public signal_base
 public:
   using slot_type = slot<T_return(T_arg...)>;
 
-  /** Add a slot to the list of slots.
-   * Any functor or slot may be passed into connect().
+  /** Add a slot at the end of the list of slots.
+   * Any functor or slot may be passed into %connect().
    * It will be converted into a slot implicitly.
    * The returned connection may be stored for disconnection
    * of the slot at some later point. It stays valid until
@@ -426,7 +426,7 @@ public:
     return connection(slot_base);
   }
 
-  /** Add a slot to the list of slots.
+  /** Add a slot at the end of the list of slots.
    * @see connect(const slot_type& slot_).
    *
    * @newin{2,8}
@@ -434,6 +434,45 @@ public:
   connection connect(slot_type&& slot_)
   {
     auto iter = signal_base::connect(std::move(slot_));
+    auto& slot_base = *iter;
+    return connection(slot_base);
+  }
+
+  /** Add a slot at the beginning of the list of slots.
+   * Any functor or slot may be passed into %connect_first().
+   * It will be converted into a slot implicitly.
+   * The returned connection may be stored for disconnection
+   * of the slot at some later point. It stays valid until
+   * the slot is disconnected from the signal.
+   * std::function<> and C++11 lambda expressions are functors.
+   * These are examples of functors that can be connected to a signal.
+   *
+   * %std::bind() creates a functor, but this functor typically has an
+   * %operator()() which is a variadic template.
+   * Our functor_trait can't deduce the result type
+   * of such a functor. If you first assign the return value of %std::bind()
+   * to a std::function, you can connect the std::function to a signal.
+   *
+   * @param slot_ The slot to add to the list of slots.
+   * @return A connection.
+   *
+   * @newin{3,6}
+   */
+  connection connect_first(const slot_type& slot_)
+  {
+    auto iter = signal_base::connect_first(slot_);
+    auto& slot_base = *iter;
+    return connection(slot_base);
+  }
+
+  /** Add a slot at the beginning of the list of slots.
+   * @see connect_first(const slot_type& slot_).
+   *
+   * @newin{3,6}
+   */
+  connection connect_first(slot_type&& slot_)
+  {
+    auto iter = signal_base::connect_first(std::move(slot_));
     auto& slot_base = *iter;
     return connection(slot_base);
   }
@@ -505,14 +544,14 @@ public:
 
 /** signal can be used to connect() slots that are invoked
  * during subsequent calls to emit(). Any functor or slot
- * can be passed into connect(). It is converted into a slot
+ * can be passed into connect() or connect_first(). It is converted into a slot
  * implicitly.
  *
  * If you want to connect one signal to another, use make_slot()
  * to retrieve a functor that emits the signal when invoked.
  *
- * Be careful if you directly pass one signal into the connect()
- * method of another: a shallow copy of the signal is made and
+ * Be careful if you directly pass one signal into the connect() or
+ * connect_first() method of another: a shallow copy of the signal is made and
  * the signal's slots are not disconnected until both the signal
  * and its clone are destroyed, which is probably not what you want!
  *
@@ -634,13 +673,14 @@ public:
 /** Signal declaration.
  * %trackable_signal_with_accumulator can be used to connect() slots that are invoked
  * during subsequent calls to emit(). Any functor or slot
- * can be passed into connect(). It is converted into a slot implicitly.
+ * can be passed into connect() or connect_first(). It is converted into a slot
+ * implicitly.
  *
  * If you want to connect one signal to another, use make_slot()
  * to retrieve a functor that emits the signal when invoked.
  *
- * Be careful if you directly pass one signal into the connect()
- * method of another: a shallow copy of the signal is made and
+ * Be careful if you directly pass one signal into the connect() or
+ * connect_first() method of another: a shallow copy of the signal is made and
  * the signal's slots are not disconnected until both the signal
  * and its clone are destroyed, which is probably not what you want!
  *
@@ -664,8 +704,8 @@ class trackable_signal_with_accumulator
 public:
   using slot_type = slot<T_return(T_arg...)>;
 
-  /** Add a slot to the list of slots.
-   * Any functor or slot may be passed into connect().
+  /** Add a slot at the end of the list of slots.
+   * Any functor or slot may be passed into %connect().
    * It will be converted into a slot implicitly.
    * The returned connection may be stored for disconnection
    * of the slot at some later point. It stays valid until
@@ -689,12 +729,51 @@ public:
     return connection(slot_base);
   }
 
-  /** Add a slot to the list of slots.
+  /** Add a slot at the end of the list of slots.
    * @see connect(const slot_type& slot_).
    */
   connection connect(slot_type&& slot_)
   {
     auto iter = signal_base::connect(std::move(slot_));
+    auto& slot_base = *iter;
+    return connection(slot_base);
+  }
+
+  /** Add a slot at the beginning of the list of slots.
+   * Any functor or slot may be passed into %connect_first().
+   * It will be converted into a slot implicitly.
+   * The returned connection may be stored for disconnection
+   * of the slot at some later point. It stays valid until
+   * the slot is disconnected from the signal.
+   * std::function<> and C++11 lambda expressions are functors.
+   * These are examples of functors that can be connected to a signal.
+   *
+   * %std::bind() creates a functor, but this functor typically has an
+   * %operator()() which is a variadic template.
+   * Our functor_trait can't deduce the result type
+   * of such a functor. If you first assign the return value of %std::bind()
+   * to a std::function, you can connect the std::function to a signal.
+   *
+   * @param slot_ The slot to add to the list of slots.
+   * @return A connection.
+   *
+   * @newin{3,6}
+   */
+  connection connect_first(const slot_type& slot_)
+  {
+    auto iter = signal_base::connect_first(slot_);
+    auto& slot_base = *iter;
+    return connection(slot_base);
+  }
+
+  /** Add a slot at the beginning of the list of slots.
+   * @see connect_first(const slot_type& slot_).
+   *
+   * @newin{3,6}
+   */
+  connection connect_first(slot_type&& slot_)
+  {
+    auto iter = signal_base::connect_first(std::move(slot_));
     auto& slot_base = *iter;
     return connection(slot_base);
   }
@@ -772,14 +851,14 @@ public:
 
 /** %trackable_signal can be used to connect() slots that are invoked
  * during subsequent calls to emit(). Any functor or slot
- * can be passed into connect(). It is converted into a slot
+ * can be passed into connect() or connect_first(). It is converted into a slot
  * implicitly.
  *
  * If you want to connect one signal to another, use make_slot()
  * to retrieve a functor that emits the signal when invoked.
  *
- * Be careful if you directly pass one signal into the connect()
- * method of another: a shallow copy of the signal is made and
+ * Be careful if you directly pass one signal into the connect() or
+ * connect_first() method of another: a shallow copy of the signal is made and
  * the signal's slots are not disconnected until both the signal
  * and its clone are destroyed, which is probably not what you want!
  *

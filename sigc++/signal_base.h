@@ -109,19 +109,35 @@ struct SIGC_API signal_impl : public std::enable_shared_from_this<signal_impl>
    */
   void block(bool should_block = true) noexcept;
 
-  /** Adds a slot at the bottom of the list of slots.
+  /** Adds a slot at the end of the list of slots.
    * @param slot_ The slot to add to the list of slots.
    * @return An iterator pointing to the new slot in the list.
    */
   iterator_type connect(const slot_base& slot_);
 
-  /** Adds a slot at the bottom of the list of slots.
+  /** Adds a slot at the end of the list of slots.
    * @param slot_ The slot to add to the list of slots.
    * @return An iterator pointing to the new slot in the list.
    *
    * @newin{2,8}
    */
   iterator_type connect(slot_base&& slot_);
+
+  /** Adds a slot at the beginning of the list of slots.
+   * @param slot_ The slot to add to the list of slots.
+   * @return An iterator pointing to the new slot in the list.
+   *
+   * @newin{3,6}
+   */
+  iterator_type connect_first(const slot_base& slot_);
+
+  /** Adds a slot at the beginning of the list of slots.
+   * @param slot_ The slot to add to the list of slots.
+   * @return An iterator pointing to the new slot in the list.
+   *
+   * @newin{3,6}
+   */
+  iterator_type connect_first(slot_base&& slot_);
 
   /** Adds a slot at the given position into the list of slots.
    * @param i An iterator indicating the position where @p slot_ should be inserted.
@@ -220,6 +236,7 @@ protected:
 
 /** @defgroup signal Signals
  * Use @ref sigc::signal_with_accumulator::connect() "sigc::signal::connect()"
+ * or @ref sigc::signal_with_accumulator::connect_first() "sigc::signal::connect_first()"
  * with sigc::mem_fun() and sigc::ptr_fun() to connect a method or function with a signal.
  *
  * @code
@@ -347,7 +364,7 @@ protected:
   using iterator_type = internal::signal_impl::iterator_type;
 
   /** Adds a slot at the end of the list of slots.
-   * With connect(), slots can also be added during signal emission.
+   * With %connect(), slots can also be added during signal emission.
    * In this case, they won't be executed until the next emission occurs.
    * @param slot_ The slot to add to the list of slots.
    * @return An iterator pointing to the new slot in the list.
@@ -355,7 +372,7 @@ protected:
   iterator_type connect(const slot_base& slot_);
 
   /** Adds a slot at the end of the list of slots.
-   * With connect(), slots can also be added during signal emission.
+   * With %connect(), slots can also be added during signal emission.
    * In this case, they won't be executed until the next emission occurs.
    * @param slot_ The slot to add to the list of slots.
    * @return An iterator pointing to the new slot in the list.
@@ -363,6 +380,26 @@ protected:
    * @newin{2,8}
    */
   iterator_type connect(slot_base&& slot_);
+
+  /** Adds a slot at the beginning of the list of slots.
+   * With %connect_first(), slots can also be added during signal emission.
+   * In this case, they won't be executed until the next emission occurs.
+   * @param slot_ The slot to add to the list of slots.
+   * @return An iterator pointing to the new slot in the list.
+   *
+   * @newin{3,6}
+   */
+  iterator_type connect_first(const slot_base& slot_);
+
+  /** Adds a slot at the beginning of the list of slots.
+   * With %connect_fist(), slots can also be added during signal emission.
+   * In this case, they won't be executed until the next emission occurs.
+   * @param slot_ The slot to add to the list of slots.
+   * @return An iterator pointing to the new slot in the list.
+   *
+   * @newin{3,6}
+   */
+  iterator_type connect_first(slot_base&& slot_);
 
   /** Adds a slot at the given position into the list of slots.
    * Note that this function does not work during signal emission!

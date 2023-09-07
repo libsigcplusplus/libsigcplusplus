@@ -34,8 +34,9 @@ namespace sigc
  *
  * You will use sigc::scoped_connection by constructing it from a ‘normal’,
  * unscoped @ref sigc::connection, such as those returned by 
- * @ref sigc::signal_with_accumulator::connect() "sigc::signal::connect()", thus
- * ‘wrapping’ the connection in a scoped_connection, adding auto-disconnection.
+ * @ref sigc::signal_with_accumulator::connect() "sigc::signal::connect()" and
+ * @ref sigc::signal_with_accumulator::connect_first() "sigc::signal::connect_first()",
+ * thus ‘wrapping’ the connection in a scoped_connection, adding auto-disconnection.
  * It can also be assigned from an unscoped connection, in which case, if there
  * was a previous slot referred to by the scoped connection, it is disconnected.
  *

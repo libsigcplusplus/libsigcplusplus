@@ -128,6 +128,18 @@ signal_impl::connect(slot_base&& slot_)
   return insert(slots_.end(), std::move(slot_));
 }
 
+signal_impl::iterator_type
+signal_impl::connect_first(const slot_base& slot_)
+{
+  return insert(slots_.begin(), slot_);
+}
+
+signal_impl::iterator_type
+signal_impl::connect_first(slot_base&& slot_)
+{
+  return insert(slots_.begin(), std::move(slot_));
+}
+
 void
 signal_impl::add_notification_to_iter(const signal_impl::iterator_type& iter)
 {
@@ -258,6 +270,18 @@ signal_base::iterator_type
 signal_base::connect(slot_base&& slot_)
 {
   return impl()->connect(std::move(slot_));
+}
+
+signal_base::iterator_type
+signal_base::connect_first(const slot_base& slot_)
+{
+  return impl()->connect_first(slot_);
+}
+
+signal_base::iterator_type
+signal_base::connect_first(slot_base&& slot_)
+{
+  return impl()->connect_first(std::move(slot_));
 }
 
 signal_base::iterator_type

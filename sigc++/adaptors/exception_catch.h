@@ -61,8 +61,9 @@ namespace sigc
  * sigc::exception_catch(&foo, my_catch())();
  * @endcode
  *
- * The functor sigc::exception_catch() returns can be directly passed into
- * @ref sigc::signal_with_accumulator::connect() "sigc::signal::connect()".
+ * The functor that sigc::exception_catch() returns can be passed directly into
+ * @ref sigc::signal_with_accumulator::connect() "sigc::signal::connect()" or
+ * @ref sigc::signal_with_accumulator::connect_first() "sigc::signal::connect_first()".
  *
  * @par Example:
  * @code

@@ -53,8 +53,9 @@ namespace sigc
  * sigc::bind(&foo,1,2,3)();    //fixes all three arguments and calls foo(1,2,3)
  * @endcode
  *
- * The functor sigc::bind() returns can be passed into
- * @ref sigc::signal_with_accumulator::connect() "sigc::signal::connect()" directly.
+ * The functor that sigc::bind() returns can be passed directly into
+ * @ref sigc::signal_with_accumulator::connect() "sigc::signal::connect()" or
+ * @ref sigc::signal_with_accumulator::connect_first() "sigc::signal::connect_first()".
  *
  * @par Example:
  * @code

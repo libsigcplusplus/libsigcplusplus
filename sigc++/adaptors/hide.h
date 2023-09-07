@@ -50,8 +50,9 @@ namespace sigc
  * sigc::hide<2>(&foo)(1,2,3);  // adds a dummy parameter at the back and calls foo(1,2)
  * @endcode
  *
- * The functor sigc::hide() returns can be directly passed into
- * @ref sigc::signal_with_accumulator::connect() "sigc::signal::connect()".
+ * The functor that sigc::hide() returns can be passed directly into
+ * @ref sigc::signal_with_accumulator::connect() "sigc::signal::connect()" or
+ * @ref sigc::signal_with_accumulator::connect_first() "sigc::signal::connect_first()".
  *
  * @par Example:
  * @code

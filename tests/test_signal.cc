@@ -50,7 +50,7 @@ void
 test_simple()
 {
   sigc::signal<int(int)> sig;
-  sig.connect(sigc::ptr_fun(&foo));
+  sig.connect([](int i) { return foo(i); });
 
   sig(1);
   util->check_result(result_stream, "foo(int 1) ");
@@ -74,17 +74,17 @@ test_auto_disconnection()
   {
     A a;
     sig.connect(sigc::ptr_fun(&foo));
-    sig.connect(sigc::mem_fun(a, &A::foo));
-    sig.connect(sigc::ptr_fun(&bar));
+    sig.connect_first(sigc::mem_fun(a, &A::foo));
+    sig.connect_first(sigc::ptr_fun(&bar));
     sig(1);
     result_stream << sig.size();
-    util->check_result(result_stream, "foo(int 1) A::foo(int 1) bar(float 1) 3");
+    util->check_result(result_stream, "bar(float 1) A::foo(int 1) foo(int 1) 3");
 
   } // a dies => auto-disconnect
 
   sig(2);
   result_stream << sig.size();
-  util->check_result(result_stream, "foo(int 2) bar(float 2) 2");
+  util->check_result(result_stream, "bar(float 2) foo(int 2) 2");
 }
 
 void
@@ -106,12 +106,12 @@ test_make_slot()
   // test make_slot()
   sigc::signal<int(int)> sig;
   sig.connect(sigc::ptr_fun(&foo));
-  sig.connect(sigc::ptr_fun(&bar));
+  sig.connect_first([](float i) { return bar(i); });
   sig.connect(sigc::ptr_fun(&foo));
   sigc::signal<int(int)> sig2;
   sig2.connect(sig.make_slot());
   sig2(3);
-  util->check_result(result_stream, "foo(int 3) bar(float 3) foo(int 3) ");
+  util->check_result(result_stream, "bar(float 3) foo(int 3) foo(int 3) ");
 
   // Delete a trackable_signal that has been connected to sig2.
   sig2.clear();

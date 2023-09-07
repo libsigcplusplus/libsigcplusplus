@@ -38,8 +38,9 @@ namespace sigc
  * square_root(9))
  * @endcode
  *
- * The functor sigc::compose() returns can be passed directly into
- * @ref sigc::signal_with_accumulator::connect() "sigc::signal::connect()".
+ * The functor that sigc::compose() returns can be passed directly into
+ * @ref sigc::signal_with_accumulator::connect() "sigc::signal::connect()" or
+ * @ref sigc::signal_with_accumulator::connect_first() "sigc::signal::connect_first()".
  *
  * @par Example:
  * @code
