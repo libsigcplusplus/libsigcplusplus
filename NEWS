@@ -1,3 +1,25 @@
+2.12.1 (stable)
+
+Documentation:
+* slot, signal: Describe the slot<void(int)> syntax more
+  (Kjell Ahlstedt) Issue #86 (Daniel Boles)
+* connection: Improve the class documentation
+  (Kjell Ahlstedt) Issue #88 (Daniel Boles)
+* Improve Visual Studio build documentation
+  (Chun-wei Fan) Pull request #94
+* Remove AUTHORS and add general information to README.md
+  (Kjell Ahlstedt) Issue gtkmm#140
+
+Build:
+* Meson: Don't copy files with configure_file()
+  (Kjell Ahlstedt)
+* Meson: Fix the evaluation of is_git_build on Windows
+  (Kjell Ahlstedt) Issue gtkmm#131 (William Roy)
+* Visual Studio: Support static builds
+  Issue #90 (Swat-SomeBug)
+  (Chun-wei Fan) Pull request #92
+
+
 2.12.0 (stable)
 
 * Add track_object(), deprecate track_obj()
