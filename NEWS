@@ -1,3 +1,40 @@
+3.6.0 (stable)
+
+* sigc++config.h.*: Update and clean up a bit for Visual Studio
+  (Chun-wei Fan) Pull request #95
+* scoped_connection: New wrapper to auto-disconnect a slot
+  Issue #87, pull request #97 (Daniel Boles)
+* signal: Add connect_first()
+  (Kjell Ahlstedt) Issue #81 (LordVolumeForm)
+
+Documentation:
+* connection: Improve the class documentation
+  (Kjell Ahlstedt) Issue #88 (Daniel Boles)
+* Improve Visual Studio build documentation
+  (Chun-wei Fan) Pull request #93
+* Remove AUTHORS and add general information to README.md
+  (Kjell Ahlstedt) Issue gtkmm#140
+* manual: Add paragraph about new scoped_connection
+  Pull request #99 (Daniel Boles)
+
+Tests:
+* Add test_scoped_connection
+  Pull request #97 (Daniel Boles)
+
+Build:
+* Meson: Don't copy files with configure_file()
+  (Kjell Ahlstedt)
+* Meson: Fix the evaluation of is_git_build on Windows
+  (Kjell Ahlstedt) Issue gtkmm#131 (William Roy)
+* CMake: Prevent multiple target declaration for uninstall
+  (Francesco Emanuele D'Agostino) Pull request #85
+* Visual Studio: Support static builds
+  Issue #90 (Swat-SomeBug)
+  (Chun-wei Fan) Pull request #91
+* Meson: Don't require the 'dot' command to build the documentation
+  (Kjell Ahlstedt) Issue #98
+
+
 3.4.0 (stable)
 
 * Add track_object(), deprecate track_obj()
