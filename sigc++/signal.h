@@ -581,7 +581,9 @@ public:
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 template<typename T_return, typename... T_arg>
-class signal;
+class signal final {
+  static_assert(sizeof...(T_arg) < 0, "The signal<R, T...> syntax has been removed. Use the signal<R(T...)> syntax.");
+};
 #endif // DOXYGEN_SHOULD_SKIP_THIS
 
 template<typename T_return, typename... T_arg>

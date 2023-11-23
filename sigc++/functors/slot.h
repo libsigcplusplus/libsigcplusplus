@@ -194,7 +194,9 @@ struct slot_call
  */
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 template<typename T_return, typename... T_arg>
-class slot;
+class slot final {
+  static_assert(sizeof...(T_arg) < 0, "The slot<R, T...> syntax has been removed. Use the slot<R(T...)> syntax.");
+};
 #endif // DOXYGEN_SHOULD_SKIP_THIS
 
 template<typename T_return, typename... T_arg>
