@@ -3,7 +3,7 @@
 # Input: built_files_root, project_source_root, sigcxx_pcname,
 #        sigcxx_api_version, build_documentation, source_h_files,
 #        built_h_files, install_datadir, python3, doc_reference,
-#        built_h_file_targets, can_add_dist_script
+#        built_h_file_targets, can_add_dist_script, dot
 # Output: install_docdir, install_devhelpdir, if build_documentation: tag_file
 
 tag_file_modules = [
@@ -57,6 +57,7 @@ doc_conf_data.set('abs_top_builddir', built_files_root)
 doc_conf_data.set('abs_top_srcdir', project_source_root)
 doc_conf_data.set('SIGCXX_API_VERSION', sigcxx_api_version)
 doc_conf_data.set('DOXYGEN_TAGFILES', doxygen_tagfiles)
+doc_conf_data.set('DOXYGEN_HAVE_DOT', dot.found() ? 'YES' : 'NO')
 
 doxyfile = configure_file(
   input: 'Doxyfile.in',
