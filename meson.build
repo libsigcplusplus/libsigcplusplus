@@ -308,7 +308,7 @@ endif
 if meson.is_subproject()
   pkgconfig_vars = {
     'htmlrefdir': install_prefix / install_docdir / 'reference' / 'html',
-    'htmlrefpub': 'http://library.gnome.org/devel/libsigc++/unstable/'
+    'htmlrefpub': 'https://libsigcplusplus.github.io/libsigcplusplus/reference/html/'
   }
   if build_documentation
     pkgconfig_vars += {'doxytagfile': tag_file.full_path()}
