@@ -335,16 +335,29 @@ if build_documentation_opt == 'if-maintainer-mode'
   real_build_documentation = ' (@0@)'.format(build_documentation)
 endif
 
-validate = get_option('validation') and can_parse_and_validate
-explain_val = ''
-if get_option('validation') and not validate
-  explain_val = ' (requires xmllint with Relax NG and DocBook V5.0 support)'
+explain_man = ''
+if build_manual_opt and not build_manual
+  explain_man = ' (requires that documentation is built)'
 endif
 
-build_pdf = build_pdf_by_default and can_build_pdf
+validate = get_option('validation') and can_parse_and_validate and build_manual
+explain_val = ''
+if get_option('validation') and not validate
+  if not build_manual
+    explain_val = ' (requires that the tutorial is built)'
+  else
+    explain_val = ' (requires xmllint with Relax NG and DocBook V5.0 support)'
+  endif
+endif
+
+build_pdf = build_pdf_by_default and can_build_pdf and build_manual
 explain_pdf = ''
 if build_pdf_by_default and not build_pdf
-  explain_pdf = ' (requires dblatex or (xsltproc and fop))'
+  if not build_manual
+    explain_pdf = ' (requires that the tutorial is built)'
+  else
+    explain_pdf = ' (requires dblatex or (xsltproc and fop))'
+  endif
 endif
 
 summary = [
@@ -357,6 +370,7 @@ summary = [
                              format(cpp_warnings, warning_level, werror),
   '    Build deprecated API: @0@'.format(build_deprecated_api),
   'Build HTML documentation: @0@@1@'.format(build_documentation_opt, real_build_documentation),
+  '          Build tutorial: @0@@1@'.format(build_manual, explain_man),
   '          XML validation: @0@@1@'.format(validate, explain_val),
   '               Build PDF: @0@@1@'.format(build_pdf, explain_pdf),
   '  Build example programs: @0@'.format(build_examples),

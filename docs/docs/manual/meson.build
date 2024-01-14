@@ -3,11 +3,13 @@
 # input: install_datadir, sigcxx_pcname, tutorial_custom_cmd, python3,
 #        build_documentation, book_name, can_add_dist_script, xsltproc
 # output: can_parse_and_validate, build_pdf_by_default, can_build_pdf,
-#         install_tutorialdir
+#         install_tutorialdir, build_manual_opt, build_manual
+
+build_manual_opt = get_option('build-manual')
+build_manual = build_manual_opt and build_documentation
 
 xmllint = find_program('xmllint', required: false)
 can_parse_and_validate = xmllint.found()
-
 validate = get_option('validation') ? 'true' : 'false'
 
 dblatex = find_program('dblatex', required: false)
@@ -18,8 +20,8 @@ build_pdf_by_default = get_option('build-pdf')
 # Installation directories are relative to {prefix}.
 install_tutorialdir = install_datadir / 'doc' / book_name / 'tutorial'
 
-if not build_documentation
-  # Documentation shall not be built or installed.
+if not build_manual
+  # The manual shall not be built or installed.
   # Return to the calling meson.build file.
   subdir_done()
 endif
