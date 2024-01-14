@@ -8,10 +8,12 @@ option('build-deprecated-api', type: 'boolean', value: true,
   description: 'Build deprecated API and include it in the library')
 option('build-documentation', type: 'combo', choices: ['false', 'if-maintainer-mode', 'true'],
   value: 'if-maintainer-mode', description: 'Build and install the documentation')
+option('build-manual', type: 'boolean', value: true,
+  description: 'Build tutorial HTML files, if documentation is built')
 option('validation', type: 'boolean', value: true,
-  description: 'Validate the tutorial XML file')
+  description: 'Validate the tutorial XML file, if tutorial HTML files are built')
 option('build-pdf', type: 'boolean', value: false,
-  description: 'Build tutorial PDF file')
+  description: 'Build tutorial PDF file, if tutorial HTML files are built')
 option('build-examples', type: 'boolean', value: true,
   description: 'Build example programs')
 option('build-tests', type: 'boolean', value: true,
