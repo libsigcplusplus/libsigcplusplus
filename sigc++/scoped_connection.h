@@ -83,14 +83,14 @@ namespace sigc
 struct SIGC_API scoped_connection final
 {
   /** Constructs an empty scoped connection object. */
-  [[nodiscard]] scoped_connection() noexcept = default;
+  scoped_connection() noexcept = default;
 
   /** Constructs a scoped connection object from an unscoped connection object.
    * The source connection still refers to the slot and can manually disconnect.
    * @param c The connection object to make a copy from, whose slot weʼll
    *   automatically disconnect when the scoped_connection object is destroyed.
    */
-  [[nodiscard]] scoped_connection(connection c) noexcept;
+  scoped_connection(connection c) noexcept;
 
   /** Overrides this scoped connection object copying an unscoped connection.
    * The current slot, if any, will be disconnect()ed before being replaced.
@@ -127,17 +127,17 @@ struct SIGC_API scoped_connection final
   /** Returns whether the connection is still active.
    * @return @p false if the connection is still active.
    */
-  [[nodiscard]] bool empty() const noexcept;
+  bool empty() const noexcept;
 
   /** Returns whether the connection is still active.
    * @return @p true if the connection is still active.
    */
-  [[nodiscard]] bool connected() const noexcept;
+  bool connected() const noexcept;
 
   /** Returns whether the connection is blocked.
    * @return @p true if the connection is blocked.
    */
-  [[nodiscard]] bool blocked() const noexcept;
+  bool blocked() const noexcept;
 
   /** Sets or unsets the blocking state of this connection.
    * See slot_base::block() for details.
@@ -157,13 +157,13 @@ struct SIGC_API scoped_connection final
   /** Returns whether the connection is still active.
    * @return @p true if the connection is still active.
    */
-  [[nodiscard]] explicit operator bool() const noexcept;
+  explicit operator bool() const noexcept;
 
   /** Releases the connection from a scoped connection object.
    * The scoped connection will no longer refer to / disconnect the slot.
    * @return An unscoped connection object referring to the same slot.
    */
-  [[nodiscard]] connection release() noexcept;
+  connection release() noexcept;
 
 private:
   sigc::connection conn_;
