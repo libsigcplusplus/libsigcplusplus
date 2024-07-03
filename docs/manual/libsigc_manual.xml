@@ -4,7 +4,7 @@
       version="5.0" xml:id="index" xml:lang="en">
 
 <info>
-  <title>libsigc++</title>
+  <title>libsigc++2</title>
   <author><personname>
     <firstname>Ainsley</firstname>
     <surname>Pereira</surname>
@@ -431,6 +431,9 @@ asignal.connect( sigc::retype( sigc::ptr_fun(&amp;dostuff) ) );
 <chapter xml:id="chapter-reference">
 <info><title>Reference</title></info>
 
-	<para>See the reference documentation <link xlink:href="http://library.gnome.org/devel/libsigc++/2.10/">online</link></para>
+  <para>The reference documentation of libsigc++2 is not available online.
+  The reference documentation of libsigc++3 is available
+  <link xlink:href="https://libsigcplusplus.github.io/libsigcplusplus/reference/html/">here</link>.
+  </para>
 </chapter>
 </book>

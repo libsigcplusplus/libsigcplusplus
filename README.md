@@ -33,11 +33,12 @@ Download location
  - https://github.com/libsigcplusplus/libsigcplusplus/releases/
 
 Reference documentation
- - https://developer-old.gnome.org/libsigc++/2.10/
+ - https://libsigcplusplus.github.io/libsigcplusplus/reference/html/
 
-This reference documentation does not document the latest release. If you want
-newer documentation, download a tarball. Tarballs contain reference documentation.
-In tarballs generated with Meson, see the untracked/docs/reference/html directory.
+The documentation on the web describes sigc++-3.0.
+If you want documentation of sigc++-2.0, download a tarball.
+Tarballs contain reference documentation. In tarballs generated with Meson,
+see the untracked/docs/reference/html directory.
 
 Discussion on GNOME's discourse forum
  - https://discourse.gnome.org/tag/cplusplus

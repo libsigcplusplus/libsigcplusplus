@@ -1,5 +1,5 @@
 doxytagfile=${pc_top_builddir}/docs/reference/libsigc++-@SIGCXX_API_VERSION@.tag
-htmlrefpub=http://library.gnome.org/devel/libsigc++/2.10/
+htmlrefpub=https://libsigcplusplus.github.io/libsigcplusplus/reference/html/
 
 Name: libsigc++
 Description: Typesafe signal and callback system for C++, not installed

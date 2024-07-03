@@ -8,7 +8,7 @@ includedir=@includedir@
 docdir=${datarootdir}/doc/libsigc++-@SIGCXX_API_VERSION@
 doxytagfile=${docdir}/reference/libsigc++-@SIGCXX_API_VERSION@.tag
 htmlrefdir=${docdir}/reference/html
-htmlrefpub=http://library.gnome.org/devel/libsigc++/2.10/
+htmlrefpub=https://libsigcplusplus.github.io/libsigcplusplus/reference/html/
 
 Name: libsigc++
 Description: Typesafe signal and callback system for C++
