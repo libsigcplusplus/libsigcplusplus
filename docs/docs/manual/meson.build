@@ -1,7 +1,7 @@
 # docs/docs/manual
 
 # input: install_datadir, sigcxx_pcname, tutorial_custom_cmd, python3,
-#        build_documentation, book_name, can_add_dist_script, xsltproc
+#        build_documentation, book_name, xsltproc
 # output: can_parse_and_validate, build_pdf_by_default, can_build_pdf,
 #         install_tutorialdir, build_manual_opt, build_manual
 
@@ -95,13 +95,11 @@ if can_build_pdf
   )
 endif
 
-if can_add_dist_script
-  # Distribute built files.
-  meson.add_dist_script(
-    python3, tutorial_custom_cmd, 'dist_doc',
-    doc_dist_dir,
-    meson.current_build_dir(),
-    meson.current_source_dir() / sigc_manual_xml,
-    meson.current_build_dir() / sigc_manual_pdf,
-  )
-endif
+# Distribute built files.
+meson.add_dist_script(
+  python3, tutorial_custom_cmd, 'dist_doc',
+  doc_dist_dir,
+  meson.current_build_dir(),
+  meson.current_source_dir() / sigc_manual_xml,
+  meson.current_build_dir() / sigc_manual_pdf,
+)

@@ -2,8 +2,7 @@
 
 # Input: project_build_root, project_source_root, sigcxx_pcname,
 #        sigcxx_api_version, build_documentation, source_h_files,
-#        hg_ccg_basenames, install_datadir, python3, doc_reference,
-#        can_add_dist_script, dot
+#        hg_ccg_basenames, install_datadir, python3, doc_reference, dot
 # Output: install_docdir, install_devhelpdir, book_name,
 #         if build_documentation: tag_file
 
@@ -18,7 +17,7 @@ docinstall_flags = []
 foreach module : tag_file_modules
   depmod = dependency(module, required: false)
   if depmod.found()
-    doxytagfile = depmod.get_variable(pkgconfig: 'doxytagfile', internal: 'doxytagfile', default_value: '')
+    doxytagfile = depmod.get_variable('doxytagfile', default_value: '')
     if doxytagfile != ''
       if depmod.type_name() == 'internal'
         # Subprojects must build their tag files before doxygen is called.
@@ -28,8 +27,8 @@ foreach module : tag_file_modules
           doxygen_tag_targets += subproject(module).get_variable('global_tag_file_target')
         endif
       endif
-      htmlrefpub = depmod.get_variable(pkgconfig: 'htmlrefpub', internal: 'htmlrefpub', default_value: '')
-      htmlrefdir = depmod.get_variable(pkgconfig: 'htmlrefdir', internal: 'htmlrefdir', default_value: '')
+      htmlrefpub = depmod.get_variable('htmlrefpub', default_value: '')
+      htmlrefdir = depmod.get_variable('htmlrefdir', default_value: '')
       if htmlrefpub == ''
         htmlrefpub = htmlrefdir
       elif htmlrefdir == ''
@@ -129,14 +128,12 @@ meson.add_install_script(
   docinstall_flags
 )
 
-if can_add_dist_script
-  # Distribute built files and files copied by mm-common-get.
-  meson.add_dist_script(
-    python3, doc_reference, 'dist_doc',
-    doctool_dir,
-    doctool_dist_dir,
-    meson.current_build_dir(),
-    tag_file.full_path(),
-    devhelp_file.full_path(),
-  )
-endif
+# Distribute built files and files copied by mm-common-get.
+meson.add_dist_script(
+  python3, doc_reference, 'dist_doc',
+  doctool_dir,
+  doctool_dist_dir,
+  meson.current_build_dir(),
+  tag_file.full_path(),
+  devhelp_file.full_path(),
+)

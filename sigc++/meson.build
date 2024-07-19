@@ -1,7 +1,7 @@
 # sigc++
 
 # Input: sigcxx_build_dep, sigcxx_pcname, sigcxx_libversion, sigcxx_api_version,
-#        darwin_versions, install_includedir, sig_rc
+#        darwin_versions, install_includedir, sig_rc, msvc_static_cxxflag
 # Output: source_h_files, sigcxx_own_dep
 
 # There are no built source files in libsigc++-3.0.
@@ -99,6 +99,36 @@ sigcxx_library = library('sigc-' + sigcxx_api_version,
   cpp_args: extra_sigc_cppflags,
   dependencies: sigcxx_build_dep,
   install: true,
+)
+
+# Generate .pc files, used by pkg-config.
+pkg_config = import('pkgconfig')
+pc_common_variables = [
+  'doxytagfile=${docdir}/reference/lib' + sigcxx_pcname + '.tag',
+  'htmlrefdir=${docdir}/reference/html',
+  'htmlrefpub=https://libsigcplusplus.github.io/libsigcplusplus/reference/html',
+]
+pc_variables = [
+  'exec_prefix=${prefix}',
+  'datarootdir=${datadir}',
+  'docdir=${datadir}/doc/lib' + sigcxx_pcname,
+] + pc_common_variables
+pc_uninstalled_variables = [
+  'docdir=${prefix}/docs/docs',
+] + pc_common_variables
+
+pkg_config.generate(sigcxx_library,
+  filebase: sigcxx_pcname,
+  variables: pc_variables,
+  uninstalled_variables: pc_uninstalled_variables,
+  name: meson.project_name(),
+  description: 'Typesafe signal and callback system for C++',
+  url: 'https://libsigcplusplus.github.io/libsigcplusplus/',
+  subdirs: [sigcxx_pcname],
+  extra_cflags: [
+    '-I${libdir}/' + sigcxx_pcname + '/include',
+    msvc_static_cxxflag,
+  ],
 )
 
 # This is used when building example programs and test programs.
