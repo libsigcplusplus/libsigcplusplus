@@ -5,7 +5,8 @@
 
 name: Publish docs
 
-# 2023-07-28: ubuntu-latest = ubuntu-22.04
+# 2024-07-19: ubuntu-latest = ubuntu-22.04
+# See https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners/about-github-hosted-runners#standard-github-hosted-runners-for-public-repositories
 on:
   # Runs on pushes targeting the default branch
   push:
@@ -37,7 +38,10 @@ jobs:
           # Prevent blocking apt install on a question during configuring of tzdata.
           export ENV DEBIAN_FRONTEND=noninteractive
           sudo apt update
-          sudo apt install libxml2-utils docbook5-xml docbook-xsl mm-common g++ meson ninja-build python3-setuptools python3-pip --yes
+          sudo apt install libxml2-utils docbook5-xml docbook-xsl mm-common g++ ninja-build python3-setuptools python3-pip --yes
+          # Ubuntu 22.04 contains meson 0.61.2, but libsigc++ requires meson >= 0.62.0.
+          # Install it with pip instead of apt.
+          sudo pip install "meson>=0.62.0"
           meson setup -Dbuild-documentation=true -Dbuild-examples=false -Dbuild-tests=false _build
           meson compile -C _build
       - name: Collect Documentation

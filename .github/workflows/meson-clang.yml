@@ -1,3 +1,5 @@
+# 2024-07-19: ubuntu-latest = ubuntu-22.04
+# See https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners/about-github-hosted-runners#standard-github-hosted-runners-for-public-repositories
 name: "Meson: clang"
 
 on: [push]
@@ -14,7 +16,10 @@ jobs:
         # Prevent blocking apt install on a question during configuring of tzdata.
         export ENV DEBIAN_FRONTEND=noninteractive
         sudo apt update
-        sudo apt install libxml2-utils docbook5-xml docbook-xsl mm-common clang meson ninja-build python3-setuptools --yes
+        sudo apt install libxml2-utils docbook5-xml docbook-xsl mm-common clang ninja-build python3-setuptools python3-pip --yes
+        # Ubuntu 22.04 contains meson 0.61.2, but libsigc++ requires meson >= 0.62.0.
+        # Install it with pip instead of apt.
+        sudo pip install "meson>=0.62.0"
         export CXX=clang++
         meson setup -Dwarnings=fatal -Dwarning_level=3 -Dwerror=true _build
         cd _build
