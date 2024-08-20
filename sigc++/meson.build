@@ -25,6 +25,7 @@ sigc_h_files = [
   'scoped_connection.h',
   'signal.h',
   'signal_base.h',
+  'signal_connect.h',
   'slot.h',
   'trackable.h',
   'type_traits.h',
