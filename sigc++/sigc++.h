@@ -119,6 +119,7 @@
 #include <sigc++/connection.h>
 #include <sigc++/scoped_connection.h>
 #include <sigc++/trackable.h>
+#include <sigc++/signal_connect.h>
 #include <sigc++/adaptors/adaptors.h>
 #include <sigc++/functors/functors.h>
 

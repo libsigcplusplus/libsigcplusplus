@@ -281,6 +281,22 @@ protected:
  * a @ref sigc::slot<T_return(T_arg...)> "sigc::slot"
  * and connected to a signal. See @ref slot "Slots" and
  * @ref sigc::signal_with_accumulator::connect() "sigc::signal::connect()".
+ *
+ * Use @ref sigc::signal_connect() to connect a method or function to a signal
+ * without having to explicitly write the required template parameters in case
+ * of method or function overloading.
+ *
+ * @code
+ * sigc::signal<void(int)> sig;
+ * void fun(int);
+ * void fun(double);
+ * sig.connect(sigc::ptr_fun<void, int>(fun));
+ * // or more simply:
+ * sigc::signal_connect(sig, fun);
+ * @endcode
+ *
+ * It can also be used as a replacement for calling signal::connect() with a
+ * sigc::mem_fun() or a sigc::ptr_fun().
  */
 
 // TODO: When we can break ABI, let signal_base derive from trackable again,

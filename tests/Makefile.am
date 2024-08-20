@@ -49,6 +49,7 @@ check_PROGRAMS = \
   test_rvalue_ref \
   test_scoped_connection \
   test_signal \
+  test_signal_connect \
   test_signal_move \
   test_size \
   test_slot \
@@ -95,6 +96,7 @@ test_retype_return_SOURCES   = test_retype_return.cc $(sigc_test_util)
 test_rvalue_ref_SOURCES      = test_rvalue_ref.cc $(sigc_test_util)
 test_scoped_connection_SOURCES = test_scoped_connection.cc $(sigc_test_util)
 test_signal_SOURCES          = test_signal.cc $(sigc_test_util)
+test_signal_connect_SOURCES  = test_signal_connect.cc $(sigc_test_util)
 test_signal_move_SOURCES     = test_signal_move.cc $(sigc_test_util)
 test_size_SOURCES            = test_size.cc $(sigc_test_util)
 test_slot_SOURCES            = test_slot.cc $(sigc_test_util)

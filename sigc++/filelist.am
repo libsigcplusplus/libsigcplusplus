@@ -27,6 +27,7 @@ sigc_public_h =				\
 	scoped_connection.h \
 	signal.h \
 	signal_base.h			\
+	signal_connect.h		\
 	slot.h			\
 	trackable.h			\
 	tuple-utils/tuple_cdr.h \
