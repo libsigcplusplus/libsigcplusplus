@@ -41,6 +41,7 @@ project_build_root = meson.current_build_dir()
 cpp_compiler = meson.get_compiler('cpp')
 cpp_compiler_id = cpp_compiler.get_id()
 is_msvc = cpp_compiler_id == 'msvc' or cpp_compiler_id.endswith('-cl')
+is_cl_impersonator = is_msvc and cpp_compiler_id != 'msvc'
 python3 = find_program('python3', version: '>=3.7')
 
 # MSVC: We currently do not support shared and static builds at the,
@@ -119,7 +120,7 @@ benchmark_dep = dependency('boost', modules: ['system', 'timer'],
                            version: '>=1.20.0', required: do_benchmark)
 can_benchmark = benchmark_dep.found()
 
-if is_msvc
+if is_msvc and not is_cl_impersonator
   # We must have Visual Studio 2017 15.7 or later...
   assert(cpp_compiler.version().split('.')[0].to_int() >= 19 and \
          cpp_compiler.version().split('.')[1].to_int() >= 15,
