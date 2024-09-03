@@ -32,6 +32,7 @@ namespace sigc
  * @param fun The function that should be wrapped.
  * @return A connection.
  *
+ * @newin{3,8}
  * @ingroup signal
  */
 template<typename T_return, typename... T_arg>
@@ -47,6 +48,7 @@ signal_connect(signal<T_return(T_arg...)>& signal, T_return (*fun)(T_arg...))
  * @param fun Pointer to method that should be wrapped.
  * @return A connection.
  *
+ * @newin{3,8}
  * @ingroup signal
  */
 template<typename T_return, typename T_obj, typename... T_arg>
@@ -62,9 +64,10 @@ signal_connect(signal<T_return(T_arg...)>& signal, /**/ T_obj& obj, T_return (T_
  * @param fun Pointer to method that should be wrapped.
  * @return A connection.
  *
+ * @newin{3,8}
  * @ingroup signal
  */
-#if SIGC_MSC
+#ifdef SIGC_MSC
 /* MSVC needs to distinguish object's class and method's class (using the
  * template parameter T_obj2) to avoid raising error C2672 (no matching
  * overloaded function found) when signal_connect(...) is called with a
@@ -88,4 +91,3 @@ signal_connect(signal<T_return(T_arg...)>& signal, /*const*/ T_obj& obj, T_retur
 } /* namespace sigc */
 
 #endif /* SIGC_SIGNAL_CONNECT_H */
-
