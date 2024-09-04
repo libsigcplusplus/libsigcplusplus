@@ -48,29 +48,6 @@ struct foo : public sigc::trackable
   }
 };
 
-struct bar : public sigc::trackable
-{
-  void fun_nonconst(int i, int j)
-  {
-    result_stream << "bar::fun_nonconst(int " << i << ", int " << j << ")";
-  }
-
-  void fun_nonconst(int i, double j)
-  {
-    result_stream << "bar::fun_nonconst(int " << i << ", double " << j << ")";
-  }
-
-  void fun_const(int i, int j) const
-  {
-    result_stream << "bar::fun_const(int " << i << ", int " << j << ")";
-  }
-
-  void fun_const(int i, double j) const
-  {
-    result_stream << "bar::fun_const(int " << i << ", double " << j << ")";
-  }
-};
-
 void
 test_signal_connect_fun()
 {
