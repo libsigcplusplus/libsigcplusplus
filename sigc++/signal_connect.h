@@ -53,7 +53,7 @@ signal_connect(signal<T_return(T_arg...)>& signal, T_return (*fun)(T_arg...))
  */
 template<typename T_return, typename T_obj, typename... T_arg>
 inline connection
-signal_connect(signal<T_return(T_arg...)>& signal, /**/ T_obj& obj, T_return (T_obj::*fun)(T_arg...))
+signal_connect(signal<T_return(T_arg...)>& signal, T_obj& obj, T_return (T_obj::*fun)(T_arg...))
 {
   return signal.connect(mem_fun<T_return, T_obj, T_obj, T_arg...>(obj, fun));
 }
@@ -67,26 +67,12 @@ signal_connect(signal<T_return(T_arg...)>& signal, /**/ T_obj& obj, T_return (T_
  * @newin{3,8}
  * @ingroup signal
  */
-#ifdef SIGC_MSC
-/* MSVC needs to distinguish object's class and method's class (using the
- * template parameter T_obj2) to avoid raising error C2672 (no matching
- * overloaded function found) when signal_connect(...) is called with a
- * const object.
- */
-template<typename T_return, typename T_obj, typename T_obj2, typename... T_arg>
-inline connection
-signal_connect(signal<T_return(T_arg...)>& signal, /*const*/ T_obj& obj, T_return (T_obj2::*fun)(T_arg...) const)
-{
-  return signal.connect(mem_fun<T_return, T_obj, T_obj, T_arg...>(obj, fun));
-}
-#else
 template<typename T_return, typename T_obj, typename... T_arg>
 inline connection
-signal_connect(signal<T_return(T_arg...)>& signal, /*const*/ T_obj& obj, T_return (T_obj::*fun)(T_arg...) const)
+signal_connect(signal<T_return(T_arg...)>& signal, const T_obj& obj, T_return (T_obj::*fun)(T_arg...) const)
 {
-  return signal.connect(mem_fun<T_return, T_obj, T_obj, T_arg...>(obj, fun));
+  return signal.connect(mem_fun<T_return, const T_obj, const T_obj, T_arg...>(obj, fun));
 }
-#endif
 
 } /* namespace sigc */
 
