@@ -5,7 +5,7 @@
 
 name: Publish docs
 
-# 2024-12-12: ubuntu-latest = ubuntu-22.04
+# 2025-02-05: ubuntu-latest = ubuntu-24.04
 # See https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners/about-github-hosted-runners#standard-github-hosted-runners-for-public-repositories
 on:
   # Runs on pushes targeting the default branch
@@ -39,10 +39,7 @@ jobs:
           # Prevent blocking apt install on a question during configuring of tzdata.
           export ENV DEBIAN_FRONTEND=noninteractive
           sudo apt update
-          sudo apt install libxml2-utils docbook5-xml docbook-xsl mm-common g++ ninja-build python3-setuptools python3-pip --yes
-          # Ubuntu 22.04 contains meson 0.61.2, but libsigc++ requires meson >= 0.62.0.
-          # Install it with pip instead of apt.
-          sudo pip install "meson>=0.62.0"
+          sudo apt install libxml2-utils docbook5-xml docbook-xsl mm-common g++ meson ninja-build python3-setuptools python3-pip --yes
           meson setup -Dbuild-documentation=true -Dbuild-examples=false -Dbuild-tests=false _build
           meson compile -C _build
       - name: Collect Documentation
@@ -56,6 +53,7 @@ jobs:
           # Move generated documentation.
           mv _build/docs/docs/manual/html _publish/manual
           mv _build/docs/docs/reference/html _publish/reference
+          mv _build/docs/docs/reference/*.tag _publish/reference/html
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Build with Jekyll
