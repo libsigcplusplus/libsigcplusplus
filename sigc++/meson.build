@@ -2,7 +2,7 @@
 
 # Input: sigcxx_build_dep, sigcxx_pcname, sigcxx_libversion, sigcxx_api_version,
 #        install_includedir, project_source_root, sigc_res, python3,
-#        handle_built_files, maintainer_mode, can_add_dist_script
+#        handle_built_files, maintainer_mode
 # Output: source_h_files, built_h_files, sigcxx_own_dep, built_files_root,
 #         built_h_file_targets
 
@@ -174,17 +174,16 @@ meson.add_install_script(
   built_h_cc_dir,
   install_includedir / sigcxx_pcname / 'sigc++', # subdir below {prefix}
   built_h_files,
+  install_tag: 'devel',
 )
 
-if can_add_dist_script
-  # Distribute built files.
-  meson.add_dist_script(
-    python3, handle_built_files, 'dist_built_files',
-    built_h_cc_dir,
-    untracked_sigcxx,
-    built_h_files + built_cc_files,
-  )
-endif
+# Distribute built files.
+meson.add_dist_script(
+  python3, handle_built_files, 'dist_built_files',
+  built_h_cc_dir,
+  untracked_sigcxx,
+  built_h_files + built_cc_files,
+)
 
 # This is used when building example programs and test programs.
 # It's also a part of sigcxx_dep, when libsigc++ is a subproject.
