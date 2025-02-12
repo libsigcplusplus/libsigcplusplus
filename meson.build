@@ -33,10 +33,9 @@ sigcxx_libversion = '@0@.@1@.@2@'.format(
   libtool_soversion[1])
 darwin_versions = [libtool_soversion[0] + 1, '@0@.@1@'.format(libtool_soversion[0] + 1, libtool_soversion[1])]
 
-# Use these instead of meson.source_root() and meson.build_root() in subdirectories.
-# source_root() and build_root() are not useful, if this is a subproject.
-project_source_root = meson.current_source_dir()
-project_build_root = meson.current_build_dir()
+# Source and build root directories of the current (sub)project.
+project_source_root = meson.project_source_root()
+project_build_root = meson.project_build_root()
 
 cpp_compiler = meson.get_compiler('cpp')
 cpp_compiler_id = cpp_compiler.get_id()
@@ -252,7 +251,9 @@ configure_file(
   input: sigcxxconfig_h_meson,
   output: 'sigc++config.h',
   configuration: pkg_conf_data,
+  install: true,
   install_dir: install_includeconfigdir,
+  install_tag: 'devel',
 )
 
 #subdir('cmake')

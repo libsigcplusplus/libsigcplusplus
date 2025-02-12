@@ -70,6 +70,7 @@ foreach ex : test_programs
     dependencies: sigcxx_own_dep,
     implicit_include_directories: false,
     build_by_default: build_tests,
+    install: false,
   )
 
   # If exe_file is a test program, it is built by default unconditionally.
@@ -93,7 +94,8 @@ if can_benchmark
     exe_file = executable(ex_name, ex_sources,
       dependencies: [sigcxx_own_dep, benchmark_dep],
       implicit_include_directories: false,
-      build_by_default: do_benchmark
+      build_by_default: do_benchmark,
+      install: false,
     )
 
     if do_benchmark

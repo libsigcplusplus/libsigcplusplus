@@ -61,7 +61,8 @@ custom_target('manual_html',
   ],
   build_by_default: true,
   install: true,
-  install_dir: install_tutorialdir
+  install_dir: install_tutorialdir,
+  install_tag: 'doc',
 )
 
 if can_parse_and_validate
