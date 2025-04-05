@@ -12,7 +12,6 @@
 
 #define ACTIVATE_BUG 1
 
-// -*- c++ -*-
 #ifndef _GLIBMM_REFPTR_H
 #define _GLIBMM_REFPTR_H
 
@@ -29,8 +28,7 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free
- * Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * License along with this library; if not, see <https://www.gnu.org/licenses/>.
  */
 
 //#include <glibmmconfig.h>
