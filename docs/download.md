@@ -5,7 +5,10 @@ title: Download
 
 ## Source Packages
 
-The source packages are available from the [GNOME download site](http://download.gnome.org/sources/libsigc++/).
+The source packages are available from [GitHub releases](https://github.com/libsigcplusplus/libsigcplusplus/releases/)
+(since 2.10.1 and 3.0.0)
+and from the [GNOME download site](http://download.gnome.org/sources/libsigc++/)
+(until 2.12.1 and 3.6.0).
 
 ## Binary Packages
 
@@ -16,7 +19,7 @@ For instance, Ubuntu Linux, Debian Linux and Fedora Linux have official libsigc+
 
 [pkg-config](http://www.freedesktop.org/wiki/Software/pkg-config/) should be used to build software that depends on libsigc++.
 
-libsigc++ is built and tested for a standards-compliant C++ compiler. Luckily, the recent versions of all major C++ compilers are now sufficiently standards-compliant.
+libsigc++ is built and tested for a standards-compliant C++ compiler.
 
 libsigc++ version 2.5.1 and later require a C++11-compliant compiler.
 
