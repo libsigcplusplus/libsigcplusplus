@@ -112,6 +112,7 @@ def dblatex():
     '-P', 'paper.type=a4paper',
     '-P', 'doc.collab.show=1',
     '-P', 'latex.output.revhistory=0',
+    '-P', 'latex.engine.options="-halt-on-error"',
   ]
 
   cmd = [
