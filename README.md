@@ -30,7 +30,7 @@ Web site
  - https://libsigcplusplus.github.io/libsigcplusplus/
 
 Download location
- - https://download.gnome.org/sources/libsigc++/
+ - https://download.gnome.org/sources/libsigc++/ (until 3.6.0)
  - https://github.com/libsigcplusplus/libsigcplusplus/releases/
 
 Reference documentation

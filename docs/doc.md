@@ -6,8 +6,8 @@ title: Documentation
 ## libsigc++-2.0
 
 The documentation is not available online. You can download a tarball from
-[GitHub releases](https://github.com/libsigcplusplus/libsigcplusplus/releases/)
-or the [GNOME download site](https://download.gnome.org/sources/libsigc++/),
+[GitHub releases](https://github.com/libsigcplusplus/libsigcplusplus/releases/) (since 2.10.1)
+or the [GNOME download site](https://download.gnome.org/sources/libsigc++/) (until 2.12.1),
 extract it, and view the documentation at *untracked/docs/*.
 
 ## libsigc++-3.0
