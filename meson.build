@@ -266,8 +266,10 @@ meson.add_dist_script(
   python3, dist_changelog,
   project_source_root,
 )
+
 # Don't distribute these files and directories.
 dont_distribute = [
+  'libsigcplusplus.doap',
   '.github',
 ]
 # Add build scripts to the distribution directory, and delete .gitignore
