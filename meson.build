@@ -39,14 +39,12 @@ project_build_root = meson.project_build_root()
 
 cpp_compiler = meson.get_compiler('cpp')
 cpp_compiler_id = cpp_compiler.get_id()
-is_msvc = cpp_compiler_id == 'msvc' or cpp_compiler_id.endswith('-cl')
-is_cl_impersonator = is_msvc and cpp_compiler_id != 'msvc'
+is_msvc_style = cpp_compiler.get_argument_syntax() == 'msvc'
 python3 = find_program('python3', version: '>=3.7')
 
-# MSVC: We currently do not support shared and static builds at the,
-#       same time, since we need different defines/cflags for proper
-#       linking.
-if is_msvc
+# MSVC: We currently do not support shared and static builds at the same time,
+#       since we need different defines/cflags for proper linking.
+if is_msvc_style
   if get_option('default_library') == 'both'
     error('-Ddefault_library=both is currently not supported for Visual Studio')
   endif
@@ -119,11 +117,11 @@ benchmark_dep = dependency('boost', modules: ['system', 'timer'],
                            version: '>=1.20.0', required: do_benchmark)
 can_benchmark = benchmark_dep.found()
 
-if is_msvc and not is_cl_impersonator
+if is_msvc_style
   # We must have Visual Studio 2017 15.7 or later...
-  assert(cpp_compiler.version().split('.')[0].to_int() >= 19 and \
-         cpp_compiler.version().split('.')[1].to_int() >= 15,
-         'Visual Studio 2017 15.7 or later is required')
+  mscver = cpp_compiler.get_define('_MSC_VER')
+  assert(mscver == '' or mscver.version_compare('>=1914'),
+         'Visual Studio 2017 15.7 or later or compatible is required')
 endif
 
 # Some dependencies are required only in maintainer mode and/or
@@ -184,17 +182,17 @@ endif
 warning_flags = []
 if cpp_warnings == 'min'
   if warning_level == 0
-    warning_flags = is_msvc ? ['/W2'] : ['-Wall']
-   endif
+    warning_flags = is_msvc_style ? ['/W2'] : ['-Wall']
+  endif
 elif cpp_warnings == 'max' or cpp_warnings == 'fatal'
   if warning_level < 3
-    warning_flags = is_msvc ? ['/W4'] : ['-pedantic', '-Wall', '-Wextra']
+    warning_flags = is_msvc_style ? ['/W4'] : ['-pedantic', '-Wall', '-Wextra']
   endif
-  if not is_msvc
+  if not is_msvc_style
     warning_flags += '-Wsuggest-override -Wshadow -Wzero-as-null-pointer-constant -Wformat-security'.split()
   endif
   if cpp_warnings == 'fatal' and not werror
-      warning_flags += is_msvc ? ['/WX'] : ['-Werror']
+      warning_flags += is_msvc_style ? ['/WX'] : ['-Werror']
   endif
 endif
 
@@ -205,7 +203,7 @@ add_project_arguments(warning_flags, language: 'cpp')
 #       that should not be overlooked stand out.
 static_cxxflag = '-DLIBSIGCXX_STATIC'
 msvc_static_cxxflag = is_msvc_static ? static_cxxflag : ''
-if is_msvc
+if is_msvc_style
   disable_warnings_list = [
     '/EHsc',  # avoid warnings caused by exception handling model used
   ]

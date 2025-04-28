@@ -1,7 +1,8 @@
 # sigc++
 
 # Input: sigcxx_build_dep, sigcxx_pcname, sigcxx_libversion, sigcxx_api_version,
-#        darwin_versions, install_includedir, sig_rc, msvc_static_cxxflag
+#        darwin_versions, install_includedir, sig_rc, msvc_static_cxxflag,
+#        is_msvc_style
 # Output: source_h_files, sigcxx_own_dep
 
 # There are no built source files in libsigc++-3.0.
@@ -76,7 +77,7 @@ extra_sigc_cppflags = []
 extra_sigc_objects = []
 
 # Make sure we are exporting the symbols from the DLL
-if is_msvc
+if is_msvc_style
   extra_sigc_cppflags += ['-DSIGC_BUILD']
 endif
 
