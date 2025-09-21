@@ -2,7 +2,7 @@
 
 project('libsigc++', 'cpp',
   version: '2.12.1',
-  license: 'LGPLv2.1+',
+  license: 'LGPL-2.1-or-later',
   default_options: [
     'cpp_std=c++11',
     'warning_level=1',
