@@ -38,9 +38,10 @@ project_source_root = meson.project_source_root()
 project_build_root = meson.project_build_root()
 
 cpp_compiler = meson.get_compiler('cpp')
-cpp_compiler_id = cpp_compiler.get_id()
 is_msvc_style = cpp_compiler.get_argument_syntax() == 'msvc'
-python3 = find_program('python3', version: '>=3.7')
+
+# Use the Python installation that Meson uses. Its version is >= 3.7.
+python3 = import('python').find_installation()
 
 # MSVC: We currently do not support shared and static builds at the same time,
 #       since we need different defines/cflags for proper linking.
