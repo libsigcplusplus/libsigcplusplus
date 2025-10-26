@@ -1,3 +1,54 @@
+3.8.0 (stable) 2025-10-26
+
+This release and future releases will not store tarballs at
+download.gnome.org/sources/. Only modules with source code at
+gitlab.gnome.org/GNOME/ can store tarballs there now.
+Tarballs of libsigcplusplus are now stored only at
+github.com/libsigcplusplus/libsigcplusplus/releases/.
+
+* slot, signal: static_assert not using R,T... syntax
+  (Daniel Boles) Issue #86, pull request #100
+* scoped_connection: Remove [[nodiscard]]
+  (Kjell Ahlstedt) Issue #102 (Vadym)
+* Add signal_connect(): Helper functions to ease connecting functions
+  or methods to signals
+  (Rémi Hérilier) Issue #104, #108, pull request #107
+* Simplify ambiguity removal when compiling with MSVC
+  (Rémi Hérilier) Pull request #110
+
+Documentation:
+* README.md: Add info about building the documentation
+  (Kjell Ahlstedt) Issue #101 (raphael10-collab)
+* Don't link to removed parts of gnome.org
+  (Kjell Ahlstedt)
+* Remove obsolete FSF (Free Software Foundation) address
+  (Tom spot Callaway) Pull request libxmlplusplus#72
+* Clarify download locations.
+  Releases will not be stored at download.gnome.org/sources/.
+  (Kjell Ahlstedt)
+
+Build:
+* Meson build: Don't fail if warning_level=everything
+  (Daniel Boles, Kjell Ahlstedt) Merge request gtkmm!87
+* Meson build: Add the build-manual option
+  (Kjell Ahlstedt)
+* Meson build: Require meson >= 0.62.0.
+  Use Meson's pkgconfig module instead of using the *.pc.in templates.
+  (Kjell Ahlstedt)
+* Meson build: Detect cl-like compilers.
+  Don't check MSVC version for non-MSVC cl
+  (Julia DeMille) Pull requst #109
+* CMake build: Change minimum required cmake version from 3.2 to 3.10
+  (Alexander Drozdov) Issue #112
+* Meson build: build-pdf: Prevent infinite loop in dblatex
+  (Philippe Baril Lecavalier) Pull request #113
+* Meson build: Better detection of MSVC-like compilers
+  (Kjell Ahlstedt)
+* Meson build: Use the Python installation that Meson uses.
+  See merge request glibmm!67
+  (Kjell Ahlstedt)
+
+
 3.6.0 (stable)
 
 * sigc++config.h.*: Update and clean up a bit for Visual Studio
