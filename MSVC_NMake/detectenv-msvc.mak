@@ -82,41 +82,25 @@ _HASH=^#
 !endif
 
 VSVER = 0
-PDBVER = 0
+PDBVER = 14
 VSVER_SUFFIX = 0
 
-!if $(VCVERSION) > 1499 && $(VCVERSION) < 1600
-PDBVER = 9
-!elseif $(VCVERSION) > 1599 && $(VCVERSION) < 1700
-PDBVER = 10
-!elseif $(VCVERSION) > 1699 && $(VCVERSION) < 1800
-PDBVER = 11
-!elseif $(VCVERSION) > 1799 && $(VCVERSION) < 1900
-PDBVER = 12
-!elseif $(VCVERSION) > 1899 && $(VCVERSION) < 2000
-PDBVER = 14
 !if $(VCVERSION) > 1909 && $(VCVERSION) < 1920
 VSVER_SUFFIX = 1
 VSVER = 15
 !elseif $(VCVERSION) > 1919 && $(VCVERSION) < 1930
 VSVER_SUFFIX = 2
 VSVER = 16
-!elseif $(VCVERSION) > 1929 && $(VCVERSION) < 2000
+!elseif $(VCVERSION) > 1929 && $(VCVERSION) < 1950
 VSVER_SUFFIX = 3
 VSVER = 17
-!else
-VSVER = $(PDBVER)
-!endif
-!else
-VSVER = $(PDBVER)
+!elseif $(VCVERSION) > 1949 && $(VCVERSION) < 2000
+VSVER_SUFFIX = 5
+VSVER = 18
 !endif
 
 !if "$(USE_COMPAT_LIBS)" != ""
-!if $(VSVER) > 15
 VSVER_LIB = 150
-!else
-VSVER_LIB = $(VSVER)0
-!endif
 !else
 VSVER_LIB = $(PDBVER)$(VSVER_SUFFIX)
 !endif
@@ -124,7 +108,7 @@ VSVER_LIB = $(PDBVER)$(VSVER_SUFFIX)
 !if "$(VSVER)" == "0"
 MSG = ^
 This NMake Makefile set supports Visual Studio^
-9 (2008) through 16 (2019).  Your Visual Studio^
+15 (2017) through 18 (2026).  Your Visual Studio^
 version is not supported.
 !error $(MSG)
 !endif
