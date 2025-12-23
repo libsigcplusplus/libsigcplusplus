@@ -48,6 +48,7 @@ Visual Studio used, as follows:
   * 2017: `15`
   * 2019: `16`
   * 2022: `17`
+  * 2026: `18`
 
 * `USE_COMPAT_LIBS`: Build the libsigc++ DLL and .lib with the filename
 `sigc-vc150(d)-3_0` for all builds.  This is for compatibility reasons,
