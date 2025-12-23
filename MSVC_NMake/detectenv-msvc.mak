@@ -81,38 +81,27 @@ _HASH=^#
 !if ![del $(ERRNUL) /q/f vercl.x vercl.i vercl.vc]
 !endif
 
-!if $(VCVERSION) > 1499 && $(VCVERSION) < 1600
-VSVER = 9
-!elseif $(VCVERSION) > 1599 && $(VCVERSION) < 1700
-VSVER = 10
-!elseif $(VCVERSION) > 1699 && $(VCVERSION) < 1800
-VSVER = 11
-!elseif $(VCVERSION) > 1799 && $(VCVERSION) < 1900
-VSVER = 12
-!elseif $(VCVERSION) > 1899 && $(VCVERSION) < 1910
+VSVER = 0
+PDBVER = 14
+
+!if $(VCVERSION) > 1899 && $(VCVERSION) < 1910
 VSVER = 14
 !elseif $(VCVERSION) > 1909 && $(VCVERSION) < 1920
 VSVER = 15
 !elseif $(VCVERSION) > 1919 && $(VCVERSION) < 1930
 VSVER = 16
-!elseif $(VCVERSION) > 1929 && $(VCVERSION) < 2000
+!elseif $(VCVERSION) > 1929 && $(VCVERSION) < 1950
 VSVER = 17
-!else
-VSVER = 0
+!elseif $(VCVERSION) > 1949 && $(VCVERSION) < 2000
+VSVER = 18
 !endif
 
 !if "$(VSVER)" == "0"
 MSG = ^
 This NMake Makefile set supports Visual Studio^
-9 (2008) through 16 (2019).  Your Visual Studio^
+14 (2015) through 18 (2026).  Your Visual Studio^
 version is not supported.
 !error $(MSG)
-!else
-!if $(VSVER) < 15
-PDBVER = $(VSVER)
-!else
-PDBVER = 14
-!endif
 !endif
 
 VALID_CFGSET = FALSE
