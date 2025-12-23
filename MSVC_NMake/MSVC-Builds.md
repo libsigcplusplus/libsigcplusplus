@@ -2,11 +2,9 @@ Instructions for building libsigc++ on Visual Studio
 =
 
 Building libsigc++ on Windows is now supported using Visual Studio
-versions 2013 or later in both 32-bit and 64-bit (x64 and ARM64) flavors,
-via NMake Makefiles.  Due to `C++11` usage, Visual Studio 2012 or
-earlier is not supported, and packages using libsigc++ may require Visual
-Studio 2015 or later as C++-11 is supported more comprehensively in later
-Visual Studio versions.
+versions 2015 or later in both 32-bit and 64-bit (x64 and ARM64) flavors,
+via NMake Makefiles.  Due to `C++11` usage, Visual Studio 2013 or
+earlier is not supported.
 
 libsigc++ itself has no external dependencies, but building the
 benchmark test program will require an installation of the Boost
@@ -52,11 +50,11 @@ specified, `$(PREFIX)` is set as `$(srcroot)\..\vs$(X)\$(platform)`, where
 `$(platform)` is `win32` for 32-bit builds or `x64` for 64-bit (Intel/AMD)
 builds or `arm64` for 64-bit (ARM) builds, and `$(X)` is the short version of the
 Visual Studio used, as follows:
-  * 2013: `12`
   * 2015: `14`
   * 2017: `15`
   * 2019: `16`
   * 2022: `17`
+  * 2026: `18`
 
 * Options, set by `<option>=1`:
 
@@ -81,4 +79,4 @@ directory in your `%PATH%`, in addition to the PERL interpreter and `m4`
 executable as noted in the [NMake builds](#Building-with-NMake) section.
 
 If building without enabling `maintainer-mode` from a release tarball, it is sufficient to
-build with Visual Studio 2017 or later, just as in the NMake builds.
+build with Visual Studio 2015 or later, just as in the NMake builds.
