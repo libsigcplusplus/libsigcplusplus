@@ -1,0 +1,32 @@
+# 2026-01-04: ubuntu-latest = ubuntu-24.04
+# See https://docs.github.com/en/actions/concepts/runners/github-hosted-runners
+# and https://github.com/actions/runner-images
+name: "Autotools: clang"
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Build
+      run: |
+        # Prevent blocking apt install on a question during configuring of tzdata.
+        export ENV DEBIAN_FRONTEND=noninteractive
+        sudo apt update
+        sudo apt install mm-common clang make docbook-xsl --yes
+        export CC=clang
+        export CXX=clang++
+        ./autogen.sh --enable-warnings=fatal
+        make
+    - name: Test
+      run: make check
+    - name: Distcheck
+      run: |
+        # distcheck runs configure again so we need to specify CC and CXX again.
+        export CC=clang
+        export CXX=clang++
+        make distcheck
