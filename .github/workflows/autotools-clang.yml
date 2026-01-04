@@ -1,3 +1,6 @@
+# 2026-01-04: ubuntu-latest = ubuntu-24.04
+# See https://docs.github.com/en/actions/concepts/runners/github-hosted-runners
+# and https://github.com/actions/runner-images
 name: "Autotools: clang"
 
 on: [push]
@@ -15,7 +18,8 @@ jobs:
         export ENV DEBIAN_FRONTEND=noninteractive
         sudo apt update
         sudo apt install mm-common clang make docbook-xsl --yes
-        export CC=clang CXX=clang++
+        export CC=clang
+        export CXX=clang++
         ./autogen.sh --enable-warnings=fatal
         make
     - name: Test
@@ -23,5 +27,6 @@ jobs:
     - name: Distcheck
       run: |
         # distcheck runs configure again so we need to specify CC and CXX again.
-        export CC=clang CXX=clang++
+        export CC=clang
+        export CXX=clang++
         make distcheck

@@ -1,3 +1,6 @@
+# 2026-01-04: windows-latest = windows-2025
+# See https://docs.github.com/en/actions/concepts/runners/github-hosted-runners
+# and https://github.com/actions/runner-images
 name: "Meson: MSVC"
 
 on: [push]
@@ -26,7 +29,7 @@ jobs:
         # to build the reference documentation, but it's error-prone to build
         # the manual. AFAIK there are no easily installable docbook5-xml and
         # docbook-xsl packages for Windows.
-        run: meson setup -Dwarnings=fatal -Dbuild-manual=false -Dmm-common:use-network=true _build
+        run: meson setup -Dwarnings=fatal -Dbuild-manual=false _build
 
       - name: Compile
         run: meson compile -C _build
