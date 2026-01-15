@@ -3,18 +3,18 @@
 
 install: all
 	@if not exist $(PREFIX)\bin\ md $(PREFIX)\bin
-	@if not exist $(PREFIX)\lib\sigc++-$(LIBSIGC_MAJOR_VERSION).$(LIBSIGC_MINOR_VERSION)\include\ md $(PREFIX)\lib\sigc++-$(LIBSIGC_MAJOR_VERSION).$(LIBSIGC_MINOR_VERSION)\include
-	@if not exist $(PREFIX)\include\sigc++-$(LIBSIGC_MAJOR_VERSION).$(LIBSIGC_MINOR_VERSION)\sigc++\adaptors\lambda\ @md $(PREFIX)\include\sigc++-$(LIBSIGC_MAJOR_VERSION).$(LIBSIGC_MINOR_VERSION)\sigc++\adaptors\lambda
-	@if not exist $(PREFIX)\include\sigc++-$(LIBSIGC_MAJOR_VERSION).$(LIBSIGC_MINOR_VERSION)\sigc++\functors\ @md $(PREFIX)\include\sigc++-$(LIBSIGC_MAJOR_VERSION).$(LIBSIGC_MINOR_VERSION)\sigc++\functors
-	@if not exist $(PREFIX)\include\sigc++-$(LIBSIGC_MAJOR_VERSION).$(LIBSIGC_MINOR_VERSION)\sigc++\tuple-utils\ @md $(PREFIX)\include\sigc++-$(LIBSIGC_MAJOR_VERSION).$(LIBSIGC_MINOR_VERSION)\sigc++\tuple-utils
-	@if "$(STATIC)" == "" copy /b $(LIBSIGC_DLL) $(PREFIX)\bin
-	@if "$(STATIC)" == "" copy /b $(LIBSIGC_DLL:.dll=.pdb) $(PREFIX)\bin
-	@copy /b $(LIBSIGC_LIB) $(PREFIX)\lib
-	@copy "..\sigc++\sigc++.h" "$(PREFIX)\include\sigc++-$(LIBSIGC_MAJOR_VERSION).$(LIBSIGC_MINOR_VERSION)\sigc++\"
-	@for %h in ($(LIBSIGC_INT_HDRS)) do @copy "..\sigc++\%h" "$(PREFIX)\include\sigc++-$(LIBSIGC_MAJOR_VERSION).$(LIBSIGC_MINOR_VERSION)\sigc++\%h"
-	@for %d in (..\sigc++ ..\untracked\sigc++ vs$(VSVER)\$(CFG)\$(PLAT)\sigc\sigc++) do @(for %h in ($(base_built_h)) do @if exist %d\%h copy "%d\%h" "$(PREFIX)\include\sigc++-$(LIBSIGC_MAJOR_VERSION).$(LIBSIGC_MINOR_VERSION)\sigc++\%h")
-	@for %d in (..\sigc++ ..\untracked\sigc++ vs$(VSVER)\$(CFG)\$(PLAT)\sigc\sigc++) do @(for %h in ($(functors_built_h)) do @if exist %d\functors\%h copy "%d\functors\%h" "$(PREFIX)\include\sigc++-$(LIBSIGC_MAJOR_VERSION).$(LIBSIGC_MINOR_VERSION)\sigc++\functors\%h")
-	@for %d in (..\sigc++ ..\untracked\sigc++ vs$(VSVER)\$(CFG)\$(PLAT)\sigc\sigc++) do @(for %h in ($(adaptors_built_h)) do @if exist %d\adaptors\%h copy "%d\adaptors\%h" "$(PREFIX)\include\sigc++-$(LIBSIGC_MAJOR_VERSION).$(LIBSIGC_MINOR_VERSION)\sigc++\adaptors\%h")
-	@for %d in (..\sigc++ ..\untracked\sigc++ vs$(VSVER)\$(CFG)\$(PLAT)\sigc\sigc++) do @(for %h in ($(lambda_built_h)) do @if exist %d\adaptors\lambda\%h copy "%d\adaptors\lambda\%h" "$(PREFIX)\include\sigc++-$(LIBSIGC_MAJOR_VERSION).$(LIBSIGC_MINOR_VERSION)\sigc++\adaptors\lambda\%h")
-	@if exist sigc++config.h copy "sigc++config.h" "$(PREFIX)\lib\sigc++-$(LIBSIGC_MAJOR_VERSION).$(LIBSIGC_MINOR_VERSION)\include\"
-	@if exist ..\untracked\MSVC_NMake\sigc++config.h copy "..\untracked\MSVC_NMake\sigc++config.h" "$(PREFIX)\lib\sigc++-$(LIBSIGC_MAJOR_VERSION).$(LIBSIGC_MINOR_VERSION)\include\"
+	@if not exist $(PREFIX)\lib\sigc++-$(SIGC_SERIES)\include\ md $(PREFIX)\lib\sigc++-$(SIGC_SERIES)\include
+	@if not exist $(PREFIX)\include\sigc++-$(SIGC_SERIES)\sigc++\adaptors\lambda\ @md $(PREFIX)\include\sigc++-$(SIGC_SERIES)\sigc++\adaptors\lambda
+	@if not exist $(PREFIX)\include\sigc++-$(SIGC_SERIES)\sigc++\functors\ @md $(PREFIX)\include\sigc++-$(SIGC_SERIES)\sigc++\functors
+	@if not exist $(PREFIX)\include\sigc++-$(SIGC_SERIES)\sigc++\tuple-utils\ @md $(PREFIX)\include\sigc++-$(SIGC_SERIES)\sigc++\tuple-utils
+	@if "$(STATIC)" == "" copy /b $(SIGC_DLL) $(PREFIX)\bin
+	@if "$(STATIC)" == "" copy /b $(SIGC_DLL:.dll=.pdb) $(PREFIX)\bin
+	@copy /b $(SIGC_LIB) $(PREFIX)\lib
+	@copy "..\sigc++\sigc++.h" "$(PREFIX)\include\sigc++-$(SIGC_SERIES)\sigc++\"
+	@for %h in ($(SIGC_INT_HDRS)) do @copy "..\sigc++\%h" "$(PREFIX)\include\sigc++-$(SIGC_SERIES)\sigc++\%h"
+	@for %d in (..\sigc++ ..\untracked\sigc++ $(OUTDIR)\sigc\sigc++) do @(for %h in ($(base_built_h)) do @if exist %d\%h copy "%d\%h" "$(PREFIX)\include\sigc++-$(SIGC_SERIES)\sigc++\%h")
+	@for %d in (..\sigc++ ..\untracked\sigc++ $(OUTDIR)\sigc\sigc++) do @(for %h in ($(functors_built_h)) do @if exist %d\functors\%h copy "%d\functors\%h" "$(PREFIX)\include\sigc++-$(SIGC_SERIES)\sigc++\functors\%h")
+	@for %d in (..\sigc++ ..\untracked\sigc++ $(OUTDIR)\sigc\sigc++) do @(for %h in ($(adaptors_built_h)) do @if exist %d\adaptors\%h copy "%d\adaptors\%h" "$(PREFIX)\include\sigc++-$(SIGC_SERIES)\sigc++\adaptors\%h")
+	@for %d in (..\sigc++ ..\untracked\sigc++ $(OUTDIR)\sigc\sigc++) do @(for %h in ($(lambda_built_h)) do @if exist %d\adaptors\lambda\%h copy "%d\adaptors\lambda\%h" "$(PREFIX)\include\sigc++-$(SIGC_SERIES)\sigc++\adaptors\lambda\%h")
+	@if exist sigc++config.h copy "sigc++config.h" "$(PREFIX)\lib\sigc++-$(SIGC_SERIES)\include\"
+	@if exist ..\untracked\MSVC_NMake\sigc++config.h copy "..\untracked\MSVC_NMake\sigc++config.h" "$(PREFIX)\lib\sigc++-$(SIGC_SERIES)\include\"
