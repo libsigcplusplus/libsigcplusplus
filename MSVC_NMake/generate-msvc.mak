@@ -16,7 +16,7 @@ sigc.rc: ..\configure.ac sigc.rc.in
 	@if "$(DO_REAL_GEN)" == "1" $(PERL) -pi.bak -e "s/\@SIGCXX_MINOR_VERSION\@/$(PKG_MINOR_VERSION)/g" $@
 	@if "$(DO_REAL_GEN)" == "1" $(PERL) -pi.bak -e "s/\@SIGCXX_MICRO_VERSION\@/$(PKG_MICRO_VERSION)/g" $@
 	@if "$(DO_REAL_GEN)" == "1" $(PERL) -pi.bak -e "s/\@PACKAGE_VERSION\@/$(PKG_MAJOR_VERSION).$(PKG_MINOR_VERSION).$(PKG_MICRO_VERSION)/g" $@
-	@if "$(DO_REAL_GEN)" == "1" $(PERL) -pi.bak -e "s/\@SIGCXX_API_VERSION\@/$(LIBSIGC_MAJOR_VERSION).$(LIBSIGC_MINOR_VERSION)/g" $@
+	@if "$(DO_REAL_GEN)" == "1" $(PERL) -pi.bak -e "s/\@SIGCXX_API_VERSION\@/$(SIGC_SERIES)/g" $@
 	@if "$(DO_REAL_GEN)" == "1" del $@.bak
 
 # You may change SIGCXX_DISABLE_DEPRECATED if you know what you are doing
