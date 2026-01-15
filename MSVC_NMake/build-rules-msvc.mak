@@ -13,67 +13,67 @@
 # 	$(CC)|$(CXX) $(cflags) /Fo$(destdir) /c @<<
 # $<
 # <<
-{..\sigc++\}.cc{vs$(VSVER)\$(CFG)\$(PLAT)\$(LIBSIGC_INTDIR)\}.obj:
+{..\sigc++\}.cc{$(OUTDIR)\$(SIGC_INTDIR)\}.obj:
 	@for %f in ($(base_built_cc) $(base_built_h)) do @if not exist ..\sigc++\%f if not exist ..\untracked\sigc++\%f if not exist $(@D)\sigc++\%f $(MAKE) /f Makefile.vc CFG=$(CFG) generate-sources
 	@for %f in ($(functors_built_cc) $(functors_built_h)) do @if not exist ..\sigc++\functors\%f if not exist ..\untracked\sigc++\functors\%f if not exist $(@D)\sigc++\functors\%f $(MAKE) /f Makefile.vc CFG=$(CFG) generate-sources
 	@for %f in ($(adaptors_built_cc) $(adaptors_built_h)) do @if not exist ..\sigc++\adaptors\%f if not exist ..\untracked\sigc++\adaptors\%f if not exist $(@D)\sigc++\adaptors\%f $(MAKE) /f Makefile.vc CFG=$(CFG) generate-sources
 	@for %f in ($(lambda_built_cc) $(lambda_built_h)) do @if not exist ..\sigc++\adaptors\lambda\%f if not exist ..\untracked\sigc++\adaptors\lambda\%f if not exist $(@D)\sigc++\adaptors\lambda\%f $(MAKE) /f Makefile.vc CFG=$(CFG) generate-sources
 	@if not exist .\sigc++config.h if not exist ..\untracked\MSVC_NMake\sigc++config.h $(MAKE) /f Makefile.vc CFG=$(CFG) sigc++config.h
 	@if not exist $(@D)\ md $(@D)
-	$(CXX) $(LIBSIGCPP_CFLAGS) /Fo$(@D)\ /Fd$(@D)\ /c @<<
+	$(CXX) $(CFLAGS) $(SIGC_DEFINES) $(SIGC_INCLUDES) /Fo$(@D)\ /Fd$(@D)\ /c @<<
 $<
 <<
 
-{..\sigc++\adaptors\lambda\}.cc{vs$(VSVER)\$(CFG)\$(PLAT)\$(LIBSIGC_INTDIR)\}.obj:
+{..\sigc++\adaptors\lambda\}.cc{$(OUTDIR)\$(SIGC_INTDIR)\}.obj:
 	@for %f in ($(base_built_cc) $(base_built_h)) do @if not exist ..\sigc++\%f if not exist ..\untracked\sigc++\%f if not exist $(@D)\sigc++\%f $(MAKE) /f Makefile.vc CFG=$(CFG) generate-sources
 	@for %f in ($(functors_built_cc) $(functors_built_h)) do @if not exist ..\sigc++\functors\%f if not exist ..\untracked\sigc++\functors\%f if not exist $(@D)\sigc++\functors\%f $(MAKE) /f Makefile.vc CFG=$(CFG) generate-sources
 	@for %f in ($(adaptors_built_cc) $(adaptors_built_h)) do @if not exist ..\sigc++\adaptors\%f if not exist ..\untracked\sigc++\adaptors\%f if not exist $(@D)\sigc++\adaptors\%f $(MAKE) /f Makefile.vc CFG=$(CFG) generate-sources
 	@for %f in ($(lambda_built_cc) $(lambda_built_h)) do @if not exist ..\sigc++\adaptors\lambda\%f if not exist ..\untracked\sigc++\adaptors\lambda\%f if not exist $(@D)\sigc++\adaptors\lambda\%f $(MAKE) /f Makefile.vc CFG=$(CFG) generate-sources
 	@if not exist .\sigc++config.h if not exist ..\untracked\MSVC_NMake\sigc++config.h $(MAKE) /f Makefile.vc CFG=$(CFG) sigc++config.h
 	@if not exist $(@D)\ md $(@D)
-	$(CXX) $(LIBSIGCPP_CFLAGS) /Fo$(@D)\ /Fd$(@D)\ /c @<<
+	$(CXX) $(CFLAGS) $(SIGC_DEFINES) $(SIGC_INCLUDES) /Fo$(@D)\ /Fd$(@D)\ /c @<<
 $<
 <<
 
-{..\sigc++\functors\}.cc{vs$(VSVER)\$(CFG)\$(PLAT)\$(LIBSIGC_INTDIR)\}.obj:
+{..\sigc++\functors\}.cc{$(OUTDIR)\$(SIGC_INTDIR)\}.obj:
 	@for %f in ($(base_built_cc) $(base_built_h)) do @if not exist ..\sigc++\%f if not exist ..\untracked\sigc++\%f if not exist $(@D)\sigc++\%f $(MAKE) /f Makefile.vc CFG=$(CFG) generate-sources
 	@for %f in ($(functors_built_cc) $(functors_built_h)) do @if not exist ..\sigc++\functors\%f if not exist ..\untracked\sigc++\functors\%f if not exist $(@D)\sigc++\functors\%f $(MAKE) /f Makefile.vc CFG=$(CFG) generate-sources
 	@for %f in ($(adaptors_built_cc) $(adaptors_built_h)) do @if not exist ..\sigc++\adaptors\%f if not exist ..\untracked\sigc++\adaptors\%f if not exist $(@D)\sigc++\adaptors\%f $(MAKE) /f Makefile.vc CFG=$(CFG) generate-sources
 	@for %f in ($(lambda_built_cc) $(lambda_built_h)) do @if not exist ..\sigc++\adaptors\lambda\%f if not exist ..\untracked\sigc++\adaptors\lambda\%f if not exist $(@D)\sigc++\adaptors\lambda\%f $(MAKE) /f Makefile.vc CFG=$(CFG) generate-sources
 	@if not exist .\sigc++config.h if not exist ..\untracked\MSVC_NMake\sigc++config.h $(MAKE) /f Makefile.vc CFG=$(CFG) sigc++config.h
 	@if not exist $(@D)\ md $(@D)
-	$(CXX) $(LIBSIGCPP_CFLAGS) /Fo$(@D)\ /Fd$(@D)\ /c @<<
+	$(CXX) $(CFLAGS) $(SIGC_DEFINES) $(SIGC_INCLUDES) /Fo$(@D)\ /Fd$(@D)\ /c @<<
 $<
 <<
 
-{..\untracked\sigc++\adaptors\lambda\}.cc{vs$(VSVER)\$(CFG)\$(PLAT)\$(LIBSIGC_INTDIR)\}.obj:
+{..\untracked\sigc++\adaptors\lambda\}.cc{$(OUTDIR)\$(SIGC_INTDIR)\}.obj:
 	@for %f in ($(base_built_cc) $(base_built_h)) do @if not exist ..\sigc++\%f if not exist ..\untracked\sigc++\%f if not exist $(@D)\sigc++\%f $(MAKE) /f Makefile.vc CFG=$(CFG) generate-sources
 	@for %f in ($(functors_built_cc) $(functors_built_h)) do @if not exist ..\sigc++\functors\%f if not exist ..\untracked\sigc++\functors\%f if not exist $(@D)\sigc++\functors\%f $(MAKE) /f Makefile.vc CFG=$(CFG) generate-sources
 	@for %f in ($(adaptors_built_cc) $(adaptors_built_h)) do @if not exist ..\sigc++\adaptors\%f if not exist ..\untracked\sigc++\adaptors\%f if not exist $(@D)\sigc++\adaptors\%f $(MAKE) /f Makefile.vc CFG=$(CFG) generate-sources
 	@for %f in ($(lambda_built_cc) $(lambda_built_h)) do @if not exist ..\sigc++\adaptors\lambda\%f if not exist ..\untracked\sigc++\adaptors\lambda\%f if not exist $(@D)\sigc++\adaptors\lambda\%f $(MAKE) /f Makefile.vc CFG=$(CFG) generate-sources
 	@if not exist .\sigc++config.h if not exist ..\untracked\MSVC_NMake\sigc++config.h $(MAKE) /f Makefile.vc CFG=$(CFG) sigc++config.h
 	@if not exist $(@D)\ md $(@D)
-	$(CXX) $(LIBSIGCPP_CFLAGS) /Fo$(@D)\ /Fd$(@D)\ /c @<<
+	$(CXX) $(CFLAGS) $(SIGC_DEFINES) $(SIGC_INCLUDES) /Fo$(@D)\ /Fd$(@D)\ /c @<<
 $<
 <<
 
-{vs$(VSVER)\$(CFG)\$(PLAT)\$(LIBSIGC_INTDIR)\sigc++\adaptors\lambda\}.cc{vs$(VSVER)\$(CFG)\$(PLAT)\$(LIBSIGC_INTDIR)\}.obj:
+{$(OUTDIR)\$(SIGC_INTDIR)\sigc++\adaptors\lambda\}.cc{$(OUTDIR)\$(SIGC_INTDIR)\}.obj:
 	@for %f in ($(base_built_cc) $(base_built_h)) do @if not exist ..\sigc++\%f if not exist ..\untracked\sigc++\%f if not exist $(@D)\sigc++\%f $(MAKE) /f Makefile.vc CFG=$(CFG) generate-sources
 	@for %f in ($(functors_built_cc) $(functors_built_h)) do @if not exist ..\sigc++\functors\%f if not exist ..\untracked\sigc++\functors\%f if not exist $(@D)\sigc++\functors\%f $(MAKE) /f Makefile.vc CFG=$(CFG) generate-sources
 	@for %f in ($(adaptors_built_cc) $(adaptors_built_h)) do @if not exist ..\sigc++\adaptors\%f if not exist ..\untracked\sigc++\adaptors\%f if not exist $(@D)\sigc++\adaptors\%f $(MAKE) /f Makefile.vc CFG=$(CFG) generate-sources
 	@for %f in ($(lambda_built_cc) $(lambda_built_h)) do @if not exist ..\sigc++\adaptors\lambda\%f if not exist ..\untracked\sigc++\adaptors\lambda\%f if not exist $(@D)\sigc++\adaptors\lambda\%f $(MAKE) /f Makefile.vc CFG=$(CFG) generate-sources
 	@if not exist .\sigc++config.h if not exist ..\untracked\MSVC_NMake\sigc++config.h $(MAKE) /f Makefile.vc CFG=$(CFG) sigc++config.h
-	$(CXX) $(LIBSIGCPP_CFLAGS) /Fo$(@D)\ /Fd$(@D)\ /c @<<
+	$(CXX) $(CFLAGS) $(SIGC_DEFINES) $(SIGC_INCLUDES) /Fo$(@D)\ /Fd$(@D)\ /c @<<
 $<
 <<
 
 # Rules for building .lib files
-$(LIBSIGC_LIB): $(LIBSIGC_DLL)
+$(SIGC_LIB): $(SIGC_DLL)
 
-{.}.rc{vs$(VSVER)\$(CFG)\$(PLAT)\$(LIBSIGC_INTDIR)\}.res:
+{.}.rc{$(OUTDIR)\$(SIGC_INTDIR)\}.res:
 	rc /fo$@ $<
 
-{..\untracked\MSVC_NMake\}.rc{vs$(VSVER)\$(CFG)\$(PLAT)\$(LIBSIGC_INTDIR)\}.res:
+{..\untracked\MSVC_NMake\}.rc{$(OUTDIR)\$(SIGC_INTDIR)\}.res:
 	@if not exist $(@D)\ md $(@D)
 	rc /fo$@ $<
 
@@ -85,15 +85,15 @@ $(LIBSIGC_LIB): $(LIBSIGC_DLL)
 # <<
 # 	@-if exist $@.manifest mt /manifest $@.manifest /outputresource:$@;2
 !ifdef STATIC
-$(LIBSIGC_LIB): $(libsigc_OBJS)
+$(SIGC_LIB): $(libsigc_OBJS)
 	lib $(ARFLAGS) -out:$@ @<<
 $(libsigc_OBJS)
 <<
 !else
-$(LIBSIGC_LIB): $(LIBSIGC_DLL)
+$(SIGC_LIB): $(SIGC_DLL)
 
-$(LIBSIGC_DLL): $(libsigc_OBJS)
-	link /DLL $(LDFLAGS) /implib:$(LIBSIGC_LIB) -out:$@ @<<
+$(SIGC_DLL): $(libsigc_OBJS)
+	link /DLL $(LDFLAGS) /implib:$(SIGC_LIB) -out:$@ @<<
 $(libsigc_OBJS)
 <<
 	@-if exist $@.manifest mt /manifest $@.manifest /outputresource:$@;2
@@ -108,26 +108,26 @@ $(libsigc_OBJS)
 # 	@-if exist $@.manifest mt /manifest $@.manifest /outputresource:$@;1
 
 clean:
-	@-del /f /q vs$(VSVER)\$(CFG)\$(PLAT)\*.exe
-	@-del /f /q vs$(VSVER)\$(CFG)\$(PLAT)\*.dll
-	@-del /f /q vs$(VSVER)\$(CFG)\$(PLAT)\*.pdb
-	@-del /f /q vs$(VSVER)\$(CFG)\$(PLAT)\*.ilk
-	@-del /f /q vs$(VSVER)\$(CFG)\$(PLAT)\*.exp
-	@-del /f /q vs$(VSVER)\$(CFG)\$(PLAT)\*.lib
-	@-if exist vs$(VSVER)\$(CFG)\$(PLAT)\$(SIGC_TESTS_INTDIR) del /f /q vs$(VSVER)\$(CFG)\$(PLAT)\$(SIGC_TESTS_INTDIR)\*.obj
-	@-if exist vs$(VSVER)\$(CFG)\$(PLAT)\$(SIGC_TESTS_INTDIR) del /f /q vs$(VSVER)\$(CFG)\$(PLAT)\$(SIGC_TESTS_INTDIR)\*.pdb
-	@-del /f /q vs$(VSVER)\$(CFG)\$(PLAT)\$(SIGC_EX_INTDIR)\*.obj
-	@-del /f /q vs$(VSVER)\$(CFG)\$(PLAT)\$(SIGC_EX_INTDIR)\*.pdb
-	@-del /f /q vs$(VSVER)\$(CFG)\$(PLAT)\$(LIBSIGC_INTDIR)\*.res
-	@-del /f /q vs$(VSVER)\$(CFG)\$(PLAT)\$(LIBSIGC_INTDIR)\*.obj
-	@-del /f /q vs$(VSVER)\$(CFG)\$(PLAT)\$(LIBSIGC_INTDIR)\*.pdb
-	@-if exist vs$(VSVER)\$(CFG)\$(PLAT)\$(SIGC_TESTS_INTDIR) rd vs$(VSVER)\$(CFG)\$(PLAT)\$(SIGC_TESTS_INTDIR)
-	@-rd vs$(VSVER)\$(CFG)\$(PLAT)\$(SIGC_EX_INTDIR)
-	@-for %d in ($(sigc_m4_srcdirs)) do @for %x in (cc h) do @if exist vs$(VSVER)\$(CFG)\$(PLAT)\$(LIBSIGC_INTDIR)\sigc++\%d\ del /f /q vs$(VSVER)\$(CFG)\$(PLAT)\$(LIBSIGC_INTDIR)\sigc++\%d\*.%x
-	@-for %x in (cc h) do @if exist vs$(VSVER)\$(CFG)\$(PLAT)\$(LIBSIGC_INTDIR)\sigc++\ del /f /q vs$(VSVER)\$(CFG)\$(PLAT)\$(LIBSIGC_INTDIR)\sigc++\*.%x
-	@-for %d in ($(sigc_m4_srcdirs)) do @rd vs$(VSVER)\$(CFG)\$(PLAT)\$(LIBSIGC_INTDIR)\sigc++\%d
-	@-rd vs$(VSVER)\$(CFG)\$(PLAT)\$(LIBSIGC_INTDIR)\sigc++
-	@-rd vs$(VSVER)\$(CFG)\$(PLAT)\$(LIBSIGC_INTDIR)
+	@-del /f /q $(OUTDIR)\*.exe
+	@-del /f /q $(OUTDIR)\*.dll
+	@-del /f /q $(OUTDIR)\*.pdb
+	@-del /f /q $(OUTDIR)\*.ilk
+	@-del /f /q $(OUTDIR)\*.exp
+	@-del /f /q $(OUTDIR)\*.lib
+	@-if exist $(OUTDIR)\$(SIGC_TESTS_INTDIR) del /f /q $(OUTDIR)\$(SIGC_TESTS_INTDIR)\*.obj
+	@-if exist $(OUTDIR)\$(SIGC_TESTS_INTDIR) del /f /q $(OUTDIR)\$(SIGC_TESTS_INTDIR)\*.pdb
+	@-del /f /q $(OUTDIR)\$(SIGC_EX_INTDIR)\*.obj
+	@-del /f /q $(OUTDIR)\$(SIGC_EX_INTDIR)\*.pdb
+	@-del /f /q $(OUTDIR)\$(SIGC_INTDIR)\*.res
+	@-del /f /q $(OUTDIR)\$(SIGC_INTDIR)\*.obj
+	@-del /f /q $(OUTDIR)\$(SIGC_INTDIR)\*.pdb
+	@-if exist $(OUTDIR)\$(SIGC_TESTS_INTDIR) rd $(OUTDIR)\$(SIGC_TESTS_INTDIR)
+	@-rd $(OUTDIR)\$(SIGC_EX_INTDIR)
+	@-for %d in ($(sigc_m4_srcdirs)) do @for %x in (cc h) do @if exist $(OUTDIR)\$(SIGC_INTDIR)\sigc++\%d\ del /f /q $(OUTDIR)\$(SIGC_INTDIR)\sigc++\%d\*.%x
+	@-for %x in (cc h) do @if exist $(OUTDIR)\$(SIGC_INTDIR)\sigc++\ del /f /q $(OUTDIR)\$(SIGC_INTDIR)\sigc++\*.%x
+	@-for %d in ($(sigc_m4_srcdirs)) do @rd $(OUTDIR)\$(SIGC_INTDIR)\sigc++\%d
+	@-rd $(OUTDIR)\$(SIGC_INTDIR)\sigc++
+	@-rd $(OUTDIR)\$(SIGC_INTDIR)
 
 forceclean: clean
 	@-for %d in (. adaptors\lambda adaptors functors) do @for %t in (.. ..\untracked) do @for %x in (cc h) do @for %f in (..\sigc++\%d\macros\*.%x.m4) do @del %t\sigc++\%d\%~nf

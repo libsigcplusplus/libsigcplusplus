@@ -16,7 +16,7 @@ sigc.rc: ..\configure.ac sigc.rc.in
 	@if "$(DO_REAL_GEN)" == "1" $(PERL) -pi.bak -e "s/\@SIGCXX_MINOR_VERSION\@/$(PKG_MINOR_VERSION)/g" $@
 	@if "$(DO_REAL_GEN)" == "1" $(PERL) -pi.bak -e "s/\@SIGCXX_MICRO_VERSION\@/$(PKG_MICRO_VERSION)/g" $@
 	@if "$(DO_REAL_GEN)" == "1" $(PERL) -pi.bak -e "s/\@PACKAGE_VERSION\@/$(PKG_MAJOR_VERSION).$(PKG_MINOR_VERSION).$(PKG_MICRO_VERSION)/g" $@
-	@if "$(DO_REAL_GEN)" == "1" $(PERL) -pi.bak -e "s/\@SIGCXX_API_VERSION\@/$(LIBSIGC_MAJOR_VERSION).$(LIBSIGC_MINOR_VERSION)/g" $@
+	@if "$(DO_REAL_GEN)" == "1" $(PERL) -pi.bak -e "s/\@SIGCXX_API_VERSION\@/$(SIGC_SERIES)/g" $@
 	@if "$(DO_REAL_GEN)" == "1" del $@.bak
 
 # You may change SIGCXX_DISABLE_DEPRECATED if you know what you are doing
@@ -46,8 +46,10 @@ pkg-ver.mak: ..\configure.ac
 	$(MAKE) /f Makefile.vc CFG=$(CFG) GENERATE_VERSIONED_FILES=1 sigc.rc sigc++config.h
 
 generate-sources:
-	@for %f in ($(base_built_cc) $(base_built_h)) do @if not exist ..\sigc++\%f if not exist ..\untracked\sigc++\%f if not exist vs$(VSVER)\$(CFG)\$(PLAT)\$(LIBSIGC_INTDIR)\sigc++\ md vs$(VSVER)\$(CFG)\$(PLAT)\$(LIBSIGC_INTDIR)\sigc++
-	@for %d in ($(sigc_m4_srcdirs)) do @for %x in (cc h) do @for %f in (..\sigc++\%d\macros\*.%x.m4) do @if not exist ..\sigc++\%d\%~nf if not exist ..\untracked\sigc++\%d\%~nf if not exist vs$(VSVER)\$(CFG)\$(PLAT)\$(LIBSIGC_INTDIR)\sigc++\%d\ md vs$(VSVER)\$(CFG)\$(PLAT)\$(LIBSIGC_INTDIR)\sigc++\%d
-	@for %f in ($(base_built_cc) $(base_built_h)) do @if not exist ..\sigc++\%f if not exist ..\untracked\sigc++\%f if not exist vs$(VSVER)\$(CFG)\$(PLAT)\$(LIBSIGC_INTDIR)\sigc++\%f @echo Generating vs$(VSVER)\$(CFG)\$(PLAT)\$(LIBSIGC_INTDIR)\sigc++\%f... & $(M4) -I ../sigc++/macros ../sigc++/macros/%f.m4 >vs$(VSVER)\$(CFG)\$(PLAT)\$(LIBSIGC_INTDIR)\sigc++\%f
-	@for %d in ($(sigc_m4_srcdirs:adaptors\lambda=)) do @for %x in (cc h) do @for %f in (..\sigc++\%d\macros\*.%x.m4) do @if not exist ..\sigc++\%d\%~nf if not exist ..\untracked\sigc++\%d\%~nf if not exist vs$(VSVER)\$(CFG)\$(PLAT)\$(LIBSIGC_INTDIR)\sigc++\%d\%~nf @echo Generating vs$(VSVER)\$(CFG)\$(PLAT)\$(LIBSIGC_INTDIR)\sigc++\%d\%~nf... & $(M4) -I ../sigc++/%d/macros -I ../sigc++/macros ../sigc++/%d/macros/%~nxf >vs$(VSVER)\$(CFG)\$(PLAT)\$(LIBSIGC_INTDIR)\sigc++\%d\%~nf
-	@for %x in (cc h) do @for %f in (..\sigc++\adaptors\lambda\macros\*.%x.m4) do @if not exist ..\sigc++\adaptors\lambda\%~nf if not exist ..\untracked\sigc++\adaptors\lambda\%~nf if not exist vs$(VSVER)\$(CFG)\$(PLAT)\$(LIBSIGC_INTDIR)\sigc++\adaptors\lambda\%~nf @echo Generating vs$(VSVER)\$(CFG)\$(PLAT)\$(LIBSIGC_INTDIR)\sigc++\adaptors\lambda\%~nf... & $(M4) -I ../sigc++/adaptors/lambda/macros -I ../sigc++/macros ../sigc++/adaptors/lambda/macros/%~nxf >vs$(VSVER)\$(CFG)\$(PLAT)\$(LIBSIGC_INTDIR)\sigc++\adaptors\lambda\%~nf
+	@if "$(UNIX_TOOLS_BINDIR_CHECKED)" == "" echo Warning: m4 is not in %PATH% or specified M4 or UNIX_TOOLS_BINDIR is not valid. Builds may fail!
+	@set PATH=$(PATH);$(UNIX_TOOLS_BINDIR_CHECKED)
+	@for %f in ($(base_built_cc) $(base_built_h)) do @if not exist ..\sigc++\%f if not exist ..\untracked\sigc++\%f if not exist $(OUTDIR)\$(SIGC_INTDIR)\sigc++\ md $(OUTDIR)\$(SIGC_INTDIR)\sigc++
+	@for %d in ($(sigc_m4_srcdirs)) do @for %x in (cc h) do @for %f in (..\sigc++\%d\macros\*.%x.m4) do @if not exist ..\sigc++\%d\%~nf if not exist ..\untracked\sigc++\%d\%~nf if not exist $(OUTDIR)\$(SIGC_INTDIR)\sigc++\%d\ md $(OUTDIR)\$(SIGC_INTDIR)\sigc++\%d
+	@for %f in ($(base_built_cc) $(base_built_h)) do @if not exist ..\sigc++\%f if not exist ..\untracked\sigc++\%f if not exist $(OUTDIR)\$(SIGC_INTDIR)\sigc++\%f @echo Generating $(OUTDIR)\$(SIGC_INTDIR)\sigc++\%f... & $(M4_FULL_PATH) -I ../sigc++/macros ../sigc++/macros/%f.m4 >$(OUTDIR)\$(SIGC_INTDIR)\sigc++\%f
+	@for %d in ($(sigc_m4_srcdirs:adaptors\lambda=)) do @for %x in (cc h) do @for %f in (..\sigc++\%d\macros\*.%x.m4) do @if not exist ..\sigc++\%d\%~nf if not exist ..\untracked\sigc++\%d\%~nf if not exist $(OUTDIR)\$(SIGC_INTDIR)\sigc++\%d\%~nf @echo Generating $(OUTDIR)\$(SIGC_INTDIR)\sigc++\%d\%~nf... & $(M4_FULL_PATH) -I ../sigc++/%d/macros -I ../sigc++/macros ../sigc++/%d/macros/%~nxf >$(OUTDIR)\$(SIGC_INTDIR)\sigc++\%d\%~nf
+	@for %x in (cc h) do @for %f in (..\sigc++\adaptors\lambda\macros\*.%x.m4) do @if not exist ..\sigc++\adaptors\lambda\%~nf if not exist ..\untracked\sigc++\adaptors\lambda\%~nf if not exist $(OUTDIR)\$(SIGC_INTDIR)\sigc++\adaptors\lambda\%~nf @echo Generating $(OUTDIR)\$(SIGC_INTDIR)\sigc++\adaptors\lambda\%~nf... & $(M4_FULL_PATH) -I ../sigc++/adaptors/lambda/macros -I ../sigc++/macros ../sigc++/adaptors/lambda/macros/%~nxf >$(OUTDIR)\$(SIGC_INTDIR)\sigc++\adaptors\lambda\%~nf
