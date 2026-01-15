@@ -120,16 +120,11 @@ VALID_CFGSET = TRUE
 
 # One may change these items, but be sure to test
 # the resulting binaries
+CFLAGS_BASE = /EHsc /std:c++17 /utf-8
 !if "$(CFG)" == "release" || "$(CFG)" == "Release"
-CFLAGS_ADD = /MD /O2 /GL /MP
-!if "$(VSVER)" != "9"
-CFLAGS_ADD = $(CFLAGS_ADD) /d2Zi+
-!endif
-!if $(VSVER) >= 14
-CFLAGS_ADD = $(CFLAGS_ADD) /utf-8
-!endif
+CFLAGS_ADD = $(CFLAGS_BASE) /MD /O2 /GL /MP
 !else
-CFLAGS_ADD = /MDd /Od
+CFLAGS_ADD = $(CFLAGS_BASE) /MDd /Od
 !endif
 
 !if "$(PLAT)" == "x64"

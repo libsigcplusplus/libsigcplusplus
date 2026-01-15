@@ -1,19 +1,39 @@
 # NMake Makefile portion for enabling features for Windows builds
 
-# These are the base minimum libraries required for building gjs.
-BASE_INCLUDES =	/I$(PREFIX)\include
+# These are the base minimum libraries required for building libsigc++.
+!ifndef BASE_INCLUDEDIR
+BASE_INCLUDEDIR = $(PREFIX)\include
+!endif
+!ifndef BASE_LIBDIR
+BASE_LIBDIR = $(PREFIX)\lib
+!endif
 
 # Please do not change anything beneath this line unless maintaining the NMake Makefiles
 
-LIBSIGC_MAJOR_VERSION = 3
-LIBSIGC_MINOR_VERSION = 0
+SIGC_MAJOR_VERSION = 3
+SIGC_MINOR_VERSION = 0
+SIGC_SERIES = $(SIGC_MAJOR_VERSION).$(SIGC_MINOR_VERSION)
+OUTDIR=vs$(VSVER)\$(CFG)\$(PLAT)
+
+DEPS_MKFILE = deps-vs$(VSVER)-$(PLAT)-$(CFG).mak
+
+# Gather up dependencies for their include directories and lib/bin dirs.
+!if [for %t in (BOOST) do @(echo !ifndef %t_INCLUDEDIR>>$(DEPS_MKFILE) & echo %t_INCLUDEDIR=^$^(BASE_INCLUDEDIR^)>>$(DEPS_MKFILE) & echo !endif>>$(DEPS_MKFILE))]
+!endif
+!if [for %t in (BOOST) do @(echo !ifndef %t_LIBDIR>>$(DEPS_MKFILE) & echo %t_LIBDIR=^$^(BASE_LIBDIR^)>>$(DEPS_MKFILE) & echo !endif>>$(DEPS_MKFILE))]
+!endif
+
+!include $(DEPS_MKFILE)
+
+!if [del /f/q $(DEPS_MKFILE)]
+!endif
 
 !ifdef STATIC
-LIBSIGC_INTDIR = sigc-static
+SIGC_INTDIR = sigc-static
 SIGC_EX_INTDIR = sigc-examples-static
 SIGC_TESTS_INTDIR = sigc-tests-static
 !else
-LIBSIGC_INTDIR = sigc
+SIGC_INTDIR = sigc
 SIGC_EX_INTDIR = sigc-examples
 SIGC_TESTS_INTDIR = sigc-tests
 !endif
@@ -24,42 +44,46 @@ DEBUG_SUFFIX = -d
 DEBUG_SUFFIX =
 !endif
 
-LIBSIGCPP_DEFINES = /DSIGC_BUILD
-
-SIGCPP_BASE_CFLAGS = /I.. /I. /I..\untracked\MSVC_NMake /std:c++17 /EHsc $(CFLAGS)
+SIGC_DEFINES = /DSIGC_BUILD
+SIGC_INCLUDES =	/I.. /I. /I..\untracked\MSVC_NMake
 
 # Define LIBSIGCXX_STATIC everywhere for static builds
 !ifdef STATIC
-SIGCPP_BASE_CFLAGS = $(SIGCPP_BASE_CFLAGS) /DLIBSIGCXX_STATIC
+SIGC_DEFINES = $(SIGC_DEFINES) /DLIBSIGCXX_STATIC
 !endif
+SIGC_PROGRAMS_DEFINES = $(SIGC_DEFINES:/DSIGC_BUILD=)
 
-LIBSIGC_INT_SOURCES = $(sigc_sources_cc:/=\)
-LIBSIGC_INT_HDRS = $(sigc_public_h:/=\)
+SIGC_INT_SOURCES = $(sigc_sources_cc:/=\)
+SIGC_INT_HDRS = $(sigc_public_h:/=\)
 
-SIGCPP_CFLAGS = $(SIGCPP_BASE_CFLAGS) $(CFLAGS)
-LIBSIGCPP_CFLAGS = $(SIGCPP_CFLAGS) $(LIBSIGCPP_DEFINES)
+SIGC_CXXFLAGS = $(SIGC_BASE_CFLAGS)
+SIGC_CXXFLAGS = $(SIGC_CXXFLAGS) $(SIGC_DEFINES)
 
-# We build sigc-vc$(VSVER_LIB)-$(LIBSIGC_MAJOR_VERSION)_$(LIBSIGC_MINOR_VERSION).dll or
-#          sigc-vc$(VSVER_LIB)d-$(LIBSIGC_MAJOR_VERSION)_$(LIBSIGC_MINOR_VERSION).dll at least
+# We build sigc-vc$(VSVER_LIB)-$(SIGC_MAJOR_VERSION)_$(SIGC_MINOR_VERSION).dll or
+#          sigc-vc$(VSVER_LIB)d-$(SIGC_MAJOR_VERSION)_$(SIGC_MINOR_VERSION).dll at least
 
 !ifdef USE_MESON_LIBS
-LIBSIGC_LIBNAME = sigc-$(LIBSIGC_MAJOR_VERSION).$(LIBSIGC_MINOR_VERSION)
-LIBSIGC_DLLNAME = $(LIBSIGC_LIBNAME)-0
+SIGC_LIBNAME = sigc-$(SIGC_SERIES)
+SIGC_DLLNAME = $(SIGC_LIBNAME)-0
 !else
-LIBSIGC_LIBNAME = sigc-vc$(VSVER_LIB)$(DEBUG_SUFFIX)-$(LIBSIGC_MAJOR_VERSION)_$(LIBSIGC_MINOR_VERSION)
-LIBSIGC_DLLNAME = $(LIBSIGC_LIBNAME)
+SIGC_LIBNAME = sigc-vc$(VSVER_LIB)$(DEBUG_SUFFIX)-$(SIGC_SERIES:.=_)
+SIGC_DLLNAME = $(SIGC_LIBNAME)
 !endif
 
 !ifdef STATIC
-LIBSIGC_LIB = vs$(VSVER)\$(CFG)\$(PLAT)\$(LIBSIGC_LIBNAME)-static.lib
+SIGC_LIB = $(OUTDIR)\$(SIGC_LIBNAME)-static.lib
 !else
-LIBSIGC_DLL = vs$(VSVER)\$(CFG)\$(PLAT)\$(LIBSIGC_DLLNAME).dll
-LIBSIGC_LIB = vs$(VSVER)\$(CFG)\$(PLAT)\$(LIBSIGC_LIBNAME).lib
+SIGC_DLL = $(OUTDIR)\$(SIGC_DLLNAME).dll
+SIGC_LIB = $(OUTDIR)\$(SIGC_LIBNAME).lib
 !endif
 
 # If your Boost libraries are built as DLLs, use BOOST_DLL=1 in your NMake command line
+SIGC_BENCHMARK_INCLUDES = /I$(BOOST_INCLUDEDIR)
+SIGC_BENCHMARK_LDFLAGS = /libpath:$(BASE_LIBDIR)
+!if "$(BOOST_LIBDIR)" != ""
+SIGC_BENCHMARK_LDFLAGS = /libpath:$(BOOST_LIBDIR)
+!endif
+SIGC_BENCHMARK_CFLAGS = $(SIGC_PROGRAMS_DEFINES)
 !ifdef BOOST_DLL
-SIGCPP_BENCHMARK_CFLAGS = $(SIGCPP_BASE_CFLAGS) /DBOOST_ALL_DYN_LINK
-!else
-SIGCPP_BENCHMARK_CFLAGS = $(SIGCPP_BASE_CFLAGS)
+SIGC_BENCHMARK_CFLAGS = $(SIGC_BENCHMARK_CFLAGS) /DBOOST_ALL_DYN_LINK
 !endif
