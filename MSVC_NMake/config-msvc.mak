@@ -16,6 +16,7 @@ SIGC_SERIES = $(SIGC_MAJOR_VERSION).$(SIGC_MINOR_VERSION)
 OUTDIR=vs$(VSVER)\$(CFG)\$(PLAT)
 
 DEPS_MKFILE = deps-vs$(VSVER)-$(PLAT)-$(CFG).mak
+BUILD_MKFILE_SNIPPET = sigc-vs$(VSVER)-$(PLAT)-$(CFG).mak
 
 # Gather up dependencies for their include directories and lib/bin dirs.
 !if [for %t in (BOOST) do @(echo !ifndef %t_INCLUDEDIR>>$(DEPS_MKFILE) & echo %t_INCLUDEDIR=^$^(BASE_INCLUDEDIR^)>>$(DEPS_MKFILE) & echo !endif>>$(DEPS_MKFILE))]
