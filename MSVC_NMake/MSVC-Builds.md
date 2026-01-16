@@ -18,12 +18,10 @@ targets:
 
 * `all`, `examples`: (or no target specified): The libsigc++ DLL and the example programs.
 * `tests`: The libsigc++ DLL and the test programs.
-* `benchmark`: The libsigc++ DLL and the benchmark program, the Boost C++ headers should be found in one of the paths that are in`%INCLUDE%`.
-
-Building directly from a GIT checkout is now supported, provided that a `PERL`
-installation is present (pass the `PERL` interpreter executable in your NMake
-command line by using `nmake /f Makefile.vc ... PERL=<path_to_PERL_interpreter_executable>` by using
-the `prep-git-build` target.
+* `benchmark`: The libsigc++ DLL and the benchmark program, the Boost C++ libraries are
+needed. The Boost C++ headers and .lib's should be found in one of the paths that are in
+`%INCLUDE%` and `%LIB%` respectively, or use BOOST_INCLUDEDIR and/or BOOST_LIBDIR to
+point to the paths where the Boost headers and .lib's can be found.
 
 The following are instructions for performing such a build.  A `clean` target is
 provided-it is recommended that one cleans the build and redo the build if any
@@ -32,13 +30,15 @@ items in their appropriate
 locations under `$(PREFIX)`, which is described below.
 
 Invoke the build by issuing the command:
-`nmake /f Makefile.vc CFG=[release|debug] [PREFIX=...] <option1=1 option2=1 ...>`
+`nmake /f Makefile.vc CFG=[release|debug] <option1=1 option2=1 ...>`
 where:
 
 * `CFG`: Required.  Choose from a `release` or `debug` build.  Note that
  all builds generate a `.pdb` file for each `.dll` and `.exe` built.
 
-* `PREFIX`: Optional.  Base directory of where the third-party headers, libraries
+Options that are supported for the build are as follows (all are optional unless
+noted):
+* PREFIX: Base directory of where the third-party headers, libraries
 and needed tools can be found, i.e. headers in `$(PREFIX)\include`,
 libraries in `$(PREFIX)\lib` and tools and DLLs in `$(PREFIX)\bin`.  If not
 specified, `$(PREFIX)` is set as `$(srcroot)\..\vs$(X)\$(platform)`, where
@@ -53,15 +53,24 @@ Visual Studio used, as follows:
 * `USE_COMPAT_LIBS`: Build the libsigc++ DLL and .lib with the filename
 `sigc-vc150(d)-3_0` for all builds.  This is for compatibility reasons,
 if re-building dependent code is not convenient, for instance
-
-* Options, set by `<option>=1`:
-
-   * `BOOST_DLL`: When building the benchmark, link to a DLL build of the Boost
-libraries.  Required if your installation of the Boost libraries are built as DLLs.
-Note that debug builds must link to debug builds of Boost and release builds must
-link to release builds of Boost.
-
-  *  `STATIC`: Optional.  Set if building libsigc++ as a static library. Note that
+* BASE_INCLUDEDIR: Base directory where needed headers can be found; default
+is `$(PREFIX)\include`. Also see BOOST_INCLUDEDIR for more details on this.
+* BASE_LIBDIR: Base directory where needed .lib's are found; default is
+`$(PREFIX)\lib`. Also see BOOST_LIBDIR for more details on this.
+* BOOST_INCLUDEDIR: Directory where the Boost C++ headers, needed for the
+benchmark program, can be found, default is `$(BASE_INCLUDEDIR)`.
+You need to include the subdirectory for the Boost version you are using,
+if it is there. i.e. If you are using Boost-1.89, you need to set this to
+`BOOST_INCLUDEDIR=<some_include_dir>\boost-1_89`.
+* BOOST_LIBDIR: Directory where the needed .lib's for Boost can be found.
+Also note BOOST_DLL if you are building against Boost that are built as DLLs.
+* BOOST_DLL: Set to `1` when building the benchmark program, link to a DLL
+build of the Boost libraries.  Required if your installation of the Boost.
+libraries are built as DLLs. Note that debug builds must link to debug builds
+of Boost and release builds must link to release builds of Boost.
+* PERL: Path to the PERL interpreter if not already in `%PATH%`, PERL is needed
+for all builds.
+*  STATIC: Set to `1` if building libsigc++ as a static library. Note that
 for building items that use this static build, `/DLIBSIGCXX_STATIC`
 must be passed into the compiler flags.
 
