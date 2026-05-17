@@ -1,3 +1,19 @@
+3.8.1 (stable) 2026-05-17
+
+Documentation:
+* MSVC_NMake/MSVC-Builds.md: Mention Visual Studio 2026
+  (Chun-wei Fan) Pull request #116
+* Visual Studio builds: Update build information
+  (Chun-wei Fan) Pull request #118
+
+Meson build:
+* NMake Makefiles: Update for Visual Studio 2026
+  (Chun-wei Fan) Pull request #116
+* NMake Makefiles: Clean up and make things more flexible
+* NMake Makefiles: Make build process more robust
+  (Chun-wei Fan) Pull request #118
+
+
 3.8.0 (stable) 2025-10-26
 
 This release and future releases will not store tarballs at
