@@ -1,3 +1,47 @@
+2.12.2 (stable) 2026-05-17
+
+This release and future releases will not store tarballs at
+download.gnome.org/sources/. Only modules with source code at
+gitlab.gnome.org/GNOME/ can store tarballs there now.
+Tarballs of libsigcplusplus are now stored only at
+github.com/libsigcplusplus/libsigcplusplus/releases/.
+
+Documentation:
+* README.md: Add info about building the documentation
+  (Kjell Ahlstedt) Issue #101 (raphael10-collab)
+* Don't link to removed parts of gnome.org
+  (Kjell Ahlstedt)
+* Remove obsolete FSF (Free Software Foundation) address
+  (Tom spot Callaway) Pull request libxmlplusplus#72
+* Clarify download locations.
+  Releases will not be stored at download.gnome.org/sources/.
+  (Kjell Ahlstedt)
+* MSVC_NMake/MSVC-Builds.md: Mention Visual Studio 2026
+  (Chun-wei Fan) Pull request #117
+* Visual Studio builds: Update build information
+  (Chun-wei Fan) Pull request #119
+
+Meson build:
+* Don't fail if warning_level=everything
+  (Daniel Boles, Kjell Ahlstedt) Merge request gtkmm!87
+* Don't require the 'dot' command to build the documentation
+  (Kjell Ahlstedt) Issue #98
+* Add the build-manual option
+* Require python3 >= 3.7. That's what Meson requires.
+* Require meson >= 0.60
+  (Kjell Ahlstedt)
+* build-pdf: Prevent infinite loop in dblatex
+  (Philippe Baril Lecavalier) Pull request #113
+* Use the Python installation that Meson uses.
+  See merge request glibmm!67
+  (Kjell Ahlstedt)
+* NMake Makefiles: Update for Visual Studio 2026
+  (Chun-wei Fan) Pull request #117
+* NMake Makefiles: Clean up and make things more flexible
+* NMake Makefiles: Make build process more robust
+  (Chun-wei Fan) Pull request #119
+
+
 2.12.1 (stable)
 
 Documentation:
