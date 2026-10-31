@@ -50,8 +50,9 @@ add_compile_options(
 
 set (PROJECT_SOURCE_DIR "${sigc++_SOURCE_DIR}/sigc++")
 
-include_directories (${sigc++_SOURCE_DIR})
-include_directories (${sigc++_BINARY_DIR})
+# fix issue with GCC 16
+include_directories (BEFORE ${sigc++_SOURCE_DIR})
+include_directories (BEFORE ${sigc++_BINARY_DIR})
 
 configure_file (sigc++config.h.cmake sigc++config.h)
 
