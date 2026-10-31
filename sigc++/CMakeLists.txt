@@ -31,6 +31,11 @@ else()
 	add_library(${SIGCPP_LIB_NAME} SHARED ${SOURCE_FILES})
 endif()
 
+target_include_directories(${SIGCPP_LIB_NAME} PUBLIC
+	$<BUILD_INTERFACE:${sigc++_SOURCE_DIR}>
+    $<BUILD_INTERFACE:${sigc++_BINARY_DIR}>
+)
+
 set_property (TARGET ${SIGCPP_LIB_NAME} PROPERTY VERSION ${PACKAGE_VERSION})
 set_property(TARGET ${SIGCPP_LIB_NAME}  PROPERTY SOVERSION ${LIBSIGCPP_SOVERSION})
 target_compile_definitions( ${SIGCPP_LIB_NAME} PRIVATE -DSIGC_BUILD )

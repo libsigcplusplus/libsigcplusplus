@@ -17,6 +17,7 @@ function (add_sigcpp_example EXAMPLE_SOURCE_FILE)
 	get_filename_component (example_name ${EXAMPLE_SOURCE_FILE} NAME_WE)
 	add_executable (${example_name} ${EXAMPLE_SOURCE_FILE})
 	target_link_libraries (${example_name} sigc-${SIGCXX_API_VERSION})
+	target_include_directories(${example_name} PRIVATE "${sigc++_SOURCE_DIR}" "${sigc++_BINARY_DIR}")
 endfunction (add_sigcpp_example)
 
 option(SIGCPP_EXAMPLES "Build examples" ON)
