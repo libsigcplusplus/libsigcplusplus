@@ -51,7 +51,7 @@ add_compile_options(
 set (PROJECT_SOURCE_DIR "${sigc++_SOURCE_DIR}/sigc++")
 
 configure_file (sigc++config.h.cmake sigc++config.h)
-
+set(PROJECT_ROOT_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 set (prefix ${CMAKE_INSTALL_PREFIX})
 set (exec_prefix \${prefix})
 set (libdir \${exec_prefix}/lib)

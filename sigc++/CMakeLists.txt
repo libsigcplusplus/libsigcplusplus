@@ -32,7 +32,7 @@ else()
 endif()
 
 target_include_directories(${SIGCPP_LIB_NAME} PUBLIC
-	$<BUILD_INTERFACE:${sigc++_SOURCE_DIR}>
+	$<BUILD_INTERFACE:${PROJECT_ROOT_DIR}>
     $<BUILD_INTERFACE:${sigc++_BINARY_DIR}>
 )
 
