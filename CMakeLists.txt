@@ -84,8 +84,8 @@ install (FILES
 
 enable_testing()
 
-
-
+set(CMAKE_INCLUDE_CURRENT_DIR OFF)
+set(CMAKE_INCLUDE_CURRENT_DIR_IN_INTERFACE OFF)
 add_subdirectory (sigc++)
 add_subdirectory (examples)
 add_subdirectory (tests)
