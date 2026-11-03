@@ -62,6 +62,7 @@ set (TEST_SOURCE_FILES
 function (add_sigcpp_test TEST_SOURCE_FILE)
 	get_filename_component (test_name ${TEST_SOURCE_FILE} NAME_WE)
 	add_executable (${test_name} ${TEST_SOURCE_FILE} testutilities.cc)
+	target_include_directories(${test_name} PRIVATE "${sigc++_SOURCE_DIR}" "${sigc++_BINARY_DIR}")
 	target_link_libraries (${test_name} sigc-${SIGCXX_API_VERSION})
         add_test (NAME ${test_name}
           # Help MSVC to find the library that the tests should link against.
@@ -72,6 +73,9 @@ function (add_sigcpp_test TEST_SOURCE_FILE)
   endif()
 endfunction (add_sigcpp_test)
 
-foreach (test_file ${TEST_SOURCE_FILES})
-	add_sigcpp_test (${test_file})
-endforeach()
+option(SIGCPP_TESTS "Build tests" ON)
+if(SIGCPP_TESTS)
+	foreach (test_file ${TEST_SOURCE_FILES})
+		add_sigcpp_test (${test_file})
+	endforeach()
+endif()
