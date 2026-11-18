@@ -50,10 +50,8 @@ add_compile_options(
 
 set (PROJECT_SOURCE_DIR "${sigc++_SOURCE_DIR}/sigc++")
 
-include_directories (${sigc++_SOURCE_DIR})
-include_directories (${sigc++_BINARY_DIR})
-
 configure_file (sigc++config.h.cmake sigc++config.h)
+set(PROJECT_ROOT_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 
 set (prefix ${CMAKE_INSTALL_PREFIX})
 set (exec_prefix \${prefix})
@@ -86,8 +84,6 @@ install (FILES
 			"${CMAKE_INSTALL_PREFIX}/lib/pkgconfig")
 
 enable_testing()
-
-
 
 add_subdirectory (sigc++)
 add_subdirectory (examples)
